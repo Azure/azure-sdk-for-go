@@ -19,98 +19,97 @@ package searchindex
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // IndexActionType enumerates the values for index action type.
 type IndexActionType string
 
 const (
-    // Delete specifies the delete state for index action type.
-    Delete IndexActionType = "delete"
-    // Merge specifies the merge state for index action type.
-    Merge IndexActionType = "merge"
-    // MergeOrUpload specifies the merge or upload state for index action type.
-    MergeOrUpload IndexActionType = "mergeOrUpload"
-    // Upload specifies the upload state for index action type.
-    Upload IndexActionType = "upload"
+	// Delete specifies the delete state for index action type.
+	Delete IndexActionType = "delete"
+	// Merge specifies the merge state for index action type.
+	Merge IndexActionType = "merge"
+	// MergeOrUpload specifies the merge or upload state for index action type.
+	MergeOrUpload IndexActionType = "mergeOrUpload"
+	// Upload specifies the upload state for index action type.
+	Upload IndexActionType = "upload"
 )
 
 // QueryType enumerates the values for query type.
 type QueryType string
 
 const (
-    // Full specifies the full state for query type.
-    Full QueryType = "full"
-    // Simple specifies the simple state for query type.
-    Simple QueryType = "simple"
+	// Full specifies the full state for query type.
+	Full QueryType = "full"
+	// Simple specifies the simple state for query type.
+	Simple QueryType = "simple"
 )
 
 // SearchMode enumerates the values for search mode.
 type SearchMode string
 
 const (
-    // All specifies the all state for search mode.
-    All SearchMode = "all"
-    // Any specifies the any state for search mode.
-    Any SearchMode = "any"
+	// All specifies the all state for search mode.
+	All SearchMode = "all"
+	// Any specifies the any state for search mode.
+	Any SearchMode = "any"
 )
 
 // DocumentIndexResult is response containing the status of operations for all
 // documents in the indexing request.
 type DocumentIndexResult struct {
-    Results *[]IndexingResult `json:"value,omitempty"`
+	Results *[]IndexingResult `json:"value,omitempty"`
 }
 
 // IndexingResult is status of an indexing operation for a single document.
 type IndexingResult struct {
-    Key *string `json:"key,omitempty"`
-    ErrorMessage *string `json:"errorMessage,omitempty"`
-    Succeeded *bool `json:"status,omitempty"`
-    StatusCode *int32 `json:"statusCode,omitempty"`
+	Key          *string `json:"key,omitempty"`
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+	Succeeded    *bool   `json:"status,omitempty"`
+	StatusCode   *int32  `json:"statusCode,omitempty"`
 }
 
 // Int64 is
 type Int64 struct {
-    autorest.Response `json:"-"`
-    Value *int64 `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *int64 `json:"value,omitempty"`
 }
 
 // SearchParametersPayload is parameters for filtering, sorting, faceting,
 // paging, and other search query behaviors.
 type SearchParametersPayload struct {
-    Count *bool `json:"count,omitempty"`
-    Facets *[]string `json:"facets,omitempty"`
-    Filter *string `json:"filter,omitempty"`
-    Highlight *string `json:"highlight,omitempty"`
-    HighlightPostTag *string `json:"highlightPostTag,omitempty"`
-    HighlightPreTag *string `json:"highlightPreTag,omitempty"`
-    MinimumCoverage *float64 `json:"minimumCoverage,omitempty"`
-    OrderBy *string `json:"orderby,omitempty"`
-    QueryType QueryType `json:"queryType,omitempty"`
-    ScoringParameters *[]string `json:"scoringParameters,omitempty"`
-    ScoringProfile *string `json:"scoringProfile,omitempty"`
-    Search *string `json:"search,omitempty"`
-    SearchFields *string `json:"searchFields,omitempty"`
-    SearchMode SearchMode `json:"searchMode,omitempty"`
-    Select *string `json:"select,omitempty"`
-    Skip *int32 `json:"skip,omitempty"`
-    Top *int32 `json:"top,omitempty"`
+	Count             *bool      `json:"count,omitempty"`
+	Facets            *[]string  `json:"facets,omitempty"`
+	Filter            *string    `json:"filter,omitempty"`
+	Highlight         *string    `json:"highlight,omitempty"`
+	HighlightPostTag  *string    `json:"highlightPostTag,omitempty"`
+	HighlightPreTag   *string    `json:"highlightPreTag,omitempty"`
+	MinimumCoverage   *float64   `json:"minimumCoverage,omitempty"`
+	OrderBy           *string    `json:"orderby,omitempty"`
+	QueryType         QueryType  `json:"queryType,omitempty"`
+	ScoringParameters *[]string  `json:"scoringParameters,omitempty"`
+	ScoringProfile    *string    `json:"scoringProfile,omitempty"`
+	Search            *string    `json:"search,omitempty"`
+	SearchFields      *string    `json:"searchFields,omitempty"`
+	SearchMode        SearchMode `json:"searchMode,omitempty"`
+	Select            *string    `json:"select,omitempty"`
+	Skip              *int32     `json:"skip,omitempty"`
+	Top               *int32     `json:"top,omitempty"`
 }
 
 // SuggestParametersPayload is parameters for filtering, sorting, fuzzy
 // matching, and other suggestions query behaviors.
 type SuggestParametersPayload struct {
-    Filter *string `json:"filter,omitempty"`
-    Fuzzy *bool `json:"fuzzy,omitempty"`
-    HighlightPostTag *string `json:"highlightPostTag,omitempty"`
-    HighlightPreTag *string `json:"highlightPreTag,omitempty"`
-    MinimumCoverage *float64 `json:"minimumCoverage,omitempty"`
-    OrderBy *string `json:"orderby,omitempty"`
-    Search *string `json:"search,omitempty"`
-    SearchFields *string `json:"searchFields,omitempty"`
-    Select *string `json:"select,omitempty"`
-    SuggesterName *string `json:"suggesterName,omitempty"`
-    Top *int32 `json:"top,omitempty"`
+	Filter           *string  `json:"filter,omitempty"`
+	Fuzzy            *bool    `json:"fuzzy,omitempty"`
+	HighlightPostTag *string  `json:"highlightPostTag,omitempty"`
+	HighlightPreTag  *string  `json:"highlightPreTag,omitempty"`
+	MinimumCoverage  *float64 `json:"minimumCoverage,omitempty"`
+	OrderBy          *string  `json:"orderby,omitempty"`
+	Search           *string  `json:"search,omitempty"`
+	SearchFields     *string  `json:"searchFields,omitempty"`
+	Select           *string  `json:"select,omitempty"`
+	SuggesterName    *string  `json:"suggesterName,omitempty"`
+	Top              *int32   `json:"top,omitempty"`
 }
-

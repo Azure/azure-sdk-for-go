@@ -19,26 +19,27 @@ package firewallrules
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"net/http"
 )
 
 // GroupClient is the provides create, read, update, and delete functionality
 // for Azure SQL Database server firewall rules.
 type GroupClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewGroupClient creates an instance of the GroupClient client.
 func NewGroupClient(subscriptionID string) GroupClient {
-        return NewGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
-        }
+	return NewGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
 
 // NewGroupClientWithBaseURI creates an instance of the GroupClient client.
-    func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClient {
-        return GroupClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClient {
+	return GroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // CreateOrUpdate creates or updates a firewall rule.
 //
@@ -48,77 +49,77 @@ func NewGroupClient(subscriptionID string) GroupClient {
 // name of the firewall rule. parameters is the required parameters for
 // creating or updating a firewall rule.
 func (client GroupClient) CreateOrUpdate(resourceGroupName string, serverName string, firewallRuleName string, parameters FirewallRule) (result FirewallRule, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: parameters,
-     Constraints: []validation.Constraint{	{Target: "parameters.Properties", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "parameters.Properties.StartIPAddress", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "parameters.Properties.EndIPAddress", Name: validation.Null, Rule: true, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "firewallrules.GroupClient","CreateOrUpdate")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.Properties.StartIPAddress", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.Properties.EndIPAddress", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "firewallrules.GroupClient", "CreateOrUpdate")
+	}
 
-    req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, firewallRuleName, parameters)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "CreateOrUpdate", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, firewallRuleName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CreateOrUpdateSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "CreateOrUpdate", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CreateOrUpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CreateOrUpdateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "CreateOrUpdate", resp, "Failure responding to request")
-    }
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client GroupClient) CreateOrUpdatePreparer(resourceGroupName string, serverName string, firewallRuleName string, parameters FirewallRule) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "firewallRuleName": autorest.Encode("path",firewallRuleName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"firewallRuleName":  autorest.Encode("path", firewallRuleName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}",pathParameters),
-                        autorest.WithJSON(parameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result FirewallRule, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Delete deletes a firewall rule.
@@ -128,65 +129,65 @@ func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result F
 // the portal. serverName is the name of the server. firewallRuleName is the
 // name of the firewall rule.
 func (client GroupClient) Delete(resourceGroupName string, serverName string, firewallRuleName string) (result autorest.Response, err error) {
-    req, err := client.DeletePreparer(resourceGroupName, serverName, firewallRuleName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "Delete", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeletePreparer(resourceGroupName, serverName, firewallRuleName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "Delete", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "Delete", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "Delete", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "Delete", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "Delete", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeletePreparer prepares the Delete request.
 func (client GroupClient) DeletePreparer(resourceGroupName string, serverName string, firewallRuleName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "firewallRuleName": autorest.Encode("path",firewallRuleName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"firewallRuleName":  autorest.Encode("path", firewallRuleName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) DeleteSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client GroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Get gets a firewall rule.
@@ -196,66 +197,66 @@ func (client GroupClient) DeleteResponder(resp *http.Response) (result autorest.
 // the portal. serverName is the name of the server. firewallRuleName is the
 // name of the firewall rule.
 func (client GroupClient) Get(resourceGroupName string, serverName string, firewallRuleName string) (result FirewallRule, err error) {
-    req, err := client.GetPreparer(resourceGroupName, serverName, firewallRuleName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(resourceGroupName, serverName, firewallRuleName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client GroupClient) GetPreparer(resourceGroupName string, serverName string, firewallRuleName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "firewallRuleName": autorest.Encode("path",firewallRuleName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"firewallRuleName":  autorest.Encode("path", firewallRuleName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetResponder(resp *http.Response) (result FirewallRule, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListByServer returns a list of firewall rules.
@@ -264,64 +265,63 @@ func (client GroupClient) GetResponder(resp *http.Response) (result FirewallRule
 // resource. You can obtain this value from the Azure Resource Manager API or
 // the portal. serverName is the name of the server.
 func (client GroupClient) ListByServer(resourceGroupName string, serverName string) (result ListResult, err error) {
-    req, err := client.ListByServerPreparer(resourceGroupName, serverName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "ListByServer", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "ListByServer", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListByServerSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "ListByServer", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListByServerSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "ListByServer", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListByServerResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "ListByServer", resp, "Failure responding to request")
-    }
+	result, err = client.ListByServerResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "firewallrules.GroupClient", "ListByServer", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListByServerPreparer prepares the ListByServer request.
 func (client GroupClient) ListByServerPreparer(resourceGroupName string, serverName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListByServerSender sends the ListByServer request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListByServerSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListByServerResponder handles the response to the ListByServer request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListByServerResponder(resp *http.Response) (result ListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

@@ -19,20 +19,21 @@ package catalog
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"net/http"
 )
 
 // GroupClient is the creates an Azure Data Lake Analytics catalog client.
 type GroupClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewGroupClient creates an instance of the GroupClient client.
 func NewGroupClient() GroupClient {
-        return GroupClient{ New()}
-        }
+	return GroupClient{New()}
+}
 
 // CreateCredential creates the specified credential for use with external data
 // sources in the specified database.
@@ -44,78 +45,78 @@ func NewGroupClient() GroupClient {
 // object. credentialName is the name of the credential. parameters is the
 // parameters required to create the credential (name and password)
 func (client GroupClient) CreateCredential(accountName string, databaseName string, credentialName string, parameters DataLakeAnalyticsCatalogCredentialCreateParameters) (result autorest.Response, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: parameters,
-     Constraints: []validation.Constraint{	{Target: "parameters.Password", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "parameters.URI", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "parameters.UserID", Name: validation.Null, Rule: true, Chain: nil }}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","CreateCredential")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Password", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.URI", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.UserID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "CreateCredential")
+	}
 
-    req, err := client.CreateCredentialPreparer(accountName, databaseName, credentialName, parameters)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "CreateCredential", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CreateCredentialPreparer(accountName, databaseName, credentialName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "CreateCredential", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CreateCredentialSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "CreateCredential", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CreateCredentialSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "CreateCredential", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CreateCredentialResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "CreateCredential", resp, "Failure responding to request")
-    }
+	result, err = client.CreateCredentialResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "CreateCredential", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CreateCredentialPreparer prepares the CreateCredential request.
 func (client GroupClient) CreateCredentialPreparer(accountName string, databaseName string, credentialName string, parameters DataLakeAnalyticsCatalogCredentialCreateParameters) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "credentialName": autorest.Encode("path",credentialName),
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"credentialName": autorest.Encode("path", credentialName),
+		"databaseName":   autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/credentials/{credentialName}",pathParameters),
-                        autorest.WithJSON(parameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/credentials/{credentialName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // CreateCredentialSender sends the CreateCredential request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) CreateCredentialSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateCredentialResponder handles the response to the CreateCredential request. The method always
 // closes the http.Response Body.
 func (client GroupClient) CreateCredentialResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // CreateSecret creates the specified secret for use with external data sources
@@ -127,76 +128,76 @@ func (client GroupClient) CreateCredentialResponder(resp *http.Response) (result
 // create the secret. secretName is the name of the secret. parameters is the
 // parameters required to create the secret (name and password)
 func (client GroupClient) CreateSecret(accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (result autorest.Response, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: parameters,
-     Constraints: []validation.Constraint{	{Target: "parameters.Password", Name: validation.Null, Rule: true, Chain: nil }}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","CreateSecret")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Password", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "CreateSecret")
+	}
 
-    req, err := client.CreateSecretPreparer(accountName, databaseName, secretName, parameters)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "CreateSecret", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CreateSecretPreparer(accountName, databaseName, secretName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "CreateSecret", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CreateSecretSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "CreateSecret", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CreateSecretSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "CreateSecret", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CreateSecretResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "CreateSecret", resp, "Failure responding to request")
-    }
+	result, err = client.CreateSecretResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "CreateSecret", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CreateSecretPreparer prepares the CreateSecret request.
 func (client GroupClient) CreateSecretPreparer(accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "secretName": autorest.Encode("path",secretName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"secretName":   autorest.Encode("path", secretName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets/{secretName}",pathParameters),
-                        autorest.WithJSON(parameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets/{secretName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // CreateSecretSender sends the CreateSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) CreateSecretSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateSecretResponder handles the response to the CreateSecret request. The method always
 // closes the http.Response Body.
 func (client GroupClient) CreateSecretResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // DeleteAllSecrets deletes all secrets in the specified database. This is
@@ -207,67 +208,67 @@ func (client GroupClient) CreateSecretResponder(resp *http.Response) (result aut
 // catalog operations. databaseName is the name of the database containing the
 // secret.
 func (client GroupClient) DeleteAllSecrets(accountName string, databaseName string) (result autorest.Response, err error) {
-    req, err := client.DeleteAllSecretsPreparer(accountName, databaseName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteAllSecrets", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeleteAllSecretsPreparer(accountName, databaseName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteAllSecrets", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteAllSecretsSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteAllSecrets", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteAllSecretsSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteAllSecrets", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteAllSecretsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteAllSecrets", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteAllSecretsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteAllSecrets", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeleteAllSecretsPreparer prepares the DeleteAllSecrets request.
 func (client GroupClient) DeleteAllSecretsPreparer(accountName string, databaseName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteAllSecretsSender sends the DeleteAllSecrets request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) DeleteAllSecretsSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteAllSecretsResponder handles the response to the DeleteAllSecrets request. The method always
 // closes the http.Response Body.
 func (client GroupClient) DeleteAllSecretsResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // DeleteCredential deletes the specified credential in the specified database
@@ -281,76 +282,76 @@ func (client GroupClient) DeleteAllSecretsResponder(resp *http.Response) (result
 // well as the credential) or not. If false will fail if there are any
 // resources relying on the credential.
 func (client GroupClient) DeleteCredential(accountName string, databaseName string, credentialName string, parameters *DataLakeAnalyticsCatalogCredentialDeleteParameters, cascade *bool) (result autorest.Response, err error) {
-    req, err := client.DeleteCredentialPreparer(accountName, databaseName, credentialName, parameters, cascade)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteCredential", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeleteCredentialPreparer(accountName, databaseName, credentialName, parameters, cascade)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteCredential", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteCredentialSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteCredential", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteCredentialSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteCredential", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteCredentialResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteCredential", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteCredentialResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteCredential", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeleteCredentialPreparer prepares the DeleteCredential request.
 func (client GroupClient) DeleteCredentialPreparer(accountName string, databaseName string, credentialName string, parameters *DataLakeAnalyticsCatalogCredentialDeleteParameters, cascade *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "credentialName": autorest.Encode("path",credentialName),
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"credentialName": autorest.Encode("path", credentialName),
+		"databaseName":   autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if cascade != nil {
-        queryParameters["cascade"] = autorest.Encode("query",*cascade)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if cascade != nil {
+		queryParameters["cascade"] = autorest.Encode("query", *cascade)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/credentials/{credentialName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if parameters != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithJSON(parameters))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/credentials/{credentialName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if parameters != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(parameters))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteCredentialSender sends the DeleteCredential request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) DeleteCredentialSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteCredentialResponder handles the response to the DeleteCredential request. The method always
 // closes the http.Response Body.
 func (client GroupClient) DeleteCredentialResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // DeleteSecret deletes the specified secret in the specified database. This is
@@ -361,68 +362,68 @@ func (client GroupClient) DeleteCredentialResponder(resp *http.Response) (result
 // catalog operations. databaseName is the name of the database containing the
 // secret. secretName is the name of the secret to delete
 func (client GroupClient) DeleteSecret(accountName string, databaseName string, secretName string) (result autorest.Response, err error) {
-    req, err := client.DeleteSecretPreparer(accountName, databaseName, secretName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteSecret", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeleteSecretPreparer(accountName, databaseName, secretName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteSecret", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteSecretSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteSecret", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteSecretSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteSecret", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteSecretResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteSecret", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteSecretResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "DeleteSecret", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeleteSecretPreparer prepares the DeleteSecret request.
 func (client GroupClient) DeleteSecretPreparer(accountName string, databaseName string, secretName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "secretName": autorest.Encode("path",secretName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"secretName":   autorest.Encode("path", secretName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets/{secretName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets/{secretName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteSecretSender sends the DeleteSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) DeleteSecretSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteSecretResponder handles the response to the DeleteSecret request. The method always
 // closes the http.Response Body.
 func (client GroupClient) DeleteSecretResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // GetAssembly retrieves the specified assembly from the Data Lake Analytics
@@ -432,69 +433,69 @@ func (client GroupClient) DeleteSecretResponder(resp *http.Response) (result aut
 // catalog operations. databaseName is the name of the database containing the
 // assembly. assemblyName is the name of the assembly.
 func (client GroupClient) GetAssembly(accountName string, databaseName string, assemblyName string) (result USQLAssembly, err error) {
-    req, err := client.GetAssemblyPreparer(accountName, databaseName, assemblyName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetAssembly", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetAssemblyPreparer(accountName, databaseName, assemblyName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetAssembly", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetAssemblySender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetAssembly", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetAssemblySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetAssembly", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetAssemblyResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetAssembly", resp, "Failure responding to request")
-    }
+	result, err = client.GetAssemblyResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetAssembly", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetAssemblyPreparer prepares the GetAssembly request.
 func (client GroupClient) GetAssemblyPreparer(accountName string, databaseName string, assemblyName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "assemblyName": autorest.Encode("path",assemblyName),
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"assemblyName": autorest.Encode("path", assemblyName),
+		"databaseName": autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/assemblies/{assemblyName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/assemblies/{assemblyName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetAssemblySender sends the GetAssembly request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetAssemblySender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAssemblyResponder handles the response to the GetAssembly request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetAssemblyResponder(resp *http.Response) (result USQLAssembly, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetCredential retrieves the specified credential from the Data Lake
@@ -504,69 +505,69 @@ func (client GroupClient) GetAssemblyResponder(resp *http.Response) (result USQL
 // catalog operations. databaseName is the name of the database containing the
 // schema. credentialName is the name of the credential.
 func (client GroupClient) GetCredential(accountName string, databaseName string, credentialName string) (result USQLCredential, err error) {
-    req, err := client.GetCredentialPreparer(accountName, databaseName, credentialName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetCredential", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetCredentialPreparer(accountName, databaseName, credentialName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetCredential", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetCredentialSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetCredential", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetCredentialSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetCredential", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetCredentialResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetCredential", resp, "Failure responding to request")
-    }
+	result, err = client.GetCredentialResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetCredential", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetCredentialPreparer prepares the GetCredential request.
 func (client GroupClient) GetCredentialPreparer(accountName string, databaseName string, credentialName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "credentialName": autorest.Encode("path",credentialName),
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"credentialName": autorest.Encode("path", credentialName),
+		"databaseName":   autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/credentials/{credentialName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/credentials/{credentialName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetCredentialSender sends the GetCredential request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetCredentialSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetCredentialResponder handles the response to the GetCredential request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetCredentialResponder(resp *http.Response) (result USQLCredential, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetDatabase retrieves the specified database from the Data Lake Analytics
@@ -575,68 +576,68 @@ func (client GroupClient) GetCredentialResponder(resp *http.Response) (result US
 // accountName is the Azure Data Lake Analytics account upon which to execute
 // catalog operations. databaseName is the name of the database.
 func (client GroupClient) GetDatabase(accountName string, databaseName string) (result USQLDatabase, err error) {
-    req, err := client.GetDatabasePreparer(accountName, databaseName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetDatabase", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetDatabasePreparer(accountName, databaseName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetDatabase", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetDatabaseSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetDatabase", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetDatabase", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetDatabaseResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetDatabase", resp, "Failure responding to request")
-    }
+	result, err = client.GetDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetDatabase", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetDatabasePreparer prepares the GetDatabase request.
 func (client GroupClient) GetDatabasePreparer(accountName string, databaseName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetDatabaseSender sends the GetDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetDatabaseSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetDatabaseResponder handles the response to the GetDatabase request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetDatabaseResponder(resp *http.Response) (result USQLDatabase, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetExternalDataSource retrieves the specified external data source from the
@@ -647,69 +648,69 @@ func (client GroupClient) GetDatabaseResponder(resp *http.Response) (result USQL
 // external data source. externalDataSourceName is the name of the external
 // data source.
 func (client GroupClient) GetExternalDataSource(accountName string, databaseName string, externalDataSourceName string) (result USQLExternalDataSource, err error) {
-    req, err := client.GetExternalDataSourcePreparer(accountName, databaseName, externalDataSourceName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetExternalDataSource", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetExternalDataSourcePreparer(accountName, databaseName, externalDataSourceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetExternalDataSource", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetExternalDataSourceSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetExternalDataSource", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetExternalDataSourceSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetExternalDataSource", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetExternalDataSourceResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetExternalDataSource", resp, "Failure responding to request")
-    }
+	result, err = client.GetExternalDataSourceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetExternalDataSource", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetExternalDataSourcePreparer prepares the GetExternalDataSource request.
 func (client GroupClient) GetExternalDataSourcePreparer(accountName string, databaseName string, externalDataSourceName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "externalDataSourceName": autorest.Encode("path",externalDataSourceName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":           autorest.Encode("path", databaseName),
+		"externalDataSourceName": autorest.Encode("path", externalDataSourceName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/externaldatasources/{externalDataSourceName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/externaldatasources/{externalDataSourceName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetExternalDataSourceSender sends the GetExternalDataSource request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetExternalDataSourceSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetExternalDataSourceResponder handles the response to the GetExternalDataSource request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetExternalDataSourceResponder(resp *http.Response) (result USQLExternalDataSource, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetPackage retrieves the specified package from the Data Lake Analytics
@@ -720,70 +721,70 @@ func (client GroupClient) GetExternalDataSourceResponder(resp *http.Response) (r
 // package. schemaName is the name of the schema containing the package.
 // packageName is the name of the package.
 func (client GroupClient) GetPackage(accountName string, databaseName string, schemaName string, packageName string) (result USQLPackage, err error) {
-    req, err := client.GetPackagePreparer(accountName, databaseName, schemaName, packageName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetPackage", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPackagePreparer(accountName, databaseName, schemaName, packageName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetPackage", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetPackageSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetPackage", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetPackageSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetPackage", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetPackageResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetPackage", resp, "Failure responding to request")
-    }
+	result, err = client.GetPackageResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetPackage", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPackagePreparer prepares the GetPackage request.
 func (client GroupClient) GetPackagePreparer(accountName string, databaseName string, schemaName string, packageName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "packageName": autorest.Encode("path",packageName),
-    "schemaName": autorest.Encode("path",schemaName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"packageName":  autorest.Encode("path", packageName),
+		"schemaName":   autorest.Encode("path", schemaName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/packages/{packageName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/packages/{packageName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetPackageSender sends the GetPackage request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetPackageSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetPackageResponder handles the response to the GetPackage request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetPackageResponder(resp *http.Response) (result USQLPackage, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetProcedure retrieves the specified procedure from the Data Lake Analytics
@@ -794,70 +795,70 @@ func (client GroupClient) GetPackageResponder(resp *http.Response) (result USQLP
 // procedure. schemaName is the name of the schema containing the procedure.
 // procedureName is the name of the procedure.
 func (client GroupClient) GetProcedure(accountName string, databaseName string, schemaName string, procedureName string) (result USQLProcedure, err error) {
-    req, err := client.GetProcedurePreparer(accountName, databaseName, schemaName, procedureName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetProcedure", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetProcedurePreparer(accountName, databaseName, schemaName, procedureName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetProcedure", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetProcedureSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetProcedure", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetProcedureSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetProcedure", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetProcedureResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetProcedure", resp, "Failure responding to request")
-    }
+	result, err = client.GetProcedureResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetProcedure", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetProcedurePreparer prepares the GetProcedure request.
 func (client GroupClient) GetProcedurePreparer(accountName string, databaseName string, schemaName string, procedureName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "procedureName": autorest.Encode("path",procedureName),
-    "schemaName": autorest.Encode("path",schemaName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":  autorest.Encode("path", databaseName),
+		"procedureName": autorest.Encode("path", procedureName),
+		"schemaName":    autorest.Encode("path", schemaName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/procedures/{procedureName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/procedures/{procedureName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetProcedureSender sends the GetProcedure request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetProcedureSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetProcedureResponder handles the response to the GetProcedure request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetProcedureResponder(resp *http.Response) (result USQLProcedure, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetSchema retrieves the specified schema from the Data Lake Analytics
@@ -867,69 +868,69 @@ func (client GroupClient) GetProcedureResponder(resp *http.Response) (result USQ
 // catalog operations. databaseName is the name of the database containing the
 // schema. schemaName is the name of the schema.
 func (client GroupClient) GetSchema(accountName string, databaseName string, schemaName string) (result USQLSchema, err error) {
-    req, err := client.GetSchemaPreparer(accountName, databaseName, schemaName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetSchema", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetSchemaPreparer(accountName, databaseName, schemaName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetSchema", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSchemaSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetSchema", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSchemaSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetSchema", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetSchemaResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetSchema", resp, "Failure responding to request")
-    }
+	result, err = client.GetSchemaResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetSchema", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetSchemaPreparer prepares the GetSchema request.
 func (client GroupClient) GetSchemaPreparer(accountName string, databaseName string, schemaName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSchemaSender sends the GetSchema request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetSchemaSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetSchemaResponder handles the response to the GetSchema request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetSchemaResponder(resp *http.Response) (result USQLSchema, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetSecret gets the specified secret in the specified database. This is
@@ -940,69 +941,69 @@ func (client GroupClient) GetSchemaResponder(resp *http.Response) (result USQLSc
 // catalog operations. databaseName is the name of the database containing the
 // secret. secretName is the name of the secret to get
 func (client GroupClient) GetSecret(accountName string, databaseName string, secretName string) (result USQLSecret, err error) {
-    req, err := client.GetSecretPreparer(accountName, databaseName, secretName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetSecret", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetSecretPreparer(accountName, databaseName, secretName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetSecret", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSecretSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetSecret", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSecretSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetSecret", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetSecretResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetSecret", resp, "Failure responding to request")
-    }
+	result, err = client.GetSecretResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetSecret", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetSecretPreparer prepares the GetSecret request.
 func (client GroupClient) GetSecretPreparer(accountName string, databaseName string, secretName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "secretName": autorest.Encode("path",secretName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"secretName":   autorest.Encode("path", secretName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets/{secretName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets/{secretName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSecretSender sends the GetSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetSecretSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetSecretResponder handles the response to the GetSecret request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetSecretResponder(resp *http.Response) (result USQLSecret, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetTable retrieves the specified table from the Data Lake Analytics catalog.
@@ -1012,70 +1013,70 @@ func (client GroupClient) GetSecretResponder(resp *http.Response) (result USQLSe
 // table. schemaName is the name of the schema containing the table. tableName
 // is the name of the table.
 func (client GroupClient) GetTable(accountName string, databaseName string, schemaName string, tableName string) (result USQLTable, err error) {
-    req, err := client.GetTablePreparer(accountName, databaseName, schemaName, tableName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTable", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetTablePreparer(accountName, databaseName, schemaName, tableName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTable", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetTableSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTable", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetTableSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTable", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetTableResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTable", resp, "Failure responding to request")
-    }
+	result, err = client.GetTableResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTable", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetTablePreparer prepares the GetTable request.
 func (client GroupClient) GetTablePreparer(accountName string, databaseName string, schemaName string, tableName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    "tableName": autorest.Encode("path",tableName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+		"tableName":    autorest.Encode("path", tableName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetTableSender sends the GetTable request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetTableSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetTableResponder handles the response to the GetTable request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetTableResponder(resp *http.Response) (result USQLTable, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetTablePartition retrieves the specified table partition from the Data Lake
@@ -1087,71 +1088,71 @@ func (client GroupClient) GetTableResponder(resp *http.Response) (result USQLTab
 // tableName is the name of the table containing the partition. partitionName
 // is the name of the table partition.
 func (client GroupClient) GetTablePartition(accountName string, databaseName string, schemaName string, tableName string, partitionName string) (result USQLTablePartition, err error) {
-    req, err := client.GetTablePartitionPreparer(accountName, databaseName, schemaName, tableName, partitionName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTablePartition", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetTablePartitionPreparer(accountName, databaseName, schemaName, tableName, partitionName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTablePartition", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetTablePartitionSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTablePartition", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetTablePartitionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTablePartition", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetTablePartitionResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTablePartition", resp, "Failure responding to request")
-    }
+	result, err = client.GetTablePartitionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTablePartition", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetTablePartitionPreparer prepares the GetTablePartition request.
 func (client GroupClient) GetTablePartitionPreparer(accountName string, databaseName string, schemaName string, tableName string, partitionName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "partitionName": autorest.Encode("path",partitionName),
-    "schemaName": autorest.Encode("path",schemaName),
-    "tableName": autorest.Encode("path",tableName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":  autorest.Encode("path", databaseName),
+		"partitionName": autorest.Encode("path", partitionName),
+		"schemaName":    autorest.Encode("path", schemaName),
+		"tableName":     autorest.Encode("path", tableName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/partitions/{partitionName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/partitions/{partitionName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetTablePartitionSender sends the GetTablePartition request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetTablePartitionSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetTablePartitionResponder handles the response to the GetTablePartition request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetTablePartitionResponder(resp *http.Response) (result USQLTablePartition, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetTableStatistic retrieves the specified table statistics from the Data
@@ -1163,71 +1164,71 @@ func (client GroupClient) GetTablePartitionResponder(resp *http.Response) (resul
 // tableName is the name of the table containing the statistics. statisticsName
 // is the name of the table statistics.
 func (client GroupClient) GetTableStatistic(accountName string, databaseName string, schemaName string, tableName string, statisticsName string) (result USQLTableStatistics, err error) {
-    req, err := client.GetTableStatisticPreparer(accountName, databaseName, schemaName, tableName, statisticsName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableStatistic", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetTableStatisticPreparer(accountName, databaseName, schemaName, tableName, statisticsName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableStatistic", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetTableStatisticSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableStatistic", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetTableStatisticSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableStatistic", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetTableStatisticResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableStatistic", resp, "Failure responding to request")
-    }
+	result, err = client.GetTableStatisticResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableStatistic", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetTableStatisticPreparer prepares the GetTableStatistic request.
 func (client GroupClient) GetTableStatisticPreparer(accountName string, databaseName string, schemaName string, tableName string, statisticsName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    "statisticsName": autorest.Encode("path",statisticsName),
-    "tableName": autorest.Encode("path",tableName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":   autorest.Encode("path", databaseName),
+		"schemaName":     autorest.Encode("path", schemaName),
+		"statisticsName": autorest.Encode("path", statisticsName),
+		"tableName":      autorest.Encode("path", tableName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics/{statisticsName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics/{statisticsName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetTableStatisticSender sends the GetTableStatistic request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetTableStatisticSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetTableStatisticResponder handles the response to the GetTableStatistic request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetTableStatisticResponder(resp *http.Response) (result USQLTableStatistics, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetTableType retrieves the specified table type from the Data Lake Analytics
@@ -1238,70 +1239,70 @@ func (client GroupClient) GetTableStatisticResponder(resp *http.Response) (resul
 // table type. schemaName is the name of the schema containing the table type.
 // tableTypeName is the name of the table type to retrieve.
 func (client GroupClient) GetTableType(accountName string, databaseName string, schemaName string, tableTypeName string) (result USQLTableType, err error) {
-    req, err := client.GetTableTypePreparer(accountName, databaseName, schemaName, tableTypeName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableType", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetTableTypePreparer(accountName, databaseName, schemaName, tableTypeName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableType", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetTableTypeSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableType", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetTableTypeSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableType", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetTableTypeResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableType", resp, "Failure responding to request")
-    }
+	result, err = client.GetTableTypeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableType", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetTableTypePreparer prepares the GetTableType request.
 func (client GroupClient) GetTableTypePreparer(accountName string, databaseName string, schemaName string, tableTypeName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    "tableTypeName": autorest.Encode("path",tableTypeName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":  autorest.Encode("path", databaseName),
+		"schemaName":    autorest.Encode("path", schemaName),
+		"tableTypeName": autorest.Encode("path", tableTypeName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tabletypes/{tableTypeName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tabletypes/{tableTypeName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetTableTypeSender sends the GetTableType request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetTableTypeSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetTableTypeResponder handles the response to the GetTableType request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetTableTypeResponder(resp *http.Response) (result USQLTableType, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetTableValuedFunction retrieves the specified table valued function from
@@ -1313,70 +1314,70 @@ func (client GroupClient) GetTableTypeResponder(resp *http.Response) (result USQ
 // table valued function. tableValuedFunctionName is the name of the
 // tableValuedFunction.
 func (client GroupClient) GetTableValuedFunction(accountName string, databaseName string, schemaName string, tableValuedFunctionName string) (result USQLTableValuedFunction, err error) {
-    req, err := client.GetTableValuedFunctionPreparer(accountName, databaseName, schemaName, tableValuedFunctionName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableValuedFunction", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetTableValuedFunctionPreparer(accountName, databaseName, schemaName, tableValuedFunctionName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableValuedFunction", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetTableValuedFunctionSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableValuedFunction", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetTableValuedFunctionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableValuedFunction", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetTableValuedFunctionResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableValuedFunction", resp, "Failure responding to request")
-    }
+	result, err = client.GetTableValuedFunctionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetTableValuedFunction", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetTableValuedFunctionPreparer prepares the GetTableValuedFunction request.
 func (client GroupClient) GetTableValuedFunctionPreparer(accountName string, databaseName string, schemaName string, tableValuedFunctionName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    "tableValuedFunctionName": autorest.Encode("path",tableValuedFunctionName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":            autorest.Encode("path", databaseName),
+		"schemaName":              autorest.Encode("path", schemaName),
+		"tableValuedFunctionName": autorest.Encode("path", tableValuedFunctionName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tablevaluedfunctions/{tableValuedFunctionName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tablevaluedfunctions/{tableValuedFunctionName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetTableValuedFunctionSender sends the GetTableValuedFunction request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetTableValuedFunctionSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetTableValuedFunctionResponder handles the response to the GetTableValuedFunction request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetTableValuedFunctionResponder(resp *http.Response) (result USQLTableValuedFunction, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetView retrieves the specified view from the Data Lake Analytics catalog.
@@ -1386,70 +1387,70 @@ func (client GroupClient) GetTableValuedFunctionResponder(resp *http.Response) (
 // view. schemaName is the name of the schema containing the view. viewName is
 // the name of the view.
 func (client GroupClient) GetView(accountName string, databaseName string, schemaName string, viewName string) (result USQLView, err error) {
-    req, err := client.GetViewPreparer(accountName, databaseName, schemaName, viewName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetView", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetViewPreparer(accountName, databaseName, schemaName, viewName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetView", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetViewSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetView", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetViewSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetView", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetViewResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetView", resp, "Failure responding to request")
-    }
+	result, err = client.GetViewResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "GetView", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetViewPreparer prepares the GetView request.
 func (client GroupClient) GetViewPreparer(accountName string, databaseName string, schemaName string, viewName string) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    "viewName": autorest.Encode("path",viewName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+		"viewName":     autorest.Encode("path", viewName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/views/{viewName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/views/{viewName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetViewSender sends the GetView request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetViewSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetViewResponder handles the response to the GetView request. The method always
 // closes the http.Response Body.
 func (client GroupClient) GetViewResponder(resp *http.Response) (result USQLView, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListAssemblies retrieves the list of assemblies from the Data Lake Analytics
@@ -1468,122 +1469,120 @@ func (client GroupClient) GetViewResponder(resp *http.Response) (result USQLView
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListAssemblies(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLAssemblyList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListAssemblies")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListAssemblies")
+	}
 
-    req, err := client.ListAssembliesPreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListAssemblies", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListAssembliesPreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListAssemblies", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListAssembliesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListAssemblies", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListAssembliesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListAssemblies", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListAssembliesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListAssemblies", resp, "Failure responding to request")
-    }
+	result, err = client.ListAssembliesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListAssemblies", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListAssembliesPreparer prepares the ListAssemblies request.
 func (client GroupClient) ListAssembliesPreparer(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/assemblies",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/assemblies", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListAssembliesSender sends the ListAssemblies request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListAssembliesSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListAssembliesResponder handles the response to the ListAssemblies request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListAssembliesResponder(resp *http.Response) (result USQLAssemblyList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListAssembliesNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListAssembliesNextResults(lastResults USQLAssemblyList) (result USQLAssemblyList, err error) {
-    req, err := lastResults.USQLAssemblyListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListAssemblies", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLAssemblyListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListAssemblies", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListAssembliesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListAssemblies", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListAssembliesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListAssemblies", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListAssembliesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListAssemblies", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListAssembliesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListAssemblies", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListCredentials retrieves the list of credentials from the Data Lake
@@ -1602,122 +1601,120 @@ func (client GroupClient) ListAssembliesNextResults(lastResults USQLAssemblyList
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListCredentials(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLCredentialList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListCredentials")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListCredentials")
+	}
 
-    req, err := client.ListCredentialsPreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListCredentials", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListCredentialsPreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListCredentials", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListCredentialsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListCredentials", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListCredentialsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListCredentials", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListCredentialsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListCredentials", resp, "Failure responding to request")
-    }
+	result, err = client.ListCredentialsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListCredentials", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListCredentialsPreparer prepares the ListCredentials request.
 func (client GroupClient) ListCredentialsPreparer(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/credentials",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/credentials", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListCredentialsSender sends the ListCredentials request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListCredentialsSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListCredentialsResponder handles the response to the ListCredentials request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListCredentialsResponder(resp *http.Response) (result USQLCredentialList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListCredentialsNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListCredentialsNextResults(lastResults USQLCredentialList) (result USQLCredentialList, err error) {
-    req, err := lastResults.USQLCredentialListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListCredentials", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLCredentialListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListCredentials", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListCredentialsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListCredentials", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListCredentialsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListCredentials", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListCredentialsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListCredentials", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListCredentialsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListCredentials", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListDatabases retrieves the list of databases from the Data Lake Analytics
@@ -1735,118 +1732,116 @@ func (client GroupClient) ListCredentialsNextResults(lastResults USQLCredentialL
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListDatabases(accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLDatabaseList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListDatabases")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListDatabases")
+	}
 
-    req, err := client.ListDatabasesPreparer(accountName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListDatabases", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListDatabasesPreparer(accountName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListDatabases", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListDatabasesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListDatabases", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListDatabasesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListDatabases", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListDatabasesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListDatabases", resp, "Failure responding to request")
-    }
+	result, err = client.ListDatabasesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListDatabases", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListDatabasesPreparer prepares the ListDatabases request.
 func (client GroupClient) ListDatabasesPreparer(accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPath("/catalog/usql/databases"),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPath("/catalog/usql/databases"),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListDatabasesSender sends the ListDatabases request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListDatabasesSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListDatabasesResponder handles the response to the ListDatabases request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListDatabasesResponder(resp *http.Response) (result USQLDatabaseList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListDatabasesNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListDatabasesNextResults(lastResults USQLDatabaseList) (result USQLDatabaseList, err error) {
-    req, err := lastResults.USQLDatabaseListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListDatabases", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLDatabaseListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListDatabases", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListDatabasesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListDatabases", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListDatabasesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListDatabases", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListDatabasesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListDatabases", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListDatabasesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListDatabases", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListExternalDataSources retrieves the list of external data sources from the
@@ -1865,122 +1860,120 @@ func (client GroupClient) ListDatabasesNextResults(lastResults USQLDatabaseList)
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListExternalDataSources(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLExternalDataSourceList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListExternalDataSources")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListExternalDataSources")
+	}
 
-    req, err := client.ListExternalDataSourcesPreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListExternalDataSources", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListExternalDataSourcesPreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListExternalDataSources", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListExternalDataSourcesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListExternalDataSources", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListExternalDataSourcesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListExternalDataSources", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListExternalDataSourcesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListExternalDataSources", resp, "Failure responding to request")
-    }
+	result, err = client.ListExternalDataSourcesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListExternalDataSources", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListExternalDataSourcesPreparer prepares the ListExternalDataSources request.
 func (client GroupClient) ListExternalDataSourcesPreparer(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/externaldatasources",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/externaldatasources", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListExternalDataSourcesSender sends the ListExternalDataSources request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListExternalDataSourcesSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListExternalDataSourcesResponder handles the response to the ListExternalDataSources request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListExternalDataSourcesResponder(resp *http.Response) (result USQLExternalDataSourceList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListExternalDataSourcesNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListExternalDataSourcesNextResults(lastResults USQLExternalDataSourceList) (result USQLExternalDataSourceList, err error) {
-    req, err := lastResults.USQLExternalDataSourceListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListExternalDataSources", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLExternalDataSourceListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListExternalDataSources", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListExternalDataSourcesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListExternalDataSources", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListExternalDataSourcesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListExternalDataSources", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListExternalDataSourcesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListExternalDataSources", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListExternalDataSourcesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListExternalDataSources", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListPackages retrieves the list of packages from the Data Lake Analytics
@@ -2000,123 +1993,121 @@ func (client GroupClient) ListExternalDataSourcesNextResults(lastResults USQLExt
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListPackages(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLPackageList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListPackages")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListPackages")
+	}
 
-    req, err := client.ListPackagesPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListPackages", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListPackagesPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListPackages", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListPackagesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListPackages", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListPackagesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListPackages", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListPackagesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListPackages", resp, "Failure responding to request")
-    }
+	result, err = client.ListPackagesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListPackages", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListPackagesPreparer prepares the ListPackages request.
 func (client GroupClient) ListPackagesPreparer(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/packages",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/packages", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListPackagesSender sends the ListPackages request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListPackagesSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListPackagesResponder handles the response to the ListPackages request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListPackagesResponder(resp *http.Response) (result USQLPackageList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListPackagesNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListPackagesNextResults(lastResults USQLPackageList) (result USQLPackageList, err error) {
-    req, err := lastResults.USQLPackageListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListPackages", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLPackageListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListPackages", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListPackagesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListPackages", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListPackagesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListPackages", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListPackagesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListPackages", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListPackagesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListPackages", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListProcedures retrieves the list of procedures from the Data Lake Analytics
@@ -2136,123 +2127,121 @@ func (client GroupClient) ListPackagesNextResults(lastResults USQLPackageList) (
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListProcedures(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLProcedureList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListProcedures")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListProcedures")
+	}
 
-    req, err := client.ListProceduresPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListProcedures", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListProceduresPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListProcedures", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListProceduresSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListProcedures", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListProceduresSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListProcedures", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListProceduresResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListProcedures", resp, "Failure responding to request")
-    }
+	result, err = client.ListProceduresResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListProcedures", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListProceduresPreparer prepares the ListProcedures request.
 func (client GroupClient) ListProceduresPreparer(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/procedures",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/procedures", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListProceduresSender sends the ListProcedures request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListProceduresSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListProceduresResponder handles the response to the ListProcedures request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListProceduresResponder(resp *http.Response) (result USQLProcedureList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListProceduresNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListProceduresNextResults(lastResults USQLProcedureList) (result USQLProcedureList, err error) {
-    req, err := lastResults.USQLProcedureListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListProcedures", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLProcedureListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListProcedures", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListProceduresSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListProcedures", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListProceduresSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListProcedures", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListProceduresResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListProcedures", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListProceduresResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListProcedures", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListSchemas retrieves the list of schemas from the Data Lake Analytics
@@ -2271,122 +2260,120 @@ func (client GroupClient) ListProceduresNextResults(lastResults USQLProcedureLis
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListSchemas(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLSchemaList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListSchemas")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListSchemas")
+	}
 
-    req, err := client.ListSchemasPreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListSchemas", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListSchemasPreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListSchemas", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSchemasSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListSchemas", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSchemasSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListSchemas", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListSchemasResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListSchemas", resp, "Failure responding to request")
-    }
+	result, err = client.ListSchemasResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListSchemas", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListSchemasPreparer prepares the ListSchemas request.
 func (client GroupClient) ListSchemasPreparer(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSchemasSender sends the ListSchemas request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListSchemasSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListSchemasResponder handles the response to the ListSchemas request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListSchemasResponder(resp *http.Response) (result USQLSchemaList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListSchemasNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListSchemasNextResults(lastResults USQLSchemaList) (result USQLSchemaList, err error) {
-    req, err := lastResults.USQLSchemaListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListSchemas", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLSchemaListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListSchemas", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListSchemasSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListSchemas", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListSchemasSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListSchemas", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListSchemasResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListSchemas", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListSchemasResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListSchemas", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListTablePartitions retrieves the list of table partitions from the Data
@@ -2407,124 +2394,122 @@ func (client GroupClient) ListSchemasNextResults(lastResults USQLSchemaList) (re
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListTablePartitions(accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLTablePartitionList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListTablePartitions")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListTablePartitions")
+	}
 
-    req, err := client.ListTablePartitionsPreparer(accountName, databaseName, schemaName, tableName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablePartitions", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListTablePartitionsPreparer(accountName, databaseName, schemaName, tableName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablePartitions", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListTablePartitionsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablePartitions", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListTablePartitionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablePartitions", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListTablePartitionsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablePartitions", resp, "Failure responding to request")
-    }
+	result, err = client.ListTablePartitionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablePartitions", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListTablePartitionsPreparer prepares the ListTablePartitions request.
 func (client GroupClient) ListTablePartitionsPreparer(accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    "tableName": autorest.Encode("path",tableName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+		"tableName":    autorest.Encode("path", tableName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/partitions",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/partitions", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListTablePartitionsSender sends the ListTablePartitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListTablePartitionsSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListTablePartitionsResponder handles the response to the ListTablePartitions request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListTablePartitionsResponder(resp *http.Response) (result USQLTablePartitionList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListTablePartitionsNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListTablePartitionsNextResults(lastResults USQLTablePartitionList) (result USQLTablePartitionList, err error) {
-    req, err := lastResults.USQLTablePartitionListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablePartitions", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLTablePartitionListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablePartitions", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListTablePartitionsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablePartitions", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListTablePartitionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablePartitions", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListTablePartitionsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablePartitions", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListTablePartitionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablePartitions", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListTables retrieves the list of tables from the Data Lake Analytics
@@ -2544,123 +2529,121 @@ func (client GroupClient) ListTablePartitionsNextResults(lastResults USQLTablePa
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListTables(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLTableList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListTables")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListTables")
+	}
 
-    req, err := client.ListTablesPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTables", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListTablesPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTables", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListTablesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTables", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListTablesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTables", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListTablesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTables", resp, "Failure responding to request")
-    }
+	result, err = client.ListTablesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTables", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListTablesPreparer prepares the ListTables request.
 func (client GroupClient) ListTablesPreparer(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListTablesSender sends the ListTables request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListTablesSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListTablesResponder handles the response to the ListTables request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListTablesResponder(resp *http.Response) (result USQLTableList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListTablesNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListTablesNextResults(lastResults USQLTableList) (result USQLTableList, err error) {
-    req, err := lastResults.USQLTableListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTables", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLTableListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTables", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListTablesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTables", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListTablesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTables", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListTablesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTables", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListTablesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTables", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListTablesByDatabase retrieves the list of all tables in a database from the
@@ -2679,122 +2662,120 @@ func (client GroupClient) ListTablesNextResults(lastResults USQLTableList) (resu
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListTablesByDatabase(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLTableList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListTablesByDatabase")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListTablesByDatabase")
+	}
 
-    req, err := client.ListTablesByDatabasePreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablesByDatabase", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListTablesByDatabasePreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablesByDatabase", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListTablesByDatabaseSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablesByDatabase", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListTablesByDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablesByDatabase", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListTablesByDatabaseResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablesByDatabase", resp, "Failure responding to request")
-    }
+	result, err = client.ListTablesByDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablesByDatabase", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListTablesByDatabasePreparer prepares the ListTablesByDatabase request.
 func (client GroupClient) ListTablesByDatabasePreparer(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/tables",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/tables", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListTablesByDatabaseSender sends the ListTablesByDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListTablesByDatabaseSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListTablesByDatabaseResponder handles the response to the ListTablesByDatabase request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListTablesByDatabaseResponder(resp *http.Response) (result USQLTableList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListTablesByDatabaseNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListTablesByDatabaseNextResults(lastResults USQLTableList) (result USQLTableList, err error) {
-    req, err := lastResults.USQLTableListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablesByDatabase", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLTableListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablesByDatabase", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListTablesByDatabaseSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablesByDatabase", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListTablesByDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablesByDatabase", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListTablesByDatabaseResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablesByDatabase", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListTablesByDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTablesByDatabase", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListTableStatistics retrieves the list of table statistics from the Data
@@ -2815,124 +2796,122 @@ func (client GroupClient) ListTablesByDatabaseNextResults(lastResults USQLTableL
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListTableStatistics(accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLTableStatisticsList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListTableStatistics")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListTableStatistics")
+	}
 
-    req, err := client.ListTableStatisticsPreparer(accountName, databaseName, schemaName, tableName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatistics", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListTableStatisticsPreparer(accountName, databaseName, schemaName, tableName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatistics", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListTableStatisticsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatistics", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListTableStatisticsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatistics", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListTableStatisticsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatistics", resp, "Failure responding to request")
-    }
+	result, err = client.ListTableStatisticsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatistics", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListTableStatisticsPreparer prepares the ListTableStatistics request.
 func (client GroupClient) ListTableStatisticsPreparer(accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    "tableName": autorest.Encode("path",tableName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+		"tableName":    autorest.Encode("path", tableName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListTableStatisticsSender sends the ListTableStatistics request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListTableStatisticsSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListTableStatisticsResponder handles the response to the ListTableStatistics request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListTableStatisticsResponder(resp *http.Response) (result USQLTableStatisticsList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListTableStatisticsNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListTableStatisticsNextResults(lastResults USQLTableStatisticsList) (result USQLTableStatisticsList, err error) {
-    req, err := lastResults.USQLTableStatisticsListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatistics", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLTableStatisticsListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatistics", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListTableStatisticsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatistics", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListTableStatisticsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatistics", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListTableStatisticsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatistics", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListTableStatisticsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatistics", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListTableStatisticsByDatabase retrieves the list of all statistics in a
@@ -2951,122 +2930,120 @@ func (client GroupClient) ListTableStatisticsNextResults(lastResults USQLTableSt
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListTableStatisticsByDatabase(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLTableStatisticsList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListTableStatisticsByDatabase")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase")
+	}
 
-    req, err := client.ListTableStatisticsByDatabasePreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListTableStatisticsByDatabasePreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListTableStatisticsByDatabaseSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListTableStatisticsByDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListTableStatisticsByDatabaseResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase", resp, "Failure responding to request")
-    }
+	result, err = client.ListTableStatisticsByDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListTableStatisticsByDatabasePreparer prepares the ListTableStatisticsByDatabase request.
 func (client GroupClient) ListTableStatisticsByDatabasePreparer(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/statistics",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/statistics", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListTableStatisticsByDatabaseSender sends the ListTableStatisticsByDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListTableStatisticsByDatabaseSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListTableStatisticsByDatabaseResponder handles the response to the ListTableStatisticsByDatabase request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListTableStatisticsByDatabaseResponder(resp *http.Response) (result USQLTableStatisticsList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListTableStatisticsByDatabaseNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListTableStatisticsByDatabaseNextResults(lastResults USQLTableStatisticsList) (result USQLTableStatisticsList, err error) {
-    req, err := lastResults.USQLTableStatisticsListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLTableStatisticsListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListTableStatisticsByDatabaseSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListTableStatisticsByDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListTableStatisticsByDatabaseResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListTableStatisticsByDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabase", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListTableStatisticsByDatabaseAndSchema retrieves the list of all table
@@ -3086,123 +3063,121 @@ func (client GroupClient) ListTableStatisticsByDatabaseNextResults(lastResults U
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListTableStatisticsByDatabaseAndSchema(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLTableStatisticsList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListTableStatisticsByDatabaseAndSchema")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema")
+	}
 
-    req, err := client.ListTableStatisticsByDatabaseAndSchemaPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListTableStatisticsByDatabaseAndSchemaPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListTableStatisticsByDatabaseAndSchemaSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListTableStatisticsByDatabaseAndSchemaSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListTableStatisticsByDatabaseAndSchemaResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema", resp, "Failure responding to request")
-    }
+	result, err = client.ListTableStatisticsByDatabaseAndSchemaResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListTableStatisticsByDatabaseAndSchemaPreparer prepares the ListTableStatisticsByDatabaseAndSchema request.
 func (client GroupClient) ListTableStatisticsByDatabaseAndSchemaPreparer(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/statistics",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/statistics", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListTableStatisticsByDatabaseAndSchemaSender sends the ListTableStatisticsByDatabaseAndSchema request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListTableStatisticsByDatabaseAndSchemaSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListTableStatisticsByDatabaseAndSchemaResponder handles the response to the ListTableStatisticsByDatabaseAndSchema request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListTableStatisticsByDatabaseAndSchemaResponder(resp *http.Response) (result USQLTableStatisticsList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListTableStatisticsByDatabaseAndSchemaNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListTableStatisticsByDatabaseAndSchemaNextResults(lastResults USQLTableStatisticsList) (result USQLTableStatisticsList, err error) {
-    req, err := lastResults.USQLTableStatisticsListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLTableStatisticsListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListTableStatisticsByDatabaseAndSchemaSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListTableStatisticsByDatabaseAndSchemaSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListTableStatisticsByDatabaseAndSchemaResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListTableStatisticsByDatabaseAndSchemaResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableStatisticsByDatabaseAndSchema", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListTableTypes retrieves the list of table types from the Data Lake
@@ -3222,123 +3197,121 @@ func (client GroupClient) ListTableStatisticsByDatabaseAndSchemaNextResults(last
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListTableTypes(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLTableTypeList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListTableTypes")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListTableTypes")
+	}
 
-    req, err := client.ListTableTypesPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableTypes", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListTableTypesPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableTypes", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListTableTypesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableTypes", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListTableTypesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableTypes", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListTableTypesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableTypes", resp, "Failure responding to request")
-    }
+	result, err = client.ListTableTypesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableTypes", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListTableTypesPreparer prepares the ListTableTypes request.
 func (client GroupClient) ListTableTypesPreparer(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tabletypes",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tabletypes", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListTableTypesSender sends the ListTableTypes request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListTableTypesSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListTableTypesResponder handles the response to the ListTableTypes request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListTableTypesResponder(resp *http.Response) (result USQLTableTypeList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListTableTypesNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListTableTypesNextResults(lastResults USQLTableTypeList) (result USQLTableTypeList, err error) {
-    req, err := lastResults.USQLTableTypeListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableTypes", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLTableTypeListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableTypes", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListTableTypesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableTypes", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListTableTypesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableTypes", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListTableTypesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableTypes", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListTableTypesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableTypes", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListTableValuedFunctions retrieves the list of table valued functions from
@@ -3358,123 +3331,121 @@ func (client GroupClient) ListTableTypesNextResults(lastResults USQLTableTypeLis
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListTableValuedFunctions(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLTableValuedFunctionList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListTableValuedFunctions")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListTableValuedFunctions")
+	}
 
-    req, err := client.ListTableValuedFunctionsPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctions", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListTableValuedFunctionsPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctions", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListTableValuedFunctionsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctions", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListTableValuedFunctionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctions", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListTableValuedFunctionsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctions", resp, "Failure responding to request")
-    }
+	result, err = client.ListTableValuedFunctionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctions", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListTableValuedFunctionsPreparer prepares the ListTableValuedFunctions request.
 func (client GroupClient) ListTableValuedFunctionsPreparer(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tablevaluedfunctions",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tablevaluedfunctions", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListTableValuedFunctionsSender sends the ListTableValuedFunctions request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListTableValuedFunctionsSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListTableValuedFunctionsResponder handles the response to the ListTableValuedFunctions request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListTableValuedFunctionsResponder(resp *http.Response) (result USQLTableValuedFunctionList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListTableValuedFunctionsNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListTableValuedFunctionsNextResults(lastResults USQLTableValuedFunctionList) (result USQLTableValuedFunctionList, err error) {
-    req, err := lastResults.USQLTableValuedFunctionListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctions", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLTableValuedFunctionListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctions", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListTableValuedFunctionsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctions", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListTableValuedFunctionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctions", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListTableValuedFunctionsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctions", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListTableValuedFunctionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctions", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListTableValuedFunctionsByDatabase retrieves the list of all table valued
@@ -3493,122 +3464,120 @@ func (client GroupClient) ListTableValuedFunctionsNextResults(lastResults USQLTa
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListTableValuedFunctionsByDatabase(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLTableValuedFunctionList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListTableValuedFunctionsByDatabase")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase")
+	}
 
-    req, err := client.ListTableValuedFunctionsByDatabasePreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListTableValuedFunctionsByDatabasePreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListTableValuedFunctionsByDatabaseSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListTableValuedFunctionsByDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListTableValuedFunctionsByDatabaseResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase", resp, "Failure responding to request")
-    }
+	result, err = client.ListTableValuedFunctionsByDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListTableValuedFunctionsByDatabasePreparer prepares the ListTableValuedFunctionsByDatabase request.
 func (client GroupClient) ListTableValuedFunctionsByDatabasePreparer(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/tablevaluedfunctions",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/tablevaluedfunctions", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListTableValuedFunctionsByDatabaseSender sends the ListTableValuedFunctionsByDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListTableValuedFunctionsByDatabaseSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListTableValuedFunctionsByDatabaseResponder handles the response to the ListTableValuedFunctionsByDatabase request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListTableValuedFunctionsByDatabaseResponder(resp *http.Response) (result USQLTableValuedFunctionList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListTableValuedFunctionsByDatabaseNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListTableValuedFunctionsByDatabaseNextResults(lastResults USQLTableValuedFunctionList) (result USQLTableValuedFunctionList, err error) {
-    req, err := lastResults.USQLTableValuedFunctionListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLTableValuedFunctionListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListTableValuedFunctionsByDatabaseSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListTableValuedFunctionsByDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListTableValuedFunctionsByDatabaseResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListTableValuedFunctionsByDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTableValuedFunctionsByDatabase", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListTypes retrieves the list of types within the specified database and
@@ -3628,123 +3597,121 @@ func (client GroupClient) ListTableValuedFunctionsByDatabaseNextResults(lastResu
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListTypes(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLTypeList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListTypes")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListTypes")
+	}
 
-    req, err := client.ListTypesPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTypes", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListTypesPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTypes", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListTypesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTypes", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListTypesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTypes", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListTypesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTypes", resp, "Failure responding to request")
-    }
+	result, err = client.ListTypesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTypes", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListTypesPreparer prepares the ListTypes request.
 func (client GroupClient) ListTypesPreparer(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/types",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/types", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListTypesSender sends the ListTypes request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListTypesSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListTypesResponder handles the response to the ListTypes request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListTypesResponder(resp *http.Response) (result USQLTypeList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListTypesNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListTypesNextResults(lastResults USQLTypeList) (result USQLTypeList, err error) {
-    req, err := lastResults.USQLTypeListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTypes", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLTypeListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTypes", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListTypesSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTypes", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListTypesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTypes", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListTypesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTypes", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListTypesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListTypes", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListViews retrieves the list of views from the Data Lake Analytics catalog.
@@ -3763,123 +3730,121 @@ func (client GroupClient) ListTypesNextResults(lastResults USQLTypeList) (result
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListViews(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLViewList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListViews")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListViews")
+	}
 
-    req, err := client.ListViewsPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViews", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListViewsPreparer(accountName, databaseName, schemaName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViews", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListViewsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViews", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListViewsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViews", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListViewsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViews", resp, "Failure responding to request")
-    }
+	result, err = client.ListViewsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViews", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListViewsPreparer prepares the ListViews request.
 func (client GroupClient) ListViewsPreparer(accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "schemaName": autorest.Encode("path",schemaName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/views",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/views", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListViewsSender sends the ListViews request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListViewsSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListViewsResponder handles the response to the ListViews request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListViewsResponder(resp *http.Response) (result USQLViewList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListViewsNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListViewsNextResults(lastResults USQLViewList) (result USQLViewList, err error) {
-    req, err := lastResults.USQLViewListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViews", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLViewListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViews", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListViewsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViews", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListViewsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViews", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListViewsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViews", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListViewsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViews", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListViewsByDatabase retrieves the list of all views in a database from the
@@ -3898,122 +3863,120 @@ func (client GroupClient) ListViewsNextResults(lastResults USQLViewList) (result
 // of true or false to request a count of the matching resources included with
 // the resources in the response, e.g. Categories?$count=true. Optional.
 func (client GroupClient) ListViewsByDatabase(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLViewList, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: top,
-     Constraints: []validation.Constraint{	{Target: "top", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}},
-    { TargetValue: skip,
-     Constraints: []validation.Constraint{	{Target: "skip", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient","ListViewsByDatabase")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "catalog.GroupClient", "ListViewsByDatabase")
+	}
 
-    req, err := client.ListViewsByDatabasePreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViewsByDatabase", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListViewsByDatabasePreparer(accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViewsByDatabase", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListViewsByDatabaseSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViewsByDatabase", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListViewsByDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViewsByDatabase", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListViewsByDatabaseResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViewsByDatabase", resp, "Failure responding to request")
-    }
+	result, err = client.ListViewsByDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViewsByDatabase", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListViewsByDatabasePreparer prepares the ListViewsByDatabase request.
 func (client GroupClient) ListViewsByDatabasePreparer(accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if skip != nil {
-        queryParameters["$skip"] = autorest.Encode("query",*skip)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(orderby) > 0 {
-        queryParameters["$orderby"] = autorest.Encode("query",orderby)
-    }
-    if count != nil {
-        queryParameters["$count"] = autorest.Encode("query",*count)
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/views",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/views", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListViewsByDatabaseSender sends the ListViewsByDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListViewsByDatabaseSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListViewsByDatabaseResponder handles the response to the ListViewsByDatabase request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListViewsByDatabaseResponder(resp *http.Response) (result USQLViewList, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListViewsByDatabaseNextResults retrieves the next set of results, if any.
 func (client GroupClient) ListViewsByDatabaseNextResults(lastResults USQLViewList) (result USQLViewList, err error) {
-    req, err := lastResults.USQLViewListPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViewsByDatabase", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.USQLViewListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViewsByDatabase", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListViewsByDatabaseSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViewsByDatabase", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListViewsByDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViewsByDatabase", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListViewsByDatabaseResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViewsByDatabase", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListViewsByDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "ListViewsByDatabase", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // UpdateCredential modifies the specified credential for use with external
@@ -4024,70 +3987,70 @@ func (client GroupClient) ListViewsByDatabaseNextResults(lastResults USQLViewLis
 // credential. credentialName is the name of the credential. parameters is the
 // parameters required to modify the credential (name and password)
 func (client GroupClient) UpdateCredential(accountName string, databaseName string, credentialName string, parameters DataLakeAnalyticsCatalogCredentialUpdateParameters) (result autorest.Response, err error) {
-    req, err := client.UpdateCredentialPreparer(accountName, databaseName, credentialName, parameters)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "UpdateCredential", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.UpdateCredentialPreparer(accountName, databaseName, credentialName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "UpdateCredential", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.UpdateCredentialSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "UpdateCredential", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.UpdateCredentialSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "UpdateCredential", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.UpdateCredentialResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "UpdateCredential", resp, "Failure responding to request")
-    }
+	result, err = client.UpdateCredentialResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "UpdateCredential", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // UpdateCredentialPreparer prepares the UpdateCredential request.
 func (client GroupClient) UpdateCredentialPreparer(accountName string, databaseName string, credentialName string, parameters DataLakeAnalyticsCatalogCredentialUpdateParameters) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "credentialName": autorest.Encode("path",credentialName),
-    "databaseName": autorest.Encode("path",databaseName),
-    }
+	pathParameters := map[string]interface{}{
+		"credentialName": autorest.Encode("path", credentialName),
+		"databaseName":   autorest.Encode("path", databaseName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPatch(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/credentials/{credentialName}",pathParameters),
-                        autorest.WithJSON(parameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/credentials/{credentialName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // UpdateCredentialSender sends the UpdateCredential request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) UpdateCredentialSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateCredentialResponder handles the response to the UpdateCredential request. The method always
 // closes the http.Response Body.
 func (client GroupClient) UpdateCredentialResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // UpdateSecret modifies the specified secret for use with external data
@@ -4099,69 +4062,68 @@ func (client GroupClient) UpdateCredentialResponder(resp *http.Response) (result
 // secret. secretName is the name of the secret. parameters is the parameters
 // required to modify the secret (name and password)
 func (client GroupClient) UpdateSecret(accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (result autorest.Response, err error) {
-    req, err := client.UpdateSecretPreparer(accountName, databaseName, secretName, parameters)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "UpdateSecret", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.UpdateSecretPreparer(accountName, databaseName, secretName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "UpdateSecret", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.UpdateSecretSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "UpdateSecret", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.UpdateSecretSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "UpdateSecret", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.UpdateSecretResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "catalog.GroupClient", "UpdateSecret", resp, "Failure responding to request")
-    }
+	result, err = client.UpdateSecretResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.GroupClient", "UpdateSecret", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // UpdateSecretPreparer prepares the UpdateSecret request.
 func (client GroupClient) UpdateSecretPreparer(accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (*http.Request, error) {
-    urlParameters := map[string]interface{} {
-    "accountName": accountName,
-    "adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
-    }
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
 
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "secretName": autorest.Encode("path",secretName),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"secretName":   autorest.Encode("path", secretName),
+	}
 
-        const APIVersion = "2016-11-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPatch(),
-                        autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-                        autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets/{secretName}",pathParameters),
-                        autorest.WithJSON(parameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets/{secretName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // UpdateSecretSender sends the UpdateSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) UpdateSecretSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateSecretResponder handles the response to the UpdateSecret request. The method always
 // closes the http.Response Body.
 func (client GroupClient) UpdateSecretResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
-

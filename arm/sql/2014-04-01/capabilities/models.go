@@ -19,123 +19,122 @@ package capabilities
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/satori/uuid"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/satori/uuid"
 )
 
 // CapabilityStatus enumerates the values for capability status.
 type CapabilityStatus string
 
 const (
-    // Available specifies the available state for capability status.
-    Available CapabilityStatus = "Available"
-    // Default specifies the default state for capability status.
-    Default CapabilityStatus = "Default"
-    // Disabled specifies the disabled state for capability status.
-    Disabled CapabilityStatus = "Disabled"
-    // Visible specifies the visible state for capability status.
-    Visible CapabilityStatus = "Visible"
+	// Available specifies the available state for capability status.
+	Available CapabilityStatus = "Available"
+	// Default specifies the default state for capability status.
+	Default CapabilityStatus = "Default"
+	// Disabled specifies the disabled state for capability status.
+	Disabled CapabilityStatus = "Disabled"
+	// Visible specifies the visible state for capability status.
+	Visible CapabilityStatus = "Visible"
 )
 
 // MaxSizeUnits enumerates the values for max size units.
 type MaxSizeUnits string
 
 const (
-    // Gigabytes specifies the gigabytes state for max size units.
-    Gigabytes MaxSizeUnits = "Gigabytes"
-    // Megabytes specifies the megabytes state for max size units.
-    Megabytes MaxSizeUnits = "Megabytes"
-    // Petabytes specifies the petabytes state for max size units.
-    Petabytes MaxSizeUnits = "Petabytes"
-    // Terabytes specifies the terabytes state for max size units.
-    Terabytes MaxSizeUnits = "Terabytes"
+	// Gigabytes specifies the gigabytes state for max size units.
+	Gigabytes MaxSizeUnits = "Gigabytes"
+	// Megabytes specifies the megabytes state for max size units.
+	Megabytes MaxSizeUnits = "Megabytes"
+	// Petabytes specifies the petabytes state for max size units.
+	Petabytes MaxSizeUnits = "Petabytes"
+	// Terabytes specifies the terabytes state for max size units.
+	Terabytes MaxSizeUnits = "Terabytes"
 )
 
 // PerformanceLevelUnit enumerates the values for performance level unit.
 type PerformanceLevelUnit string
 
 const (
-    // DTU specifies the dtu state for performance level unit.
-    DTU PerformanceLevelUnit = "DTU"
+	// DTU specifies the dtu state for performance level unit.
+	DTU PerformanceLevelUnit = "DTU"
 )
 
 // EditionCapability is the database edition capabilities.
 type EditionCapability struct {
-    Name *string `json:"name,omitempty"`
-    Status CapabilityStatus `json:"status,omitempty"`
-    SupportedServiceLevelObjectives *[]ServiceObjectiveCapability `json:"supportedServiceLevelObjectives,omitempty"`
+	Name                            *string                       `json:"name,omitempty"`
+	Status                          CapabilityStatus              `json:"status,omitempty"`
+	SupportedServiceLevelObjectives *[]ServiceObjectiveCapability `json:"supportedServiceLevelObjectives,omitempty"`
 }
 
 // ElasticPoolDtuCapability is the Elastic Pool DTU capability.
 type ElasticPoolDtuCapability struct {
-    Limit *int64 `json:"limit,omitempty"`
-    MaxDatabaseCount *int64 `json:"maxDatabaseCount,omitempty"`
-    Status CapabilityStatus `json:"status,omitempty"`
-    SupportedMaxSizes *[]MaxSizeCapability `json:"supportedMaxSizes,omitempty"`
-    IncludedMaxSize *MaxSizeCapability `json:"includedMaxSize,omitempty"`
-    SupportedPerDatabaseMaxSizes *[]MaxSizeCapability `json:"supportedPerDatabaseMaxSizes,omitempty"`
-    SupportedPerDatabaseMaxDtus *[]ElasticPoolPerDatabaseMaxDtuCapability `json:"supportedPerDatabaseMaxDtus,omitempty"`
+	Limit                        *int64                                    `json:"limit,omitempty"`
+	MaxDatabaseCount             *int64                                    `json:"maxDatabaseCount,omitempty"`
+	Status                       CapabilityStatus                          `json:"status,omitempty"`
+	SupportedMaxSizes            *[]MaxSizeCapability                      `json:"supportedMaxSizes,omitempty"`
+	IncludedMaxSize              *MaxSizeCapability                        `json:"includedMaxSize,omitempty"`
+	SupportedPerDatabaseMaxSizes *[]MaxSizeCapability                      `json:"supportedPerDatabaseMaxSizes,omitempty"`
+	SupportedPerDatabaseMaxDtus  *[]ElasticPoolPerDatabaseMaxDtuCapability `json:"supportedPerDatabaseMaxDtus,omitempty"`
 }
 
 // ElasticPoolEditionCapability is the elastic pool edition capabilities.
 type ElasticPoolEditionCapability struct {
-    Name *string `json:"name,omitempty"`
-    Status CapabilityStatus `json:"status,omitempty"`
-    SupportedElasticPoolDtus *[]ElasticPoolDtuCapability `json:"supportedElasticPoolDtus,omitempty"`
+	Name                     *string                     `json:"name,omitempty"`
+	Status                   CapabilityStatus            `json:"status,omitempty"`
+	SupportedElasticPoolDtus *[]ElasticPoolDtuCapability `json:"supportedElasticPoolDtus,omitempty"`
 }
 
 // ElasticPoolPerDatabaseMaxDtuCapability is the max per-database DTU
 // capability.
 type ElasticPoolPerDatabaseMaxDtuCapability struct {
-    Limit *int64 `json:"limit,omitempty"`
-    Status CapabilityStatus `json:"status,omitempty"`
-    SupportedPerDatabaseMinDtus *[]ElasticPoolPerDatabaseMinDtuCapability `json:"supportedPerDatabaseMinDtus,omitempty"`
+	Limit                       *int64                                    `json:"limit,omitempty"`
+	Status                      CapabilityStatus                          `json:"status,omitempty"`
+	SupportedPerDatabaseMinDtus *[]ElasticPoolPerDatabaseMinDtuCapability `json:"supportedPerDatabaseMinDtus,omitempty"`
 }
 
 // ElasticPoolPerDatabaseMinDtuCapability is the minimum per-database DTU
 // capability.
 type ElasticPoolPerDatabaseMinDtuCapability struct {
-    Limit *int64 `json:"limit,omitempty"`
-    Status CapabilityStatus `json:"status,omitempty"`
+	Limit  *int64           `json:"limit,omitempty"`
+	Status CapabilityStatus `json:"status,omitempty"`
 }
 
 // LocationCapabilities is the capabilities for a location.
 type LocationCapabilities struct {
-    autorest.Response `json:"-"`
-    Name *string `json:"name,omitempty"`
-    Status CapabilityStatus `json:"status,omitempty"`
-    SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
+	autorest.Response       `json:"-"`
+	Name                    *string                    `json:"name,omitempty"`
+	Status                  CapabilityStatus           `json:"status,omitempty"`
+	SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
 }
 
 // MaxSizeCapability is the maximum size limits for a database.
 type MaxSizeCapability struct {
-    Limit *int64 `json:"limit,omitempty"`
-    Unit MaxSizeUnits `json:"unit,omitempty"`
-    Status CapabilityStatus `json:"status,omitempty"`
+	Limit  *int64           `json:"limit,omitempty"`
+	Unit   MaxSizeUnits     `json:"unit,omitempty"`
+	Status CapabilityStatus `json:"status,omitempty"`
 }
 
 // PerformanceLevel is a possible performance level of a service objective
 // capability.
 type PerformanceLevel struct {
-    Unit PerformanceLevelUnit `json:"unit,omitempty"`
-    Value *int32 `json:"value,omitempty"`
+	Unit  PerformanceLevelUnit `json:"unit,omitempty"`
+	Value *int32               `json:"value,omitempty"`
 }
 
 // ServerVersionCapability is the server capabilities.
 type ServerVersionCapability struct {
-    Name *string `json:"name,omitempty"`
-    Status CapabilityStatus `json:"status,omitempty"`
-    SupportedEditions *[]EditionCapability `json:"supportedEditions,omitempty"`
-    SupportedElasticPoolEditions *[]ElasticPoolEditionCapability `json:"supportedElasticPoolEditions,omitempty"`
+	Name                         *string                         `json:"name,omitempty"`
+	Status                       CapabilityStatus                `json:"status,omitempty"`
+	SupportedEditions            *[]EditionCapability            `json:"supportedEditions,omitempty"`
+	SupportedElasticPoolEditions *[]ElasticPoolEditionCapability `json:"supportedElasticPoolEditions,omitempty"`
 }
 
 // ServiceObjectiveCapability is the service objectives capability.
 type ServiceObjectiveCapability struct {
-    Name *string `json:"name,omitempty"`
-    Status CapabilityStatus `json:"status,omitempty"`
-    *PerformanceLevel `json:"performanceLevel,omitempty"`
-    ID *uuid.UUID `json:"id,omitempty"`
-    SupportedMaxSizes *[]MaxSizeCapability `json:"supportedMaxSizes,omitempty"`
-    IncludedMaxSize *MaxSizeCapability `json:"includedMaxSize,omitempty"`
+	Name              *string          `json:"name,omitempty"`
+	Status            CapabilityStatus `json:"status,omitempty"`
+	*PerformanceLevel `json:"performanceLevel,omitempty"`
+	ID                *uuid.UUID           `json:"id,omitempty"`
+	SupportedMaxSizes *[]MaxSizeCapability `json:"supportedMaxSizes,omitempty"`
+	IncludedMaxSize   *MaxSizeCapability   `json:"includedMaxSize,omitempty"`
 }
-

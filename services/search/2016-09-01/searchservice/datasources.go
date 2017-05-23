@@ -19,107 +19,106 @@ package searchservice
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "github.com/satori/uuid"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/satori/uuid"
+	"net/http"
 )
 
 // DataSourcesClient is the client that can be used to manage and query indexes
 // and documents, as well as manage other resources, on an Azure Search
 // service.
 type DataSourcesClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewDataSourcesClient creates an instance of the DataSourcesClient client.
 func NewDataSourcesClient() DataSourcesClient {
-        return NewDataSourcesClientWithBaseURI(DefaultBaseURI, )
-        }
+	return NewDataSourcesClientWithBaseURI(DefaultBaseURI)
+}
 
 // NewDataSourcesClientWithBaseURI creates an instance of the DataSourcesClient
 // client.
-    func NewDataSourcesClientWithBaseURI(baseURI string, ) DataSourcesClient {
-        return DataSourcesClient{ NewWithBaseURI(baseURI, )}
-    }
+func NewDataSourcesClientWithBaseURI(baseURI string) DataSourcesClient {
+	return DataSourcesClient{NewWithBaseURI(baseURI)}
+}
 
 // Create creates a new Azure Search datasource.
 //
 // dataSource is the definition of the datasource to create. clientRequestID is
 // the tracking ID sent with the request to help with debugging.
 func (client DataSourcesClient) Create(dataSource DataSource, clientRequestID *uuid.UUID) (result DataSource, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: dataSource,
-     Constraints: []validation.Constraint{	{Target: "dataSource.Name", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "dataSource.Type", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "dataSource.Credentials", Name: validation.Null, Rule: true ,
-    Chain: []validation.Constraint{	{Target: "dataSource.Credentials.ConnectionString", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    	{Target: "dataSource.Container", Name: validation.Null, Rule: true ,
-    Chain: []validation.Constraint{	{Target: "dataSource.Container.Name", Name: validation.Null, Rule: true, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "searchservice.DataSourcesClient","Create")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: dataSource,
+			Constraints: []validation.Constraint{{Target: "dataSource.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "dataSource.Type", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "dataSource.Credentials", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "dataSource.Credentials.ConnectionString", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "dataSource.Container", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "dataSource.Container.Name", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "searchservice.DataSourcesClient", "Create")
+	}
 
-    req, err := client.CreatePreparer(dataSource, clientRequestID)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Create", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CreatePreparer(dataSource, clientRequestID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Create", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CreateSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Create", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CreateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Create", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CreateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Create", resp, "Failure responding to request")
-    }
+	result, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Create", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CreatePreparer prepares the Create request.
 func (client DataSourcesClient) CreatePreparer(dataSource DataSource, clientRequestID *uuid.UUID) (*http.Request, error) {
-        const APIVersion = "2016-09-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/datasources"),
-                        autorest.WithJSON(dataSource),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/datasources"),
+		autorest.WithJSON(dataSource),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSourcesClient) CreateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
 func (client DataSourcesClient) CreateResponder(resp *http.Response) (result DataSource, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // CreateOrUpdate creates a new Azure Search datasource or updates a datasource
@@ -133,90 +132,88 @@ func (client DataSourcesClient) CreateResponder(resp *http.Response) (result Dat
 // If-None-Match condition. The operation will be performed only if the ETag on
 // the server does not match this value.
 func (client DataSourcesClient) CreateOrUpdate(dataSourceName string, dataSource DataSource, clientRequestID *uuid.UUID, ifMatch string, ifNoneMatch string) (result DataSource, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: dataSource,
-     Constraints: []validation.Constraint{	{Target: "dataSource.Name", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "dataSource.Type", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "dataSource.Credentials", Name: validation.Null, Rule: true ,
-    Chain: []validation.Constraint{	{Target: "dataSource.Credentials.ConnectionString", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    	{Target: "dataSource.Container", Name: validation.Null, Rule: true ,
-    Chain: []validation.Constraint{	{Target: "dataSource.Container.Name", Name: validation.Null, Rule: true, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "searchservice.DataSourcesClient","CreateOrUpdate")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: dataSource,
+			Constraints: []validation.Constraint{{Target: "dataSource.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "dataSource.Type", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "dataSource.Credentials", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "dataSource.Credentials.ConnectionString", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "dataSource.Container", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "dataSource.Container.Name", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "searchservice.DataSourcesClient", "CreateOrUpdate")
+	}
 
-    req, err := client.CreateOrUpdatePreparer(dataSourceName, dataSource, clientRequestID, ifMatch, ifNoneMatch)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "CreateOrUpdate", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CreateOrUpdatePreparer(dataSourceName, dataSource, clientRequestID, ifMatch, ifNoneMatch)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CreateOrUpdateSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "CreateOrUpdate", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CreateOrUpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CreateOrUpdateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "CreateOrUpdate", resp, "Failure responding to request")
-    }
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client DataSourcesClient) CreateOrUpdatePreparer(dataSourceName string, dataSource DataSource, clientRequestID *uuid.UUID, ifMatch string, ifNoneMatch string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "dataSourceName": autorest.Encode("path",dataSourceName),
-    }
+	pathParameters := map[string]interface{}{
+		"dataSourceName": autorest.Encode("path", dataSourceName),
+	}
 
-        const APIVersion = "2016-09-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/datasources('{dataSourceName}')",pathParameters),
-                        autorest.WithJSON(dataSource),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/datasources('{dataSourceName}')", pathParameters),
+		autorest.WithJSON(dataSource),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSourcesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client DataSourcesClient) CreateOrUpdateResponder(resp *http.Response) (result DataSource, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Delete deletes an Azure Search datasource.
@@ -228,74 +225,74 @@ func (client DataSourcesClient) CreateOrUpdateResponder(resp *http.Response) (re
 // If-None-Match condition. The operation will be performed only if the ETag on
 // the server does not match this value.
 func (client DataSourcesClient) Delete(dataSourceName string, clientRequestID *uuid.UUID, ifMatch string, ifNoneMatch string) (result autorest.Response, err error) {
-    req, err := client.DeletePreparer(dataSourceName, clientRequestID, ifMatch, ifNoneMatch)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Delete", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeletePreparer(dataSourceName, clientRequestID, ifMatch, ifNoneMatch)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Delete", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Delete", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Delete", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Delete", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Delete", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeletePreparer prepares the Delete request.
 func (client DataSourcesClient) DeletePreparer(dataSourceName string, clientRequestID *uuid.UUID, ifMatch string, ifNoneMatch string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "dataSourceName": autorest.Encode("path",dataSourceName),
-    }
+	pathParameters := map[string]interface{}{
+		"dataSourceName": autorest.Encode("path", dataSourceName),
+	}
 
-        const APIVersion = "2016-09-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/datasources('{dataSourceName}')",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/datasources('{dataSourceName}')", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSourcesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client DataSourcesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent,http.StatusNotFound),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Get retrieves a datasource definition from Azure Search.
@@ -303,67 +300,67 @@ func (client DataSourcesClient) DeleteResponder(resp *http.Response) (result aut
 // dataSourceName is the name of the datasource to retrieve. clientRequestID is
 // the tracking ID sent with the request to help with debugging.
 func (client DataSourcesClient) Get(dataSourceName string, clientRequestID *uuid.UUID) (result DataSource, err error) {
-    req, err := client.GetPreparer(dataSourceName, clientRequestID)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(dataSourceName, clientRequestID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client DataSourcesClient) GetPreparer(dataSourceName string, clientRequestID *uuid.UUID) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "dataSourceName": autorest.Encode("path",dataSourceName),
-    }
+	pathParameters := map[string]interface{}{
+		"dataSourceName": autorest.Encode("path", dataSourceName),
+	}
 
-        const APIVersion = "2016-09-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/datasources('{dataSourceName}')",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/datasources('{dataSourceName}')", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSourcesClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client DataSourcesClient) GetResponder(resp *http.Response) (result DataSource, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List lists all datasources available for an Azure Search service.
@@ -371,62 +368,61 @@ func (client DataSourcesClient) GetResponder(resp *http.Response) (result DataSo
 // clientRequestID is the tracking ID sent with the request to help with
 // debugging.
 func (client DataSourcesClient) List(clientRequestID *uuid.UUID) (result DataSourceListResult, err error) {
-    req, err := client.ListPreparer(clientRequestID)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "List", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListPreparer(clientRequestID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "List", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "List", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "List", resp, "Failure responding to request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "searchservice.DataSourcesClient", "List", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListPreparer prepares the List request.
 func (client DataSourcesClient) ListPreparer(clientRequestID *uuid.UUID) (*http.Request, error) {
-        const APIVersion = "2016-09-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/datasources"),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/datasources"),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client DataSourcesClient) ListSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client DataSourcesClient) ListResponder(resp *http.Response) (result DataSourceListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

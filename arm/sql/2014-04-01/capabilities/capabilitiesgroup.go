@@ -19,87 +19,87 @@ package capabilities
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // GroupClient is the describes the Azure SQL capabilities available to a
 // subscription for a given location.
 type GroupClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewGroupClient creates an instance of the GroupClient client.
 func NewGroupClient(subscriptionID string) GroupClient {
-        return NewGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
-        }
+	return NewGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
 
 // NewGroupClientWithBaseURI creates an instance of the GroupClient client.
-    func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClient {
-        return GroupClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClient {
+	return GroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // ListByLocation gets the capabilities available for the specified location.
 //
 // locationID is the location id whose capabilities are retrieved.
 func (client GroupClient) ListByLocation(locationID string) (result LocationCapabilities, err error) {
-    req, err := client.ListByLocationPreparer(locationID)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "capabilities.GroupClient", "ListByLocation", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListByLocationPreparer(locationID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "capabilities.GroupClient", "ListByLocation", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListByLocationSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "capabilities.GroupClient", "ListByLocation", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListByLocationSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "capabilities.GroupClient", "ListByLocation", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListByLocationResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "capabilities.GroupClient", "ListByLocation", resp, "Failure responding to request")
-    }
+	result, err = client.ListByLocationResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "capabilities.GroupClient", "ListByLocation", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListByLocationPreparer prepares the ListByLocation request.
 func (client GroupClient) ListByLocationPreparer(locationID string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "locationId": autorest.Encode("path",locationID),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"locationId":     autorest.Encode("path", locationID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationId}/capabilities",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationId}/capabilities", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListByLocationSender sends the ListByLocation request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListByLocationSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListByLocationResponder handles the response to the ListByLocation request. The method always
 // closes the http.Response Body.
 func (client GroupClient) ListByLocationResponder(resp *http.Response) (result LocationCapabilities, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

@@ -19,28 +19,29 @@ package batchservice
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "github.com/Azure/go-autorest/autorest/date"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"net/http"
 )
 
 // JobScheduleClient is the a client for issuing REST requests to the Azure
 // Batch service.
 type JobScheduleClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewJobScheduleClient creates an instance of the JobScheduleClient client.
 func NewJobScheduleClient() JobScheduleClient {
-        return NewJobScheduleClientWithBaseURI(DefaultBaseURI, )
-        }
+	return NewJobScheduleClientWithBaseURI(DefaultBaseURI)
+}
 
 // NewJobScheduleClientWithBaseURI creates an instance of the JobScheduleClient
 // client.
-    func NewJobScheduleClientWithBaseURI(baseURI string, ) JobScheduleClient {
-        return JobScheduleClient{ NewWithBaseURI(baseURI, )}
-    }
+func NewJobScheduleClientWithBaseURI(baseURI string) JobScheduleClient {
+	return JobScheduleClient{NewWithBaseURI(baseURI)}
+}
 
 // Add adds a job schedule to the specified account.
 //
@@ -53,101 +54,100 @@ func NewJobScheduleClient() JobScheduleClient {
 // ocpDate is the time the request was issued. If not specified, this header
 // will be automatically populated with the current system clock time.
 func (client JobScheduleClient) Add(cloudJobSchedule JobScheduleAddParameter, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: cloudJobSchedule,
-     Constraints: []validation.Constraint{	{Target: "cloudJobSchedule.ID", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "cloudJobSchedule.Schedule", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "cloudJobSchedule.JobSpecification", Name: validation.Null, Rule: true ,
-    Chain: []validation.Constraint{	{Target: "cloudJobSchedule.JobSpecification.PoolInfo", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.CloudServiceConfiguration", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.CloudServiceConfiguration.OsFamily", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    	{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference", Name: validation.Null, Rule: true ,
-    Chain: []validation.Constraint{	{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference.Publisher", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference.Offer", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference.Sku", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    	{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.NodeAgentSKUID", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    }},
-    }},
-    }},
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.JobScheduleClient","Add")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: cloudJobSchedule,
+			Constraints: []validation.Constraint{{Target: "cloudJobSchedule.ID", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "cloudJobSchedule.Schedule", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "cloudJobSchedule.JobSpecification", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "cloudJobSchedule.JobSpecification.PoolInfo", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.CloudServiceConfiguration", Name: validation.Null, Rule: false,
+									Chain: []validation.Constraint{{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.CloudServiceConfiguration.OsFamily", Name: validation.Null, Rule: true, Chain: nil}}},
+									{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration", Name: validation.Null, Rule: false,
+										Chain: []validation.Constraint{{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference", Name: validation.Null, Rule: true,
+											Chain: []validation.Constraint{{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference.Publisher", Name: validation.Null, Rule: true, Chain: nil},
+												{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference.Offer", Name: validation.Null, Rule: true, Chain: nil},
+												{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference.Sku", Name: validation.Null, Rule: true, Chain: nil},
+											}},
+											{Target: "cloudJobSchedule.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.NodeAgentSKUID", Name: validation.Null, Rule: true, Chain: nil},
+										}},
+								}},
+							}},
+						}},
+					}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.JobScheduleClient", "Add")
+	}
 
-    req, err := client.AddPreparer(cloudJobSchedule, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Add", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.AddPreparer(cloudJobSchedule, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Add", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.AddSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Add", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.AddSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Add", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.AddResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Add", resp, "Failure responding to request")
-    }
+	result, err = client.AddResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Add", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // AddPreparer prepares the Add request.
 func (client JobScheduleClient) AddPreparer(cloudJobSchedule JobScheduleAddParameter, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-        const APIVersion = "2016-02-01.3.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-02-01.3.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/jobschedules"),
-                        autorest.WithJSON(cloudJobSchedule),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/jobschedules"),
+		autorest.WithJSON(cloudJobSchedule),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) AddSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // AddResponder handles the response to the Add request. The method always
 // closes the http.Response Body.
 func (client JobScheduleClient) AddResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Delete deletes a job schedule from the specified account.
@@ -169,93 +169,93 @@ func (client JobScheduleClient) AddResponder(resp *http.Response) (result autore
 // header to perform the operation only if the resource has not been modified
 // since the specified date/time.
 func (client JobScheduleClient) Delete(jobScheduleID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.DeletePreparer(jobScheduleID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Delete", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeletePreparer(jobScheduleID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Delete", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Delete", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Delete", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Delete", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Delete", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeletePreparer prepares the Delete request.
 func (client JobScheduleClient) DeletePreparer(jobScheduleID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobScheduleId": autorest.Encode("path",jobScheduleID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobScheduleId": autorest.Encode("path", jobScheduleID),
+	}
 
-        const APIVersion = "2016-02-01.3.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-02-01.3.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobschedules/{jobScheduleId}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobschedules/{jobScheduleId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) DeleteSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client JobScheduleClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Disable disables a job schedule.
@@ -277,93 +277,93 @@ func (client JobScheduleClient) DeleteResponder(resp *http.Response) (result aut
 // header to perform the operation only if the resource has not been modified
 // since the specified date/time.
 func (client JobScheduleClient) Disable(jobScheduleID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.DisablePreparer(jobScheduleID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Disable", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DisablePreparer(jobScheduleID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Disable", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DisableSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Disable", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DisableSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Disable", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DisableResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Disable", resp, "Failure responding to request")
-    }
+	result, err = client.DisableResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Disable", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DisablePreparer prepares the Disable request.
 func (client JobScheduleClient) DisablePreparer(jobScheduleID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobScheduleId": autorest.Encode("path",jobScheduleID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobScheduleId": autorest.Encode("path", jobScheduleID),
+	}
 
-        const APIVersion = "2016-02-01.3.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-02-01.3.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobschedules/{jobScheduleId}/disable",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobschedules/{jobScheduleId}/disable", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // DisableSender sends the Disable request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) DisableSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DisableResponder handles the response to the Disable request. The method always
 // closes the http.Response Body.
 func (client JobScheduleClient) DisableResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Enable enables a job schedule.
@@ -385,93 +385,93 @@ func (client JobScheduleClient) DisableResponder(resp *http.Response) (result au
 // header to perform the operation only if the resource has not been modified
 // since the specified date/time.
 func (client JobScheduleClient) Enable(jobScheduleID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.EnablePreparer(jobScheduleID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Enable", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.EnablePreparer(jobScheduleID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Enable", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.EnableSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Enable", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.EnableSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Enable", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.EnableResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Enable", resp, "Failure responding to request")
-    }
+	result, err = client.EnableResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Enable", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // EnablePreparer prepares the Enable request.
 func (client JobScheduleClient) EnablePreparer(jobScheduleID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobScheduleId": autorest.Encode("path",jobScheduleID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobScheduleId": autorest.Encode("path", jobScheduleID),
+	}
 
-        const APIVersion = "2016-02-01.3.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-02-01.3.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobschedules/{jobScheduleId}/enable",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobschedules/{jobScheduleId}/enable", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // EnableSender sends the Enable request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) EnableSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // EnableResponder handles the response to the Enable request. The method always
 // closes the http.Response Body.
 func (client JobScheduleClient) EnableResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Exists checks the specified job schedule exists.
@@ -493,93 +493,93 @@ func (client JobScheduleClient) EnableResponder(resp *http.Response) (result aut
 // is specify this header to perform the operation only if the resource has not
 // been modified since the specified date/time.
 func (client JobScheduleClient) Exists(jobScheduleID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.ExistsPreparer(jobScheduleID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Exists", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ExistsPreparer(jobScheduleID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Exists", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ExistsSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Exists", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ExistsSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Exists", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ExistsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Exists", resp, "Failure responding to request")
-    }
+	result, err = client.ExistsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Exists", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ExistsPreparer prepares the Exists request.
 func (client JobScheduleClient) ExistsPreparer(jobScheduleID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobScheduleId": autorest.Encode("path",jobScheduleID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobScheduleId": autorest.Encode("path", jobScheduleID),
+	}
 
-        const APIVersion = "2016-02-01.3.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-02-01.3.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsHead(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobschedules/{jobScheduleId}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsHead(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobschedules/{jobScheduleId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ExistsSender sends the Exists request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) ExistsSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ExistsResponder handles the response to the Exists request. The method always
 // closes the http.Response Body.
 func (client JobScheduleClient) ExistsResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNotFound),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Get gets information about the specified job schedule.
@@ -602,100 +602,100 @@ func (client JobScheduleClient) ExistsResponder(resp *http.Response) (result aut
 // header to perform the operation only if the resource has not been modified
 // since the specified date/time.
 func (client JobScheduleClient) Get(jobScheduleID string, selectParameter string, expand string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result CloudJobSchedule, err error) {
-    req, err := client.GetPreparer(jobScheduleID, selectParameter, expand, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(jobScheduleID, selectParameter, expand, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client JobScheduleClient) GetPreparer(jobScheduleID string, selectParameter string, expand string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobScheduleId": autorest.Encode("path",jobScheduleID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobScheduleId": autorest.Encode("path", jobScheduleID),
+	}
 
-        const APIVersion = "2016-02-01.3.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(expand) > 0 {
-        queryParameters["$expand"] = autorest.Encode("query",expand)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-02-01.3.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobschedules/{jobScheduleId}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobschedules/{jobScheduleId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client JobScheduleClient) GetResponder(resp *http.Response) (result CloudJobSchedule, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List lists all of the job schedules in the specified account.
@@ -711,110 +711,110 @@ func (client JobScheduleClient) GetResponder(resp *http.Response) (result CloudJ
 // ocpDate is the time the request was issued. If not specified, this header
 // will be automatically populated with the current system clock time.
 func (client JobScheduleClient) List(filter string, selectParameter string, expand string, maxResults *int32, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result CloudJobScheduleListResult, err error) {
-    req, err := client.ListPreparer(filter, selectParameter, expand, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "List", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListPreparer(filter, selectParameter, expand, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "List", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "List", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "List", resp, "Failure responding to request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "List", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListPreparer prepares the List request.
 func (client JobScheduleClient) ListPreparer(filter string, selectParameter string, expand string, maxResults *int32, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-        const APIVersion = "2016-02-01.3.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(expand) > 0 {
-        queryParameters["$expand"] = autorest.Encode("query",expand)
-    }
-    if maxResults != nil {
-        queryParameters["maxresults"] = autorest.Encode("query",*maxResults)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-02-01.3.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+	if maxResults != nil {
+		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/jobschedules"),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/jobschedules"),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) ListSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client JobScheduleClient) ListResponder(resp *http.Response) (result CloudJobScheduleListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListNextResults retrieves the next set of results, if any.
 func (client JobScheduleClient) ListNextResults(lastResults CloudJobScheduleListResult) (result CloudJobScheduleListResult, err error) {
-    req, err := lastResults.CloudJobScheduleListResultPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "List", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.CloudJobScheduleListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "List", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "List", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "List", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "List", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "List", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // Patch updates the properties of the specified job schedule.
@@ -837,95 +837,95 @@ func (client JobScheduleClient) ListNextResults(lastResults CloudJobScheduleList
 // header to perform the operation only if the resource has not been modified
 // since the specified date/time.
 func (client JobScheduleClient) Patch(jobScheduleID string, jobSchedulePatchParameter JobSchedulePatchParameter, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.PatchPreparer(jobScheduleID, jobSchedulePatchParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Patch", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.PatchPreparer(jobScheduleID, jobSchedulePatchParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Patch", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.PatchSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Patch", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.PatchSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Patch", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.PatchResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Patch", resp, "Failure responding to request")
-    }
+	result, err = client.PatchResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Patch", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // PatchPreparer prepares the Patch request.
 func (client JobScheduleClient) PatchPreparer(jobScheduleID string, jobSchedulePatchParameter JobSchedulePatchParameter, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobScheduleId": autorest.Encode("path",jobScheduleID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobScheduleId": autorest.Encode("path", jobScheduleID),
+	}
 
-        const APIVersion = "2016-02-01.3.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-02-01.3.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPatch(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobschedules/{jobScheduleId}",pathParameters),
-                        autorest.WithJSON(jobSchedulePatchParameter),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobschedules/{jobScheduleId}", pathParameters),
+		autorest.WithJSON(jobSchedulePatchParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // PatchSender sends the Patch request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) PatchSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // PatchResponder handles the response to the Patch request. The method always
 // closes the http.Response Body.
 func (client JobScheduleClient) PatchResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Terminate terminates a job schedule.
@@ -947,93 +947,93 @@ func (client JobScheduleClient) PatchResponder(resp *http.Response) (result auto
 // header to perform the operation only if the resource has not been modified
 // since the specified date/time.
 func (client JobScheduleClient) Terminate(jobScheduleID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.TerminatePreparer(jobScheduleID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Terminate", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.TerminatePreparer(jobScheduleID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Terminate", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.TerminateSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Terminate", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.TerminateSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Terminate", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.TerminateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Terminate", resp, "Failure responding to request")
-    }
+	result, err = client.TerminateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Terminate", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // TerminatePreparer prepares the Terminate request.
 func (client JobScheduleClient) TerminatePreparer(jobScheduleID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobScheduleId": autorest.Encode("path",jobScheduleID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobScheduleId": autorest.Encode("path", jobScheduleID),
+	}
 
-        const APIVersion = "2016-02-01.3.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-02-01.3.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobschedules/{jobScheduleId}/terminate",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobschedules/{jobScheduleId}/terminate", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // TerminateSender sends the Terminate request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) TerminateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // TerminateResponder handles the response to the Terminate request. The method always
 // closes the http.Response Body.
 func (client JobScheduleClient) TerminateResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Update updates the properties of the specified job schedule.
@@ -1056,119 +1056,117 @@ func (client JobScheduleClient) TerminateResponder(resp *http.Response) (result 
 // header to perform the operation only if the resource has not been modified
 // since the specified date/time.
 func (client JobScheduleClient) Update(jobScheduleID string, jobScheduleUpdateParameter JobScheduleUpdateParameter, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: jobScheduleUpdateParameter,
-     Constraints: []validation.Constraint{	{Target: "jobScheduleUpdateParameter.Schedule", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "jobScheduleUpdateParameter.JobSpecification", Name: validation.Null, Rule: true ,
-    Chain: []validation.Constraint{	{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.CloudServiceConfiguration", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.CloudServiceConfiguration.OsFamily", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    	{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference", Name: validation.Null, Rule: true ,
-    Chain: []validation.Constraint{	{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference.Publisher", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference.Offer", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference.Sku", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    	{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.NodeAgentSKUID", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    }},
-    }},
-    }},
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.JobScheduleClient","Update")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: jobScheduleUpdateParameter,
+			Constraints: []validation.Constraint{{Target: "jobScheduleUpdateParameter.Schedule", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "jobScheduleUpdateParameter.JobSpecification", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.CloudServiceConfiguration", Name: validation.Null, Rule: false,
+									Chain: []validation.Constraint{{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.CloudServiceConfiguration.OsFamily", Name: validation.Null, Rule: true, Chain: nil}}},
+									{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration", Name: validation.Null, Rule: false,
+										Chain: []validation.Constraint{{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference", Name: validation.Null, Rule: true,
+											Chain: []validation.Constraint{{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference.Publisher", Name: validation.Null, Rule: true, Chain: nil},
+												{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference.Offer", Name: validation.Null, Rule: true, Chain: nil},
+												{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.ImageReference.Sku", Name: validation.Null, Rule: true, Chain: nil},
+											}},
+											{Target: "jobScheduleUpdateParameter.JobSpecification.PoolInfo.AutoPoolSpecification.Pool.VirtualMachineConfiguration.NodeAgentSKUID", Name: validation.Null, Rule: true, Chain: nil},
+										}},
+								}},
+							}},
+						}},
+					}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.JobScheduleClient", "Update")
+	}
 
-    req, err := client.UpdatePreparer(jobScheduleID, jobScheduleUpdateParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Update", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.UpdatePreparer(jobScheduleID, jobScheduleUpdateParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Update", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.UpdateSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Update", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Update", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.UpdateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Update", resp, "Failure responding to request")
-    }
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.JobScheduleClient", "Update", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // UpdatePreparer prepares the Update request.
 func (client JobScheduleClient) UpdatePreparer(jobScheduleID string, jobScheduleUpdateParameter JobScheduleUpdateParameter, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobScheduleId": autorest.Encode("path",jobScheduleID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobScheduleId": autorest.Encode("path", jobScheduleID),
+	}
 
-        const APIVersion = "2016-02-01.3.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-02-01.3.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobschedules/{jobScheduleId}",pathParameters),
-                        autorest.WithJSON(jobScheduleUpdateParameter),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobschedules/{jobScheduleId}", pathParameters),
+		autorest.WithJSON(jobScheduleUpdateParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobScheduleClient) UpdateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client JobScheduleClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
-

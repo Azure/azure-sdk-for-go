@@ -19,27 +19,28 @@ package insightsmanagementclientalertrules
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"net/http"
 )
 
 // AlertRulesClient is the client for the AlertRules methods of the
 // Insightsmanagementclientalertrules service.
 type AlertRulesClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewAlertRulesClient creates an instance of the AlertRulesClient client.
 func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
-        return NewAlertRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
-        }
+	return NewAlertRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
 
 // NewAlertRulesClientWithBaseURI creates an instance of the AlertRulesClient
 // client.
-    func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) AlertRulesClient {
-        return AlertRulesClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) AlertRulesClient {
+	return AlertRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // CreateOrUpdate creates or updates an alert rule.
 // Request method: PUT		Request URI:
@@ -48,76 +49,76 @@ func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
 // resourceGroupName is the name of the resource group. ruleName is the name of
 // the rule. parameters is the parameters of the rule to create or update.
 func (client AlertRulesClient) CreateOrUpdate(resourceGroupName string, ruleName string, parameters AlertRuleResource) (result AlertRuleResource, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: parameters,
-     Constraints: []validation.Constraint{	{Target: "parameters.AlertRule", Name: validation.Null, Rule: true ,
-    Chain: []validation.Constraint{	{Target: "parameters.AlertRule.Name", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "parameters.AlertRule.IsEnabled", Name: validation.Null, Rule: true, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "insightsmanagementclientalertrules.AlertRulesClient","CreateOrUpdate")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.AlertRule", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.AlertRule.Name", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.AlertRule.IsEnabled", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "insightsmanagementclientalertrules.AlertRulesClient", "CreateOrUpdate")
+	}
 
-    req, err := client.CreateOrUpdatePreparer(resourceGroupName, ruleName, parameters)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "CreateOrUpdate", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, ruleName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CreateOrUpdateSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "CreateOrUpdate", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CreateOrUpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CreateOrUpdateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "CreateOrUpdate", resp, "Failure responding to request")
-    }
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client AlertRulesClient) CreateOrUpdatePreparer(resourceGroupName string, ruleName string, parameters AlertRuleResource) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "ruleName": autorest.Encode("path",ruleName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"ruleName":          autorest.Encode("path", ruleName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2016-03-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}",pathParameters),
-                        autorest.WithJSON(parameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertRulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client AlertRulesClient) CreateOrUpdateResponder(resp *http.Response) (result AlertRuleResource, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Delete deletes an alert rule
@@ -125,64 +126,64 @@ func (client AlertRulesClient) CreateOrUpdateResponder(resp *http.Response) (res
 // resourceGroupName is the name of the resource group. ruleName is the name of
 // the rule.
 func (client AlertRulesClient) Delete(resourceGroupName string, ruleName string) (result autorest.Response, err error) {
-    req, err := client.DeletePreparer(resourceGroupName, ruleName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "Delete", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeletePreparer(resourceGroupName, ruleName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "Delete", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "Delete", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "Delete", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "Delete", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "Delete", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeletePreparer prepares the Delete request.
 func (client AlertRulesClient) DeletePreparer(resourceGroupName string, ruleName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "ruleName": autorest.Encode("path",ruleName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"ruleName":          autorest.Encode("path", ruleName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2016-03-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertRulesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client AlertRulesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusNoContent,http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Get gets an alert rule
@@ -190,65 +191,65 @@ func (client AlertRulesClient) DeleteResponder(resp *http.Response) (result auto
 // resourceGroupName is the name of the resource group. ruleName is the name of
 // the rule.
 func (client AlertRulesClient) Get(resourceGroupName string, ruleName string) (result AlertRuleResource, err error) {
-    req, err := client.GetPreparer(resourceGroupName, ruleName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(resourceGroupName, ruleName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client AlertRulesClient) GetPreparer(resourceGroupName string, ruleName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "ruleName": autorest.Encode("path",ruleName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"ruleName":          autorest.Encode("path", ruleName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2016-03-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2016-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertRulesClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client AlertRulesClient) GetResponder(resp *http.Response) (result AlertRuleResource, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListByResourceGroup list the alert rules within a resource group.
@@ -257,66 +258,65 @@ func (client AlertRulesClient) GetResponder(resp *http.Response) (result AlertRu
 // apply on the operation. For more information please see
 // https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx
 func (client AlertRulesClient) ListByResourceGroup(resourceGroupName string, filter string) (result AlertRuleResourceCollection, err error) {
-    req, err := client.ListByResourceGroupPreparer(resourceGroupName, filter)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "ListByResourceGroup", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListByResourceGroupPreparer(resourceGroupName, filter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListByResourceGroupSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "ListByResourceGroup", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListByResourceGroupResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "ListByResourceGroup", resp, "Failure responding to request")
-    }
+	result, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientalertrules.AlertRulesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
 func (client AlertRulesClient) ListByResourceGroupPreparer(resourceGroupName string, filter string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2016-03-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
+	const APIVersion = "2016-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertRulesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
 func (client AlertRulesClient) ListByResourceGroupResponder(resp *http.Response) (result AlertRuleResourceCollection, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

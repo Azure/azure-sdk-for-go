@@ -19,35 +19,35 @@ package searchservice
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // IndexerExecutionStatus enumerates the values for indexer execution status.
 type IndexerExecutionStatus string
 
 const (
-    // InProgress specifies the in progress state for indexer execution status.
-    InProgress IndexerExecutionStatus = "inProgress"
-    // Reset specifies the reset state for indexer execution status.
-    Reset IndexerExecutionStatus = "reset"
-    // Success specifies the success state for indexer execution status.
-    Success IndexerExecutionStatus = "success"
-    // TransientFailure specifies the transient failure state for indexer
-    // execution status.
-    TransientFailure IndexerExecutionStatus = "transientFailure"
+	// InProgress specifies the in progress state for indexer execution status.
+	InProgress IndexerExecutionStatus = "inProgress"
+	// Reset specifies the reset state for indexer execution status.
+	Reset IndexerExecutionStatus = "reset"
+	// Success specifies the success state for indexer execution status.
+	Success IndexerExecutionStatus = "success"
+	// TransientFailure specifies the transient failure state for indexer
+	// execution status.
+	TransientFailure IndexerExecutionStatus = "transientFailure"
 )
 
 // IndexerStatus enumerates the values for indexer status.
 type IndexerStatus string
 
 const (
-    // Error specifies the error state for indexer status.
-    Error IndexerStatus = "error"
-    // Running specifies the running state for indexer status.
-    Running IndexerStatus = "running"
-    // Unknown specifies the unknown state for indexer status.
-    Unknown IndexerStatus = "unknown"
+	// Error specifies the error state for indexer status.
+	Error IndexerStatus = "error"
+	// Running specifies the running state for indexer status.
+	Running IndexerStatus = "running"
+	// Unknown specifies the unknown state for indexer status.
+	Unknown IndexerStatus = "unknown"
 )
 
 // ScoringFunctionAggregation enumerates the values for scoring function
@@ -55,17 +55,17 @@ const (
 type ScoringFunctionAggregation string
 
 const (
-    // Average specifies the average state for scoring function aggregation.
-    Average ScoringFunctionAggregation = "average"
-    // FirstMatching specifies the first matching state for scoring function
-    // aggregation.
-    FirstMatching ScoringFunctionAggregation = "firstMatching"
-    // Maximum specifies the maximum state for scoring function aggregation.
-    Maximum ScoringFunctionAggregation = "maximum"
-    // Minimum specifies the minimum state for scoring function aggregation.
-    Minimum ScoringFunctionAggregation = "minimum"
-    // Sum specifies the sum state for scoring function aggregation.
-    Sum ScoringFunctionAggregation = "sum"
+	// Average specifies the average state for scoring function aggregation.
+	Average ScoringFunctionAggregation = "average"
+	// FirstMatching specifies the first matching state for scoring function
+	// aggregation.
+	FirstMatching ScoringFunctionAggregation = "firstMatching"
+	// Maximum specifies the maximum state for scoring function aggregation.
+	Maximum ScoringFunctionAggregation = "maximum"
+	// Minimum specifies the minimum state for scoring function aggregation.
+	Minimum ScoringFunctionAggregation = "minimum"
+	// Sum specifies the sum state for scoring function aggregation.
+	Sum ScoringFunctionAggregation = "sum"
 )
 
 // ScoringFunctionInterpolation enumerates the values for scoring function
@@ -73,33 +73,33 @@ const (
 type ScoringFunctionInterpolation string
 
 const (
-    // Constant specifies the constant state for scoring function
-    // interpolation.
-    Constant ScoringFunctionInterpolation = "constant"
-    // Linear specifies the linear state for scoring function interpolation.
-    Linear ScoringFunctionInterpolation = "linear"
-    // Logarithmic specifies the logarithmic state for scoring function
-    // interpolation.
-    Logarithmic ScoringFunctionInterpolation = "logarithmic"
-    // Quadratic specifies the quadratic state for scoring function
-    // interpolation.
-    Quadratic ScoringFunctionInterpolation = "quadratic"
+	// Constant specifies the constant state for scoring function
+	// interpolation.
+	Constant ScoringFunctionInterpolation = "constant"
+	// Linear specifies the linear state for scoring function interpolation.
+	Linear ScoringFunctionInterpolation = "linear"
+	// Logarithmic specifies the logarithmic state for scoring function
+	// interpolation.
+	Logarithmic ScoringFunctionInterpolation = "logarithmic"
+	// Quadratic specifies the quadratic state for scoring function
+	// interpolation.
+	Quadratic ScoringFunctionInterpolation = "quadratic"
 )
 
 // SuggesterSearchMode enumerates the values for suggester search mode.
 type SuggesterSearchMode string
 
 const (
-    // AnalyzingInfixMatching specifies the analyzing infix matching state for
-    // suggester search mode.
-    AnalyzingInfixMatching SuggesterSearchMode = "analyzingInfixMatching"
+	// AnalyzingInfixMatching specifies the analyzing infix matching state for
+	// suggester search mode.
+	AnalyzingInfixMatching SuggesterSearchMode = "analyzingInfixMatching"
 )
 
 // CorsOptions is defines options to control Cross-Origin Resource Sharing
 // (CORS) for an index.
 type CorsOptions struct {
-    AllowedOrigins *[]string `json:"allowedOrigins,omitempty"`
-    MaxAgeInSeconds *int64 `json:"maxAgeInSeconds,omitempty"`
+	AllowedOrigins  *[]string `json:"allowedOrigins,omitempty"`
+	MaxAgeInSeconds *int64    `json:"maxAgeInSeconds,omitempty"`
 }
 
 // DataChangeDetectionPolicy is abstract base class for data change detection
@@ -110,8 +110,8 @@ type DataChangeDetectionPolicy struct {
 // DataContainer is represents information about the entity (such as Azure SQL
 // table or DocumentDb collection) that will be indexed.
 type DataContainer struct {
-    Name *string `json:"name,omitempty"`
-    Query *string `json:"query,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	Query *string `json:"query,omitempty"`
 }
 
 // DataDeletionDetectionPolicy is abstract base class for data deletion
@@ -122,199 +122,199 @@ type DataDeletionDetectionPolicy struct {
 // DataSource is represents a datasource definition in Azure Search, which can
 // be used to configure an indexer.
 type DataSource struct {
-    autorest.Response `json:"-"`
-    Name *string `json:"name,omitempty"`
-    Description *string `json:"description,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Credentials *DataSourceCredentials `json:"credentials,omitempty"`
-    Container *DataContainer `json:"container,omitempty"`
-    DataChangeDetectionPolicy *DataChangeDetectionPolicy `json:"dataChangeDetectionPolicy,omitempty"`
-    DataDeletionDetectionPolicy *DataDeletionDetectionPolicy `json:"dataDeletionDetectionPolicy,omitempty"`
+	autorest.Response           `json:"-"`
+	Name                        *string                      `json:"name,omitempty"`
+	Description                 *string                      `json:"description,omitempty"`
+	Type                        *string                      `json:"type,omitempty"`
+	Credentials                 *DataSourceCredentials       `json:"credentials,omitempty"`
+	Container                   *DataContainer               `json:"container,omitempty"`
+	DataChangeDetectionPolicy   *DataChangeDetectionPolicy   `json:"dataChangeDetectionPolicy,omitempty"`
+	DataDeletionDetectionPolicy *DataDeletionDetectionPolicy `json:"dataDeletionDetectionPolicy,omitempty"`
 }
 
 // DataSourceCredentials is represents credentials that can be used to connect
 // to a datasource.
 type DataSourceCredentials struct {
-    ConnectionString *string `json:"connectionString,omitempty"`
+	ConnectionString *string `json:"connectionString,omitempty"`
 }
 
 // DataSourceListResult is response from a List Datasources request. If
 // successful, it includes the full definitions of all datasources.
 type DataSourceListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]DataSource `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]DataSource `json:"value,omitempty"`
 }
 
 // DistanceScoringFunction is defines a function that boosts scores based on
 // distance from a geographic location.
 type DistanceScoringFunction struct {
-    FieldName *string `json:"fieldName,omitempty"`
-    Boost *float64 `json:"boost,omitempty"`
-    Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
-    Distance *DistanceScoringParameters `json:"distance,omitempty"`
+	FieldName     *string                      `json:"fieldName,omitempty"`
+	Boost         *float64                     `json:"boost,omitempty"`
+	Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
+	Distance      *DistanceScoringParameters   `json:"distance,omitempty"`
 }
 
 // DistanceScoringParameters is provides parameter values to a distance scoring
 // function.
 type DistanceScoringParameters struct {
-    ReferencePointParameter *string `json:"referencePointParameter,omitempty"`
-    BoostingDistance *float64 `json:"boostingDistance,omitempty"`
+	ReferencePointParameter *string  `json:"referencePointParameter,omitempty"`
+	BoostingDistance        *float64 `json:"boostingDistance,omitempty"`
 }
 
 // Field is represents a field in an index definition in Azure Search, which
 // describes the name, data type, and search behavior of a field.
 type Field struct {
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Analyzer *string `json:"analyzer,omitempty"`
-    Key *bool `json:"key,omitempty"`
-    Searchable *bool `json:"searchable,omitempty"`
-    Filterable *bool `json:"filterable,omitempty"`
-    Sortable *bool `json:"sortable,omitempty"`
-    Facetable *bool `json:"facetable,omitempty"`
-    Retrievable *bool `json:"retrievable,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	Type        *string `json:"type,omitempty"`
+	Analyzer    *string `json:"analyzer,omitempty"`
+	Key         *bool   `json:"key,omitempty"`
+	Searchable  *bool   `json:"searchable,omitempty"`
+	Filterable  *bool   `json:"filterable,omitempty"`
+	Sortable    *bool   `json:"sortable,omitempty"`
+	Facetable   *bool   `json:"facetable,omitempty"`
+	Retrievable *bool   `json:"retrievable,omitempty"`
 }
 
 // FreshnessScoringFunction is defines a function that boosts scores based on
 // the value of a date-time field.
 type FreshnessScoringFunction struct {
-    FieldName *string `json:"fieldName,omitempty"`
-    Boost *float64 `json:"boost,omitempty"`
-    Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
-    Freshness *FreshnessScoringParameters `json:"freshness,omitempty"`
+	FieldName     *string                      `json:"fieldName,omitempty"`
+	Boost         *float64                     `json:"boost,omitempty"`
+	Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
+	Freshness     *FreshnessScoringParameters  `json:"freshness,omitempty"`
 }
 
 // FreshnessScoringParameters is provides parameter values to a freshness
 // scoring function.
 type FreshnessScoringParameters struct {
-    BoostingDuration *string `json:"boostingDuration,omitempty"`
+	BoostingDuration *string `json:"boostingDuration,omitempty"`
 }
 
 // HighWaterMarkChangeDetectionPolicy is defines a data change detection policy
 // that captures changes based on the value of a high water mark column.
 type HighWaterMarkChangeDetectionPolicy struct {
-    HighWaterMarkColumnName *string `json:"highWaterMarkColumnName,omitempty"`
+	HighWaterMarkColumnName *string `json:"highWaterMarkColumnName,omitempty"`
 }
 
 // Index is represents an index definition in Azure Search, which describes the
 // fields and search behavior of an index.
 type Index struct {
-    autorest.Response `json:"-"`
-    Name *string `json:"name,omitempty"`
-    Fields *[]Field `json:"fields,omitempty"`
-    ScoringProfiles *[]ScoringProfile `json:"scoringProfiles,omitempty"`
-    DefaultScoringProfile *string `json:"defaultScoringProfile,omitempty"`
-    CorsOptions *CorsOptions `json:"corsOptions,omitempty"`
-    Suggesters *[]Suggester `json:"suggesters,omitempty"`
+	autorest.Response     `json:"-"`
+	Name                  *string           `json:"name,omitempty"`
+	Fields                *[]Field          `json:"fields,omitempty"`
+	ScoringProfiles       *[]ScoringProfile `json:"scoringProfiles,omitempty"`
+	DefaultScoringProfile *string           `json:"defaultScoringProfile,omitempty"`
+	CorsOptions           *CorsOptions      `json:"corsOptions,omitempty"`
+	Suggesters            *[]Suggester      `json:"suggesters,omitempty"`
 }
 
 // Indexer is represents an Azure Search indexer.
 type Indexer struct {
-    autorest.Response `json:"-"`
-    Name *string `json:"name,omitempty"`
-    Description *string `json:"description,omitempty"`
-    DataSourceName *string `json:"dataSourceName,omitempty"`
-    TargetIndexName *string `json:"targetIndexName,omitempty"`
-    Schedule *IndexingSchedule `json:"schedule,omitempty"`
-    Parameters *IndexingParameters `json:"parameters,omitempty"`
+	autorest.Response `json:"-"`
+	Name              *string             `json:"name,omitempty"`
+	Description       *string             `json:"description,omitempty"`
+	DataSourceName    *string             `json:"dataSourceName,omitempty"`
+	TargetIndexName   *string             `json:"targetIndexName,omitempty"`
+	Schedule          *IndexingSchedule   `json:"schedule,omitempty"`
+	Parameters        *IndexingParameters `json:"parameters,omitempty"`
 }
 
 // IndexerExecutionInfo is represents the current status and execution history
 // of an indexer.
 type IndexerExecutionInfo struct {
-    autorest.Response `json:"-"`
-    Status IndexerStatus `json:"status,omitempty"`
-    LastResult *IndexerExecutionResult `json:"lastResult,omitempty"`
-    ExecutionHistory *[]IndexerExecutionResult `json:"executionHistory,omitempty"`
+	autorest.Response `json:"-"`
+	Status            IndexerStatus             `json:"status,omitempty"`
+	LastResult        *IndexerExecutionResult   `json:"lastResult,omitempty"`
+	ExecutionHistory  *[]IndexerExecutionResult `json:"executionHistory,omitempty"`
 }
 
 // IndexerExecutionResult is represents result of an individual indexer
 // execution.
 type IndexerExecutionResult struct {
-    Status IndexerExecutionStatus `json:"status,omitempty"`
-    ErrorMessage *string `json:"errorMessage,omitempty"`
-    StartTime *date.Time `json:"startTime,omitempty"`
-    EndTime *date.Time `json:"endTime,omitempty"`
-    Errors *[]ItemError `json:"errors,omitempty"`
-    ItemsProcessed *int32 `json:"itemsProcessed,omitempty"`
-    ItemsFailed *int32 `json:"itemsFailed,omitempty"`
-    InitialTrackingState *string `json:"initialTrackingState,omitempty"`
-    FinalTrackingState *string `json:"finalTrackingState,omitempty"`
+	Status               IndexerExecutionStatus `json:"status,omitempty"`
+	ErrorMessage         *string                `json:"errorMessage,omitempty"`
+	StartTime            *date.Time             `json:"startTime,omitempty"`
+	EndTime              *date.Time             `json:"endTime,omitempty"`
+	Errors               *[]ItemError           `json:"errors,omitempty"`
+	ItemsProcessed       *int32                 `json:"itemsProcessed,omitempty"`
+	ItemsFailed          *int32                 `json:"itemsFailed,omitempty"`
+	InitialTrackingState *string                `json:"initialTrackingState,omitempty"`
+	FinalTrackingState   *string                `json:"finalTrackingState,omitempty"`
 }
 
 // IndexerListResult is response from a List Indexers request. If successful,
 // it includes the full definitions of all indexers.
 type IndexerListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]Indexer `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]Indexer `json:"value,omitempty"`
 }
 
 // IndexGetStatisticsResult is statistics for a given index. Statistics are
 // collected periodically and are not guaranteed to always be up-to-date.
 type IndexGetStatisticsResult struct {
-    autorest.Response `json:"-"`
-    DocumentCount *int64 `json:"documentCount,omitempty"`
-    StorageSize *int64 `json:"storageSize,omitempty"`
+	autorest.Response `json:"-"`
+	DocumentCount     *int64 `json:"documentCount,omitempty"`
+	StorageSize       *int64 `json:"storageSize,omitempty"`
 }
 
 // IndexingParameters is represents parameters for indexer execution.
 type IndexingParameters struct {
-    MaxFailedItems *int32 `json:"maxFailedItems,omitempty"`
-    MaxFailedItemsPerBatch *int32 `json:"maxFailedItemsPerBatch,omitempty"`
-    Base64EncodeKeys *bool `json:"base64EncodeKeys,omitempty"`
+	MaxFailedItems         *int32 `json:"maxFailedItems,omitempty"`
+	MaxFailedItemsPerBatch *int32 `json:"maxFailedItemsPerBatch,omitempty"`
+	Base64EncodeKeys       *bool  `json:"base64EncodeKeys,omitempty"`
 }
 
 // IndexingSchedule is represents a schedule for indexer execution.
 type IndexingSchedule struct {
-    Interval *string `json:"interval,omitempty"`
-    StartTime *date.Time `json:"startTime,omitempty"`
+	Interval  *string    `json:"interval,omitempty"`
+	StartTime *date.Time `json:"startTime,omitempty"`
 }
 
 // IndexListResult is response from a List Indexes request. If successful, it
 // includes the full definitions of all indexes.
 type IndexListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]Index `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]Index `json:"value,omitempty"`
 }
 
 // ItemError is represents an item- or document-level indexing error.
 type ItemError struct {
-    Key *string `json:"key,omitempty"`
-    ErrorMessage *string `json:"errorMessage,omitempty"`
+	Key          *string `json:"key,omitempty"`
+	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
 // MagnitudeScoringFunction is defines a function that boosts scores based on
 // the magnitude of a numeric field.
 type MagnitudeScoringFunction struct {
-    FieldName *string `json:"fieldName,omitempty"`
-    Boost *float64 `json:"boost,omitempty"`
-    Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
-    Magnitude *MagnitudeScoringParameters `json:"magnitude,omitempty"`
+	FieldName     *string                      `json:"fieldName,omitempty"`
+	Boost         *float64                     `json:"boost,omitempty"`
+	Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
+	Magnitude     *MagnitudeScoringParameters  `json:"magnitude,omitempty"`
 }
 
 // MagnitudeScoringParameters is provides parameter values to a magnitude
 // scoring function.
 type MagnitudeScoringParameters struct {
-    BoostingRangeStart *float64 `json:"boostingRangeStart,omitempty"`
-    BoostingRangeEnd *float64 `json:"boostingRangeEnd,omitempty"`
-    ConstantBoostBeyondRange *bool `json:"constantBoostBeyondRange,omitempty"`
+	BoostingRangeStart       *float64 `json:"boostingRangeStart,omitempty"`
+	BoostingRangeEnd         *float64 `json:"boostingRangeEnd,omitempty"`
+	ConstantBoostBeyondRange *bool    `json:"constantBoostBeyondRange,omitempty"`
 }
 
 // ScoringFunction is abstract base class for functions that can modify
 // document scores during ranking.
 type ScoringFunction struct {
-    FieldName *string `json:"fieldName,omitempty"`
-    Boost *float64 `json:"boost,omitempty"`
-    Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
+	FieldName     *string                      `json:"fieldName,omitempty"`
+	Boost         *float64                     `json:"boost,omitempty"`
+	Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
 }
 
 // ScoringProfile is defines parameters for an Azure Search index that
 // influence scoring in search queries.
 type ScoringProfile struct {
-    Name *string `json:"name,omitempty"`
-    Text *TextWeights `json:"text,omitempty"`
-    Functions *[]ScoringFunction `json:"functions,omitempty"`
-    FunctionAggregation ScoringFunctionAggregation `json:"functionAggregation,omitempty"`
+	Name                *string                    `json:"name,omitempty"`
+	Text                *TextWeights               `json:"text,omitempty"`
+	Functions           *[]ScoringFunction         `json:"functions,omitempty"`
+	FunctionAggregation ScoringFunctionAggregation `json:"functionAggregation,omitempty"`
 }
 
 // SoftDeleteColumnDeletionDetectionPolicy is defines a data deletion detection
@@ -322,8 +322,8 @@ type ScoringProfile struct {
 // item should be deleted based on the value of a designated 'soft delete'
 // column.
 type SoftDeleteColumnDeletionDetectionPolicy struct {
-    SoftDeleteColumnName *string `json:"softDeleteColumnName,omitempty"`
-    SoftDeleteMarkerValue *string `json:"softDeleteMarkerValue,omitempty"`
+	SoftDeleteColumnName  *string `json:"softDeleteColumnName,omitempty"`
+	SoftDeleteMarkerValue *string `json:"softDeleteMarkerValue,omitempty"`
 }
 
 // SQLIntegratedChangeTrackingPolicy is defines a data change detection policy
@@ -335,28 +335,27 @@ type SQLIntegratedChangeTrackingPolicy struct {
 // Suggester is defines how the Suggest API should apply to a group of fields
 // in the index.
 type Suggester struct {
-    Name *string `json:"name,omitempty"`
-    SearchMode *string `json:"searchMode,omitempty"`
-    SourceFields *[]string `json:"sourceFields,omitempty"`
+	Name         *string   `json:"name,omitempty"`
+	SearchMode   *string   `json:"searchMode,omitempty"`
+	SourceFields *[]string `json:"sourceFields,omitempty"`
 }
 
 // TagScoringFunction is defines a function that boosts scores of documents
 // with string values matching a given list of tags.
 type TagScoringFunction struct {
-    FieldName *string `json:"fieldName,omitempty"`
-    Boost *float64 `json:"boost,omitempty"`
-    Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
-    Tag *TagScoringParameters `json:"tag,omitempty"`
+	FieldName     *string                      `json:"fieldName,omitempty"`
+	Boost         *float64                     `json:"boost,omitempty"`
+	Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
+	Tag           *TagScoringParameters        `json:"tag,omitempty"`
 }
 
 // TagScoringParameters is provides parameter values to a tag scoring function.
 type TagScoringParameters struct {
-    TagsParameter *string `json:"tagsParameter,omitempty"`
+	TagsParameter *string `json:"tagsParameter,omitempty"`
 }
 
 // TextWeights is defines weights on index fields for which matches should
 // boost scoring in search queries.
 type TextWeights struct {
-    Weights *map[string]*float64 `json:"weights,omitempty"`
+	Weights *map[string]*float64 `json:"weights,omitempty"`
 }
-

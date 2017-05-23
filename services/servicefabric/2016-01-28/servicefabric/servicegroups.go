@@ -19,95 +19,96 @@ package servicefabric
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // ServiceGroupsClient is the client for the ServiceGroups methods of the
 // Servicefabric service.
 type ServiceGroupsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewServiceGroupsClient creates an instance of the ServiceGroupsClient
 // client.
 func NewServiceGroupsClient(timeout *int32) ServiceGroupsClient {
-        return NewServiceGroupsClientWithBaseURI(DefaultBaseURI, timeout)
-        }
+	return NewServiceGroupsClientWithBaseURI(DefaultBaseURI, timeout)
+}
 
 // NewServiceGroupsClientWithBaseURI creates an instance of the
 // ServiceGroupsClient client.
-    func NewServiceGroupsClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupsClient {
-        return ServiceGroupsClient{ NewWithBaseURI(baseURI, timeout)}
-    }
+func NewServiceGroupsClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupsClient {
+	return ServiceGroupsClient{NewWithBaseURI(baseURI, timeout)}
+}
 
 // Create create service groups
 //
 // applicationName is the name of the service group
 // createServiceGroupDescription is the description of the service group
 func (client ServiceGroupsClient) Create(applicationName string, createServiceGroupDescription CreateServiceGroupDescription) (result String, err error) {
-    req, err := client.CreatePreparer(applicationName, createServiceGroupDescription)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Create", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CreatePreparer(applicationName, createServiceGroupDescription)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Create", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CreateSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Create", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CreateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Create", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CreateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Create", resp, "Failure responding to request")
-    }
+	result, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Create", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CreatePreparer prepares the Create request.
 func (client ServiceGroupsClient) CreatePreparer(applicationName string, createServiceGroupDescription CreateServiceGroupDescription) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "applicationName": applicationName,
-    }
+	pathParameters := map[string]interface{}{
+		"applicationName": applicationName,
+	}
 
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/Applications/{applicationName}/$/GetServices/$/CreateServiceGroup",pathParameters),
-                        autorest.WithJSON(createServiceGroupDescription),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Applications/{applicationName}/$/GetServices/$/CreateServiceGroup", pathParameters),
+		autorest.WithJSON(createServiceGroupDescription),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceGroupsClient) CreateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
 func (client ServiceGroupsClient) CreateResponder(resp *http.Response) (result String, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated,http.StatusAccepted),
-            autorest.ByUnmarshallingJSON(&result.Value),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Remove remove service groups
@@ -115,67 +116,67 @@ func (client ServiceGroupsClient) CreateResponder(resp *http.Response) (result S
 // applicationName is the name of the application serviceName is the name of
 // the service
 func (client ServiceGroupsClient) Remove(applicationName string, serviceName string) (result String, err error) {
-    req, err := client.RemovePreparer(applicationName, serviceName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Remove", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.RemovePreparer(applicationName, serviceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Remove", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.RemoveSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Remove", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.RemoveSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Remove", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.RemoveResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Remove", resp, "Failure responding to request")
-    }
+	result, err = client.RemoveResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Remove", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // RemovePreparer prepares the Remove request.
 func (client ServiceGroupsClient) RemovePreparer(applicationName string, serviceName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "applicationName": applicationName,
-    "serviceName": serviceName,
-    }
+	pathParameters := map[string]interface{}{
+		"applicationName": applicationName,
+		"serviceName":     serviceName,
+	}
 
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/Applications/{applicationName}/$/GetServiceGroups/{serviceName}/$/Delete",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Applications/{applicationName}/$/GetServiceGroups/{serviceName}/$/Delete", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // RemoveSender sends the Remove request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceGroupsClient) RemoveSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // RemoveResponder handles the response to the Remove request. The method always
 // closes the http.Response Body.
 func (client ServiceGroupsClient) RemoveResponder(resp *http.Response) (result String, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result.Value),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Update update service groups
@@ -184,68 +185,67 @@ func (client ServiceGroupsClient) RemoveResponder(resp *http.Response) (result S
 // the service updateServiceGroupDescription is the description of the service
 // group update
 func (client ServiceGroupsClient) Update(applicationName string, serviceName string, updateServiceGroupDescription UpdateServiceGroupDescription) (result String, err error) {
-    req, err := client.UpdatePreparer(applicationName, serviceName, updateServiceGroupDescription)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Update", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.UpdatePreparer(applicationName, serviceName, updateServiceGroupDescription)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Update", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.UpdateSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Update", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Update", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.UpdateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Update", resp, "Failure responding to request")
-    }
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupsClient", "Update", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // UpdatePreparer prepares the Update request.
 func (client ServiceGroupsClient) UpdatePreparer(applicationName string, serviceName string, updateServiceGroupDescription UpdateServiceGroupDescription) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "applicationName": applicationName,
-    "serviceName": serviceName,
-    }
+	pathParameters := map[string]interface{}{
+		"applicationName": applicationName,
+		"serviceName":     serviceName,
+	}
 
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/Applications/{applicationName}/$/GetServices/{serviceName}/$/UpdateServiceGroup",pathParameters),
-                        autorest.WithJSON(updateServiceGroupDescription),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Applications/{applicationName}/$/GetServices/{serviceName}/$/UpdateServiceGroup", pathParameters),
+		autorest.WithJSON(updateServiceGroupDescription),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceGroupsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client ServiceGroupsClient) UpdateResponder(resp *http.Response) (result String, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result.Value),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

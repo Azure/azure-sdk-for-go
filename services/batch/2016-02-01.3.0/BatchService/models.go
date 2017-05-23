@@ -19,47 +19,47 @@ package batchservice
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/date"
-    "github.com/Azure/go-autorest/autorest/to"
-    "io"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
+	"io"
+	"net/http"
 )
 
 // AllocationState enumerates the values for allocation state.
 type AllocationState string
 
 const (
-    // Resizing specifies the resizing state for allocation state.
-    Resizing AllocationState = "resizing"
-    // Steady specifies the steady state for allocation state.
-    Steady AllocationState = "steady"
-    // Stopping specifies the stopping state for allocation state.
-    Stopping AllocationState = "stopping"
+	// Resizing specifies the resizing state for allocation state.
+	Resizing AllocationState = "resizing"
+	// Steady specifies the steady state for allocation state.
+	Steady AllocationState = "steady"
+	// Stopping specifies the stopping state for allocation state.
+	Stopping AllocationState = "stopping"
 )
 
 // CertificateFormat enumerates the values for certificate format.
 type CertificateFormat string
 
 const (
-    // Cer specifies the cer state for certificate format.
-    Cer CertificateFormat = "cer"
-    // Pfx specifies the pfx state for certificate format.
-    Pfx CertificateFormat = "pfx"
-    // Unmapped specifies the unmapped state for certificate format.
-    Unmapped CertificateFormat = "unmapped"
+	// Cer specifies the cer state for certificate format.
+	Cer CertificateFormat = "cer"
+	// Pfx specifies the pfx state for certificate format.
+	Pfx CertificateFormat = "pfx"
+	// Unmapped specifies the unmapped state for certificate format.
+	Unmapped CertificateFormat = "unmapped"
 )
 
 // CertificateState enumerates the values for certificate state.
 type CertificateState string
 
 const (
-    // Active specifies the active state for certificate state.
-    Active CertificateState = "active"
-    // Deletefailed specifies the deletefailed state for certificate state.
-    Deletefailed CertificateState = "deletefailed"
-    // Deleting specifies the deleting state for certificate state.
-    Deleting CertificateState = "deleting"
+	// Active specifies the active state for certificate state.
+	Active CertificateState = "active"
+	// Deletefailed specifies the deletefailed state for certificate state.
+	Deletefailed CertificateState = "deletefailed"
+	// Deleting specifies the deleting state for certificate state.
+	Deleting CertificateState = "deleting"
 )
 
 // CertificateStoreLocation enumerates the values for certificate store
@@ -67,33 +67,33 @@ const (
 type CertificateStoreLocation string
 
 const (
-    // CertificateStoreLocationCurrentuser specifies the certificate store
-    // location currentuser state for certificate store location.
-    CertificateStoreLocationCurrentuser CertificateStoreLocation = "currentuser"
-    // CertificateStoreLocationLocalmachine specifies the certificate store
-    // location localmachine state for certificate store location.
-    CertificateStoreLocationLocalmachine CertificateStoreLocation = "localmachine"
-    // CertificateStoreLocationUnmapped specifies the certificate store
-    // location unmapped state for certificate store location.
-    CertificateStoreLocationUnmapped CertificateStoreLocation = "unmapped"
+	// CertificateStoreLocationCurrentuser specifies the certificate store
+	// location currentuser state for certificate store location.
+	CertificateStoreLocationCurrentuser CertificateStoreLocation = "currentuser"
+	// CertificateStoreLocationLocalmachine specifies the certificate store
+	// location localmachine state for certificate store location.
+	CertificateStoreLocationLocalmachine CertificateStoreLocation = "localmachine"
+	// CertificateStoreLocationUnmapped specifies the certificate store
+	// location unmapped state for certificate store location.
+	CertificateStoreLocationUnmapped CertificateStoreLocation = "unmapped"
 )
 
 // CertificateVisibility enumerates the values for certificate visibility.
 type CertificateVisibility string
 
 const (
-    // CertificateVisibilityRemoteuser specifies the certificate visibility
-    // remoteuser state for certificate visibility.
-    CertificateVisibilityRemoteuser CertificateVisibility = "remoteuser"
-    // CertificateVisibilityStarttask specifies the certificate visibility
-    // starttask state for certificate visibility.
-    CertificateVisibilityStarttask CertificateVisibility = "starttask"
-    // CertificateVisibilityTask specifies the certificate visibility task
-    // state for certificate visibility.
-    CertificateVisibilityTask CertificateVisibility = "task"
-    // CertificateVisibilityUnmapped specifies the certificate visibility
-    // unmapped state for certificate visibility.
-    CertificateVisibilityUnmapped CertificateVisibility = "unmapped"
+	// CertificateVisibilityRemoteuser specifies the certificate visibility
+	// remoteuser state for certificate visibility.
+	CertificateVisibilityRemoteuser CertificateVisibility = "remoteuser"
+	// CertificateVisibilityStarttask specifies the certificate visibility
+	// starttask state for certificate visibility.
+	CertificateVisibilityStarttask CertificateVisibility = "starttask"
+	// CertificateVisibilityTask specifies the certificate visibility task
+	// state for certificate visibility.
+	CertificateVisibilityTask CertificateVisibility = "task"
+	// CertificateVisibilityUnmapped specifies the certificate visibility
+	// unmapped state for certificate visibility.
+	CertificateVisibilityUnmapped CertificateVisibility = "unmapped"
 )
 
 // ComputeNodeDeallocationOption enumerates the values for compute node
@@ -101,33 +101,33 @@ const (
 type ComputeNodeDeallocationOption string
 
 const (
-    // Requeue specifies the requeue state for compute node deallocation
-    // option.
-    Requeue ComputeNodeDeallocationOption = "requeue"
-    // Retaineddata specifies the retaineddata state for compute node
-    // deallocation option.
-    Retaineddata ComputeNodeDeallocationOption = "retaineddata"
-    // Taskcompletion specifies the taskcompletion state for compute node
-    // deallocation option.
-    Taskcompletion ComputeNodeDeallocationOption = "taskcompletion"
-    // Terminate specifies the terminate state for compute node deallocation
-    // option.
-    Terminate ComputeNodeDeallocationOption = "terminate"
+	// Requeue specifies the requeue state for compute node deallocation
+	// option.
+	Requeue ComputeNodeDeallocationOption = "requeue"
+	// Retaineddata specifies the retaineddata state for compute node
+	// deallocation option.
+	Retaineddata ComputeNodeDeallocationOption = "retaineddata"
+	// Taskcompletion specifies the taskcompletion state for compute node
+	// deallocation option.
+	Taskcompletion ComputeNodeDeallocationOption = "taskcompletion"
+	// Terminate specifies the terminate state for compute node deallocation
+	// option.
+	Terminate ComputeNodeDeallocationOption = "terminate"
 )
 
 // ComputeNodeFillType enumerates the values for compute node fill type.
 type ComputeNodeFillType string
 
 const (
-    // ComputeNodeFillTypePack specifies the compute node fill type pack state
-    // for compute node fill type.
-    ComputeNodeFillTypePack ComputeNodeFillType = "pack"
-    // ComputeNodeFillTypeSpread specifies the compute node fill type spread
-    // state for compute node fill type.
-    ComputeNodeFillTypeSpread ComputeNodeFillType = "spread"
-    // ComputeNodeFillTypeUnmapped specifies the compute node fill type
-    // unmapped state for compute node fill type.
-    ComputeNodeFillTypeUnmapped ComputeNodeFillType = "unmapped"
+	// ComputeNodeFillTypePack specifies the compute node fill type pack state
+	// for compute node fill type.
+	ComputeNodeFillTypePack ComputeNodeFillType = "pack"
+	// ComputeNodeFillTypeSpread specifies the compute node fill type spread
+	// state for compute node fill type.
+	ComputeNodeFillTypeSpread ComputeNodeFillType = "spread"
+	// ComputeNodeFillTypeUnmapped specifies the compute node fill type
+	// unmapped state for compute node fill type.
+	ComputeNodeFillTypeUnmapped ComputeNodeFillType = "unmapped"
 )
 
 // ComputeNodeRebootOption enumerates the values for compute node reboot
@@ -135,18 +135,18 @@ const (
 type ComputeNodeRebootOption string
 
 const (
-    // ComputeNodeRebootOptionRequeue specifies the compute node reboot option
-    // requeue state for compute node reboot option.
-    ComputeNodeRebootOptionRequeue ComputeNodeRebootOption = "requeue"
-    // ComputeNodeRebootOptionRetaineddata specifies the compute node reboot
-    // option retaineddata state for compute node reboot option.
-    ComputeNodeRebootOptionRetaineddata ComputeNodeRebootOption = "retaineddata"
-    // ComputeNodeRebootOptionTaskcompletion specifies the compute node reboot
-    // option taskcompletion state for compute node reboot option.
-    ComputeNodeRebootOptionTaskcompletion ComputeNodeRebootOption = "taskcompletion"
-    // ComputeNodeRebootOptionTerminate specifies the compute node reboot
-    // option terminate state for compute node reboot option.
-    ComputeNodeRebootOptionTerminate ComputeNodeRebootOption = "terminate"
+	// ComputeNodeRebootOptionRequeue specifies the compute node reboot option
+	// requeue state for compute node reboot option.
+	ComputeNodeRebootOptionRequeue ComputeNodeRebootOption = "requeue"
+	// ComputeNodeRebootOptionRetaineddata specifies the compute node reboot
+	// option retaineddata state for compute node reboot option.
+	ComputeNodeRebootOptionRetaineddata ComputeNodeRebootOption = "retaineddata"
+	// ComputeNodeRebootOptionTaskcompletion specifies the compute node reboot
+	// option taskcompletion state for compute node reboot option.
+	ComputeNodeRebootOptionTaskcompletion ComputeNodeRebootOption = "taskcompletion"
+	// ComputeNodeRebootOptionTerminate specifies the compute node reboot
+	// option terminate state for compute node reboot option.
+	ComputeNodeRebootOptionTerminate ComputeNodeRebootOption = "terminate"
 )
 
 // ComputeNodeReimageOption enumerates the values for compute node reimage
@@ -154,50 +154,50 @@ const (
 type ComputeNodeReimageOption string
 
 const (
-    // ComputeNodeReimageOptionRequeue specifies the compute node reimage
-    // option requeue state for compute node reimage option.
-    ComputeNodeReimageOptionRequeue ComputeNodeReimageOption = "requeue"
-    // ComputeNodeReimageOptionRetaineddata specifies the compute node reimage
-    // option retaineddata state for compute node reimage option.
-    ComputeNodeReimageOptionRetaineddata ComputeNodeReimageOption = "retaineddata"
-    // ComputeNodeReimageOptionTaskcompletion specifies the compute node
-    // reimage option taskcompletion state for compute node reimage option.
-    ComputeNodeReimageOptionTaskcompletion ComputeNodeReimageOption = "taskcompletion"
-    // ComputeNodeReimageOptionTerminate specifies the compute node reimage
-    // option terminate state for compute node reimage option.
-    ComputeNodeReimageOptionTerminate ComputeNodeReimageOption = "terminate"
+	// ComputeNodeReimageOptionRequeue specifies the compute node reimage
+	// option requeue state for compute node reimage option.
+	ComputeNodeReimageOptionRequeue ComputeNodeReimageOption = "requeue"
+	// ComputeNodeReimageOptionRetaineddata specifies the compute node reimage
+	// option retaineddata state for compute node reimage option.
+	ComputeNodeReimageOptionRetaineddata ComputeNodeReimageOption = "retaineddata"
+	// ComputeNodeReimageOptionTaskcompletion specifies the compute node
+	// reimage option taskcompletion state for compute node reimage option.
+	ComputeNodeReimageOptionTaskcompletion ComputeNodeReimageOption = "taskcompletion"
+	// ComputeNodeReimageOptionTerminate specifies the compute node reimage
+	// option terminate state for compute node reimage option.
+	ComputeNodeReimageOptionTerminate ComputeNodeReimageOption = "terminate"
 )
 
 // ComputeNodeState enumerates the values for compute node state.
 type ComputeNodeState string
 
 const (
-    // Creating specifies the creating state for compute node state.
-    Creating ComputeNodeState = "creating"
-    // Idle specifies the idle state for compute node state.
-    Idle ComputeNodeState = "idle"
-    // Leavingpool specifies the leavingpool state for compute node state.
-    Leavingpool ComputeNodeState = "leavingpool"
-    // Offline specifies the offline state for compute node state.
-    Offline ComputeNodeState = "offline"
-    // Rebooting specifies the rebooting state for compute node state.
-    Rebooting ComputeNodeState = "rebooting"
-    // Reimaging specifies the reimaging state for compute node state.
-    Reimaging ComputeNodeState = "reimaging"
-    // Running specifies the running state for compute node state.
-    Running ComputeNodeState = "running"
-    // Starting specifies the starting state for compute node state.
-    Starting ComputeNodeState = "starting"
-    // Starttaskfailed specifies the starttaskfailed state for compute node
-    // state.
-    Starttaskfailed ComputeNodeState = "starttaskfailed"
-    // Unknown specifies the unknown state for compute node state.
-    Unknown ComputeNodeState = "unknown"
-    // Unusable specifies the unusable state for compute node state.
-    Unusable ComputeNodeState = "unusable"
-    // Waitingforstarttask specifies the waitingforstarttask state for compute
-    // node state.
-    Waitingforstarttask ComputeNodeState = "waitingforstarttask"
+	// Creating specifies the creating state for compute node state.
+	Creating ComputeNodeState = "creating"
+	// Idle specifies the idle state for compute node state.
+	Idle ComputeNodeState = "idle"
+	// Leavingpool specifies the leavingpool state for compute node state.
+	Leavingpool ComputeNodeState = "leavingpool"
+	// Offline specifies the offline state for compute node state.
+	Offline ComputeNodeState = "offline"
+	// Rebooting specifies the rebooting state for compute node state.
+	Rebooting ComputeNodeState = "rebooting"
+	// Reimaging specifies the reimaging state for compute node state.
+	Reimaging ComputeNodeState = "reimaging"
+	// Running specifies the running state for compute node state.
+	Running ComputeNodeState = "running"
+	// Starting specifies the starting state for compute node state.
+	Starting ComputeNodeState = "starting"
+	// Starttaskfailed specifies the starttaskfailed state for compute node
+	// state.
+	Starttaskfailed ComputeNodeState = "starttaskfailed"
+	// Unknown specifies the unknown state for compute node state.
+	Unknown ComputeNodeState = "unknown"
+	// Unusable specifies the unusable state for compute node state.
+	Unusable ComputeNodeState = "unusable"
+	// Waitingforstarttask specifies the waitingforstarttask state for compute
+	// node state.
+	Waitingforstarttask ComputeNodeState = "waitingforstarttask"
 )
 
 // DisableComputeNodeSchedulingOption enumerates the values for disable compute
@@ -205,33 +205,33 @@ const (
 type DisableComputeNodeSchedulingOption string
 
 const (
-    // DisableComputeNodeSchedulingOptionRequeue specifies the disable compute
-    // node scheduling option requeue state for disable compute node scheduling
-    // option.
-    DisableComputeNodeSchedulingOptionRequeue DisableComputeNodeSchedulingOption = "requeue"
-    // DisableComputeNodeSchedulingOptionTaskcompletion specifies the disable
-    // compute node scheduling option taskcompletion state for disable compute
-    // node scheduling option.
-    DisableComputeNodeSchedulingOptionTaskcompletion DisableComputeNodeSchedulingOption = "taskcompletion"
-    // DisableComputeNodeSchedulingOptionTerminate specifies the disable
-    // compute node scheduling option terminate state for disable compute node
-    // scheduling option.
-    DisableComputeNodeSchedulingOptionTerminate DisableComputeNodeSchedulingOption = "terminate"
+	// DisableComputeNodeSchedulingOptionRequeue specifies the disable compute
+	// node scheduling option requeue state for disable compute node scheduling
+	// option.
+	DisableComputeNodeSchedulingOptionRequeue DisableComputeNodeSchedulingOption = "requeue"
+	// DisableComputeNodeSchedulingOptionTaskcompletion specifies the disable
+	// compute node scheduling option taskcompletion state for disable compute
+	// node scheduling option.
+	DisableComputeNodeSchedulingOptionTaskcompletion DisableComputeNodeSchedulingOption = "taskcompletion"
+	// DisableComputeNodeSchedulingOptionTerminate specifies the disable
+	// compute node scheduling option terminate state for disable compute node
+	// scheduling option.
+	DisableComputeNodeSchedulingOptionTerminate DisableComputeNodeSchedulingOption = "terminate"
 )
 
 // DisableJobOption enumerates the values for disable job option.
 type DisableJobOption string
 
 const (
-    // DisableJobOptionRequeue specifies the disable job option requeue state
-    // for disable job option.
-    DisableJobOptionRequeue DisableJobOption = "requeue"
-    // DisableJobOptionTerminate specifies the disable job option terminate
-    // state for disable job option.
-    DisableJobOptionTerminate DisableJobOption = "terminate"
-    // DisableJobOptionWait specifies the disable job option wait state for
-    // disable job option.
-    DisableJobOptionWait DisableJobOption = "wait"
+	// DisableJobOptionRequeue specifies the disable job option requeue state
+	// for disable job option.
+	DisableJobOptionRequeue DisableJobOption = "requeue"
+	// DisableJobOptionTerminate specifies the disable job option terminate
+	// state for disable job option.
+	DisableJobOptionTerminate DisableJobOption = "terminate"
+	// DisableJobOptionWait specifies the disable job option wait state for
+	// disable job option.
+	DisableJobOptionWait DisableJobOption = "wait"
 )
 
 // JobPreparationTaskState enumerates the values for job preparation task
@@ -239,919 +239,919 @@ const (
 type JobPreparationTaskState string
 
 const (
-    // JobPreparationTaskStateCompleted specifies the job preparation task
-    // state completed state for job preparation task state.
-    JobPreparationTaskStateCompleted JobPreparationTaskState = "completed"
-    // JobPreparationTaskStateRunning specifies the job preparation task state
-    // running state for job preparation task state.
-    JobPreparationTaskStateRunning JobPreparationTaskState = "running"
+	// JobPreparationTaskStateCompleted specifies the job preparation task
+	// state completed state for job preparation task state.
+	JobPreparationTaskStateCompleted JobPreparationTaskState = "completed"
+	// JobPreparationTaskStateRunning specifies the job preparation task state
+	// running state for job preparation task state.
+	JobPreparationTaskStateRunning JobPreparationTaskState = "running"
 )
 
 // JobReleaseTaskState enumerates the values for job release task state.
 type JobReleaseTaskState string
 
 const (
-    // JobReleaseTaskStateCompleted specifies the job release task state
-    // completed state for job release task state.
-    JobReleaseTaskStateCompleted JobReleaseTaskState = "completed"
-    // JobReleaseTaskStateRunning specifies the job release task state running
-    // state for job release task state.
-    JobReleaseTaskStateRunning JobReleaseTaskState = "running"
+	// JobReleaseTaskStateCompleted specifies the job release task state
+	// completed state for job release task state.
+	JobReleaseTaskStateCompleted JobReleaseTaskState = "completed"
+	// JobReleaseTaskStateRunning specifies the job release task state running
+	// state for job release task state.
+	JobReleaseTaskStateRunning JobReleaseTaskState = "running"
 )
 
 // JobScheduleState enumerates the values for job schedule state.
 type JobScheduleState string
 
 const (
-    // JobScheduleStateActive specifies the job schedule state active state for
-    // job schedule state.
-    JobScheduleStateActive JobScheduleState = "active"
-    // JobScheduleStateCompleted specifies the job schedule state completed
-    // state for job schedule state.
-    JobScheduleStateCompleted JobScheduleState = "completed"
-    // JobScheduleStateDeleting specifies the job schedule state deleting state
-    // for job schedule state.
-    JobScheduleStateDeleting JobScheduleState = "deleting"
-    // JobScheduleStateDisabled specifies the job schedule state disabled state
-    // for job schedule state.
-    JobScheduleStateDisabled JobScheduleState = "disabled"
-    // JobScheduleStateTerminating specifies the job schedule state terminating
-    // state for job schedule state.
-    JobScheduleStateTerminating JobScheduleState = "terminating"
+	// JobScheduleStateActive specifies the job schedule state active state for
+	// job schedule state.
+	JobScheduleStateActive JobScheduleState = "active"
+	// JobScheduleStateCompleted specifies the job schedule state completed
+	// state for job schedule state.
+	JobScheduleStateCompleted JobScheduleState = "completed"
+	// JobScheduleStateDeleting specifies the job schedule state deleting state
+	// for job schedule state.
+	JobScheduleStateDeleting JobScheduleState = "deleting"
+	// JobScheduleStateDisabled specifies the job schedule state disabled state
+	// for job schedule state.
+	JobScheduleStateDisabled JobScheduleState = "disabled"
+	// JobScheduleStateTerminating specifies the job schedule state terminating
+	// state for job schedule state.
+	JobScheduleStateTerminating JobScheduleState = "terminating"
 )
 
 // JobState enumerates the values for job state.
 type JobState string
 
 const (
-    // JobStateActive specifies the job state active state for job state.
-    JobStateActive JobState = "active"
-    // JobStateCompleted specifies the job state completed state for job state.
-    JobStateCompleted JobState = "completed"
-    // JobStateDeleting specifies the job state deleting state for job state.
-    JobStateDeleting JobState = "deleting"
-    // JobStateDisabled specifies the job state disabled state for job state.
-    JobStateDisabled JobState = "disabled"
-    // JobStateDisabling specifies the job state disabling state for job state.
-    JobStateDisabling JobState = "disabling"
-    // JobStateEnabling specifies the job state enabling state for job state.
-    JobStateEnabling JobState = "enabling"
-    // JobStateTerminating specifies the job state terminating state for job
-    // state.
-    JobStateTerminating JobState = "terminating"
+	// JobStateActive specifies the job state active state for job state.
+	JobStateActive JobState = "active"
+	// JobStateCompleted specifies the job state completed state for job state.
+	JobStateCompleted JobState = "completed"
+	// JobStateDeleting specifies the job state deleting state for job state.
+	JobStateDeleting JobState = "deleting"
+	// JobStateDisabled specifies the job state disabled state for job state.
+	JobStateDisabled JobState = "disabled"
+	// JobStateDisabling specifies the job state disabling state for job state.
+	JobStateDisabling JobState = "disabling"
+	// JobStateEnabling specifies the job state enabling state for job state.
+	JobStateEnabling JobState = "enabling"
+	// JobStateTerminating specifies the job state terminating state for job
+	// state.
+	JobStateTerminating JobState = "terminating"
 )
 
 // OSType enumerates the values for os type.
 type OSType string
 
 const (
-    // OSTypeLinux specifies the os type linux state for os type.
-    OSTypeLinux OSType = "linux"
-    // OSTypeUnmapped specifies the os type unmapped state for os type.
-    OSTypeUnmapped OSType = "unmapped"
-    // OSTypeWindows specifies the os type windows state for os type.
-    OSTypeWindows OSType = "windows"
+	// OSTypeLinux specifies the os type linux state for os type.
+	OSTypeLinux OSType = "linux"
+	// OSTypeUnmapped specifies the os type unmapped state for os type.
+	OSTypeUnmapped OSType = "unmapped"
+	// OSTypeWindows specifies the os type windows state for os type.
+	OSTypeWindows OSType = "windows"
 )
 
 // PoolLifetimeOption enumerates the values for pool lifetime option.
 type PoolLifetimeOption string
 
 const (
-    // PoolLifetimeOptionJob specifies the pool lifetime option job state for
-    // pool lifetime option.
-    PoolLifetimeOptionJob PoolLifetimeOption = "job"
-    // PoolLifetimeOptionJobschedule specifies the pool lifetime option
-    // jobschedule state for pool lifetime option.
-    PoolLifetimeOptionJobschedule PoolLifetimeOption = "jobschedule"
-    // PoolLifetimeOptionUnmapped specifies the pool lifetime option unmapped
-    // state for pool lifetime option.
-    PoolLifetimeOptionUnmapped PoolLifetimeOption = "unmapped"
+	// PoolLifetimeOptionJob specifies the pool lifetime option job state for
+	// pool lifetime option.
+	PoolLifetimeOptionJob PoolLifetimeOption = "job"
+	// PoolLifetimeOptionJobschedule specifies the pool lifetime option
+	// jobschedule state for pool lifetime option.
+	PoolLifetimeOptionJobschedule PoolLifetimeOption = "jobschedule"
+	// PoolLifetimeOptionUnmapped specifies the pool lifetime option unmapped
+	// state for pool lifetime option.
+	PoolLifetimeOptionUnmapped PoolLifetimeOption = "unmapped"
 )
 
 // PoolState enumerates the values for pool state.
 type PoolState string
 
 const (
-    // PoolStateActive specifies the pool state active state for pool state.
-    PoolStateActive PoolState = "active"
-    // PoolStateDeleting specifies the pool state deleting state for pool
-    // state.
-    PoolStateDeleting PoolState = "deleting"
-    // PoolStateUpgrading specifies the pool state upgrading state for pool
-    // state.
-    PoolStateUpgrading PoolState = "upgrading"
+	// PoolStateActive specifies the pool state active state for pool state.
+	PoolStateActive PoolState = "active"
+	// PoolStateDeleting specifies the pool state deleting state for pool
+	// state.
+	PoolStateDeleting PoolState = "deleting"
+	// PoolStateUpgrading specifies the pool state upgrading state for pool
+	// state.
+	PoolStateUpgrading PoolState = "upgrading"
 )
 
 // SchedulingErrorCategory enumerates the values for scheduling error category.
 type SchedulingErrorCategory string
 
 const (
-    // SchedulingErrorCategoryServererror specifies the scheduling error
-    // category servererror state for scheduling error category.
-    SchedulingErrorCategoryServererror SchedulingErrorCategory = "servererror"
-    // SchedulingErrorCategoryUnmapped specifies the scheduling error category
-    // unmapped state for scheduling error category.
-    SchedulingErrorCategoryUnmapped SchedulingErrorCategory = "unmapped"
-    // SchedulingErrorCategoryUsererror specifies the scheduling error category
-    // usererror state for scheduling error category.
-    SchedulingErrorCategoryUsererror SchedulingErrorCategory = "usererror"
+	// SchedulingErrorCategoryServererror specifies the scheduling error
+	// category servererror state for scheduling error category.
+	SchedulingErrorCategoryServererror SchedulingErrorCategory = "servererror"
+	// SchedulingErrorCategoryUnmapped specifies the scheduling error category
+	// unmapped state for scheduling error category.
+	SchedulingErrorCategoryUnmapped SchedulingErrorCategory = "unmapped"
+	// SchedulingErrorCategoryUsererror specifies the scheduling error category
+	// usererror state for scheduling error category.
+	SchedulingErrorCategoryUsererror SchedulingErrorCategory = "usererror"
 )
 
 // SchedulingState enumerates the values for scheduling state.
 type SchedulingState string
 
 const (
-    // Disabled specifies the disabled state for scheduling state.
-    Disabled SchedulingState = "disabled"
-    // Enabled specifies the enabled state for scheduling state.
-    Enabled SchedulingState = "enabled"
+	// Disabled specifies the disabled state for scheduling state.
+	Disabled SchedulingState = "disabled"
+	// Enabled specifies the enabled state for scheduling state.
+	Enabled SchedulingState = "enabled"
 )
 
 // StartTaskState enumerates the values for start task state.
 type StartTaskState string
 
 const (
-    // StartTaskStateCompleted specifies the start task state completed state
-    // for start task state.
-    StartTaskStateCompleted StartTaskState = "completed"
-    // StartTaskStateRunning specifies the start task state running state for
-    // start task state.
-    StartTaskStateRunning StartTaskState = "running"
+	// StartTaskStateCompleted specifies the start task state completed state
+	// for start task state.
+	StartTaskStateCompleted StartTaskState = "completed"
+	// StartTaskStateRunning specifies the start task state running state for
+	// start task state.
+	StartTaskStateRunning StartTaskState = "running"
 )
 
 // TaskAddStatus enumerates the values for task add status.
 type TaskAddStatus string
 
 const (
-    // TaskAddStatusClienterror specifies the task add status clienterror state
-    // for task add status.
-    TaskAddStatusClienterror TaskAddStatus = "clienterror"
-    // TaskAddStatusServererror specifies the task add status servererror state
-    // for task add status.
-    TaskAddStatusServererror TaskAddStatus = "servererror"
-    // TaskAddStatusSuccess specifies the task add status success state for
-    // task add status.
-    TaskAddStatusSuccess TaskAddStatus = "success"
-    // TaskAddStatusUnmapped specifies the task add status unmapped state for
-    // task add status.
-    TaskAddStatusUnmapped TaskAddStatus = "unmapped"
+	// TaskAddStatusClienterror specifies the task add status clienterror state
+	// for task add status.
+	TaskAddStatusClienterror TaskAddStatus = "clienterror"
+	// TaskAddStatusServererror specifies the task add status servererror state
+	// for task add status.
+	TaskAddStatusServererror TaskAddStatus = "servererror"
+	// TaskAddStatusSuccess specifies the task add status success state for
+	// task add status.
+	TaskAddStatusSuccess TaskAddStatus = "success"
+	// TaskAddStatusUnmapped specifies the task add status unmapped state for
+	// task add status.
+	TaskAddStatusUnmapped TaskAddStatus = "unmapped"
 )
 
 // TaskState enumerates the values for task state.
 type TaskState string
 
 const (
-    // TaskStateActive specifies the task state active state for task state.
-    TaskStateActive TaskState = "active"
-    // TaskStateCompleted specifies the task state completed state for task
-    // state.
-    TaskStateCompleted TaskState = "completed"
-    // TaskStatePreparing specifies the task state preparing state for task
-    // state.
-    TaskStatePreparing TaskState = "preparing"
-    // TaskStateRunning specifies the task state running state for task state.
-    TaskStateRunning TaskState = "running"
+	// TaskStateActive specifies the task state active state for task state.
+	TaskStateActive TaskState = "active"
+	// TaskStateCompleted specifies the task state completed state for task
+	// state.
+	TaskStateCompleted TaskState = "completed"
+	// TaskStatePreparing specifies the task state preparing state for task
+	// state.
+	TaskStatePreparing TaskState = "preparing"
+	// TaskStateRunning specifies the task state running state for task state.
+	TaskStateRunning TaskState = "running"
 )
 
 // AccountListNodeAgentSkusResult is response to an
 // AccountOperation.ListNodeAgentSkus request.
 type AccountListNodeAgentSkusResult struct {
-    autorest.Response `json:"-"`
-    Value *[]NodeAgentSku `json:"value,omitempty"`
-    OdataNextLink *string `json:"odata.nextLink,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]NodeAgentSku `json:"value,omitempty"`
+	OdataNextLink     *string         `json:"odata.nextLink,omitempty"`
 }
 
 // AccountListNodeAgentSkusResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client AccountListNodeAgentSkusResult) AccountListNodeAgentSkusResultPreparer() (*http.Request, error) {
-    if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
-        return nil, nil
-    }
-    return autorest.Prepare(&http.Request{},
-        autorest.AsJSON(),
-        autorest.AsGet(),
-        autorest.WithBaseURL(to.String(client.OdataNextLink)));
+	if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.OdataNextLink)))
 }
 
 // AffinityInformation is a locality hint that can be used by the Batch service
 // to select a compute node on which to start a task.
 type AffinityInformation struct {
-    AffinityID *string `json:"affinityId,omitempty"`
+	AffinityID *string `json:"affinityId,omitempty"`
 }
 
 // ApplicationListResult is response to a ApplicationOperations.List request.
 type ApplicationListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]ApplicationSummary `json:"value,omitempty"`
-    OdataNextLink *string `json:"odata.nextLink,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]ApplicationSummary `json:"value,omitempty"`
+	OdataNextLink     *string               `json:"odata.nextLink,omitempty"`
 }
 
 // ApplicationListResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client ApplicationListResult) ApplicationListResultPreparer() (*http.Request, error) {
-    if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
-        return nil, nil
-    }
-    return autorest.Prepare(&http.Request{},
-        autorest.AsJSON(),
-        autorest.AsGet(),
-        autorest.WithBaseURL(to.String(client.OdataNextLink)));
+	if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.OdataNextLink)))
 }
 
 // ApplicationPackageReference is a reference to an application package to be
 // installed on compute nodes in a pool.
 type ApplicationPackageReference struct {
-    ApplicationID *string `json:"applicationId,omitempty"`
-    Version *string `json:"version,omitempty"`
+	ApplicationID *string `json:"applicationId,omitempty"`
+	Version       *string `json:"version,omitempty"`
 }
 
 // ApplicationSummary is contains information about an application in an Azure
 // Batch account.
 type ApplicationSummary struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    DisplayName *string `json:"displayName,omitempty"`
-    Versions *[]string `json:"versions,omitempty"`
+	autorest.Response `json:"-"`
+	ID                *string   `json:"id,omitempty"`
+	DisplayName       *string   `json:"displayName,omitempty"`
+	Versions          *[]string `json:"versions,omitempty"`
 }
 
 // AutoPoolSpecification is specifies characteristics for a temporary 'auto
 // pool'. The Batch service will create this auto pool, run all the tasks for
 // the job on it, and will delete the pool once the job has completed.
 type AutoPoolSpecification struct {
-    AutoPoolIDPrefix *string `json:"autoPoolIdPrefix,omitempty"`
-    PoolLifetimeOption PoolLifetimeOption `json:"poolLifetimeOption,omitempty"`
-    KeepAlive *bool `json:"keepAlive,omitempty"`
-    Pool *PoolSpecification `json:"pool,omitempty"`
+	AutoPoolIDPrefix   *string            `json:"autoPoolIdPrefix,omitempty"`
+	PoolLifetimeOption PoolLifetimeOption `json:"poolLifetimeOption,omitempty"`
+	KeepAlive          *bool              `json:"keepAlive,omitempty"`
+	Pool               *PoolSpecification `json:"pool,omitempty"`
 }
 
 // AutoScaleRun is the results and errors from an execution of a pool autoscale
 // formula.
 type AutoScaleRun struct {
-    autorest.Response `json:"-"`
-    Timestamp *date.Time `json:"timestamp,omitempty"`
-    Results *string `json:"results,omitempty"`
-    Error *AutoScaleRunError `json:"error,omitempty"`
+	autorest.Response `json:"-"`
+	Timestamp         *date.Time         `json:"timestamp,omitempty"`
+	Results           *string            `json:"results,omitempty"`
+	Error             *AutoScaleRunError `json:"error,omitempty"`
 }
 
 // AutoScaleRunError is an error that occurred when executing or evaluating a
 // pool autoscale formula.
 type AutoScaleRunError struct {
-    Code *string `json:"code,omitempty"`
-    Message *string `json:"message,omitempty"`
-    Values *[]NameValuePair `json:"values,omitempty"`
+	Code    *string          `json:"code,omitempty"`
+	Message *string          `json:"message,omitempty"`
+	Values  *[]NameValuePair `json:"values,omitempty"`
 }
 
 // BatchError is an error response received from the Azure Batch service.
 type BatchError struct {
-    Code *string `json:"code,omitempty"`
-    Message *ErrorMessage `json:"message,omitempty"`
-    Values *[]BatchErrorDetail `json:"values,omitempty"`
+	Code    *string             `json:"code,omitempty"`
+	Message *ErrorMessage       `json:"message,omitempty"`
+	Values  *[]BatchErrorDetail `json:"values,omitempty"`
 }
 
 // BatchErrorDetail is an item of additional information included in an Azure
 // Batch error response.
 type BatchErrorDetail struct {
-    Key *string `json:"key,omitempty"`
-    Value *string `json:"value,omitempty"`
+	Key   *string `json:"key,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 
 // Certificate is a certificate that can be installed on compute nodes and can
 // be used to authenticate operations on the machine.
 type Certificate struct {
-    autorest.Response `json:"-"`
-    Thumbprint *string `json:"thumbprint,omitempty"`
-    ThumbprintAlgorithm *string `json:"thumbprintAlgorithm,omitempty"`
-    URL *string `json:"url,omitempty"`
-    State CertificateState `json:"state,omitempty"`
-    StateTransitionTime *date.Time `json:"stateTransitionTime,omitempty"`
-    PreviousState CertificateState `json:"previousState,omitempty"`
-    PreviousStateTransitionTime *date.Time `json:"previousStateTransitionTime,omitempty"`
-    PublicData *string `json:"publicData,omitempty"`
-    DeleteCertificateError *DeleteCertificateError `json:"deleteCertificateError,omitempty"`
+	autorest.Response           `json:"-"`
+	Thumbprint                  *string                 `json:"thumbprint,omitempty"`
+	ThumbprintAlgorithm         *string                 `json:"thumbprintAlgorithm,omitempty"`
+	URL                         *string                 `json:"url,omitempty"`
+	State                       CertificateState        `json:"state,omitempty"`
+	StateTransitionTime         *date.Time              `json:"stateTransitionTime,omitempty"`
+	PreviousState               CertificateState        `json:"previousState,omitempty"`
+	PreviousStateTransitionTime *date.Time              `json:"previousStateTransitionTime,omitempty"`
+	PublicData                  *string                 `json:"publicData,omitempty"`
+	DeleteCertificateError      *DeleteCertificateError `json:"deleteCertificateError,omitempty"`
 }
 
 // CertificateAddParameter is a certificate that can be installed on compute
 // nodes and can be used to authenticate operations on the machine.
 type CertificateAddParameter struct {
-    Thumbprint *string `json:"thumbprint,omitempty"`
-    ThumbprintAlgorithm *string `json:"thumbprintAlgorithm,omitempty"`
-    Data *string `json:"data,omitempty"`
-    CertificateFormat CertificateFormat `json:"certificateFormat,omitempty"`
-    Password *string `json:"password,omitempty"`
+	Thumbprint          *string           `json:"thumbprint,omitempty"`
+	ThumbprintAlgorithm *string           `json:"thumbprintAlgorithm,omitempty"`
+	Data                *string           `json:"data,omitempty"`
+	CertificateFormat   CertificateFormat `json:"certificateFormat,omitempty"`
+	Password            *string           `json:"password,omitempty"`
 }
 
 // CertificateListResult is response to a CertificateOperation.List request.
 type CertificateListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]Certificate `json:"value,omitempty"`
-    OdataNextLink *string `json:"odata.nextLink,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]Certificate `json:"value,omitempty"`
+	OdataNextLink     *string        `json:"odata.nextLink,omitempty"`
 }
 
 // CertificateListResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client CertificateListResult) CertificateListResultPreparer() (*http.Request, error) {
-    if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
-        return nil, nil
-    }
-    return autorest.Prepare(&http.Request{},
-        autorest.AsJSON(),
-        autorest.AsGet(),
-        autorest.WithBaseURL(to.String(client.OdataNextLink)));
+	if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.OdataNextLink)))
 }
 
 // CertificateReference is a reference to a certificate to be installed on
 // compute nodes in a pool.
 type CertificateReference struct {
-    Thumbprint *string `json:"thumbprint,omitempty"`
-    ThumbprintAlgorithm *string `json:"thumbprintAlgorithm,omitempty"`
-    StoreLocation CertificateStoreLocation `json:"storeLocation,omitempty"`
-    StoreName *string `json:"storeName,omitempty"`
-    Visibility *[]CertificateVisibility `json:"visibility,omitempty"`
+	Thumbprint          *string                  `json:"thumbprint,omitempty"`
+	ThumbprintAlgorithm *string                  `json:"thumbprintAlgorithm,omitempty"`
+	StoreLocation       CertificateStoreLocation `json:"storeLocation,omitempty"`
+	StoreName           *string                  `json:"storeName,omitempty"`
+	Visibility          *[]CertificateVisibility `json:"visibility,omitempty"`
 }
 
 // CloudJob is an Azure Batch job.
 type CloudJob struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    DisplayName *string `json:"displayName,omitempty"`
-    UsesTaskDependencies *bool `json:"usesTaskDependencies,omitempty"`
-    URL *string `json:"url,omitempty"`
-    ETag *string `json:"eTag,omitempty"`
-    LastModified *date.Time `json:"lastModified,omitempty"`
-    CreationTime *date.Time `json:"creationTime,omitempty"`
-    State JobState `json:"state,omitempty"`
-    StateTransitionTime *date.Time `json:"stateTransitionTime,omitempty"`
-    PreviousState JobState `json:"previousState,omitempty"`
-    PreviousStateTransitionTime *date.Time `json:"previousStateTransitionTime,omitempty"`
-    Priority *int32 `json:"priority,omitempty"`
-    Constraints *JobConstraints `json:"constraints,omitempty"`
-    JobManagerTask *JobManagerTask `json:"jobManagerTask,omitempty"`
-    JobPreparationTask *JobPreparationTask `json:"jobPreparationTask,omitempty"`
-    JobReleaseTask *JobReleaseTask `json:"jobReleaseTask,omitempty"`
-    CommonEnvironmentSettings *[]EnvironmentSetting `json:"commonEnvironmentSettings,omitempty"`
-    PoolInfo *PoolInformation `json:"poolInfo,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
-    ExecutionInfo *JobExecutionInformation `json:"executionInfo,omitempty"`
-    Stats *JobStatistics `json:"stats,omitempty"`
+	autorest.Response           `json:"-"`
+	ID                          *string                  `json:"id,omitempty"`
+	DisplayName                 *string                  `json:"displayName,omitempty"`
+	UsesTaskDependencies        *bool                    `json:"usesTaskDependencies,omitempty"`
+	URL                         *string                  `json:"url,omitempty"`
+	ETag                        *string                  `json:"eTag,omitempty"`
+	LastModified                *date.Time               `json:"lastModified,omitempty"`
+	CreationTime                *date.Time               `json:"creationTime,omitempty"`
+	State                       JobState                 `json:"state,omitempty"`
+	StateTransitionTime         *date.Time               `json:"stateTransitionTime,omitempty"`
+	PreviousState               JobState                 `json:"previousState,omitempty"`
+	PreviousStateTransitionTime *date.Time               `json:"previousStateTransitionTime,omitempty"`
+	Priority                    *int32                   `json:"priority,omitempty"`
+	Constraints                 *JobConstraints          `json:"constraints,omitempty"`
+	JobManagerTask              *JobManagerTask          `json:"jobManagerTask,omitempty"`
+	JobPreparationTask          *JobPreparationTask      `json:"jobPreparationTask,omitempty"`
+	JobReleaseTask              *JobReleaseTask          `json:"jobReleaseTask,omitempty"`
+	CommonEnvironmentSettings   *[]EnvironmentSetting    `json:"commonEnvironmentSettings,omitempty"`
+	PoolInfo                    *PoolInformation         `json:"poolInfo,omitempty"`
+	Metadata                    *[]MetadataItem          `json:"metadata,omitempty"`
+	ExecutionInfo               *JobExecutionInformation `json:"executionInfo,omitempty"`
+	Stats                       *JobStatistics           `json:"stats,omitempty"`
 }
 
 // CloudJobListPreparationAndReleaseTaskStatusResult is response to a
 // CloudJobOperations.ListPreparationAndReleaseTaskStatus request.
 type CloudJobListPreparationAndReleaseTaskStatusResult struct {
-    autorest.Response `json:"-"`
-    Value *[]JobPreparationAndReleaseTaskExecutionInformation `json:"value,omitempty"`
-    OdataNextLink *string `json:"odata.nextLink,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]JobPreparationAndReleaseTaskExecutionInformation `json:"value,omitempty"`
+	OdataNextLink     *string                                             `json:"odata.nextLink,omitempty"`
 }
 
 // CloudJobListPreparationAndReleaseTaskStatusResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client CloudJobListPreparationAndReleaseTaskStatusResult) CloudJobListPreparationAndReleaseTaskStatusResultPreparer() (*http.Request, error) {
-    if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
-        return nil, nil
-    }
-    return autorest.Prepare(&http.Request{},
-        autorest.AsJSON(),
-        autorest.AsGet(),
-        autorest.WithBaseURL(to.String(client.OdataNextLink)));
+	if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.OdataNextLink)))
 }
 
 // CloudJobListResult is response to a CloudJobOperation.List or
 // ListFromJobSchedule request.
 type CloudJobListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]CloudJob `json:"value,omitempty"`
-    OdataNextLink *string `json:"odata.nextLink,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]CloudJob `json:"value,omitempty"`
+	OdataNextLink     *string     `json:"odata.nextLink,omitempty"`
 }
 
 // CloudJobListResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client CloudJobListResult) CloudJobListResultPreparer() (*http.Request, error) {
-    if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
-        return nil, nil
-    }
-    return autorest.Prepare(&http.Request{},
-        autorest.AsJSON(),
-        autorest.AsGet(),
-        autorest.WithBaseURL(to.String(client.OdataNextLink)));
+	if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.OdataNextLink)))
 }
 
 // CloudJobSchedule is a job schedule that allows recurring jobs by specifying
 // when to run jobs and a specification used to create each job.
 type CloudJobSchedule struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    DisplayName *string `json:"displayName,omitempty"`
-    URL *string `json:"url,omitempty"`
-    ETag *string `json:"eTag,omitempty"`
-    LastModified *date.Time `json:"lastModified,omitempty"`
-    CreationTime *date.Time `json:"creationTime,omitempty"`
-    State JobScheduleState `json:"state,omitempty"`
-    StateTransitionTime *date.Time `json:"stateTransitionTime,omitempty"`
-    PreviousState JobScheduleState `json:"previousState,omitempty"`
-    PreviousStateTransitionTime *date.Time `json:"previousStateTransitionTime,omitempty"`
-    Schedule *Schedule `json:"schedule,omitempty"`
-    JobSpecification *JobSpecification `json:"jobSpecification,omitempty"`
-    ExecutionInfo *JobScheduleExecutionInformation `json:"executionInfo,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
-    Stats *JobScheduleStatistics `json:"stats,omitempty"`
+	autorest.Response           `json:"-"`
+	ID                          *string                          `json:"id,omitempty"`
+	DisplayName                 *string                          `json:"displayName,omitempty"`
+	URL                         *string                          `json:"url,omitempty"`
+	ETag                        *string                          `json:"eTag,omitempty"`
+	LastModified                *date.Time                       `json:"lastModified,omitempty"`
+	CreationTime                *date.Time                       `json:"creationTime,omitempty"`
+	State                       JobScheduleState                 `json:"state,omitempty"`
+	StateTransitionTime         *date.Time                       `json:"stateTransitionTime,omitempty"`
+	PreviousState               JobScheduleState                 `json:"previousState,omitempty"`
+	PreviousStateTransitionTime *date.Time                       `json:"previousStateTransitionTime,omitempty"`
+	Schedule                    *Schedule                        `json:"schedule,omitempty"`
+	JobSpecification            *JobSpecification                `json:"jobSpecification,omitempty"`
+	ExecutionInfo               *JobScheduleExecutionInformation `json:"executionInfo,omitempty"`
+	Metadata                    *[]MetadataItem                  `json:"metadata,omitempty"`
+	Stats                       *JobScheduleStatistics           `json:"stats,omitempty"`
 }
 
 // CloudJobScheduleListResult is response to a CloudJobScheduleOperation.List
 // request.
 type CloudJobScheduleListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]CloudJobSchedule `json:"value,omitempty"`
-    OdataNextLink *string `json:"odata.nextLink,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]CloudJobSchedule `json:"value,omitempty"`
+	OdataNextLink     *string             `json:"odata.nextLink,omitempty"`
 }
 
 // CloudJobScheduleListResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client CloudJobScheduleListResult) CloudJobScheduleListResultPreparer() (*http.Request, error) {
-    if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
-        return nil, nil
-    }
-    return autorest.Prepare(&http.Request{},
-        autorest.AsJSON(),
-        autorest.AsGet(),
-        autorest.WithBaseURL(to.String(client.OdataNextLink)));
+	if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.OdataNextLink)))
 }
 
 // CloudPool is a pool in the Azure Batch service.
 type CloudPool struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    DisplayName *string `json:"displayName,omitempty"`
-    URL *string `json:"url,omitempty"`
-    ETag *string `json:"eTag,omitempty"`
-    LastModified *date.Time `json:"lastModified,omitempty"`
-    CreationTime *date.Time `json:"creationTime,omitempty"`
-    State PoolState `json:"state,omitempty"`
-    StateTransitionTime *date.Time `json:"stateTransitionTime,omitempty"`
-    AllocationState AllocationState `json:"allocationState,omitempty"`
-    AllocationStateTransitionTime *date.Time `json:"allocationStateTransitionTime,omitempty"`
-    VMSize *string `json:"vmSize,omitempty"`
-    CloudServiceConfiguration *CloudServiceConfiguration `json:"cloudServiceConfiguration,omitempty"`
-    VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
-    ResizeTimeout *string `json:"resizeTimeout,omitempty"`
-    ResizeError *ResizeError `json:"resizeError,omitempty"`
-    CurrentDedicated *int32 `json:"currentDedicated,omitempty"`
-    TargetDedicated *int32 `json:"targetDedicated,omitempty"`
-    EnableAutoScale *bool `json:"enableAutoScale,omitempty"`
-    AutoScaleFormula *string `json:"autoScaleFormula,omitempty"`
-    AutoScaleEvaluationInterval *string `json:"autoScaleEvaluationInterval,omitempty"`
-    AutoScaleRun *AutoScaleRun `json:"autoScaleRun,omitempty"`
-    EnableInterNodeCommunication *bool `json:"enableInterNodeCommunication,omitempty"`
-    StartTask *StartTask `json:"startTask,omitempty"`
-    CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-    ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-    MaxTasksPerNode *int32 `json:"maxTasksPerNode,omitempty"`
-    TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
-    Stats *PoolStatistics `json:"stats,omitempty"`
+	autorest.Response             `json:"-"`
+	ID                            *string                        `json:"id,omitempty"`
+	DisplayName                   *string                        `json:"displayName,omitempty"`
+	URL                           *string                        `json:"url,omitempty"`
+	ETag                          *string                        `json:"eTag,omitempty"`
+	LastModified                  *date.Time                     `json:"lastModified,omitempty"`
+	CreationTime                  *date.Time                     `json:"creationTime,omitempty"`
+	State                         PoolState                      `json:"state,omitempty"`
+	StateTransitionTime           *date.Time                     `json:"stateTransitionTime,omitempty"`
+	AllocationState               AllocationState                `json:"allocationState,omitempty"`
+	AllocationStateTransitionTime *date.Time                     `json:"allocationStateTransitionTime,omitempty"`
+	VMSize                        *string                        `json:"vmSize,omitempty"`
+	CloudServiceConfiguration     *CloudServiceConfiguration     `json:"cloudServiceConfiguration,omitempty"`
+	VirtualMachineConfiguration   *VirtualMachineConfiguration   `json:"virtualMachineConfiguration,omitempty"`
+	ResizeTimeout                 *string                        `json:"resizeTimeout,omitempty"`
+	ResizeError                   *ResizeError                   `json:"resizeError,omitempty"`
+	CurrentDedicated              *int32                         `json:"currentDedicated,omitempty"`
+	TargetDedicated               *int32                         `json:"targetDedicated,omitempty"`
+	EnableAutoScale               *bool                          `json:"enableAutoScale,omitempty"`
+	AutoScaleFormula              *string                        `json:"autoScaleFormula,omitempty"`
+	AutoScaleEvaluationInterval   *string                        `json:"autoScaleEvaluationInterval,omitempty"`
+	AutoScaleRun                  *AutoScaleRun                  `json:"autoScaleRun,omitempty"`
+	EnableInterNodeCommunication  *bool                          `json:"enableInterNodeCommunication,omitempty"`
+	StartTask                     *StartTask                     `json:"startTask,omitempty"`
+	CertificateReferences         *[]CertificateReference        `json:"certificateReferences,omitempty"`
+	ApplicationPackageReferences  *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
+	MaxTasksPerNode               *int32                         `json:"maxTasksPerNode,omitempty"`
+	TaskSchedulingPolicy          *TaskSchedulingPolicy          `json:"taskSchedulingPolicy,omitempty"`
+	Metadata                      *[]MetadataItem                `json:"metadata,omitempty"`
+	Stats                         *PoolStatistics                `json:"stats,omitempty"`
 }
 
 // CloudPoolListResult is response to a CloudPoolOperations.List request.
 type CloudPoolListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]CloudPool `json:"value,omitempty"`
-    OdataNextLink *string `json:"odata.nextLink,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]CloudPool `json:"value,omitempty"`
+	OdataNextLink     *string      `json:"odata.nextLink,omitempty"`
 }
 
 // CloudPoolListResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client CloudPoolListResult) CloudPoolListResultPreparer() (*http.Request, error) {
-    if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
-        return nil, nil
-    }
-    return autorest.Prepare(&http.Request{},
-        autorest.AsJSON(),
-        autorest.AsGet(),
-        autorest.WithBaseURL(to.String(client.OdataNextLink)));
+	if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.OdataNextLink)))
 }
 
 // CloudServiceConfiguration is the configuration for nodes in a pool based on
 // the Azure Cloud Services platform.
 type CloudServiceConfiguration struct {
-    OsFamily *string `json:"osFamily,omitempty"`
-    TargetOSVersion *string `json:"targetOSVersion,omitempty"`
-    CurrentOSVersion *string `json:"currentOSVersion,omitempty"`
+	OsFamily         *string `json:"osFamily,omitempty"`
+	TargetOSVersion  *string `json:"targetOSVersion,omitempty"`
+	CurrentOSVersion *string `json:"currentOSVersion,omitempty"`
 }
 
 // CloudTask is an Azure Batch task.
 type CloudTask struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    DisplayName *string `json:"displayName,omitempty"`
-    URL *string `json:"url,omitempty"`
-    ETag *string `json:"eTag,omitempty"`
-    LastModified *date.Time `json:"lastModified,omitempty"`
-    CreationTime *date.Time `json:"creationTime,omitempty"`
-    State TaskState `json:"state,omitempty"`
-    StateTransitionTime *date.Time `json:"stateTransitionTime,omitempty"`
-    PreviousState TaskState `json:"previousState,omitempty"`
-    PreviousStateTransitionTime *date.Time `json:"previousStateTransitionTime,omitempty"`
-    CommandLine *string `json:"commandLine,omitempty"`
-    ResourceFiles *[]ResourceFile `json:"resourceFiles,omitempty"`
-    EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
-    AffinityInfo *AffinityInformation `json:"affinityInfo,omitempty"`
-    Constraints *TaskConstraints `json:"constraints,omitempty"`
-    RunElevated *bool `json:"runElevated,omitempty"`
-    ExecutionInfo *TaskExecutionInformation `json:"executionInfo,omitempty"`
-    NodeInfo *ComputeNodeInformation `json:"nodeInfo,omitempty"`
-    MultiInstanceSettings *MultiInstanceSettings `json:"multiInstanceSettings,omitempty"`
-    Stats *TaskStatistics `json:"stats,omitempty"`
-    DependsOn *TaskDependencies `json:"dependsOn,omitempty"`
+	autorest.Response           `json:"-"`
+	ID                          *string                   `json:"id,omitempty"`
+	DisplayName                 *string                   `json:"displayName,omitempty"`
+	URL                         *string                   `json:"url,omitempty"`
+	ETag                        *string                   `json:"eTag,omitempty"`
+	LastModified                *date.Time                `json:"lastModified,omitempty"`
+	CreationTime                *date.Time                `json:"creationTime,omitempty"`
+	State                       TaskState                 `json:"state,omitempty"`
+	StateTransitionTime         *date.Time                `json:"stateTransitionTime,omitempty"`
+	PreviousState               TaskState                 `json:"previousState,omitempty"`
+	PreviousStateTransitionTime *date.Time                `json:"previousStateTransitionTime,omitempty"`
+	CommandLine                 *string                   `json:"commandLine,omitempty"`
+	ResourceFiles               *[]ResourceFile           `json:"resourceFiles,omitempty"`
+	EnvironmentSettings         *[]EnvironmentSetting     `json:"environmentSettings,omitempty"`
+	AffinityInfo                *AffinityInformation      `json:"affinityInfo,omitempty"`
+	Constraints                 *TaskConstraints          `json:"constraints,omitempty"`
+	RunElevated                 *bool                     `json:"runElevated,omitempty"`
+	ExecutionInfo               *TaskExecutionInformation `json:"executionInfo,omitempty"`
+	NodeInfo                    *ComputeNodeInformation   `json:"nodeInfo,omitempty"`
+	MultiInstanceSettings       *MultiInstanceSettings    `json:"multiInstanceSettings,omitempty"`
+	Stats                       *TaskStatistics           `json:"stats,omitempty"`
+	DependsOn                   *TaskDependencies         `json:"dependsOn,omitempty"`
 }
 
 // CloudTaskListResult is response to a CloudTaskOperations.List request.
 type CloudTaskListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]CloudTask `json:"value,omitempty"`
-    OdataNextLink *string `json:"odata.nextLink,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]CloudTask `json:"value,omitempty"`
+	OdataNextLink     *string      `json:"odata.nextLink,omitempty"`
 }
 
 // CloudTaskListResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client CloudTaskListResult) CloudTaskListResultPreparer() (*http.Request, error) {
-    if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
-        return nil, nil
-    }
-    return autorest.Prepare(&http.Request{},
-        autorest.AsJSON(),
-        autorest.AsGet(),
-        autorest.WithBaseURL(to.String(client.OdataNextLink)));
+	if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.OdataNextLink)))
 }
 
 // CloudTaskListSubtasksResult is response to a
 // CloudTaskOperations.ListSubtasks request.
 type CloudTaskListSubtasksResult struct {
-    autorest.Response `json:"-"`
-    Value *[]SubtaskInformation `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]SubtaskInformation `json:"value,omitempty"`
 }
 
 // ComputeNode is a compute node in the Batch service.
 type ComputeNode struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    URL *string `json:"url,omitempty"`
-    State ComputeNodeState `json:"state,omitempty"`
-    SchedulingState SchedulingState `json:"schedulingState,omitempty"`
-    StateTransitionTime *date.Time `json:"stateTransitionTime,omitempty"`
-    LastBootTime *date.Time `json:"lastBootTime,omitempty"`
-    AllocationTime *date.Time `json:"allocationTime,omitempty"`
-    IPAddress *string `json:"ipAddress,omitempty"`
-    AffinityID *string `json:"affinityId,omitempty"`
-    VMSize *string `json:"vmSize,omitempty"`
-    TotalTasksRun *int32 `json:"totalTasksRun,omitempty"`
-    RunningTasksCount *int32 `json:"runningTasksCount,omitempty"`
-    TotalTasksSucceeded *int32 `json:"totalTasksSucceeded,omitempty"`
-    RecentTasks *[]TaskInformation `json:"recentTasks,omitempty"`
-    StartTask *StartTask `json:"startTask,omitempty"`
-    StartTaskInfo *StartTaskInformation `json:"startTaskInfo,omitempty"`
-    CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-    Errors *[]ComputeNodeError `json:"errors,omitempty"`
+	autorest.Response     `json:"-"`
+	ID                    *string                 `json:"id,omitempty"`
+	URL                   *string                 `json:"url,omitempty"`
+	State                 ComputeNodeState        `json:"state,omitempty"`
+	SchedulingState       SchedulingState         `json:"schedulingState,omitempty"`
+	StateTransitionTime   *date.Time              `json:"stateTransitionTime,omitempty"`
+	LastBootTime          *date.Time              `json:"lastBootTime,omitempty"`
+	AllocationTime        *date.Time              `json:"allocationTime,omitempty"`
+	IPAddress             *string                 `json:"ipAddress,omitempty"`
+	AffinityID            *string                 `json:"affinityId,omitempty"`
+	VMSize                *string                 `json:"vmSize,omitempty"`
+	TotalTasksRun         *int32                  `json:"totalTasksRun,omitempty"`
+	RunningTasksCount     *int32                  `json:"runningTasksCount,omitempty"`
+	TotalTasksSucceeded   *int32                  `json:"totalTasksSucceeded,omitempty"`
+	RecentTasks           *[]TaskInformation      `json:"recentTasks,omitempty"`
+	StartTask             *StartTask              `json:"startTask,omitempty"`
+	StartTaskInfo         *StartTaskInformation   `json:"startTaskInfo,omitempty"`
+	CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
+	Errors                *[]ComputeNodeError     `json:"errors,omitempty"`
 }
 
 // ComputeNodeError is an error encountered by a compute node.
 type ComputeNodeError struct {
-    Code *string `json:"code,omitempty"`
-    Message *string `json:"message,omitempty"`
-    ErrorDetails *[]NameValuePair `json:"errorDetails,omitempty"`
+	Code         *string          `json:"code,omitempty"`
+	Message      *string          `json:"message,omitempty"`
+	ErrorDetails *[]NameValuePair `json:"errorDetails,omitempty"`
 }
 
 // ComputeNodeGetRemoteLoginSettingsResult is response to a
 // ComputeNodeOperation.GetRemoteLoginSettings request.
 type ComputeNodeGetRemoteLoginSettingsResult struct {
-    autorest.Response `json:"-"`
-    RemoteLoginIPAddress *string `json:"remoteLoginIPAddress,omitempty"`
-    RemoteLoginPort *int32 `json:"remoteLoginPort,omitempty"`
+	autorest.Response    `json:"-"`
+	RemoteLoginIPAddress *string `json:"remoteLoginIPAddress,omitempty"`
+	RemoteLoginPort      *int32  `json:"remoteLoginPort,omitempty"`
 }
 
 // ComputeNodeInformation is information about the compute node on which a task
 // ran.
 type ComputeNodeInformation struct {
-    AffinityID *string `json:"affinityId,omitempty"`
-    NodeURL *string `json:"nodeUrl,omitempty"`
-    PoolID *string `json:"poolId,omitempty"`
-    NodeID *string `json:"nodeId,omitempty"`
-    TaskRootDirectory *string `json:"taskRootDirectory,omitempty"`
-    TaskRootDirectoryURL *string `json:"taskRootDirectoryUrl,omitempty"`
+	AffinityID           *string `json:"affinityId,omitempty"`
+	NodeURL              *string `json:"nodeUrl,omitempty"`
+	PoolID               *string `json:"poolId,omitempty"`
+	NodeID               *string `json:"nodeId,omitempty"`
+	TaskRootDirectory    *string `json:"taskRootDirectory,omitempty"`
+	TaskRootDirectoryURL *string `json:"taskRootDirectoryUrl,omitempty"`
 }
 
 // ComputeNodeListResult is response to a ComputeNodeOperation.List request.
 type ComputeNodeListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]ComputeNode `json:"value,omitempty"`
-    OdataNextLink *string `json:"odata.nextLink,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]ComputeNode `json:"value,omitempty"`
+	OdataNextLink     *string        `json:"odata.nextLink,omitempty"`
 }
 
 // ComputeNodeListResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client ComputeNodeListResult) ComputeNodeListResultPreparer() (*http.Request, error) {
-    if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
-        return nil, nil
-    }
-    return autorest.Prepare(&http.Request{},
-        autorest.AsJSON(),
-        autorest.AsGet(),
-        autorest.WithBaseURL(to.String(client.OdataNextLink)));
+	if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.OdataNextLink)))
 }
 
 // ComputeNodeUser is an user account on a compute node.
 type ComputeNodeUser struct {
-    Name *string `json:"name,omitempty"`
-    IsAdmin *bool `json:"isAdmin,omitempty"`
-    ExpiryTime *date.Time `json:"expiryTime,omitempty"`
-    Password *string `json:"password,omitempty"`
-    SSHPublicKey *string `json:"sshPublicKey,omitempty"`
+	Name         *string    `json:"name,omitempty"`
+	IsAdmin      *bool      `json:"isAdmin,omitempty"`
+	ExpiryTime   *date.Time `json:"expiryTime,omitempty"`
+	Password     *string    `json:"password,omitempty"`
+	SSHPublicKey *string    `json:"sshPublicKey,omitempty"`
 }
 
 // DeleteCertificateError is an error encountered by the Batch service when
 // deleting a certificate.
 type DeleteCertificateError struct {
-    Code *string `json:"code,omitempty"`
-    Message *string `json:"message,omitempty"`
-    Values *[]NameValuePair `json:"values,omitempty"`
+	Code    *string          `json:"code,omitempty"`
+	Message *string          `json:"message,omitempty"`
+	Values  *[]NameValuePair `json:"values,omitempty"`
 }
 
 // EnvironmentSetting is an environment variable to be set on a task process.
 type EnvironmentSetting struct {
-    Name *string `json:"name,omitempty"`
-    Value *string `json:"value,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 
 // ErrorMessage is an error message received in an Azure Batch error response.
 type ErrorMessage struct {
-    Lang *string `json:"lang,omitempty"`
-    Value *string `json:"value,omitempty"`
+	Lang  *string `json:"lang,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 
 // FileProperties is the properties of a file on a compute node.
 type FileProperties struct {
-    CreationTime *date.Time `json:"creationTime,omitempty"`
-    LastModified *date.Time `json:"lastModified,omitempty"`
-    ContentLength *int64 `json:"contentLength,omitempty"`
-    ContentType *string `json:"contentType,omitempty"`
-    FileMode *string `json:"fileMode,omitempty"`
+	CreationTime  *date.Time `json:"creationTime,omitempty"`
+	LastModified  *date.Time `json:"lastModified,omitempty"`
+	ContentLength *int64     `json:"contentLength,omitempty"`
+	ContentType   *string    `json:"contentType,omitempty"`
+	FileMode      *string    `json:"fileMode,omitempty"`
 }
 
 // ImageReference is a reference to an Azure Virtual Machines Marketplace
 // image.
 type ImageReference struct {
-    Publisher *string `json:"publisher,omitempty"`
-    Offer *string `json:"offer,omitempty"`
-    Sku *string `json:"sku,omitempty"`
-    Version *string `json:"version,omitempty"`
+	Publisher *string `json:"publisher,omitempty"`
+	Offer     *string `json:"offer,omitempty"`
+	Sku       *string `json:"sku,omitempty"`
+	Version   *string `json:"version,omitempty"`
 }
 
 // JobAddParameter is an Azure Batch job to add.
 type JobAddParameter struct {
-    ID *string `json:"id,omitempty"`
-    DisplayName *string `json:"displayName,omitempty"`
-    Priority *int32 `json:"priority,omitempty"`
-    Constraints *JobConstraints `json:"constraints,omitempty"`
-    JobManagerTask *JobManagerTask `json:"jobManagerTask,omitempty"`
-    JobPreparationTask *JobPreparationTask `json:"jobPreparationTask,omitempty"`
-    JobReleaseTask *JobReleaseTask `json:"jobReleaseTask,omitempty"`
-    CommonEnvironmentSettings *[]EnvironmentSetting `json:"commonEnvironmentSettings,omitempty"`
-    PoolInfo *PoolInformation `json:"poolInfo,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
-    UsesTaskDependencies *bool `json:"usesTaskDependencies,omitempty"`
+	ID                        *string               `json:"id,omitempty"`
+	DisplayName               *string               `json:"displayName,omitempty"`
+	Priority                  *int32                `json:"priority,omitempty"`
+	Constraints               *JobConstraints       `json:"constraints,omitempty"`
+	JobManagerTask            *JobManagerTask       `json:"jobManagerTask,omitempty"`
+	JobPreparationTask        *JobPreparationTask   `json:"jobPreparationTask,omitempty"`
+	JobReleaseTask            *JobReleaseTask       `json:"jobReleaseTask,omitempty"`
+	CommonEnvironmentSettings *[]EnvironmentSetting `json:"commonEnvironmentSettings,omitempty"`
+	PoolInfo                  *PoolInformation      `json:"poolInfo,omitempty"`
+	Metadata                  *[]MetadataItem       `json:"metadata,omitempty"`
+	UsesTaskDependencies      *bool                 `json:"usesTaskDependencies,omitempty"`
 }
 
 // JobConstraints is specifies the execution constraints for jobs created on a
 // schedule.
 type JobConstraints struct {
-    MaxWallClockTime *string `json:"maxWallClockTime,omitempty"`
-    MaxTaskRetryCount *int32 `json:"maxTaskRetryCount,omitempty"`
+	MaxWallClockTime  *string `json:"maxWallClockTime,omitempty"`
+	MaxTaskRetryCount *int32  `json:"maxTaskRetryCount,omitempty"`
 }
 
 // JobDisableParameter is parameters for a CloudJobOperations.Disable request.
 type JobDisableParameter struct {
-    DisableTasks DisableJobOption `json:"disableTasks,omitempty"`
+	DisableTasks DisableJobOption `json:"disableTasks,omitempty"`
 }
 
 // JobExecutionInformation is contains information about the execution of a job
 // in the Azure Batch service.
 type JobExecutionInformation struct {
-    StartTime *date.Time `json:"startTime,omitempty"`
-    EndTime *date.Time `json:"endTime,omitempty"`
-    PoolID *string `json:"poolId,omitempty"`
-    SchedulingError *JobSchedulingError `json:"schedulingError,omitempty"`
-    TerminateReason *string `json:"terminateReason,omitempty"`
+	StartTime       *date.Time          `json:"startTime,omitempty"`
+	EndTime         *date.Time          `json:"endTime,omitempty"`
+	PoolID          *string             `json:"poolId,omitempty"`
+	SchedulingError *JobSchedulingError `json:"schedulingError,omitempty"`
+	TerminateReason *string             `json:"terminateReason,omitempty"`
 }
 
 // JobManagerTask is specifies details of a Job Manager task.
 type JobManagerTask struct {
-    ID *string `json:"id,omitempty"`
-    DisplayName *string `json:"displayName,omitempty"`
-    CommandLine *string `json:"commandLine,omitempty"`
-    ResourceFiles *[]ResourceFile `json:"resourceFiles,omitempty"`
-    EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
-    Constraints *TaskConstraints `json:"constraints,omitempty"`
-    KillJobOnCompletion *bool `json:"killJobOnCompletion,omitempty"`
-    RunElevated *bool `json:"runElevated,omitempty"`
-    RunExclusive *bool `json:"runExclusive,omitempty"`
+	ID                  *string               `json:"id,omitempty"`
+	DisplayName         *string               `json:"displayName,omitempty"`
+	CommandLine         *string               `json:"commandLine,omitempty"`
+	ResourceFiles       *[]ResourceFile       `json:"resourceFiles,omitempty"`
+	EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
+	Constraints         *TaskConstraints      `json:"constraints,omitempty"`
+	KillJobOnCompletion *bool                 `json:"killJobOnCompletion,omitempty"`
+	RunElevated         *bool                 `json:"runElevated,omitempty"`
+	RunExclusive        *bool                 `json:"runExclusive,omitempty"`
 }
 
 // JobPatchParameter is parameters for a CloudJobOperations.Patch request.
 type JobPatchParameter struct {
-    Priority *int32 `json:"priority,omitempty"`
-    Constraints *JobConstraints `json:"constraints,omitempty"`
-    PoolInfo *PoolInformation `json:"poolInfo,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
+	Priority    *int32           `json:"priority,omitempty"`
+	Constraints *JobConstraints  `json:"constraints,omitempty"`
+	PoolInfo    *PoolInformation `json:"poolInfo,omitempty"`
+	Metadata    *[]MetadataItem  `json:"metadata,omitempty"`
 }
 
 // JobPreparationAndReleaseTaskExecutionInformation is the status of the Job
 // Preparation and Job Release tasks on a compute node.
 type JobPreparationAndReleaseTaskExecutionInformation struct {
-    PoolID *string `json:"poolId,omitempty"`
-    NodeID *string `json:"nodeId,omitempty"`
-    NodeURL *string `json:"nodeUrl,omitempty"`
-    JobPreparationTaskExecutionInfo *JobPreparationTaskExecutionInformation `json:"jobPreparationTaskExecutionInfo,omitempty"`
-    JobReleaseTaskExecutionInfo *JobReleaseTaskExecutionInformation `json:"jobReleaseTaskExecutionInfo,omitempty"`
+	PoolID                          *string                                 `json:"poolId,omitempty"`
+	NodeID                          *string                                 `json:"nodeId,omitempty"`
+	NodeURL                         *string                                 `json:"nodeUrl,omitempty"`
+	JobPreparationTaskExecutionInfo *JobPreparationTaskExecutionInformation `json:"jobPreparationTaskExecutionInfo,omitempty"`
+	JobReleaseTaskExecutionInfo     *JobReleaseTaskExecutionInformation     `json:"jobReleaseTaskExecutionInfo,omitempty"`
 }
 
 // JobPreparationTask is a Job Preparation task to run before any tasks of the
 // job on any given compute node.
 type JobPreparationTask struct {
-    ID *string `json:"id,omitempty"`
-    CommandLine *string `json:"commandLine,omitempty"`
-    ResourceFiles *[]ResourceFile `json:"resourceFiles,omitempty"`
-    EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
-    Constraints *TaskConstraints `json:"constraints,omitempty"`
-    WaitForSuccess *bool `json:"waitForSuccess,omitempty"`
-    RunElevated *bool `json:"runElevated,omitempty"`
-    RerunOnNodeRebootAfterSuccess *bool `json:"rerunOnNodeRebootAfterSuccess,omitempty"`
+	ID                            *string               `json:"id,omitempty"`
+	CommandLine                   *string               `json:"commandLine,omitempty"`
+	ResourceFiles                 *[]ResourceFile       `json:"resourceFiles,omitempty"`
+	EnvironmentSettings           *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
+	Constraints                   *TaskConstraints      `json:"constraints,omitempty"`
+	WaitForSuccess                *bool                 `json:"waitForSuccess,omitempty"`
+	RunElevated                   *bool                 `json:"runElevated,omitempty"`
+	RerunOnNodeRebootAfterSuccess *bool                 `json:"rerunOnNodeRebootAfterSuccess,omitempty"`
 }
 
 // JobPreparationTaskExecutionInformation is contains information about the
 // execution of a Job Preparation task on a compute node.
 type JobPreparationTaskExecutionInformation struct {
-    StartTime *date.Time `json:"startTime,omitempty"`
-    EndTime *date.Time `json:"endTime,omitempty"`
-    State JobPreparationTaskState `json:"state,omitempty"`
-    TaskRootDirectory *string `json:"taskRootDirectory,omitempty"`
-    TaskRootDirectoryURL *string `json:"taskRootDirectoryUrl,omitempty"`
-    ExitCode *int32 `json:"exitCode,omitempty"`
-    SchedulingError *TaskSchedulingError `json:"schedulingError,omitempty"`
-    RetryCount *int32 `json:"retryCount,omitempty"`
-    LastRetryTime *date.Time `json:"lastRetryTime,omitempty"`
+	StartTime            *date.Time              `json:"startTime,omitempty"`
+	EndTime              *date.Time              `json:"endTime,omitempty"`
+	State                JobPreparationTaskState `json:"state,omitempty"`
+	TaskRootDirectory    *string                 `json:"taskRootDirectory,omitempty"`
+	TaskRootDirectoryURL *string                 `json:"taskRootDirectoryUrl,omitempty"`
+	ExitCode             *int32                  `json:"exitCode,omitempty"`
+	SchedulingError      *TaskSchedulingError    `json:"schedulingError,omitempty"`
+	RetryCount           *int32                  `json:"retryCount,omitempty"`
+	LastRetryTime        *date.Time              `json:"lastRetryTime,omitempty"`
 }
 
 // JobReleaseTask is a Job Release task to run on job completion on any compute
 // node where the job has run.
 type JobReleaseTask struct {
-    ID *string `json:"id,omitempty"`
-    CommandLine *string `json:"commandLine,omitempty"`
-    ResourceFiles *[]ResourceFile `json:"resourceFiles,omitempty"`
-    EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
-    MaxWallClockTime *string `json:"maxWallClockTime,omitempty"`
-    RetentionTime *string `json:"retentionTime,omitempty"`
-    RunElevated *bool `json:"runElevated,omitempty"`
+	ID                  *string               `json:"id,omitempty"`
+	CommandLine         *string               `json:"commandLine,omitempty"`
+	ResourceFiles       *[]ResourceFile       `json:"resourceFiles,omitempty"`
+	EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
+	MaxWallClockTime    *string               `json:"maxWallClockTime,omitempty"`
+	RetentionTime       *string               `json:"retentionTime,omitempty"`
+	RunElevated         *bool                 `json:"runElevated,omitempty"`
 }
 
 // JobReleaseTaskExecutionInformation is contains information about the
 // execution of a Job Release task on a compute node.
 type JobReleaseTaskExecutionInformation struct {
-    StartTime *date.Time `json:"startTime,omitempty"`
-    EndTime *date.Time `json:"endTime,omitempty"`
-    State JobReleaseTaskState `json:"state,omitempty"`
-    TaskRootDirectory *string `json:"taskRootDirectory,omitempty"`
-    TaskRootDirectoryURL *string `json:"taskRootDirectoryUrl,omitempty"`
-    ExitCode *int32 `json:"exitCode,omitempty"`
-    SchedulingError *TaskSchedulingError `json:"schedulingError,omitempty"`
+	StartTime            *date.Time           `json:"startTime,omitempty"`
+	EndTime              *date.Time           `json:"endTime,omitempty"`
+	State                JobReleaseTaskState  `json:"state,omitempty"`
+	TaskRootDirectory    *string              `json:"taskRootDirectory,omitempty"`
+	TaskRootDirectoryURL *string              `json:"taskRootDirectoryUrl,omitempty"`
+	ExitCode             *int32               `json:"exitCode,omitempty"`
+	SchedulingError      *TaskSchedulingError `json:"schedulingError,omitempty"`
 }
 
 // JobScheduleAddParameter is a job schedule that allows recurring jobs by
 // specifying when to run jobs and a specification used to create each job.
 type JobScheduleAddParameter struct {
-    ID *string `json:"id,omitempty"`
-    DisplayName *string `json:"displayName,omitempty"`
-    Schedule *Schedule `json:"schedule,omitempty"`
-    JobSpecification *JobSpecification `json:"jobSpecification,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
+	ID               *string           `json:"id,omitempty"`
+	DisplayName      *string           `json:"displayName,omitempty"`
+	Schedule         *Schedule         `json:"schedule,omitempty"`
+	JobSpecification *JobSpecification `json:"jobSpecification,omitempty"`
+	Metadata         *[]MetadataItem   `json:"metadata,omitempty"`
 }
 
 // JobScheduleExecutionInformation is specifies how tasks should be run in a
 // job associated with a job schedule.
 type JobScheduleExecutionInformation struct {
-    NextRunTime *date.Time `json:"nextRunTime,omitempty"`
-    RecentJob *RecentJob `json:"recentJob,omitempty"`
-    EndTime *date.Time `json:"endTime,omitempty"`
+	NextRunTime *date.Time `json:"nextRunTime,omitempty"`
+	RecentJob   *RecentJob `json:"recentJob,omitempty"`
+	EndTime     *date.Time `json:"endTime,omitempty"`
 }
 
 // JobSchedulePatchParameter is parameters for a
 // CloudJobScheduleOperations.Patch request.
 type JobSchedulePatchParameter struct {
-    Schedule *Schedule `json:"schedule,omitempty"`
-    JobSpecification *JobSpecification `json:"jobSpecification,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
+	Schedule         *Schedule         `json:"schedule,omitempty"`
+	JobSpecification *JobSpecification `json:"jobSpecification,omitempty"`
+	Metadata         *[]MetadataItem   `json:"metadata,omitempty"`
 }
 
 // JobScheduleStatistics is resource usage statistics for a job schedule.
 type JobScheduleStatistics struct {
-    URL *string `json:"url,omitempty"`
-    StartTime *date.Time `json:"startTime,omitempty"`
-    LastUpdateTime *date.Time `json:"lastUpdateTime,omitempty"`
-    UserCPUTime *string `json:"userCPUTime,omitempty"`
-    KernelCPUTime *string `json:"kernelCPUTime,omitempty"`
-    WallClockTime *string `json:"wallClockTime,omitempty"`
-    ReadIOps *int64 `json:"readIOps,omitempty"`
-    WriteIOps *int64 `json:"writeIOps,omitempty"`
-    ReadIOGiB *float64 `json:"readIOGiB,omitempty"`
-    WriteIOGiB *float64 `json:"writeIOGiB,omitempty"`
-    NumSucceededTasks *int64 `json:"numSucceededTasks,omitempty"`
-    NumFailedTasks *int64 `json:"numFailedTasks,omitempty"`
-    NumTaskRetries *int64 `json:"numTaskRetries,omitempty"`
-    WaitTime *string `json:"waitTime,omitempty"`
+	URL               *string    `json:"url,omitempty"`
+	StartTime         *date.Time `json:"startTime,omitempty"`
+	LastUpdateTime    *date.Time `json:"lastUpdateTime,omitempty"`
+	UserCPUTime       *string    `json:"userCPUTime,omitempty"`
+	KernelCPUTime     *string    `json:"kernelCPUTime,omitempty"`
+	WallClockTime     *string    `json:"wallClockTime,omitempty"`
+	ReadIOps          *int64     `json:"readIOps,omitempty"`
+	WriteIOps         *int64     `json:"writeIOps,omitempty"`
+	ReadIOGiB         *float64   `json:"readIOGiB,omitempty"`
+	WriteIOGiB        *float64   `json:"writeIOGiB,omitempty"`
+	NumSucceededTasks *int64     `json:"numSucceededTasks,omitempty"`
+	NumFailedTasks    *int64     `json:"numFailedTasks,omitempty"`
+	NumTaskRetries    *int64     `json:"numTaskRetries,omitempty"`
+	WaitTime          *string    `json:"waitTime,omitempty"`
 }
 
 // JobScheduleUpdateParameter is parameters for a
 // CloudJobScheduleOperations.Update request.
 type JobScheduleUpdateParameter struct {
-    Schedule *Schedule `json:"schedule,omitempty"`
-    JobSpecification *JobSpecification `json:"jobSpecification,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
+	Schedule         *Schedule         `json:"schedule,omitempty"`
+	JobSpecification *JobSpecification `json:"jobSpecification,omitempty"`
+	Metadata         *[]MetadataItem   `json:"metadata,omitempty"`
 }
 
 // JobSchedulingError is an error encountered by the Batch service when
 // scheduling a job.
 type JobSchedulingError struct {
-    Category SchedulingErrorCategory `json:"category,omitempty"`
-    Code *string `json:"code,omitempty"`
-    Message *string `json:"message,omitempty"`
-    Details *[]NameValuePair `json:"details,omitempty"`
+	Category SchedulingErrorCategory `json:"category,omitempty"`
+	Code     *string                 `json:"code,omitempty"`
+	Message  *string                 `json:"message,omitempty"`
+	Details  *[]NameValuePair        `json:"details,omitempty"`
 }
 
 // JobSpecification is specifies details of the jobs to be created on a
 // schedule.
 type JobSpecification struct {
-    Priority *int32 `json:"priority,omitempty"`
-    DisplayName *string `json:"displayName,omitempty"`
-    UsesTaskDependencies *bool `json:"usesTaskDependencies,omitempty"`
-    Constraints *JobConstraints `json:"constraints,omitempty"`
-    JobManagerTask *JobManagerTask `json:"jobManagerTask,omitempty"`
-    JobPreparationTask *JobPreparationTask `json:"jobPreparationTask,omitempty"`
-    JobReleaseTask *JobReleaseTask `json:"jobReleaseTask,omitempty"`
-    CommonEnvironmentSettings *[]EnvironmentSetting `json:"commonEnvironmentSettings,omitempty"`
-    PoolInfo *PoolInformation `json:"poolInfo,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
+	Priority                  *int32                `json:"priority,omitempty"`
+	DisplayName               *string               `json:"displayName,omitempty"`
+	UsesTaskDependencies      *bool                 `json:"usesTaskDependencies,omitempty"`
+	Constraints               *JobConstraints       `json:"constraints,omitempty"`
+	JobManagerTask            *JobManagerTask       `json:"jobManagerTask,omitempty"`
+	JobPreparationTask        *JobPreparationTask   `json:"jobPreparationTask,omitempty"`
+	JobReleaseTask            *JobReleaseTask       `json:"jobReleaseTask,omitempty"`
+	CommonEnvironmentSettings *[]EnvironmentSetting `json:"commonEnvironmentSettings,omitempty"`
+	PoolInfo                  *PoolInformation      `json:"poolInfo,omitempty"`
+	Metadata                  *[]MetadataItem       `json:"metadata,omitempty"`
 }
 
 // JobStatistics is resource usage statistics for a job.
 type JobStatistics struct {
-    autorest.Response `json:"-"`
-    URL *string `json:"url,omitempty"`
-    StartTime *date.Time `json:"startTime,omitempty"`
-    LastUpdateTime *date.Time `json:"lastUpdateTime,omitempty"`
-    UserCPUTime *string `json:"userCPUTime,omitempty"`
-    KernelCPUTime *string `json:"kernelCPUTime,omitempty"`
-    WallClockTime *string `json:"wallClockTime,omitempty"`
-    ReadIOps *int64 `json:"readIOps,omitempty"`
-    WriteIOps *int64 `json:"writeIOps,omitempty"`
-    ReadIOGiB *float64 `json:"readIOGiB,omitempty"`
-    WriteIOGiB *float64 `json:"writeIOGiB,omitempty"`
-    NumSucceededTasks *int64 `json:"numSucceededTasks,omitempty"`
-    NumFailedTasks *int64 `json:"numFailedTasks,omitempty"`
-    NumTaskRetries *int64 `json:"numTaskRetries,omitempty"`
-    WaitTime *string `json:"waitTime,omitempty"`
+	autorest.Response `json:"-"`
+	URL               *string    `json:"url,omitempty"`
+	StartTime         *date.Time `json:"startTime,omitempty"`
+	LastUpdateTime    *date.Time `json:"lastUpdateTime,omitempty"`
+	UserCPUTime       *string    `json:"userCPUTime,omitempty"`
+	KernelCPUTime     *string    `json:"kernelCPUTime,omitempty"`
+	WallClockTime     *string    `json:"wallClockTime,omitempty"`
+	ReadIOps          *int64     `json:"readIOps,omitempty"`
+	WriteIOps         *int64     `json:"writeIOps,omitempty"`
+	ReadIOGiB         *float64   `json:"readIOGiB,omitempty"`
+	WriteIOGiB        *float64   `json:"writeIOGiB,omitempty"`
+	NumSucceededTasks *int64     `json:"numSucceededTasks,omitempty"`
+	NumFailedTasks    *int64     `json:"numFailedTasks,omitempty"`
+	NumTaskRetries    *int64     `json:"numTaskRetries,omitempty"`
+	WaitTime          *string    `json:"waitTime,omitempty"`
 }
 
 // JobTerminateParameter is parameters for a CloudJobOperations.Terminate
 // request.
 type JobTerminateParameter struct {
-    TerminateReason *string `json:"terminateReason,omitempty"`
+	TerminateReason *string `json:"terminateReason,omitempty"`
 }
 
 // JobUpdateParameter is parameters for a CloudJobOperations.Update request.
 type JobUpdateParameter struct {
-    Priority *int32 `json:"priority,omitempty"`
-    Constraints *JobConstraints `json:"constraints,omitempty"`
-    PoolInfo *PoolInformation `json:"poolInfo,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
+	Priority    *int32           `json:"priority,omitempty"`
+	Constraints *JobConstraints  `json:"constraints,omitempty"`
+	PoolInfo    *PoolInformation `json:"poolInfo,omitempty"`
+	Metadata    *[]MetadataItem  `json:"metadata,omitempty"`
 }
 
 // MetadataItem is a name-value pair associated with a Batch service resource.
 // The Batch service does not assign any meaning to this metadata; it is solely
 // for the use of user code.
 type MetadataItem struct {
-    Name *string `json:"name,omitempty"`
-    Value *string `json:"value,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 
 // MultiInstanceSettings is settings which specify how to run a multi-instance
 // task. Multi-instance tasks are commonly used to support MPI tasks.
 type MultiInstanceSettings struct {
-    NumberOfInstances *int32 `json:"numberOfInstances,omitempty"`
-    CoordinationCommandLine *string `json:"coordinationCommandLine,omitempty"`
-    CommonResourceFiles *[]ResourceFile `json:"commonResourceFiles,omitempty"`
+	NumberOfInstances       *int32          `json:"numberOfInstances,omitempty"`
+	CoordinationCommandLine *string         `json:"coordinationCommandLine,omitempty"`
+	CommonResourceFiles     *[]ResourceFile `json:"commonResourceFiles,omitempty"`
 }
 
 // NameValuePair is represents a name-value pair.
 type NameValuePair struct {
-    Name *string `json:"name,omitempty"`
-    Value *string `json:"value,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 
 // NodeAgentSku is a node agent SKU supported by the Batch service. The Batch
@@ -1160,430 +1160,429 @@ type NameValuePair struct {
 // are different implementations of the node agent, known as SKUs, for
 // different operating systems.
 type NodeAgentSku struct {
-    ID *string `json:"id,omitempty"`
-    VerifiedImageReferences *[]ImageReference `json:"verifiedImageReferences,omitempty"`
-    OsType OSType `json:"osType,omitempty"`
+	ID                      *string           `json:"id,omitempty"`
+	VerifiedImageReferences *[]ImageReference `json:"verifiedImageReferences,omitempty"`
+	OsType                  OSType            `json:"osType,omitempty"`
 }
 
 // NodeDisableSchedulingParameter is parameters for a
 // ComputeNodeOperations.DisableScheduling request.
 type NodeDisableSchedulingParameter struct {
-    NodeDisableSchedulingOption DisableComputeNodeSchedulingOption `json:"nodeDisableSchedulingOption,omitempty"`
+	NodeDisableSchedulingOption DisableComputeNodeSchedulingOption `json:"nodeDisableSchedulingOption,omitempty"`
 }
 
 // NodeFile is information about a file or directory on a compute node.
 type NodeFile struct {
-    Name *string `json:"name,omitempty"`
-    URL *string `json:"url,omitempty"`
-    IsDirectory *bool `json:"isDirectory,omitempty"`
-    Properties *FileProperties `json:"properties,omitempty"`
+	Name        *string         `json:"name,omitempty"`
+	URL         *string         `json:"url,omitempty"`
+	IsDirectory *bool           `json:"isDirectory,omitempty"`
+	Properties  *FileProperties `json:"properties,omitempty"`
 }
 
 // NodeFileListResult is response to a FileOperation.ListFromComputeNode or
 // FileOperation.ListFromTask request.
 type NodeFileListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]NodeFile `json:"value,omitempty"`
-    OdataNextLink *string `json:"odata.nextLink,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]NodeFile `json:"value,omitempty"`
+	OdataNextLink     *string     `json:"odata.nextLink,omitempty"`
 }
 
 // NodeFileListResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client NodeFileListResult) NodeFileListResultPreparer() (*http.Request, error) {
-    if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
-        return nil, nil
-    }
-    return autorest.Prepare(&http.Request{},
-        autorest.AsJSON(),
-        autorest.AsGet(),
-        autorest.WithBaseURL(to.String(client.OdataNextLink)));
+	if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.OdataNextLink)))
 }
 
 // NodeRebootParameter is parameters for a ComputeNodeOperations.Reboot
 // request.
 type NodeRebootParameter struct {
-    NodeRebootOption ComputeNodeRebootOption `json:"nodeRebootOption,omitempty"`
+	NodeRebootOption ComputeNodeRebootOption `json:"nodeRebootOption,omitempty"`
 }
 
 // NodeReimageParameter is parameters for a ComputeNodeOperations.Reimage
 // request.
 type NodeReimageParameter struct {
-    NodeReimageOption ComputeNodeReimageOption `json:"nodeReimageOption,omitempty"`
+	NodeReimageOption ComputeNodeReimageOption `json:"nodeReimageOption,omitempty"`
 }
 
 // NodeRemoveParameter is parameters for a ComputeNodeOperations.Remove
 // request.
 type NodeRemoveParameter struct {
-    NodeList *[]string `json:"nodeList,omitempty"`
-    ResizeTimeout *string `json:"resizeTimeout,omitempty"`
-    NodeDeallocationOption ComputeNodeDeallocationOption `json:"nodeDeallocationOption,omitempty"`
+	NodeList               *[]string                     `json:"nodeList,omitempty"`
+	ResizeTimeout          *string                       `json:"resizeTimeout,omitempty"`
+	NodeDeallocationOption ComputeNodeDeallocationOption `json:"nodeDeallocationOption,omitempty"`
 }
 
 // NodeUpdateUserParameter is parameters for a ComputeNodeOperations.UpdateUser
 // request.
 type NodeUpdateUserParameter struct {
-    Password *string `json:"password,omitempty"`
-    ExpiryTime *date.Time `json:"expiryTime,omitempty"`
-    SSHPublicKey *string `json:"sshPublicKey,omitempty"`
+	Password     *string    `json:"password,omitempty"`
+	ExpiryTime   *date.Time `json:"expiryTime,omitempty"`
+	SSHPublicKey *string    `json:"sshPublicKey,omitempty"`
 }
 
 // PoolAddParameter is a pool in the Azure Batch service to add.
 type PoolAddParameter struct {
-    ID *string `json:"id,omitempty"`
-    DisplayName *string `json:"displayName,omitempty"`
-    VMSize *string `json:"vmSize,omitempty"`
-    CloudServiceConfiguration *CloudServiceConfiguration `json:"cloudServiceConfiguration,omitempty"`
-    VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
-    ResizeTimeout *string `json:"resizeTimeout,omitempty"`
-    TargetDedicated *int32 `json:"targetDedicated,omitempty"`
-    EnableAutoScale *bool `json:"enableAutoScale,omitempty"`
-    AutoScaleFormula *string `json:"autoScaleFormula,omitempty"`
-    AutoScaleEvaluationInterval *string `json:"autoScaleEvaluationInterval,omitempty"`
-    EnableInterNodeCommunication *bool `json:"enableInterNodeCommunication,omitempty"`
-    StartTask *StartTask `json:"startTask,omitempty"`
-    CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-    ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-    MaxTasksPerNode *int32 `json:"maxTasksPerNode,omitempty"`
-    TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
+	ID                           *string                        `json:"id,omitempty"`
+	DisplayName                  *string                        `json:"displayName,omitempty"`
+	VMSize                       *string                        `json:"vmSize,omitempty"`
+	CloudServiceConfiguration    *CloudServiceConfiguration     `json:"cloudServiceConfiguration,omitempty"`
+	VirtualMachineConfiguration  *VirtualMachineConfiguration   `json:"virtualMachineConfiguration,omitempty"`
+	ResizeTimeout                *string                        `json:"resizeTimeout,omitempty"`
+	TargetDedicated              *int32                         `json:"targetDedicated,omitempty"`
+	EnableAutoScale              *bool                          `json:"enableAutoScale,omitempty"`
+	AutoScaleFormula             *string                        `json:"autoScaleFormula,omitempty"`
+	AutoScaleEvaluationInterval  *string                        `json:"autoScaleEvaluationInterval,omitempty"`
+	EnableInterNodeCommunication *bool                          `json:"enableInterNodeCommunication,omitempty"`
+	StartTask                    *StartTask                     `json:"startTask,omitempty"`
+	CertificateReferences        *[]CertificateReference        `json:"certificateReferences,omitempty"`
+	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
+	MaxTasksPerNode              *int32                         `json:"maxTasksPerNode,omitempty"`
+	TaskSchedulingPolicy         *TaskSchedulingPolicy          `json:"taskSchedulingPolicy,omitempty"`
+	Metadata                     *[]MetadataItem                `json:"metadata,omitempty"`
 }
 
 // PoolEnableAutoScaleParameter is parameters for a
 // CloudPoolOperations.EnableAutoScale request.
 type PoolEnableAutoScaleParameter struct {
-    AutoScaleFormula *string `json:"autoScaleFormula,omitempty"`
-    AutoScaleEvaluationInterval *string `json:"autoScaleEvaluationInterval,omitempty"`
+	AutoScaleFormula            *string `json:"autoScaleFormula,omitempty"`
+	AutoScaleEvaluationInterval *string `json:"autoScaleEvaluationInterval,omitempty"`
 }
 
 // PoolEvaluateAutoScaleParameter is parameters for a
 // CloudJobOperations.EvaluateAutoScale request.
 type PoolEvaluateAutoScaleParameter struct {
-    AutoScaleFormula *string `json:"autoScaleFormula,omitempty"`
+	AutoScaleFormula *string `json:"autoScaleFormula,omitempty"`
 }
 
 // PoolInformation is specifies how a job should be assigned to a pool.
 type PoolInformation struct {
-    PoolID *string `json:"poolId,omitempty"`
-    AutoPoolSpecification *AutoPoolSpecification `json:"autoPoolSpecification,omitempty"`
+	PoolID                *string                `json:"poolId,omitempty"`
+	AutoPoolSpecification *AutoPoolSpecification `json:"autoPoolSpecification,omitempty"`
 }
 
 // PoolListPoolUsageMetricsResult is response to an
 // AccountOperation.ListPoolUsageMetrics request.
 type PoolListPoolUsageMetricsResult struct {
-    autorest.Response `json:"-"`
-    Value *[]PoolUsageMetrics `json:"value,omitempty"`
-    OdataNextLink *string `json:"odata.nextLink,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]PoolUsageMetrics `json:"value,omitempty"`
+	OdataNextLink     *string             `json:"odata.nextLink,omitempty"`
 }
 
 // PoolListPoolUsageMetricsResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client PoolListPoolUsageMetricsResult) PoolListPoolUsageMetricsResultPreparer() (*http.Request, error) {
-    if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
-        return nil, nil
-    }
-    return autorest.Prepare(&http.Request{},
-        autorest.AsJSON(),
-        autorest.AsGet(),
-        autorest.WithBaseURL(to.String(client.OdataNextLink)));
+	if client.OdataNextLink == nil || len(to.String(client.OdataNextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.OdataNextLink)))
 }
 
 // PoolPatchParameter is parameters for a CloudPoolOperations.Patch request.
 type PoolPatchParameter struct {
-    StartTask *StartTask `json:"startTask,omitempty"`
-    CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-    ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
+	StartTask                    *StartTask                     `json:"startTask,omitempty"`
+	CertificateReferences        *[]CertificateReference        `json:"certificateReferences,omitempty"`
+	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
+	Metadata                     *[]MetadataItem                `json:"metadata,omitempty"`
 }
 
 // PoolResizeParameter is parameters for a CloudPoolOperations.Resize request.
 type PoolResizeParameter struct {
-    TargetDedicated *int32 `json:"targetDedicated,omitempty"`
-    ResizeTimeout *string `json:"resizeTimeout,omitempty"`
-    NodeDeallocationOption ComputeNodeDeallocationOption `json:"nodeDeallocationOption,omitempty"`
+	TargetDedicated        *int32                        `json:"targetDedicated,omitempty"`
+	ResizeTimeout          *string                       `json:"resizeTimeout,omitempty"`
+	NodeDeallocationOption ComputeNodeDeallocationOption `json:"nodeDeallocationOption,omitempty"`
 }
 
 // PoolSpecification is specification for creating a new pool.
 type PoolSpecification struct {
-    DisplayName *string `json:"displayName,omitempty"`
-    VMSize *string `json:"vmSize,omitempty"`
-    CloudServiceConfiguration *CloudServiceConfiguration `json:"cloudServiceConfiguration,omitempty"`
-    VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
-    MaxTasksPerNode *int32 `json:"maxTasksPerNode,omitempty"`
-    TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
-    ResizeTimeout *string `json:"resizeTimeout,omitempty"`
-    TargetDedicated *int32 `json:"targetDedicated,omitempty"`
-    EnableAutoScale *bool `json:"enableAutoScale,omitempty"`
-    AutoScaleFormula *string `json:"autoScaleFormula,omitempty"`
-    AutoScaleEvaluationInterval *string `json:"autoScaleEvaluationInterval,omitempty"`
-    EnableInterNodeCommunication *bool `json:"enableInterNodeCommunication,omitempty"`
-    StartTask *StartTask `json:"startTask,omitempty"`
-    CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-    ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
+	DisplayName                  *string                        `json:"displayName,omitempty"`
+	VMSize                       *string                        `json:"vmSize,omitempty"`
+	CloudServiceConfiguration    *CloudServiceConfiguration     `json:"cloudServiceConfiguration,omitempty"`
+	VirtualMachineConfiguration  *VirtualMachineConfiguration   `json:"virtualMachineConfiguration,omitempty"`
+	MaxTasksPerNode              *int32                         `json:"maxTasksPerNode,omitempty"`
+	TaskSchedulingPolicy         *TaskSchedulingPolicy          `json:"taskSchedulingPolicy,omitempty"`
+	ResizeTimeout                *string                        `json:"resizeTimeout,omitempty"`
+	TargetDedicated              *int32                         `json:"targetDedicated,omitempty"`
+	EnableAutoScale              *bool                          `json:"enableAutoScale,omitempty"`
+	AutoScaleFormula             *string                        `json:"autoScaleFormula,omitempty"`
+	AutoScaleEvaluationInterval  *string                        `json:"autoScaleEvaluationInterval,omitempty"`
+	EnableInterNodeCommunication *bool                          `json:"enableInterNodeCommunication,omitempty"`
+	StartTask                    *StartTask                     `json:"startTask,omitempty"`
+	CertificateReferences        *[]CertificateReference        `json:"certificateReferences,omitempty"`
+	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
+	Metadata                     *[]MetadataItem                `json:"metadata,omitempty"`
 }
 
 // PoolStatistics is contains utilization and resource usage statistics for the
 // lifetime of a pool.
 type PoolStatistics struct {
-    autorest.Response `json:"-"`
-    URL *string `json:"url,omitempty"`
-    StartTime *date.Time `json:"startTime,omitempty"`
-    LastUpdateTime *date.Time `json:"lastUpdateTime,omitempty"`
-    UsageStats *UsageStatistics `json:"usageStats,omitempty"`
-    ResourceStats *ResourceStatistics `json:"resourceStats,omitempty"`
+	autorest.Response `json:"-"`
+	URL               *string             `json:"url,omitempty"`
+	StartTime         *date.Time          `json:"startTime,omitempty"`
+	LastUpdateTime    *date.Time          `json:"lastUpdateTime,omitempty"`
+	UsageStats        *UsageStatistics    `json:"usageStats,omitempty"`
+	ResourceStats     *ResourceStatistics `json:"resourceStats,omitempty"`
 }
 
 // PoolUpdatePropertiesParameter is parameters for a
 // CloudPoolOperations.UpdateProperties request.
 type PoolUpdatePropertiesParameter struct {
-    StartTask *StartTask `json:"startTask,omitempty"`
-    CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-    ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-    Metadata *[]MetadataItem `json:"metadata,omitempty"`
+	StartTask                    *StartTask                     `json:"startTask,omitempty"`
+	CertificateReferences        *[]CertificateReference        `json:"certificateReferences,omitempty"`
+	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
+	Metadata                     *[]MetadataItem                `json:"metadata,omitempty"`
 }
 
 // PoolUpgradeOSParameter is parameters for a CloudPoolOperations.UpgradeOS
 // request.
 type PoolUpgradeOSParameter struct {
-    TargetOSVersion *string `json:"targetOSVersion,omitempty"`
+	TargetOSVersion *string `json:"targetOSVersion,omitempty"`
 }
 
 // PoolUsageMetrics is usage metrics for a pool across an aggregation interval.
 type PoolUsageMetrics struct {
-    PoolID *string `json:"poolId,omitempty"`
-    StartTime *date.Time `json:"startTime,omitempty"`
-    EndTime *date.Time `json:"endTime,omitempty"`
-    VMSize *string `json:"vmSize,omitempty"`
-    TotalCoreHours *float64 `json:"totalCoreHours,omitempty"`
-    DataIngressGiB *float64 `json:"dataIngressGiB,omitempty"`
-    DataEgressGiB *float64 `json:"dataEgressGiB,omitempty"`
+	PoolID         *string    `json:"poolId,omitempty"`
+	StartTime      *date.Time `json:"startTime,omitempty"`
+	EndTime        *date.Time `json:"endTime,omitempty"`
+	VMSize         *string    `json:"vmSize,omitempty"`
+	TotalCoreHours *float64   `json:"totalCoreHours,omitempty"`
+	DataIngressGiB *float64   `json:"dataIngressGiB,omitempty"`
+	DataEgressGiB  *float64   `json:"dataEgressGiB,omitempty"`
 }
 
 // ReadCloser is
 type ReadCloser struct {
-    autorest.Response `json:"-"`
-    Value *io.ReadCloser `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *io.ReadCloser `json:"value,omitempty"`
 }
 
 // RecentJob is information about the most recent job to run under the job
 // schedule.
 type RecentJob struct {
-    ID *string `json:"id,omitempty"`
-    URL *string `json:"url,omitempty"`
+	ID  *string `json:"id,omitempty"`
+	URL *string `json:"url,omitempty"`
 }
 
 // ResizeError is an error that occurred when resizing a pool.
 type ResizeError struct {
-    Code *string `json:"code,omitempty"`
-    Message *string `json:"message,omitempty"`
-    Values *[]NameValuePair `json:"values,omitempty"`
+	Code    *string          `json:"code,omitempty"`
+	Message *string          `json:"message,omitempty"`
+	Values  *[]NameValuePair `json:"values,omitempty"`
 }
 
 // ResourceFile is a file to be downloaded from Azure blob storage to a compute
 // node.
 type ResourceFile struct {
-    BlobSource *string `json:"blobSource,omitempty"`
-    FilePath *string `json:"filePath,omitempty"`
-    FileMode *string `json:"fileMode,omitempty"`
+	BlobSource *string `json:"blobSource,omitempty"`
+	FilePath   *string `json:"filePath,omitempty"`
+	FileMode   *string `json:"fileMode,omitempty"`
 }
 
 // ResourceStatistics is statistics related to resource consumption by compute
 // nodes in a pool.
 type ResourceStatistics struct {
-    StartTime *date.Time `json:"startTime,omitempty"`
-    LastUpdateTime *date.Time `json:"lastUpdateTime,omitempty"`
-    AvgCPUPercentage *float64 `json:"avgCPUPercentage,omitempty"`
-    AvgMemoryGiB *float64 `json:"avgMemoryGiB,omitempty"`
-    PeakMemoryGiB *float64 `json:"peakMemoryGiB,omitempty"`
-    AvgDiskGiB *float64 `json:"avgDiskGiB,omitempty"`
-    PeakDiskGiB *float64 `json:"peakDiskGiB,omitempty"`
-    DiskReadIOps *int64 `json:"diskReadIOps,omitempty"`
-    DiskWriteIOps *int64 `json:"diskWriteIOps,omitempty"`
-    DiskReadGiB *float64 `json:"diskReadGiB,omitempty"`
-    DiskWriteGiB *float64 `json:"diskWriteGiB,omitempty"`
-    NetworkReadGiB *float64 `json:"networkReadGiB,omitempty"`
-    NetworkWriteGiB *float64 `json:"networkWriteGiB,omitempty"`
+	StartTime        *date.Time `json:"startTime,omitempty"`
+	LastUpdateTime   *date.Time `json:"lastUpdateTime,omitempty"`
+	AvgCPUPercentage *float64   `json:"avgCPUPercentage,omitempty"`
+	AvgMemoryGiB     *float64   `json:"avgMemoryGiB,omitempty"`
+	PeakMemoryGiB    *float64   `json:"peakMemoryGiB,omitempty"`
+	AvgDiskGiB       *float64   `json:"avgDiskGiB,omitempty"`
+	PeakDiskGiB      *float64   `json:"peakDiskGiB,omitempty"`
+	DiskReadIOps     *int64     `json:"diskReadIOps,omitempty"`
+	DiskWriteIOps    *int64     `json:"diskWriteIOps,omitempty"`
+	DiskReadGiB      *float64   `json:"diskReadGiB,omitempty"`
+	DiskWriteGiB     *float64   `json:"diskWriteGiB,omitempty"`
+	NetworkReadGiB   *float64   `json:"networkReadGiB,omitempty"`
+	NetworkWriteGiB  *float64   `json:"networkWriteGiB,omitempty"`
 }
 
 // Schedule is the schedule according to which jobs will be created
 type Schedule struct {
-    DoNotRunUntil *date.Time `json:"doNotRunUntil,omitempty"`
-    DoNotRunAfter *date.Time `json:"doNotRunAfter,omitempty"`
-    StartWindow *string `json:"startWindow,omitempty"`
-    RecurrenceInterval *string `json:"recurrenceInterval,omitempty"`
+	DoNotRunUntil      *date.Time `json:"doNotRunUntil,omitempty"`
+	DoNotRunAfter      *date.Time `json:"doNotRunAfter,omitempty"`
+	StartWindow        *string    `json:"startWindow,omitempty"`
+	RecurrenceInterval *string    `json:"recurrenceInterval,omitempty"`
 }
 
 // StartTask is a task which is run when a compute node joins a pool in the
 // Azure Batch service, or when the compute node is rebooted or reimaged.
 type StartTask struct {
-    CommandLine *string `json:"commandLine,omitempty"`
-    ResourceFiles *[]ResourceFile `json:"resourceFiles,omitempty"`
-    EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
-    RunElevated *bool `json:"runElevated,omitempty"`
-    MaxTaskRetryCount *int32 `json:"maxTaskRetryCount,omitempty"`
-    WaitForSuccess *bool `json:"waitForSuccess,omitempty"`
+	CommandLine         *string               `json:"commandLine,omitempty"`
+	ResourceFiles       *[]ResourceFile       `json:"resourceFiles,omitempty"`
+	EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
+	RunElevated         *bool                 `json:"runElevated,omitempty"`
+	MaxTaskRetryCount   *int32                `json:"maxTaskRetryCount,omitempty"`
+	WaitForSuccess      *bool                 `json:"waitForSuccess,omitempty"`
 }
 
 // StartTaskInformation is information about a start task running on a compute
 // node.
 type StartTaskInformation struct {
-    State StartTaskState `json:"state,omitempty"`
-    StartTime *date.Time `json:"startTime,omitempty"`
-    EndTime *date.Time `json:"endTime,omitempty"`
-    ExitCode *int32 `json:"exitCode,omitempty"`
-    SchedulingError *TaskSchedulingError `json:"schedulingError,omitempty"`
-    RetryCount *int32 `json:"retryCount,omitempty"`
-    LastRetryTime *date.Time `json:"lastRetryTime,omitempty"`
+	State           StartTaskState       `json:"state,omitempty"`
+	StartTime       *date.Time           `json:"startTime,omitempty"`
+	EndTime         *date.Time           `json:"endTime,omitempty"`
+	ExitCode        *int32               `json:"exitCode,omitempty"`
+	SchedulingError *TaskSchedulingError `json:"schedulingError,omitempty"`
+	RetryCount      *int32               `json:"retryCount,omitempty"`
+	LastRetryTime   *date.Time           `json:"lastRetryTime,omitempty"`
 }
 
 // SubtaskInformation is information about an Azure Batch subtask.
 type SubtaskInformation struct {
-    ID *int32 `json:"id,omitempty"`
-    NodeInfo *ComputeNodeInformation `json:"nodeInfo,omitempty"`
-    StartTime *date.Time `json:"startTime,omitempty"`
-    EndTime *date.Time `json:"endTime,omitempty"`
-    ExitCode *int32 `json:"exitCode,omitempty"`
-    SchedulingError *TaskSchedulingError `json:"schedulingError,omitempty"`
-    State TaskState `json:"state,omitempty"`
-    StateTransitionTime *date.Time `json:"stateTransitionTime,omitempty"`
-    PreviousState TaskState `json:"previousState,omitempty"`
-    PreviousStateTransitionTime *date.Time `json:"previousStateTransitionTime,omitempty"`
+	ID                          *int32                  `json:"id,omitempty"`
+	NodeInfo                    *ComputeNodeInformation `json:"nodeInfo,omitempty"`
+	StartTime                   *date.Time              `json:"startTime,omitempty"`
+	EndTime                     *date.Time              `json:"endTime,omitempty"`
+	ExitCode                    *int32                  `json:"exitCode,omitempty"`
+	SchedulingError             *TaskSchedulingError    `json:"schedulingError,omitempty"`
+	State                       TaskState               `json:"state,omitempty"`
+	StateTransitionTime         *date.Time              `json:"stateTransitionTime,omitempty"`
+	PreviousState               TaskState               `json:"previousState,omitempty"`
+	PreviousStateTransitionTime *date.Time              `json:"previousStateTransitionTime,omitempty"`
 }
 
 // TaskAddCollectionParameter is a collection of Azure Batch tasks to add.
 type TaskAddCollectionParameter struct {
-    Value *[]TaskAddParameter `json:"value,omitempty"`
+	Value *[]TaskAddParameter `json:"value,omitempty"`
 }
 
 // TaskAddCollectionResult is response to a TaskOperations.AddCollection
 // request.
 type TaskAddCollectionResult struct {
-    autorest.Response `json:"-"`
-    Value *[]TaskAddResult `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]TaskAddResult `json:"value,omitempty"`
 }
 
 // TaskAddParameter is an Azure Batch task to add.
 type TaskAddParameter struct {
-    ID *string `json:"id,omitempty"`
-    DisplayName *string `json:"displayName,omitempty"`
-    CommandLine *string `json:"commandLine,omitempty"`
-    ResourceFiles *[]ResourceFile `json:"resourceFiles,omitempty"`
-    EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
-    AffinityInfo *AffinityInformation `json:"affinityInfo,omitempty"`
-    Constraints *TaskConstraints `json:"constraints,omitempty"`
-    RunElevated *bool `json:"runElevated,omitempty"`
-    MultiInstanceSettings *MultiInstanceSettings `json:"multiInstanceSettings,omitempty"`
-    DependsOn *TaskDependencies `json:"dependsOn,omitempty"`
+	ID                    *string                `json:"id,omitempty"`
+	DisplayName           *string                `json:"displayName,omitempty"`
+	CommandLine           *string                `json:"commandLine,omitempty"`
+	ResourceFiles         *[]ResourceFile        `json:"resourceFiles,omitempty"`
+	EnvironmentSettings   *[]EnvironmentSetting  `json:"environmentSettings,omitempty"`
+	AffinityInfo          *AffinityInformation   `json:"affinityInfo,omitempty"`
+	Constraints           *TaskConstraints       `json:"constraints,omitempty"`
+	RunElevated           *bool                  `json:"runElevated,omitempty"`
+	MultiInstanceSettings *MultiInstanceSettings `json:"multiInstanceSettings,omitempty"`
+	DependsOn             *TaskDependencies      `json:"dependsOn,omitempty"`
 }
 
 // TaskAddResult is result for a single task added as part of an add task
 // collection operation.
 type TaskAddResult struct {
-    Status TaskAddStatus `json:"status,omitempty"`
-    TaskID *string `json:"taskId,omitempty"`
-    ETag *string `json:"eTag,omitempty"`
-    LastModified *date.Time `json:"lastModified,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Error *BatchError `json:"error,omitempty"`
+	Status       TaskAddStatus `json:"status,omitempty"`
+	TaskID       *string       `json:"taskId,omitempty"`
+	ETag         *string       `json:"eTag,omitempty"`
+	LastModified *date.Time    `json:"lastModified,omitempty"`
+	Location     *string       `json:"location,omitempty"`
+	Error        *BatchError   `json:"error,omitempty"`
 }
 
 // TaskConstraints is constraints to apply to the Job Manager task.
 type TaskConstraints struct {
-    MaxWallClockTime *string `json:"maxWallClockTime,omitempty"`
-    RetentionTime *string `json:"retentionTime,omitempty"`
-    MaxTaskRetryCount *int32 `json:"maxTaskRetryCount,omitempty"`
+	MaxWallClockTime  *string `json:"maxWallClockTime,omitempty"`
+	RetentionTime     *string `json:"retentionTime,omitempty"`
+	MaxTaskRetryCount *int32  `json:"maxTaskRetryCount,omitempty"`
 }
 
 // TaskDependencies is specifies any dependencies of a task. Any task that is
 // explicitly specified or within a dependency range must complete before the
 // dependant task will be scheduled.
 type TaskDependencies struct {
-    TaskIds *[]string `json:"taskIds,omitempty"`
-    TaskIDRanges *[]TaskIDRange `json:"taskIdRanges,omitempty"`
+	TaskIds      *[]string      `json:"taskIds,omitempty"`
+	TaskIDRanges *[]TaskIDRange `json:"taskIdRanges,omitempty"`
 }
 
 // TaskExecutionInformation is information about the execution of a task.
 type TaskExecutionInformation struct {
-    StartTime *date.Time `json:"startTime,omitempty"`
-    EndTime *date.Time `json:"endTime,omitempty"`
-    ExitCode *int32 `json:"exitCode,omitempty"`
-    SchedulingError *TaskSchedulingError `json:"schedulingError,omitempty"`
-    RetryCount *int32 `json:"retryCount,omitempty"`
-    LastRetryTime *date.Time `json:"lastRetryTime,omitempty"`
-    RequeueCount *int32 `json:"requeueCount,omitempty"`
-    LastRequeueTime *date.Time `json:"lastRequeueTime,omitempty"`
+	StartTime       *date.Time           `json:"startTime,omitempty"`
+	EndTime         *date.Time           `json:"endTime,omitempty"`
+	ExitCode        *int32               `json:"exitCode,omitempty"`
+	SchedulingError *TaskSchedulingError `json:"schedulingError,omitempty"`
+	RetryCount      *int32               `json:"retryCount,omitempty"`
+	LastRetryTime   *date.Time           `json:"lastRetryTime,omitempty"`
+	RequeueCount    *int32               `json:"requeueCount,omitempty"`
+	LastRequeueTime *date.Time           `json:"lastRequeueTime,omitempty"`
 }
 
 // TaskIDRange is a range of task ids that a task can depend on. All tasks with
 // ids in the range must complete successfully before the dependent task can be
 // scheduled.
 type TaskIDRange struct {
-    Start *int32 `json:"start,omitempty"`
-    End *int32 `json:"end,omitempty"`
+	Start *int32 `json:"start,omitempty"`
+	End   *int32 `json:"end,omitempty"`
 }
 
 // TaskInformation is information about a task running on a compute node.
 type TaskInformation struct {
-    TaskURL *string `json:"taskUrl,omitempty"`
-    JobID *string `json:"jobId,omitempty"`
-    TaskID *string `json:"taskId,omitempty"`
-    SubtaskID *int32 `json:"subtaskId,omitempty"`
-    TaskState TaskState `json:"taskState,omitempty"`
-    ExecutionInfo *TaskExecutionInformation `json:"executionInfo,omitempty"`
+	TaskURL       *string                   `json:"taskUrl,omitempty"`
+	JobID         *string                   `json:"jobId,omitempty"`
+	TaskID        *string                   `json:"taskId,omitempty"`
+	SubtaskID     *int32                    `json:"subtaskId,omitempty"`
+	TaskState     TaskState                 `json:"taskState,omitempty"`
+	ExecutionInfo *TaskExecutionInformation `json:"executionInfo,omitempty"`
 }
 
 // TaskSchedulingError is information about an error when scheduling a task.
 type TaskSchedulingError struct {
-    Category SchedulingErrorCategory `json:"category,omitempty"`
-    Code *string `json:"code,omitempty"`
-    Message *string `json:"message,omitempty"`
-    Details *[]NameValuePair `json:"details,omitempty"`
+	Category SchedulingErrorCategory `json:"category,omitempty"`
+	Code     *string                 `json:"code,omitempty"`
+	Message  *string                 `json:"message,omitempty"`
+	Details  *[]NameValuePair        `json:"details,omitempty"`
 }
 
 // TaskSchedulingPolicy is specifies how tasks should be distributed across
 // compute nodes.
 type TaskSchedulingPolicy struct {
-    NodeFillType ComputeNodeFillType `json:"nodeFillType,omitempty"`
+	NodeFillType ComputeNodeFillType `json:"nodeFillType,omitempty"`
 }
 
 // TaskStatistics is resource usage statistics for a task.
 type TaskStatistics struct {
-    URL *string `json:"url,omitempty"`
-    StartTime *date.Time `json:"startTime,omitempty"`
-    LastUpdateTime *date.Time `json:"lastUpdateTime,omitempty"`
-    UserCPUTime *string `json:"userCPUTime,omitempty"`
-    KernelCPUTime *string `json:"kernelCPUTime,omitempty"`
-    WallClockTime *string `json:"wallClockTime,omitempty"`
-    ReadIOps *int64 `json:"readIOps,omitempty"`
-    WriteIOps *int64 `json:"writeIOps,omitempty"`
-    ReadIOGiB *float64 `json:"readIOGiB,omitempty"`
-    WriteIOGiB *float64 `json:"writeIOGiB,omitempty"`
-    WaitTime *string `json:"waitTime,omitempty"`
+	URL            *string    `json:"url,omitempty"`
+	StartTime      *date.Time `json:"startTime,omitempty"`
+	LastUpdateTime *date.Time `json:"lastUpdateTime,omitempty"`
+	UserCPUTime    *string    `json:"userCPUTime,omitempty"`
+	KernelCPUTime  *string    `json:"kernelCPUTime,omitempty"`
+	WallClockTime  *string    `json:"wallClockTime,omitempty"`
+	ReadIOps       *int64     `json:"readIOps,omitempty"`
+	WriteIOps      *int64     `json:"writeIOps,omitempty"`
+	ReadIOGiB      *float64   `json:"readIOGiB,omitempty"`
+	WriteIOGiB     *float64   `json:"writeIOGiB,omitempty"`
+	WaitTime       *string    `json:"waitTime,omitempty"`
 }
 
 // TaskUpdateParameter is parameters for a CloudTaskOperations.Update request.
 type TaskUpdateParameter struct {
-    Constraints *TaskConstraints `json:"constraints,omitempty"`
+	Constraints *TaskConstraints `json:"constraints,omitempty"`
 }
 
 // UsageStatistics is statistics related to pool usage information.
 type UsageStatistics struct {
-    StartTime *date.Time `json:"startTime,omitempty"`
-    LastUpdateTime *date.Time `json:"lastUpdateTime,omitempty"`
-    DedicatedCoreTime *string `json:"dedicatedCoreTime,omitempty"`
+	StartTime         *date.Time `json:"startTime,omitempty"`
+	LastUpdateTime    *date.Time `json:"lastUpdateTime,omitempty"`
+	DedicatedCoreTime *string    `json:"dedicatedCoreTime,omitempty"`
 }
 
 // VirtualMachineConfiguration is the configuration for compute nodes in a pool
 // based on the Azure Virtual Machines infrastructure.
 type VirtualMachineConfiguration struct {
-    ImageReference *ImageReference `json:"imageReference,omitempty"`
-    NodeAgentSKUID *string `json:"nodeAgentSKUId,omitempty"`
-    WindowsConfiguration *WindowsConfiguration `json:"windowsConfiguration,omitempty"`
+	ImageReference       *ImageReference       `json:"imageReference,omitempty"`
+	NodeAgentSKUID       *string               `json:"nodeAgentSKUId,omitempty"`
+	WindowsConfiguration *WindowsConfiguration `json:"windowsConfiguration,omitempty"`
 }
 
 // WindowsConfiguration is windows operating system settings to apply to the
 // virtual machine.
 type WindowsConfiguration struct {
-    EnableAutomaticUpdates *bool `json:"enableAutomaticUpdates,omitempty"`
+	EnableAutomaticUpdates *bool `json:"enableAutomaticUpdates,omitempty"`
 }
-

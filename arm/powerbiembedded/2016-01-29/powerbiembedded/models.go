@@ -19,145 +19,144 @@ package powerbiembedded
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // AccessKeyName enumerates the values for access key name.
 type AccessKeyName string
 
 const (
-    // Key1 specifies the key 1 state for access key name.
-    Key1 AccessKeyName = "key1"
-    // Key2 specifies the key 2 state for access key name.
-    Key2 AccessKeyName = "key2"
+	// Key1 specifies the key 1 state for access key name.
+	Key1 AccessKeyName = "key1"
+	// Key2 specifies the key 2 state for access key name.
+	Key2 AccessKeyName = "key2"
 )
 
 // CheckNameReason enumerates the values for check name reason.
 type CheckNameReason string
 
 const (
-    // Invalid specifies the invalid state for check name reason.
-    Invalid CheckNameReason = "Invalid"
-    // Unavailable specifies the unavailable state for check name reason.
-    Unavailable CheckNameReason = "Unavailable"
+	// Invalid specifies the invalid state for check name reason.
+	Invalid CheckNameReason = "Invalid"
+	// Unavailable specifies the unavailable state for check name reason.
+	Unavailable CheckNameReason = "Unavailable"
 )
 
 // AzureSku is
 type AzureSku struct {
-    Name *string `json:"name,omitempty"`
-    Tier *string `json:"tier,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Tier *string `json:"tier,omitempty"`
 }
 
 // CheckNameRequest is
 type CheckNameRequest struct {
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // CheckNameResponse is
 type CheckNameResponse struct {
-    autorest.Response `json:"-"`
-    NameAvailable *bool `json:"nameAvailable,omitempty"`
-    Reason CheckNameReason `json:"reason,omitempty"`
-    Message *string `json:"message,omitempty"`
+	autorest.Response `json:"-"`
+	NameAvailable     *bool           `json:"nameAvailable,omitempty"`
+	Reason            CheckNameReason `json:"reason,omitempty"`
+	Message           *string         `json:"message,omitempty"`
 }
 
 // CreateWorkspaceCollectionRequest is
 type CreateWorkspaceCollectionRequest struct {
-    Location *string `json:"location,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
-    Sku *AzureSku `json:"sku,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+	Sku      *AzureSku           `json:"sku,omitempty"`
 }
 
 // Display is
 type Display struct {
-    Provider *string `json:"provider,omitempty"`
-    Resource *string `json:"resource,omitempty"`
-    Operation *string `json:"operation,omitempty"`
-    Description *string `json:"description,omitempty"`
-    Origin *string `json:"origin,omitempty"`
+	Provider    *string `json:"provider,omitempty"`
+	Resource    *string `json:"resource,omitempty"`
+	Operation   *string `json:"operation,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Origin      *string `json:"origin,omitempty"`
 }
 
 // Error is
 type Error struct {
-    Code *string `json:"code,omitempty"`
-    Message *string `json:"message,omitempty"`
-    Target *string `json:"target,omitempty"`
-    Details *[]ErrorDetail `json:"details,omitempty"`
+	Code    *string        `json:"code,omitempty"`
+	Message *string        `json:"message,omitempty"`
+	Target  *string        `json:"target,omitempty"`
+	Details *[]ErrorDetail `json:"details,omitempty"`
 }
 
 // ErrorDetail is
 type ErrorDetail struct {
-    Code *string `json:"code,omitempty"`
-    Message *string `json:"message,omitempty"`
-    Target *string `json:"target,omitempty"`
+	Code    *string `json:"code,omitempty"`
+	Message *string `json:"message,omitempty"`
+	Target  *string `json:"target,omitempty"`
 }
 
 // MigrateWorkspaceCollectionRequest is
 type MigrateWorkspaceCollectionRequest struct {
-    TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
-    Resources *[]string `json:"resources,omitempty"`
+	TargetResourceGroup *string   `json:"targetResourceGroup,omitempty"`
+	Resources           *[]string `json:"resources,omitempty"`
 }
 
 // Operation is
 type Operation struct {
-    Name *string `json:"name,omitempty"`
-    Display *Display `json:"display,omitempty"`
+	Name    *string  `json:"name,omitempty"`
+	Display *Display `json:"display,omitempty"`
 }
 
 // OperationList is
 type OperationList struct {
-    autorest.Response `json:"-"`
-    Value *[]Operation `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]Operation `json:"value,omitempty"`
 }
 
 // UpdateWorkspaceCollectionRequest is
 type UpdateWorkspaceCollectionRequest struct {
-    Tags *map[string]*string `json:"tags,omitempty"`
-    Sku *AzureSku `json:"sku,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
+	Sku  *AzureSku           `json:"sku,omitempty"`
 }
 
 // Workspace is
 type Workspace struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Properties *map[string]interface{} `json:"properties,omitempty"`
+	ID         *string                 `json:"id,omitempty"`
+	Name       *string                 `json:"name,omitempty"`
+	Type       *string                 `json:"type,omitempty"`
+	Properties *map[string]interface{} `json:"properties,omitempty"`
 }
 
 // WorkspaceCollection is
 type WorkspaceCollection struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
-    Sku *AzureSku `json:"sku,omitempty"`
-    Properties *map[string]interface{} `json:"properties,omitempty"`
+	autorest.Response `json:"-"`
+	ID                *string                 `json:"id,omitempty"`
+	Name              *string                 `json:"name,omitempty"`
+	Type              *string                 `json:"type,omitempty"`
+	Location          *string                 `json:"location,omitempty"`
+	Tags              *map[string]*string     `json:"tags,omitempty"`
+	Sku               *AzureSku               `json:"sku,omitempty"`
+	Properties        *map[string]interface{} `json:"properties,omitempty"`
 }
 
 // WorkspaceCollectionAccessKey is
 type WorkspaceCollectionAccessKey struct {
-    KeyName AccessKeyName `json:"keyName,omitempty"`
+	KeyName AccessKeyName `json:"keyName,omitempty"`
 }
 
 // WorkspaceCollectionAccessKeys is
 type WorkspaceCollectionAccessKeys struct {
-    autorest.Response `json:"-"`
-    Key1 *string `json:"key1,omitempty"`
-    Key2 *string `json:"key2,omitempty"`
+	autorest.Response `json:"-"`
+	Key1              *string `json:"key1,omitempty"`
+	Key2              *string `json:"key2,omitempty"`
 }
 
 // WorkspaceCollectionList is
 type WorkspaceCollectionList struct {
-    autorest.Response `json:"-"`
-    Value *[]WorkspaceCollection `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]WorkspaceCollection `json:"value,omitempty"`
 }
 
 // WorkspaceList is
 type WorkspaceList struct {
-    autorest.Response `json:"-"`
-    Value *[]Workspace `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]Workspace `json:"value,omitempty"`
 }
-

@@ -19,94 +19,94 @@ package servicefabric
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // DeployedReplicaDetailsClient is the client for the DeployedReplicaDetails
 // methods of the Servicefabric service.
 type DeployedReplicaDetailsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewDeployedReplicaDetailsClient creates an instance of the
 // DeployedReplicaDetailsClient client.
 func NewDeployedReplicaDetailsClient(timeout *int32) DeployedReplicaDetailsClient {
-        return NewDeployedReplicaDetailsClientWithBaseURI(DefaultBaseURI, timeout)
-        }
+	return NewDeployedReplicaDetailsClientWithBaseURI(DefaultBaseURI, timeout)
+}
 
 // NewDeployedReplicaDetailsClientWithBaseURI creates an instance of the
 // DeployedReplicaDetailsClient client.
-    func NewDeployedReplicaDetailsClientWithBaseURI(baseURI string, timeout *int32) DeployedReplicaDetailsClient {
-        return DeployedReplicaDetailsClient{ NewWithBaseURI(baseURI, timeout)}
-    }
+func NewDeployedReplicaDetailsClientWithBaseURI(baseURI string, timeout *int32) DeployedReplicaDetailsClient {
+	return DeployedReplicaDetailsClient{NewWithBaseURI(baseURI, timeout)}
+}
 
 // Get get deployed replica details
 //
 // nodeName is the name of the node partitionName is the name of the partition
 // replicaID is the id of the replica
 func (client DeployedReplicaDetailsClient) Get(nodeName string, partitionName string, replicaID string) (result DeployedReplicaDetail, err error) {
-    req, err := client.GetPreparer(nodeName, partitionName, replicaID)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.DeployedReplicaDetailsClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(nodeName, partitionName, replicaID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.DeployedReplicaDetailsClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.DeployedReplicaDetailsClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.DeployedReplicaDetailsClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.DeployedReplicaDetailsClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.DeployedReplicaDetailsClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client DeployedReplicaDetailsClient) GetPreparer(nodeName string, partitionName string, replicaID string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeName": autorest.Encode("path",nodeName),
-    "partitionName": partitionName,
-    "replicaId": autorest.Encode("path",replicaID),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeName":      autorest.Encode("path", nodeName),
+		"partitionName": partitionName,
+		"replicaId":     autorest.Encode("path", replicaID),
+	}
 
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/Nodes/{nodeName}/$/GetPartitions/{partitionName}/$/GetReplicas/{replicaId}/$/GetDetail",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Nodes/{nodeName}/$/GetPartitions/{partitionName}/$/GetReplicas/{replicaId}/$/GetDetail", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeployedReplicaDetailsClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client DeployedReplicaDetailsClient) GetResponder(resp *http.Response) (result DeployedReplicaDetail, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

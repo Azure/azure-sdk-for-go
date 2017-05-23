@@ -19,27 +19,28 @@ package batchservice
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "github.com/Azure/go-autorest/autorest/date"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"net/http"
 )
 
 // TaskClient is the a client for issuing REST requests to the Azure Batch
 // service.
 type TaskClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewTaskClient creates an instance of the TaskClient client.
 func NewTaskClient() TaskClient {
-        return NewTaskClientWithBaseURI(DefaultBaseURI, )
-        }
+	return NewTaskClientWithBaseURI(DefaultBaseURI)
+}
 
 // NewTaskClientWithBaseURI creates an instance of the TaskClient client.
-    func NewTaskClientWithBaseURI(baseURI string, ) TaskClient {
-        return TaskClient{ NewWithBaseURI(baseURI, )}
-    }
+func NewTaskClientWithBaseURI(baseURI string) TaskClient {
+	return TaskClient{NewWithBaseURI(baseURI)}
+}
 
 // Add sends the add request.
 //
@@ -53,92 +54,90 @@ func NewTaskClient() TaskClient {
 // time the request was issued. If not specified, this header will be
 // automatically populated with the current system clock time.
 func (client TaskClient) Add(jobID string, task TaskAddParameter, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: task,
-     Constraints: []validation.Constraint{	{Target: "task.ID", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "task.CommandLine", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "task.AffinityInfo", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "task.AffinityInfo.AffinityID", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    	{Target: "task.MultiInstanceSettings", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "task.MultiInstanceSettings.NumberOfInstances", Name: validation.Null, Rule: true, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.TaskClient","Add")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: task,
+			Constraints: []validation.Constraint{{Target: "task.ID", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "task.CommandLine", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "task.AffinityInfo", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "task.AffinityInfo.AffinityID", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "task.MultiInstanceSettings", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "task.MultiInstanceSettings.NumberOfInstances", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.TaskClient", "Add")
+	}
 
-    req, err := client.AddPreparer(jobID, task, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Add", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.AddPreparer(jobID, task, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Add", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.AddSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Add", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.AddSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Add", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.AddResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Add", resp, "Failure responding to request")
-    }
+	result, err = client.AddResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Add", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // AddPreparer prepares the Add request.
 func (client TaskClient) AddPreparer(jobID string, task TaskAddParameter, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobId": autorest.Encode("path",jobID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobId": autorest.Encode("path", jobID),
+	}
 
-        const APIVersion = "2016-07-01.3.1"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-07-01.3.1"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/tasks",pathParameters),
-                        autorest.WithJSON(task),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/tasks", pathParameters),
+		autorest.WithJSON(task),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) AddSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // AddResponder handles the response to the Add request. The method always
 // closes the http.Response Body.
 func (client TaskClient) AddResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // AddCollection note that each task must have a unique ID. The Batch service
@@ -161,88 +160,87 @@ func (client TaskClient) AddResponder(resp *http.Response) (result autorest.Resp
 // time the request was issued. If not specified, this header will be
 // automatically populated with the current system clock time.
 func (client TaskClient) AddCollection(jobID string, taskCollection TaskAddCollectionParameter, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result TaskAddCollectionResult, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: taskCollection,
-     Constraints: []validation.Constraint{	{Target: "taskCollection.Value", Name: validation.Null, Rule: true ,
-    Chain: []validation.Constraint{	{Target: "taskCollection.Value", Name: validation.MaxItems, Rule: 100, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.TaskClient","AddCollection")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: taskCollection,
+			Constraints: []validation.Constraint{{Target: "taskCollection.Value", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "taskCollection.Value", Name: validation.MaxItems, Rule: 100, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.TaskClient", "AddCollection")
+	}
 
-    req, err := client.AddCollectionPreparer(jobID, taskCollection, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "AddCollection", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.AddCollectionPreparer(jobID, taskCollection, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "AddCollection", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.AddCollectionSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "AddCollection", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.AddCollectionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "AddCollection", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.AddCollectionResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "AddCollection", resp, "Failure responding to request")
-    }
+	result, err = client.AddCollectionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "AddCollection", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // AddCollectionPreparer prepares the AddCollection request.
 func (client TaskClient) AddCollectionPreparer(jobID string, taskCollection TaskAddCollectionParameter, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobId": autorest.Encode("path",jobID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobId": autorest.Encode("path", jobID),
+	}
 
-        const APIVersion = "2016-07-01.3.1"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-07-01.3.1"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/addtaskcollection",pathParameters),
-                        autorest.WithJSON(taskCollection),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/addtaskcollection", pathParameters),
+		autorest.WithJSON(taskCollection),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // AddCollectionSender sends the AddCollection request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) AddCollectionSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // AddCollectionResponder handles the response to the AddCollection request. The method always
 // closes the http.Response Body.
 func (client TaskClient) AddCollectionResponder(resp *http.Response) (result TaskAddCollectionResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Delete when a task is deleted, all of the files in its directory on the
@@ -269,94 +267,94 @@ func (client TaskClient) AddCollectionResponder(resp *http.Response) (result Tas
 // header to perform the operation only if the resource has not been modified
 // since the specified date/time.
 func (client TaskClient) Delete(jobID string, taskID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.DeletePreparer(jobID, taskID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Delete", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeletePreparer(jobID, taskID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Delete", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Delete", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Delete", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Delete", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Delete", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeletePreparer prepares the Delete request.
 func (client TaskClient) DeletePreparer(jobID string, taskID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobId": autorest.Encode("path",jobID),
-    "taskId": autorest.Encode("path",taskID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobId":  autorest.Encode("path", jobID),
+		"taskId": autorest.Encode("path", taskID),
+	}
 
-        const APIVersion = "2016-07-01.3.1"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-07-01.3.1"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) DeleteSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client TaskClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Get for multi-instance tasks, information such as affinityId, executionInfo
@@ -382,101 +380,101 @@ func (client TaskClient) DeleteResponder(resp *http.Response) (result autorest.R
 // header to perform the operation only if the resource has not been modified
 // since the specified date/time.
 func (client TaskClient) Get(jobID string, taskID string, selectParameter string, expand string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result CloudTask, err error) {
-    req, err := client.GetPreparer(jobID, taskID, selectParameter, expand, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(jobID, taskID, selectParameter, expand, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client TaskClient) GetPreparer(jobID string, taskID string, selectParameter string, expand string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobId": autorest.Encode("path",jobID),
-    "taskId": autorest.Encode("path",taskID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobId":  autorest.Encode("path", jobID),
+		"taskId": autorest.Encode("path", taskID),
+	}
 
-        const APIVersion = "2016-07-01.3.1"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(expand) > 0 {
-        queryParameters["$expand"] = autorest.Encode("query",expand)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-07-01.3.1"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client TaskClient) GetResponder(resp *http.Response) (result CloudTask, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List for multi-instance tasks, information such as affinityId, executionInfo
@@ -495,123 +493,123 @@ func (client TaskClient) GetResponder(resp *http.Response) (result CloudTask, er
 // time the request was issued. If not specified, this header will be
 // automatically populated with the current system clock time.
 func (client TaskClient) List(jobID string, filter string, selectParameter string, expand string, maxResults *int32, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result CloudTaskListResult, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: maxResults,
-     Constraints: []validation.Constraint{	{Target: "maxResults", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil },
-    	{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.TaskClient","List")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: maxResults,
+			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.TaskClient", "List")
+	}
 
-    req, err := client.ListPreparer(jobID, filter, selectParameter, expand, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "List", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListPreparer(jobID, filter, selectParameter, expand, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "List", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "List", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "List", resp, "Failure responding to request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "List", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListPreparer prepares the List request.
 func (client TaskClient) ListPreparer(jobID string, filter string, selectParameter string, expand string, maxResults *int32, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobId": autorest.Encode("path",jobID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobId": autorest.Encode("path", jobID),
+	}
 
-        const APIVersion = "2016-07-01.3.1"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(expand) > 0 {
-        queryParameters["$expand"] = autorest.Encode("query",expand)
-    }
-    if maxResults != nil {
-        queryParameters["maxresults"] = autorest.Encode("query",*maxResults)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-07-01.3.1"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+	if maxResults != nil {
+		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/tasks",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/tasks", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) ListSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client TaskClient) ListResponder(resp *http.Response) (result CloudTaskListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListNextResults retrieves the next set of results, if any.
 func (client TaskClient) ListNextResults(lastResults CloudTaskListResult) (result CloudTaskListResult, err error) {
-    req, err := lastResults.CloudTaskListResultPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "batchservice.TaskClient", "List", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.CloudTaskListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "batchservice.TaskClient", "List", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "batchservice.TaskClient", "List", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "batchservice.TaskClient", "List", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "List", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "List", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListSubtasks if the task is not a multi-instance task then this returns an
@@ -627,82 +625,82 @@ func (client TaskClient) ListNextResults(lastResults CloudTaskListResult) (resul
 // time the request was issued. If not specified, this header will be
 // automatically populated with the current system clock time.
 func (client TaskClient) ListSubtasks(jobID string, taskID string, selectParameter string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result CloudTaskListSubtasksResult, err error) {
-    req, err := client.ListSubtasksPreparer(jobID, taskID, selectParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "ListSubtasks", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListSubtasksPreparer(jobID, taskID, selectParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "ListSubtasks", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSubtasksSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "ListSubtasks", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSubtasksSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "ListSubtasks", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListSubtasksResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "ListSubtasks", resp, "Failure responding to request")
-    }
+	result, err = client.ListSubtasksResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "ListSubtasks", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListSubtasksPreparer prepares the ListSubtasks request.
 func (client TaskClient) ListSubtasksPreparer(jobID string, taskID string, selectParameter string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobId": autorest.Encode("path",jobID),
-    "taskId": autorest.Encode("path",taskID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobId":  autorest.Encode("path", jobID),
+		"taskId": autorest.Encode("path", taskID),
+	}
 
-        const APIVersion = "2016-07-01.3.1"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-07-01.3.1"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/subtasksinfo",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/subtasksinfo", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSubtasksSender sends the ListSubtasks request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) ListSubtasksSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListSubtasksResponder handles the response to the ListSubtasks request. The method always
 // closes the http.Response Body.
 func (client TaskClient) ListSubtasksResponder(resp *http.Response) (result CloudTaskListSubtasksResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Reactivate reactivation makes a task eligible to be retried again up to its
@@ -731,94 +729,94 @@ func (client TaskClient) ListSubtasksResponder(resp *http.Response) (result Clou
 // header to perform the operation only if the resource has not been modified
 // since the specified date/time.
 func (client TaskClient) Reactivate(jobID string, taskID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.ReactivatePreparer(jobID, taskID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Reactivate", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ReactivatePreparer(jobID, taskID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Reactivate", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ReactivateSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Reactivate", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ReactivateSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Reactivate", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ReactivateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Reactivate", resp, "Failure responding to request")
-    }
+	result, err = client.ReactivateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Reactivate", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ReactivatePreparer prepares the Reactivate request.
 func (client TaskClient) ReactivatePreparer(jobID string, taskID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobId": autorest.Encode("path",jobID),
-    "taskId": autorest.Encode("path",taskID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobId":  autorest.Encode("path", jobID),
+		"taskId": autorest.Encode("path", taskID),
+	}
 
-        const APIVersion = "2016-07-01.3.1"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-07-01.3.1"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/reactivate",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/reactivate", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ReactivateSender sends the Reactivate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) ReactivateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ReactivateResponder handles the response to the Reactivate request. The method always
 // closes the http.Response Body.
 func (client TaskClient) ReactivateResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Terminate when the task has been terminated, it moves to the completed
@@ -844,94 +842,94 @@ func (client TaskClient) ReactivateResponder(resp *http.Response) (result autore
 // header to perform the operation only if the resource has not been modified
 // since the specified date/time.
 func (client TaskClient) Terminate(jobID string, taskID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.TerminatePreparer(jobID, taskID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Terminate", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.TerminatePreparer(jobID, taskID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Terminate", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.TerminateSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Terminate", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.TerminateSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Terminate", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.TerminateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Terminate", resp, "Failure responding to request")
-    }
+	result, err = client.TerminateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Terminate", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // TerminatePreparer prepares the Terminate request.
 func (client TaskClient) TerminatePreparer(jobID string, taskID string, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobId": autorest.Encode("path",jobID),
-    "taskId": autorest.Encode("path",taskID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobId":  autorest.Encode("path", jobID),
+		"taskId": autorest.Encode("path", taskID),
+	}
 
-        const APIVersion = "2016-07-01.3.1"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-07-01.3.1"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/terminate",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/terminate", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // TerminateSender sends the Terminate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) TerminateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // TerminateResponder handles the response to the Terminate request. The method always
 // closes the http.Response Body.
 func (client TaskClient) TerminateResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Update updates the properties of the specified task.
@@ -954,95 +952,94 @@ func (client TaskClient) TerminateResponder(resp *http.Response) (result autores
 // header to perform the operation only if the resource has not been modified
 // since the specified date/time.
 func (client TaskClient) Update(jobID string, taskID string, taskUpdateParameter TaskUpdateParameter, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.UpdatePreparer(jobID, taskID, taskUpdateParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Update", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.UpdatePreparer(jobID, taskID, taskUpdateParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Update", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.UpdateSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Update", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Update", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.UpdateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Update", resp, "Failure responding to request")
-    }
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.TaskClient", "Update", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // UpdatePreparer prepares the Update request.
 func (client TaskClient) UpdatePreparer(jobID string, taskID string, taskUpdateParameter TaskUpdateParameter, timeout *int32, clientRequestID string, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobId": autorest.Encode("path",jobID),
-    "taskId": autorest.Encode("path",taskID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobId":  autorest.Encode("path", jobID),
+		"taskId": autorest.Encode("path", taskID),
+	}
 
-        const APIVersion = "2016-07-01.3.1"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2016-07-01.3.1"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}",pathParameters),
-                        autorest.WithJSON(taskUpdateParameter),
-                        autorest.WithQueryParameters(queryParameters))
-    if len(clientRequestID) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}", pathParameters),
+		autorest.WithJSON(taskUpdateParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if len(clientRequestID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client TaskClient) UpdateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client TaskClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
-

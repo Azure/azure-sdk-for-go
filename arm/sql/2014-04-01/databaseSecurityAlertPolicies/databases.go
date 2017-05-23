@@ -19,26 +19,27 @@ package databasesecurityalertpolicies
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // DatabasesClient is the provides create, read and update functionality for
 // database Threat Detection policies.
 type DatabasesClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewDatabasesClient creates an instance of the DatabasesClient client.
 func NewDatabasesClient(subscriptionID string) DatabasesClient {
-        return NewDatabasesClientWithBaseURI(DefaultBaseURI, subscriptionID)
-        }
+	return NewDatabasesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
 
 // NewDatabasesClientWithBaseURI creates an instance of the DatabasesClient
 // client.
-    func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
-        return DatabasesClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
+	return DatabasesClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // CreateOrUpdateThreatDetectionPolicy creates or updates a database's threat
 // detection policy.
@@ -49,68 +50,68 @@ func NewDatabasesClient(subscriptionID string) DatabasesClient {
 // of the database for which database Threat Detection policy is defined.
 // parameters is the database Threat Detection policy.
 func (client DatabasesClient) CreateOrUpdateThreatDetectionPolicy(resourceGroupName string, serverName string, databaseName string, parameters DatabaseSecurityAlertPolicy) (result DatabaseSecurityAlertPolicy, err error) {
-    req, err := client.CreateOrUpdateThreatDetectionPolicyPreparer(resourceGroupName, serverName, databaseName, parameters)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "databasesecurityalertpolicies.DatabasesClient", "CreateOrUpdateThreatDetectionPolicy", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CreateOrUpdateThreatDetectionPolicyPreparer(resourceGroupName, serverName, databaseName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "databasesecurityalertpolicies.DatabasesClient", "CreateOrUpdateThreatDetectionPolicy", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CreateOrUpdateThreatDetectionPolicySender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "databasesecurityalertpolicies.DatabasesClient", "CreateOrUpdateThreatDetectionPolicy", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CreateOrUpdateThreatDetectionPolicySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "databasesecurityalertpolicies.DatabasesClient", "CreateOrUpdateThreatDetectionPolicy", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CreateOrUpdateThreatDetectionPolicyResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "databasesecurityalertpolicies.DatabasesClient", "CreateOrUpdateThreatDetectionPolicy", resp, "Failure responding to request")
-    }
+	result, err = client.CreateOrUpdateThreatDetectionPolicyResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "databasesecurityalertpolicies.DatabasesClient", "CreateOrUpdateThreatDetectionPolicy", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CreateOrUpdateThreatDetectionPolicyPreparer prepares the CreateOrUpdateThreatDetectionPolicy request.
 func (client DatabasesClient) CreateOrUpdateThreatDetectionPolicyPreparer(resourceGroupName string, serverName string, databaseName string, parameters DatabaseSecurityAlertPolicy) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/default",pathParameters),
-                        autorest.WithJSON(parameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/default", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // CreateOrUpdateThreatDetectionPolicySender sends the CreateOrUpdateThreatDetectionPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) CreateOrUpdateThreatDetectionPolicySender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateThreatDetectionPolicyResponder handles the response to the CreateOrUpdateThreatDetectionPolicy request. The method always
 // closes the http.Response Body.
 func (client DatabasesClient) CreateOrUpdateThreatDetectionPolicyResponder(resp *http.Response) (result DatabaseSecurityAlertPolicy, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetThreatDetectionPolicy gets a database's threat detection policy.
@@ -120,65 +121,64 @@ func (client DatabasesClient) CreateOrUpdateThreatDetectionPolicyResponder(resp 
 // the portal. serverName is the name of the server. databaseName is the name
 // of the database for which database Threat Detection policy is defined.
 func (client DatabasesClient) GetThreatDetectionPolicy(resourceGroupName string, serverName string, databaseName string) (result DatabaseSecurityAlertPolicy, err error) {
-    req, err := client.GetThreatDetectionPolicyPreparer(resourceGroupName, serverName, databaseName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "databasesecurityalertpolicies.DatabasesClient", "GetThreatDetectionPolicy", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetThreatDetectionPolicyPreparer(resourceGroupName, serverName, databaseName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "databasesecurityalertpolicies.DatabasesClient", "GetThreatDetectionPolicy", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetThreatDetectionPolicySender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "databasesecurityalertpolicies.DatabasesClient", "GetThreatDetectionPolicy", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetThreatDetectionPolicySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "databasesecurityalertpolicies.DatabasesClient", "GetThreatDetectionPolicy", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetThreatDetectionPolicyResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "databasesecurityalertpolicies.DatabasesClient", "GetThreatDetectionPolicy", resp, "Failure responding to request")
-    }
+	result, err = client.GetThreatDetectionPolicyResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "databasesecurityalertpolicies.DatabasesClient", "GetThreatDetectionPolicy", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetThreatDetectionPolicyPreparer prepares the GetThreatDetectionPolicy request.
 func (client DatabasesClient) GetThreatDetectionPolicyPreparer(resourceGroupName string, serverName string, databaseName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/default",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/default", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetThreatDetectionPolicySender sends the GetThreatDetectionPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) GetThreatDetectionPolicySender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetThreatDetectionPolicyResponder handles the response to the GetThreatDetectionPolicy request. The method always
 // closes the http.Response Body.
 func (client DatabasesClient) GetThreatDetectionPolicyResponder(resp *http.Response) (result DatabaseSecurityAlertPolicy, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

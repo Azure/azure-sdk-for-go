@@ -19,8 +19,8 @@ package searchservice
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // CjkBigramTokenFilterScripts enumerates the values for cjk bigram token
@@ -28,16 +28,16 @@ import (
 type CjkBigramTokenFilterScripts string
 
 const (
-    // Han specifies the han state for cjk bigram token filter scripts.
-    Han CjkBigramTokenFilterScripts = "han"
-    // Hangul specifies the hangul state for cjk bigram token filter scripts.
-    Hangul CjkBigramTokenFilterScripts = "hangul"
-    // Hiragana specifies the hiragana state for cjk bigram token filter
-    // scripts.
-    Hiragana CjkBigramTokenFilterScripts = "hiragana"
-    // Katakana specifies the katakana state for cjk bigram token filter
-    // scripts.
-    Katakana CjkBigramTokenFilterScripts = "katakana"
+	// Han specifies the han state for cjk bigram token filter scripts.
+	Han CjkBigramTokenFilterScripts = "han"
+	// Hangul specifies the hangul state for cjk bigram token filter scripts.
+	Hangul CjkBigramTokenFilterScripts = "hangul"
+	// Hiragana specifies the hiragana state for cjk bigram token filter
+	// scripts.
+	Hiragana CjkBigramTokenFilterScripts = "hiragana"
+	// Katakana specifies the katakana state for cjk bigram token filter
+	// scripts.
+	Katakana CjkBigramTokenFilterScripts = "katakana"
 )
 
 // EdgeNGramTokenFilterSide enumerates the values for edge n gram token filter
@@ -45,37 +45,37 @@ const (
 type EdgeNGramTokenFilterSide string
 
 const (
-    // Back specifies the back state for edge n gram token filter side.
-    Back EdgeNGramTokenFilterSide = "back"
-    // Front specifies the front state for edge n gram token filter side.
-    Front EdgeNGramTokenFilterSide = "front"
+	// Back specifies the back state for edge n gram token filter side.
+	Back EdgeNGramTokenFilterSide = "back"
+	// Front specifies the front state for edge n gram token filter side.
+	Front EdgeNGramTokenFilterSide = "front"
 )
 
 // IndexerExecutionStatus enumerates the values for indexer execution status.
 type IndexerExecutionStatus string
 
 const (
-    // InProgress specifies the in progress state for indexer execution status.
-    InProgress IndexerExecutionStatus = "inProgress"
-    // Reset specifies the reset state for indexer execution status.
-    Reset IndexerExecutionStatus = "reset"
-    // Success specifies the success state for indexer execution status.
-    Success IndexerExecutionStatus = "success"
-    // TransientFailure specifies the transient failure state for indexer
-    // execution status.
-    TransientFailure IndexerExecutionStatus = "transientFailure"
+	// InProgress specifies the in progress state for indexer execution status.
+	InProgress IndexerExecutionStatus = "inProgress"
+	// Reset specifies the reset state for indexer execution status.
+	Reset IndexerExecutionStatus = "reset"
+	// Success specifies the success state for indexer execution status.
+	Success IndexerExecutionStatus = "success"
+	// TransientFailure specifies the transient failure state for indexer
+	// execution status.
+	TransientFailure IndexerExecutionStatus = "transientFailure"
 )
 
 // IndexerStatus enumerates the values for indexer status.
 type IndexerStatus string
 
 const (
-    // Error specifies the error state for indexer status.
-    Error IndexerStatus = "error"
-    // Running specifies the running state for indexer status.
-    Running IndexerStatus = "running"
-    // Unknown specifies the unknown state for indexer status.
-    Unknown IndexerStatus = "unknown"
+	// Error specifies the error state for indexer status.
+	Error IndexerStatus = "error"
+	// Running specifies the running state for indexer status.
+	Running IndexerStatus = "running"
+	// Unknown specifies the unknown state for indexer status.
+	Unknown IndexerStatus = "unknown"
 )
 
 // MicrosoftStemmingTokenizerLanguage enumerates the values for microsoft
@@ -83,140 +83,140 @@ const (
 type MicrosoftStemmingTokenizerLanguage string
 
 const (
-    // Arabic specifies the arabic state for microsoft stemming tokenizer
-    // language.
-    Arabic MicrosoftStemmingTokenizerLanguage = "arabic"
-    // Bangla specifies the bangla state for microsoft stemming tokenizer
-    // language.
-    Bangla MicrosoftStemmingTokenizerLanguage = "bangla"
-    // Bulgarian specifies the bulgarian state for microsoft stemming tokenizer
-    // language.
-    Bulgarian MicrosoftStemmingTokenizerLanguage = "bulgarian"
-    // Catalan specifies the catalan state for microsoft stemming tokenizer
-    // language.
-    Catalan MicrosoftStemmingTokenizerLanguage = "catalan"
-    // Croatian specifies the croatian state for microsoft stemming tokenizer
-    // language.
-    Croatian MicrosoftStemmingTokenizerLanguage = "croatian"
-    // Czech specifies the czech state for microsoft stemming tokenizer
-    // language.
-    Czech MicrosoftStemmingTokenizerLanguage = "czech"
-    // Danish specifies the danish state for microsoft stemming tokenizer
-    // language.
-    Danish MicrosoftStemmingTokenizerLanguage = "danish"
-    // Dutch specifies the dutch state for microsoft stemming tokenizer
-    // language.
-    Dutch MicrosoftStemmingTokenizerLanguage = "dutch"
-    // English specifies the english state for microsoft stemming tokenizer
-    // language.
-    English MicrosoftStemmingTokenizerLanguage = "english"
-    // Estonian specifies the estonian state for microsoft stemming tokenizer
-    // language.
-    Estonian MicrosoftStemmingTokenizerLanguage = "estonian"
-    // Finnish specifies the finnish state for microsoft stemming tokenizer
-    // language.
-    Finnish MicrosoftStemmingTokenizerLanguage = "finnish"
-    // French specifies the french state for microsoft stemming tokenizer
-    // language.
-    French MicrosoftStemmingTokenizerLanguage = "french"
-    // German specifies the german state for microsoft stemming tokenizer
-    // language.
-    German MicrosoftStemmingTokenizerLanguage = "german"
-    // Greek specifies the greek state for microsoft stemming tokenizer
-    // language.
-    Greek MicrosoftStemmingTokenizerLanguage = "greek"
-    // Gujarati specifies the gujarati state for microsoft stemming tokenizer
-    // language.
-    Gujarati MicrosoftStemmingTokenizerLanguage = "gujarati"
-    // Hebrew specifies the hebrew state for microsoft stemming tokenizer
-    // language.
-    Hebrew MicrosoftStemmingTokenizerLanguage = "hebrew"
-    // Hindi specifies the hindi state for microsoft stemming tokenizer
-    // language.
-    Hindi MicrosoftStemmingTokenizerLanguage = "hindi"
-    // Hungarian specifies the hungarian state for microsoft stemming tokenizer
-    // language.
-    Hungarian MicrosoftStemmingTokenizerLanguage = "hungarian"
-    // Icelandic specifies the icelandic state for microsoft stemming tokenizer
-    // language.
-    Icelandic MicrosoftStemmingTokenizerLanguage = "icelandic"
-    // Indonesian specifies the indonesian state for microsoft stemming
-    // tokenizer language.
-    Indonesian MicrosoftStemmingTokenizerLanguage = "indonesian"
-    // Italian specifies the italian state for microsoft stemming tokenizer
-    // language.
-    Italian MicrosoftStemmingTokenizerLanguage = "italian"
-    // Kannada specifies the kannada state for microsoft stemming tokenizer
-    // language.
-    Kannada MicrosoftStemmingTokenizerLanguage = "kannada"
-    // Latvian specifies the latvian state for microsoft stemming tokenizer
-    // language.
-    Latvian MicrosoftStemmingTokenizerLanguage = "latvian"
-    // Lithuanian specifies the lithuanian state for microsoft stemming
-    // tokenizer language.
-    Lithuanian MicrosoftStemmingTokenizerLanguage = "lithuanian"
-    // Malay specifies the malay state for microsoft stemming tokenizer
-    // language.
-    Malay MicrosoftStemmingTokenizerLanguage = "malay"
-    // Malayalam specifies the malayalam state for microsoft stemming tokenizer
-    // language.
-    Malayalam MicrosoftStemmingTokenizerLanguage = "malayalam"
-    // Marathi specifies the marathi state for microsoft stemming tokenizer
-    // language.
-    Marathi MicrosoftStemmingTokenizerLanguage = "marathi"
-    // NorwegianBokmaal specifies the norwegian bokmaal state for microsoft
-    // stemming tokenizer language.
-    NorwegianBokmaal MicrosoftStemmingTokenizerLanguage = "norwegianBokmaal"
-    // Polish specifies the polish state for microsoft stemming tokenizer
-    // language.
-    Polish MicrosoftStemmingTokenizerLanguage = "polish"
-    // Portuguese specifies the portuguese state for microsoft stemming
-    // tokenizer language.
-    Portuguese MicrosoftStemmingTokenizerLanguage = "portuguese"
-    // PortugueseBrazilian specifies the portuguese brazilian state for
-    // microsoft stemming tokenizer language.
-    PortugueseBrazilian MicrosoftStemmingTokenizerLanguage = "portugueseBrazilian"
-    // Punjabi specifies the punjabi state for microsoft stemming tokenizer
-    // language.
-    Punjabi MicrosoftStemmingTokenizerLanguage = "punjabi"
-    // Romanian specifies the romanian state for microsoft stemming tokenizer
-    // language.
-    Romanian MicrosoftStemmingTokenizerLanguage = "romanian"
-    // Russian specifies the russian state for microsoft stemming tokenizer
-    // language.
-    Russian MicrosoftStemmingTokenizerLanguage = "russian"
-    // SerbianCyrillic specifies the serbian cyrillic state for microsoft
-    // stemming tokenizer language.
-    SerbianCyrillic MicrosoftStemmingTokenizerLanguage = "serbianCyrillic"
-    // SerbianLatin specifies the serbian latin state for microsoft stemming
-    // tokenizer language.
-    SerbianLatin MicrosoftStemmingTokenizerLanguage = "serbianLatin"
-    // Slovak specifies the slovak state for microsoft stemming tokenizer
-    // language.
-    Slovak MicrosoftStemmingTokenizerLanguage = "slovak"
-    // Slovenian specifies the slovenian state for microsoft stemming tokenizer
-    // language.
-    Slovenian MicrosoftStemmingTokenizerLanguage = "slovenian"
-    // Spanish specifies the spanish state for microsoft stemming tokenizer
-    // language.
-    Spanish MicrosoftStemmingTokenizerLanguage = "spanish"
-    // Swedish specifies the swedish state for microsoft stemming tokenizer
-    // language.
-    Swedish MicrosoftStemmingTokenizerLanguage = "swedish"
-    // Tamil specifies the tamil state for microsoft stemming tokenizer
-    // language.
-    Tamil MicrosoftStemmingTokenizerLanguage = "tamil"
-    // Telugu specifies the telugu state for microsoft stemming tokenizer
-    // language.
-    Telugu MicrosoftStemmingTokenizerLanguage = "telugu"
-    // Turkish specifies the turkish state for microsoft stemming tokenizer
-    // language.
-    Turkish MicrosoftStemmingTokenizerLanguage = "turkish"
-    // Ukrainian specifies the ukrainian state for microsoft stemming tokenizer
-    // language.
-    Ukrainian MicrosoftStemmingTokenizerLanguage = "ukrainian"
-    // Urdu specifies the urdu state for microsoft stemming tokenizer language.
-    Urdu MicrosoftStemmingTokenizerLanguage = "urdu"
+	// Arabic specifies the arabic state for microsoft stemming tokenizer
+	// language.
+	Arabic MicrosoftStemmingTokenizerLanguage = "arabic"
+	// Bangla specifies the bangla state for microsoft stemming tokenizer
+	// language.
+	Bangla MicrosoftStemmingTokenizerLanguage = "bangla"
+	// Bulgarian specifies the bulgarian state for microsoft stemming tokenizer
+	// language.
+	Bulgarian MicrosoftStemmingTokenizerLanguage = "bulgarian"
+	// Catalan specifies the catalan state for microsoft stemming tokenizer
+	// language.
+	Catalan MicrosoftStemmingTokenizerLanguage = "catalan"
+	// Croatian specifies the croatian state for microsoft stemming tokenizer
+	// language.
+	Croatian MicrosoftStemmingTokenizerLanguage = "croatian"
+	// Czech specifies the czech state for microsoft stemming tokenizer
+	// language.
+	Czech MicrosoftStemmingTokenizerLanguage = "czech"
+	// Danish specifies the danish state for microsoft stemming tokenizer
+	// language.
+	Danish MicrosoftStemmingTokenizerLanguage = "danish"
+	// Dutch specifies the dutch state for microsoft stemming tokenizer
+	// language.
+	Dutch MicrosoftStemmingTokenizerLanguage = "dutch"
+	// English specifies the english state for microsoft stemming tokenizer
+	// language.
+	English MicrosoftStemmingTokenizerLanguage = "english"
+	// Estonian specifies the estonian state for microsoft stemming tokenizer
+	// language.
+	Estonian MicrosoftStemmingTokenizerLanguage = "estonian"
+	// Finnish specifies the finnish state for microsoft stemming tokenizer
+	// language.
+	Finnish MicrosoftStemmingTokenizerLanguage = "finnish"
+	// French specifies the french state for microsoft stemming tokenizer
+	// language.
+	French MicrosoftStemmingTokenizerLanguage = "french"
+	// German specifies the german state for microsoft stemming tokenizer
+	// language.
+	German MicrosoftStemmingTokenizerLanguage = "german"
+	// Greek specifies the greek state for microsoft stemming tokenizer
+	// language.
+	Greek MicrosoftStemmingTokenizerLanguage = "greek"
+	// Gujarati specifies the gujarati state for microsoft stemming tokenizer
+	// language.
+	Gujarati MicrosoftStemmingTokenizerLanguage = "gujarati"
+	// Hebrew specifies the hebrew state for microsoft stemming tokenizer
+	// language.
+	Hebrew MicrosoftStemmingTokenizerLanguage = "hebrew"
+	// Hindi specifies the hindi state for microsoft stemming tokenizer
+	// language.
+	Hindi MicrosoftStemmingTokenizerLanguage = "hindi"
+	// Hungarian specifies the hungarian state for microsoft stemming tokenizer
+	// language.
+	Hungarian MicrosoftStemmingTokenizerLanguage = "hungarian"
+	// Icelandic specifies the icelandic state for microsoft stemming tokenizer
+	// language.
+	Icelandic MicrosoftStemmingTokenizerLanguage = "icelandic"
+	// Indonesian specifies the indonesian state for microsoft stemming
+	// tokenizer language.
+	Indonesian MicrosoftStemmingTokenizerLanguage = "indonesian"
+	// Italian specifies the italian state for microsoft stemming tokenizer
+	// language.
+	Italian MicrosoftStemmingTokenizerLanguage = "italian"
+	// Kannada specifies the kannada state for microsoft stemming tokenizer
+	// language.
+	Kannada MicrosoftStemmingTokenizerLanguage = "kannada"
+	// Latvian specifies the latvian state for microsoft stemming tokenizer
+	// language.
+	Latvian MicrosoftStemmingTokenizerLanguage = "latvian"
+	// Lithuanian specifies the lithuanian state for microsoft stemming
+	// tokenizer language.
+	Lithuanian MicrosoftStemmingTokenizerLanguage = "lithuanian"
+	// Malay specifies the malay state for microsoft stemming tokenizer
+	// language.
+	Malay MicrosoftStemmingTokenizerLanguage = "malay"
+	// Malayalam specifies the malayalam state for microsoft stemming tokenizer
+	// language.
+	Malayalam MicrosoftStemmingTokenizerLanguage = "malayalam"
+	// Marathi specifies the marathi state for microsoft stemming tokenizer
+	// language.
+	Marathi MicrosoftStemmingTokenizerLanguage = "marathi"
+	// NorwegianBokmaal specifies the norwegian bokmaal state for microsoft
+	// stemming tokenizer language.
+	NorwegianBokmaal MicrosoftStemmingTokenizerLanguage = "norwegianBokmaal"
+	// Polish specifies the polish state for microsoft stemming tokenizer
+	// language.
+	Polish MicrosoftStemmingTokenizerLanguage = "polish"
+	// Portuguese specifies the portuguese state for microsoft stemming
+	// tokenizer language.
+	Portuguese MicrosoftStemmingTokenizerLanguage = "portuguese"
+	// PortugueseBrazilian specifies the portuguese brazilian state for
+	// microsoft stemming tokenizer language.
+	PortugueseBrazilian MicrosoftStemmingTokenizerLanguage = "portugueseBrazilian"
+	// Punjabi specifies the punjabi state for microsoft stemming tokenizer
+	// language.
+	Punjabi MicrosoftStemmingTokenizerLanguage = "punjabi"
+	// Romanian specifies the romanian state for microsoft stemming tokenizer
+	// language.
+	Romanian MicrosoftStemmingTokenizerLanguage = "romanian"
+	// Russian specifies the russian state for microsoft stemming tokenizer
+	// language.
+	Russian MicrosoftStemmingTokenizerLanguage = "russian"
+	// SerbianCyrillic specifies the serbian cyrillic state for microsoft
+	// stemming tokenizer language.
+	SerbianCyrillic MicrosoftStemmingTokenizerLanguage = "serbianCyrillic"
+	// SerbianLatin specifies the serbian latin state for microsoft stemming
+	// tokenizer language.
+	SerbianLatin MicrosoftStemmingTokenizerLanguage = "serbianLatin"
+	// Slovak specifies the slovak state for microsoft stemming tokenizer
+	// language.
+	Slovak MicrosoftStemmingTokenizerLanguage = "slovak"
+	// Slovenian specifies the slovenian state for microsoft stemming tokenizer
+	// language.
+	Slovenian MicrosoftStemmingTokenizerLanguage = "slovenian"
+	// Spanish specifies the spanish state for microsoft stemming tokenizer
+	// language.
+	Spanish MicrosoftStemmingTokenizerLanguage = "spanish"
+	// Swedish specifies the swedish state for microsoft stemming tokenizer
+	// language.
+	Swedish MicrosoftStemmingTokenizerLanguage = "swedish"
+	// Tamil specifies the tamil state for microsoft stemming tokenizer
+	// language.
+	Tamil MicrosoftStemmingTokenizerLanguage = "tamil"
+	// Telugu specifies the telugu state for microsoft stemming tokenizer
+	// language.
+	Telugu MicrosoftStemmingTokenizerLanguage = "telugu"
+	// Turkish specifies the turkish state for microsoft stemming tokenizer
+	// language.
+	Turkish MicrosoftStemmingTokenizerLanguage = "turkish"
+	// Ukrainian specifies the ukrainian state for microsoft stemming tokenizer
+	// language.
+	Ukrainian MicrosoftStemmingTokenizerLanguage = "ukrainian"
+	// Urdu specifies the urdu state for microsoft stemming tokenizer language.
+	Urdu MicrosoftStemmingTokenizerLanguage = "urdu"
 )
 
 // MicrosoftTokenizerLanguage enumerates the values for microsoft tokenizer
@@ -224,167 +224,167 @@ const (
 type MicrosoftTokenizerLanguage string
 
 const (
-    // MicrosoftTokenizerLanguageBangla specifies the microsoft tokenizer
-    // language bangla state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageBangla MicrosoftTokenizerLanguage = "bangla"
-    // MicrosoftTokenizerLanguageBulgarian specifies the microsoft tokenizer
-    // language bulgarian state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageBulgarian MicrosoftTokenizerLanguage = "bulgarian"
-    // MicrosoftTokenizerLanguageCatalan specifies the microsoft tokenizer
-    // language catalan state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageCatalan MicrosoftTokenizerLanguage = "catalan"
-    // MicrosoftTokenizerLanguageChineseSimplified specifies the microsoft
-    // tokenizer language chinese simplified state for microsoft tokenizer
-    // language.
-    MicrosoftTokenizerLanguageChineseSimplified MicrosoftTokenizerLanguage = "chineseSimplified"
-    // MicrosoftTokenizerLanguageChineseTraditional specifies the microsoft
-    // tokenizer language chinese traditional state for microsoft tokenizer
-    // language.
-    MicrosoftTokenizerLanguageChineseTraditional MicrosoftTokenizerLanguage = "chineseTraditional"
-    // MicrosoftTokenizerLanguageCroatian specifies the microsoft tokenizer
-    // language croatian state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageCroatian MicrosoftTokenizerLanguage = "croatian"
-    // MicrosoftTokenizerLanguageCzech specifies the microsoft tokenizer
-    // language czech state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageCzech MicrosoftTokenizerLanguage = "czech"
-    // MicrosoftTokenizerLanguageDanish specifies the microsoft tokenizer
-    // language danish state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageDanish MicrosoftTokenizerLanguage = "danish"
-    // MicrosoftTokenizerLanguageDutch specifies the microsoft tokenizer
-    // language dutch state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageDutch MicrosoftTokenizerLanguage = "dutch"
-    // MicrosoftTokenizerLanguageEnglish specifies the microsoft tokenizer
-    // language english state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageEnglish MicrosoftTokenizerLanguage = "english"
-    // MicrosoftTokenizerLanguageFrench specifies the microsoft tokenizer
-    // language french state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageFrench MicrosoftTokenizerLanguage = "french"
-    // MicrosoftTokenizerLanguageGerman specifies the microsoft tokenizer
-    // language german state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageGerman MicrosoftTokenizerLanguage = "german"
-    // MicrosoftTokenizerLanguageGreek specifies the microsoft tokenizer
-    // language greek state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageGreek MicrosoftTokenizerLanguage = "greek"
-    // MicrosoftTokenizerLanguageGujarati specifies the microsoft tokenizer
-    // language gujarati state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageGujarati MicrosoftTokenizerLanguage = "gujarati"
-    // MicrosoftTokenizerLanguageHindi specifies the microsoft tokenizer
-    // language hindi state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageHindi MicrosoftTokenizerLanguage = "hindi"
-    // MicrosoftTokenizerLanguageIcelandic specifies the microsoft tokenizer
-    // language icelandic state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageIcelandic MicrosoftTokenizerLanguage = "icelandic"
-    // MicrosoftTokenizerLanguageIndonesian specifies the microsoft tokenizer
-    // language indonesian state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageIndonesian MicrosoftTokenizerLanguage = "indonesian"
-    // MicrosoftTokenizerLanguageItalian specifies the microsoft tokenizer
-    // language italian state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageItalian MicrosoftTokenizerLanguage = "italian"
-    // MicrosoftTokenizerLanguageJapanese specifies the microsoft tokenizer
-    // language japanese state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageJapanese MicrosoftTokenizerLanguage = "japanese"
-    // MicrosoftTokenizerLanguageKannada specifies the microsoft tokenizer
-    // language kannada state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageKannada MicrosoftTokenizerLanguage = "kannada"
-    // MicrosoftTokenizerLanguageKorean specifies the microsoft tokenizer
-    // language korean state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageKorean MicrosoftTokenizerLanguage = "korean"
-    // MicrosoftTokenizerLanguageMalay specifies the microsoft tokenizer
-    // language malay state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageMalay MicrosoftTokenizerLanguage = "malay"
-    // MicrosoftTokenizerLanguageMalayalam specifies the microsoft tokenizer
-    // language malayalam state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageMalayalam MicrosoftTokenizerLanguage = "malayalam"
-    // MicrosoftTokenizerLanguageMarathi specifies the microsoft tokenizer
-    // language marathi state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageMarathi MicrosoftTokenizerLanguage = "marathi"
-    // MicrosoftTokenizerLanguageNorwegianBokmaal specifies the microsoft
-    // tokenizer language norwegian bokmaal state for microsoft tokenizer
-    // language.
-    MicrosoftTokenizerLanguageNorwegianBokmaal MicrosoftTokenizerLanguage = "norwegianBokmaal"
-    // MicrosoftTokenizerLanguagePolish specifies the microsoft tokenizer
-    // language polish state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguagePolish MicrosoftTokenizerLanguage = "polish"
-    // MicrosoftTokenizerLanguagePortuguese specifies the microsoft tokenizer
-    // language portuguese state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguagePortuguese MicrosoftTokenizerLanguage = "portuguese"
-    // MicrosoftTokenizerLanguagePortugueseBrazilian specifies the microsoft
-    // tokenizer language portuguese brazilian state for microsoft tokenizer
-    // language.
-    MicrosoftTokenizerLanguagePortugueseBrazilian MicrosoftTokenizerLanguage = "portugueseBrazilian"
-    // MicrosoftTokenizerLanguagePunjabi specifies the microsoft tokenizer
-    // language punjabi state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguagePunjabi MicrosoftTokenizerLanguage = "punjabi"
-    // MicrosoftTokenizerLanguageRomanian specifies the microsoft tokenizer
-    // language romanian state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageRomanian MicrosoftTokenizerLanguage = "romanian"
-    // MicrosoftTokenizerLanguageRussian specifies the microsoft tokenizer
-    // language russian state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageRussian MicrosoftTokenizerLanguage = "russian"
-    // MicrosoftTokenizerLanguageSerbianCyrillic specifies the microsoft
-    // tokenizer language serbian cyrillic state for microsoft tokenizer
-    // language.
-    MicrosoftTokenizerLanguageSerbianCyrillic MicrosoftTokenizerLanguage = "serbianCyrillic"
-    // MicrosoftTokenizerLanguageSerbianLatin specifies the microsoft tokenizer
-    // language serbian latin state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageSerbianLatin MicrosoftTokenizerLanguage = "serbianLatin"
-    // MicrosoftTokenizerLanguageSlovenian specifies the microsoft tokenizer
-    // language slovenian state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageSlovenian MicrosoftTokenizerLanguage = "slovenian"
-    // MicrosoftTokenizerLanguageSpanish specifies the microsoft tokenizer
-    // language spanish state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageSpanish MicrosoftTokenizerLanguage = "spanish"
-    // MicrosoftTokenizerLanguageSwedish specifies the microsoft tokenizer
-    // language swedish state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageSwedish MicrosoftTokenizerLanguage = "swedish"
-    // MicrosoftTokenizerLanguageTamil specifies the microsoft tokenizer
-    // language tamil state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageTamil MicrosoftTokenizerLanguage = "tamil"
-    // MicrosoftTokenizerLanguageTelugu specifies the microsoft tokenizer
-    // language telugu state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageTelugu MicrosoftTokenizerLanguage = "telugu"
-    // MicrosoftTokenizerLanguageThai specifies the microsoft tokenizer
-    // language thai state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageThai MicrosoftTokenizerLanguage = "thai"
-    // MicrosoftTokenizerLanguageUkrainian specifies the microsoft tokenizer
-    // language ukrainian state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageUkrainian MicrosoftTokenizerLanguage = "ukrainian"
-    // MicrosoftTokenizerLanguageUrdu specifies the microsoft tokenizer
-    // language urdu state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageUrdu MicrosoftTokenizerLanguage = "urdu"
-    // MicrosoftTokenizerLanguageVietnamese specifies the microsoft tokenizer
-    // language vietnamese state for microsoft tokenizer language.
-    MicrosoftTokenizerLanguageVietnamese MicrosoftTokenizerLanguage = "vietnamese"
+	// MicrosoftTokenizerLanguageBangla specifies the microsoft tokenizer
+	// language bangla state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageBangla MicrosoftTokenizerLanguage = "bangla"
+	// MicrosoftTokenizerLanguageBulgarian specifies the microsoft tokenizer
+	// language bulgarian state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageBulgarian MicrosoftTokenizerLanguage = "bulgarian"
+	// MicrosoftTokenizerLanguageCatalan specifies the microsoft tokenizer
+	// language catalan state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageCatalan MicrosoftTokenizerLanguage = "catalan"
+	// MicrosoftTokenizerLanguageChineseSimplified specifies the microsoft
+	// tokenizer language chinese simplified state for microsoft tokenizer
+	// language.
+	MicrosoftTokenizerLanguageChineseSimplified MicrosoftTokenizerLanguage = "chineseSimplified"
+	// MicrosoftTokenizerLanguageChineseTraditional specifies the microsoft
+	// tokenizer language chinese traditional state for microsoft tokenizer
+	// language.
+	MicrosoftTokenizerLanguageChineseTraditional MicrosoftTokenizerLanguage = "chineseTraditional"
+	// MicrosoftTokenizerLanguageCroatian specifies the microsoft tokenizer
+	// language croatian state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageCroatian MicrosoftTokenizerLanguage = "croatian"
+	// MicrosoftTokenizerLanguageCzech specifies the microsoft tokenizer
+	// language czech state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageCzech MicrosoftTokenizerLanguage = "czech"
+	// MicrosoftTokenizerLanguageDanish specifies the microsoft tokenizer
+	// language danish state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageDanish MicrosoftTokenizerLanguage = "danish"
+	// MicrosoftTokenizerLanguageDutch specifies the microsoft tokenizer
+	// language dutch state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageDutch MicrosoftTokenizerLanguage = "dutch"
+	// MicrosoftTokenizerLanguageEnglish specifies the microsoft tokenizer
+	// language english state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageEnglish MicrosoftTokenizerLanguage = "english"
+	// MicrosoftTokenizerLanguageFrench specifies the microsoft tokenizer
+	// language french state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageFrench MicrosoftTokenizerLanguage = "french"
+	// MicrosoftTokenizerLanguageGerman specifies the microsoft tokenizer
+	// language german state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageGerman MicrosoftTokenizerLanguage = "german"
+	// MicrosoftTokenizerLanguageGreek specifies the microsoft tokenizer
+	// language greek state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageGreek MicrosoftTokenizerLanguage = "greek"
+	// MicrosoftTokenizerLanguageGujarati specifies the microsoft tokenizer
+	// language gujarati state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageGujarati MicrosoftTokenizerLanguage = "gujarati"
+	// MicrosoftTokenizerLanguageHindi specifies the microsoft tokenizer
+	// language hindi state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageHindi MicrosoftTokenizerLanguage = "hindi"
+	// MicrosoftTokenizerLanguageIcelandic specifies the microsoft tokenizer
+	// language icelandic state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageIcelandic MicrosoftTokenizerLanguage = "icelandic"
+	// MicrosoftTokenizerLanguageIndonesian specifies the microsoft tokenizer
+	// language indonesian state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageIndonesian MicrosoftTokenizerLanguage = "indonesian"
+	// MicrosoftTokenizerLanguageItalian specifies the microsoft tokenizer
+	// language italian state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageItalian MicrosoftTokenizerLanguage = "italian"
+	// MicrosoftTokenizerLanguageJapanese specifies the microsoft tokenizer
+	// language japanese state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageJapanese MicrosoftTokenizerLanguage = "japanese"
+	// MicrosoftTokenizerLanguageKannada specifies the microsoft tokenizer
+	// language kannada state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageKannada MicrosoftTokenizerLanguage = "kannada"
+	// MicrosoftTokenizerLanguageKorean specifies the microsoft tokenizer
+	// language korean state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageKorean MicrosoftTokenizerLanguage = "korean"
+	// MicrosoftTokenizerLanguageMalay specifies the microsoft tokenizer
+	// language malay state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageMalay MicrosoftTokenizerLanguage = "malay"
+	// MicrosoftTokenizerLanguageMalayalam specifies the microsoft tokenizer
+	// language malayalam state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageMalayalam MicrosoftTokenizerLanguage = "malayalam"
+	// MicrosoftTokenizerLanguageMarathi specifies the microsoft tokenizer
+	// language marathi state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageMarathi MicrosoftTokenizerLanguage = "marathi"
+	// MicrosoftTokenizerLanguageNorwegianBokmaal specifies the microsoft
+	// tokenizer language norwegian bokmaal state for microsoft tokenizer
+	// language.
+	MicrosoftTokenizerLanguageNorwegianBokmaal MicrosoftTokenizerLanguage = "norwegianBokmaal"
+	// MicrosoftTokenizerLanguagePolish specifies the microsoft tokenizer
+	// language polish state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguagePolish MicrosoftTokenizerLanguage = "polish"
+	// MicrosoftTokenizerLanguagePortuguese specifies the microsoft tokenizer
+	// language portuguese state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguagePortuguese MicrosoftTokenizerLanguage = "portuguese"
+	// MicrosoftTokenizerLanguagePortugueseBrazilian specifies the microsoft
+	// tokenizer language portuguese brazilian state for microsoft tokenizer
+	// language.
+	MicrosoftTokenizerLanguagePortugueseBrazilian MicrosoftTokenizerLanguage = "portugueseBrazilian"
+	// MicrosoftTokenizerLanguagePunjabi specifies the microsoft tokenizer
+	// language punjabi state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguagePunjabi MicrosoftTokenizerLanguage = "punjabi"
+	// MicrosoftTokenizerLanguageRomanian specifies the microsoft tokenizer
+	// language romanian state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageRomanian MicrosoftTokenizerLanguage = "romanian"
+	// MicrosoftTokenizerLanguageRussian specifies the microsoft tokenizer
+	// language russian state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageRussian MicrosoftTokenizerLanguage = "russian"
+	// MicrosoftTokenizerLanguageSerbianCyrillic specifies the microsoft
+	// tokenizer language serbian cyrillic state for microsoft tokenizer
+	// language.
+	MicrosoftTokenizerLanguageSerbianCyrillic MicrosoftTokenizerLanguage = "serbianCyrillic"
+	// MicrosoftTokenizerLanguageSerbianLatin specifies the microsoft tokenizer
+	// language serbian latin state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageSerbianLatin MicrosoftTokenizerLanguage = "serbianLatin"
+	// MicrosoftTokenizerLanguageSlovenian specifies the microsoft tokenizer
+	// language slovenian state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageSlovenian MicrosoftTokenizerLanguage = "slovenian"
+	// MicrosoftTokenizerLanguageSpanish specifies the microsoft tokenizer
+	// language spanish state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageSpanish MicrosoftTokenizerLanguage = "spanish"
+	// MicrosoftTokenizerLanguageSwedish specifies the microsoft tokenizer
+	// language swedish state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageSwedish MicrosoftTokenizerLanguage = "swedish"
+	// MicrosoftTokenizerLanguageTamil specifies the microsoft tokenizer
+	// language tamil state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageTamil MicrosoftTokenizerLanguage = "tamil"
+	// MicrosoftTokenizerLanguageTelugu specifies the microsoft tokenizer
+	// language telugu state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageTelugu MicrosoftTokenizerLanguage = "telugu"
+	// MicrosoftTokenizerLanguageThai specifies the microsoft tokenizer
+	// language thai state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageThai MicrosoftTokenizerLanguage = "thai"
+	// MicrosoftTokenizerLanguageUkrainian specifies the microsoft tokenizer
+	// language ukrainian state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageUkrainian MicrosoftTokenizerLanguage = "ukrainian"
+	// MicrosoftTokenizerLanguageUrdu specifies the microsoft tokenizer
+	// language urdu state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageUrdu MicrosoftTokenizerLanguage = "urdu"
+	// MicrosoftTokenizerLanguageVietnamese specifies the microsoft tokenizer
+	// language vietnamese state for microsoft tokenizer language.
+	MicrosoftTokenizerLanguageVietnamese MicrosoftTokenizerLanguage = "vietnamese"
 )
 
 // PhoneticEncoder enumerates the values for phonetic encoder.
 type PhoneticEncoder string
 
 const (
-    // BeiderMorse specifies the beider morse state for phonetic encoder.
-    BeiderMorse PhoneticEncoder = "beiderMorse"
-    // Caverphone1 specifies the caverphone 1 state for phonetic encoder.
-    Caverphone1 PhoneticEncoder = "caverphone1"
-    // Caverphone2 specifies the caverphone 2 state for phonetic encoder.
-    Caverphone2 PhoneticEncoder = "caverphone2"
-    // Cologne specifies the cologne state for phonetic encoder.
-    Cologne PhoneticEncoder = "cologne"
-    // DoubleMetaphone specifies the double metaphone state for phonetic
-    // encoder.
-    DoubleMetaphone PhoneticEncoder = "doubleMetaphone"
-    // HaasePhonetik specifies the haase phonetik state for phonetic encoder.
-    HaasePhonetik PhoneticEncoder = "haasePhonetik"
-    // KoelnerPhonetik specifies the koelner phonetik state for phonetic
-    // encoder.
-    KoelnerPhonetik PhoneticEncoder = "koelnerPhonetik"
-    // Metaphone specifies the metaphone state for phonetic encoder.
-    Metaphone PhoneticEncoder = "metaphone"
-    // Nysiis specifies the nysiis state for phonetic encoder.
-    Nysiis PhoneticEncoder = "nysiis"
-    // RefinedSoundex specifies the refined soundex state for phonetic encoder.
-    RefinedSoundex PhoneticEncoder = "refinedSoundex"
-    // Soundex specifies the soundex state for phonetic encoder.
-    Soundex PhoneticEncoder = "soundex"
+	// BeiderMorse specifies the beider morse state for phonetic encoder.
+	BeiderMorse PhoneticEncoder = "beiderMorse"
+	// Caverphone1 specifies the caverphone 1 state for phonetic encoder.
+	Caverphone1 PhoneticEncoder = "caverphone1"
+	// Caverphone2 specifies the caverphone 2 state for phonetic encoder.
+	Caverphone2 PhoneticEncoder = "caverphone2"
+	// Cologne specifies the cologne state for phonetic encoder.
+	Cologne PhoneticEncoder = "cologne"
+	// DoubleMetaphone specifies the double metaphone state for phonetic
+	// encoder.
+	DoubleMetaphone PhoneticEncoder = "doubleMetaphone"
+	// HaasePhonetik specifies the haase phonetik state for phonetic encoder.
+	HaasePhonetik PhoneticEncoder = "haasePhonetik"
+	// KoelnerPhonetik specifies the koelner phonetik state for phonetic
+	// encoder.
+	KoelnerPhonetik PhoneticEncoder = "koelnerPhonetik"
+	// Metaphone specifies the metaphone state for phonetic encoder.
+	Metaphone PhoneticEncoder = "metaphone"
+	// Nysiis specifies the nysiis state for phonetic encoder.
+	Nysiis PhoneticEncoder = "nysiis"
+	// RefinedSoundex specifies the refined soundex state for phonetic encoder.
+	RefinedSoundex PhoneticEncoder = "refinedSoundex"
+	// Soundex specifies the soundex state for phonetic encoder.
+	Soundex PhoneticEncoder = "soundex"
 )
 
 // ScoringFunctionAggregation enumerates the values for scoring function
@@ -392,17 +392,17 @@ const (
 type ScoringFunctionAggregation string
 
 const (
-    // Average specifies the average state for scoring function aggregation.
-    Average ScoringFunctionAggregation = "average"
-    // FirstMatching specifies the first matching state for scoring function
-    // aggregation.
-    FirstMatching ScoringFunctionAggregation = "firstMatching"
-    // Maximum specifies the maximum state for scoring function aggregation.
-    Maximum ScoringFunctionAggregation = "maximum"
-    // Minimum specifies the minimum state for scoring function aggregation.
-    Minimum ScoringFunctionAggregation = "minimum"
-    // Sum specifies the sum state for scoring function aggregation.
-    Sum ScoringFunctionAggregation = "sum"
+	// Average specifies the average state for scoring function aggregation.
+	Average ScoringFunctionAggregation = "average"
+	// FirstMatching specifies the first matching state for scoring function
+	// aggregation.
+	FirstMatching ScoringFunctionAggregation = "firstMatching"
+	// Maximum specifies the maximum state for scoring function aggregation.
+	Maximum ScoringFunctionAggregation = "maximum"
+	// Minimum specifies the minimum state for scoring function aggregation.
+	Minimum ScoringFunctionAggregation = "minimum"
+	// Sum specifies the sum state for scoring function aggregation.
+	Sum ScoringFunctionAggregation = "sum"
 )
 
 // ScoringFunctionInterpolation enumerates the values for scoring function
@@ -410,17 +410,17 @@ const (
 type ScoringFunctionInterpolation string
 
 const (
-    // Constant specifies the constant state for scoring function
-    // interpolation.
-    Constant ScoringFunctionInterpolation = "constant"
-    // Linear specifies the linear state for scoring function interpolation.
-    Linear ScoringFunctionInterpolation = "linear"
-    // Logarithmic specifies the logarithmic state for scoring function
-    // interpolation.
-    Logarithmic ScoringFunctionInterpolation = "logarithmic"
-    // Quadratic specifies the quadratic state for scoring function
-    // interpolation.
-    Quadratic ScoringFunctionInterpolation = "quadratic"
+	// Constant specifies the constant state for scoring function
+	// interpolation.
+	Constant ScoringFunctionInterpolation = "constant"
+	// Linear specifies the linear state for scoring function interpolation.
+	Linear ScoringFunctionInterpolation = "linear"
+	// Logarithmic specifies the logarithmic state for scoring function
+	// interpolation.
+	Logarithmic ScoringFunctionInterpolation = "logarithmic"
+	// Quadratic specifies the quadratic state for scoring function
+	// interpolation.
+	Quadratic ScoringFunctionInterpolation = "quadratic"
 )
 
 // SnowballTokenFilterLanguage enumerates the values for snowball token filter
@@ -428,72 +428,72 @@ const (
 type SnowballTokenFilterLanguage string
 
 const (
-    // SnowballTokenFilterLanguageArmenian specifies the snowball token filter
-    // language armenian state for snowball token filter language.
-    SnowballTokenFilterLanguageArmenian SnowballTokenFilterLanguage = "armenian"
-    // SnowballTokenFilterLanguageBasque specifies the snowball token filter
-    // language basque state for snowball token filter language.
-    SnowballTokenFilterLanguageBasque SnowballTokenFilterLanguage = "basque"
-    // SnowballTokenFilterLanguageCatalan specifies the snowball token filter
-    // language catalan state for snowball token filter language.
-    SnowballTokenFilterLanguageCatalan SnowballTokenFilterLanguage = "catalan"
-    // SnowballTokenFilterLanguageDanish specifies the snowball token filter
-    // language danish state for snowball token filter language.
-    SnowballTokenFilterLanguageDanish SnowballTokenFilterLanguage = "danish"
-    // SnowballTokenFilterLanguageDutch specifies the snowball token filter
-    // language dutch state for snowball token filter language.
-    SnowballTokenFilterLanguageDutch SnowballTokenFilterLanguage = "dutch"
-    // SnowballTokenFilterLanguageEnglish specifies the snowball token filter
-    // language english state for snowball token filter language.
-    SnowballTokenFilterLanguageEnglish SnowballTokenFilterLanguage = "english"
-    // SnowballTokenFilterLanguageFinnish specifies the snowball token filter
-    // language finnish state for snowball token filter language.
-    SnowballTokenFilterLanguageFinnish SnowballTokenFilterLanguage = "finnish"
-    // SnowballTokenFilterLanguageFrench specifies the snowball token filter
-    // language french state for snowball token filter language.
-    SnowballTokenFilterLanguageFrench SnowballTokenFilterLanguage = "french"
-    // SnowballTokenFilterLanguageGerman specifies the snowball token filter
-    // language german state for snowball token filter language.
-    SnowballTokenFilterLanguageGerman SnowballTokenFilterLanguage = "german"
-    // SnowballTokenFilterLanguageGerman2 specifies the snowball token filter
-    // language german 2 state for snowball token filter language.
-    SnowballTokenFilterLanguageGerman2 SnowballTokenFilterLanguage = "german2"
-    // SnowballTokenFilterLanguageHungarian specifies the snowball token filter
-    // language hungarian state for snowball token filter language.
-    SnowballTokenFilterLanguageHungarian SnowballTokenFilterLanguage = "hungarian"
-    // SnowballTokenFilterLanguageItalian specifies the snowball token filter
-    // language italian state for snowball token filter language.
-    SnowballTokenFilterLanguageItalian SnowballTokenFilterLanguage = "italian"
-    // SnowballTokenFilterLanguageKp specifies the snowball token filter
-    // language kp state for snowball token filter language.
-    SnowballTokenFilterLanguageKp SnowballTokenFilterLanguage = "kp"
-    // SnowballTokenFilterLanguageLovins specifies the snowball token filter
-    // language lovins state for snowball token filter language.
-    SnowballTokenFilterLanguageLovins SnowballTokenFilterLanguage = "lovins"
-    // SnowballTokenFilterLanguageNorwegian specifies the snowball token filter
-    // language norwegian state for snowball token filter language.
-    SnowballTokenFilterLanguageNorwegian SnowballTokenFilterLanguage = "norwegian"
-    // SnowballTokenFilterLanguagePorter specifies the snowball token filter
-    // language porter state for snowball token filter language.
-    SnowballTokenFilterLanguagePorter SnowballTokenFilterLanguage = "porter"
-    // SnowballTokenFilterLanguagePortuguese specifies the snowball token
-    // filter language portuguese state for snowball token filter language.
-    SnowballTokenFilterLanguagePortuguese SnowballTokenFilterLanguage = "portuguese"
-    // SnowballTokenFilterLanguageRomanian specifies the snowball token filter
-    // language romanian state for snowball token filter language.
-    SnowballTokenFilterLanguageRomanian SnowballTokenFilterLanguage = "romanian"
-    // SnowballTokenFilterLanguageRussian specifies the snowball token filter
-    // language russian state for snowball token filter language.
-    SnowballTokenFilterLanguageRussian SnowballTokenFilterLanguage = "russian"
-    // SnowballTokenFilterLanguageSpanish specifies the snowball token filter
-    // language spanish state for snowball token filter language.
-    SnowballTokenFilterLanguageSpanish SnowballTokenFilterLanguage = "spanish"
-    // SnowballTokenFilterLanguageSwedish specifies the snowball token filter
-    // language swedish state for snowball token filter language.
-    SnowballTokenFilterLanguageSwedish SnowballTokenFilterLanguage = "swedish"
-    // SnowballTokenFilterLanguageTurkish specifies the snowball token filter
-    // language turkish state for snowball token filter language.
-    SnowballTokenFilterLanguageTurkish SnowballTokenFilterLanguage = "turkish"
+	// SnowballTokenFilterLanguageArmenian specifies the snowball token filter
+	// language armenian state for snowball token filter language.
+	SnowballTokenFilterLanguageArmenian SnowballTokenFilterLanguage = "armenian"
+	// SnowballTokenFilterLanguageBasque specifies the snowball token filter
+	// language basque state for snowball token filter language.
+	SnowballTokenFilterLanguageBasque SnowballTokenFilterLanguage = "basque"
+	// SnowballTokenFilterLanguageCatalan specifies the snowball token filter
+	// language catalan state for snowball token filter language.
+	SnowballTokenFilterLanguageCatalan SnowballTokenFilterLanguage = "catalan"
+	// SnowballTokenFilterLanguageDanish specifies the snowball token filter
+	// language danish state for snowball token filter language.
+	SnowballTokenFilterLanguageDanish SnowballTokenFilterLanguage = "danish"
+	// SnowballTokenFilterLanguageDutch specifies the snowball token filter
+	// language dutch state for snowball token filter language.
+	SnowballTokenFilterLanguageDutch SnowballTokenFilterLanguage = "dutch"
+	// SnowballTokenFilterLanguageEnglish specifies the snowball token filter
+	// language english state for snowball token filter language.
+	SnowballTokenFilterLanguageEnglish SnowballTokenFilterLanguage = "english"
+	// SnowballTokenFilterLanguageFinnish specifies the snowball token filter
+	// language finnish state for snowball token filter language.
+	SnowballTokenFilterLanguageFinnish SnowballTokenFilterLanguage = "finnish"
+	// SnowballTokenFilterLanguageFrench specifies the snowball token filter
+	// language french state for snowball token filter language.
+	SnowballTokenFilterLanguageFrench SnowballTokenFilterLanguage = "french"
+	// SnowballTokenFilterLanguageGerman specifies the snowball token filter
+	// language german state for snowball token filter language.
+	SnowballTokenFilterLanguageGerman SnowballTokenFilterLanguage = "german"
+	// SnowballTokenFilterLanguageGerman2 specifies the snowball token filter
+	// language german 2 state for snowball token filter language.
+	SnowballTokenFilterLanguageGerman2 SnowballTokenFilterLanguage = "german2"
+	// SnowballTokenFilterLanguageHungarian specifies the snowball token filter
+	// language hungarian state for snowball token filter language.
+	SnowballTokenFilterLanguageHungarian SnowballTokenFilterLanguage = "hungarian"
+	// SnowballTokenFilterLanguageItalian specifies the snowball token filter
+	// language italian state for snowball token filter language.
+	SnowballTokenFilterLanguageItalian SnowballTokenFilterLanguage = "italian"
+	// SnowballTokenFilterLanguageKp specifies the snowball token filter
+	// language kp state for snowball token filter language.
+	SnowballTokenFilterLanguageKp SnowballTokenFilterLanguage = "kp"
+	// SnowballTokenFilterLanguageLovins specifies the snowball token filter
+	// language lovins state for snowball token filter language.
+	SnowballTokenFilterLanguageLovins SnowballTokenFilterLanguage = "lovins"
+	// SnowballTokenFilterLanguageNorwegian specifies the snowball token filter
+	// language norwegian state for snowball token filter language.
+	SnowballTokenFilterLanguageNorwegian SnowballTokenFilterLanguage = "norwegian"
+	// SnowballTokenFilterLanguagePorter specifies the snowball token filter
+	// language porter state for snowball token filter language.
+	SnowballTokenFilterLanguagePorter SnowballTokenFilterLanguage = "porter"
+	// SnowballTokenFilterLanguagePortuguese specifies the snowball token
+	// filter language portuguese state for snowball token filter language.
+	SnowballTokenFilterLanguagePortuguese SnowballTokenFilterLanguage = "portuguese"
+	// SnowballTokenFilterLanguageRomanian specifies the snowball token filter
+	// language romanian state for snowball token filter language.
+	SnowballTokenFilterLanguageRomanian SnowballTokenFilterLanguage = "romanian"
+	// SnowballTokenFilterLanguageRussian specifies the snowball token filter
+	// language russian state for snowball token filter language.
+	SnowballTokenFilterLanguageRussian SnowballTokenFilterLanguage = "russian"
+	// SnowballTokenFilterLanguageSpanish specifies the snowball token filter
+	// language spanish state for snowball token filter language.
+	SnowballTokenFilterLanguageSpanish SnowballTokenFilterLanguage = "spanish"
+	// SnowballTokenFilterLanguageSwedish specifies the snowball token filter
+	// language swedish state for snowball token filter language.
+	SnowballTokenFilterLanguageSwedish SnowballTokenFilterLanguage = "swedish"
+	// SnowballTokenFilterLanguageTurkish specifies the snowball token filter
+	// language turkish state for snowball token filter language.
+	SnowballTokenFilterLanguageTurkish SnowballTokenFilterLanguage = "turkish"
 )
 
 // StemmerTokenFilterLanguage enumerates the values for stemmer token filter
@@ -501,324 +501,324 @@ const (
 type StemmerTokenFilterLanguage string
 
 const (
-    // StemmerTokenFilterLanguageArabic specifies the stemmer token filter
-    // language arabic state for stemmer token filter language.
-    StemmerTokenFilterLanguageArabic StemmerTokenFilterLanguage = "arabic"
-    // StemmerTokenFilterLanguageArmenian specifies the stemmer token filter
-    // language armenian state for stemmer token filter language.
-    StemmerTokenFilterLanguageArmenian StemmerTokenFilterLanguage = "armenian"
-    // StemmerTokenFilterLanguageBasque specifies the stemmer token filter
-    // language basque state for stemmer token filter language.
-    StemmerTokenFilterLanguageBasque StemmerTokenFilterLanguage = "basque"
-    // StemmerTokenFilterLanguageBrazilian specifies the stemmer token filter
-    // language brazilian state for stemmer token filter language.
-    StemmerTokenFilterLanguageBrazilian StemmerTokenFilterLanguage = "brazilian"
-    // StemmerTokenFilterLanguageBulgarian specifies the stemmer token filter
-    // language bulgarian state for stemmer token filter language.
-    StemmerTokenFilterLanguageBulgarian StemmerTokenFilterLanguage = "bulgarian"
-    // StemmerTokenFilterLanguageCatalan specifies the stemmer token filter
-    // language catalan state for stemmer token filter language.
-    StemmerTokenFilterLanguageCatalan StemmerTokenFilterLanguage = "catalan"
-    // StemmerTokenFilterLanguageCzech specifies the stemmer token filter
-    // language czech state for stemmer token filter language.
-    StemmerTokenFilterLanguageCzech StemmerTokenFilterLanguage = "czech"
-    // StemmerTokenFilterLanguageDanish specifies the stemmer token filter
-    // language danish state for stemmer token filter language.
-    StemmerTokenFilterLanguageDanish StemmerTokenFilterLanguage = "danish"
-    // StemmerTokenFilterLanguageDutch specifies the stemmer token filter
-    // language dutch state for stemmer token filter language.
-    StemmerTokenFilterLanguageDutch StemmerTokenFilterLanguage = "dutch"
-    // StemmerTokenFilterLanguageDutchKp specifies the stemmer token filter
-    // language dutch kp state for stemmer token filter language.
-    StemmerTokenFilterLanguageDutchKp StemmerTokenFilterLanguage = "dutchKp"
-    // StemmerTokenFilterLanguageEnglish specifies the stemmer token filter
-    // language english state for stemmer token filter language.
-    StemmerTokenFilterLanguageEnglish StemmerTokenFilterLanguage = "english"
-    // StemmerTokenFilterLanguageFinnish specifies the stemmer token filter
-    // language finnish state for stemmer token filter language.
-    StemmerTokenFilterLanguageFinnish StemmerTokenFilterLanguage = "finnish"
-    // StemmerTokenFilterLanguageFrench specifies the stemmer token filter
-    // language french state for stemmer token filter language.
-    StemmerTokenFilterLanguageFrench StemmerTokenFilterLanguage = "french"
-    // StemmerTokenFilterLanguageGalician specifies the stemmer token filter
-    // language galician state for stemmer token filter language.
-    StemmerTokenFilterLanguageGalician StemmerTokenFilterLanguage = "galician"
-    // StemmerTokenFilterLanguageGerman specifies the stemmer token filter
-    // language german state for stemmer token filter language.
-    StemmerTokenFilterLanguageGerman StemmerTokenFilterLanguage = "german"
-    // StemmerTokenFilterLanguageGerman2 specifies the stemmer token filter
-    // language german 2 state for stemmer token filter language.
-    StemmerTokenFilterLanguageGerman2 StemmerTokenFilterLanguage = "german2"
-    // StemmerTokenFilterLanguageGreek specifies the stemmer token filter
-    // language greek state for stemmer token filter language.
-    StemmerTokenFilterLanguageGreek StemmerTokenFilterLanguage = "greek"
-    // StemmerTokenFilterLanguageHindi specifies the stemmer token filter
-    // language hindi state for stemmer token filter language.
-    StemmerTokenFilterLanguageHindi StemmerTokenFilterLanguage = "hindi"
-    // StemmerTokenFilterLanguageHungarian specifies the stemmer token filter
-    // language hungarian state for stemmer token filter language.
-    StemmerTokenFilterLanguageHungarian StemmerTokenFilterLanguage = "hungarian"
-    // StemmerTokenFilterLanguageIndonesian specifies the stemmer token filter
-    // language indonesian state for stemmer token filter language.
-    StemmerTokenFilterLanguageIndonesian StemmerTokenFilterLanguage = "indonesian"
-    // StemmerTokenFilterLanguageIrish specifies the stemmer token filter
-    // language irish state for stemmer token filter language.
-    StemmerTokenFilterLanguageIrish StemmerTokenFilterLanguage = "irish"
-    // StemmerTokenFilterLanguageItalian specifies the stemmer token filter
-    // language italian state for stemmer token filter language.
-    StemmerTokenFilterLanguageItalian StemmerTokenFilterLanguage = "italian"
-    // StemmerTokenFilterLanguageLatvian specifies the stemmer token filter
-    // language latvian state for stemmer token filter language.
-    StemmerTokenFilterLanguageLatvian StemmerTokenFilterLanguage = "latvian"
-    // StemmerTokenFilterLanguageLightEnglish specifies the stemmer token
-    // filter language light english state for stemmer token filter language.
-    StemmerTokenFilterLanguageLightEnglish StemmerTokenFilterLanguage = "lightEnglish"
-    // StemmerTokenFilterLanguageLightFinnish specifies the stemmer token
-    // filter language light finnish state for stemmer token filter language.
-    StemmerTokenFilterLanguageLightFinnish StemmerTokenFilterLanguage = "lightFinnish"
-    // StemmerTokenFilterLanguageLightFrench specifies the stemmer token filter
-    // language light french state for stemmer token filter language.
-    StemmerTokenFilterLanguageLightFrench StemmerTokenFilterLanguage = "lightFrench"
-    // StemmerTokenFilterLanguageLightGerman specifies the stemmer token filter
-    // language light german state for stemmer token filter language.
-    StemmerTokenFilterLanguageLightGerman StemmerTokenFilterLanguage = "lightGerman"
-    // StemmerTokenFilterLanguageLightHungarian specifies the stemmer token
-    // filter language light hungarian state for stemmer token filter language.
-    StemmerTokenFilterLanguageLightHungarian StemmerTokenFilterLanguage = "lightHungarian"
-    // StemmerTokenFilterLanguageLightItalian specifies the stemmer token
-    // filter language light italian state for stemmer token filter language.
-    StemmerTokenFilterLanguageLightItalian StemmerTokenFilterLanguage = "lightItalian"
-    // StemmerTokenFilterLanguageLightNorwegian specifies the stemmer token
-    // filter language light norwegian state for stemmer token filter language.
-    StemmerTokenFilterLanguageLightNorwegian StemmerTokenFilterLanguage = "lightNorwegian"
-    // StemmerTokenFilterLanguageLightNynorsk specifies the stemmer token
-    // filter language light nynorsk state for stemmer token filter language.
-    StemmerTokenFilterLanguageLightNynorsk StemmerTokenFilterLanguage = "lightNynorsk"
-    // StemmerTokenFilterLanguageLightPortuguese specifies the stemmer token
-    // filter language light portuguese state for stemmer token filter
-    // language.
-    StemmerTokenFilterLanguageLightPortuguese StemmerTokenFilterLanguage = "lightPortuguese"
-    // StemmerTokenFilterLanguageLightRussian specifies the stemmer token
-    // filter language light russian state for stemmer token filter language.
-    StemmerTokenFilterLanguageLightRussian StemmerTokenFilterLanguage = "lightRussian"
-    // StemmerTokenFilterLanguageLightSpanish specifies the stemmer token
-    // filter language light spanish state for stemmer token filter language.
-    StemmerTokenFilterLanguageLightSpanish StemmerTokenFilterLanguage = "lightSpanish"
-    // StemmerTokenFilterLanguageLightSwedish specifies the stemmer token
-    // filter language light swedish state for stemmer token filter language.
-    StemmerTokenFilterLanguageLightSwedish StemmerTokenFilterLanguage = "lightSwedish"
-    // StemmerTokenFilterLanguageLovins specifies the stemmer token filter
-    // language lovins state for stemmer token filter language.
-    StemmerTokenFilterLanguageLovins StemmerTokenFilterLanguage = "lovins"
-    // StemmerTokenFilterLanguageMinimalEnglish specifies the stemmer token
-    // filter language minimal english state for stemmer token filter language.
-    StemmerTokenFilterLanguageMinimalEnglish StemmerTokenFilterLanguage = "minimalEnglish"
-    // StemmerTokenFilterLanguageMinimalFrench specifies the stemmer token
-    // filter language minimal french state for stemmer token filter language.
-    StemmerTokenFilterLanguageMinimalFrench StemmerTokenFilterLanguage = "minimalFrench"
-    // StemmerTokenFilterLanguageMinimalGalician specifies the stemmer token
-    // filter language minimal galician state for stemmer token filter
-    // language.
-    StemmerTokenFilterLanguageMinimalGalician StemmerTokenFilterLanguage = "minimalGalician"
-    // StemmerTokenFilterLanguageMinimalGerman specifies the stemmer token
-    // filter language minimal german state for stemmer token filter language.
-    StemmerTokenFilterLanguageMinimalGerman StemmerTokenFilterLanguage = "minimalGerman"
-    // StemmerTokenFilterLanguageMinimalNorwegian specifies the stemmer token
-    // filter language minimal norwegian state for stemmer token filter
-    // language.
-    StemmerTokenFilterLanguageMinimalNorwegian StemmerTokenFilterLanguage = "minimalNorwegian"
-    // StemmerTokenFilterLanguageMinimalNynorsk specifies the stemmer token
-    // filter language minimal nynorsk state for stemmer token filter language.
-    StemmerTokenFilterLanguageMinimalNynorsk StemmerTokenFilterLanguage = "minimalNynorsk"
-    // StemmerTokenFilterLanguageMinimalPortuguese specifies the stemmer token
-    // filter language minimal portuguese state for stemmer token filter
-    // language.
-    StemmerTokenFilterLanguageMinimalPortuguese StemmerTokenFilterLanguage = "minimalPortuguese"
-    // StemmerTokenFilterLanguageNorwegian specifies the stemmer token filter
-    // language norwegian state for stemmer token filter language.
-    StemmerTokenFilterLanguageNorwegian StemmerTokenFilterLanguage = "norwegian"
-    // StemmerTokenFilterLanguagePorter2 specifies the stemmer token filter
-    // language porter 2 state for stemmer token filter language.
-    StemmerTokenFilterLanguagePorter2 StemmerTokenFilterLanguage = "porter2"
-    // StemmerTokenFilterLanguagePortuguese specifies the stemmer token filter
-    // language portuguese state for stemmer token filter language.
-    StemmerTokenFilterLanguagePortuguese StemmerTokenFilterLanguage = "portuguese"
-    // StemmerTokenFilterLanguagePortugueseRslp specifies the stemmer token
-    // filter language portuguese rslp state for stemmer token filter language.
-    StemmerTokenFilterLanguagePortugueseRslp StemmerTokenFilterLanguage = "portugueseRslp"
-    // StemmerTokenFilterLanguagePossessiveEnglish specifies the stemmer token
-    // filter language possessive english state for stemmer token filter
-    // language.
-    StemmerTokenFilterLanguagePossessiveEnglish StemmerTokenFilterLanguage = "possessiveEnglish"
-    // StemmerTokenFilterLanguageRomanian specifies the stemmer token filter
-    // language romanian state for stemmer token filter language.
-    StemmerTokenFilterLanguageRomanian StemmerTokenFilterLanguage = "romanian"
-    // StemmerTokenFilterLanguageRussian specifies the stemmer token filter
-    // language russian state for stemmer token filter language.
-    StemmerTokenFilterLanguageRussian StemmerTokenFilterLanguage = "russian"
-    // StemmerTokenFilterLanguageSorani specifies the stemmer token filter
-    // language sorani state for stemmer token filter language.
-    StemmerTokenFilterLanguageSorani StemmerTokenFilterLanguage = "sorani"
-    // StemmerTokenFilterLanguageSpanish specifies the stemmer token filter
-    // language spanish state for stemmer token filter language.
-    StemmerTokenFilterLanguageSpanish StemmerTokenFilterLanguage = "spanish"
-    // StemmerTokenFilterLanguageSwedish specifies the stemmer token filter
-    // language swedish state for stemmer token filter language.
-    StemmerTokenFilterLanguageSwedish StemmerTokenFilterLanguage = "swedish"
-    // StemmerTokenFilterLanguageTurkish specifies the stemmer token filter
-    // language turkish state for stemmer token filter language.
-    StemmerTokenFilterLanguageTurkish StemmerTokenFilterLanguage = "turkish"
+	// StemmerTokenFilterLanguageArabic specifies the stemmer token filter
+	// language arabic state for stemmer token filter language.
+	StemmerTokenFilterLanguageArabic StemmerTokenFilterLanguage = "arabic"
+	// StemmerTokenFilterLanguageArmenian specifies the stemmer token filter
+	// language armenian state for stemmer token filter language.
+	StemmerTokenFilterLanguageArmenian StemmerTokenFilterLanguage = "armenian"
+	// StemmerTokenFilterLanguageBasque specifies the stemmer token filter
+	// language basque state for stemmer token filter language.
+	StemmerTokenFilterLanguageBasque StemmerTokenFilterLanguage = "basque"
+	// StemmerTokenFilterLanguageBrazilian specifies the stemmer token filter
+	// language brazilian state for stemmer token filter language.
+	StemmerTokenFilterLanguageBrazilian StemmerTokenFilterLanguage = "brazilian"
+	// StemmerTokenFilterLanguageBulgarian specifies the stemmer token filter
+	// language bulgarian state for stemmer token filter language.
+	StemmerTokenFilterLanguageBulgarian StemmerTokenFilterLanguage = "bulgarian"
+	// StemmerTokenFilterLanguageCatalan specifies the stemmer token filter
+	// language catalan state for stemmer token filter language.
+	StemmerTokenFilterLanguageCatalan StemmerTokenFilterLanguage = "catalan"
+	// StemmerTokenFilterLanguageCzech specifies the stemmer token filter
+	// language czech state for stemmer token filter language.
+	StemmerTokenFilterLanguageCzech StemmerTokenFilterLanguage = "czech"
+	// StemmerTokenFilterLanguageDanish specifies the stemmer token filter
+	// language danish state for stemmer token filter language.
+	StemmerTokenFilterLanguageDanish StemmerTokenFilterLanguage = "danish"
+	// StemmerTokenFilterLanguageDutch specifies the stemmer token filter
+	// language dutch state for stemmer token filter language.
+	StemmerTokenFilterLanguageDutch StemmerTokenFilterLanguage = "dutch"
+	// StemmerTokenFilterLanguageDutchKp specifies the stemmer token filter
+	// language dutch kp state for stemmer token filter language.
+	StemmerTokenFilterLanguageDutchKp StemmerTokenFilterLanguage = "dutchKp"
+	// StemmerTokenFilterLanguageEnglish specifies the stemmer token filter
+	// language english state for stemmer token filter language.
+	StemmerTokenFilterLanguageEnglish StemmerTokenFilterLanguage = "english"
+	// StemmerTokenFilterLanguageFinnish specifies the stemmer token filter
+	// language finnish state for stemmer token filter language.
+	StemmerTokenFilterLanguageFinnish StemmerTokenFilterLanguage = "finnish"
+	// StemmerTokenFilterLanguageFrench specifies the stemmer token filter
+	// language french state for stemmer token filter language.
+	StemmerTokenFilterLanguageFrench StemmerTokenFilterLanguage = "french"
+	// StemmerTokenFilterLanguageGalician specifies the stemmer token filter
+	// language galician state for stemmer token filter language.
+	StemmerTokenFilterLanguageGalician StemmerTokenFilterLanguage = "galician"
+	// StemmerTokenFilterLanguageGerman specifies the stemmer token filter
+	// language german state for stemmer token filter language.
+	StemmerTokenFilterLanguageGerman StemmerTokenFilterLanguage = "german"
+	// StemmerTokenFilterLanguageGerman2 specifies the stemmer token filter
+	// language german 2 state for stemmer token filter language.
+	StemmerTokenFilterLanguageGerman2 StemmerTokenFilterLanguage = "german2"
+	// StemmerTokenFilterLanguageGreek specifies the stemmer token filter
+	// language greek state for stemmer token filter language.
+	StemmerTokenFilterLanguageGreek StemmerTokenFilterLanguage = "greek"
+	// StemmerTokenFilterLanguageHindi specifies the stemmer token filter
+	// language hindi state for stemmer token filter language.
+	StemmerTokenFilterLanguageHindi StemmerTokenFilterLanguage = "hindi"
+	// StemmerTokenFilterLanguageHungarian specifies the stemmer token filter
+	// language hungarian state for stemmer token filter language.
+	StemmerTokenFilterLanguageHungarian StemmerTokenFilterLanguage = "hungarian"
+	// StemmerTokenFilterLanguageIndonesian specifies the stemmer token filter
+	// language indonesian state for stemmer token filter language.
+	StemmerTokenFilterLanguageIndonesian StemmerTokenFilterLanguage = "indonesian"
+	// StemmerTokenFilterLanguageIrish specifies the stemmer token filter
+	// language irish state for stemmer token filter language.
+	StemmerTokenFilterLanguageIrish StemmerTokenFilterLanguage = "irish"
+	// StemmerTokenFilterLanguageItalian specifies the stemmer token filter
+	// language italian state for stemmer token filter language.
+	StemmerTokenFilterLanguageItalian StemmerTokenFilterLanguage = "italian"
+	// StemmerTokenFilterLanguageLatvian specifies the stemmer token filter
+	// language latvian state for stemmer token filter language.
+	StemmerTokenFilterLanguageLatvian StemmerTokenFilterLanguage = "latvian"
+	// StemmerTokenFilterLanguageLightEnglish specifies the stemmer token
+	// filter language light english state for stemmer token filter language.
+	StemmerTokenFilterLanguageLightEnglish StemmerTokenFilterLanguage = "lightEnglish"
+	// StemmerTokenFilterLanguageLightFinnish specifies the stemmer token
+	// filter language light finnish state for stemmer token filter language.
+	StemmerTokenFilterLanguageLightFinnish StemmerTokenFilterLanguage = "lightFinnish"
+	// StemmerTokenFilterLanguageLightFrench specifies the stemmer token filter
+	// language light french state for stemmer token filter language.
+	StemmerTokenFilterLanguageLightFrench StemmerTokenFilterLanguage = "lightFrench"
+	// StemmerTokenFilterLanguageLightGerman specifies the stemmer token filter
+	// language light german state for stemmer token filter language.
+	StemmerTokenFilterLanguageLightGerman StemmerTokenFilterLanguage = "lightGerman"
+	// StemmerTokenFilterLanguageLightHungarian specifies the stemmer token
+	// filter language light hungarian state for stemmer token filter language.
+	StemmerTokenFilterLanguageLightHungarian StemmerTokenFilterLanguage = "lightHungarian"
+	// StemmerTokenFilterLanguageLightItalian specifies the stemmer token
+	// filter language light italian state for stemmer token filter language.
+	StemmerTokenFilterLanguageLightItalian StemmerTokenFilterLanguage = "lightItalian"
+	// StemmerTokenFilterLanguageLightNorwegian specifies the stemmer token
+	// filter language light norwegian state for stemmer token filter language.
+	StemmerTokenFilterLanguageLightNorwegian StemmerTokenFilterLanguage = "lightNorwegian"
+	// StemmerTokenFilterLanguageLightNynorsk specifies the stemmer token
+	// filter language light nynorsk state for stemmer token filter language.
+	StemmerTokenFilterLanguageLightNynorsk StemmerTokenFilterLanguage = "lightNynorsk"
+	// StemmerTokenFilterLanguageLightPortuguese specifies the stemmer token
+	// filter language light portuguese state for stemmer token filter
+	// language.
+	StemmerTokenFilterLanguageLightPortuguese StemmerTokenFilterLanguage = "lightPortuguese"
+	// StemmerTokenFilterLanguageLightRussian specifies the stemmer token
+	// filter language light russian state for stemmer token filter language.
+	StemmerTokenFilterLanguageLightRussian StemmerTokenFilterLanguage = "lightRussian"
+	// StemmerTokenFilterLanguageLightSpanish specifies the stemmer token
+	// filter language light spanish state for stemmer token filter language.
+	StemmerTokenFilterLanguageLightSpanish StemmerTokenFilterLanguage = "lightSpanish"
+	// StemmerTokenFilterLanguageLightSwedish specifies the stemmer token
+	// filter language light swedish state for stemmer token filter language.
+	StemmerTokenFilterLanguageLightSwedish StemmerTokenFilterLanguage = "lightSwedish"
+	// StemmerTokenFilterLanguageLovins specifies the stemmer token filter
+	// language lovins state for stemmer token filter language.
+	StemmerTokenFilterLanguageLovins StemmerTokenFilterLanguage = "lovins"
+	// StemmerTokenFilterLanguageMinimalEnglish specifies the stemmer token
+	// filter language minimal english state for stemmer token filter language.
+	StemmerTokenFilterLanguageMinimalEnglish StemmerTokenFilterLanguage = "minimalEnglish"
+	// StemmerTokenFilterLanguageMinimalFrench specifies the stemmer token
+	// filter language minimal french state for stemmer token filter language.
+	StemmerTokenFilterLanguageMinimalFrench StemmerTokenFilterLanguage = "minimalFrench"
+	// StemmerTokenFilterLanguageMinimalGalician specifies the stemmer token
+	// filter language minimal galician state for stemmer token filter
+	// language.
+	StemmerTokenFilterLanguageMinimalGalician StemmerTokenFilterLanguage = "minimalGalician"
+	// StemmerTokenFilterLanguageMinimalGerman specifies the stemmer token
+	// filter language minimal german state for stemmer token filter language.
+	StemmerTokenFilterLanguageMinimalGerman StemmerTokenFilterLanguage = "minimalGerman"
+	// StemmerTokenFilterLanguageMinimalNorwegian specifies the stemmer token
+	// filter language minimal norwegian state for stemmer token filter
+	// language.
+	StemmerTokenFilterLanguageMinimalNorwegian StemmerTokenFilterLanguage = "minimalNorwegian"
+	// StemmerTokenFilterLanguageMinimalNynorsk specifies the stemmer token
+	// filter language minimal nynorsk state for stemmer token filter language.
+	StemmerTokenFilterLanguageMinimalNynorsk StemmerTokenFilterLanguage = "minimalNynorsk"
+	// StemmerTokenFilterLanguageMinimalPortuguese specifies the stemmer token
+	// filter language minimal portuguese state for stemmer token filter
+	// language.
+	StemmerTokenFilterLanguageMinimalPortuguese StemmerTokenFilterLanguage = "minimalPortuguese"
+	// StemmerTokenFilterLanguageNorwegian specifies the stemmer token filter
+	// language norwegian state for stemmer token filter language.
+	StemmerTokenFilterLanguageNorwegian StemmerTokenFilterLanguage = "norwegian"
+	// StemmerTokenFilterLanguagePorter2 specifies the stemmer token filter
+	// language porter 2 state for stemmer token filter language.
+	StemmerTokenFilterLanguagePorter2 StemmerTokenFilterLanguage = "porter2"
+	// StemmerTokenFilterLanguagePortuguese specifies the stemmer token filter
+	// language portuguese state for stemmer token filter language.
+	StemmerTokenFilterLanguagePortuguese StemmerTokenFilterLanguage = "portuguese"
+	// StemmerTokenFilterLanguagePortugueseRslp specifies the stemmer token
+	// filter language portuguese rslp state for stemmer token filter language.
+	StemmerTokenFilterLanguagePortugueseRslp StemmerTokenFilterLanguage = "portugueseRslp"
+	// StemmerTokenFilterLanguagePossessiveEnglish specifies the stemmer token
+	// filter language possessive english state for stemmer token filter
+	// language.
+	StemmerTokenFilterLanguagePossessiveEnglish StemmerTokenFilterLanguage = "possessiveEnglish"
+	// StemmerTokenFilterLanguageRomanian specifies the stemmer token filter
+	// language romanian state for stemmer token filter language.
+	StemmerTokenFilterLanguageRomanian StemmerTokenFilterLanguage = "romanian"
+	// StemmerTokenFilterLanguageRussian specifies the stemmer token filter
+	// language russian state for stemmer token filter language.
+	StemmerTokenFilterLanguageRussian StemmerTokenFilterLanguage = "russian"
+	// StemmerTokenFilterLanguageSorani specifies the stemmer token filter
+	// language sorani state for stemmer token filter language.
+	StemmerTokenFilterLanguageSorani StemmerTokenFilterLanguage = "sorani"
+	// StemmerTokenFilterLanguageSpanish specifies the stemmer token filter
+	// language spanish state for stemmer token filter language.
+	StemmerTokenFilterLanguageSpanish StemmerTokenFilterLanguage = "spanish"
+	// StemmerTokenFilterLanguageSwedish specifies the stemmer token filter
+	// language swedish state for stemmer token filter language.
+	StemmerTokenFilterLanguageSwedish StemmerTokenFilterLanguage = "swedish"
+	// StemmerTokenFilterLanguageTurkish specifies the stemmer token filter
+	// language turkish state for stemmer token filter language.
+	StemmerTokenFilterLanguageTurkish StemmerTokenFilterLanguage = "turkish"
 )
 
 // StopwordsList enumerates the values for stopwords list.
 type StopwordsList string
 
 const (
-    // StopwordsListArabic specifies the stopwords list arabic state for
-    // stopwords list.
-    StopwordsListArabic StopwordsList = "arabic"
-    // StopwordsListArmenian specifies the stopwords list armenian state for
-    // stopwords list.
-    StopwordsListArmenian StopwordsList = "armenian"
-    // StopwordsListBasque specifies the stopwords list basque state for
-    // stopwords list.
-    StopwordsListBasque StopwordsList = "basque"
-    // StopwordsListBrazilian specifies the stopwords list brazilian state for
-    // stopwords list.
-    StopwordsListBrazilian StopwordsList = "brazilian"
-    // StopwordsListBulgarian specifies the stopwords list bulgarian state for
-    // stopwords list.
-    StopwordsListBulgarian StopwordsList = "bulgarian"
-    // StopwordsListCatalan specifies the stopwords list catalan state for
-    // stopwords list.
-    StopwordsListCatalan StopwordsList = "catalan"
-    // StopwordsListCzech specifies the stopwords list czech state for
-    // stopwords list.
-    StopwordsListCzech StopwordsList = "czech"
-    // StopwordsListDanish specifies the stopwords list danish state for
-    // stopwords list.
-    StopwordsListDanish StopwordsList = "danish"
-    // StopwordsListDutch specifies the stopwords list dutch state for
-    // stopwords list.
-    StopwordsListDutch StopwordsList = "dutch"
-    // StopwordsListEnglish specifies the stopwords list english state for
-    // stopwords list.
-    StopwordsListEnglish StopwordsList = "english"
-    // StopwordsListFinnish specifies the stopwords list finnish state for
-    // stopwords list.
-    StopwordsListFinnish StopwordsList = "finnish"
-    // StopwordsListFrench specifies the stopwords list french state for
-    // stopwords list.
-    StopwordsListFrench StopwordsList = "french"
-    // StopwordsListGalician specifies the stopwords list galician state for
-    // stopwords list.
-    StopwordsListGalician StopwordsList = "galician"
-    // StopwordsListGerman specifies the stopwords list german state for
-    // stopwords list.
-    StopwordsListGerman StopwordsList = "german"
-    // StopwordsListGreek specifies the stopwords list greek state for
-    // stopwords list.
-    StopwordsListGreek StopwordsList = "greek"
-    // StopwordsListHindi specifies the stopwords list hindi state for
-    // stopwords list.
-    StopwordsListHindi StopwordsList = "hindi"
-    // StopwordsListHungarian specifies the stopwords list hungarian state for
-    // stopwords list.
-    StopwordsListHungarian StopwordsList = "hungarian"
-    // StopwordsListIndonesian specifies the stopwords list indonesian state
-    // for stopwords list.
-    StopwordsListIndonesian StopwordsList = "indonesian"
-    // StopwordsListIrish specifies the stopwords list irish state for
-    // stopwords list.
-    StopwordsListIrish StopwordsList = "irish"
-    // StopwordsListItalian specifies the stopwords list italian state for
-    // stopwords list.
-    StopwordsListItalian StopwordsList = "italian"
-    // StopwordsListLatvian specifies the stopwords list latvian state for
-    // stopwords list.
-    StopwordsListLatvian StopwordsList = "latvian"
-    // StopwordsListNorwegian specifies the stopwords list norwegian state for
-    // stopwords list.
-    StopwordsListNorwegian StopwordsList = "norwegian"
-    // StopwordsListPersian specifies the stopwords list persian state for
-    // stopwords list.
-    StopwordsListPersian StopwordsList = "persian"
-    // StopwordsListPortuguese specifies the stopwords list portuguese state
-    // for stopwords list.
-    StopwordsListPortuguese StopwordsList = "portuguese"
-    // StopwordsListRomanian specifies the stopwords list romanian state for
-    // stopwords list.
-    StopwordsListRomanian StopwordsList = "romanian"
-    // StopwordsListRussian specifies the stopwords list russian state for
-    // stopwords list.
-    StopwordsListRussian StopwordsList = "russian"
-    // StopwordsListSorani specifies the stopwords list sorani state for
-    // stopwords list.
-    StopwordsListSorani StopwordsList = "sorani"
-    // StopwordsListSpanish specifies the stopwords list spanish state for
-    // stopwords list.
-    StopwordsListSpanish StopwordsList = "spanish"
-    // StopwordsListSwedish specifies the stopwords list swedish state for
-    // stopwords list.
-    StopwordsListSwedish StopwordsList = "swedish"
-    // StopwordsListThai specifies the stopwords list thai state for stopwords
-    // list.
-    StopwordsListThai StopwordsList = "thai"
-    // StopwordsListTurkish specifies the stopwords list turkish state for
-    // stopwords list.
-    StopwordsListTurkish StopwordsList = "turkish"
+	// StopwordsListArabic specifies the stopwords list arabic state for
+	// stopwords list.
+	StopwordsListArabic StopwordsList = "arabic"
+	// StopwordsListArmenian specifies the stopwords list armenian state for
+	// stopwords list.
+	StopwordsListArmenian StopwordsList = "armenian"
+	// StopwordsListBasque specifies the stopwords list basque state for
+	// stopwords list.
+	StopwordsListBasque StopwordsList = "basque"
+	// StopwordsListBrazilian specifies the stopwords list brazilian state for
+	// stopwords list.
+	StopwordsListBrazilian StopwordsList = "brazilian"
+	// StopwordsListBulgarian specifies the stopwords list bulgarian state for
+	// stopwords list.
+	StopwordsListBulgarian StopwordsList = "bulgarian"
+	// StopwordsListCatalan specifies the stopwords list catalan state for
+	// stopwords list.
+	StopwordsListCatalan StopwordsList = "catalan"
+	// StopwordsListCzech specifies the stopwords list czech state for
+	// stopwords list.
+	StopwordsListCzech StopwordsList = "czech"
+	// StopwordsListDanish specifies the stopwords list danish state for
+	// stopwords list.
+	StopwordsListDanish StopwordsList = "danish"
+	// StopwordsListDutch specifies the stopwords list dutch state for
+	// stopwords list.
+	StopwordsListDutch StopwordsList = "dutch"
+	// StopwordsListEnglish specifies the stopwords list english state for
+	// stopwords list.
+	StopwordsListEnglish StopwordsList = "english"
+	// StopwordsListFinnish specifies the stopwords list finnish state for
+	// stopwords list.
+	StopwordsListFinnish StopwordsList = "finnish"
+	// StopwordsListFrench specifies the stopwords list french state for
+	// stopwords list.
+	StopwordsListFrench StopwordsList = "french"
+	// StopwordsListGalician specifies the stopwords list galician state for
+	// stopwords list.
+	StopwordsListGalician StopwordsList = "galician"
+	// StopwordsListGerman specifies the stopwords list german state for
+	// stopwords list.
+	StopwordsListGerman StopwordsList = "german"
+	// StopwordsListGreek specifies the stopwords list greek state for
+	// stopwords list.
+	StopwordsListGreek StopwordsList = "greek"
+	// StopwordsListHindi specifies the stopwords list hindi state for
+	// stopwords list.
+	StopwordsListHindi StopwordsList = "hindi"
+	// StopwordsListHungarian specifies the stopwords list hungarian state for
+	// stopwords list.
+	StopwordsListHungarian StopwordsList = "hungarian"
+	// StopwordsListIndonesian specifies the stopwords list indonesian state
+	// for stopwords list.
+	StopwordsListIndonesian StopwordsList = "indonesian"
+	// StopwordsListIrish specifies the stopwords list irish state for
+	// stopwords list.
+	StopwordsListIrish StopwordsList = "irish"
+	// StopwordsListItalian specifies the stopwords list italian state for
+	// stopwords list.
+	StopwordsListItalian StopwordsList = "italian"
+	// StopwordsListLatvian specifies the stopwords list latvian state for
+	// stopwords list.
+	StopwordsListLatvian StopwordsList = "latvian"
+	// StopwordsListNorwegian specifies the stopwords list norwegian state for
+	// stopwords list.
+	StopwordsListNorwegian StopwordsList = "norwegian"
+	// StopwordsListPersian specifies the stopwords list persian state for
+	// stopwords list.
+	StopwordsListPersian StopwordsList = "persian"
+	// StopwordsListPortuguese specifies the stopwords list portuguese state
+	// for stopwords list.
+	StopwordsListPortuguese StopwordsList = "portuguese"
+	// StopwordsListRomanian specifies the stopwords list romanian state for
+	// stopwords list.
+	StopwordsListRomanian StopwordsList = "romanian"
+	// StopwordsListRussian specifies the stopwords list russian state for
+	// stopwords list.
+	StopwordsListRussian StopwordsList = "russian"
+	// StopwordsListSorani specifies the stopwords list sorani state for
+	// stopwords list.
+	StopwordsListSorani StopwordsList = "sorani"
+	// StopwordsListSpanish specifies the stopwords list spanish state for
+	// stopwords list.
+	StopwordsListSpanish StopwordsList = "spanish"
+	// StopwordsListSwedish specifies the stopwords list swedish state for
+	// stopwords list.
+	StopwordsListSwedish StopwordsList = "swedish"
+	// StopwordsListThai specifies the stopwords list thai state for stopwords
+	// list.
+	StopwordsListThai StopwordsList = "thai"
+	// StopwordsListTurkish specifies the stopwords list turkish state for
+	// stopwords list.
+	StopwordsListTurkish StopwordsList = "turkish"
 )
 
 // SuggesterSearchMode enumerates the values for suggester search mode.
 type SuggesterSearchMode string
 
 const (
-    // AnalyzingInfixMatching specifies the analyzing infix matching state for
-    // suggester search mode.
-    AnalyzingInfixMatching SuggesterSearchMode = "analyzingInfixMatching"
+	// AnalyzingInfixMatching specifies the analyzing infix matching state for
+	// suggester search mode.
+	AnalyzingInfixMatching SuggesterSearchMode = "analyzingInfixMatching"
 )
 
 // TokenCharacterKind enumerates the values for token character kind.
 type TokenCharacterKind string
 
 const (
-    // Digit specifies the digit state for token character kind.
-    Digit TokenCharacterKind = "digit"
-    // Letter specifies the letter state for token character kind.
-    Letter TokenCharacterKind = "letter"
-    // Punctuation specifies the punctuation state for token character kind.
-    Punctuation TokenCharacterKind = "punctuation"
-    // Symbol specifies the symbol state for token character kind.
-    Symbol TokenCharacterKind = "symbol"
-    // Whitespace specifies the whitespace state for token character kind.
-    Whitespace TokenCharacterKind = "whitespace"
+	// Digit specifies the digit state for token character kind.
+	Digit TokenCharacterKind = "digit"
+	// Letter specifies the letter state for token character kind.
+	Letter TokenCharacterKind = "letter"
+	// Punctuation specifies the punctuation state for token character kind.
+	Punctuation TokenCharacterKind = "punctuation"
+	// Symbol specifies the symbol state for token character kind.
+	Symbol TokenCharacterKind = "symbol"
+	// Whitespace specifies the whitespace state for token character kind.
+	Whitespace TokenCharacterKind = "whitespace"
 )
 
 // Analyzer is abstract base class for analyzers.
 type Analyzer struct {
-    Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // AnalyzeRequest is specifies some text and analysis components used to break
 // that text into tokens.
 type AnalyzeRequest struct {
-    Text *string `json:"text,omitempty"`
-    Analyzer *AnalyzerName `json:"analyzer,omitempty"`
-    Tokenizer *TokenizerName `json:"tokenizer,omitempty"`
-    TokenFilters *[]TokenFilterName `json:"tokenFilters,omitempty"`
-    CharFilters *[]CharFilterName `json:"charFilters,omitempty"`
+	Text         *string            `json:"text,omitempty"`
+	Analyzer     *AnalyzerName      `json:"analyzer,omitempty"`
+	Tokenizer    *TokenizerName     `json:"tokenizer,omitempty"`
+	TokenFilters *[]TokenFilterName `json:"tokenFilters,omitempty"`
+	CharFilters  *[]CharFilterName  `json:"charFilters,omitempty"`
 }
 
 // AnalyzeResult is the result of testing an analyzer on text.
 type AnalyzeResult struct {
-    autorest.Response `json:"-"`
-    Tokens *[]TokenInfo `json:"tokens,omitempty"`
+	autorest.Response `json:"-"`
+	Tokens            *[]TokenInfo `json:"tokens,omitempty"`
 }
 
 // AnalyzerName is defines the names of all text analyzers supported by Azure
 // Search.
 type AnalyzerName struct {
-    Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // ASCIIFoldingTokenFilter is converts alphabetic, numeric, and symbolic
@@ -826,52 +826,52 @@ type AnalyzerName struct {
 // "Basic Latin" Unicode block) into their ASCII equivalents, if such
 // equivalents exist. This token filter is implemented using Apache Lucene.
 type ASCIIFoldingTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    PreserveOriginal *bool `json:"preserveOriginal,omitempty"`
+	Name             *string `json:"name,omitempty"`
+	PreserveOriginal *bool   `json:"preserveOriginal,omitempty"`
 }
 
 // CharFilter is abstract base class for character filters.
 type CharFilter struct {
-    Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // CharFilterName is defines the names of all character filters supported by
 // Azure Search.
 type CharFilterName struct {
-    Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // CjkBigramTokenFilter is forms bigrams of CJK terms that are generated from
 // StandardTokenizer. This token filter is implemented using Apache Lucene.
 type CjkBigramTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    IgnoreScripts *[]CjkBigramTokenFilterScripts `json:"ignoreScripts,omitempty"`
-    OutputUnigrams *bool `json:"outputUnigrams,omitempty"`
+	Name           *string                        `json:"name,omitempty"`
+	IgnoreScripts  *[]CjkBigramTokenFilterScripts `json:"ignoreScripts,omitempty"`
+	OutputUnigrams *bool                          `json:"outputUnigrams,omitempty"`
 }
 
 // ClassicTokenizer is grammar-based tokenizer that is suitable for processing
 // most European-language documents. This tokenizer is implemented using Apache
 // Lucene.
 type ClassicTokenizer struct {
-    Name *string `json:"name,omitempty"`
-    MaxTokenLength *int32 `json:"maxTokenLength,omitempty"`
+	Name           *string `json:"name,omitempty"`
+	MaxTokenLength *int32  `json:"maxTokenLength,omitempty"`
 }
 
 // CommonGramTokenFilter is construct bigrams for frequently occurring terms
 // while indexing. Single terms are still indexed too, with bigrams overlaid.
 // This token filter is implemented using Apache Lucene.
 type CommonGramTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    CommonWords *[]string `json:"commonWords,omitempty"`
-    IgnoreCase *bool `json:"ignoreCase,omitempty"`
-    UseQueryMode *bool `json:"queryMode,omitempty"`
+	Name         *string   `json:"name,omitempty"`
+	CommonWords  *[]string `json:"commonWords,omitempty"`
+	IgnoreCase   *bool     `json:"ignoreCase,omitempty"`
+	UseQueryMode *bool     `json:"queryMode,omitempty"`
 }
 
 // CorsOptions is defines options to control Cross-Origin Resource Sharing
 // (CORS) for an index.
 type CorsOptions struct {
-    AllowedOrigins *[]string `json:"allowedOrigins,omitempty"`
-    MaxAgeInSeconds *int64 `json:"maxAgeInSeconds,omitempty"`
+	AllowedOrigins  *[]string `json:"allowedOrigins,omitempty"`
+	MaxAgeInSeconds *int64    `json:"maxAgeInSeconds,omitempty"`
 }
 
 // CustomAnalyzer is allows you to take control over the process of converting
@@ -880,10 +880,10 @@ type CorsOptions struct {
 // tokenizer is responsible for breaking text into tokens, and the filters for
 // modifying tokens emitted by the tokenizer.
 type CustomAnalyzer struct {
-    Name *string `json:"name,omitempty"`
-    Tokenizer *TokenizerName `json:"tokenizer,omitempty"`
-    TokenFilters *[]TokenFilterName `json:"tokenFilters,omitempty"`
-    CharFilters *[]CharFilterName `json:"charFilters,omitempty"`
+	Name         *string            `json:"name,omitempty"`
+	Tokenizer    *TokenizerName     `json:"tokenizer,omitempty"`
+	TokenFilters *[]TokenFilterName `json:"tokenFilters,omitempty"`
+	CharFilters  *[]CharFilterName  `json:"charFilters,omitempty"`
 }
 
 // DataChangeDetectionPolicy is abstract base class for data change detection
@@ -894,8 +894,8 @@ type DataChangeDetectionPolicy struct {
 // DataContainer is represents information about the entity (such as Azure SQL
 // table or DocumentDb collection) that will be indexed.
 type DataContainer struct {
-    Name *string `json:"name,omitempty"`
-    Query *string `json:"query,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	Query *string `json:"query,omitempty"`
 }
 
 // DataDeletionDetectionPolicy is abstract base class for data deletion
@@ -906,314 +906,314 @@ type DataDeletionDetectionPolicy struct {
 // DataSource is represents a datasource definition in Azure Search, which can
 // be used to configure an indexer.
 type DataSource struct {
-    autorest.Response `json:"-"`
-    Name *string `json:"name,omitempty"`
-    Description *string `json:"description,omitempty"`
-    Type *DataSourceType `json:"type,omitempty"`
-    Credentials *DataSourceCredentials `json:"credentials,omitempty"`
-    Container *DataContainer `json:"container,omitempty"`
-    DataChangeDetectionPolicy *DataChangeDetectionPolicy `json:"dataChangeDetectionPolicy,omitempty"`
-    DataDeletionDetectionPolicy *DataDeletionDetectionPolicy `json:"dataDeletionDetectionPolicy,omitempty"`
-    ETag *string `json:"@odata.etag,omitempty"`
+	autorest.Response           `json:"-"`
+	Name                        *string                      `json:"name,omitempty"`
+	Description                 *string                      `json:"description,omitempty"`
+	Type                        *DataSourceType              `json:"type,omitempty"`
+	Credentials                 *DataSourceCredentials       `json:"credentials,omitempty"`
+	Container                   *DataContainer               `json:"container,omitempty"`
+	DataChangeDetectionPolicy   *DataChangeDetectionPolicy   `json:"dataChangeDetectionPolicy,omitempty"`
+	DataDeletionDetectionPolicy *DataDeletionDetectionPolicy `json:"dataDeletionDetectionPolicy,omitempty"`
+	ETag                        *string                      `json:"@odata.etag,omitempty"`
 }
 
 // DataSourceCredentials is represents credentials that can be used to connect
 // to a datasource.
 type DataSourceCredentials struct {
-    ConnectionString *string `json:"connectionString,omitempty"`
+	ConnectionString *string `json:"connectionString,omitempty"`
 }
 
 // DataSourceListResult is response from a List Datasources request. If
 // successful, it includes the full definitions of all datasources.
 type DataSourceListResult struct {
-    autorest.Response `json:"-"`
-    DataSources *[]DataSource `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	DataSources       *[]DataSource `json:"value,omitempty"`
 }
 
 // DataSourceType is defines the type of an Azure Search datasource.
 type DataSourceType struct {
-    Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // DataType is defines the data type of a field in an Azure Search index.
 type DataType struct {
-    Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // DictionaryDecompounderTokenFilter is decomposes compound words found in many
 // Germanic languages. This token filter is implemented using Apache Lucene.
 type DictionaryDecompounderTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    WordList *[]string `json:"wordList,omitempty"`
-    MinWordSize *int32 `json:"minWordSize,omitempty"`
-    MinSubwordSize *int32 `json:"minSubwordSize,omitempty"`
-    MaxSubwordSize *int32 `json:"maxSubwordSize,omitempty"`
-    OnlyLongestMatch *bool `json:"onlyLongestMatch,omitempty"`
+	Name             *string   `json:"name,omitempty"`
+	WordList         *[]string `json:"wordList,omitempty"`
+	MinWordSize      *int32    `json:"minWordSize,omitempty"`
+	MinSubwordSize   *int32    `json:"minSubwordSize,omitempty"`
+	MaxSubwordSize   *int32    `json:"maxSubwordSize,omitempty"`
+	OnlyLongestMatch *bool     `json:"onlyLongestMatch,omitempty"`
 }
 
 // DistanceScoringFunction is defines a function that boosts scores based on
 // distance from a geographic location.
 type DistanceScoringFunction struct {
-    FieldName *string `json:"fieldName,omitempty"`
-    Boost *float64 `json:"boost,omitempty"`
-    Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
-    Parameters *DistanceScoringParameters `json:"distance,omitempty"`
+	FieldName     *string                      `json:"fieldName,omitempty"`
+	Boost         *float64                     `json:"boost,omitempty"`
+	Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
+	Parameters    *DistanceScoringParameters   `json:"distance,omitempty"`
 }
 
 // DistanceScoringParameters is provides parameter values to a distance scoring
 // function.
 type DistanceScoringParameters struct {
-    ReferencePointParameter *string `json:"referencePointParameter,omitempty"`
-    BoostingDistance *float64 `json:"boostingDistance,omitempty"`
+	ReferencePointParameter *string  `json:"referencePointParameter,omitempty"`
+	BoostingDistance        *float64 `json:"boostingDistance,omitempty"`
 }
 
 // EdgeNGramTokenFilter is generates n-grams of the given size(s) starting from
 // the front or the back of an input token. This token filter is implemented
 // using Apache Lucene.
 type EdgeNGramTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    MinGram *int32 `json:"minGram,omitempty"`
-    MaxGram *int32 `json:"maxGram,omitempty"`
-    Side EdgeNGramTokenFilterSide `json:"side,omitempty"`
+	Name    *string                  `json:"name,omitempty"`
+	MinGram *int32                   `json:"minGram,omitempty"`
+	MaxGram *int32                   `json:"maxGram,omitempty"`
+	Side    EdgeNGramTokenFilterSide `json:"side,omitempty"`
 }
 
 // EdgeNGramTokenFilterV2 is generates n-grams of the given size(s) starting
 // from the front or the back of an input token. This token filter is
 // implemented using Apache Lucene.
 type EdgeNGramTokenFilterV2 struct {
-    Name *string `json:"name,omitempty"`
-    MinGram *int32 `json:"minGram,omitempty"`
-    MaxGram *int32 `json:"maxGram,omitempty"`
-    Side EdgeNGramTokenFilterSide `json:"side,omitempty"`
+	Name    *string                  `json:"name,omitempty"`
+	MinGram *int32                   `json:"minGram,omitempty"`
+	MaxGram *int32                   `json:"maxGram,omitempty"`
+	Side    EdgeNGramTokenFilterSide `json:"side,omitempty"`
 }
 
 // EdgeNGramTokenizer is tokenizes the input from an edge into n-grams of the
 // given size(s). This tokenizer is implemented using Apache Lucene.
 type EdgeNGramTokenizer struct {
-    Name *string `json:"name,omitempty"`
-    MinGram *int32 `json:"minGram,omitempty"`
-    MaxGram *int32 `json:"maxGram,omitempty"`
-    TokenChars *[]TokenCharacterKind `json:"tokenChars,omitempty"`
+	Name       *string               `json:"name,omitempty"`
+	MinGram    *int32                `json:"minGram,omitempty"`
+	MaxGram    *int32                `json:"maxGram,omitempty"`
+	TokenChars *[]TokenCharacterKind `json:"tokenChars,omitempty"`
 }
 
 // ElisionTokenFilter is removes elisions. For example, "l'avion" (the plane)
 // will be converted to "avion" (plane). This token filter is implemented using
 // Apache Lucene.
 type ElisionTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    Articles *[]string `json:"articles,omitempty"`
+	Name     *string   `json:"name,omitempty"`
+	Articles *[]string `json:"articles,omitempty"`
 }
 
 // Field is represents a field in an index definition in Azure Search, which
 // describes the name, data type, and search behavior of a field.
 type Field struct {
-    Name *string `json:"name,omitempty"`
-    Type *DataType `json:"type,omitempty"`
-    Analyzer *AnalyzerName `json:"analyzer,omitempty"`
-    SearchAnalyzer *AnalyzerName `json:"searchAnalyzer,omitempty"`
-    IndexAnalyzer *AnalyzerName `json:"indexAnalyzer,omitempty"`
-    IsKey *bool `json:"key,omitempty"`
-    IsSearchable *bool `json:"searchable,omitempty"`
-    IsFilterable *bool `json:"filterable,omitempty"`
-    IsSortable *bool `json:"sortable,omitempty"`
-    IsFacetable *bool `json:"facetable,omitempty"`
-    IsRetrievable *bool `json:"retrievable,omitempty"`
+	Name           *string       `json:"name,omitempty"`
+	Type           *DataType     `json:"type,omitempty"`
+	Analyzer       *AnalyzerName `json:"analyzer,omitempty"`
+	SearchAnalyzer *AnalyzerName `json:"searchAnalyzer,omitempty"`
+	IndexAnalyzer  *AnalyzerName `json:"indexAnalyzer,omitempty"`
+	IsKey          *bool         `json:"key,omitempty"`
+	IsSearchable   *bool         `json:"searchable,omitempty"`
+	IsFilterable   *bool         `json:"filterable,omitempty"`
+	IsSortable     *bool         `json:"sortable,omitempty"`
+	IsFacetable    *bool         `json:"facetable,omitempty"`
+	IsRetrievable  *bool         `json:"retrievable,omitempty"`
 }
 
 // FieldMapping is defines a mapping between a field in a data source and a
 // target field in an index.
 type FieldMapping struct {
-    SourceFieldName *string `json:"sourceFieldName,omitempty"`
-    TargetFieldName *string `json:"targetFieldName,omitempty"`
-    MappingFunction *FieldMappingFunction `json:"mappingFunction,omitempty"`
+	SourceFieldName *string               `json:"sourceFieldName,omitempty"`
+	TargetFieldName *string               `json:"targetFieldName,omitempty"`
+	MappingFunction *FieldMappingFunction `json:"mappingFunction,omitempty"`
 }
 
 // FieldMappingFunction is represents a function that transforms a value from a
 // data source before indexing.
 type FieldMappingFunction struct {
-    Name *string `json:"name,omitempty"`
-    Parameters *map[string]*map[string]interface{} `json:"parameters,omitempty"`
+	Name       *string                             `json:"name,omitempty"`
+	Parameters *map[string]*map[string]interface{} `json:"parameters,omitempty"`
 }
 
 // FreshnessScoringFunction is defines a function that boosts scores based on
 // the value of a date-time field.
 type FreshnessScoringFunction struct {
-    FieldName *string `json:"fieldName,omitempty"`
-    Boost *float64 `json:"boost,omitempty"`
-    Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
-    Parameters *FreshnessScoringParameters `json:"freshness,omitempty"`
+	FieldName     *string                      `json:"fieldName,omitempty"`
+	Boost         *float64                     `json:"boost,omitempty"`
+	Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
+	Parameters    *FreshnessScoringParameters  `json:"freshness,omitempty"`
 }
 
 // FreshnessScoringParameters is provides parameter values to a freshness
 // scoring function.
 type FreshnessScoringParameters struct {
-    BoostingDuration *string `json:"boostingDuration,omitempty"`
+	BoostingDuration *string `json:"boostingDuration,omitempty"`
 }
 
 // HighWaterMarkChangeDetectionPolicy is defines a data change detection policy
 // that captures changes based on the value of a high water mark column.
 type HighWaterMarkChangeDetectionPolicy struct {
-    HighWaterMarkColumnName *string `json:"highWaterMarkColumnName,omitempty"`
+	HighWaterMarkColumnName *string `json:"highWaterMarkColumnName,omitempty"`
 }
 
 // Index is represents an index definition in Azure Search, which describes the
 // fields and search behavior of an index.
 type Index struct {
-    autorest.Response `json:"-"`
-    Name *string `json:"name,omitempty"`
-    Fields *[]Field `json:"fields,omitempty"`
-    ScoringProfiles *[]ScoringProfile `json:"scoringProfiles,omitempty"`
-    DefaultScoringProfile *string `json:"defaultScoringProfile,omitempty"`
-    CorsOptions *CorsOptions `json:"corsOptions,omitempty"`
-    Suggesters *[]Suggester `json:"suggesters,omitempty"`
-    Analyzers *[]Analyzer `json:"analyzers,omitempty"`
-    Tokenizers *[]Tokenizer `json:"tokenizers,omitempty"`
-    TokenFilters *[]TokenFilter `json:"tokenFilters,omitempty"`
-    CharFilters *[]CharFilter `json:"charFilters,omitempty"`
-    ETag *string `json:"@odata.etag,omitempty"`
+	autorest.Response     `json:"-"`
+	Name                  *string           `json:"name,omitempty"`
+	Fields                *[]Field          `json:"fields,omitempty"`
+	ScoringProfiles       *[]ScoringProfile `json:"scoringProfiles,omitempty"`
+	DefaultScoringProfile *string           `json:"defaultScoringProfile,omitempty"`
+	CorsOptions           *CorsOptions      `json:"corsOptions,omitempty"`
+	Suggesters            *[]Suggester      `json:"suggesters,omitempty"`
+	Analyzers             *[]Analyzer       `json:"analyzers,omitempty"`
+	Tokenizers            *[]Tokenizer      `json:"tokenizers,omitempty"`
+	TokenFilters          *[]TokenFilter    `json:"tokenFilters,omitempty"`
+	CharFilters           *[]CharFilter     `json:"charFilters,omitempty"`
+	ETag                  *string           `json:"@odata.etag,omitempty"`
 }
 
 // Indexer is represents an Azure Search indexer.
 type Indexer struct {
-    autorest.Response `json:"-"`
-    Name *string `json:"name,omitempty"`
-    Description *string `json:"description,omitempty"`
-    DataSourceName *string `json:"dataSourceName,omitempty"`
-    TargetIndexName *string `json:"targetIndexName,omitempty"`
-    Schedule *IndexingSchedule `json:"schedule,omitempty"`
-    Parameters *IndexingParameters `json:"parameters,omitempty"`
-    FieldMappings *[]FieldMapping `json:"fieldMappings,omitempty"`
-    IsDisabled *bool `json:"disabled,omitempty"`
-    ETag *string `json:"@odata.etag,omitempty"`
+	autorest.Response `json:"-"`
+	Name              *string             `json:"name,omitempty"`
+	Description       *string             `json:"description,omitempty"`
+	DataSourceName    *string             `json:"dataSourceName,omitempty"`
+	TargetIndexName   *string             `json:"targetIndexName,omitempty"`
+	Schedule          *IndexingSchedule   `json:"schedule,omitempty"`
+	Parameters        *IndexingParameters `json:"parameters,omitempty"`
+	FieldMappings     *[]FieldMapping     `json:"fieldMappings,omitempty"`
+	IsDisabled        *bool               `json:"disabled,omitempty"`
+	ETag              *string             `json:"@odata.etag,omitempty"`
 }
 
 // IndexerExecutionInfo is represents the current status and execution history
 // of an indexer.
 type IndexerExecutionInfo struct {
-    autorest.Response `json:"-"`
-    Status IndexerStatus `json:"status,omitempty"`
-    LastResult *IndexerExecutionResult `json:"lastResult,omitempty"`
-    ExecutionHistory *[]IndexerExecutionResult `json:"executionHistory,omitempty"`
+	autorest.Response `json:"-"`
+	Status            IndexerStatus             `json:"status,omitempty"`
+	LastResult        *IndexerExecutionResult   `json:"lastResult,omitempty"`
+	ExecutionHistory  *[]IndexerExecutionResult `json:"executionHistory,omitempty"`
 }
 
 // IndexerExecutionResult is represents the result of an individual indexer
 // execution.
 type IndexerExecutionResult struct {
-    Status IndexerExecutionStatus `json:"status,omitempty"`
-    ErrorMessage *string `json:"errorMessage,omitempty"`
-    StartTime *date.Time `json:"startTime,omitempty"`
-    EndTime *date.Time `json:"endTime,omitempty"`
-    Errors *[]ItemError `json:"errors,omitempty"`
-    ItemCount *int32 `json:"itemsProcessed,omitempty"`
-    FailedItemCount *int32 `json:"itemsFailed,omitempty"`
-    InitialTrackingState *string `json:"initialTrackingState,omitempty"`
-    FinalTrackingState *string `json:"finalTrackingState,omitempty"`
+	Status               IndexerExecutionStatus `json:"status,omitempty"`
+	ErrorMessage         *string                `json:"errorMessage,omitempty"`
+	StartTime            *date.Time             `json:"startTime,omitempty"`
+	EndTime              *date.Time             `json:"endTime,omitempty"`
+	Errors               *[]ItemError           `json:"errors,omitempty"`
+	ItemCount            *int32                 `json:"itemsProcessed,omitempty"`
+	FailedItemCount      *int32                 `json:"itemsFailed,omitempty"`
+	InitialTrackingState *string                `json:"initialTrackingState,omitempty"`
+	FinalTrackingState   *string                `json:"finalTrackingState,omitempty"`
 }
 
 // IndexerListResult is response from a List Indexers request. If successful,
 // it includes the full definitions of all indexers.
 type IndexerListResult struct {
-    autorest.Response `json:"-"`
-    Indexers *[]Indexer `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Indexers          *[]Indexer `json:"value,omitempty"`
 }
 
 // IndexGetStatisticsResult is statistics for a given index. Statistics are
 // collected periodically and are not guaranteed to always be up-to-date.
 type IndexGetStatisticsResult struct {
-    autorest.Response `json:"-"`
-    DocumentCount *int64 `json:"documentCount,omitempty"`
-    StorageSize *int64 `json:"storageSize,omitempty"`
+	autorest.Response `json:"-"`
+	DocumentCount     *int64 `json:"documentCount,omitempty"`
+	StorageSize       *int64 `json:"storageSize,omitempty"`
 }
 
 // IndexingParameters is represents parameters for indexer execution.
 type IndexingParameters struct {
-    BatchSize *int32 `json:"batchSize,omitempty"`
-    MaxFailedItems *int32 `json:"maxFailedItems,omitempty"`
-    MaxFailedItemsPerBatch *int32 `json:"maxFailedItemsPerBatch,omitempty"`
-    Base64EncodeKeys *bool `json:"base64EncodeKeys,omitempty"`
-    Configuration *map[string]*map[string]interface{} `json:"configuration,omitempty"`
+	BatchSize              *int32                              `json:"batchSize,omitempty"`
+	MaxFailedItems         *int32                              `json:"maxFailedItems,omitempty"`
+	MaxFailedItemsPerBatch *int32                              `json:"maxFailedItemsPerBatch,omitempty"`
+	Base64EncodeKeys       *bool                               `json:"base64EncodeKeys,omitempty"`
+	Configuration          *map[string]*map[string]interface{} `json:"configuration,omitempty"`
 }
 
 // IndexingSchedule is represents a schedule for indexer execution.
 type IndexingSchedule struct {
-    Interval *string `json:"interval,omitempty"`
-    StartTime *date.Time `json:"startTime,omitempty"`
+	Interval  *string    `json:"interval,omitempty"`
+	StartTime *date.Time `json:"startTime,omitempty"`
 }
 
 // IndexListResult is response from a List Indexes request. If successful, it
 // includes the full definitions of all indexes.
 type IndexListResult struct {
-    autorest.Response `json:"-"`
-    Indexes *[]Index `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Indexes           *[]Index `json:"value,omitempty"`
 }
 
 // ItemError is represents an item- or document-level indexing error.
 type ItemError struct {
-    Key *string `json:"key,omitempty"`
-    ErrorMessage *string `json:"errorMessage,omitempty"`
+	Key          *string `json:"key,omitempty"`
+	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
 // KeepTokenFilter is a token filter that only keeps tokens with text contained
 // in a specified list of words. This token filter is implemented using Apache
 // Lucene.
 type KeepTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    KeepWords *[]string `json:"keepWords,omitempty"`
-    LowerCaseKeepWords *bool `json:"keepWordsCase,omitempty"`
+	Name               *string   `json:"name,omitempty"`
+	KeepWords          *[]string `json:"keepWords,omitempty"`
+	LowerCaseKeepWords *bool     `json:"keepWordsCase,omitempty"`
 }
 
 // KeywordMarkerTokenFilter is marks terms as keywords. This token filter is
 // implemented using Apache Lucene.
 type KeywordMarkerTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    Keywords *[]string `json:"keywords,omitempty"`
-    IgnoreCase *bool `json:"ignoreCase,omitempty"`
+	Name       *string   `json:"name,omitempty"`
+	Keywords   *[]string `json:"keywords,omitempty"`
+	IgnoreCase *bool     `json:"ignoreCase,omitempty"`
 }
 
 // KeywordTokenizer is emits the entire input as a single token. This tokenizer
 // is implemented using Apache Lucene.
 type KeywordTokenizer struct {
-    Name *string `json:"name,omitempty"`
-    BufferSize *int32 `json:"bufferSize,omitempty"`
+	Name       *string `json:"name,omitempty"`
+	BufferSize *int32  `json:"bufferSize,omitempty"`
 }
 
 // KeywordTokenizerV2 is emits the entire input as a single token.
 type KeywordTokenizerV2 struct {
-    Name *string `json:"name,omitempty"`
-    MaxTokenLength *int32 `json:"maxTokenLength,omitempty"`
+	Name           *string `json:"name,omitempty"`
+	MaxTokenLength *int32  `json:"maxTokenLength,omitempty"`
 }
 
 // LengthTokenFilter is removes words that are too long or too short. This
 // token filter is implemented using Apache Lucene.
 type LengthTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    Min *int32 `json:"min,omitempty"`
-    Max *int32 `json:"max,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Min  *int32  `json:"min,omitempty"`
+	Max  *int32  `json:"max,omitempty"`
 }
 
 // LimitTokenFilter is limits the number of tokens while indexing. This token
 // filter is implemented using Apache Lucene.
 type LimitTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    MaxTokenCount *int32 `json:"maxTokenCount,omitempty"`
-    ConsumeAllTokens *bool `json:"consumeAllTokens,omitempty"`
+	Name             *string `json:"name,omitempty"`
+	MaxTokenCount    *int32  `json:"maxTokenCount,omitempty"`
+	ConsumeAllTokens *bool   `json:"consumeAllTokens,omitempty"`
 }
 
 // MagnitudeScoringFunction is defines a function that boosts scores based on
 // the magnitude of a numeric field.
 type MagnitudeScoringFunction struct {
-    FieldName *string `json:"fieldName,omitempty"`
-    Boost *float64 `json:"boost,omitempty"`
-    Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
-    Parameters *MagnitudeScoringParameters `json:"magnitude,omitempty"`
+	FieldName     *string                      `json:"fieldName,omitempty"`
+	Boost         *float64                     `json:"boost,omitempty"`
+	Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
+	Parameters    *MagnitudeScoringParameters  `json:"magnitude,omitempty"`
 }
 
 // MagnitudeScoringParameters is provides parameter values to a magnitude
 // scoring function.
 type MagnitudeScoringParameters struct {
-    BoostingRangeStart *float64 `json:"boostingRangeStart,omitempty"`
-    BoostingRangeEnd *float64 `json:"boostingRangeEnd,omitempty"`
-    ShouldBoostBeyondRangeByConstant *bool `json:"constantBoostBeyondRange,omitempty"`
+	BoostingRangeStart               *float64 `json:"boostingRangeStart,omitempty"`
+	BoostingRangeEnd                 *float64 `json:"boostingRangeEnd,omitempty"`
+	ShouldBoostBeyondRangeByConstant *bool    `json:"constantBoostBeyondRange,omitempty"`
 }
 
 // MappingCharFilter is a character filter that applies mappings defined with
@@ -1221,91 +1221,91 @@ type MagnitudeScoringParameters struct {
 // point wins). Replacement is allowed to be the empty string. This character
 // filter is implemented using Apache Lucene.
 type MappingCharFilter struct {
-    Name *string `json:"name,omitempty"`
-    Mappings *[]string `json:"mappings,omitempty"`
+	Name     *string   `json:"name,omitempty"`
+	Mappings *[]string `json:"mappings,omitempty"`
 }
 
 // MicrosoftLanguageStemmingTokenizer is divides text using language-specific
 // rules and reduces words to their base forms.
 type MicrosoftLanguageStemmingTokenizer struct {
-    Name *string `json:"name,omitempty"`
-    MaxTokenLength *int32 `json:"maxTokenLength,omitempty"`
-    IsSearchTokenizer *bool `json:"isSearchTokenizer,omitempty"`
-    Language MicrosoftStemmingTokenizerLanguage `json:"language,omitempty"`
+	Name              *string                            `json:"name,omitempty"`
+	MaxTokenLength    *int32                             `json:"maxTokenLength,omitempty"`
+	IsSearchTokenizer *bool                              `json:"isSearchTokenizer,omitempty"`
+	Language          MicrosoftStemmingTokenizerLanguage `json:"language,omitempty"`
 }
 
 // MicrosoftLanguageTokenizer is divides text using language-specific rules.
 type MicrosoftLanguageTokenizer struct {
-    Name *string `json:"name,omitempty"`
-    MaxTokenLength *int32 `json:"maxTokenLength,omitempty"`
-    IsSearchTokenizer *bool `json:"isSearchTokenizer,omitempty"`
-    Language MicrosoftTokenizerLanguage `json:"language,omitempty"`
+	Name              *string                    `json:"name,omitempty"`
+	MaxTokenLength    *int32                     `json:"maxTokenLength,omitempty"`
+	IsSearchTokenizer *bool                      `json:"isSearchTokenizer,omitempty"`
+	Language          MicrosoftTokenizerLanguage `json:"language,omitempty"`
 }
 
 // NGramTokenFilter is generates n-grams of the given size(s). This token
 // filter is implemented using Apache Lucene.
 type NGramTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    MinGram *int32 `json:"minGram,omitempty"`
-    MaxGram *int32 `json:"maxGram,omitempty"`
+	Name    *string `json:"name,omitempty"`
+	MinGram *int32  `json:"minGram,omitempty"`
+	MaxGram *int32  `json:"maxGram,omitempty"`
 }
 
 // NGramTokenFilterV2 is generates n-grams of the given size(s). This token
 // filter is implemented using Apache Lucene.
 type NGramTokenFilterV2 struct {
-    Name *string `json:"name,omitempty"`
-    MinGram *int32 `json:"minGram,omitempty"`
-    MaxGram *int32 `json:"maxGram,omitempty"`
+	Name    *string `json:"name,omitempty"`
+	MinGram *int32  `json:"minGram,omitempty"`
+	MaxGram *int32  `json:"maxGram,omitempty"`
 }
 
 // NGramTokenizer is tokenizes the input into n-grams of the given size(s).
 // This tokenizer is implemented using Apache Lucene.
 type NGramTokenizer struct {
-    Name *string `json:"name,omitempty"`
-    MinGram *int32 `json:"minGram,omitempty"`
-    MaxGram *int32 `json:"maxGram,omitempty"`
-    TokenChars *[]TokenCharacterKind `json:"tokenChars,omitempty"`
+	Name       *string               `json:"name,omitempty"`
+	MinGram    *int32                `json:"minGram,omitempty"`
+	MaxGram    *int32                `json:"maxGram,omitempty"`
+	TokenChars *[]TokenCharacterKind `json:"tokenChars,omitempty"`
 }
 
 // PathHierarchyTokenizer is tokenizer for path-like hierarchies. This
 // tokenizer is implemented using Apache Lucene.
 type PathHierarchyTokenizer struct {
-    Name *string `json:"name,omitempty"`
-    Delimiter *string `json:"delimiter,omitempty"`
-    Replacement *string `json:"replacement,omitempty"`
-    BufferSize *int32 `json:"bufferSize,omitempty"`
-    ReverseTokenOrder *bool `json:"reverse,omitempty"`
-    NumberOfTokensToSkip *int32 `json:"skip,omitempty"`
+	Name                 *string `json:"name,omitempty"`
+	Delimiter            *string `json:"delimiter,omitempty"`
+	Replacement          *string `json:"replacement,omitempty"`
+	BufferSize           *int32  `json:"bufferSize,omitempty"`
+	ReverseTokenOrder    *bool   `json:"reverse,omitempty"`
+	NumberOfTokensToSkip *int32  `json:"skip,omitempty"`
 }
 
 // PathHierarchyTokenizerV2 is tokenizer for path-like hierarchies. This
 // tokenizer is implemented using Apache Lucene.
 type PathHierarchyTokenizerV2 struct {
-    Name *string `json:"name,omitempty"`
-    Delimiter *string `json:"delimiter,omitempty"`
-    Replacement *string `json:"replacement,omitempty"`
-    MaxTokenLength *int32 `json:"maxTokenLength,omitempty"`
-    ReverseTokenOrder *bool `json:"reverse,omitempty"`
-    NumberOfTokensToSkip *int32 `json:"skip,omitempty"`
+	Name                 *string `json:"name,omitempty"`
+	Delimiter            *string `json:"delimiter,omitempty"`
+	Replacement          *string `json:"replacement,omitempty"`
+	MaxTokenLength       *int32  `json:"maxTokenLength,omitempty"`
+	ReverseTokenOrder    *bool   `json:"reverse,omitempty"`
+	NumberOfTokensToSkip *int32  `json:"skip,omitempty"`
 }
 
 // PatternAnalyzer is flexibly separates text into terms via a regular
 // expression pattern. This analyzer is implemented using Apache Lucene.
 type PatternAnalyzer struct {
-    Name *string `json:"name,omitempty"`
-    LowerCaseTerms *bool `json:"lowercase,omitempty"`
-    Pattern *string `json:"pattern,omitempty"`
-    Flags *RegexFlags `json:"flags,omitempty"`
-    Stopwords *[]string `json:"stopwords,omitempty"`
+	Name           *string     `json:"name,omitempty"`
+	LowerCaseTerms *bool       `json:"lowercase,omitempty"`
+	Pattern        *string     `json:"pattern,omitempty"`
+	Flags          *RegexFlags `json:"flags,omitempty"`
+	Stopwords      *[]string   `json:"stopwords,omitempty"`
 }
 
 // PatternCaptureTokenFilter is uses Java regexes to emit multiple tokens - one
 // for each capture group in one or more patterns. This token filter is
 // implemented using Apache Lucene.
 type PatternCaptureTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    Patterns *[]string `json:"patterns,omitempty"`
-    PreserveOriginal *bool `json:"preserveOriginal,omitempty"`
+	Name             *string   `json:"name,omitempty"`
+	Patterns         *[]string `json:"patterns,omitempty"`
+	PreserveOriginal *bool     `json:"preserveOriginal,omitempty"`
 }
 
 // PatternReplaceCharFilter is a character filter that replaces characters in
@@ -1315,9 +1315,9 @@ type PatternCaptureTokenFilter struct {
 // "(aa)\s+(bb)", and replacement "$1#$2", the result would be "aa#bb aa#bb".
 // This character filter is implemented using Apache Lucene.
 type PatternReplaceCharFilter struct {
-    Name *string `json:"name,omitempty"`
-    Pattern *string `json:"pattern,omitempty"`
-    Replacement *string `json:"replacement,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	Pattern     *string `json:"pattern,omitempty"`
+	Replacement *string `json:"replacement,omitempty"`
 }
 
 // PatternReplaceTokenFilter is a character filter that replaces characters in
@@ -1327,68 +1327,68 @@ type PatternReplaceCharFilter struct {
 // "(aa)\s+(bb)", and replacement "$1#$2", the result would be "aa#bb aa#bb".
 // This token filter is implemented using Apache Lucene.
 type PatternReplaceTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    Pattern *string `json:"pattern,omitempty"`
-    Replacement *string `json:"replacement,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	Pattern     *string `json:"pattern,omitempty"`
+	Replacement *string `json:"replacement,omitempty"`
 }
 
 // PatternTokenizer is tokenizer that uses regex pattern matching to construct
 // distinct tokens. This tokenizer is implemented using Apache Lucene.
 type PatternTokenizer struct {
-    Name *string `json:"name,omitempty"`
-    Pattern *string `json:"pattern,omitempty"`
-    Flags *RegexFlags `json:"flags,omitempty"`
-    Group *int32 `json:"group,omitempty"`
+	Name    *string     `json:"name,omitempty"`
+	Pattern *string     `json:"pattern,omitempty"`
+	Flags   *RegexFlags `json:"flags,omitempty"`
+	Group   *int32      `json:"group,omitempty"`
 }
 
 // PhoneticTokenFilter is create tokens for phonetic matches. This token filter
 // is implemented using Apache Lucene.
 type PhoneticTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    Encoder PhoneticEncoder `json:"encoder,omitempty"`
-    ReplaceOriginalTokens *bool `json:"replace,omitempty"`
+	Name                  *string         `json:"name,omitempty"`
+	Encoder               PhoneticEncoder `json:"encoder,omitempty"`
+	ReplaceOriginalTokens *bool           `json:"replace,omitempty"`
 }
 
 // RegexFlags is defines flags that can be combined to control how regular
 // expressions are used in the pattern analyzer and pattern tokenizer.
 type RegexFlags struct {
-    Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // ScoringFunction is abstract base class for functions that can modify
 // document scores during ranking.
 type ScoringFunction struct {
-    FieldName *string `json:"fieldName,omitempty"`
-    Boost *float64 `json:"boost,omitempty"`
-    Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
+	FieldName     *string                      `json:"fieldName,omitempty"`
+	Boost         *float64                     `json:"boost,omitempty"`
+	Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
 }
 
 // ScoringProfile is defines parameters for an Azure Search index that
 // influence scoring in search queries.
 type ScoringProfile struct {
-    Name *string `json:"name,omitempty"`
-    TextWeights *TextWeights `json:"text,omitempty"`
-    Functions *[]ScoringFunction `json:"functions,omitempty"`
-    FunctionAggregation ScoringFunctionAggregation `json:"functionAggregation,omitempty"`
+	Name                *string                    `json:"name,omitempty"`
+	TextWeights         *TextWeights               `json:"text,omitempty"`
+	Functions           *[]ScoringFunction         `json:"functions,omitempty"`
+	FunctionAggregation ScoringFunctionAggregation `json:"functionAggregation,omitempty"`
 }
 
 // ShingleTokenFilter is creates combinations of tokens as a single token. This
 // token filter is implemented using Apache Lucene.
 type ShingleTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    MaxShingleSize *int32 `json:"maxShingleSize,omitempty"`
-    MinShingleSize *int32 `json:"minShingleSize,omitempty"`
-    OutputUnigrams *bool `json:"outputUnigrams,omitempty"`
-    OutputUnigramsIfNoShingles *bool `json:"outputUnigramsIfNoShingles,omitempty"`
-    TokenSeparator *string `json:"tokenSeparator,omitempty"`
-    FilterToken *string `json:"filterToken,omitempty"`
+	Name                       *string `json:"name,omitempty"`
+	MaxShingleSize             *int32  `json:"maxShingleSize,omitempty"`
+	MinShingleSize             *int32  `json:"minShingleSize,omitempty"`
+	OutputUnigrams             *bool   `json:"outputUnigrams,omitempty"`
+	OutputUnigramsIfNoShingles *bool   `json:"outputUnigramsIfNoShingles,omitempty"`
+	TokenSeparator             *string `json:"tokenSeparator,omitempty"`
+	FilterToken                *string `json:"filterToken,omitempty"`
 }
 
 // SnowballTokenFilter is a filter that stems words using a Snowball-generated
 // stemmer. This token filter is implemented using Apache Lucene.
 type SnowballTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    Language SnowballTokenFilterLanguage `json:"language,omitempty"`
+	Name     *string                     `json:"name,omitempty"`
+	Language SnowballTokenFilterLanguage `json:"language,omitempty"`
 }
 
 // SoftDeleteColumnDeletionDetectionPolicy is defines a data deletion detection
@@ -1396,8 +1396,8 @@ type SnowballTokenFilter struct {
 // item should be deleted based on the value of a designated 'soft delete'
 // column.
 type SoftDeleteColumnDeletionDetectionPolicy struct {
-    SoftDeleteColumnName *string `json:"softDeleteColumnName,omitempty"`
-    SoftDeleteMarkerValue *string `json:"softDeleteMarkerValue,omitempty"`
+	SoftDeleteColumnName  *string `json:"softDeleteColumnName,omitempty"`
+	SoftDeleteMarkerValue *string `json:"softDeleteMarkerValue,omitempty"`
 }
 
 // SQLIntegratedChangeTrackingPolicy is defines a data change detection policy
@@ -1409,23 +1409,23 @@ type SQLIntegratedChangeTrackingPolicy struct {
 // StandardAnalyzer is standard Apache Lucene analyzer; Composed of the
 // standard tokenizer, lowercase filter and stop filter.
 type StandardAnalyzer struct {
-    Name *string `json:"name,omitempty"`
-    MaxTokenLength *int32 `json:"maxTokenLength,omitempty"`
-    Stopwords *[]string `json:"stopwords,omitempty"`
+	Name           *string   `json:"name,omitempty"`
+	MaxTokenLength *int32    `json:"maxTokenLength,omitempty"`
+	Stopwords      *[]string `json:"stopwords,omitempty"`
 }
 
 // StandardTokenizer is breaks text following the Unicode Text Segmentation
 // rules. This tokenizer is implemented using Apache Lucene.
 type StandardTokenizer struct {
-    Name *string `json:"name,omitempty"`
-    MaxTokenLength *int32 `json:"maxTokenLength,omitempty"`
+	Name           *string `json:"name,omitempty"`
+	MaxTokenLength *int32  `json:"maxTokenLength,omitempty"`
 }
 
 // StandardTokenizerV2 is breaks text following the Unicode Text Segmentation
 // rules. This tokenizer is implemented using Apache Lucene.
 type StandardTokenizerV2 struct {
-    Name *string `json:"name,omitempty"`
-    MaxTokenLength *int32 `json:"maxTokenLength,omitempty"`
+	Name           *string `json:"name,omitempty"`
+	MaxTokenLength *int32  `json:"maxTokenLength,omitempty"`
 }
 
 // StemmerOverrideTokenFilter is provides the ability to override other
@@ -1434,136 +1434,135 @@ type StandardTokenizerV2 struct {
 // stemmed with stemmers down the chain. Must be placed before any stemming
 // filters. This token filter is implemented using Apache Lucene.
 type StemmerOverrideTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    Rules *[]string `json:"rules,omitempty"`
+	Name  *string   `json:"name,omitempty"`
+	Rules *[]string `json:"rules,omitempty"`
 }
 
 // StemmerTokenFilter is language specific stemming filter. This token filter
 // is implemented using Apache Lucene.
 type StemmerTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    Language StemmerTokenFilterLanguage `json:"language,omitempty"`
+	Name     *string                    `json:"name,omitempty"`
+	Language StemmerTokenFilterLanguage `json:"language,omitempty"`
 }
 
 // StopAnalyzer is divides text at non-letters; Applies the lowercase and
 // stopword token filters. This analyzer is implemented using Apache Lucene.
 type StopAnalyzer struct {
-    Name *string `json:"name,omitempty"`
-    Stopwords *[]string `json:"stopwords,omitempty"`
+	Name      *string   `json:"name,omitempty"`
+	Stopwords *[]string `json:"stopwords,omitempty"`
 }
 
 // StopwordsTokenFilter is removes stop words from a token stream. This token
 // filter is implemented using Apache Lucene.
 type StopwordsTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    Stopwords *[]string `json:"stopwords,omitempty"`
-    StopwordsList StopwordsList `json:"stopwordsList,omitempty"`
-    IgnoreCase *bool `json:"ignoreCase,omitempty"`
-    RemoveTrailingStopWords *bool `json:"removeTrailing,omitempty"`
+	Name                    *string       `json:"name,omitempty"`
+	Stopwords               *[]string     `json:"stopwords,omitempty"`
+	StopwordsList           StopwordsList `json:"stopwordsList,omitempty"`
+	IgnoreCase              *bool         `json:"ignoreCase,omitempty"`
+	RemoveTrailingStopWords *bool         `json:"removeTrailing,omitempty"`
 }
 
 // Suggester is defines how the Suggest API should apply to a group of fields
 // in the index.
 type Suggester struct {
-    Name *string `json:"name,omitempty"`
-    SearchMode *string `json:"searchMode,omitempty"`
-    SourceFields *[]string `json:"sourceFields,omitempty"`
+	Name         *string   `json:"name,omitempty"`
+	SearchMode   *string   `json:"searchMode,omitempty"`
+	SourceFields *[]string `json:"sourceFields,omitempty"`
 }
 
 // SynonymTokenFilter is matches single or multi-word synonyms in a token
 // stream. This token filter is implemented using Apache Lucene.
 type SynonymTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    Synonyms *[]string `json:"synonyms,omitempty"`
-    IgnoreCase *bool `json:"ignoreCase,omitempty"`
-    Expand *bool `json:"expand,omitempty"`
+	Name       *string   `json:"name,omitempty"`
+	Synonyms   *[]string `json:"synonyms,omitempty"`
+	IgnoreCase *bool     `json:"ignoreCase,omitempty"`
+	Expand     *bool     `json:"expand,omitempty"`
 }
 
 // TagScoringFunction is defines a function that boosts scores of documents
 // with string values matching a given list of tags.
 type TagScoringFunction struct {
-    FieldName *string `json:"fieldName,omitempty"`
-    Boost *float64 `json:"boost,omitempty"`
-    Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
-    Parameters *TagScoringParameters `json:"tag,omitempty"`
+	FieldName     *string                      `json:"fieldName,omitempty"`
+	Boost         *float64                     `json:"boost,omitempty"`
+	Interpolation ScoringFunctionInterpolation `json:"interpolation,omitempty"`
+	Parameters    *TagScoringParameters        `json:"tag,omitempty"`
 }
 
 // TagScoringParameters is provides parameter values to a tag scoring function.
 type TagScoringParameters struct {
-    TagsParameter *string `json:"tagsParameter,omitempty"`
+	TagsParameter *string `json:"tagsParameter,omitempty"`
 }
 
 // TextWeights is defines weights on index fields for which matches should
 // boost scoring in search queries.
 type TextWeights struct {
-    Weights *map[string]*float64 `json:"weights,omitempty"`
+	Weights *map[string]*float64 `json:"weights,omitempty"`
 }
 
 // TokenFilter is abstract base class for token filters.
 type TokenFilter struct {
-    Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // TokenFilterName is defines the names of all token filters supported by Azure
 // Search.
 type TokenFilterName struct {
-    Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // TokenInfo is information about a token returned by an analyzer.
 type TokenInfo struct {
-    Token *string `json:"token,omitempty"`
-    StartOffset *int32 `json:"startOffset,omitempty"`
-    EndOffset *int32 `json:"endOffset,omitempty"`
-    Position *int32 `json:"position,omitempty"`
+	Token       *string `json:"token,omitempty"`
+	StartOffset *int32  `json:"startOffset,omitempty"`
+	EndOffset   *int32  `json:"endOffset,omitempty"`
+	Position    *int32  `json:"position,omitempty"`
 }
 
 // Tokenizer is abstract base class for tokenizers.
 type Tokenizer struct {
-    Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // TokenizerName is defines the names of all tokenizers supported by Azure
 // Search.
 type TokenizerName struct {
-    Name *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // TruncateTokenFilter is truncates the terms to a specific length. This token
 // filter is implemented using Apache Lucene.
 type TruncateTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    Length *int32 `json:"length,omitempty"`
+	Name   *string `json:"name,omitempty"`
+	Length *int32  `json:"length,omitempty"`
 }
 
 // UaxURLEmailTokenizer is tokenizes urls and emails as one token. This
 // tokenizer is implemented using Apache Lucene.
 type UaxURLEmailTokenizer struct {
-    Name *string `json:"name,omitempty"`
-    MaxTokenLength *int32 `json:"maxTokenLength,omitempty"`
+	Name           *string `json:"name,omitempty"`
+	MaxTokenLength *int32  `json:"maxTokenLength,omitempty"`
 }
 
 // UniqueTokenFilter is filters out tokens with same text as the previous
 // token. This token filter is implemented using Apache Lucene.
 type UniqueTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    OnlyOnSamePosition *bool `json:"onlyOnSamePosition,omitempty"`
+	Name               *string `json:"name,omitempty"`
+	OnlyOnSamePosition *bool   `json:"onlyOnSamePosition,omitempty"`
 }
 
 // WordDelimiterTokenFilter is splits words into subwords and performs optional
 // transformations on subword groups. This token filter is implemented using
 // Apache Lucene.
 type WordDelimiterTokenFilter struct {
-    Name *string `json:"name,omitempty"`
-    GenerateWordParts *bool `json:"generateWordParts,omitempty"`
-    GenerateNumberParts *bool `json:"generateNumberParts,omitempty"`
-    CatenateWords *bool `json:"catenateWords,omitempty"`
-    CatenateNumbers *bool `json:"catenateNumbers,omitempty"`
-    CatenateAll *bool `json:"catenateAll,omitempty"`
-    SplitOnCaseChange *bool `json:"splitOnCaseChange,omitempty"`
-    PreserveOriginal *bool `json:"preserveOriginal,omitempty"`
-    SplitOnNumerics *bool `json:"splitOnNumerics,omitempty"`
-    StemEnglishPossessive *bool `json:"stemEnglishPossessive,omitempty"`
-    ProtectedWords *[]string `json:"protectedWords,omitempty"`
+	Name                  *string   `json:"name,omitempty"`
+	GenerateWordParts     *bool     `json:"generateWordParts,omitempty"`
+	GenerateNumberParts   *bool     `json:"generateNumberParts,omitempty"`
+	CatenateWords         *bool     `json:"catenateWords,omitempty"`
+	CatenateNumbers       *bool     `json:"catenateNumbers,omitempty"`
+	CatenateAll           *bool     `json:"catenateAll,omitempty"`
+	SplitOnCaseChange     *bool     `json:"splitOnCaseChange,omitempty"`
+	PreserveOriginal      *bool     `json:"preserveOriginal,omitempty"`
+	SplitOnNumerics       *bool     `json:"splitOnNumerics,omitempty"`
+	StemEnglishPossessive *bool     `json:"stemEnglishPossessive,omitempty"`
+	ProtectedWords        *[]string `json:"protectedWords,omitempty"`
 }
-

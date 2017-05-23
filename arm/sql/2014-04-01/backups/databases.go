@@ -19,27 +19,28 @@ package backups
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // DatabasesClient is the provides create, read, update and delete
 // functionality for Azure SQL Database resources including servers, databases,
 // elastic pools, recommendations, operations, and usage metrics.
 type DatabasesClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewDatabasesClient creates an instance of the DatabasesClient client.
 func NewDatabasesClient(subscriptionID string) DatabasesClient {
-        return NewDatabasesClientWithBaseURI(DefaultBaseURI, subscriptionID)
-        }
+	return NewDatabasesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
 
 // NewDatabasesClientWithBaseURI creates an instance of the DatabasesClient
 // client.
-    func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
-        return DatabasesClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
+	return DatabasesClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // ListRestorePoints returns a list of database restore points.
 //
@@ -48,65 +49,64 @@ func NewDatabasesClient(subscriptionID string) DatabasesClient {
 // the portal. serverName is the name of the server. databaseName is the name
 // of the database from which to retrieve available restore points.
 func (client DatabasesClient) ListRestorePoints(resourceGroupName string, serverName string, databaseName string) (result RestorePointListResult, err error) {
-    req, err := client.ListRestorePointsPreparer(resourceGroupName, serverName, databaseName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "backups.DatabasesClient", "ListRestorePoints", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListRestorePointsPreparer(resourceGroupName, serverName, databaseName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backups.DatabasesClient", "ListRestorePoints", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListRestorePointsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "backups.DatabasesClient", "ListRestorePoints", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListRestorePointsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "backups.DatabasesClient", "ListRestorePoints", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListRestorePointsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "backups.DatabasesClient", "ListRestorePoints", resp, "Failure responding to request")
-    }
+	result, err = client.ListRestorePointsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backups.DatabasesClient", "ListRestorePoints", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListRestorePointsPreparer prepares the ListRestorePoints request.
 func (client DatabasesClient) ListRestorePointsPreparer(resourceGroupName string, serverName string, databaseName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListRestorePointsSender sends the ListRestorePoints request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) ListRestorePointsSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListRestorePointsResponder handles the response to the ListRestorePoints request. The method always
 // closes the http.Response Body.
 func (client DatabasesClient) ListRestorePointsResponder(resp *http.Response) (result RestorePointListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

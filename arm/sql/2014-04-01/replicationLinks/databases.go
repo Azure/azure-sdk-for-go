@@ -19,26 +19,27 @@ package replicationlinks
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // DatabasesClient is the provides read, delete, and failover functionality for
 // Azure SQL Database replication links.
 type DatabasesClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewDatabasesClient creates an instance of the DatabasesClient client.
 func NewDatabasesClient(subscriptionID string) DatabasesClient {
-        return NewDatabasesClientWithBaseURI(DefaultBaseURI, subscriptionID)
-        }
+	return NewDatabasesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
 
 // NewDatabasesClientWithBaseURI creates an instance of the DatabasesClient
 // client.
-    func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
-        return DatabasesClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
+	return DatabasesClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // DeleteReplicationLink deletes a database replication link. Cannot be done
 // during failover.
@@ -49,66 +50,66 @@ func NewDatabasesClient(subscriptionID string) DatabasesClient {
 // of the database that has the replication link to be dropped. linkID is the
 // ID of the replication link to be deleted.
 func (client DatabasesClient) DeleteReplicationLink(resourceGroupName string, serverName string, databaseName string, linkID string) (result autorest.Response, err error) {
-    req, err := client.DeleteReplicationLinkPreparer(resourceGroupName, serverName, databaseName, linkID)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "DeleteReplicationLink", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeleteReplicationLinkPreparer(resourceGroupName, serverName, databaseName, linkID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "DeleteReplicationLink", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteReplicationLinkSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "DeleteReplicationLink", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteReplicationLinkSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "DeleteReplicationLink", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteReplicationLinkResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "DeleteReplicationLink", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteReplicationLinkResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "DeleteReplicationLink", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeleteReplicationLinkPreparer prepares the DeleteReplicationLink request.
 func (client DatabasesClient) DeleteReplicationLinkPreparer(resourceGroupName string, serverName string, databaseName string, linkID string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "linkId": autorest.Encode("path",linkID),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":      autorest.Encode("path", databaseName),
+		"linkId":            autorest.Encode("path", linkID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteReplicationLinkSender sends the DeleteReplicationLink request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) DeleteReplicationLinkSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteReplicationLinkResponder handles the response to the DeleteReplicationLink request. The method always
 // closes the http.Response Body.
 func (client DatabasesClient) DeleteReplicationLinkResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // FailoverReplicationLink sets which replica database is primary by failing
@@ -123,79 +124,79 @@ func (client DatabasesClient) DeleteReplicationLinkResponder(resp *http.Response
 // of the database that has the replication link to be failed over. linkID is
 // the ID of the replication link to be failed over.
 func (client DatabasesClient) FailoverReplicationLink(resourceGroupName string, serverName string, databaseName string, linkID string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
-    resultChan := make(chan autorest.Response, 1)
-    errChan:= make(chan error, 1)
-    go func() {
-        var err error
-        var result autorest.Response
-        defer func() {
-            resultChan <- result
-            errChan <- err
-            close(resultChan)
-            close(errChan)
-        }()
-    req, err := client.FailoverReplicationLinkPreparer(resourceGroupName, serverName, databaseName, linkID, cancel)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "FailoverReplicationLink", nil , "Failure preparing request")
-        return
-    }
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.FailoverReplicationLinkPreparer(resourceGroupName, serverName, databaseName, linkID, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "FailoverReplicationLink", nil, "Failure preparing request")
+			return
+		}
 
-    resp, err := client.FailoverReplicationLinkSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "FailoverReplicationLink", resp, "Failure sending request")
-        return
-    }
+		resp, err := client.FailoverReplicationLinkSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "FailoverReplicationLink", resp, "Failure sending request")
+			return
+		}
 
-    result, err = client.FailoverReplicationLinkResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "FailoverReplicationLink", resp, "Failure responding to request")
-    }
-    }()
-    return resultChan, errChan
+		result, err = client.FailoverReplicationLinkResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "FailoverReplicationLink", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // FailoverReplicationLinkPreparer prepares the FailoverReplicationLink request.
 func (client DatabasesClient) FailoverReplicationLinkPreparer(resourceGroupName string, serverName string, databaseName string, linkID string, cancel <-chan struct{}) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "linkId": autorest.Encode("path",linkID),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":      autorest.Encode("path", databaseName),
+		"linkId":            autorest.Encode("path", linkID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{Cancel: cancel})
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
 }
 
 // FailoverReplicationLinkSender sends the FailoverReplicationLink request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) FailoverReplicationLinkSender(req *http.Request) (*http.Response, error) {
-        return autorest.SendWithSender(client,
-                                                    req,
-                                                    azure.DoPollForAsynchronous(client.PollingDelay))
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // FailoverReplicationLinkResponder handles the response to the FailoverReplicationLink request. The method always
 // closes the http.Response Body.
 func (client DatabasesClient) FailoverReplicationLinkResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent,http.StatusAccepted),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // FailoverReplicationLinkAllowDataLoss sets which replica database is primary
@@ -210,79 +211,79 @@ func (client DatabasesClient) FailoverReplicationLinkResponder(resp *http.Respon
 // of the database that has the replication link to be failed over. linkID is
 // the ID of the replication link to be failed over.
 func (client DatabasesClient) FailoverReplicationLinkAllowDataLoss(resourceGroupName string, serverName string, databaseName string, linkID string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
-    resultChan := make(chan autorest.Response, 1)
-    errChan:= make(chan error, 1)
-    go func() {
-        var err error
-        var result autorest.Response
-        defer func() {
-            resultChan <- result
-            errChan <- err
-            close(resultChan)
-            close(errChan)
-        }()
-    req, err := client.FailoverReplicationLinkAllowDataLossPreparer(resourceGroupName, serverName, databaseName, linkID, cancel)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "FailoverReplicationLinkAllowDataLoss", nil , "Failure preparing request")
-        return
-    }
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			resultChan <- result
+			errChan <- err
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.FailoverReplicationLinkAllowDataLossPreparer(resourceGroupName, serverName, databaseName, linkID, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "FailoverReplicationLinkAllowDataLoss", nil, "Failure preparing request")
+			return
+		}
 
-    resp, err := client.FailoverReplicationLinkAllowDataLossSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "FailoverReplicationLinkAllowDataLoss", resp, "Failure sending request")
-        return
-    }
+		resp, err := client.FailoverReplicationLinkAllowDataLossSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "FailoverReplicationLinkAllowDataLoss", resp, "Failure sending request")
+			return
+		}
 
-    result, err = client.FailoverReplicationLinkAllowDataLossResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "FailoverReplicationLinkAllowDataLoss", resp, "Failure responding to request")
-    }
-    }()
-    return resultChan, errChan
+		result, err = client.FailoverReplicationLinkAllowDataLossResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "FailoverReplicationLinkAllowDataLoss", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // FailoverReplicationLinkAllowDataLossPreparer prepares the FailoverReplicationLinkAllowDataLoss request.
 func (client DatabasesClient) FailoverReplicationLinkAllowDataLossPreparer(resourceGroupName string, serverName string, databaseName string, linkID string, cancel <-chan struct{}) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "linkId": autorest.Encode("path",linkID),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":      autorest.Encode("path", databaseName),
+		"linkId":            autorest.Encode("path", linkID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{Cancel: cancel})
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
 }
 
 // FailoverReplicationLinkAllowDataLossSender sends the FailoverReplicationLinkAllowDataLoss request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) FailoverReplicationLinkAllowDataLossSender(req *http.Request) (*http.Response, error) {
-        return autorest.SendWithSender(client,
-                                                    req,
-                                                    azure.DoPollForAsynchronous(client.PollingDelay))
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // FailoverReplicationLinkAllowDataLossResponder handles the response to the FailoverReplicationLinkAllowDataLoss request. The method always
 // closes the http.Response Body.
 func (client DatabasesClient) FailoverReplicationLinkAllowDataLossResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent,http.StatusAccepted),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // GetReplicationLink gets a database replication link.
@@ -293,67 +294,67 @@ func (client DatabasesClient) FailoverReplicationLinkAllowDataLossResponder(resp
 // of the database to get the link for. linkID is the replication link ID to be
 // retrieved.
 func (client DatabasesClient) GetReplicationLink(resourceGroupName string, serverName string, databaseName string, linkID string) (result ReplicationLink, err error) {
-    req, err := client.GetReplicationLinkPreparer(resourceGroupName, serverName, databaseName, linkID)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "GetReplicationLink", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetReplicationLinkPreparer(resourceGroupName, serverName, databaseName, linkID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "GetReplicationLink", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetReplicationLinkSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "GetReplicationLink", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetReplicationLinkSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "GetReplicationLink", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetReplicationLinkResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "GetReplicationLink", resp, "Failure responding to request")
-    }
+	result, err = client.GetReplicationLinkResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "GetReplicationLink", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetReplicationLinkPreparer prepares the GetReplicationLink request.
 func (client DatabasesClient) GetReplicationLinkPreparer(resourceGroupName string, serverName string, databaseName string, linkID string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "linkId": autorest.Encode("path",linkID),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":      autorest.Encode("path", databaseName),
+		"linkId":            autorest.Encode("path", linkID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetReplicationLinkSender sends the GetReplicationLink request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) GetReplicationLinkSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetReplicationLinkResponder handles the response to the GetReplicationLink request. The method always
 // closes the http.Response Body.
 func (client DatabasesClient) GetReplicationLinkResponder(resp *http.Response) (result ReplicationLink, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListReplicationLinks lists a database's replication links.
@@ -363,65 +364,64 @@ func (client DatabasesClient) GetReplicationLinkResponder(resp *http.Response) (
 // the portal. serverName is the name of the server. databaseName is the name
 // of the database to retrieve links for.
 func (client DatabasesClient) ListReplicationLinks(resourceGroupName string, serverName string, databaseName string) (result ListResult, err error) {
-    req, err := client.ListReplicationLinksPreparer(resourceGroupName, serverName, databaseName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "ListReplicationLinks", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListReplicationLinksPreparer(resourceGroupName, serverName, databaseName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "ListReplicationLinks", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListReplicationLinksSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "ListReplicationLinks", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListReplicationLinksSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "ListReplicationLinks", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListReplicationLinksResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "ListReplicationLinks", resp, "Failure responding to request")
-    }
+	result, err = client.ListReplicationLinksResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "replicationlinks.DatabasesClient", "ListReplicationLinks", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListReplicationLinksPreparer prepares the ListReplicationLinks request.
 func (client DatabasesClient) ListReplicationLinksPreparer(resourceGroupName string, serverName string, databaseName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2014-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListReplicationLinksSender sends the ListReplicationLinks request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) ListReplicationLinksSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListReplicationLinksResponder handles the response to the ListReplicationLinks request. The method always
 // closes the http.Response Body.
 func (client DatabasesClient) ListReplicationLinksResponder(resp *http.Response) (result ListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

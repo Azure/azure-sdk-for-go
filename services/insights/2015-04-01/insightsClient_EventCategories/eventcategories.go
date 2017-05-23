@@ -19,84 +19,84 @@ package insightsclienteventcategories
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // EventCategoriesClient is the client for the EventCategories methods of the
 // Insightsclienteventcategories service.
 type EventCategoriesClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewEventCategoriesClient creates an instance of the EventCategoriesClient
 // client.
 func NewEventCategoriesClient() EventCategoriesClient {
-        return NewEventCategoriesClientWithBaseURI(DefaultBaseURI, )
-        }
+	return NewEventCategoriesClientWithBaseURI(DefaultBaseURI)
+}
 
 // NewEventCategoriesClientWithBaseURI creates an instance of the
 // EventCategoriesClient client.
-    func NewEventCategoriesClientWithBaseURI(baseURI string, ) EventCategoriesClient {
-        return EventCategoriesClient{ NewWithBaseURI(baseURI, )}
-    }
+func NewEventCategoriesClientWithBaseURI(baseURI string) EventCategoriesClient {
+	return EventCategoriesClient{NewWithBaseURI(baseURI)}
+}
 
 // List get the list of available event categories supported in the Activity
 // Log Service. The current list includes the following: Aministrative,
 // Security, ServiceHealth, Alert, Recommendation, Policy.
 func (client EventCategoriesClient) List() (result EventCategoryCollection, err error) {
-    req, err := client.ListPreparer()
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsclienteventcategories.EventCategoriesClient", "List", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListPreparer()
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsclienteventcategories.EventCategoriesClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "insightsclienteventcategories.EventCategoriesClient", "List", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "insightsclienteventcategories.EventCategoriesClient", "List", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsclienteventcategories.EventCategoriesClient", "List", resp, "Failure responding to request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsclienteventcategories.EventCategoriesClient", "List", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListPreparer prepares the List request.
 func (client EventCategoriesClient) ListPreparer() (*http.Request, error) {
-        const APIVersion = "2015-04-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2015-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/providers/microsoft.insights/eventcategories"),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/providers/microsoft.insights/eventcategories"),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventCategoriesClient) ListSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client EventCategoriesClient) ListResponder(resp *http.Response) (result EventCategoryCollection, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

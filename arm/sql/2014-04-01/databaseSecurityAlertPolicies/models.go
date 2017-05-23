@@ -19,7 +19,7 @@ package databasesecurityalertpolicies
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // SecurityAlertPolicyEmailAccountAdmins enumerates the values for security
@@ -27,12 +27,12 @@ import (
 type SecurityAlertPolicyEmailAccountAdmins string
 
 const (
-    // Disabled specifies the disabled state for security alert policy email
-    // account admins.
-    Disabled SecurityAlertPolicyEmailAccountAdmins = "Disabled"
-    // Enabled specifies the enabled state for security alert policy email
-    // account admins.
-    Enabled SecurityAlertPolicyEmailAccountAdmins = "Enabled"
+	// Disabled specifies the disabled state for security alert policy email
+	// account admins.
+	Disabled SecurityAlertPolicyEmailAccountAdmins = "Disabled"
+	// Enabled specifies the enabled state for security alert policy email
+	// account admins.
+	Enabled SecurityAlertPolicyEmailAccountAdmins = "Enabled"
 )
 
 // SecurityAlertPolicyState enumerates the values for security alert policy
@@ -40,15 +40,15 @@ const (
 type SecurityAlertPolicyState string
 
 const (
-    // SecurityAlertPolicyStateDisabled specifies the security alert policy
-    // state disabled state for security alert policy state.
-    SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = "Disabled"
-    // SecurityAlertPolicyStateEnabled specifies the security alert policy
-    // state enabled state for security alert policy state.
-    SecurityAlertPolicyStateEnabled SecurityAlertPolicyState = "Enabled"
-    // SecurityAlertPolicyStateNew specifies the security alert policy state
-    // new state for security alert policy state.
-    SecurityAlertPolicyStateNew SecurityAlertPolicyState = "New"
+	// SecurityAlertPolicyStateDisabled specifies the security alert policy
+	// state disabled state for security alert policy state.
+	SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = "Disabled"
+	// SecurityAlertPolicyStateEnabled specifies the security alert policy
+	// state enabled state for security alert policy state.
+	SecurityAlertPolicyStateEnabled SecurityAlertPolicyState = "Enabled"
+	// SecurityAlertPolicyStateNew specifies the security alert policy state
+	// new state for security alert policy state.
+	SecurityAlertPolicyStateNew SecurityAlertPolicyState = "New"
 )
 
 // SecurityAlertPolicyUseServerDefault enumerates the values for security alert
@@ -56,61 +56,60 @@ const (
 type SecurityAlertPolicyUseServerDefault string
 
 const (
-    // SecurityAlertPolicyUseServerDefaultDisabled specifies the security alert
-    // policy use server default disabled state for security alert policy use
-    // server default.
-    SecurityAlertPolicyUseServerDefaultDisabled SecurityAlertPolicyUseServerDefault = "Disabled"
-    // SecurityAlertPolicyUseServerDefaultEnabled specifies the security alert
-    // policy use server default enabled state for security alert policy use
-    // server default.
-    SecurityAlertPolicyUseServerDefaultEnabled SecurityAlertPolicyUseServerDefault = "Enabled"
+	// SecurityAlertPolicyUseServerDefaultDisabled specifies the security alert
+	// policy use server default disabled state for security alert policy use
+	// server default.
+	SecurityAlertPolicyUseServerDefaultDisabled SecurityAlertPolicyUseServerDefault = "Disabled"
+	// SecurityAlertPolicyUseServerDefaultEnabled specifies the security alert
+	// policy use server default enabled state for security alert policy use
+	// server default.
+	SecurityAlertPolicyUseServerDefaultEnabled SecurityAlertPolicyUseServerDefault = "Enabled"
 )
 
 // DatabaseSecurityAlertPolicy is contains information about a database Threat
 // Detection policy.
 type DatabaseSecurityAlertPolicy struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Kind *string `json:"kind,omitempty"`
-    *DatabaseSecurityAlertPolicyProperties `json:"properties,omitempty"`
+	autorest.Response                      `json:"-"`
+	ID                                     *string `json:"id,omitempty"`
+	Name                                   *string `json:"name,omitempty"`
+	Type                                   *string `json:"type,omitempty"`
+	Location                               *string `json:"location,omitempty"`
+	Kind                                   *string `json:"kind,omitempty"`
+	*DatabaseSecurityAlertPolicyProperties `json:"properties,omitempty"`
 }
 
 // DatabaseSecurityAlertPolicyProperties is properties for a database Threat
 // Detection policy.
 type DatabaseSecurityAlertPolicyProperties struct {
-    State SecurityAlertPolicyState `json:"state,omitempty"`
-    DisabledAlerts *string `json:"disabledAlerts,omitempty"`
-    EmailAddresses *string `json:"emailAddresses,omitempty"`
-    EmailAccountAdmins SecurityAlertPolicyEmailAccountAdmins `json:"emailAccountAdmins,omitempty"`
-    StorageEndpoint *string `json:"storageEndpoint,omitempty"`
-    StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
-    RetentionDays *int32 `json:"retentionDays,omitempty"`
-    UseServerDefault SecurityAlertPolicyUseServerDefault `json:"useServerDefault,omitempty"`
+	State                   SecurityAlertPolicyState              `json:"state,omitempty"`
+	DisabledAlerts          *string                               `json:"disabledAlerts,omitempty"`
+	EmailAddresses          *string                               `json:"emailAddresses,omitempty"`
+	EmailAccountAdmins      SecurityAlertPolicyEmailAccountAdmins `json:"emailAccountAdmins,omitempty"`
+	StorageEndpoint         *string                               `json:"storageEndpoint,omitempty"`
+	StorageAccountAccessKey *string                               `json:"storageAccountAccessKey,omitempty"`
+	RetentionDays           *int32                                `json:"retentionDays,omitempty"`
+	UseServerDefault        SecurityAlertPolicyUseServerDefault   `json:"useServerDefault,omitempty"`
 }
 
 // ProxyResource is aRM proxy resource.
 type ProxyResource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // Resource is aRM resource.
 type Resource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // TrackedResource is aRM tracked top level resource.
 type TrackedResource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
-    Location *string `json:"location,omitempty"`
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+	Location *string             `json:"location,omitempty"`
 }
-

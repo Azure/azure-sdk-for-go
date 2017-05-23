@@ -19,58 +19,57 @@ package insightsclientmetrics
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // Unit enumerates the values for unit.
 type Unit string
 
 const (
-    // Bytes specifies the bytes state for unit.
-    Bytes Unit = "Bytes"
-    // BytesPerSecond specifies the bytes per second state for unit.
-    BytesPerSecond Unit = "BytesPerSecond"
-    // Count specifies the count state for unit.
-    Count Unit = "Count"
-    // CountPerSecond specifies the count per second state for unit.
-    CountPerSecond Unit = "CountPerSecond"
-    // MilliSeconds specifies the milli seconds state for unit.
-    MilliSeconds Unit = "MilliSeconds"
-    // Percent specifies the percent state for unit.
-    Percent Unit = "Percent"
-    // Seconds specifies the seconds state for unit.
-    Seconds Unit = "Seconds"
+	// Bytes specifies the bytes state for unit.
+	Bytes Unit = "Bytes"
+	// BytesPerSecond specifies the bytes per second state for unit.
+	BytesPerSecond Unit = "BytesPerSecond"
+	// Count specifies the count state for unit.
+	Count Unit = "Count"
+	// CountPerSecond specifies the count per second state for unit.
+	CountPerSecond Unit = "CountPerSecond"
+	// MilliSeconds specifies the milli seconds state for unit.
+	MilliSeconds Unit = "MilliSeconds"
+	// Percent specifies the percent state for unit.
+	Percent Unit = "Percent"
+	// Seconds specifies the seconds state for unit.
+	Seconds Unit = "Seconds"
 )
 
 // LocalizableString is the localizable string class.
 type LocalizableString struct {
-    Value *string `json:"value,omitempty"`
-    LocalizedValue *string `json:"localizedValue,omitempty"`
+	Value          *string `json:"value,omitempty"`
+	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
 // Metric is a set of metric values in a time range.
 type Metric struct {
-    ID *string `json:"id,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Name *LocalizableString `json:"name,omitempty"`
-    Unit Unit `json:"unit,omitempty"`
-    Data *[]MetricValue `json:"data,omitempty"`
+	ID   *string            `json:"id,omitempty"`
+	Type *string            `json:"type,omitempty"`
+	Name *LocalizableString `json:"name,omitempty"`
+	Unit Unit               `json:"unit,omitempty"`
+	Data *[]MetricValue     `json:"data,omitempty"`
 }
 
 // MetricCollection is the collection of metric value sets.
 type MetricCollection struct {
-    autorest.Response `json:"-"`
-    Value *[]Metric `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]Metric `json:"value,omitempty"`
 }
 
 // MetricValue is represents a metric value.
 type MetricValue struct {
-    TimeStamp *date.Time `json:"timeStamp,omitempty"`
-    Average *float64 `json:"average,omitempty"`
-    Minimum *float64 `json:"minimum,omitempty"`
-    Maximum *float64 `json:"maximum,omitempty"`
-    Total *float64 `json:"total,omitempty"`
-    Count *int64 `json:"count,omitempty"`
+	TimeStamp *date.Time `json:"timeStamp,omitempty"`
+	Average   *float64   `json:"average,omitempty"`
+	Minimum   *float64   `json:"minimum,omitempty"`
+	Maximum   *float64   `json:"maximum,omitempty"`
+	Total     *float64   `json:"total,omitempty"`
+	Count     *int64     `json:"count,omitempty"`
 }
-

@@ -19,28 +19,29 @@ package commerce
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
+	"net/http"
 )
 
 // UsageAggregatesClient is the client for the UsageAggregates methods of the
 // Commerce service.
 type UsageAggregatesClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewUsageAggregatesClient creates an instance of the UsageAggregatesClient
 // client.
 func NewUsageAggregatesClient(subscriptionID string) UsageAggregatesClient {
-        return NewUsageAggregatesClientWithBaseURI(DefaultBaseURI, subscriptionID)
-        }
+	return NewUsageAggregatesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
 
 // NewUsageAggregatesClientWithBaseURI creates an instance of the
 // UsageAggregatesClient client.
-    func NewUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) UsageAggregatesClient {
-        return UsageAggregatesClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) UsageAggregatesClient {
+	return UsageAggregatesClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // List query aggregated Azure subscription consumption data for a date range.
 //
@@ -59,97 +60,96 @@ func NewUsageAggregatesClient(subscriptionID string) UsageAggregatesClient {
 // result set. If not present, the data is retrieved from the beginning of the
 // day/hour (based on the granularity) passed in.
 func (client UsageAggregatesClient) List(reportedStartTime date.Time, reportedEndTime date.Time, showDetails *bool, aggregationGranularity AggregationGranularity, continuationToken string) (result UsageAggregationListResult, err error) {
-    req, err := client.ListPreparer(reportedStartTime, reportedEndTime, showDetails, aggregationGranularity, continuationToken)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListPreparer(reportedStartTime, reportedEndTime, showDetails, aggregationGranularity, continuationToken)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", resp, "Failure responding to request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListPreparer prepares the List request.
 func (client UsageAggregatesClient) ListPreparer(reportedStartTime date.Time, reportedEndTime date.Time, showDetails *bool, aggregationGranularity AggregationGranularity, continuationToken string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2015-06-01-preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    "reportedEndTime": autorest.Encode("query",reportedEndTime),
-    "reportedStartTime": autorest.Encode("query",reportedStartTime),
-    }
-    if showDetails != nil {
-        queryParameters["showDetails"] = autorest.Encode("query",*showDetails)
-    }
-    if len(string(aggregationGranularity)) > 0 {
-        queryParameters["aggregationGranularity"] = autorest.Encode("query",aggregationGranularity)
-    }
-    if len(continuationToken) > 0 {
-        queryParameters["continuationToken"] = autorest.Encode("query",continuationToken)
-    }
+	const APIVersion = "2015-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version":       APIVersion,
+		"reportedEndTime":   autorest.Encode("query", reportedEndTime),
+		"reportedStartTime": autorest.Encode("query", reportedStartTime),
+	}
+	if showDetails != nil {
+		queryParameters["showDetails"] = autorest.Encode("query", *showDetails)
+	}
+	if len(string(aggregationGranularity)) > 0 {
+		queryParameters["aggregationGranularity"] = autorest.Encode("query", aggregationGranularity)
+	}
+	if len(continuationToken) > 0 {
+		queryParameters["continuationToken"] = autorest.Encode("query", continuationToken)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Commerce/UsageAggregates",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Commerce/UsageAggregates", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageAggregatesClient) ListSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client UsageAggregatesClient) ListResponder(resp *http.Response) (result UsageAggregationListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListNextResults retrieves the next set of results, if any.
 func (client UsageAggregatesClient) ListNextResults(lastResults UsageAggregationListResult) (result UsageAggregationListResult, err error) {
-    req, err := lastResults.UsageAggregationListResultPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.UsageAggregationListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
-

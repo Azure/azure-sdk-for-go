@@ -19,28 +19,29 @@ package batchservice
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "github.com/satori/uuid"
-    "github.com/Azure/go-autorest/autorest/date"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/satori/uuid"
+	"net/http"
 )
 
 // FileClient is the a client for issuing REST requests to the Azure Batch
 // service.
 type FileClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewFileClient creates an instance of the FileClient client.
 func NewFileClient() FileClient {
-        return NewFileClientWithBaseURI(DefaultBaseURI, )
-        }
+	return NewFileClientWithBaseURI(DefaultBaseURI)
+}
 
 // NewFileClientWithBaseURI creates an instance of the FileClient client.
-    func NewFileClientWithBaseURI(baseURI string, ) FileClient {
-        return FileClient{ NewWithBaseURI(baseURI, )}
-    }
+func NewFileClientWithBaseURI(baseURI string) FileClient {
+	return FileClient{NewWithBaseURI(baseURI)}
+}
 
 // DeleteFromComputeNode sends the delete from compute node request.
 //
@@ -60,82 +61,82 @@ func NewFileClient() FileClient {
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client FileClient) DeleteFromComputeNode(poolID string, nodeID string, filePath string, recursive *bool, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.DeleteFromComputeNodePreparer(poolID, nodeID, filePath, recursive, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "DeleteFromComputeNode", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeleteFromComputeNodePreparer(poolID, nodeID, filePath, recursive, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "DeleteFromComputeNode", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteFromComputeNodeSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "DeleteFromComputeNode", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteFromComputeNodeSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "DeleteFromComputeNode", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteFromComputeNodeResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "DeleteFromComputeNode", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteFromComputeNodeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "DeleteFromComputeNode", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeleteFromComputeNodePreparer prepares the DeleteFromComputeNode request.
 func (client FileClient) DeleteFromComputeNodePreparer(poolID string, nodeID string, filePath string, recursive *bool, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "filePath": autorest.Encode("path",filePath),
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"filePath": autorest.Encode("path", filePath),
+		"nodeId":   autorest.Encode("path", nodeID),
+		"poolId":   autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if recursive != nil {
-        queryParameters["recursive"] = autorest.Encode("query",*recursive)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if recursive != nil {
+		queryParameters["recursive"] = autorest.Encode("query", *recursive)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/files/{filePath}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/files/{filePath}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteFromComputeNodeSender sends the DeleteFromComputeNode request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) DeleteFromComputeNodeSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteFromComputeNodeResponder handles the response to the DeleteFromComputeNode request. The method always
 // closes the http.Response Body.
 func (client FileClient) DeleteFromComputeNodeResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // DeleteFromTask sends the delete from task request.
@@ -156,82 +157,82 @@ func (client FileClient) DeleteFromComputeNodeResponder(resp *http.Response) (re
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client FileClient) DeleteFromTask(jobID string, taskID string, filePath string, recursive *bool, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.DeleteFromTaskPreparer(jobID, taskID, filePath, recursive, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "DeleteFromTask", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeleteFromTaskPreparer(jobID, taskID, filePath, recursive, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "DeleteFromTask", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteFromTaskSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "DeleteFromTask", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteFromTaskSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "DeleteFromTask", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteFromTaskResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "DeleteFromTask", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteFromTaskResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "DeleteFromTask", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeleteFromTaskPreparer prepares the DeleteFromTask request.
 func (client FileClient) DeleteFromTaskPreparer(jobID string, taskID string, filePath string, recursive *bool, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "filePath": autorest.Encode("path",filePath),
-    "jobId": autorest.Encode("path",jobID),
-    "taskId": autorest.Encode("path",taskID),
-    }
+	pathParameters := map[string]interface{}{
+		"filePath": autorest.Encode("path", filePath),
+		"jobId":    autorest.Encode("path", jobID),
+		"taskId":   autorest.Encode("path", taskID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if recursive != nil {
-        queryParameters["recursive"] = autorest.Encode("query",*recursive)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if recursive != nil {
+		queryParameters["recursive"] = autorest.Encode("query", *recursive)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/files/{filePath}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/files/{filePath}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteFromTaskSender sends the DeleteFromTask request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) DeleteFromTaskSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteFromTaskResponder handles the response to the DeleteFromTask request. The method always
 // closes the http.Response Body.
 func (client FileClient) DeleteFromTaskResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // GetFromComputeNode returns the content of the specified compute node file.
@@ -255,91 +256,91 @@ func (client FileClient) DeleteFromTaskResponder(resp *http.Response) (result au
 // resource known to the client. The operation will be performed only if the
 // resource on the service has not been modified since the specified time.
 func (client FileClient) GetFromComputeNode(poolID string, nodeID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ocpRange string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result ReadCloser, err error) {
-    req, err := client.GetFromComputeNodePreparer(poolID, nodeID, filePath, timeout, clientRequestID, returnClientRequestID, ocpDate, ocpRange, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetFromComputeNode", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetFromComputeNodePreparer(poolID, nodeID, filePath, timeout, clientRequestID, returnClientRequestID, ocpDate, ocpRange, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetFromComputeNode", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetFromComputeNodeSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetFromComputeNode", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetFromComputeNodeSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetFromComputeNode", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetFromComputeNodeResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetFromComputeNode", resp, "Failure responding to request")
-    }
+	result, err = client.GetFromComputeNodeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetFromComputeNode", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetFromComputeNodePreparer prepares the GetFromComputeNode request.
 func (client FileClient) GetFromComputeNodePreparer(poolID string, nodeID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ocpRange string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "filePath": autorest.Encode("path",filePath),
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"filePath": autorest.Encode("path", filePath),
+		"nodeId":   autorest.Encode("path", nodeID),
+		"poolId":   autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/files/{filePath}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ocpRange) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-range",autorest.String(ocpRange)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/files/{filePath}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ocpRange) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-range", autorest.String(ocpRange)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetFromComputeNodeSender sends the GetFromComputeNode request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) GetFromComputeNodeSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetFromComputeNodeResponder handles the response to the GetFromComputeNode request. The method always
 // closes the http.Response Body.
 func (client FileClient) GetFromComputeNodeResponder(resp *http.Response) (result ReadCloser, err error) {
-    result.Value = &resp.Body
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK))
-    result.Response = autorest.Response{Response: resp}
-    return
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetFromTask returns the content of the specified task file.
@@ -363,91 +364,91 @@ func (client FileClient) GetFromComputeNodeResponder(resp *http.Response) (resul
 // resource known to the client. The operation will be performed only if the
 // resource on the service has not been modified since the specified time.
 func (client FileClient) GetFromTask(jobID string, taskID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ocpRange string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result ReadCloser, err error) {
-    req, err := client.GetFromTaskPreparer(jobID, taskID, filePath, timeout, clientRequestID, returnClientRequestID, ocpDate, ocpRange, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetFromTask", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetFromTaskPreparer(jobID, taskID, filePath, timeout, clientRequestID, returnClientRequestID, ocpDate, ocpRange, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetFromTask", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetFromTaskSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetFromTask", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetFromTaskSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetFromTask", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetFromTaskResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetFromTask", resp, "Failure responding to request")
-    }
+	result, err = client.GetFromTaskResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetFromTask", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetFromTaskPreparer prepares the GetFromTask request.
 func (client FileClient) GetFromTaskPreparer(jobID string, taskID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ocpRange string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "filePath": autorest.Encode("path",filePath),
-    "jobId": autorest.Encode("path",jobID),
-    "taskId": autorest.Encode("path",taskID),
-    }
+	pathParameters := map[string]interface{}{
+		"filePath": autorest.Encode("path", filePath),
+		"jobId":    autorest.Encode("path", jobID),
+		"taskId":   autorest.Encode("path", taskID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/files/{filePath}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ocpRange) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-range",autorest.String(ocpRange)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/files/{filePath}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ocpRange) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-range", autorest.String(ocpRange)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetFromTaskSender sends the GetFromTask request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) GetFromTaskSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetFromTaskResponder handles the response to the GetFromTask request. The method always
 // closes the http.Response Body.
 func (client FileClient) GetFromTaskResponder(resp *http.Response) (result ReadCloser, err error) {
-    result.Value = &resp.Body
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK))
-    result.Response = autorest.Response{Response: resp}
-    return
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetPropertiesFromComputeNode gets the properties of the specified compute
@@ -470,87 +471,87 @@ func (client FileClient) GetFromTaskResponder(resp *http.Response) (result ReadC
 // resource known to the client. The operation will be performed only if the
 // resource on the service has not been modified since the specified time.
 func (client FileClient) GetPropertiesFromComputeNode(poolID string, nodeID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.GetPropertiesFromComputeNodePreparer(poolID, nodeID, filePath, timeout, clientRequestID, returnClientRequestID, ocpDate, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetPropertiesFromComputeNode", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPropertiesFromComputeNodePreparer(poolID, nodeID, filePath, timeout, clientRequestID, returnClientRequestID, ocpDate, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetPropertiesFromComputeNode", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetPropertiesFromComputeNodeSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetPropertiesFromComputeNode", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetPropertiesFromComputeNodeSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetPropertiesFromComputeNode", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetPropertiesFromComputeNodeResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetPropertiesFromComputeNode", resp, "Failure responding to request")
-    }
+	result, err = client.GetPropertiesFromComputeNodeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetPropertiesFromComputeNode", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPropertiesFromComputeNodePreparer prepares the GetPropertiesFromComputeNode request.
 func (client FileClient) GetPropertiesFromComputeNodePreparer(poolID string, nodeID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "filePath": autorest.Encode("path",filePath),
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"filePath": autorest.Encode("path", filePath),
+		"nodeId":   autorest.Encode("path", nodeID),
+		"poolId":   autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsHead(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/files/{filePath}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsHead(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/files/{filePath}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetPropertiesFromComputeNodeSender sends the GetPropertiesFromComputeNode request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) GetPropertiesFromComputeNodeSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetPropertiesFromComputeNodeResponder handles the response to the GetPropertiesFromComputeNode request. The method always
 // closes the http.Response Body.
 func (client FileClient) GetPropertiesFromComputeNodeResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // GetPropertiesFromTask gets the properties of the specified task file.
@@ -572,87 +573,87 @@ func (client FileClient) GetPropertiesFromComputeNodeResponder(resp *http.Respon
 // resource known to the client. The operation will be performed only if the
 // resource on the service has not been modified since the specified time.
 func (client FileClient) GetPropertiesFromTask(jobID string, taskID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.GetPropertiesFromTaskPreparer(jobID, taskID, filePath, timeout, clientRequestID, returnClientRequestID, ocpDate, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetPropertiesFromTask", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPropertiesFromTaskPreparer(jobID, taskID, filePath, timeout, clientRequestID, returnClientRequestID, ocpDate, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetPropertiesFromTask", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetPropertiesFromTaskSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetPropertiesFromTask", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetPropertiesFromTaskSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetPropertiesFromTask", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetPropertiesFromTaskResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetPropertiesFromTask", resp, "Failure responding to request")
-    }
+	result, err = client.GetPropertiesFromTaskResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "GetPropertiesFromTask", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPropertiesFromTaskPreparer prepares the GetPropertiesFromTask request.
 func (client FileClient) GetPropertiesFromTaskPreparer(jobID string, taskID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "filePath": autorest.Encode("path",filePath),
-    "jobId": autorest.Encode("path",jobID),
-    "taskId": autorest.Encode("path",taskID),
-    }
+	pathParameters := map[string]interface{}{
+		"filePath": autorest.Encode("path", filePath),
+		"jobId":    autorest.Encode("path", jobID),
+		"taskId":   autorest.Encode("path", taskID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsHead(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/files/{filePath}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsHead(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/files/{filePath}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetPropertiesFromTaskSender sends the GetPropertiesFromTask request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) GetPropertiesFromTaskSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetPropertiesFromTaskResponder handles the response to the GetPropertiesFromTask request. The method always
 // closes the http.Response Body.
 func (client FileClient) GetPropertiesFromTaskResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // ListFromComputeNode sends the list from compute node request.
@@ -671,121 +672,121 @@ func (client FileClient) GetPropertiesFromTaskResponder(resp *http.Response) (re
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client FileClient) ListFromComputeNode(poolID string, nodeID string, filter string, recursive *bool, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result NodeFileListResult, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: maxResults,
-     Constraints: []validation.Constraint{	{Target: "maxResults", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil },
-    	{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.FileClient","ListFromComputeNode")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: maxResults,
+			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.FileClient", "ListFromComputeNode")
+	}
 
-    req, err := client.ListFromComputeNodePreparer(poolID, nodeID, filter, recursive, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromComputeNode", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListFromComputeNodePreparer(poolID, nodeID, filter, recursive, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromComputeNode", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListFromComputeNodeSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromComputeNode", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListFromComputeNodeSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromComputeNode", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListFromComputeNodeResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromComputeNode", resp, "Failure responding to request")
-    }
+	result, err = client.ListFromComputeNodeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromComputeNode", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListFromComputeNodePreparer prepares the ListFromComputeNode request.
 func (client FileClient) ListFromComputeNodePreparer(poolID string, nodeID string, filter string, recursive *bool, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeId": autorest.Encode("path", nodeID),
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if recursive != nil {
-        queryParameters["recursive"] = autorest.Encode("query",*recursive)
-    }
-    if maxResults != nil {
-        queryParameters["maxresults"] = autorest.Encode("query",*maxResults)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if recursive != nil {
+		queryParameters["recursive"] = autorest.Encode("query", *recursive)
+	}
+	if maxResults != nil {
+		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/files",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/files", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListFromComputeNodeSender sends the ListFromComputeNode request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) ListFromComputeNodeSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListFromComputeNodeResponder handles the response to the ListFromComputeNode request. The method always
 // closes the http.Response Body.
 func (client FileClient) ListFromComputeNodeResponder(resp *http.Response) (result NodeFileListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListFromComputeNodeNextResults retrieves the next set of results, if any.
 func (client FileClient) ListFromComputeNodeNextResults(lastResults NodeFileListResult) (result NodeFileListResult, err error) {
-    req, err := lastResults.NodeFileListResultPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromComputeNode", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.NodeFileListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromComputeNode", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListFromComputeNodeSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromComputeNode", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListFromComputeNodeSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromComputeNode", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListFromComputeNodeResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromComputeNode", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListFromComputeNodeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromComputeNode", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListFromTask sends the list from task request.
@@ -805,120 +806,119 @@ func (client FileClient) ListFromComputeNodeNextResults(lastResults NodeFileList
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client FileClient) ListFromTask(jobID string, taskID string, filter string, recursive *bool, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result NodeFileListResult, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: maxResults,
-     Constraints: []validation.Constraint{	{Target: "maxResults", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil },
-    	{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.FileClient","ListFromTask")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: maxResults,
+			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.FileClient", "ListFromTask")
+	}
 
-    req, err := client.ListFromTaskPreparer(jobID, taskID, filter, recursive, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromTask", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListFromTaskPreparer(jobID, taskID, filter, recursive, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromTask", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListFromTaskSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromTask", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListFromTaskSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromTask", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListFromTaskResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromTask", resp, "Failure responding to request")
-    }
+	result, err = client.ListFromTaskResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromTask", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListFromTaskPreparer prepares the ListFromTask request.
 func (client FileClient) ListFromTaskPreparer(jobID string, taskID string, filter string, recursive *bool, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "jobId": autorest.Encode("path",jobID),
-    "taskId": autorest.Encode("path",taskID),
-    }
+	pathParameters := map[string]interface{}{
+		"jobId":  autorest.Encode("path", jobID),
+		"taskId": autorest.Encode("path", taskID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if recursive != nil {
-        queryParameters["recursive"] = autorest.Encode("query",*recursive)
-    }
-    if maxResults != nil {
-        queryParameters["maxresults"] = autorest.Encode("query",*maxResults)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if recursive != nil {
+		queryParameters["recursive"] = autorest.Encode("query", *recursive)
+	}
+	if maxResults != nil {
+		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/files",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/jobs/{jobId}/tasks/{taskId}/files", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListFromTaskSender sends the ListFromTask request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) ListFromTaskSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListFromTaskResponder handles the response to the ListFromTask request. The method always
 // closes the http.Response Body.
 func (client FileClient) ListFromTaskResponder(resp *http.Response) (result NodeFileListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListFromTaskNextResults retrieves the next set of results, if any.
 func (client FileClient) ListFromTaskNextResults(lastResults NodeFileListResult) (result NodeFileListResult, err error) {
-    req, err := lastResults.NodeFileListResultPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromTask", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.NodeFileListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromTask", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListFromTaskSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromTask", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListFromTaskSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromTask", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListFromTaskResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromTask", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListFromTaskResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.FileClient", "ListFromTask", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
-

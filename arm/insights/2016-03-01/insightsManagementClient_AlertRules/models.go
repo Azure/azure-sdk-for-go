@@ -19,99 +19,99 @@ package insightsmanagementclientalertrules
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // ConditionOperator enumerates the values for condition operator.
 type ConditionOperator string
 
 const (
-    // GreaterThan specifies the greater than state for condition operator.
-    GreaterThan ConditionOperator = "GreaterThan"
-    // GreaterThanOrEqual specifies the greater than or equal state for
-    // condition operator.
-    GreaterThanOrEqual ConditionOperator = "GreaterThanOrEqual"
-    // LessThan specifies the less than state for condition operator.
-    LessThan ConditionOperator = "LessThan"
-    // LessThanOrEqual specifies the less than or equal state for condition
-    // operator.
-    LessThanOrEqual ConditionOperator = "LessThanOrEqual"
+	// GreaterThan specifies the greater than state for condition operator.
+	GreaterThan ConditionOperator = "GreaterThan"
+	// GreaterThanOrEqual specifies the greater than or equal state for
+	// condition operator.
+	GreaterThanOrEqual ConditionOperator = "GreaterThanOrEqual"
+	// LessThan specifies the less than state for condition operator.
+	LessThan ConditionOperator = "LessThan"
+	// LessThanOrEqual specifies the less than or equal state for condition
+	// operator.
+	LessThanOrEqual ConditionOperator = "LessThanOrEqual"
 )
 
 // TimeAggregationOperator enumerates the values for time aggregation operator.
 type TimeAggregationOperator string
 
 const (
-    // Average specifies the average state for time aggregation operator.
-    Average TimeAggregationOperator = "Average"
-    // Last specifies the last state for time aggregation operator.
-    Last TimeAggregationOperator = "Last"
-    // Maximum specifies the maximum state for time aggregation operator.
-    Maximum TimeAggregationOperator = "Maximum"
-    // Minimum specifies the minimum state for time aggregation operator.
-    Minimum TimeAggregationOperator = "Minimum"
-    // Total specifies the total state for time aggregation operator.
-    Total TimeAggregationOperator = "Total"
+	// Average specifies the average state for time aggregation operator.
+	Average TimeAggregationOperator = "Average"
+	// Last specifies the last state for time aggregation operator.
+	Last TimeAggregationOperator = "Last"
+	// Maximum specifies the maximum state for time aggregation operator.
+	Maximum TimeAggregationOperator = "Maximum"
+	// Minimum specifies the minimum state for time aggregation operator.
+	Minimum TimeAggregationOperator = "Minimum"
+	// Total specifies the total state for time aggregation operator.
+	Total TimeAggregationOperator = "Total"
 )
 
 // AlertRule is an alert rule.
 type AlertRule struct {
-    Name *string `json:"name,omitempty"`
-    Description *string `json:"description,omitempty"`
-    IsEnabled *bool `json:"isEnabled,omitempty"`
-    Condition *RuleCondition `json:"condition,omitempty"`
-    Actions *[]RuleAction `json:"actions,omitempty"`
-    LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
+	Name            *string        `json:"name,omitempty"`
+	Description     *string        `json:"description,omitempty"`
+	IsEnabled       *bool          `json:"isEnabled,omitempty"`
+	Condition       *RuleCondition `json:"condition,omitempty"`
+	Actions         *[]RuleAction  `json:"actions,omitempty"`
+	LastUpdatedTime *date.Time     `json:"lastUpdatedTime,omitempty"`
 }
 
 // AlertRuleResource is the alert rule resource.
 type AlertRuleResource struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
-    *AlertRule `json:"properties,omitempty"`
+	autorest.Response `json:"-"`
+	ID                *string             `json:"id,omitempty"`
+	Name              *string             `json:"name,omitempty"`
+	Type              *string             `json:"type,omitempty"`
+	Location          *string             `json:"location,omitempty"`
+	Tags              *map[string]*string `json:"tags,omitempty"`
+	*AlertRule        `json:"properties,omitempty"`
 }
 
 // AlertRuleResourceCollection is represents a collection of alert rule
 // resources.
 type AlertRuleResourceCollection struct {
-    autorest.Response `json:"-"`
-    Value *[]AlertRuleResource `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]AlertRuleResource `json:"value,omitempty"`
 }
 
 // LocationThresholdRuleCondition is a rule condition based on a certain number
 // of locations failing.
 type LocationThresholdRuleCondition struct {
-    DataSource *RuleDataSource `json:"dataSource,omitempty"`
-    WindowSize *string `json:"windowSize,omitempty"`
-    FailedLocationCount *int32 `json:"failedLocationCount,omitempty"`
+	DataSource          *RuleDataSource `json:"dataSource,omitempty"`
+	WindowSize          *string         `json:"windowSize,omitempty"`
+	FailedLocationCount *int32          `json:"failedLocationCount,omitempty"`
 }
 
 // ManagementEventAggregationCondition is how the data that is collected should
 // be combined over time.
 type ManagementEventAggregationCondition struct {
-    Operator ConditionOperator `json:"operator,omitempty"`
-    Threshold *float64 `json:"threshold,omitempty"`
-    WindowSize *string `json:"windowSize,omitempty"`
+	Operator   ConditionOperator `json:"operator,omitempty"`
+	Threshold  *float64          `json:"threshold,omitempty"`
+	WindowSize *string           `json:"windowSize,omitempty"`
 }
 
 // ManagementEventRuleCondition is a management event rule condition.
 type ManagementEventRuleCondition struct {
-    DataSource *RuleDataSource `json:"dataSource,omitempty"`
-    Aggregation *ManagementEventAggregationCondition `json:"aggregation,omitempty"`
+	DataSource  *RuleDataSource                      `json:"dataSource,omitempty"`
+	Aggregation *ManagementEventAggregationCondition `json:"aggregation,omitempty"`
 }
 
 // Resource is an azure resource object
 type Resource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
 // RuleAction is the action that is performed when the alert rule becomes
@@ -132,53 +132,52 @@ type RuleDataSource struct {
 // condition is evaluated. The discriminator is always RuleEmailAction in this
 // case.
 type RuleEmailAction struct {
-    SendToServiceOwners *bool `json:"sendToServiceOwners,omitempty"`
-    CustomEmails *[]string `json:"customEmails,omitempty"`
+	SendToServiceOwners *bool     `json:"sendToServiceOwners,omitempty"`
+	CustomEmails        *[]string `json:"customEmails,omitempty"`
 }
 
 // RuleManagementEventClaimsDataSource is the claims for a rule management
 // event data source.
 type RuleManagementEventClaimsDataSource struct {
-    EmailAddress *string `json:"emailAddress,omitempty"`
+	EmailAddress *string `json:"emailAddress,omitempty"`
 }
 
 // RuleManagementEventDataSource is a rule management event data source. The
 // discriminator fields is always RuleManagementEventDataSource in this case.
 type RuleManagementEventDataSource struct {
-    EventName *string `json:"eventName,omitempty"`
-    EventSource *string `json:"eventSource,omitempty"`
-    Level *string `json:"level,omitempty"`
-    OperationName *string `json:"operationName,omitempty"`
-    ResourceGroupName *string `json:"resourceGroupName,omitempty"`
-    ResourceProviderName *string `json:"resourceProviderName,omitempty"`
-    ResourceURI *string `json:"resourceUri,omitempty"`
-    Status *string `json:"status,omitempty"`
-    SubStatus *string `json:"subStatus,omitempty"`
-    Claims *RuleManagementEventClaimsDataSource `json:"claims,omitempty"`
+	EventName            *string                              `json:"eventName,omitempty"`
+	EventSource          *string                              `json:"eventSource,omitempty"`
+	Level                *string                              `json:"level,omitempty"`
+	OperationName        *string                              `json:"operationName,omitempty"`
+	ResourceGroupName    *string                              `json:"resourceGroupName,omitempty"`
+	ResourceProviderName *string                              `json:"resourceProviderName,omitempty"`
+	ResourceURI          *string                              `json:"resourceUri,omitempty"`
+	Status               *string                              `json:"status,omitempty"`
+	SubStatus            *string                              `json:"subStatus,omitempty"`
+	Claims               *RuleManagementEventClaimsDataSource `json:"claims,omitempty"`
 }
 
 // RuleMetricDataSource is a rule metric data source. The discriminator value
 // is always RuleMetricDataSource in this case.
 type RuleMetricDataSource struct {
-    ResourceURI *string `json:"resourceUri,omitempty"`
-    MetricName *string `json:"metricName,omitempty"`
+	ResourceURI *string `json:"resourceUri,omitempty"`
+	MetricName  *string `json:"metricName,omitempty"`
 }
 
 // RuleWebhookAction is specifies the action to post to service when the rule
 // condition is evaluated. The discriminator is always RuleWebhookAction in
 // this case.
 type RuleWebhookAction struct {
-    ServiceURI *string `json:"serviceUri,omitempty"`
-    Properties *map[string]*string `json:"properties,omitempty"`
+	ServiceURI *string             `json:"serviceUri,omitempty"`
+	Properties *map[string]*string `json:"properties,omitempty"`
 }
 
 // ThresholdRuleCondition is a rule condition based on a metric crossing a
 // threshold.
 type ThresholdRuleCondition struct {
-    DataSource *RuleDataSource `json:"dataSource,omitempty"`
-    Operator ConditionOperator `json:"operator,omitempty"`
-    Threshold *float64 `json:"threshold,omitempty"`
-    WindowSize *string `json:"windowSize,omitempty"`
-    TimeAggregation TimeAggregationOperator `json:"timeAggregation,omitempty"`
+	DataSource      *RuleDataSource         `json:"dataSource,omitempty"`
+	Operator        ConditionOperator       `json:"operator,omitempty"`
+	Threshold       *float64                `json:"threshold,omitempty"`
+	WindowSize      *string                 `json:"windowSize,omitempty"`
+	TimeAggregation TimeAggregationOperator `json:"timeAggregation,omitempty"`
 }
-

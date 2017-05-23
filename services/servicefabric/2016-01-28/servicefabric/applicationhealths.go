@@ -19,27 +19,28 @@ package servicefabric
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // ApplicationHealthsClient is the client for the ApplicationHealths methods of
 // the Servicefabric service.
 type ApplicationHealthsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewApplicationHealthsClient creates an instance of the
 // ApplicationHealthsClient client.
 func NewApplicationHealthsClient(timeout *int32) ApplicationHealthsClient {
-        return NewApplicationHealthsClientWithBaseURI(DefaultBaseURI, timeout)
-        }
+	return NewApplicationHealthsClientWithBaseURI(DefaultBaseURI, timeout)
+}
 
 // NewApplicationHealthsClientWithBaseURI creates an instance of the
 // ApplicationHealthsClient client.
-    func NewApplicationHealthsClientWithBaseURI(baseURI string, timeout *int32) ApplicationHealthsClient {
-        return ApplicationHealthsClient{ NewWithBaseURI(baseURI, timeout)}
-    }
+func NewApplicationHealthsClientWithBaseURI(baseURI string, timeout *int32) ApplicationHealthsClient {
+	return ApplicationHealthsClient{NewWithBaseURI(baseURI, timeout)}
+}
 
 // Get get application healths
 //
@@ -47,72 +48,72 @@ func NewApplicationHealthsClient(timeout *int32) ApplicationHealthsClient {
 // the filter of the events health state deployedApplicationsHealthStateFilter
 // is the filter of the deployed application health state
 func (client ApplicationHealthsClient) Get(applicationName string, eventsHealthStateFilter string, deployedApplicationsHealthStateFilter string) (result ApplicationHealth, err error) {
-    req, err := client.GetPreparer(applicationName, eventsHealthStateFilter, deployedApplicationsHealthStateFilter)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ApplicationHealthsClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(applicationName, eventsHealthStateFilter, deployedApplicationsHealthStateFilter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationHealthsClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.ApplicationHealthsClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationHealthsClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ApplicationHealthsClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationHealthsClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client ApplicationHealthsClient) GetPreparer(applicationName string, eventsHealthStateFilter string, deployedApplicationsHealthStateFilter string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "applicationName": applicationName,
-    }
+	pathParameters := map[string]interface{}{
+		"applicationName": applicationName,
+	}
 
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(eventsHealthStateFilter) > 0 {
-        queryParameters["EventsHealthStateFilter"] = autorest.Encode("query",eventsHealthStateFilter)
-    }
-    if len(deployedApplicationsHealthStateFilter) > 0 {
-        queryParameters["DeployedApplicationsHealthStateFilter"] = autorest.Encode("query",deployedApplicationsHealthStateFilter)
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(eventsHealthStateFilter) > 0 {
+		queryParameters["EventsHealthStateFilter"] = autorest.Encode("query", eventsHealthStateFilter)
+	}
+	if len(deployedApplicationsHealthStateFilter) > 0 {
+		queryParameters["DeployedApplicationsHealthStateFilter"] = autorest.Encode("query", deployedApplicationsHealthStateFilter)
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/Applications/{applicationName}/$/GetHealth",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Applications/{applicationName}/$/GetHealth", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationHealthsClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ApplicationHealthsClient) GetResponder(resp *http.Response) (result ApplicationHealth, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Send send application health
@@ -120,67 +121,66 @@ func (client ApplicationHealthsClient) GetResponder(resp *http.Response) (result
 // applicationName is the name of the application applicationHealthReport is
 // the report of the application health
 func (client ApplicationHealthsClient) Send(applicationName string, applicationHealthReport ApplicationHealthReport) (result String, err error) {
-    req, err := client.SendPreparer(applicationName, applicationHealthReport)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ApplicationHealthsClient", "Send", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.SendPreparer(applicationName, applicationHealthReport)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationHealthsClient", "Send", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.SendSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.ApplicationHealthsClient", "Send", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.SendSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationHealthsClient", "Send", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.SendResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ApplicationHealthsClient", "Send", resp, "Failure responding to request")
-    }
+	result, err = client.SendResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationHealthsClient", "Send", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // SendPreparer prepares the Send request.
 func (client ApplicationHealthsClient) SendPreparer(applicationName string, applicationHealthReport ApplicationHealthReport) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "applicationName": applicationName,
-    }
+	pathParameters := map[string]interface{}{
+		"applicationName": applicationName,
+	}
 
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/Applications/{applicationName}/$/ReportHealth",pathParameters),
-                        autorest.WithJSON(applicationHealthReport),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Applications/{applicationName}/$/ReportHealth", pathParameters),
+		autorest.WithJSON(applicationHealthReport),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // SendSender sends the Send request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationHealthsClient) SendSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // SendResponder handles the response to the Send request. The method always
 // closes the http.Response Body.
 func (client ApplicationHealthsClient) SendResponder(resp *http.Response) (result String, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result.Value),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

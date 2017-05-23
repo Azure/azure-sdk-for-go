@@ -19,101 +19,100 @@ package containerregistry
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/date"
-    "github.com/Azure/go-autorest/autorest/to"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // Registry is an object that represents a container registry.
 type Registry struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
-    *RegistryProperties `json:"properties,omitempty"`
+	autorest.Response   `json:"-"`
+	ID                  *string             `json:"id,omitempty"`
+	Name                *string             `json:"name,omitempty"`
+	Type                *string             `json:"type,omitempty"`
+	Location            *string             `json:"location,omitempty"`
+	Tags                *map[string]*string `json:"tags,omitempty"`
+	*RegistryProperties `json:"properties,omitempty"`
 }
 
 // RegistryCredentials is the result of a request to get the administrator
 // login credentials for a container registry.
 type RegistryCredentials struct {
-    autorest.Response `json:"-"`
-    Username *string `json:"username,omitempty"`
-    Password *string `json:"password,omitempty"`
+	autorest.Response `json:"-"`
+	Username          *string `json:"username,omitempty"`
+	Password          *string `json:"password,omitempty"`
 }
 
 // RegistryListResult is the result of a request to list container registries.
 type RegistryListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]Registry `json:"value,omitempty"`
-    NextLink *string `json:"nextLink,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]Registry `json:"value,omitempty"`
+	NextLink          *string     `json:"nextLink,omitempty"`
 }
 
 // RegistryListResultPreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
 func (client RegistryListResult) RegistryListResultPreparer() (*http.Request, error) {
-    if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-        return nil, nil
-    }
-    return autorest.Prepare(&http.Request{},
-        autorest.AsJSON(),
-        autorest.AsGet(),
-        autorest.WithBaseURL(to.String(client.NextLink)));
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
 // RegistryNameCheckRequest is a request to check whether the container
 // registry name is available.
 type RegistryNameCheckRequest struct {
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // RegistryNameStatus is the result of a request to check the availability of a
 // container registry name.
 type RegistryNameStatus struct {
-    autorest.Response `json:"-"`
-    NameAvailable *bool `json:"nameAvailable,omitempty"`
-    Reason *string `json:"reason,omitempty"`
-    Message *string `json:"message,omitempty"`
+	autorest.Response `json:"-"`
+	NameAvailable     *bool   `json:"nameAvailable,omitempty"`
+	Reason            *string `json:"reason,omitempty"`
+	Message           *string `json:"message,omitempty"`
 }
 
 // RegistryProperties is the properties of a container registry.
 type RegistryProperties struct {
-    LoginServer *string `json:"loginServer,omitempty"`
-    CreationDate *date.Time `json:"creationDate,omitempty"`
-    AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
-    StorageAccount *StorageAccountProperties `json:"storageAccount,omitempty"`
+	LoginServer      *string                   `json:"loginServer,omitempty"`
+	CreationDate     *date.Time                `json:"creationDate,omitempty"`
+	AdminUserEnabled *bool                     `json:"adminUserEnabled,omitempty"`
+	StorageAccount   *StorageAccountProperties `json:"storageAccount,omitempty"`
 }
 
 // RegistryPropertiesUpdateParameters is the parameters for updating the
 // properties of a container registry.
 type RegistryPropertiesUpdateParameters struct {
-    AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
-    StorageAccount *StorageAccountProperties `json:"storageAccount,omitempty"`
+	AdminUserEnabled *bool                     `json:"adminUserEnabled,omitempty"`
+	StorageAccount   *StorageAccountProperties `json:"storageAccount,omitempty"`
 }
 
 // RegistryUpdateParameters is the parameters for updating a container
 // registry.
 type RegistryUpdateParameters struct {
-    Tags *map[string]*string `json:"tags,omitempty"`
-    *RegistryPropertiesUpdateParameters `json:"properties,omitempty"`
+	Tags                                *map[string]*string `json:"tags,omitempty"`
+	*RegistryPropertiesUpdateParameters `json:"properties,omitempty"`
 }
 
 // Resource is an Azure resource.
 type Resource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
 // StorageAccountProperties is the properties of a storage account for a
 // container registry.
 type StorageAccountProperties struct {
-    Name *string `json:"name,omitempty"`
-    AccessKey *string `json:"accessKey,omitempty"`
+	Name      *string `json:"name,omitempty"`
+	AccessKey *string `json:"accessKey,omitempty"`
 }
-

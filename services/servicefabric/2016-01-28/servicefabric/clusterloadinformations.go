@@ -19,85 +19,85 @@ package servicefabric
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // ClusterLoadInformationsClient is the client for the ClusterLoadInformations
 // methods of the Servicefabric service.
 type ClusterLoadInformationsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewClusterLoadInformationsClient creates an instance of the
 // ClusterLoadInformationsClient client.
 func NewClusterLoadInformationsClient(timeout *int32) ClusterLoadInformationsClient {
-        return NewClusterLoadInformationsClientWithBaseURI(DefaultBaseURI, timeout)
-        }
+	return NewClusterLoadInformationsClientWithBaseURI(DefaultBaseURI, timeout)
+}
 
 // NewClusterLoadInformationsClientWithBaseURI creates an instance of the
 // ClusterLoadInformationsClient client.
-    func NewClusterLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) ClusterLoadInformationsClient {
-        return ClusterLoadInformationsClient{ NewWithBaseURI(baseURI, timeout)}
-    }
+func NewClusterLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) ClusterLoadInformationsClient {
+	return ClusterLoadInformationsClient{NewWithBaseURI(baseURI, timeout)}
+}
 
 // Get get cluster load informations
 func (client ClusterLoadInformationsClient) Get() (result ClusterLoadInformation, err error) {
-    req, err := client.GetPreparer()
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ClusterLoadInformationsClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer()
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ClusterLoadInformationsClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.ClusterLoadInformationsClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.ClusterLoadInformationsClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ClusterLoadInformationsClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ClusterLoadInformationsClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client ClusterLoadInformationsClient) GetPreparer() (*http.Request, error) {
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/$/GetLoadInformation"),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/$/GetLoadInformation"),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClusterLoadInformationsClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ClusterLoadInformationsClient) GetResponder(resp *http.Response) (result ClusterLoadInformation, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

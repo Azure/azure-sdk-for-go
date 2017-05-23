@@ -19,63 +19,62 @@ package backups
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // RestorePointTypes enumerates the values for restore point types.
 type RestorePointTypes string
 
 const (
-    // CONTINUOUS specifies the continuous state for restore point types.
-    CONTINUOUS RestorePointTypes = "CONTINUOUS"
-    // DISCRETE specifies the discrete state for restore point types.
-    DISCRETE RestorePointTypes = "DISCRETE"
+	// CONTINUOUS specifies the continuous state for restore point types.
+	CONTINUOUS RestorePointTypes = "CONTINUOUS"
+	// DISCRETE specifies the discrete state for restore point types.
+	DISCRETE RestorePointTypes = "DISCRETE"
 )
 
 // ProxyResource is aRM proxy resource.
 type ProxyResource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // Resource is aRM resource.
 type Resource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // RestorePoint is represents a database restore point.
 type RestorePoint struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    *RestorePointProperties `json:"properties,omitempty"`
+	ID                      *string `json:"id,omitempty"`
+	Name                    *string `json:"name,omitempty"`
+	Type                    *string `json:"type,omitempty"`
+	*RestorePointProperties `json:"properties,omitempty"`
 }
 
 // RestorePointListResult is represents the response to a list database restore
 // points request.
 type RestorePointListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]RestorePoint `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]RestorePoint `json:"value,omitempty"`
 }
 
 // RestorePointProperties is represents the properties of a database restore
 // point.
 type RestorePointProperties struct {
-    RestorePointType RestorePointTypes `json:"restorePointType,omitempty"`
-    RestorePointCreationDate *date.Time `json:"restorePointCreationDate,omitempty"`
-    EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
+	RestorePointType         RestorePointTypes `json:"restorePointType,omitempty"`
+	RestorePointCreationDate *date.Time        `json:"restorePointCreationDate,omitempty"`
+	EarliestRestoreDate      *date.Time        `json:"earliestRestoreDate,omitempty"`
 }
 
 // TrackedResource is aRM tracked top level resource.
 type TrackedResource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
-    Location *string `json:"location,omitempty"`
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+	Location *string             `json:"location,omitempty"`
 }
-

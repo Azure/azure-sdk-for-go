@@ -19,9 +19,9 @@ package blobauditingpolicies
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // DatabasesClient is the the database management API provides a RESTful set of
@@ -29,18 +29,19 @@ import (
 // API enables users to create, retrieve, update, and delete databases,
 // servers, and other entities.
 type DatabasesClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewDatabasesClient creates an instance of the DatabasesClient client.
 func NewDatabasesClient(subscriptionID string) DatabasesClient {
-        return NewDatabasesClientWithBaseURI(DefaultBaseURI, subscriptionID)
-        }
+	return NewDatabasesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
 
 // NewDatabasesClientWithBaseURI creates an instance of the DatabasesClient
 // client.
-    func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
-        return DatabasesClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
+	return DatabasesClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // CreateOrUpdateBlobAuditingPolicy creates or updates a database's blob
 // auditing policy.
@@ -51,68 +52,68 @@ func NewDatabasesClient(subscriptionID string) DatabasesClient {
 // of the database for which database blob audit policy will be defined.
 // parameters is the database blob auditing policy.
 func (client DatabasesClient) CreateOrUpdateBlobAuditingPolicy(resourceGroupName string, serverName string, databaseName string, parameters DatabaseBlobAuditingPolicy) (result DatabaseBlobAuditingPolicy, err error) {
-    req, err := client.CreateOrUpdateBlobAuditingPolicyPreparer(resourceGroupName, serverName, databaseName, parameters)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "CreateOrUpdateBlobAuditingPolicy", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CreateOrUpdateBlobAuditingPolicyPreparer(resourceGroupName, serverName, databaseName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "CreateOrUpdateBlobAuditingPolicy", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CreateOrUpdateBlobAuditingPolicySender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "CreateOrUpdateBlobAuditingPolicy", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CreateOrUpdateBlobAuditingPolicySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "CreateOrUpdateBlobAuditingPolicy", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CreateOrUpdateBlobAuditingPolicyResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "CreateOrUpdateBlobAuditingPolicy", resp, "Failure responding to request")
-    }
+	result, err = client.CreateOrUpdateBlobAuditingPolicyResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "CreateOrUpdateBlobAuditingPolicy", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CreateOrUpdateBlobAuditingPolicyPreparer prepares the CreateOrUpdateBlobAuditingPolicy request.
 func (client DatabasesClient) CreateOrUpdateBlobAuditingPolicyPreparer(resourceGroupName string, serverName string, databaseName string, parameters DatabaseBlobAuditingPolicy) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2015-05-01-preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2015-05-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/default",pathParameters),
-                        autorest.WithJSON(parameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/default", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // CreateOrUpdateBlobAuditingPolicySender sends the CreateOrUpdateBlobAuditingPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) CreateOrUpdateBlobAuditingPolicySender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateBlobAuditingPolicyResponder handles the response to the CreateOrUpdateBlobAuditingPolicy request. The method always
 // closes the http.Response Body.
 func (client DatabasesClient) CreateOrUpdateBlobAuditingPolicyResponder(resp *http.Response) (result DatabaseBlobAuditingPolicy, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetBlobAuditingPolicy gets a database's blob auditing policy.
@@ -122,65 +123,64 @@ func (client DatabasesClient) CreateOrUpdateBlobAuditingPolicyResponder(resp *ht
 // the portal. serverName is the name of the server. databaseName is the name
 // of the database for which database blob audit policy is defined.
 func (client DatabasesClient) GetBlobAuditingPolicy(resourceGroupName string, serverName string, databaseName string) (result DatabaseBlobAuditingPolicy, err error) {
-    req, err := client.GetBlobAuditingPolicyPreparer(resourceGroupName, serverName, databaseName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "GetBlobAuditingPolicy", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetBlobAuditingPolicyPreparer(resourceGroupName, serverName, databaseName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "GetBlobAuditingPolicy", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetBlobAuditingPolicySender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "GetBlobAuditingPolicy", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetBlobAuditingPolicySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "GetBlobAuditingPolicy", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetBlobAuditingPolicyResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "GetBlobAuditingPolicy", resp, "Failure responding to request")
-    }
+	result, err = client.GetBlobAuditingPolicyResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "GetBlobAuditingPolicy", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetBlobAuditingPolicyPreparer prepares the GetBlobAuditingPolicy request.
 func (client DatabasesClient) GetBlobAuditingPolicyPreparer(resourceGroupName string, serverName string, databaseName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "databaseName": autorest.Encode("path",databaseName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "serverName": autorest.Encode("path",serverName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2015-05-01-preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2015-05-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/default",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/default", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetBlobAuditingPolicySender sends the GetBlobAuditingPolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) GetBlobAuditingPolicySender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetBlobAuditingPolicyResponder handles the response to the GetBlobAuditingPolicy request. The method always
 // closes the http.Response Body.
 func (client DatabasesClient) GetBlobAuditingPolicyResponder(resp *http.Response) (result DatabaseBlobAuditingPolicy, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

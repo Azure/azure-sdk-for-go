@@ -19,29 +19,30 @@ package batchservice
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "github.com/satori/uuid"
-    "github.com/Azure/go-autorest/autorest/date"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/satori/uuid"
+	"net/http"
 )
 
 // ComputeNodeClient is the a client for issuing REST requests to the Azure
 // Batch service.
 type ComputeNodeClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewComputeNodeClient creates an instance of the ComputeNodeClient client.
 func NewComputeNodeClient() ComputeNodeClient {
-        return NewComputeNodeClientWithBaseURI(DefaultBaseURI, )
-        }
+	return NewComputeNodeClientWithBaseURI(DefaultBaseURI)
+}
 
 // NewComputeNodeClientWithBaseURI creates an instance of the ComputeNodeClient
 // client.
-    func NewComputeNodeClientWithBaseURI(baseURI string, ) ComputeNodeClient {
-        return ComputeNodeClient{ NewWithBaseURI(baseURI, )}
-    }
+func NewComputeNodeClientWithBaseURI(baseURI string) ComputeNodeClient {
+	return ComputeNodeClient{NewWithBaseURI(baseURI)}
+}
 
 // AddUser you can add a user account to a node only when it is in the idle or
 // running state.
@@ -58,86 +59,86 @@ func NewComputeNodeClient() ComputeNodeClient {
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client ComputeNodeClient) AddUser(poolID string, nodeID string, userParameter ComputeNodeUser, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: userParameter,
-     Constraints: []validation.Constraint{	{Target: "userParameter.Name", Name: validation.Null, Rule: true, Chain: nil }}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.ComputeNodeClient","AddUser")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: userParameter,
+			Constraints: []validation.Constraint{{Target: "userParameter.Name", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.ComputeNodeClient", "AddUser")
+	}
 
-    req, err := client.AddUserPreparer(poolID, nodeID, userParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "AddUser", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.AddUserPreparer(poolID, nodeID, userParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "AddUser", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.AddUserSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "AddUser", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.AddUserSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "AddUser", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.AddUserResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "AddUser", resp, "Failure responding to request")
-    }
+	result, err = client.AddUserResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "AddUser", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // AddUserPreparer prepares the AddUser request.
 func (client ComputeNodeClient) AddUserPreparer(poolID string, nodeID string, userParameter ComputeNodeUser, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeId": autorest.Encode("path", nodeID),
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/users",pathParameters),
-                        autorest.WithJSON(userParameter),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/users", pathParameters),
+		autorest.WithJSON(userParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // AddUserSender sends the AddUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) AddUserSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // AddUserResponder handles the response to the AddUser request. The method always
 // closes the http.Response Body.
 func (client ComputeNodeClient) AddUserResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // DeleteUser you can delete a user account to a node only when it is in the
@@ -155,79 +156,79 @@ func (client ComputeNodeClient) AddUserResponder(resp *http.Response) (result au
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client ComputeNodeClient) DeleteUser(poolID string, nodeID string, userName string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.DeleteUserPreparer(poolID, nodeID, userName, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "DeleteUser", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeleteUserPreparer(poolID, nodeID, userName, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "DeleteUser", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteUserSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "DeleteUser", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteUserSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "DeleteUser", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteUserResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "DeleteUser", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteUserResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "DeleteUser", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeleteUserPreparer prepares the DeleteUser request.
 func (client ComputeNodeClient) DeleteUserPreparer(poolID string, nodeID string, userName string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    "userName": autorest.Encode("path",userName),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeId":   autorest.Encode("path", nodeID),
+		"poolId":   autorest.Encode("path", poolID),
+		"userName": autorest.Encode("path", userName),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/users/{userName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/users/{userName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteUserSender sends the DeleteUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) DeleteUserSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteUserResponder handles the response to the DeleteUser request. The method always
 // closes the http.Response Body.
 func (client ComputeNodeClient) DeleteUserResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // DisableScheduling sends the disable scheduling request.
@@ -244,83 +245,83 @@ func (client ComputeNodeClient) DeleteUserResponder(resp *http.Response) (result
 // this to the current system clock time; set it explicitly if you are calling
 // the REST API directly.
 func (client ComputeNodeClient) DisableScheduling(poolID string, nodeID string, nodeDisableSchedulingParameter *NodeDisableSchedulingParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.DisableSchedulingPreparer(poolID, nodeID, nodeDisableSchedulingParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "DisableScheduling", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DisableSchedulingPreparer(poolID, nodeID, nodeDisableSchedulingParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "DisableScheduling", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DisableSchedulingSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "DisableScheduling", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DisableSchedulingSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "DisableScheduling", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DisableSchedulingResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "DisableScheduling", resp, "Failure responding to request")
-    }
+	result, err = client.DisableSchedulingResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "DisableScheduling", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DisableSchedulingPreparer prepares the DisableScheduling request.
 func (client ComputeNodeClient) DisableSchedulingPreparer(poolID string, nodeID string, nodeDisableSchedulingParameter *NodeDisableSchedulingParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeId": autorest.Encode("path", nodeID),
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/disablescheduling",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if nodeDisableSchedulingParameter != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithJSON(nodeDisableSchedulingParameter))
-    }
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/disablescheduling", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if nodeDisableSchedulingParameter != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(nodeDisableSchedulingParameter))
+	}
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // DisableSchedulingSender sends the DisableScheduling request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) DisableSchedulingSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DisableSchedulingResponder handles the response to the DisableScheduling request. The method always
 // closes the http.Response Body.
 func (client ComputeNodeClient) DisableSchedulingResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // EnableScheduling sends the enable scheduling request.
@@ -336,78 +337,78 @@ func (client ComputeNodeClient) DisableSchedulingResponder(resp *http.Response) 
 // this to the current system clock time; set it explicitly if you are calling
 // the REST API directly.
 func (client ComputeNodeClient) EnableScheduling(poolID string, nodeID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.EnableSchedulingPreparer(poolID, nodeID, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "EnableScheduling", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.EnableSchedulingPreparer(poolID, nodeID, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "EnableScheduling", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.EnableSchedulingSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "EnableScheduling", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.EnableSchedulingSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "EnableScheduling", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.EnableSchedulingResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "EnableScheduling", resp, "Failure responding to request")
-    }
+	result, err = client.EnableSchedulingResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "EnableScheduling", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // EnableSchedulingPreparer prepares the EnableScheduling request.
 func (client ComputeNodeClient) EnableSchedulingPreparer(poolID string, nodeID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeId": autorest.Encode("path", nodeID),
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/enablescheduling",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/enablescheduling", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // EnableSchedulingSender sends the EnableScheduling request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) EnableSchedulingSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // EnableSchedulingResponder handles the response to the EnableScheduling request. The method always
 // closes the http.Response Body.
 func (client ComputeNodeClient) EnableSchedulingResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Get sends the get request.
@@ -424,82 +425,82 @@ func (client ComputeNodeClient) EnableSchedulingResponder(resp *http.Response) (
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client ComputeNodeClient) Get(poolID string, nodeID string, selectParameter string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result ComputeNode, err error) {
-    req, err := client.GetPreparer(poolID, nodeID, selectParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(poolID, nodeID, selectParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client ComputeNodeClient) GetPreparer(poolID string, nodeID string, selectParameter string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeId": autorest.Encode("path", nodeID),
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ComputeNodeClient) GetResponder(resp *http.Response) (result ComputeNode, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetRemoteDesktop before you can access a node by using the RDP file, you
@@ -517,78 +518,78 @@ func (client ComputeNodeClient) GetResponder(resp *http.Response) (result Comput
 // issued. Client libraries typically set this to the current system clock
 // time; set it explicitly if you are calling the REST API directly.
 func (client ComputeNodeClient) GetRemoteDesktop(poolID string, nodeID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result ReadCloser, err error) {
-    req, err := client.GetRemoteDesktopPreparer(poolID, nodeID, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "GetRemoteDesktop", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetRemoteDesktopPreparer(poolID, nodeID, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "GetRemoteDesktop", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetRemoteDesktopSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "GetRemoteDesktop", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetRemoteDesktopSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "GetRemoteDesktop", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetRemoteDesktopResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "GetRemoteDesktop", resp, "Failure responding to request")
-    }
+	result, err = client.GetRemoteDesktopResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "GetRemoteDesktop", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetRemoteDesktopPreparer prepares the GetRemoteDesktop request.
 func (client ComputeNodeClient) GetRemoteDesktopPreparer(poolID string, nodeID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeId": autorest.Encode("path", nodeID),
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/rdp",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/rdp", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetRemoteDesktopSender sends the GetRemoteDesktop request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) GetRemoteDesktopSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetRemoteDesktopResponder handles the response to the GetRemoteDesktop request. The method always
 // closes the http.Response Body.
 func (client ComputeNodeClient) GetRemoteDesktopResponder(resp *http.Response) (result ReadCloser, err error) {
-    result.Value = &resp.Body
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK))
-    result.Response = autorest.Response{Response: resp}
-    return
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetRemoteLoginSettings before you can remotely login to a node using the
@@ -607,79 +608,79 @@ func (client ComputeNodeClient) GetRemoteDesktopResponder(resp *http.Response) (
 // issued. Client libraries typically set this to the current system clock
 // time; set it explicitly if you are calling the REST API directly.
 func (client ComputeNodeClient) GetRemoteLoginSettings(poolID string, nodeID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result ComputeNodeGetRemoteLoginSettingsResult, err error) {
-    req, err := client.GetRemoteLoginSettingsPreparer(poolID, nodeID, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "GetRemoteLoginSettings", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetRemoteLoginSettingsPreparer(poolID, nodeID, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "GetRemoteLoginSettings", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetRemoteLoginSettingsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "GetRemoteLoginSettings", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetRemoteLoginSettingsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "GetRemoteLoginSettings", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetRemoteLoginSettingsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "GetRemoteLoginSettings", resp, "Failure responding to request")
-    }
+	result, err = client.GetRemoteLoginSettingsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "GetRemoteLoginSettings", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetRemoteLoginSettingsPreparer prepares the GetRemoteLoginSettings request.
 func (client ComputeNodeClient) GetRemoteLoginSettingsPreparer(poolID string, nodeID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeId": autorest.Encode("path", nodeID),
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/remoteloginsettings",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/remoteloginsettings", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetRemoteLoginSettingsSender sends the GetRemoteLoginSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) GetRemoteLoginSettingsSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetRemoteLoginSettingsResponder handles the response to the GetRemoteLoginSettings request. The method always
 // closes the http.Response Body.
 func (client ComputeNodeClient) GetRemoteLoginSettingsResponder(resp *http.Response) (result ComputeNodeGetRemoteLoginSettingsResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List sends the list request.
@@ -697,120 +698,120 @@ func (client ComputeNodeClient) GetRemoteLoginSettingsResponder(resp *http.Respo
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client ComputeNodeClient) List(poolID string, filter string, selectParameter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result ComputeNodeListResult, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: maxResults,
-     Constraints: []validation.Constraint{	{Target: "maxResults", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil },
-    	{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.ComputeNodeClient","List")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: maxResults,
+			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.ComputeNodeClient", "List")
+	}
 
-    req, err := client.ListPreparer(poolID, filter, selectParameter, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "List", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListPreparer(poolID, filter, selectParameter, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "List", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "List", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "List", resp, "Failure responding to request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "List", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListPreparer prepares the List request.
 func (client ComputeNodeClient) ListPreparer(poolID string, filter string, selectParameter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if maxResults != nil {
-        queryParameters["maxresults"] = autorest.Encode("query",*maxResults)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if maxResults != nil {
+		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) ListSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client ComputeNodeClient) ListResponder(resp *http.Response) (result ComputeNodeListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListNextResults retrieves the next set of results, if any.
 func (client ComputeNodeClient) ListNextResults(lastResults ComputeNodeListResult) (result ComputeNodeListResult, err error) {
-    req, err := lastResults.ComputeNodeListResultPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "List", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.ComputeNodeListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "List", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "List", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "List", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "List", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "List", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // Reboot you can restart a node only if it is in an idle or running state.
@@ -827,83 +828,83 @@ func (client ComputeNodeClient) ListNextResults(lastResults ComputeNodeListResul
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client ComputeNodeClient) Reboot(poolID string, nodeID string, nodeRebootParameter *NodeRebootParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.RebootPreparer(poolID, nodeID, nodeRebootParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Reboot", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.RebootPreparer(poolID, nodeID, nodeRebootParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Reboot", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.RebootSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Reboot", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.RebootSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Reboot", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.RebootResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Reboot", resp, "Failure responding to request")
-    }
+	result, err = client.RebootResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Reboot", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // RebootPreparer prepares the Reboot request.
 func (client ComputeNodeClient) RebootPreparer(poolID string, nodeID string, nodeRebootParameter *NodeRebootParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeId": autorest.Encode("path", nodeID),
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/reboot",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if nodeRebootParameter != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithJSON(nodeRebootParameter))
-    }
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/reboot", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if nodeRebootParameter != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(nodeRebootParameter))
+	}
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // RebootSender sends the Reboot request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) RebootSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // RebootResponder handles the response to the Reboot request. The method always
 // closes the http.Response Body.
 func (client ComputeNodeClient) RebootResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Reimage you can reinstall the operating system on a node only if it is in an
@@ -922,83 +923,83 @@ func (client ComputeNodeClient) RebootResponder(resp *http.Response) (result aut
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client ComputeNodeClient) Reimage(poolID string, nodeID string, nodeReimageParameter *NodeReimageParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.ReimagePreparer(poolID, nodeID, nodeReimageParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Reimage", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ReimagePreparer(poolID, nodeID, nodeReimageParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Reimage", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ReimageSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Reimage", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ReimageSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Reimage", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ReimageResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Reimage", resp, "Failure responding to request")
-    }
+	result, err = client.ReimageResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "Reimage", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ReimagePreparer prepares the Reimage request.
 func (client ComputeNodeClient) ReimagePreparer(poolID string, nodeID string, nodeReimageParameter *NodeReimageParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeId": autorest.Encode("path", nodeID),
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/reimage",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if nodeReimageParameter != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithJSON(nodeReimageParameter))
-    }
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/reimage", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if nodeReimageParameter != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(nodeReimageParameter))
+	}
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ReimageSender sends the Reimage request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) ReimageSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ReimageResponder handles the response to the Reimage request. The method always
 // closes the http.Response Body.
 func (client ComputeNodeClient) ReimageResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // UpdateUser this operation replaces of all the updateable properties of the
@@ -1020,80 +1021,79 @@ func (client ComputeNodeClient) ReimageResponder(resp *http.Response) (result au
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client ComputeNodeClient) UpdateUser(poolID string, nodeID string, userName string, nodeUpdateUserParameter NodeUpdateUserParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.UpdateUserPreparer(poolID, nodeID, userName, nodeUpdateUserParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "UpdateUser", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.UpdateUserPreparer(poolID, nodeID, userName, nodeUpdateUserParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "UpdateUser", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.UpdateUserSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "UpdateUser", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.UpdateUserSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "UpdateUser", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.UpdateUserResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "UpdateUser", resp, "Failure responding to request")
-    }
+	result, err = client.UpdateUserResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.ComputeNodeClient", "UpdateUser", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // UpdateUserPreparer prepares the UpdateUser request.
 func (client ComputeNodeClient) UpdateUserPreparer(poolID string, nodeID string, userName string, nodeUpdateUserParameter NodeUpdateUserParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeId": autorest.Encode("path",nodeID),
-    "poolId": autorest.Encode("path",poolID),
-    "userName": autorest.Encode("path",userName),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeId":   autorest.Encode("path", nodeID),
+		"poolId":   autorest.Encode("path", poolID),
+		"userName": autorest.Encode("path", userName),
+	}
 
-        const APIVersion = "2017-01-01.4.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-01-01.4.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/users/{userName}",pathParameters),
-                        autorest.WithJSON(nodeUpdateUserParameter),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/nodes/{nodeId}/users/{userName}", pathParameters),
+		autorest.WithJSON(nodeUpdateUserParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // UpdateUserSender sends the UpdateUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ComputeNodeClient) UpdateUserSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdateUserResponder handles the response to the UpdateUser request. The method always
 // closes the http.Response Body.
 func (client ComputeNodeClient) UpdateUserResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
-

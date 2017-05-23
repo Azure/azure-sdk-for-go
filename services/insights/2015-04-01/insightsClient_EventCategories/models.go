@@ -19,20 +19,19 @@ package insightsclienteventcategories
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // EventCategoryCollection is a collection of event categories. Currently
 // possible values are: Administrative, Security, ServiceHealth, Alert,
 // Recommendation, Policy.
 type EventCategoryCollection struct {
-    autorest.Response `json:"-"`
-    Value *[]LocalizableString `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]LocalizableString `json:"value,omitempty"`
 }
 
 // LocalizableString is the localizable string class.
 type LocalizableString struct {
-    Value *string `json:"value,omitempty"`
-    LocalizedValue *string `json:"localizedValue,omitempty"`
+	Value          *string `json:"value,omitempty"`
+	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
-

@@ -19,27 +19,28 @@ package servicefabric
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // ClusterHealthsClient is the client for the ClusterHealths methods of the
 // Servicefabric service.
 type ClusterHealthsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewClusterHealthsClient creates an instance of the ClusterHealthsClient
 // client.
 func NewClusterHealthsClient(timeout *int32) ClusterHealthsClient {
-        return NewClusterHealthsClientWithBaseURI(DefaultBaseURI, timeout)
-        }
+	return NewClusterHealthsClientWithBaseURI(DefaultBaseURI, timeout)
+}
 
 // NewClusterHealthsClientWithBaseURI creates an instance of the
 // ClusterHealthsClient client.
-    func NewClusterHealthsClientWithBaseURI(baseURI string, timeout *int32) ClusterHealthsClient {
-        return ClusterHealthsClient{ NewWithBaseURI(baseURI, timeout)}
-    }
+func NewClusterHealthsClientWithBaseURI(baseURI string, timeout *int32) ClusterHealthsClient {
+	return ClusterHealthsClient{NewWithBaseURI(baseURI, timeout)}
+}
 
 // Get get cluster healths
 //
@@ -47,134 +48,133 @@ func NewClusterHealthsClient(timeout *int32) ClusterHealthsClient {
 // nodesHealthStateFilter is the filter of the nodes health state
 // applicationsHealthStateFilter is the filter of the applications health state
 func (client ClusterHealthsClient) Get(eventsHealthStateFilter string, nodesHealthStateFilter string, applicationsHealthStateFilter string) (result ClusterHealth, err error) {
-    req, err := client.GetPreparer(eventsHealthStateFilter, nodesHealthStateFilter, applicationsHealthStateFilter)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ClusterHealthsClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(eventsHealthStateFilter, nodesHealthStateFilter, applicationsHealthStateFilter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ClusterHealthsClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.ClusterHealthsClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.ClusterHealthsClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ClusterHealthsClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ClusterHealthsClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client ClusterHealthsClient) GetPreparer(eventsHealthStateFilter string, nodesHealthStateFilter string, applicationsHealthStateFilter string) (*http.Request, error) {
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(eventsHealthStateFilter) > 0 {
-        queryParameters["EventsHealthStateFilter"] = autorest.Encode("query",eventsHealthStateFilter)
-    }
-    if len(nodesHealthStateFilter) > 0 {
-        queryParameters["NodesHealthStateFilter"] = autorest.Encode("query",nodesHealthStateFilter)
-    }
-    if len(applicationsHealthStateFilter) > 0 {
-        queryParameters["ApplicationsHealthStateFilter"] = autorest.Encode("query",applicationsHealthStateFilter)
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(eventsHealthStateFilter) > 0 {
+		queryParameters["EventsHealthStateFilter"] = autorest.Encode("query", eventsHealthStateFilter)
+	}
+	if len(nodesHealthStateFilter) > 0 {
+		queryParameters["NodesHealthStateFilter"] = autorest.Encode("query", nodesHealthStateFilter)
+	}
+	if len(applicationsHealthStateFilter) > 0 {
+		queryParameters["ApplicationsHealthStateFilter"] = autorest.Encode("query", applicationsHealthStateFilter)
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/$/GetClusterHealth"),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/$/GetClusterHealth"),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClusterHealthsClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ClusterHealthsClient) GetResponder(resp *http.Response) (result ClusterHealth, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Send report cluster healths
 //
 // clusterHealthReport is the report of the cluster health
 func (client ClusterHealthsClient) Send(clusterHealthReport ClusterHealthReport) (result String, err error) {
-    req, err := client.SendPreparer(clusterHealthReport)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ClusterHealthsClient", "Send", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.SendPreparer(clusterHealthReport)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ClusterHealthsClient", "Send", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.SendSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.ClusterHealthsClient", "Send", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.SendSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.ClusterHealthsClient", "Send", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.SendResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ClusterHealthsClient", "Send", resp, "Failure responding to request")
-    }
+	result, err = client.SendResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ClusterHealthsClient", "Send", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // SendPreparer prepares the Send request.
 func (client ClusterHealthsClient) SendPreparer(clusterHealthReport ClusterHealthReport) (*http.Request, error) {
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/$/ReportClusterHealth"),
-                        autorest.WithJSON(clusterHealthReport),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/$/ReportClusterHealth"),
+		autorest.WithJSON(clusterHealthReport),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // SendSender sends the Send request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClusterHealthsClient) SendSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // SendResponder handles the response to the Send request. The method always
 // closes the http.Response Body.
 func (client ClusterHealthsClient) SendResponder(resp *http.Response) (result String, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result.Value),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

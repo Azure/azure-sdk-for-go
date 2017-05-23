@@ -23,32 +23,31 @@ package servicefabric
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 const (
-        // DefaultBaseURI is the default URI used for the service Servicefabric
-        DefaultBaseURI = "http://localhost:19080"
+	// DefaultBaseURI is the default URI used for the service Servicefabric
+	DefaultBaseURI = "http://localhost:19080"
 )
 
 // ManagementClient is the base client for Servicefabric.
 type ManagementClient struct {
-    autorest.Client
-        BaseURI string
-                Timeout *int32
+	autorest.Client
+	BaseURI string
+	Timeout *int32
 }
 
 // New creates an instance of the ManagementClient client.
-func New(timeout *int32)ManagementClient {
-        return NewWithBaseURI(DefaultBaseURI, timeout)
+func New(timeout *int32) ManagementClient {
+	return NewWithBaseURI(DefaultBaseURI, timeout)
 }
 
-    // NewWithBaseURI creates an instance of the ManagementClient client.
-    func NewWithBaseURI(baseURI string, timeout *int32) ManagementClient {
-        return ManagementClient{
-            Client: autorest.NewClientWithUserAgent(UserAgent()),
-            BaseURI: baseURI,
-                        Timeout: timeout,
-        }
-    }
-
+// NewWithBaseURI creates an instance of the ManagementClient client.
+func NewWithBaseURI(baseURI string, timeout *int32) ManagementClient {
+	return ManagementClient{
+		Client:  autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI: baseURI,
+		Timeout: timeout,
+	}
+}

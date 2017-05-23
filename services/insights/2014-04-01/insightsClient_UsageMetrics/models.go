@@ -19,30 +19,29 @@ package insightsclientusagemetrics
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // LocalizableString is the localizable string class.
 type LocalizableString struct {
-    Value *string `json:"value,omitempty"`
-    LocalizedValue *string `json:"localizedValue,omitempty"`
+	Value          *string `json:"value,omitempty"`
+	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
 // UsageMetric is usage Metric data.
 type UsageMetric struct {
-    Name *LocalizableString `json:"name,omitempty"`
-    CurrentValue *float64 `json:"currentValue,omitempty"`
-    ID *string `json:"id,omitempty"`
-    Limit *float64 `json:"limit,omitempty"`
-    Unit *string `json:"unit,omitempty"`
-    NextResetTime *date.Time `json:"nextResetTime,omitempty"`
-    QuotaPeriod *string `json:"quotaPeriod,omitempty"`
+	Name          *LocalizableString `json:"name,omitempty"`
+	CurrentValue  *float64           `json:"currentValue,omitempty"`
+	ID            *string            `json:"id,omitempty"`
+	Limit         *float64           `json:"limit,omitempty"`
+	Unit          *string            `json:"unit,omitempty"`
+	NextResetTime *date.Time         `json:"nextResetTime,omitempty"`
+	QuotaPeriod   *string            `json:"quotaPeriod,omitempty"`
 }
 
 // UsageMetricCollection is represents collection of usage metrics.
 type UsageMetricCollection struct {
-    autorest.Response `json:"-"`
-    Value *[]UsageMetric `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]UsageMetric `json:"value,omitempty"`
 }
-

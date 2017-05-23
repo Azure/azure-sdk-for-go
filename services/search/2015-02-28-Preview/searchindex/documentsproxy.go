@@ -19,90 +19,90 @@ package searchindex
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "github.com/satori/uuid"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/satori/uuid"
+	"net/http"
 )
 
 // DocumentsProxyClient is the client that can be used to query an Azure Search
 // index and upload, merge, or delete documents.
 type DocumentsProxyClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewDocumentsProxyClient creates an instance of the DocumentsProxyClient
 // client.
 func NewDocumentsProxyClient() DocumentsProxyClient {
-        return NewDocumentsProxyClientWithBaseURI(DefaultBaseURI, )
-        }
+	return NewDocumentsProxyClientWithBaseURI(DefaultBaseURI)
+}
 
 // NewDocumentsProxyClientWithBaseURI creates an instance of the
 // DocumentsProxyClient client.
-    func NewDocumentsProxyClientWithBaseURI(baseURI string, ) DocumentsProxyClient {
-        return DocumentsProxyClient{ NewWithBaseURI(baseURI, )}
-    }
+func NewDocumentsProxyClientWithBaseURI(baseURI string) DocumentsProxyClient {
+	return DocumentsProxyClient{NewWithBaseURI(baseURI)}
+}
 
 // Count queries the number of documents in the Azure Search index.
 //
 // clientRequestID is the tracking ID sent with the request to help with
 // debugging.
 func (client DocumentsProxyClient) Count(clientRequestID *uuid.UUID) (result Int64, err error) {
-    req, err := client.CountPreparer(clientRequestID)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "searchindex.DocumentsProxyClient", "Count", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CountPreparer(clientRequestID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "searchindex.DocumentsProxyClient", "Count", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CountSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "searchindex.DocumentsProxyClient", "Count", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CountSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "searchindex.DocumentsProxyClient", "Count", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CountResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "searchindex.DocumentsProxyClient", "Count", resp, "Failure responding to request")
-    }
+	result, err = client.CountResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "searchindex.DocumentsProxyClient", "Count", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CountPreparer prepares the Count request.
 func (client DocumentsProxyClient) CountPreparer(clientRequestID *uuid.UUID) (*http.Request, error) {
-        const APIVersion = "2015-02-28-Preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2015-02-28-Preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/docs/$count"),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/docs/$count"),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // CountSender sends the Count request. The method will close the
 // http.Response Body if it receives an error.
 func (client DocumentsProxyClient) CountSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CountResponder handles the response to the Count request. The method always
 // closes the http.Response Body.
 func (client DocumentsProxyClient) CountResponder(resp *http.Response) (result Int64, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result.Value),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

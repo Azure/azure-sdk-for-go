@@ -19,7 +19,7 @@ package blobauditingpolicies
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // BlobAuditingPolicyState enumerates the values for blob auditing policy
@@ -27,56 +27,55 @@ import (
 type BlobAuditingPolicyState string
 
 const (
-    // Disabled specifies the disabled state for blob auditing policy state.
-    Disabled BlobAuditingPolicyState = "Disabled"
-    // Enabled specifies the enabled state for blob auditing policy state.
-    Enabled BlobAuditingPolicyState = "Enabled"
+	// Disabled specifies the disabled state for blob auditing policy state.
+	Disabled BlobAuditingPolicyState = "Disabled"
+	// Enabled specifies the enabled state for blob auditing policy state.
+	Enabled BlobAuditingPolicyState = "Enabled"
 )
 
 // DatabaseBlobAuditingPolicy is contains information about a database Blob
 // Auditing policy.
 type DatabaseBlobAuditingPolicy struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Kind *string `json:"kind,omitempty"`
-    *DatabaseBlobAuditingPolicyProperties `json:"properties,omitempty"`
+	autorest.Response                     `json:"-"`
+	ID                                    *string `json:"id,omitempty"`
+	Name                                  *string `json:"name,omitempty"`
+	Type                                  *string `json:"type,omitempty"`
+	Location                              *string `json:"location,omitempty"`
+	Kind                                  *string `json:"kind,omitempty"`
+	*DatabaseBlobAuditingPolicyProperties `json:"properties,omitempty"`
 }
 
 // DatabaseBlobAuditingPolicyProperties is properties for a database Blob
 // Auditing policy.
 type DatabaseBlobAuditingPolicyProperties struct {
-    State BlobAuditingPolicyState `json:"state,omitempty"`
-    StorageEndpoint *string `json:"storageEndpoint,omitempty"`
-    StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
-    RetentionDays *int32 `json:"retentionDays,omitempty"`
-    AuditActionsAndGroups *[]string `json:"auditActionsAndGroups,omitempty"`
-    StorageAccountSubscriptionID *string `json:"storageAccountSubscriptionId,omitempty"`
-    IsStorageSecondaryKeyInUse *bool `json:"isStorageSecondaryKeyInUse,omitempty"`
+	State                        BlobAuditingPolicyState `json:"state,omitempty"`
+	StorageEndpoint              *string                 `json:"storageEndpoint,omitempty"`
+	StorageAccountAccessKey      *string                 `json:"storageAccountAccessKey,omitempty"`
+	RetentionDays                *int32                  `json:"retentionDays,omitempty"`
+	AuditActionsAndGroups        *[]string               `json:"auditActionsAndGroups,omitempty"`
+	StorageAccountSubscriptionID *string                 `json:"storageAccountSubscriptionId,omitempty"`
+	IsStorageSecondaryKeyInUse   *bool                   `json:"isStorageSecondaryKeyInUse,omitempty"`
 }
 
 // ProxyResource is aRM proxy resource.
 type ProxyResource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // Resource is aRM resource.
 type Resource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // TrackedResource is aRM tracked top level resource.
 type TrackedResource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
-    Location *string `json:"location,omitempty"`
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+	Location *string             `json:"location,omitempty"`
 }
-

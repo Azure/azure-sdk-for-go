@@ -23,32 +23,31 @@ package insightsmanagementclientautoscale
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 const (
-        // DefaultBaseURI is the default URI used for the service Insightsmanagementclientautoscale
-        DefaultBaseURI = "https://management.azure.com"
+	// DefaultBaseURI is the default URI used for the service Insightsmanagementclientautoscale
+	DefaultBaseURI = "https://management.azure.com"
 )
 
 // ManagementClient is the base client for Insightsmanagementclientautoscale.
 type ManagementClient struct {
-    autorest.Client
-        BaseURI string
-                SubscriptionID string
+	autorest.Client
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the ManagementClient client.
-func New(subscriptionID string)ManagementClient {
-        return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+func New(subscriptionID string) ManagementClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-    // NewWithBaseURI creates an instance of the ManagementClient client.
-    func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-        return ManagementClient{
-            Client: autorest.NewClientWithUserAgent(UserAgent()),
-            BaseURI: baseURI,
-                        SubscriptionID: subscriptionID,
-        }
-    }
-
+// NewWithBaseURI creates an instance of the ManagementClient client.
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return ManagementClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
+	}
+}

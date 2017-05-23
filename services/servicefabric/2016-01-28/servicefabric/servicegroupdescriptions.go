@@ -19,93 +19,93 @@ package servicefabric
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // ServiceGroupDescriptionsClient is the client for the
 // ServiceGroupDescriptions methods of the Servicefabric service.
 type ServiceGroupDescriptionsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewServiceGroupDescriptionsClient creates an instance of the
 // ServiceGroupDescriptionsClient client.
 func NewServiceGroupDescriptionsClient(timeout *int32) ServiceGroupDescriptionsClient {
-        return NewServiceGroupDescriptionsClientWithBaseURI(DefaultBaseURI, timeout)
-        }
+	return NewServiceGroupDescriptionsClientWithBaseURI(DefaultBaseURI, timeout)
+}
 
 // NewServiceGroupDescriptionsClientWithBaseURI creates an instance of the
 // ServiceGroupDescriptionsClient client.
-    func NewServiceGroupDescriptionsClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupDescriptionsClient {
-        return ServiceGroupDescriptionsClient{ NewWithBaseURI(baseURI, timeout)}
-    }
+func NewServiceGroupDescriptionsClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupDescriptionsClient {
+	return ServiceGroupDescriptionsClient{NewWithBaseURI(baseURI, timeout)}
+}
 
 // Get get service group descriptions
 //
 // applicationName is the name of the application serviceName is the name of
 // the service
 func (client ServiceGroupDescriptionsClient) Get(applicationName string, serviceName string) (result ServiceGroupDescription, err error) {
-    req, err := client.GetPreparer(applicationName, serviceName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupDescriptionsClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(applicationName, serviceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupDescriptionsClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupDescriptionsClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupDescriptionsClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupDescriptionsClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceGroupDescriptionsClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client ServiceGroupDescriptionsClient) GetPreparer(applicationName string, serviceName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "applicationName": applicationName,
-    "serviceName": serviceName,
-    }
+	pathParameters := map[string]interface{}{
+		"applicationName": applicationName,
+		"serviceName":     serviceName,
+	}
 
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/Applications/{applicationName}/$/GetServices/{serviceName}/$/GetServiceGroupDescription",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Applications/{applicationName}/$/GetServices/{serviceName}/$/GetServiceGroupDescription", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceGroupDescriptionsClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ServiceGroupDescriptionsClient) GetResponder(resp *http.Response) (result ServiceGroupDescription, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

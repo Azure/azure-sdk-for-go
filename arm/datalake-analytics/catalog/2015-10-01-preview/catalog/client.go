@@ -23,30 +23,29 @@ package catalog
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 const (
-        // DefaultAdlaCatalogDNSSuffix is the default value for adla catalog dns suffix
-        DefaultAdlaCatalogDNSSuffix = "azuredatalakeanalytics.net"
+	// DefaultAdlaCatalogDNSSuffix is the default value for adla catalog dns suffix
+	DefaultAdlaCatalogDNSSuffix = "azuredatalakeanalytics.net"
 )
 
 // ManagementClient is the base client for Catalog.
 type ManagementClient struct {
-    autorest.Client
-                AdlaCatalogDNSSuffix string
+	autorest.Client
+	AdlaCatalogDNSSuffix string
 }
 
 // New creates an instance of the ManagementClient client.
-func New()ManagementClient {
-        return NewWithoutDefaults(DefaultAdlaCatalogDNSSuffix)
+func New() ManagementClient {
+	return NewWithoutDefaults(DefaultAdlaCatalogDNSSuffix)
 }
 
-    // NewWithoutDefaults creates an instance of the ManagementClient client.
-    func NewWithoutDefaults(adlaCatalogDNSSuffix string) ManagementClient {
-        return ManagementClient{
-            Client: autorest.NewClientWithUserAgent(UserAgent()),
-                    AdlaCatalogDNSSuffix: adlaCatalogDNSSuffix,
-        }
-    }
-
+// NewWithoutDefaults creates an instance of the ManagementClient client.
+func NewWithoutDefaults(adlaCatalogDNSSuffix string) ManagementClient {
+	return ManagementClient{
+		Client:               autorest.NewClientWithUserAgent(UserAgent()),
+		AdlaCatalogDNSSuffix: adlaCatalogDNSSuffix,
+	}
+}

@@ -19,93 +19,93 @@ package servicefabric
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // ApplicationManifestsClient is the client for the ApplicationManifests
 // methods of the Servicefabric service.
 type ApplicationManifestsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewApplicationManifestsClient creates an instance of the
 // ApplicationManifestsClient client.
 func NewApplicationManifestsClient(timeout *int32) ApplicationManifestsClient {
-        return NewApplicationManifestsClientWithBaseURI(DefaultBaseURI, timeout)
-        }
+	return NewApplicationManifestsClientWithBaseURI(DefaultBaseURI, timeout)
+}
 
 // NewApplicationManifestsClientWithBaseURI creates an instance of the
 // ApplicationManifestsClient client.
-    func NewApplicationManifestsClientWithBaseURI(baseURI string, timeout *int32) ApplicationManifestsClient {
-        return ApplicationManifestsClient{ NewWithBaseURI(baseURI, timeout)}
-    }
+func NewApplicationManifestsClientWithBaseURI(baseURI string, timeout *int32) ApplicationManifestsClient {
+	return ApplicationManifestsClient{NewWithBaseURI(baseURI, timeout)}
+}
 
 // Get get application manifests
 //
 // applicationTypeName is the name of the application type
 // applicationTypeVersion is the version of the application type
 func (client ApplicationManifestsClient) Get(applicationTypeName string, applicationTypeVersion string) (result ApplicationManifest, err error) {
-    req, err := client.GetPreparer(applicationTypeName, applicationTypeVersion)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ApplicationManifestsClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(applicationTypeName, applicationTypeVersion)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationManifestsClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.ApplicationManifestsClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationManifestsClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ApplicationManifestsClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationManifestsClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client ApplicationManifestsClient) GetPreparer(applicationTypeName string, applicationTypeVersion string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "applicationTypeName": autorest.Encode("path",applicationTypeName),
-    }
+	pathParameters := map[string]interface{}{
+		"applicationTypeName": autorest.Encode("path", applicationTypeName),
+	}
 
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    "ApplicationTypeVersion": autorest.Encode("query",applicationTypeVersion),
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version":            APIVersion,
+		"ApplicationTypeVersion": autorest.Encode("query", applicationTypeVersion),
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/ApplicationTypes/{applicationTypeName}/$/GetApplicationManifest",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/ApplicationTypes/{applicationTypeName}/$/GetApplicationManifest", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationManifestsClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ApplicationManifestsClient) GetResponder(resp *http.Response) (result ApplicationManifest, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

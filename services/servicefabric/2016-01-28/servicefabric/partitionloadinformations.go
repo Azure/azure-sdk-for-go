@@ -19,91 +19,91 @@ package servicefabric
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // PartitionLoadInformationsClient is the client for the
 // PartitionLoadInformations methods of the Servicefabric service.
 type PartitionLoadInformationsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewPartitionLoadInformationsClient creates an instance of the
 // PartitionLoadInformationsClient client.
 func NewPartitionLoadInformationsClient(timeout *int32) PartitionLoadInformationsClient {
-        return NewPartitionLoadInformationsClientWithBaseURI(DefaultBaseURI, timeout)
-        }
+	return NewPartitionLoadInformationsClientWithBaseURI(DefaultBaseURI, timeout)
+}
 
 // NewPartitionLoadInformationsClientWithBaseURI creates an instance of the
 // PartitionLoadInformationsClient client.
-    func NewPartitionLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) PartitionLoadInformationsClient {
-        return PartitionLoadInformationsClient{ NewWithBaseURI(baseURI, timeout)}
-    }
+func NewPartitionLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) PartitionLoadInformationsClient {
+	return PartitionLoadInformationsClient{NewWithBaseURI(baseURI, timeout)}
+}
 
 // Get get partition load informations
 //
 // partitionID is the id of the partition
 func (client PartitionLoadInformationsClient) Get(partitionID string) (result PartitionLoadInformation, err error) {
-    req, err := client.GetPreparer(partitionID)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.PartitionLoadInformationsClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(partitionID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.PartitionLoadInformationsClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.PartitionLoadInformationsClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.PartitionLoadInformationsClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.PartitionLoadInformationsClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.PartitionLoadInformationsClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client PartitionLoadInformationsClient) GetPreparer(partitionID string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "partitionId": autorest.Encode("path",partitionID),
-    }
+	pathParameters := map[string]interface{}{
+		"partitionId": autorest.Encode("path", partitionID),
+	}
 
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/Partitions/{partitionId}/$/GetLoadInformation",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Partitions/{partitionId}/$/GetLoadInformation", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PartitionLoadInformationsClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client PartitionLoadInformationsClient) GetResponder(resp *http.Response) (result PartitionLoadInformation, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

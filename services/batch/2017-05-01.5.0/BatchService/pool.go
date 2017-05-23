@@ -19,28 +19,29 @@ package batchservice
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "github.com/Azure/go-autorest/autorest/date"
-    "github.com/satori/uuid"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/satori/uuid"
+	"net/http"
 )
 
 // PoolClient is the a client for issuing REST requests to the Azure Batch
 // service.
 type PoolClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewPoolClient creates an instance of the PoolClient client.
 func NewPoolClient() PoolClient {
-        return NewPoolClientWithBaseURI(DefaultBaseURI, )
-        }
+	return NewPoolClientWithBaseURI(DefaultBaseURI)
+}
 
 // NewPoolClientWithBaseURI creates an instance of the PoolClient client.
-    func NewPoolClientWithBaseURI(baseURI string, ) PoolClient {
-        return PoolClient{ NewWithBaseURI(baseURI, )}
-    }
+func NewPoolClientWithBaseURI(baseURI string) PoolClient {
+	return PoolClient{NewWithBaseURI(baseURI)}
+}
 
 // Add when naming pools, avoid including sensitive information such as user
 // names or secret project names. This information may appear in telemetry logs
@@ -56,99 +57,96 @@ func NewPoolClient() PoolClient {
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client PoolClient) Add(pool PoolAddParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: pool,
-     Constraints: []validation.Constraint{	{Target: "pool.ID", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "pool.VMSize", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "pool.CloudServiceConfiguration", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "pool.CloudServiceConfiguration.OsFamily", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    	{Target: "pool.VirtualMachineConfiguration", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "pool.VirtualMachineConfiguration.ImageReference", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "pool.VirtualMachineConfiguration.ImageReference.Publisher", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "pool.VirtualMachineConfiguration.ImageReference.Offer", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "pool.VirtualMachineConfiguration.ImageReference.Sku", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    	{Target: "pool.VirtualMachineConfiguration.OsDisk", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "pool.VirtualMachineConfiguration.OsDisk.ImageUris", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    	{Target: "pool.VirtualMachineConfiguration.NodeAgentSKUID", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    	{Target: "pool.StartTask", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "pool.StartTask.CommandLine", Name: validation.Null, Rule: true, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient","Add")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: pool,
+			Constraints: []validation.Constraint{{Target: "pool.ID", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "pool.VMSize", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "pool.CloudServiceConfiguration", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "pool.CloudServiceConfiguration.OsFamily", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "pool.VirtualMachineConfiguration", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "pool.VirtualMachineConfiguration.ImageReference", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "pool.VirtualMachineConfiguration.ImageReference.Publisher", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "pool.VirtualMachineConfiguration.ImageReference.Offer", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "pool.VirtualMachineConfiguration.ImageReference.Sku", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+						{Target: "pool.VirtualMachineConfiguration.OsDisk", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "pool.VirtualMachineConfiguration.OsDisk.ImageUris", Name: validation.Null, Rule: true, Chain: nil}}},
+						{Target: "pool.VirtualMachineConfiguration.NodeAgentSKUID", Name: validation.Null, Rule: true, Chain: nil},
+					}},
+				{Target: "pool.StartTask", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "pool.StartTask.CommandLine", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient", "Add")
+	}
 
-    req, err := client.AddPreparer(pool, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Add", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.AddPreparer(pool, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Add", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.AddSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Add", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.AddSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Add", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.AddResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Add", resp, "Failure responding to request")
-    }
+	result, err = client.AddResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Add", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // AddPreparer prepares the Add request.
 func (client PoolClient) AddPreparer(pool PoolAddParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/pools"),
-                        autorest.WithJSON(pool),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/pools"),
+		autorest.WithJSON(pool),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) AddSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // AddResponder handles the response to the Add request. The method always
 // closes the http.Response Body.
 func (client PoolClient) AddResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Delete when you request that a pool be deleted, the following actions occur:
@@ -186,93 +184,93 @@ func (client PoolClient) AddResponder(resp *http.Response) (result autorest.Resp
 // performed only if the resource on the service has not been modified since
 // the specified time.
 func (client PoolClient) Delete(poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.DeletePreparer(poolID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Delete", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeletePreparer(poolID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Delete", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Delete", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Delete", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Delete", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Delete", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeletePreparer prepares the Delete request.
 func (client PoolClient) DeletePreparer(poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) DeleteSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client PoolClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // DisableAutoScale sends the disable auto scale request.
@@ -287,77 +285,77 @@ func (client PoolClient) DeleteResponder(resp *http.Response) (result autorest.R
 // this to the current system clock time; set it explicitly if you are calling
 // the REST API directly.
 func (client PoolClient) DisableAutoScale(poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.DisableAutoScalePreparer(poolID, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "DisableAutoScale", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DisableAutoScalePreparer(poolID, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "DisableAutoScale", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DisableAutoScaleSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "DisableAutoScale", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DisableAutoScaleSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "DisableAutoScale", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DisableAutoScaleResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "DisableAutoScale", resp, "Failure responding to request")
-    }
+	result, err = client.DisableAutoScaleResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "DisableAutoScale", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DisableAutoScalePreparer prepares the DisableAutoScale request.
 func (client PoolClient) DisableAutoScalePreparer(poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/disableautoscale",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/disableautoscale", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // DisableAutoScaleSender sends the DisableAutoScale request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) DisableAutoScaleSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DisableAutoScaleResponder handles the response to the DisableAutoScale request. The method always
 // closes the http.Response Body.
 func (client PoolClient) DisableAutoScaleResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // EnableAutoScale you cannot enable automatic scaling on a pool if a resize
@@ -390,95 +388,95 @@ func (client PoolClient) DisableAutoScaleResponder(resp *http.Response) (result 
 // performed only if the resource on the service has not been modified since
 // the specified time.
 func (client PoolClient) EnableAutoScale(poolID string, poolEnableAutoScaleParameter PoolEnableAutoScaleParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.EnableAutoScalePreparer(poolID, poolEnableAutoScaleParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "EnableAutoScale", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.EnableAutoScalePreparer(poolID, poolEnableAutoScaleParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "EnableAutoScale", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.EnableAutoScaleSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "EnableAutoScale", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.EnableAutoScaleSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "EnableAutoScale", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.EnableAutoScaleResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "EnableAutoScale", resp, "Failure responding to request")
-    }
+	result, err = client.EnableAutoScaleResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "EnableAutoScale", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // EnableAutoScalePreparer prepares the EnableAutoScale request.
 func (client PoolClient) EnableAutoScalePreparer(poolID string, poolEnableAutoScaleParameter PoolEnableAutoScaleParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/enableautoscale",pathParameters),
-                        autorest.WithJSON(poolEnableAutoScaleParameter),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/enableautoscale", pathParameters),
+		autorest.WithJSON(poolEnableAutoScaleParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // EnableAutoScaleSender sends the EnableAutoScale request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) EnableAutoScaleSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // EnableAutoScaleResponder handles the response to the EnableAutoScale request. The method always
 // closes the http.Response Body.
 func (client PoolClient) EnableAutoScaleResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // EvaluateAutoScale this API is primarily for validating an autoscale formula,
@@ -495,86 +493,86 @@ func (client PoolClient) EnableAutoScaleResponder(resp *http.Response) (result a
 // issued. Client libraries typically set this to the current system clock
 // time; set it explicitly if you are calling the REST API directly.
 func (client PoolClient) EvaluateAutoScale(poolID string, poolEvaluateAutoScaleParameter PoolEvaluateAutoScaleParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result AutoScaleRun, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: poolEvaluateAutoScaleParameter,
-     Constraints: []validation.Constraint{	{Target: "poolEvaluateAutoScaleParameter.AutoScaleFormula", Name: validation.Null, Rule: true, Chain: nil }}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient","EvaluateAutoScale")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: poolEvaluateAutoScaleParameter,
+			Constraints: []validation.Constraint{{Target: "poolEvaluateAutoScaleParameter.AutoScaleFormula", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient", "EvaluateAutoScale")
+	}
 
-    req, err := client.EvaluateAutoScalePreparer(poolID, poolEvaluateAutoScaleParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "EvaluateAutoScale", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.EvaluateAutoScalePreparer(poolID, poolEvaluateAutoScaleParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "EvaluateAutoScale", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.EvaluateAutoScaleSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "EvaluateAutoScale", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.EvaluateAutoScaleSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "EvaluateAutoScale", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.EvaluateAutoScaleResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "EvaluateAutoScale", resp, "Failure responding to request")
-    }
+	result, err = client.EvaluateAutoScaleResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "EvaluateAutoScale", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // EvaluateAutoScalePreparer prepares the EvaluateAutoScale request.
 func (client PoolClient) EvaluateAutoScalePreparer(poolID string, poolEvaluateAutoScaleParameter PoolEvaluateAutoScaleParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/evaluateautoscale",pathParameters),
-                        autorest.WithJSON(poolEvaluateAutoScaleParameter),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/evaluateautoscale", pathParameters),
+		autorest.WithJSON(poolEvaluateAutoScaleParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // EvaluateAutoScaleSender sends the EvaluateAutoScale request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) EvaluateAutoScaleSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // EvaluateAutoScaleResponder handles the response to the EvaluateAutoScale request. The method always
 // closes the http.Response Body.
 func (client PoolClient) EvaluateAutoScaleResponder(resp *http.Response) (result AutoScaleRun, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Exists gets basic properties of a pool.
@@ -601,93 +599,93 @@ func (client PoolClient) EvaluateAutoScaleResponder(resp *http.Response) (result
 // performed only if the resource on the service has not been modified since
 // the specified time.
 func (client PoolClient) Exists(poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.ExistsPreparer(poolID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Exists", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ExistsPreparer(poolID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Exists", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ExistsSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Exists", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ExistsSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Exists", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ExistsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Exists", resp, "Failure responding to request")
-    }
+	result, err = client.ExistsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Exists", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ExistsPreparer prepares the Exists request.
 func (client PoolClient) ExistsPreparer(poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsHead(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsHead(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ExistsSender sends the Exists request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) ExistsSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ExistsResponder handles the response to the Exists request. The method always
 // closes the http.Response Body.
 func (client PoolClient) ExistsResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNotFound),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Get gets information about the specified pool.
@@ -715,100 +713,100 @@ func (client PoolClient) ExistsResponder(resp *http.Response) (result autorest.R
 // performed only if the resource on the service has not been modified since
 // the specified time.
 func (client PoolClient) Get(poolID string, selectParameter string, expand string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result CloudPool, err error) {
-    req, err := client.GetPreparer(poolID, selectParameter, expand, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(poolID, selectParameter, expand, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client PoolClient) GetPreparer(poolID string, selectParameter string, expand string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(expand) > 0 {
-        queryParameters["$expand"] = autorest.Encode("query",expand)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client PoolClient) GetResponder(resp *http.Response) (result CloudPool, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // GetAllLifetimeStatistics statistics are aggregated across all pools that
@@ -824,74 +822,74 @@ func (client PoolClient) GetResponder(resp *http.Response) (result CloudPool, er
 // issued. Client libraries typically set this to the current system clock
 // time; set it explicitly if you are calling the REST API directly.
 func (client PoolClient) GetAllLifetimeStatistics(timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result PoolStatistics, err error) {
-    req, err := client.GetAllLifetimeStatisticsPreparer(timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "GetAllLifetimeStatistics", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetAllLifetimeStatisticsPreparer(timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "GetAllLifetimeStatistics", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetAllLifetimeStatisticsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "GetAllLifetimeStatistics", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetAllLifetimeStatisticsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "GetAllLifetimeStatistics", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetAllLifetimeStatisticsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "GetAllLifetimeStatistics", resp, "Failure responding to request")
-    }
+	result, err = client.GetAllLifetimeStatisticsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "GetAllLifetimeStatistics", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetAllLifetimeStatisticsPreparer prepares the GetAllLifetimeStatistics request.
 func (client PoolClient) GetAllLifetimeStatisticsPreparer(timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/lifetimepoolstats"),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/lifetimepoolstats"),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetAllLifetimeStatisticsSender sends the GetAllLifetimeStatistics request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) GetAllLifetimeStatisticsSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetAllLifetimeStatisticsResponder handles the response to the GetAllLifetimeStatistics request. The method always
 // closes the http.Response Body.
 func (client PoolClient) GetAllLifetimeStatisticsResponder(resp *http.Response) (result PoolStatistics, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List sends the list request.
@@ -908,119 +906,119 @@ func (client PoolClient) GetAllLifetimeStatisticsResponder(resp *http.Response) 
 // issued. Client libraries typically set this to the current system clock
 // time; set it explicitly if you are calling the REST API directly.
 func (client PoolClient) List(filter string, selectParameter string, expand string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result CloudPoolListResult, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: maxResults,
-     Constraints: []validation.Constraint{	{Target: "maxResults", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil },
-    	{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient","List")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: maxResults,
+			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient", "List")
+	}
 
-    req, err := client.ListPreparer(filter, selectParameter, expand, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "List", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListPreparer(filter, selectParameter, expand, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "List", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "List", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "List", resp, "Failure responding to request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "List", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListPreparer prepares the List request.
 func (client PoolClient) ListPreparer(filter string, selectParameter string, expand string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if len(selectParameter) > 0 {
-        queryParameters["$select"] = autorest.Encode("query",selectParameter)
-    }
-    if len(expand) > 0 {
-        queryParameters["$expand"] = autorest.Encode("query",expand)
-    }
-    if maxResults != nil {
-        queryParameters["maxresults"] = autorest.Encode("query",*maxResults)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+	if maxResults != nil {
+		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/pools"),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/pools"),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) ListSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client PoolClient) ListResponder(resp *http.Response) (result CloudPoolListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListNextResults retrieves the next set of results, if any.
 func (client PoolClient) ListNextResults(lastResults CloudPoolListResult) (result CloudPoolListResult, err error) {
-    req, err := lastResults.CloudPoolListResultPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "batchservice.PoolClient", "List", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.CloudPoolListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "batchservice.PoolClient", "List", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "batchservice.PoolClient", "List", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "batchservice.PoolClient", "List", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "List", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "List", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // ListUsageMetrics if you do not specify a $filter clause including a poolId,
@@ -1046,119 +1044,119 @@ func (client PoolClient) ListNextResults(lastResults CloudPoolListResult) (resul
 // issued. Client libraries typically set this to the current system clock
 // time; set it explicitly if you are calling the REST API directly.
 func (client PoolClient) ListUsageMetrics(startTime *date.Time, endTime *date.Time, filter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result PoolListUsageMetricsResult, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: maxResults,
-     Constraints: []validation.Constraint{	{Target: "maxResults", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil },
-    	{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient","ListUsageMetrics")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: maxResults,
+			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient", "ListUsageMetrics")
+	}
 
-    req, err := client.ListUsageMetricsPreparer(startTime, endTime, filter, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "ListUsageMetrics", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListUsageMetricsPreparer(startTime, endTime, filter, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "ListUsageMetrics", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListUsageMetricsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "ListUsageMetrics", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListUsageMetricsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "ListUsageMetrics", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListUsageMetricsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "ListUsageMetrics", resp, "Failure responding to request")
-    }
+	result, err = client.ListUsageMetricsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "ListUsageMetrics", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListUsageMetricsPreparer prepares the ListUsageMetrics request.
 func (client PoolClient) ListUsageMetricsPreparer(startTime *date.Time, endTime *date.Time, filter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if startTime != nil {
-        queryParameters["starttime"] = autorest.Encode("query",*startTime)
-    }
-    if endTime != nil {
-        queryParameters["endtime"] = autorest.Encode("query",*endTime)
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if maxResults != nil {
-        queryParameters["maxresults"] = autorest.Encode("query",*maxResults)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if startTime != nil {
+		queryParameters["starttime"] = autorest.Encode("query", *startTime)
+	}
+	if endTime != nil {
+		queryParameters["endtime"] = autorest.Encode("query", *endTime)
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if maxResults != nil {
+		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/poolusagemetrics"),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/poolusagemetrics"),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListUsageMetricsSender sends the ListUsageMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) ListUsageMetricsSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListUsageMetricsResponder handles the response to the ListUsageMetrics request. The method always
 // closes the http.Response Body.
 func (client PoolClient) ListUsageMetricsResponder(resp *http.Response) (result PoolListUsageMetricsResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListUsageMetricsNextResults retrieves the next set of results, if any.
 func (client PoolClient) ListUsageMetricsNextResults(lastResults PoolListUsageMetricsResult) (result PoolListUsageMetricsResult, err error) {
-    req, err := lastResults.PoolListUsageMetricsResultPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "batchservice.PoolClient", "ListUsageMetrics", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.PoolListUsageMetricsResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "batchservice.PoolClient", "ListUsageMetrics", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListUsageMetricsSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "batchservice.PoolClient", "ListUsageMetrics", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListUsageMetricsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "batchservice.PoolClient", "ListUsageMetrics", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListUsageMetricsResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "ListUsageMetrics", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListUsageMetricsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "ListUsageMetrics", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
 
 // Patch this only replaces the pool properties specified in the request. For
@@ -1189,95 +1187,95 @@ func (client PoolClient) ListUsageMetricsNextResults(lastResults PoolListUsageMe
 // performed only if the resource on the service has not been modified since
 // the specified time.
 func (client PoolClient) Patch(poolID string, poolPatchParameter PoolPatchParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.PatchPreparer(poolID, poolPatchParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Patch", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.PatchPreparer(poolID, poolPatchParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Patch", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.PatchSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Patch", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.PatchSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Patch", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.PatchResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Patch", resp, "Failure responding to request")
-    }
+	result, err = client.PatchResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Patch", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // PatchPreparer prepares the Patch request.
 func (client PoolClient) PatchPreparer(poolID string, poolPatchParameter PoolPatchParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPatch(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}",pathParameters),
-                        autorest.WithJSON(poolPatchParameter),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}", pathParameters),
+		autorest.WithJSON(poolPatchParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // PatchSender sends the Patch request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) PatchSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // PatchResponder handles the response to the Patch request. The method always
 // closes the http.Response Body.
 func (client PoolClient) PatchResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // RemoveNodes this operation can only run when the allocation state of the
@@ -1307,103 +1305,102 @@ func (client PoolClient) PatchResponder(resp *http.Response) (result autorest.Re
 // performed only if the resource on the service has not been modified since
 // the specified time.
 func (client PoolClient) RemoveNodes(poolID string, nodeRemoveParameter NodeRemoveParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: nodeRemoveParameter,
-     Constraints: []validation.Constraint{	{Target: "nodeRemoveParameter.NodeList", Name: validation.Null, Rule: true ,
-    Chain: []validation.Constraint{	{Target: "nodeRemoveParameter.NodeList", Name: validation.MaxItems, Rule: 100, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient","RemoveNodes")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: nodeRemoveParameter,
+			Constraints: []validation.Constraint{{Target: "nodeRemoveParameter.NodeList", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "nodeRemoveParameter.NodeList", Name: validation.MaxItems, Rule: 100, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient", "RemoveNodes")
+	}
 
-    req, err := client.RemoveNodesPreparer(poolID, nodeRemoveParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "RemoveNodes", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.RemoveNodesPreparer(poolID, nodeRemoveParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "RemoveNodes", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.RemoveNodesSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "RemoveNodes", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.RemoveNodesSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "RemoveNodes", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.RemoveNodesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "RemoveNodes", resp, "Failure responding to request")
-    }
+	result, err = client.RemoveNodesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "RemoveNodes", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // RemoveNodesPreparer prepares the RemoveNodes request.
 func (client PoolClient) RemoveNodesPreparer(poolID string, nodeRemoveParameter NodeRemoveParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/removenodes",pathParameters),
-                        autorest.WithJSON(nodeRemoveParameter),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/removenodes", pathParameters),
+		autorest.WithJSON(nodeRemoveParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // RemoveNodesSender sends the RemoveNodes request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) RemoveNodesSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // RemoveNodesResponder handles the response to the RemoveNodes request. The method always
 // closes the http.Response Body.
 func (client PoolClient) RemoveNodesResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Resize you can only resize a pool when its allocation state is steady. If
@@ -1437,95 +1434,95 @@ func (client PoolClient) RemoveNodesResponder(resp *http.Response) (result autor
 // performed only if the resource on the service has not been modified since
 // the specified time.
 func (client PoolClient) Resize(poolID string, poolResizeParameter PoolResizeParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.ResizePreparer(poolID, poolResizeParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Resize", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ResizePreparer(poolID, poolResizeParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Resize", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ResizeSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Resize", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ResizeSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Resize", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ResizeResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Resize", resp, "Failure responding to request")
-    }
+	result, err = client.ResizeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "Resize", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ResizePreparer prepares the Resize request.
 func (client PoolClient) ResizePreparer(poolID string, poolResizeParameter PoolResizeParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/resize",pathParameters),
-                        autorest.WithJSON(poolResizeParameter),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/resize", pathParameters),
+		autorest.WithJSON(poolResizeParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ResizeSender sends the Resize request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) ResizeSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ResizeResponder handles the response to the Resize request. The method always
 // closes the http.Response Body.
 func (client PoolClient) ResizeResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // StopResize this does not restore the pool to its previous state before the
@@ -1556,93 +1553,93 @@ func (client PoolClient) ResizeResponder(resp *http.Response) (result autorest.R
 // performed only if the resource on the service has not been modified since
 // the specified time.
 func (client PoolClient) StopResize(poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    req, err := client.StopResizePreparer(poolID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "StopResize", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.StopResizePreparer(poolID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "StopResize", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.StopResizeSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "StopResize", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.StopResizeSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "StopResize", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.StopResizeResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "StopResize", resp, "Failure responding to request")
-    }
+	result, err = client.StopResizeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "StopResize", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // StopResizePreparer prepares the StopResize request.
 func (client PoolClient) StopResizePreparer(poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/stopresize",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/stopresize", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // StopResizeSender sends the StopResize request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) StopResizeSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // StopResizeResponder handles the response to the StopResize request. The method always
 // closes the http.Response Body.
 func (client PoolClient) StopResizeResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // UpdateProperties this fully replaces all the updateable properties of the
@@ -1661,90 +1658,89 @@ func (client PoolClient) StopResizeResponder(resp *http.Response) (result autore
 // current system clock time; set it explicitly if you are calling the REST API
 // directly.
 func (client PoolClient) UpdateProperties(poolID string, poolUpdatePropertiesParameter PoolUpdatePropertiesParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: poolUpdatePropertiesParameter,
-     Constraints: []validation.Constraint{	{Target: "poolUpdatePropertiesParameter.StartTask", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "poolUpdatePropertiesParameter.StartTask.CommandLine", Name: validation.Null, Rule: true, Chain: nil },
-    }},
-    	{Target: "poolUpdatePropertiesParameter.CertificateReferences", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "poolUpdatePropertiesParameter.ApplicationPackageReferences", Name: validation.Null, Rule: true, Chain: nil },
-    	{Target: "poolUpdatePropertiesParameter.Metadata", Name: validation.Null, Rule: true, Chain: nil }}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient","UpdateProperties")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: poolUpdatePropertiesParameter,
+			Constraints: []validation.Constraint{{Target: "poolUpdatePropertiesParameter.StartTask", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "poolUpdatePropertiesParameter.StartTask.CommandLine", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "poolUpdatePropertiesParameter.CertificateReferences", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "poolUpdatePropertiesParameter.ApplicationPackageReferences", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "poolUpdatePropertiesParameter.Metadata", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient", "UpdateProperties")
+	}
 
-    req, err := client.UpdatePropertiesPreparer(poolID, poolUpdatePropertiesParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "UpdateProperties", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.UpdatePropertiesPreparer(poolID, poolUpdatePropertiesParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "UpdateProperties", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.UpdatePropertiesSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "UpdateProperties", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.UpdatePropertiesSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "UpdateProperties", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.UpdatePropertiesResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "UpdateProperties", resp, "Failure responding to request")
-    }
+	result, err = client.UpdatePropertiesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "UpdateProperties", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // UpdatePropertiesPreparer prepares the UpdateProperties request.
 func (client PoolClient) UpdatePropertiesPreparer(poolID string, poolUpdatePropertiesParameter PoolUpdatePropertiesParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/updateproperties",pathParameters),
-                        autorest.WithJSON(poolUpdatePropertiesParameter),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/updateproperties", pathParameters),
+		autorest.WithJSON(poolUpdatePropertiesParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // UpdatePropertiesSender sends the UpdateProperties request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) UpdatePropertiesSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpdatePropertiesResponder handles the response to the UpdateProperties request. The method always
 // closes the http.Response Body.
 func (client PoolClient) UpdatePropertiesResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // UpgradeOS during an upgrade, the Batch service upgrades each compute node in
@@ -1782,100 +1778,99 @@ func (client PoolClient) UpdatePropertiesResponder(resp *http.Response) (result 
 // performed only if the resource on the service has not been modified since
 // the specified time.
 func (client PoolClient) UpgradeOS(poolID string, poolUpgradeOSParameter PoolUpgradeOSParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: poolUpgradeOSParameter,
-     Constraints: []validation.Constraint{	{Target: "poolUpgradeOSParameter.TargetOSVersion", Name: validation.Null, Rule: true, Chain: nil }}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient","UpgradeOS")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: poolUpgradeOSParameter,
+			Constraints: []validation.Constraint{{Target: "poolUpgradeOSParameter.TargetOSVersion", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.PoolClient", "UpgradeOS")
+	}
 
-    req, err := client.UpgradeOSPreparer(poolID, poolUpgradeOSParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "UpgradeOS", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.UpgradeOSPreparer(poolID, poolUpgradeOSParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "UpgradeOS", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.UpgradeOSSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "UpgradeOS", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.UpgradeOSSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "UpgradeOS", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.UpgradeOSResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "UpgradeOS", resp, "Failure responding to request")
-    }
+	result, err = client.UpgradeOSResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.PoolClient", "UpgradeOS", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // UpgradeOSPreparer prepares the UpgradeOS request.
 func (client PoolClient) UpgradeOSPreparer(poolID string, poolUpgradeOSParameter PoolUpgradeOSParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "poolId": autorest.Encode("path",poolID),
-    }
+	pathParameters := map[string]interface{}{
+		"poolId": autorest.Encode("path", poolID),
+	}
 
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/pools/{poolId}/upgradeos",pathParameters),
-                        autorest.WithJSON(poolUpgradeOSParameter),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    if len(ifMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Match",autorest.String(ifMatch)))
-    }
-    if len(ifNoneMatch) > 0 {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-None-Match",autorest.String(ifNoneMatch)))
-    }
-    if ifModifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Modified-Since",autorest.String(ifModifiedSince)))
-    }
-    if ifUnmodifiedSince != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("If-Unmodified-Since",autorest.String(ifUnmodifiedSince)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/pools/{poolId}/upgradeos", pathParameters),
+		autorest.WithJSON(poolUpgradeOSParameter),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
+	if ifModifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Modified-Since", autorest.String(ifModifiedSince)))
+	}
+	if ifUnmodifiedSince != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Unmodified-Since", autorest.String(ifUnmodifiedSince)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // UpgradeOSSender sends the UpgradeOS request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoolClient) UpgradeOSSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // UpgradeOSResponder handles the response to the UpgradeOS request. The method always
 // closes the http.Response Body.
 func (client PoolClient) UpgradeOSResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
-

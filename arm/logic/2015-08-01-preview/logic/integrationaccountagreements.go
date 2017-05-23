@@ -19,26 +19,27 @@ package logic
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // IntegrationAccountAgreementsClient is the rEST API for Azure Logic Apps.
 type IntegrationAccountAgreementsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewIntegrationAccountAgreementsClient creates an instance of the
 // IntegrationAccountAgreementsClient client.
 func NewIntegrationAccountAgreementsClient(subscriptionID string) IntegrationAccountAgreementsClient {
-        return NewIntegrationAccountAgreementsClientWithBaseURI(DefaultBaseURI, subscriptionID)
-        }
+	return NewIntegrationAccountAgreementsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
 
 // NewIntegrationAccountAgreementsClientWithBaseURI creates an instance of the
 // IntegrationAccountAgreementsClient client.
-    func NewIntegrationAccountAgreementsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountAgreementsClient {
-        return IntegrationAccountAgreementsClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewIntegrationAccountAgreementsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountAgreementsClient {
+	return IntegrationAccountAgreementsClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // CreateOrUpdate creates or updates an integration account agreement.
 //
@@ -46,68 +47,68 @@ func NewIntegrationAccountAgreementsClient(subscriptionID string) IntegrationAcc
 // integration account name. agreementName is the integration account agreement
 // name. agreement is the integration account agreement.
 func (client IntegrationAccountAgreementsClient) CreateOrUpdate(resourceGroupName string, integrationAccountName string, agreementName string, agreement IntegrationAccountAgreement) (result IntegrationAccountAgreement, err error) {
-    req, err := client.CreateOrUpdatePreparer(resourceGroupName, integrationAccountName, agreementName, agreement)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "CreateOrUpdate", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, integrationAccountName, agreementName, agreement)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CreateOrUpdateSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "CreateOrUpdate", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CreateOrUpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CreateOrUpdateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "CreateOrUpdate", resp, "Failure responding to request")
-    }
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client IntegrationAccountAgreementsClient) CreateOrUpdatePreparer(resourceGroupName string, integrationAccountName string, agreementName string, agreement IntegrationAccountAgreement) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "agreementName": autorest.Encode("path",agreementName),
-    "integrationAccountName": autorest.Encode("path",integrationAccountName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"agreementName":          autorest.Encode("path", agreementName),
+		"integrationAccountName": autorest.Encode("path", integrationAccountName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2015-08-01-preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2015-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements/{agreementName}",pathParameters),
-                        autorest.WithJSON(agreement),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements/{agreementName}", pathParameters),
+		autorest.WithJSON(agreement),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationAccountAgreementsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client IntegrationAccountAgreementsClient) CreateOrUpdateResponder(resp *http.Response) (result IntegrationAccountAgreement, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Delete deletes an integration account agreement.
@@ -116,65 +117,65 @@ func (client IntegrationAccountAgreementsClient) CreateOrUpdateResponder(resp *h
 // integration account name. agreementName is the integration account agreement
 // name.
 func (client IntegrationAccountAgreementsClient) Delete(resourceGroupName string, integrationAccountName string, agreementName string) (result autorest.Response, err error) {
-    req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, agreementName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "Delete", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, agreementName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "Delete", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "Delete", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "Delete", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "Delete", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "Delete", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeletePreparer prepares the Delete request.
 func (client IntegrationAccountAgreementsClient) DeletePreparer(resourceGroupName string, integrationAccountName string, agreementName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "agreementName": autorest.Encode("path",agreementName),
-    "integrationAccountName": autorest.Encode("path",integrationAccountName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"agreementName":          autorest.Encode("path", agreementName),
+		"integrationAccountName": autorest.Encode("path", integrationAccountName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2015-08-01-preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2015-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements/{agreementName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements/{agreementName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationAccountAgreementsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client IntegrationAccountAgreementsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Get gets an integration account agreement.
@@ -183,66 +184,66 @@ func (client IntegrationAccountAgreementsClient) DeleteResponder(resp *http.Resp
 // integration account name. agreementName is the integration account agreement
 // name.
 func (client IntegrationAccountAgreementsClient) Get(resourceGroupName string, integrationAccountName string, agreementName string) (result IntegrationAccountAgreement, err error) {
-    req, err := client.GetPreparer(resourceGroupName, integrationAccountName, agreementName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(resourceGroupName, integrationAccountName, agreementName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client IntegrationAccountAgreementsClient) GetPreparer(resourceGroupName string, integrationAccountName string, agreementName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "agreementName": autorest.Encode("path",agreementName),
-    "integrationAccountName": autorest.Encode("path",integrationAccountName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"agreementName":          autorest.Encode("path", agreementName),
+		"integrationAccountName": autorest.Encode("path", integrationAccountName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2015-08-01-preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2015-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements/{agreementName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements/{agreementName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationAccountAgreementsClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client IntegrationAccountAgreementsClient) GetResponder(resp *http.Response) (result IntegrationAccountAgreement, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List gets a list of integration account agreements.
@@ -251,94 +252,93 @@ func (client IntegrationAccountAgreementsClient) GetResponder(resp *http.Respons
 // integration account name. top is the number of items to be included in the
 // result. filter is the filter to apply on the operation.
 func (client IntegrationAccountAgreementsClient) List(resourceGroupName string, integrationAccountName string, top *int32, filter string) (result IntegrationAccountAgreementListResult, err error) {
-    req, err := client.ListPreparer(resourceGroupName, integrationAccountName, top, filter)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "List", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListPreparer(resourceGroupName, integrationAccountName, top, filter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "List", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "List", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "List", resp, "Failure responding to request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "List", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListPreparer prepares the List request.
 func (client IntegrationAccountAgreementsClient) ListPreparer(resourceGroupName string, integrationAccountName string, top *int32, filter string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "integrationAccountName": autorest.Encode("path",integrationAccountName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"integrationAccountName": autorest.Encode("path", integrationAccountName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2015-08-01-preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
+	const APIVersion = "2015-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/agreements", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationAccountAgreementsClient) ListSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client IntegrationAccountAgreementsClient) ListResponder(resp *http.Response) (result IntegrationAccountAgreementListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListNextResults retrieves the next set of results, if any.
 func (client IntegrationAccountAgreementsClient) ListNextResults(lastResults IntegrationAccountAgreementListResult) (result IntegrationAccountAgreementListResult, err error) {
-    req, err := lastResults.IntegrationAccountAgreementListResultPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "List", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.IntegrationAccountAgreementListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "List", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "List", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "List", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "List", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAgreementsClient", "List", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
-

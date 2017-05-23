@@ -19,25 +19,26 @@ package insightsclientmetrics
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // MetricsClient is the client for the Metrics methods of the
 // Insightsclientmetrics service.
 type MetricsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewMetricsClient creates an instance of the MetricsClient client.
 func NewMetricsClient() MetricsClient {
-        return NewMetricsClientWithBaseURI(DefaultBaseURI, )
-        }
+	return NewMetricsClientWithBaseURI(DefaultBaseURI)
+}
 
 // NewMetricsClientWithBaseURI creates an instance of the MetricsClient client.
-    func NewMetricsClientWithBaseURI(baseURI string, ) MetricsClient {
-        return MetricsClient{ NewWithBaseURI(baseURI, )}
-    }
+func NewMetricsClientWithBaseURI(baseURI string) MetricsClient {
+	return MetricsClient{NewWithBaseURI(baseURI)}
+}
 
 // List **Lists the metric values for a resource**.<br>The **$filter** is used
 // to reduce the set of metric data returned. Some common properties for this
@@ -62,65 +63,64 @@ func NewMetricsClient() MetricsClient {
 // data collected. The syntax allowed depends on the operation. See the
 // operation's description for details.
 func (client MetricsClient) List(resourceURI string, filter string) (result MetricCollection, err error) {
-    req, err := client.ListPreparer(resourceURI, filter)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsclientmetrics.MetricsClient", "List", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListPreparer(resourceURI, filter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsclientmetrics.MetricsClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "insightsclientmetrics.MetricsClient", "List", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "insightsclientmetrics.MetricsClient", "List", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsclientmetrics.MetricsClient", "List", resp, "Failure responding to request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsclientmetrics.MetricsClient", "List", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListPreparer prepares the List request.
 func (client MetricsClient) ListPreparer(resourceURI string, filter string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "resourceUri": resourceURI,
-    }
+	pathParameters := map[string]interface{}{
+		"resourceUri": resourceURI,
+	}
 
-        const APIVersion = "2016-09-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
+	const APIVersion = "2016-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/metrics",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/metrics", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client MetricsClient) ListSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client MetricsClient) ListResponder(resp *http.Response) (result MetricCollection, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

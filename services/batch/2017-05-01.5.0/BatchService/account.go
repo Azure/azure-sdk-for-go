@@ -19,28 +19,29 @@ package batchservice
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
-    "github.com/satori/uuid"
-    "github.com/Azure/go-autorest/autorest/date"
-    "github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/satori/uuid"
+	"net/http"
 )
 
 // AccountClient is the a client for issuing REST requests to the Azure Batch
 // service.
 type AccountClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewAccountClient creates an instance of the AccountClient client.
 func NewAccountClient() AccountClient {
-        return NewAccountClientWithBaseURI(DefaultBaseURI, )
-        }
+	return NewAccountClientWithBaseURI(DefaultBaseURI)
+}
 
 // NewAccountClientWithBaseURI creates an instance of the AccountClient client.
-    func NewAccountClientWithBaseURI(baseURI string, ) AccountClient {
-        return AccountClient{ NewWithBaseURI(baseURI, )}
-    }
+func NewAccountClientWithBaseURI(baseURI string) AccountClient {
+	return AccountClient{NewWithBaseURI(baseURI)}
+}
 
 // ListNodeAgentSkus sends the list node agent skus request.
 //
@@ -55,112 +56,111 @@ func NewAccountClient() AccountClient {
 // issued. Client libraries typically set this to the current system clock
 // time; set it explicitly if you are calling the REST API directly.
 func (client AccountClient) ListNodeAgentSkus(filter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result AccountListNodeAgentSkusResult, err error) {
-    if err := validation.Validate([]validation.Validation{
-    { TargetValue: maxResults,
-     Constraints: []validation.Constraint{	{Target: "maxResults", Name: validation.Null, Rule: false ,
-    Chain: []validation.Constraint{	{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil },
-    	{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil },
-    }}}}}); err != nil {
-    return result, validation.NewErrorWithValidationError(err, "batchservice.AccountClient","ListNodeAgentSkus")
-}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: maxResults,
+			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "batchservice.AccountClient", "ListNodeAgentSkus")
+	}
 
-    req, err := client.ListNodeAgentSkusPreparer(filter, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.AccountClient", "ListNodeAgentSkus", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListNodeAgentSkusPreparer(filter, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.AccountClient", "ListNodeAgentSkus", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListNodeAgentSkusSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "batchservice.AccountClient", "ListNodeAgentSkus", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListNodeAgentSkusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchservice.AccountClient", "ListNodeAgentSkus", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListNodeAgentSkusResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.AccountClient", "ListNodeAgentSkus", resp, "Failure responding to request")
-    }
+	result, err = client.ListNodeAgentSkusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.AccountClient", "ListNodeAgentSkus", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListNodeAgentSkusPreparer prepares the ListNodeAgentSkus request.
 func (client AccountClient) ListNodeAgentSkusPreparer(filter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
-        const APIVersion = "2017-05-01.5.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if len(filter) > 0 {
-        queryParameters["$filter"] = autorest.Encode("query",filter)
-    }
-    if maxResults != nil {
-        queryParameters["maxresults"] = autorest.Encode("query",*maxResults)
-    }
-    if timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*timeout)
-    }
+	const APIVersion = "2017-05-01.5.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if maxResults != nil {
+		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	}
+	if timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/nodeagentskus"),
-                        autorest.WithQueryParameters(queryParameters))
-    if clientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("client-request-id",autorest.String(clientRequestID)))
-    }
-    if returnClientRequestID != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("return-client-request-id",autorest.String(returnClientRequestID)))
-    }
-    if ocpDate != nil {
-        preparer = autorest.DecoratePreparer(preparer,
-                            autorest.WithHeader("ocp-date",autorest.String(ocpDate)))
-    }
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/nodeagentskus"),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("client-request-id", autorest.String(clientRequestID)))
+	}
+	if returnClientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("return-client-request-id", autorest.String(returnClientRequestID)))
+	}
+	if ocpDate != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("ocp-date", autorest.String(ocpDate)))
+	}
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListNodeAgentSkusSender sends the ListNodeAgentSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AccountClient) ListNodeAgentSkusSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListNodeAgentSkusResponder handles the response to the ListNodeAgentSkus request. The method always
 // closes the http.Response Body.
 func (client AccountClient) ListNodeAgentSkusResponder(resp *http.Response) (result AccountListNodeAgentSkusResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListNodeAgentSkusNextResults retrieves the next set of results, if any.
 func (client AccountClient) ListNodeAgentSkusNextResults(lastResults AccountListNodeAgentSkusResult) (result AccountListNodeAgentSkusResult, err error) {
-    req, err := lastResults.AccountListNodeAgentSkusResultPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "batchservice.AccountClient", "ListNodeAgentSkus", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.AccountListNodeAgentSkusResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "batchservice.AccountClient", "ListNodeAgentSkus", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListNodeAgentSkusSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "batchservice.AccountClient", "ListNodeAgentSkus", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListNodeAgentSkusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "batchservice.AccountClient", "ListNodeAgentSkus", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListNodeAgentSkusResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "batchservice.AccountClient", "ListNodeAgentSkus", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListNodeAgentSkusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchservice.AccountClient", "ListNodeAgentSkus", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
-

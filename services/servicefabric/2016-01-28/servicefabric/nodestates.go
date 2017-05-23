@@ -19,90 +19,90 @@ package servicefabric
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // NodeStatesClient is the client for the NodeStates methods of the
 // Servicefabric service.
 type NodeStatesClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewNodeStatesClient creates an instance of the NodeStatesClient client.
 func NewNodeStatesClient(timeout *int32) NodeStatesClient {
-        return NewNodeStatesClientWithBaseURI(DefaultBaseURI, timeout)
-        }
+	return NewNodeStatesClientWithBaseURI(DefaultBaseURI, timeout)
+}
 
 // NewNodeStatesClientWithBaseURI creates an instance of the NodeStatesClient
 // client.
-    func NewNodeStatesClientWithBaseURI(baseURI string, timeout *int32) NodeStatesClient {
-        return NodeStatesClient{ NewWithBaseURI(baseURI, timeout)}
-    }
+func NewNodeStatesClientWithBaseURI(baseURI string, timeout *int32) NodeStatesClient {
+	return NodeStatesClient{NewWithBaseURI(baseURI, timeout)}
+}
 
 // Remove remove node states
 //
 // nodeName is the name of the node
 func (client NodeStatesClient) Remove(nodeName string) (result String, err error) {
-    req, err := client.RemovePreparer(nodeName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.NodeStatesClient", "Remove", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.RemovePreparer(nodeName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.NodeStatesClient", "Remove", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.RemoveSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.NodeStatesClient", "Remove", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.RemoveSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.NodeStatesClient", "Remove", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.RemoveResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.NodeStatesClient", "Remove", resp, "Failure responding to request")
-    }
+	result, err = client.RemoveResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.NodeStatesClient", "Remove", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // RemovePreparer prepares the Remove request.
 func (client NodeStatesClient) RemovePreparer(nodeName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "nodeName": autorest.Encode("path",nodeName),
-    }
+	pathParameters := map[string]interface{}{
+		"nodeName": autorest.Encode("path", nodeName),
+	}
 
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsPost(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/Nodes/{nodeName}/$/RemoveNodeState",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Nodes/{nodeName}/$/RemoveNodeState", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // RemoveSender sends the Remove request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodeStatesClient) RemoveSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // RemoveResponder handles the response to the Remove request. The method always
 // closes the http.Response Body.
 func (client NodeStatesClient) RemoveResponder(resp *http.Response) (result String, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result.Value),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

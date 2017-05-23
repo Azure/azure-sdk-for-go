@@ -19,152 +19,151 @@ package trafficmanager
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // CheckTrafficManagerRelativeDNSNameAvailabilityParameters is parameters
 // supplied to check Traffic Manager name operation.
 type CheckTrafficManagerRelativeDNSNameAvailabilityParameters struct {
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // CloudError is
 type CloudError struct {
-    Error *CloudErrorBody `json:"error,omitempty"`
+	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
 // CloudErrorBody is
 type CloudErrorBody struct {
-    Code *string `json:"code,omitempty"`
-    Message *string `json:"message,omitempty"`
-    Target *string `json:"target,omitempty"`
-    Details *[]CloudErrorBody `json:"details,omitempty"`
+	Code    *string           `json:"code,omitempty"`
+	Message *string           `json:"message,omitempty"`
+	Target  *string           `json:"target,omitempty"`
+	Details *[]CloudErrorBody `json:"details,omitempty"`
 }
 
 // DeleteOperationResult is the result of the request or operation.
 type DeleteOperationResult struct {
-    autorest.Response `json:"-"`
-    OperationResult *bool `json:"boolean,omitempty"`
+	autorest.Response `json:"-"`
+	OperationResult   *bool `json:"boolean,omitempty"`
 }
 
 // DNSConfig is class containing DNS settings in a Traffic Manager profile.
 type DNSConfig struct {
-    RelativeName *string `json:"relativeName,omitempty"`
-    Fqdn *string `json:"fqdn,omitempty"`
-    TTL *int64 `json:"ttl,omitempty"`
+	RelativeName *string `json:"relativeName,omitempty"`
+	Fqdn         *string `json:"fqdn,omitempty"`
+	TTL          *int64  `json:"ttl,omitempty"`
 }
 
 // Endpoint is class representing a Traffic Manager endpoint.
 type Endpoint struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    *EndpointProperties `json:"properties,omitempty"`
+	autorest.Response   `json:"-"`
+	ID                  *string `json:"id,omitempty"`
+	Name                *string `json:"name,omitempty"`
+	Type                *string `json:"type,omitempty"`
+	*EndpointProperties `json:"properties,omitempty"`
 }
 
 // EndpointProperties is class representing a Traffic Manager endpoint
 // properties.
 type EndpointProperties struct {
-    TargetResourceID *string `json:"targetResourceId,omitempty"`
-    Target *string `json:"target,omitempty"`
-    EndpointStatus *string `json:"endpointStatus,omitempty"`
-    Weight *int64 `json:"weight,omitempty"`
-    Priority *int64 `json:"priority,omitempty"`
-    EndpointLocation *string `json:"endpointLocation,omitempty"`
-    EndpointMonitorStatus *string `json:"endpointMonitorStatus,omitempty"`
-    MinChildEndpoints *int64 `json:"minChildEndpoints,omitempty"`
-    GeoMapping *[]string `json:"geoMapping,omitempty"`
+	TargetResourceID      *string   `json:"targetResourceId,omitempty"`
+	Target                *string   `json:"target,omitempty"`
+	EndpointStatus        *string   `json:"endpointStatus,omitempty"`
+	Weight                *int64    `json:"weight,omitempty"`
+	Priority              *int64    `json:"priority,omitempty"`
+	EndpointLocation      *string   `json:"endpointLocation,omitempty"`
+	EndpointMonitorStatus *string   `json:"endpointMonitorStatus,omitempty"`
+	MinChildEndpoints     *int64    `json:"minChildEndpoints,omitempty"`
+	GeoMapping            *[]string `json:"geoMapping,omitempty"`
 }
 
 // GeographicHierarchy is class representing the Geographic hierarchy used with
 // the Geographic traffic routing method.
 type GeographicHierarchy struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
-    *GeographicHierarchyProperties `json:"properties,omitempty"`
+	autorest.Response              `json:"-"`
+	ID                             *string             `json:"id,omitempty"`
+	Name                           *string             `json:"name,omitempty"`
+	Type                           *string             `json:"type,omitempty"`
+	Location                       *string             `json:"location,omitempty"`
+	Tags                           *map[string]*string `json:"tags,omitempty"`
+	*GeographicHierarchyProperties `json:"properties,omitempty"`
 }
 
 // GeographicHierarchyProperties is class representing the properties of the
 // Geographic hierarchy used with the Geographic traffic routing method.
 type GeographicHierarchyProperties struct {
-    GeographicHierarchy *Region `json:"geographicHierarchy,omitempty"`
+	GeographicHierarchy *Region `json:"geographicHierarchy,omitempty"`
 }
 
 // MonitorConfig is class containing endpoint monitoring settings in a Traffic
 // Manager profile.
 type MonitorConfig struct {
-    ProfileMonitorStatus *string `json:"profileMonitorStatus,omitempty"`
-    Protocol *string `json:"protocol,omitempty"`
-    Port *int64 `json:"port,omitempty"`
-    Path *string `json:"path,omitempty"`
-    IntervalInSeconds *int64 `json:"intervalInSeconds,omitempty"`
-    TimeoutInSeconds *int64 `json:"timeoutInSeconds,omitempty"`
-    ToleratedNumberOfFailures *int64 `json:"toleratedNumberOfFailures,omitempty"`
+	ProfileMonitorStatus      *string `json:"profileMonitorStatus,omitempty"`
+	Protocol                  *string `json:"protocol,omitempty"`
+	Port                      *int64  `json:"port,omitempty"`
+	Path                      *string `json:"path,omitempty"`
+	IntervalInSeconds         *int64  `json:"intervalInSeconds,omitempty"`
+	TimeoutInSeconds          *int64  `json:"timeoutInSeconds,omitempty"`
+	ToleratedNumberOfFailures *int64  `json:"toleratedNumberOfFailures,omitempty"`
 }
 
 // NameAvailability is class representing a Traffic Manager Name Availability
 // response.
 type NameAvailability struct {
-    autorest.Response `json:"-"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    NameAvailable *bool `json:"nameAvailable,omitempty"`
-    Reason *string `json:"reason,omitempty"`
-    Message *string `json:"message,omitempty"`
+	autorest.Response `json:"-"`
+	Name              *string `json:"name,omitempty"`
+	Type              *string `json:"type,omitempty"`
+	NameAvailable     *bool   `json:"nameAvailable,omitempty"`
+	Reason            *string `json:"reason,omitempty"`
+	Message           *string `json:"message,omitempty"`
 }
 
 // Profile is class representing a Traffic Manager profile.
 type Profile struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
-    *ProfileProperties `json:"properties,omitempty"`
+	autorest.Response  `json:"-"`
+	ID                 *string             `json:"id,omitempty"`
+	Name               *string             `json:"name,omitempty"`
+	Type               *string             `json:"type,omitempty"`
+	Location           *string             `json:"location,omitempty"`
+	Tags               *map[string]*string `json:"tags,omitempty"`
+	*ProfileProperties `json:"properties,omitempty"`
 }
 
 // ProfileListResult is the list Traffic Manager profiles operation response.
 type ProfileListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]Profile `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]Profile `json:"value,omitempty"`
 }
 
 // ProfileProperties is class representing the Traffic Manager profile
 // properties.
 type ProfileProperties struct {
-    ProfileStatus *string `json:"profileStatus,omitempty"`
-    TrafficRoutingMethod *string `json:"trafficRoutingMethod,omitempty"`
-    DNSConfig *DNSConfig `json:"dnsConfig,omitempty"`
-    MonitorConfig *MonitorConfig `json:"monitorConfig,omitempty"`
-    Endpoints *[]Endpoint `json:"endpoints,omitempty"`
+	ProfileStatus        *string        `json:"profileStatus,omitempty"`
+	TrafficRoutingMethod *string        `json:"trafficRoutingMethod,omitempty"`
+	DNSConfig            *DNSConfig     `json:"dnsConfig,omitempty"`
+	MonitorConfig        *MonitorConfig `json:"monitorConfig,omitempty"`
+	Endpoints            *[]Endpoint    `json:"endpoints,omitempty"`
 }
 
 // Region is class representing a region in the Geographic hierarchy used with
 // the Geographic traffic routing method.
 type Region struct {
-    Code *string `json:"code,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Regions *[]Region `json:"regions,omitempty"`
+	Code    *string   `json:"code,omitempty"`
+	Name    *string   `json:"name,omitempty"`
+	Regions *[]Region `json:"regions,omitempty"`
 }
 
 // Resource is the Resource model definition.
 type Resource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
 // SubResource is
 type SubResource struct {
-    ID *string `json:"id,omitempty"`
+	ID *string `json:"id,omitempty"`
 }
-

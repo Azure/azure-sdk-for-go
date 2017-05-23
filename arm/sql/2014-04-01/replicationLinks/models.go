@@ -19,75 +19,74 @@ package replicationlinks
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // ReplicationRole enumerates the values for replication role.
 type ReplicationRole string
 
 const (
-    // Copy specifies the copy state for replication role.
-    Copy ReplicationRole = "Copy"
-    // NonReadableSecondary specifies the non readable secondary state for
-    // replication role.
-    NonReadableSecondary ReplicationRole = "NonReadableSecondary"
-    // Primary specifies the primary state for replication role.
-    Primary ReplicationRole = "Primary"
-    // Secondary specifies the secondary state for replication role.
-    Secondary ReplicationRole = "Secondary"
-    // Source specifies the source state for replication role.
-    Source ReplicationRole = "Source"
+	// Copy specifies the copy state for replication role.
+	Copy ReplicationRole = "Copy"
+	// NonReadableSecondary specifies the non readable secondary state for
+	// replication role.
+	NonReadableSecondary ReplicationRole = "NonReadableSecondary"
+	// Primary specifies the primary state for replication role.
+	Primary ReplicationRole = "Primary"
+	// Secondary specifies the secondary state for replication role.
+	Secondary ReplicationRole = "Secondary"
+	// Source specifies the source state for replication role.
+	Source ReplicationRole = "Source"
 )
 
 // ReplicationState enumerates the values for replication state.
 type ReplicationState string
 
 const (
-    // CATCHUP specifies the catchup state for replication state.
-    CATCHUP ReplicationState = "CATCH_UP"
-    // PENDING specifies the pending state for replication state.
-    PENDING ReplicationState = "PENDING"
-    // SEEDING specifies the seeding state for replication state.
-    SEEDING ReplicationState = "SEEDING"
-    // SUSPENDED specifies the suspended state for replication state.
-    SUSPENDED ReplicationState = "SUSPENDED"
+	// CATCHUP specifies the catchup state for replication state.
+	CATCHUP ReplicationState = "CATCH_UP"
+	// PENDING specifies the pending state for replication state.
+	PENDING ReplicationState = "PENDING"
+	// SEEDING specifies the seeding state for replication state.
+	SEEDING ReplicationState = "SEEDING"
+	// SUSPENDED specifies the suspended state for replication state.
+	SUSPENDED ReplicationState = "SUSPENDED"
 )
 
 // ListResult is represents the response to a List database replication link
 // request.
 type ListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]ReplicationLink `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]ReplicationLink `json:"value,omitempty"`
 }
 
 // Properties is represents the properties of a database replication link.
 type Properties struct {
-    IsTerminationAllowed *bool `json:"isTerminationAllowed,omitempty"`
-    ReplicationMode *string `json:"replicationMode,omitempty"`
-    PartnerServer *string `json:"partnerServer,omitempty"`
-    PartnerDatabase *string `json:"partnerDatabase,omitempty"`
-    PartnerLocation *string `json:"partnerLocation,omitempty"`
-    Role ReplicationRole `json:"role,omitempty"`
-    PartnerRole ReplicationRole `json:"partnerRole,omitempty"`
-    StartTime *date.Time `json:"startTime,omitempty"`
-    PercentComplete *int32 `json:"percentComplete,omitempty"`
-    ReplicationState ReplicationState `json:"replicationState,omitempty"`
+	IsTerminationAllowed *bool            `json:"isTerminationAllowed,omitempty"`
+	ReplicationMode      *string          `json:"replicationMode,omitempty"`
+	PartnerServer        *string          `json:"partnerServer,omitempty"`
+	PartnerDatabase      *string          `json:"partnerDatabase,omitempty"`
+	PartnerLocation      *string          `json:"partnerLocation,omitempty"`
+	Role                 ReplicationRole  `json:"role,omitempty"`
+	PartnerRole          ReplicationRole  `json:"partnerRole,omitempty"`
+	StartTime            *date.Time       `json:"startTime,omitempty"`
+	PercentComplete      *int32           `json:"percentComplete,omitempty"`
+	ReplicationState     ReplicationState `json:"replicationState,omitempty"`
 }
 
 // ReplicationLink is represents a database replication link.
 type ReplicationLink struct {
-    autorest.Response `json:"-"`
-    Name *string `json:"name,omitempty"`
-    ID *string `json:"id,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Type *string `json:"type,omitempty"`
-    *Properties `json:"properties,omitempty"`
+	autorest.Response `json:"-"`
+	Name              *string `json:"name,omitempty"`
+	ID                *string `json:"id,omitempty"`
+	Location          *string `json:"location,omitempty"`
+	Type              *string `json:"type,omitempty"`
+	*Properties       `json:"properties,omitempty"`
 }
 
 // SubResource is subresource properties
 type SubResource struct {
-    Name *string `json:"name,omitempty"`
-    ID *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	ID   *string `json:"id,omitempty"`
 }
-

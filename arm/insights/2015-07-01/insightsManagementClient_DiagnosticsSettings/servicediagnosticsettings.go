@@ -19,28 +19,29 @@ package insightsmanagementclientdiagnosticssettings
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // ServiceDiagnosticSettingsClient is the client for the
 // ServiceDiagnosticSettings methods of the
 // Insightsmanagementclientdiagnosticssettings service.
 type ServiceDiagnosticSettingsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewServiceDiagnosticSettingsClient creates an instance of the
 // ServiceDiagnosticSettingsClient client.
 func NewServiceDiagnosticSettingsClient() ServiceDiagnosticSettingsClient {
-        return NewServiceDiagnosticSettingsClientWithBaseURI(DefaultBaseURI, )
-        }
+	return NewServiceDiagnosticSettingsClientWithBaseURI(DefaultBaseURI)
+}
 
 // NewServiceDiagnosticSettingsClientWithBaseURI creates an instance of the
 // ServiceDiagnosticSettingsClient client.
-    func NewServiceDiagnosticSettingsClientWithBaseURI(baseURI string, ) ServiceDiagnosticSettingsClient {
-        return ServiceDiagnosticSettingsClient{ NewWithBaseURI(baseURI, )}
-    }
+func NewServiceDiagnosticSettingsClientWithBaseURI(baseURI string) ServiceDiagnosticSettingsClient {
+	return ServiceDiagnosticSettingsClient{NewWithBaseURI(baseURI)}
+}
 
 // CreateOrUpdate create or update new diagnostic settings for the specified
 // resource.
@@ -48,127 +49,126 @@ func NewServiceDiagnosticSettingsClient() ServiceDiagnosticSettingsClient {
 // resourceURI is the identifier of the resource. parameters is parameters
 // supplied to the operation.
 func (client ServiceDiagnosticSettingsClient) CreateOrUpdate(resourceURI string, parameters ServiceDiagnosticSettingsResource) (result ServiceDiagnosticSettingsResource, err error) {
-    req, err := client.CreateOrUpdatePreparer(resourceURI, parameters)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientdiagnosticssettings.ServiceDiagnosticSettingsClient", "CreateOrUpdate", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CreateOrUpdatePreparer(resourceURI, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientdiagnosticssettings.ServiceDiagnosticSettingsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CreateOrUpdateSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientdiagnosticssettings.ServiceDiagnosticSettingsClient", "CreateOrUpdate", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CreateOrUpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientdiagnosticssettings.ServiceDiagnosticSettingsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CreateOrUpdateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientdiagnosticssettings.ServiceDiagnosticSettingsClient", "CreateOrUpdate", resp, "Failure responding to request")
-    }
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientdiagnosticssettings.ServiceDiagnosticSettingsClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client ServiceDiagnosticSettingsClient) CreateOrUpdatePreparer(resourceURI string, parameters ServiceDiagnosticSettingsResource) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "resourceUri": autorest.Encode("path",resourceURI),
-    }
+	pathParameters := map[string]interface{}{
+		"resourceUri": autorest.Encode("path", resourceURI),
+	}
 
-        const APIVersion = "2015-07-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2015-07-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/service",pathParameters),
-                        autorest.WithJSON(parameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/service", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceDiagnosticSettingsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client ServiceDiagnosticSettingsClient) CreateOrUpdateResponder(resp *http.Response) (result ServiceDiagnosticSettingsResource, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Get gets the active diagnostic settings for the specified resource.
 //
 // resourceURI is the identifier of the resource.
 func (client ServiceDiagnosticSettingsClient) Get(resourceURI string) (result ServiceDiagnosticSettingsResource, err error) {
-    req, err := client.GetPreparer(resourceURI)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientdiagnosticssettings.ServiceDiagnosticSettingsClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(resourceURI)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientdiagnosticssettings.ServiceDiagnosticSettingsClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientdiagnosticssettings.ServiceDiagnosticSettingsClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientdiagnosticssettings.ServiceDiagnosticSettingsClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "insightsmanagementclientdiagnosticssettings.ServiceDiagnosticSettingsClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insightsmanagementclientdiagnosticssettings.ServiceDiagnosticSettingsClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client ServiceDiagnosticSettingsClient) GetPreparer(resourceURI string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "resourceUri": autorest.Encode("path",resourceURI),
-    }
+	pathParameters := map[string]interface{}{
+		"resourceUri": autorest.Encode("path", resourceURI),
+	}
 
-        const APIVersion = "2015-07-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2015-07-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/service",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/service", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceDiagnosticSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ServiceDiagnosticSettingsClient) GetResponder(resp *http.Response) (result ServiceDiagnosticSettingsResource, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

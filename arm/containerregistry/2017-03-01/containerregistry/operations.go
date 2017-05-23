@@ -19,106 +19,106 @@ package containerregistry
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // OperationsClient is the client for the Operations methods of the
 // Containerregistry service.
 type OperationsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewOperationsClient creates an instance of the OperationsClient client.
 func NewOperationsClient(subscriptionID string) OperationsClient {
-        return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
-        }
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient
 // client.
-    func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-        return OperationsClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // List lists all of the available Azure Container Registry REST API
 // operations.
 func (client OperationsClient) List() (result OperationListResult, err error) {
-    req, err := client.ListPreparer()
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListPreparer()
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", resp, "Failure responding to request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer() (*http.Request, error) {
-        const APIVersion = "2017-03-01"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2017-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPath("/providers/Microsoft.ContainerRegistry/operations"),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/providers/Microsoft.ContainerRegistry/operations"),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListNextResults retrieves the next set of results, if any.
 func (client OperationsClient) ListNextResults(lastResults OperationListResult) (result OperationListResult, err error) {
-    req, err := lastResults.OperationListResultPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.OperationListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.OperationsClient", "List", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
-

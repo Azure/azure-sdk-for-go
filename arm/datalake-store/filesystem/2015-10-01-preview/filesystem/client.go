@@ -23,30 +23,29 @@ package filesystem
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 const (
-        // DefaultAdlsFileSystemDNSSuffix is the default value for adls file system dns suffix
-        DefaultAdlsFileSystemDNSSuffix = "azuredatalakestore.net"
+	// DefaultAdlsFileSystemDNSSuffix is the default value for adls file system dns suffix
+	DefaultAdlsFileSystemDNSSuffix = "azuredatalakestore.net"
 )
 
 // ManagementClient is the base client for Filesystem.
 type ManagementClient struct {
-    autorest.Client
-                AdlsFileSystemDNSSuffix string
+	autorest.Client
+	AdlsFileSystemDNSSuffix string
 }
 
 // New creates an instance of the ManagementClient client.
-func New()ManagementClient {
-        return NewWithoutDefaults(DefaultAdlsFileSystemDNSSuffix)
+func New() ManagementClient {
+	return NewWithoutDefaults(DefaultAdlsFileSystemDNSSuffix)
 }
 
-    // NewWithoutDefaults creates an instance of the ManagementClient client.
-    func NewWithoutDefaults(adlsFileSystemDNSSuffix string) ManagementClient {
-        return ManagementClient{
-            Client: autorest.NewClientWithUserAgent(UserAgent()),
-                    AdlsFileSystemDNSSuffix: adlsFileSystemDNSSuffix,
-        }
-    }
-
+// NewWithoutDefaults creates an instance of the ManagementClient client.
+func NewWithoutDefaults(adlsFileSystemDNSSuffix string) ManagementClient {
+	return ManagementClient{
+		Client:                  autorest.NewClientWithUserAgent(UserAgent()),
+		AdlsFileSystemDNSSuffix: adlsFileSystemDNSSuffix,
+	}
+}

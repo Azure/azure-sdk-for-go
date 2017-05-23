@@ -19,58 +19,57 @@ package insightsmanagementclientdiagnosticssettings
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // LogSettings is part of MultiTenantDiagnosticSettings. Specifies the settings
 // for a particular log.
 type LogSettings struct {
-    Category *string `json:"category,omitempty"`
-    Enabled *bool `json:"enabled,omitempty"`
-    RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+	Category        *string          `json:"category,omitempty"`
+	Enabled         *bool            `json:"enabled,omitempty"`
+	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
 }
 
 // MetricSettings is part of MultiTenantDiagnosticSettings. Specifies the
 // settings for a particular metric.
 type MetricSettings struct {
-    TimeGrain *string `json:"timeGrain,omitempty"`
-    Enabled *bool `json:"enabled,omitempty"`
-    RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+	TimeGrain       *string          `json:"timeGrain,omitempty"`
+	Enabled         *bool            `json:"enabled,omitempty"`
+	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
 }
 
 // Resource is an azure resource object
 type Resource struct {
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
 // RetentionPolicy is specifies the retention policy for the log.
 type RetentionPolicy struct {
-    Enabled *bool `json:"enabled,omitempty"`
-    Days *int32 `json:"days,omitempty"`
+	Enabled *bool  `json:"enabled,omitempty"`
+	Days    *int32 `json:"days,omitempty"`
 }
 
 // ServiceDiagnosticSettings is the diagnostic settings for service.
 type ServiceDiagnosticSettings struct {
-    StorageAccountID *string `json:"storageAccountId,omitempty"`
-    ServiceBusRuleID *string `json:"serviceBusRuleId,omitempty"`
-    Metrics *[]MetricSettings `json:"metrics,omitempty"`
-    Logs *[]LogSettings `json:"logs,omitempty"`
-    WorkspaceID *string `json:"workspaceId,omitempty"`
+	StorageAccountID *string           `json:"storageAccountId,omitempty"`
+	ServiceBusRuleID *string           `json:"serviceBusRuleId,omitempty"`
+	Metrics          *[]MetricSettings `json:"metrics,omitempty"`
+	Logs             *[]LogSettings    `json:"logs,omitempty"`
+	WorkspaceID      *string           `json:"workspaceId,omitempty"`
 }
 
 // ServiceDiagnosticSettingsResource is description of a service diagnostic
 // setting
 type ServiceDiagnosticSettingsResource struct {
-    autorest.Response `json:"-"`
-    ID *string `json:"id,omitempty"`
-    Name *string `json:"name,omitempty"`
-    Type *string `json:"type,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Tags *map[string]*string `json:"tags,omitempty"`
-    *ServiceDiagnosticSettings `json:"properties,omitempty"`
+	autorest.Response          `json:"-"`
+	ID                         *string             `json:"id,omitempty"`
+	Name                       *string             `json:"name,omitempty"`
+	Type                       *string             `json:"type,omitempty"`
+	Location                   *string             `json:"location,omitempty"`
+	Tags                       *map[string]*string `json:"tags,omitempty"`
+	*ServiceDiagnosticSettings `json:"properties,omitempty"`
 }
-

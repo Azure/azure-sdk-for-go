@@ -19,93 +19,93 @@ package servicefabric
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // DeployedServiceTypesClient is the client for the DeployedServiceTypes
 // methods of the Servicefabric service.
 type DeployedServiceTypesClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewDeployedServiceTypesClient creates an instance of the
 // DeployedServiceTypesClient client.
 func NewDeployedServiceTypesClient(timeout *int32) DeployedServiceTypesClient {
-        return NewDeployedServiceTypesClientWithBaseURI(DefaultBaseURI, timeout)
-        }
+	return NewDeployedServiceTypesClientWithBaseURI(DefaultBaseURI, timeout)
+}
 
 // NewDeployedServiceTypesClientWithBaseURI creates an instance of the
 // DeployedServiceTypesClient client.
-    func NewDeployedServiceTypesClientWithBaseURI(baseURI string, timeout *int32) DeployedServiceTypesClient {
-        return DeployedServiceTypesClient{ NewWithBaseURI(baseURI, timeout)}
-    }
+func NewDeployedServiceTypesClientWithBaseURI(baseURI string, timeout *int32) DeployedServiceTypesClient {
+	return DeployedServiceTypesClient{NewWithBaseURI(baseURI, timeout)}
+}
 
 // Get get deployed service types
 //
 // nodeName is the name of the node applicationName is the name of the
 // application
 func (client DeployedServiceTypesClient) Get(nodeName string, applicationName string) (result ListDeployedServiceType, err error) {
-    req, err := client.GetPreparer(nodeName, applicationName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.DeployedServiceTypesClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(nodeName, applicationName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.DeployedServiceTypesClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.DeployedServiceTypesClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.DeployedServiceTypesClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.DeployedServiceTypesClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.DeployedServiceTypesClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client DeployedServiceTypesClient) GetPreparer(nodeName string, applicationName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "applicationName": applicationName,
-    "nodeName": autorest.Encode("path",nodeName),
-    }
+	pathParameters := map[string]interface{}{
+		"applicationName": applicationName,
+		"nodeName":        autorest.Encode("path", nodeName),
+	}
 
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/Nodes/{nodeName}/$/GetApplications/{applicationName}/$/GetServiceTypes",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Nodes/{nodeName}/$/GetApplications/{applicationName}/$/GetServiceTypes", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeployedServiceTypesClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client DeployedServiceTypesClient) GetResponder(resp *http.Response) (result ListDeployedServiceType, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result.Value),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

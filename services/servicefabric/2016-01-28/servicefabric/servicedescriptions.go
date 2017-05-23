@@ -19,91 +19,91 @@ package servicefabric
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // ServiceDescriptionsClient is the client for the ServiceDescriptions methods
 // of the Servicefabric service.
 type ServiceDescriptionsClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewServiceDescriptionsClient creates an instance of the
 // ServiceDescriptionsClient client.
 func NewServiceDescriptionsClient(timeout *int32) ServiceDescriptionsClient {
-        return NewServiceDescriptionsClientWithBaseURI(DefaultBaseURI, timeout)
-        }
+	return NewServiceDescriptionsClientWithBaseURI(DefaultBaseURI, timeout)
+}
 
 // NewServiceDescriptionsClientWithBaseURI creates an instance of the
 // ServiceDescriptionsClient client.
-    func NewServiceDescriptionsClientWithBaseURI(baseURI string, timeout *int32) ServiceDescriptionsClient {
-        return ServiceDescriptionsClient{ NewWithBaseURI(baseURI, timeout)}
-    }
+func NewServiceDescriptionsClientWithBaseURI(baseURI string, timeout *int32) ServiceDescriptionsClient {
+	return ServiceDescriptionsClient{NewWithBaseURI(baseURI, timeout)}
+}
 
 // Get get service descriptions
 //
 // serviceName is the name of the service
 func (client ServiceDescriptionsClient) Get(serviceName string) (result ServiceDescription, err error) {
-    req, err := client.GetPreparer(serviceName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceDescriptionsClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(serviceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceDescriptionsClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceDescriptionsClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceDescriptionsClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "servicefabric.ServiceDescriptionsClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicefabric.ServiceDescriptionsClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client ServiceDescriptionsClient) GetPreparer(serviceName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "serviceName": serviceName,
-    }
+	pathParameters := map[string]interface{}{
+		"serviceName": serviceName,
+	}
 
-        const APIVersion = "1.0.0"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if client.Timeout != nil {
-        queryParameters["timeout"] = autorest.Encode("query",*client.Timeout)
-    }
+	const APIVersion = "1.0.0"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if client.Timeout != nil {
+		queryParameters["timeout"] = autorest.Encode("query", *client.Timeout)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/Services/{serviceName}/$/GetDescription",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Services/{serviceName}/$/GetDescription", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceDescriptionsClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ServiceDescriptionsClient) GetResponder(resp *http.Response) (result ServiceDescription, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
-

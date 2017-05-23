@@ -19,35 +19,34 @@ package firewallrules
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // FirewallRule is represents a server firewall rule.
 type FirewallRule struct {
-    autorest.Response `json:"-"`
-    Name *string `json:"name,omitempty"`
-    ID *string `json:"id,omitempty"`
-    Kind *string `json:"kind,omitempty"`
-    Location *string `json:"location,omitempty"`
-    Type *string `json:"type,omitempty"`
-    *Properties `json:"properties,omitempty"`
+	autorest.Response `json:"-"`
+	Name              *string `json:"name,omitempty"`
+	ID                *string `json:"id,omitempty"`
+	Kind              *string `json:"kind,omitempty"`
+	Location          *string `json:"location,omitempty"`
+	Type              *string `json:"type,omitempty"`
+	*Properties       `json:"properties,omitempty"`
 }
 
 // ListResult is represents the response to a List Firewall Rules request.
 type ListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]FirewallRule `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]FirewallRule `json:"value,omitempty"`
 }
 
 // Properties is represents the properties of a server firewall rule.
 type Properties struct {
-    StartIPAddress *string `json:"startIpAddress,omitempty"`
-    EndIPAddress *string `json:"endIpAddress,omitempty"`
+	StartIPAddress *string `json:"startIpAddress,omitempty"`
+	EndIPAddress   *string `json:"endIpAddress,omitempty"`
 }
 
 // SubResource is subresource properties
 type SubResource struct {
-    Name *string `json:"name,omitempty"`
-    ID *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	ID   *string `json:"id,omitempty"`
 }
-

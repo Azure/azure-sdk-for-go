@@ -19,36 +19,35 @@ package serverazureadadministrators
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/satori/uuid"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/satori/uuid"
 )
 
 // ServerAdministratorListResult is the response to a list Active Directory
 // Administrators request.
 type ServerAdministratorListResult struct {
-    autorest.Response `json:"-"`
-    Value *[]ServerAzureADAdministrator `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]ServerAzureADAdministrator `json:"value,omitempty"`
 }
 
 // ServerAdministratorProperties is the properties of an server Administrator.
 type ServerAdministratorProperties struct {
-    AdministratorType *string `json:"administratorType,omitempty"`
-    Login *string `json:"login,omitempty"`
-    Sid *uuid.UUID `json:"sid,omitempty"`
-    TenantID *uuid.UUID `json:"tenantId,omitempty"`
+	AdministratorType *string    `json:"administratorType,omitempty"`
+	Login             *string    `json:"login,omitempty"`
+	Sid               *uuid.UUID `json:"sid,omitempty"`
+	TenantID          *uuid.UUID `json:"tenantId,omitempty"`
 }
 
 // ServerAzureADAdministrator is an server Active Directory Administrator.
 type ServerAzureADAdministrator struct {
-    autorest.Response `json:"-"`
-    Name *string `json:"name,omitempty"`
-    ID *string `json:"id,omitempty"`
-    *ServerAdministratorProperties `json:"properties,omitempty"`
+	autorest.Response              `json:"-"`
+	Name                           *string `json:"name,omitempty"`
+	ID                             *string `json:"id,omitempty"`
+	*ServerAdministratorProperties `json:"properties,omitempty"`
 }
 
 // SQLSubResource is subresource properties
 type SQLSubResource struct {
-    Name *string `json:"name,omitempty"`
-    ID *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	ID   *string `json:"id,omitempty"`
 }
-

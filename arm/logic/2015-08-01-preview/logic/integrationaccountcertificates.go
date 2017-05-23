@@ -19,26 +19,27 @@ package logic
 // regenerated.
 
 import (
-    "github.com/Azure/go-autorest/autorest"
-    "github.com/Azure/go-autorest/autorest/azure"
-    "net/http"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // IntegrationAccountCertificatesClient is the rEST API for Azure Logic Apps.
 type IntegrationAccountCertificatesClient struct {
-    ManagementClient
+	ManagementClient
 }
+
 // NewIntegrationAccountCertificatesClient creates an instance of the
 // IntegrationAccountCertificatesClient client.
 func NewIntegrationAccountCertificatesClient(subscriptionID string) IntegrationAccountCertificatesClient {
-        return NewIntegrationAccountCertificatesClientWithBaseURI(DefaultBaseURI, subscriptionID)
-        }
+	return NewIntegrationAccountCertificatesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
 
 // NewIntegrationAccountCertificatesClientWithBaseURI creates an instance of
 // the IntegrationAccountCertificatesClient client.
-    func NewIntegrationAccountCertificatesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountCertificatesClient {
-        return IntegrationAccountCertificatesClient{ NewWithBaseURI(baseURI, subscriptionID)}
-    }
+func NewIntegrationAccountCertificatesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountCertificatesClient {
+	return IntegrationAccountCertificatesClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
 
 // CreateOrUpdate creates or updates an integration account certificate.
 //
@@ -46,68 +47,68 @@ func NewIntegrationAccountCertificatesClient(subscriptionID string) IntegrationA
 // integration account name. certificateName is the integration account
 // certificate name. certificate is the integration account certificate.
 func (client IntegrationAccountCertificatesClient) CreateOrUpdate(resourceGroupName string, integrationAccountName string, certificateName string, certificate IntegrationAccountCertificate) (result IntegrationAccountCertificate, err error) {
-    req, err := client.CreateOrUpdatePreparer(resourceGroupName, integrationAccountName, certificateName, certificate)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "CreateOrUpdate", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.CreateOrUpdatePreparer(resourceGroupName, integrationAccountName, certificateName, certificate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.CreateOrUpdateSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "CreateOrUpdate", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.CreateOrUpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.CreateOrUpdateResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "CreateOrUpdate", resp, "Failure responding to request")
-    }
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client IntegrationAccountCertificatesClient) CreateOrUpdatePreparer(resourceGroupName string, integrationAccountName string, certificateName string, certificate IntegrationAccountCertificate) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "certificateName": autorest.Encode("path",certificateName),
-    "integrationAccountName": autorest.Encode("path",integrationAccountName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"certificateName":        autorest.Encode("path", certificateName),
+		"integrationAccountName": autorest.Encode("path", integrationAccountName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2015-08-01-preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2015-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsJSON(),
-                        autorest.AsPut(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates/{certificateName}",pathParameters),
-                        autorest.WithJSON(certificate),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates/{certificateName}", pathParameters),
+		autorest.WithJSON(certificate),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationAccountCertificatesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client IntegrationAccountCertificatesClient) CreateOrUpdateResponder(resp *http.Response) (result IntegrationAccountCertificate, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Delete deletes an integration account certificate.
@@ -116,65 +117,65 @@ func (client IntegrationAccountCertificatesClient) CreateOrUpdateResponder(resp 
 // integration account name. certificateName is the integration account
 // certificate name.
 func (client IntegrationAccountCertificatesClient) Delete(resourceGroupName string, integrationAccountName string, certificateName string) (result autorest.Response, err error) {
-    req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, certificateName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "Delete", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, certificateName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "Delete", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.DeleteSender(req)
-    if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "Delete", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "Delete", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.DeleteResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "Delete", resp, "Failure responding to request")
-    }
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "Delete", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // DeletePreparer prepares the Delete request.
 func (client IntegrationAccountCertificatesClient) DeletePreparer(resourceGroupName string, integrationAccountName string, certificateName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "certificateName": autorest.Encode("path",certificateName),
-    "integrationAccountName": autorest.Encode("path",integrationAccountName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"certificateName":        autorest.Encode("path", certificateName),
+		"integrationAccountName": autorest.Encode("path", integrationAccountName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2015-08-01-preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2015-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsDelete(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates/{certificateName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates/{certificateName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationAccountCertificatesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client IntegrationAccountCertificatesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
-            autorest.ByClosing())
-    result.Response = resp
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Get gets an integration account certificate.
@@ -183,66 +184,66 @@ func (client IntegrationAccountCertificatesClient) DeleteResponder(resp *http.Re
 // integration account name. certificateName is the integration account
 // certificate name.
 func (client IntegrationAccountCertificatesClient) Get(resourceGroupName string, integrationAccountName string, certificateName string) (result IntegrationAccountCertificate, err error) {
-    req, err := client.GetPreparer(resourceGroupName, integrationAccountName, certificateName)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "Get", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.GetPreparer(resourceGroupName, integrationAccountName, certificateName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "Get", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.GetSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "Get", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "Get", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.GetResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "Get", resp, "Failure responding to request")
-    }
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "Get", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // GetPreparer prepares the Get request.
 func (client IntegrationAccountCertificatesClient) GetPreparer(resourceGroupName string, integrationAccountName string, certificateName string) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "certificateName": autorest.Encode("path",certificateName),
-    "integrationAccountName": autorest.Encode("path",integrationAccountName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"certificateName":        autorest.Encode("path", certificateName),
+		"integrationAccountName": autorest.Encode("path", integrationAccountName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2015-08-01-preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
+	const APIVersion = "2015-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates/{certificateName}",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates/{certificateName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationAccountCertificatesClient) GetSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client IntegrationAccountCertificatesClient) GetResponder(resp *http.Response) (result IntegrationAccountCertificate, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // List gets a list of integration account certificates.
@@ -251,91 +252,90 @@ func (client IntegrationAccountCertificatesClient) GetResponder(resp *http.Respo
 // integration account name. top is the number of items to be included in the
 // result.
 func (client IntegrationAccountCertificatesClient) List(resourceGroupName string, integrationAccountName string, top *int32) (result IntegrationAccountCertificateListResult, err error) {
-    req, err := client.ListPreparer(resourceGroupName, integrationAccountName, top)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "List", nil , "Failure preparing request")
-        return
-    }
+	req, err := client.ListPreparer(resourceGroupName, integrationAccountName, top)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "List", nil, "Failure preparing request")
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "List", resp, "Failure sending request")
-        return
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "List", resp, "Failure sending request")
+		return
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "List", resp, "Failure responding to request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "List", resp, "Failure responding to request")
+	}
 
-    return
+	return
 }
 
 // ListPreparer prepares the List request.
 func (client IntegrationAccountCertificatesClient) ListPreparer(resourceGroupName string, integrationAccountName string, top *int32) (*http.Request, error) {
-    pathParameters := map[string]interface{} {
-    "integrationAccountName": autorest.Encode("path",integrationAccountName),
-    "resourceGroupName": autorest.Encode("path",resourceGroupName),
-    "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-    }
+	pathParameters := map[string]interface{}{
+		"integrationAccountName": autorest.Encode("path", integrationAccountName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
 
-        const APIVersion = "2015-08-01-preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-    if top != nil {
-        queryParameters["$top"] = autorest.Encode("query",*top)
-    }
+	const APIVersion = "2015-08-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
 
-    preparer := autorest.CreatePreparer(
-                        autorest.AsGet(),
-                        autorest.WithBaseURL(client.BaseURI),
-                        autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates",pathParameters),
-                        autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare(&http.Request{})
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationAccountCertificatesClient) ListSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client IntegrationAccountCertificatesClient) ListResponder(resp *http.Response) (result IntegrationAccountCertificateListResult, err error) {
-    err = autorest.Respond(
-            resp,
-            client.ByInspecting(),
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
-            autorest.ByUnmarshallingJSON(&result),
-            autorest.ByClosing())
-    result.Response = autorest.Response{Response: resp}
-    return
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListNextResults retrieves the next set of results, if any.
 func (client IntegrationAccountCertificatesClient) ListNextResults(lastResults IntegrationAccountCertificateListResult) (result IntegrationAccountCertificateListResult, err error) {
-    req, err := lastResults.IntegrationAccountCertificateListResultPreparer()
-    if err != nil {
-        return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "List", nil , "Failure preparing next results request")
-    }
-    if req == nil {
-        return
-    }
+	req, err := lastResults.IntegrationAccountCertificateListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "List", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
 
-    resp, err := client.ListSender(req)
-    if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "List", resp, "Failure sending next results request")
-    }
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "List", resp, "Failure sending next results request")
+	}
 
-    result, err = client.ListResponder(resp)
-    if err != nil {
-        err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "List", resp, "Failure responding to next results request")
-    }
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountCertificatesClient", "List", resp, "Failure responding to next results request")
+	}
 
-    return
+	return
 }
-

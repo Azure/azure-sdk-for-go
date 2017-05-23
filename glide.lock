@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 hash: 7a8f8652a17526f090124ace3974ce9bff3d6d09a83ab94841d377c1125111f7
 updated: 2017-06-12T16:27:58.5460985-07:00
+=======
+hash: fc11c273a4bfae9a077f2238a4693fa3af3d815dfc1b1e9ec75d9eb8e6428993
+updated: 2017-05-23T10:47:59.5894489-07:00
+>>>>>>> c9acadb... Fixing glide defs to include Masterminds/semver
 imports:
 - name: github.com/Azure/go-autorest
   version: ""
@@ -14,6 +19,12 @@ imports:
   version: a539ee1a749a2b895533f979515ac7e6e0f5b650
 - name: github.com/howeyc/gopass
   version: bf9dde6d0d2c004a008c27aaee91170c786f6db8
+- name: github.com/marstr/collection
+  version: 165abaa88296e36dc3961e1a284e00414190ac43
+- name: github.com/marstr/swagger
+  version: 4385a1c8a6362cddd28de068cb833dbc3089c5ae
+- name: github.com/Masterminds/semver
+  version: abff1900528dbdaf6f3f5aa92c398be1eaf2a9f7
 - name: github.com/mattn/go-colorable
   version: ded68f7a9561c023e790de24279db7ebf473ea80
 - name: github.com/mattn/go-isatty

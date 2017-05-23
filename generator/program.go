@@ -13,6 +13,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/Masterminds/semver"
 	"github.com/marstr/swagger"
 )
 
@@ -41,6 +42,7 @@ var (
 	wait                        bool
 	targetFile                  string
 	debugLog                    *log.Logger
+	version                     *semver.Version
 )
 
 type Swagger struct {
@@ -49,6 +51,7 @@ type Swagger struct {
 }
 
 func init() {
+	var err error
 	flag.StringVar(&azureRestAPIBranch, "branch", defaultAzureRESTAPIBranch, "The branch, tag, or SHA1 identifier in the Azure Rest API Specs repository to use during API generation.")
 	flag.StringVar(&remoteAzureRestAPISpecsPath, "repo", defaultRemoteAzureRestAPISpecsPath, "The path to the location of the Azure REST API Specs repository that should be used for generation.")
 	flag.StringVar(&outputLocation, "output", getDefaultOutputLocation(), "a directory in which all generated code should be placed.")
@@ -59,11 +62,18 @@ func init() {
 	flag.BoolVar(&verbose, "verbose", false, "Print status messages as processing is done.")
 	flag.BoolVar(&wait, "wait", false, "Use this program to halt execution before the cleanup phase is entered.")
 	useDebug := flag.Bool("debug", false, "Include this flag to print debug messages as the program executes.")
+	rawVersion := flag.String("version", "0.0.0", "The version that should be stamped on the generated code. Common usage will be to report user agent.")
 
 	flag.Parse()
 
 	if help {
 		return
+	}
+
+	version, err = semver.NewVersion(*rawVersion)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not read version \"%s\" because: %v", *rawVersion, err)
+		os.Exit(1)
 	}
 
 	debugWriter := ioutil.Discard
@@ -305,7 +315,7 @@ func generate(swag Swagger, outputRootPath, specsRootPath string, output io.Writ
 		"-Namespace", namespace[strings.LastIndex(namespace, "/")+1:],
 		"-OutputDirectory", outputDir,
 		"-Modeler", "Swagger",
-		"-pv",
+		"-pv", version.String(),
 		"-SkipValidation")
 	autorest.Stdout = output
 	autorest.Stderr = output

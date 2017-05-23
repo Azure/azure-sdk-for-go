@@ -1,5 +1,5 @@
 hash: fc11c273a4bfae9a077f2238a4693fa3af3d815dfc1b1e9ec75d9eb8e6428993
-updated: 2017-05-04T15:24:51.52099-07:00
+updated: 2017-05-23T10:47:59.5894489-07:00
 imports:
 - name: github.com/Azure/go-autorest
   version: 58f6f26e200fa5dfb40c9cd1c83f3e2c860d779d
@@ -14,6 +14,12 @@ imports:
   version: 2268707a8f0843315e2004ee4f1d021dc08baedf
 - name: github.com/howeyc/gopass
   version: bf9dde6d0d2c004a008c27aaee91170c786f6db8
+- name: github.com/marstr/collection
+  version: 165abaa88296e36dc3961e1a284e00414190ac43
+- name: github.com/marstr/swagger
+  version: 4385a1c8a6362cddd28de068cb833dbc3089c5ae
+- name: github.com/Masterminds/semver
+  version: abff1900528dbdaf6f3f5aa92c398be1eaf2a9f7
 - name: github.com/mattn/go-colorable
   version: ded68f7a9561c023e790de24279db7ebf473ea80
 - name: github.com/mattn/go-isatty

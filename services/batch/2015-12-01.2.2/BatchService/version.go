@@ -21,10 +21,10 @@ package batchservice
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-    return "Azure-SDK-For-Go/0.0.0 arm-batchservice/2015-12-01.2.2"
+    return "Azure-SDK-For-Go/v0.0.0 arm-batchservice/2015-12-01.2.2"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.
 func Version() string {
-  return "0.0.0"
+  return "v0.0.0"
 }

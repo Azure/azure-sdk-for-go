@@ -21,10 +21,10 @@ package filesystem
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-    return "Azure-SDK-For-Go/0.0.0 arm-filesystem/2015-10-01-preview"
+    return "Azure-SDK-For-Go/v0.0.0 arm-filesystem/2015-10-01-preview"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.
 func Version() string {
-  return "0.0.0"
+  return "v0.0.0"
 }

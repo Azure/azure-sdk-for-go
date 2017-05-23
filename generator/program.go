@@ -228,13 +228,17 @@ func main() {
 			fmt.Fprintln(os.Stderr, "Error: ", x)
 		}
 		return false
+	}).Select(func(x interface{}) interface{} {
+		subject := x.(string)
+		subject = strings.TrimPrefix(subject, outputLocation)
+		subject = path.Join("github.com", "Azure", "azure-sdk-for-go", subject)
+		subject = path.Clean(subject)
+		return subject
 	}).Where(func(x interface{}) bool {
-		err := format(x.(string))
-		return err == nil
+		return format(x.(string)) == nil
 	}).Where(func(x interface{}) bool {
 		formatted++
-		err := vet(x.(string))
-		return err == nil
+		return vet(x.(string)) == nil
 	})
 
 	for range processor {
@@ -320,8 +324,6 @@ func generate(swag Swagger, outputRootPath, specsRootPath string, output io.Writ
 	autorest.Stdout = output
 	autorest.Stderr = output
 	autorest.Dir = specsRootPath
-
-	debugLog.Print("Autorest running in directory: ", autorest.Dir)
 
 	err = autorest.Run()
 	return

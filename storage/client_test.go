@@ -489,12 +489,34 @@ func (s *StorageClientSuite) Test_doRetry(c *chk.C) {
 	c.Assert(resp.StatusCode, chk.Equals, http.StatusNotFound)
 
 	// Was it the correct amount of retries... ?
-	c.Assert(cli.Sender.(*DefaultSender).attempts, chk.Equals, cli.Sender.(*DefaultSender).RetryAttempts)
+	c.Assert(cli.Sender.(*DefaultSender).attempts, chk.Equals, ds.RetryAttempts)
 	// What about time... ?
 	// Note, seconds are rounded
 	sum := 0
 	for i := 0; i < ds.RetryAttempts; i++ {
 		sum += int(ds.RetryDuration.Seconds() * math.Pow(2, float64(i))) // same formula used in autorest.DelayForBackoff
 	}
+	c.Assert(int(afterRetries.Seconds()), chk.Equals, sum)
+
+	// SASURI test
+	blobCli := getBlobClient(c)
+	cnt := blobCli.GetContainerReference(containerName(c))
+	sasuri, err := cnt.GetSASURI(fixedTime, "racwdl")
+	c.Assert(err, chk.IsNil)
+
+	cntSAS, err := GetContainerReferenceFromSASURI(sasuri)
+	c.Assert(err, chk.IsNil)
+	cntSAS.bsc.client.HTTPClient = cli.HTTPClient
+
+	// This request will fail with 403
+	ds.ValidStatusCodes = []int{http.StatusForbidden}
+	cntSAS.Client().Sender = ds
+
+	now = time.Now()
+	_, err = cntSAS.Exists()
+	afterRetries = time.Since(now)
+	c.Assert(err, chk.NotNil)
+
+	c.Assert(cntSAS.Client().Sender.(*DefaultSender).attempts, chk.Equals, ds.RetryAttempts)
 	c.Assert(int(afterRetries.Seconds()), chk.Equals, sum)
 }

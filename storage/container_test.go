@@ -93,22 +93,22 @@ func (s *ContainerSuite) TestContainerExists(c *chk.C) {
 
 	// SASURI test
 	// SASURI test fails, I wonder if SASURI is good enough to do HEAD operations?
-	sasCli := NewBasicSASClient()
-	sasCli.HTTPClient = cli.client.HTTPClient
-	blobSASCli := sasCli.GetBlobService()
-
 	sasuri1, err := cnt1.GetSASURI(fixedTime, "racwdl")
 	c.Assert(err, chk.IsNil)
-	cntSAS1, err := blobSASCli.GetContainerReferenceFromSASURI(sasuri1)
+	cntSAS1, err := GetContainerReferenceFromSASURI(sasuri1)
 	c.Assert(err, chk.IsNil)
+	cntSAS1.Client().HTTPClient = cli.client.HTTPClient
+
 	ok, err = cntSAS1.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
 	sasuri2, err := cnt2.GetSASURI(fixedTime, "racwdl")
 	c.Assert(err, chk.IsNil)
-	cntSAS2, err := blobSASCli.GetContainerReferenceFromSASURI(sasuri2)
+	cntSAS2, err := GetContainerReferenceFromSASURI(sasuri2)
 	c.Assert(err, chk.IsNil)
+	cntSAS2.Client().HTTPClient = cli.client.HTTPClient
+
 	ok, err = cntSAS2.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, true)
@@ -200,11 +200,9 @@ func (s *ContainerSuite) TestListBlobsPagination(c *chk.C) {
 	// SASURI test
 	sasuri, err := cnt.GetSASURI(fixedTime, "racwdl")
 	c.Assert(err, chk.IsNil)
-	sasCli := NewBasicSASClient()
-	sasCli.HTTPClient = cli.client.HTTPClient
-	blobSASCli := sasCli.GetBlobService()
-	cntSAS, err := blobSASCli.GetContainerReferenceFromSASURI(sasuri)
+	cntSAS, err := GetContainerReferenceFromSASURI(sasuri)
 	c.Assert(err, chk.IsNil)
+	cntSAS.Client().HTTPClient = cli.client.HTTPClient
 
 	listBlobsPagination(c, cntSAS, pageSize, blobs)
 }

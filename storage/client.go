@@ -262,15 +262,10 @@ func IsValidStorageAccount(account string) bool {
 	return validStorageAccount.MatchString(account)
 }
 
-func NewBasicSASClient() Client {
-	return NewSASClient(DefaultAPIVersion, defaultUseHTTPS)
-}
-
-func NewSASClient(apiVersion string, useHTTPS bool) Client {
+func newSASClient() Client {
 	c := Client{
 		HTTPClient: http.DefaultClient,
-		useHTTPS:   useHTTPS,
-		apiVersion: apiVersion,
+		apiVersion: DefaultAPIVersion,
 		sasClient:  true,
 		Sender: &DefaultSender{
 			RetryAttempts:    defaultRetryAttempts,

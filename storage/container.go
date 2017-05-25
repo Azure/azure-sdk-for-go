@@ -21,6 +21,10 @@ type Container struct {
 	sasuri     string
 }
 
+func (c *Container) Client() *Client {
+	return &c.bsc.client
+}
+
 func (c *Container) buildPath() string {
 	return fmt.Sprintf("/%s", c.Name)
 }

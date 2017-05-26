@@ -22,9 +22,11 @@ func (s *BlockBlobSuite) TestCreateBlockBlobFromReader(c *chk.C) {
 	c.Assert(cnt.Create(nil), chk.IsNil)
 	defer cnt.Delete(nil)
 
-	data := content(8888)
-	b.Properties.ContentLength = int64(len(data))
-	c.Assert(b.CreateBlockBlobFromReader(bytes.NewReader(data), nil), chk.IsNil)
+	length := 8888
+	data := content(length)
+	err := b.CreateBlockBlobFromReader(bytes.NewReader(data), nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(b.Properties.ContentLength, chk.Equals, int64(length))
 
 	resp, err := b.Get(nil)
 	c.Assert(err, chk.IsNil)
@@ -33,26 +35,6 @@ func (s *BlockBlobSuite) TestCreateBlockBlobFromReader(c *chk.C) {
 
 	c.Assert(err, chk.IsNil)
 	c.Assert(gotData, chk.DeepEquals, data)
-}
-
-func (s *BlockBlobSuite) TestCreateBlockBlobFromReaderWithShortData(c *chk.C) {
-	cli := getBlobClient(c)
-	rec := cli.client.appendRecorder(c)
-	defer rec.Stop()
-
-	cnt := cli.GetContainerReference(containerName(c))
-	b := cnt.GetBlobReference(blobName(c))
-	c.Assert(cnt.Create(nil), chk.IsNil)
-	defer cnt.Delete(nil)
-
-	data := content(8888)
-	b.Properties.ContentLength = 9999
-	err := b.CreateBlockBlobFromReader(bytes.NewReader(data), nil)
-	c.Assert(err, chk.NotNil)
-
-	_, err = b.Get(nil)
-	// Upload was incomplete: blob should not have been created.
-	c.Assert(err, chk.NotNil)
 }
 
 func (s *BlockBlobSuite) TestPutBlock(c *chk.C) {

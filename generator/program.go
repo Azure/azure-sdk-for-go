@@ -30,9 +30,9 @@ const (
 )
 
 var (
-	remoteAzureRestAPISpecsPath string
-	localAzureRestAPISpecsPath  string
-	azureRestAPIBranch          string
+	remoteAzureRESTAPISpecsPath string
+	localAzureRESTAPISpecsPath  string
+	azureRESTAPIBranch          string
 	outputLocation              string
 	dryRun                      bool
 	help                        bool
@@ -45,15 +45,15 @@ var (
 	version                     *semver.Version
 )
 
-type Swagger struct {
+type metaSwagger struct {
 	swagger.Swagger
 	Path string
 }
 
 func init() {
 	var err error
-	flag.StringVar(&azureRestAPIBranch, "branch", defaultAzureRESTAPIBranch, "The branch, tag, or SHA1 identifier in the Azure Rest API Specs repository to use during API generation.")
-	flag.StringVar(&remoteAzureRestAPISpecsPath, "repo", defaultRemoteAzureRestAPISpecsPath, "The path to the location of the Azure REST API Specs repository that should be used for generation.")
+	flag.StringVar(&azureRESTAPIBranch, "branch", defaultAzureRESTAPIBranch, "The branch, tag, or SHA1 identifier in the Azure Rest API Specs repository to use during API generation.")
+	flag.StringVar(&remoteAzureRESTAPISpecsPath, "repo", defaultRemoteAzureRestAPISpecsPath, "The path to the location of the Azure REST API Specs repository that should be used for generation.")
 	flag.StringVar(&outputLocation, "output", getDefaultOutputLocation(), "a directory in which all generated code should be placed.")
 	flag.StringVar(&targetFile, "target", "", "If a target file is provided, generator will only run on this file instead of all swaggers it encounters in the repository.")
 	flag.BoolVar(&dryRun, "preview", false, "Use this flag to print a list of packages that would be generated instead of actually generating the new sdk.")
@@ -101,10 +101,10 @@ func init() {
 	}
 
 	if noClone {
-		localAzureRestAPISpecsPath = remoteAzureRestAPISpecsPath
+		localAzureRESTAPISpecsPath = remoteAzureRESTAPISpecsPath
 	} else {
 		var err error
-		localAzureRestAPISpecsPath, err = ioutil.TempDir("./", "")
+		localAzureRESTAPISpecsPath, err = ioutil.TempDir("./", "")
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(ExitCodeFailedToClone)
@@ -131,7 +131,7 @@ func main() {
 	}
 
 	if noClone == false {
-		if temp, err := cloneAPISpecs(remoteAzureRestAPISpecsPath, localAzureRestAPISpecsPath); err == nil {
+		if temp, err := cloneAPISpecs(remoteAzureRESTAPISpecsPath, localAzureRESTAPISpecsPath); err == nil {
 			repoLoc = temp
 			defer func() {
 				if wait {
@@ -150,17 +150,22 @@ func main() {
 		}
 	}
 
-	if err = checkoutAPISpecsVer(azureRestAPIBranch, repoLoc); err != nil {
+	if err = checkoutAPISpecsVer(azureRESTAPIBranch, repoLoc); err != nil {
 		errLog.Print(err)
 		exitStatus = ExitCodeFailedToClone
 		return
 	}
 
-	finder, err := NewSwaggerFinder(repoLoc)
+	finderOutput := ioutil.Discard
+	if verbose {
+		finderOutput = os.Stdout
+	}
+
+	finder, err := NewSwaggerFinder(repoLoc, finderOutput)
 
 	if dryRun {
 		namespaces := finder.Enumerate().Select(func(x interface{}) interface{} {
-			namespace, err := getNamespace(x.(Swagger))
+			namespace, err := getNamespace(x.(metaSwagger))
 			if err != nil {
 				return err
 			}
@@ -195,7 +200,7 @@ func main() {
 		found++
 		return x
 	}).ParallelSelect(func(x interface{}) interface{} {
-		cast := x.(Swagger)
+		cast := x.(metaSwagger)
 		var err error
 		var logWriter io.Writer
 		var outputFile *os.File
@@ -299,7 +304,7 @@ func isGitDir(dir string) bool {
 	return retval
 }
 
-func generate(swag Swagger, outputRootPath, specsRootPath string, output io.Writer) (outputDir string, err error) {
+func generate(swag metaSwagger, outputRootPath, specsRootPath string, output io.Writer) (outputDir string, err error) {
 	if output == nil {
 		output = ioutil.Discard
 	}
@@ -348,12 +353,12 @@ func vet(path string) (err error) {
 }
 
 // getNamespace takes a swagger and finds the appropriate namespace to be fed into Autorest.
-var getNamespace = func() func(Swagger) (string, error) {
+var getNamespace = func() func(metaSwagger) (string, error) {
 	//Defining the Regexp strategies statically like this helps improve perf by ensuring they only get compiled once.
 	standardPattern := regexp.MustCompile(`(?:(?P<plane>\w+)-)?(?P<package>[\w\d\.\-]+)(?:[/\\](?P<subpackage>(?:[\w\d]+[/\\]?)+))?[/\\](?P<version>\d{4}-\d{2}-\d{2}[\w\d\-\.]*)[/\\]swagger[/\\](?P<filename>.+)\.json`)
 	semverPattern := regexp.MustCompile(`(?:(?P<plane>\w+)-)?(?P<package>[\w\d\.\-]+)(?:[/\\](?P<subpackage>(?:[\w\d]+[/\\]?)+))?[/\\](?P<version>v?\d+(?:\.\d+){0,2}(?:-[\w\d\-\.]+)?)[/\\]swagger[/\\](?P<filename>.+)\.json`)
 
-	return func(swag Swagger) (result string, err error) {
+	return func(swag metaSwagger) (result string, err error) {
 		strategies := []*regexp.Regexp{
 			standardPattern,
 			semverPattern,

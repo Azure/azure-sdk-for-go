@@ -52,7 +52,7 @@ func TestGetNamespace(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.given, func(t *testing.T) {
-			result, err := getNamespace(Swagger{
+			result, err := getNamespace(metaSwagger{
 				Path: tc.given,
 			})
 			if err != nil {
@@ -70,8 +70,8 @@ func TestGetNamespace(t *testing.T) {
 func TestMain(m *testing.M) {
 	exitStatus := m.Run()
 	if noClone == false {
-		if err := os.RemoveAll(localAzureRestAPISpecsPath); err != nil {
-			fmt.Fprintln(os.Stderr, "Unable to delete folder: ", localAzureRestAPISpecsPath)
+		if err := os.RemoveAll(localAzureRESTAPISpecsPath); err != nil {
+			fmt.Fprintln(os.Stderr, "Unable to delete folder: ", localAzureRESTAPISpecsPath)
 		}
 	}
 	os.Exit(exitStatus)

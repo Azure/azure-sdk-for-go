@@ -24,10 +24,10 @@ import (
 	"net/http"
 )
 
-// DatabasesClient is the the database management API provides a RESTful set of
-// web APIs that interact with database services to manage your databases. The
-// API enables users to create, retrieve, update, and delete databases,
-// servers, and other entities.
+// DatabasesClient is the the Azure SQL Database management API provides a
+// RESTful set of web APIs that interact with Azure SQL Database services to
+// manage your databases. The API enables users to create, retrieve, update,
+// and delete databases, servers, and other entities.
 type DatabasesClient struct {
 	ManagementClient
 }
@@ -49,10 +49,11 @@ func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) Databa
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or
 // the portal. serverName is the name of the server. databaseName is the name
-// of the database for which database blob audit policy will be defined.
-// parameters is the database blob auditing policy.
-func (client DatabasesClient) CreateOrUpdateBlobAuditingPolicy(resourceGroupName string, serverName string, databaseName string, parameters DatabaseBlobAuditingPolicy) (result DatabaseBlobAuditingPolicy, err error) {
-	req, err := client.CreateOrUpdateBlobAuditingPolicyPreparer(resourceGroupName, serverName, databaseName, parameters)
+// of the database for which the blob auditing policy will be defined.
+// blobAuditingPolicyName is the name of the blob auditing policy. parameters
+// is the database blob auditing policy.
+func (client DatabasesClient) CreateOrUpdateBlobAuditingPolicy(resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName string, parameters DatabaseBlobAuditingPolicy) (result DatabaseBlobAuditingPolicy, err error) {
+	req, err := client.CreateOrUpdateBlobAuditingPolicyPreparer(resourceGroupName, serverName, databaseName, blobAuditingPolicyName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "CreateOrUpdateBlobAuditingPolicy", nil, "Failure preparing request")
 		return
@@ -74,12 +75,13 @@ func (client DatabasesClient) CreateOrUpdateBlobAuditingPolicy(resourceGroupName
 }
 
 // CreateOrUpdateBlobAuditingPolicyPreparer prepares the CreateOrUpdateBlobAuditingPolicy request.
-func (client DatabasesClient) CreateOrUpdateBlobAuditingPolicyPreparer(resourceGroupName string, serverName string, databaseName string, parameters DatabaseBlobAuditingPolicy) (*http.Request, error) {
+func (client DatabasesClient) CreateOrUpdateBlobAuditingPolicyPreparer(resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName string, parameters DatabaseBlobAuditingPolicy) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"databaseName":      autorest.Encode("path", databaseName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serverName":        autorest.Encode("path", serverName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"blobAuditingPolicyName": autorest.Encode("path", blobAuditingPolicyName),
+		"databaseName":           autorest.Encode("path", databaseName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"serverName":             autorest.Encode("path", serverName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2015-05-01-preview"
@@ -91,7 +93,7 @@ func (client DatabasesClient) CreateOrUpdateBlobAuditingPolicyPreparer(resourceG
 		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/{blobAuditingPolicyName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
@@ -121,9 +123,10 @@ func (client DatabasesClient) CreateOrUpdateBlobAuditingPolicyResponder(resp *ht
 // resourceGroupName is the name of the resource group that contains the
 // resource. You can obtain this value from the Azure Resource Manager API or
 // the portal. serverName is the name of the server. databaseName is the name
-// of the database for which database blob audit policy is defined.
-func (client DatabasesClient) GetBlobAuditingPolicy(resourceGroupName string, serverName string, databaseName string) (result DatabaseBlobAuditingPolicy, err error) {
-	req, err := client.GetBlobAuditingPolicyPreparer(resourceGroupName, serverName, databaseName)
+// of the database for which the blob audit policy is defined.
+// blobAuditingPolicyName is the name of the blob auditing policy.
+func (client DatabasesClient) GetBlobAuditingPolicy(resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName string) (result DatabaseBlobAuditingPolicy, err error) {
+	req, err := client.GetBlobAuditingPolicyPreparer(resourceGroupName, serverName, databaseName, blobAuditingPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blobauditingpolicies.DatabasesClient", "GetBlobAuditingPolicy", nil, "Failure preparing request")
 		return
@@ -145,12 +148,13 @@ func (client DatabasesClient) GetBlobAuditingPolicy(resourceGroupName string, se
 }
 
 // GetBlobAuditingPolicyPreparer prepares the GetBlobAuditingPolicy request.
-func (client DatabasesClient) GetBlobAuditingPolicyPreparer(resourceGroupName string, serverName string, databaseName string) (*http.Request, error) {
+func (client DatabasesClient) GetBlobAuditingPolicyPreparer(resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"databaseName":      autorest.Encode("path", databaseName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serverName":        autorest.Encode("path", serverName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"blobAuditingPolicyName": autorest.Encode("path", blobAuditingPolicyName),
+		"databaseName":           autorest.Encode("path", databaseName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"serverName":             autorest.Encode("path", serverName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2015-05-01-preview"
@@ -161,7 +165,7 @@ func (client DatabasesClient) GetBlobAuditingPolicyPreparer(resourceGroupName st
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/{blobAuditingPolicyName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }

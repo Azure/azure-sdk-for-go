@@ -790,12 +790,12 @@ func (client ManagementClient) DeleteKeyResponder(resp *http.Response) (result D
 	return
 }
 
-// DeleteSasDefinition deletes a sas definition from a specified storage
+// DeleteSasDefinition deletes a SAS definition from a specified storage
 // account.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // storageAccountName is the name of the storage account. sasDefinitionName is
-// the name of the sas definition.
+// the name of the SAS definition.
 func (client ManagementClient) DeleteSasDefinition(vaultBaseURL string, storageAccountName string, sasDefinitionName string) (result SasDefinitionBundle, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: storageAccountName,
@@ -2551,12 +2551,12 @@ func (client ManagementClient) GetKeyVersionsNextResults(lastResults KeyListResu
 	return
 }
 
-// GetSasDefinition gets information about a sas definition for the specified
+// GetSasDefinition gets information about a SAS definition for the specified
 // storage account.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // storageAccountName is the name of the storage account. sasDefinitionName is
-// the name of the sas definition.
+// the name of the SAS definition.
 func (client ManagementClient) GetSasDefinition(vaultBaseURL string, storageAccountName string, sasDefinitionName string) (result SasDefinitionBundle, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: storageAccountName,
@@ -2630,7 +2630,7 @@ func (client ManagementClient) GetSasDefinitionResponder(resp *http.Response) (r
 	return
 }
 
-// GetSasDefinitions list storage sas definitions for the given storage
+// GetSasDefinitions list storage SAS definitions for the given storage
 // account.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
@@ -4242,12 +4242,12 @@ func (client ManagementClient) SetCertificateIssuerResponder(resp *http.Response
 	return
 }
 
-// SetSasDefinition creates or updates a new sas definition for the specified
+// SetSasDefinition creates or updates a new SAS definition for the specified
 // storage account.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // storageAccountName is the name of the storage account. sasDefinitionName is
-// the name of the sas definition. parameters is the parameters to create a sas
+// the name of the SAS definition. parameters is the parameters to create a SAS
 // definition.
 func (client ManagementClient) SetSasDefinition(vaultBaseURL string, storageAccountName string, sasDefinitionName string, parameters SasDefinitionCreateParameters) (result SasDefinitionBundle, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -5015,11 +5015,11 @@ func (client ManagementClient) UpdateKeyResponder(resp *http.Response) (result K
 }
 
 // UpdateSasDefinition updates the specified attributes associated with the
-// given sas definition.
+// given SAS definition.
 //
 // vaultBaseURL is the vault name, for example https://myvault.vault.azure.net.
 // storageAccountName is the name of the storage account. sasDefinitionName is
-// the name of the sas definition. parameters is the parameters to update a sas
+// the name of the SAS definition. parameters is the parameters to update a SAS
 // definition.
 func (client ManagementClient) UpdateSasDefinition(vaultBaseURL string, storageAccountName string, sasDefinitionName string, parameters SasDefinitionUpdateParameters) (result SasDefinitionBundle, err error) {
 	if err := validation.Validate([]validation.Validation{

@@ -691,14 +691,14 @@ type PendingCertificateSigningRequestResult struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// SasDefinitionAttributes is the sas definition management attributes.
+// SasDefinitionAttributes is the SAS definition management attributes.
 type SasDefinitionAttributes struct {
 	Enabled *bool          `json:"enabled,omitempty"`
 	Created *date.UnixTime `json:"created,omitempty"`
 	Updated *date.UnixTime `json:"updated,omitempty"`
 }
 
-// SasDefinitionBundle is a sas definition bundle consists of key vault sas
+// SasDefinitionBundle is a SAS definition bundle consists of key vault SAS
 // definition details plus its attributes.
 type SasDefinitionBundle struct {
 	autorest.Response `json:"-"`
@@ -709,14 +709,14 @@ type SasDefinitionBundle struct {
 	Tags              *map[string]*string      `json:"tags,omitempty"`
 }
 
-// SasDefinitionCreateParameters is the sas definition create parameters.
+// SasDefinitionCreateParameters is the SAS definition create parameters.
 type SasDefinitionCreateParameters struct {
 	Parameters              *map[string]*string      `json:"parameters,omitempty"`
 	SasDefinitionAttributes *SasDefinitionAttributes `json:"attributes,omitempty"`
 	Tags                    *map[string]*string      `json:"tags,omitempty"`
 }
 
-// SasDefinitionItem is the sas definition item containing storage sas
+// SasDefinitionItem is the SAS definition item containing storage SAS
 // definition metadata.
 type SasDefinitionItem struct {
 	ID         *string                  `json:"id,omitempty"`
@@ -725,7 +725,7 @@ type SasDefinitionItem struct {
 	Tags       *map[string]*string      `json:"tags,omitempty"`
 }
 
-// SasDefinitionListResult is the storage account sas definition list result.
+// SasDefinitionListResult is the storage account SAS definition list result.
 type SasDefinitionListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]SasDefinitionItem `json:"value,omitempty"`
@@ -744,7 +744,7 @@ func (client SasDefinitionListResult) SasDefinitionListResultPreparer() (*http.R
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// SasDefinitionUpdateParameters is the sas definition update parameters.
+// SasDefinitionUpdateParameters is the SAS definition update parameters.
 type SasDefinitionUpdateParameters struct {
 	Parameters              *map[string]*string      `json:"parameters,omitempty"`
 	SasDefinitionAttributes *SasDefinitionAttributes `json:"attributes,omitempty"`

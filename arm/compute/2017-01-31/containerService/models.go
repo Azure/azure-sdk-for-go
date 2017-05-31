@@ -24,18 +24,18 @@ import (
 	"net/http"
 )
 
-// OchestratorTypes enumerates the values for ochestrator types.
-type OchestratorTypes string
+// OrchestratorTypes enumerates the values for orchestrator types.
+type OrchestratorTypes string
 
 const (
-	// Custom specifies the custom state for ochestrator types.
-	Custom OchestratorTypes = "Custom"
-	// DCOS specifies the dcos state for ochestrator types.
-	DCOS OchestratorTypes = "DCOS"
-	// Kubernetes specifies the kubernetes state for ochestrator types.
-	Kubernetes OchestratorTypes = "Kubernetes"
-	// Swarm specifies the swarm state for ochestrator types.
-	Swarm OchestratorTypes = "Swarm"
+	// Custom specifies the custom state for orchestrator types.
+	Custom OrchestratorTypes = "Custom"
+	// DCOS specifies the dcos state for orchestrator types.
+	DCOS OrchestratorTypes = "DCOS"
+	// Kubernetes specifies the kubernetes state for orchestrator types.
+	Kubernetes OrchestratorTypes = "Kubernetes"
+	// Swarm specifies the swarm state for orchestrator types.
+	Swarm OrchestratorTypes = "Swarm"
 )
 
 // VMSizeTypes enumerates the values for vm size types.
@@ -202,7 +202,7 @@ type Model struct {
 
 // OrchestratorProfile is profile for the container service orchestrator.
 type OrchestratorProfile struct {
-	OrchestratorType OchestratorTypes `json:"orchestratorType,omitempty"`
+	OrchestratorType OrchestratorTypes `json:"orchestratorType,omitempty"`
 }
 
 // Properties is properties of the container service.

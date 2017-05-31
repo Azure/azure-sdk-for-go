@@ -1,9 +1,10 @@
 // Package blobauditingpolicies implements the Azure ARM Blobauditingpolicies
 // service API version 2015-05-01-preview.
 //
-// The database management API provides a RESTful set of web APIs that interact
-// with database services to manage your databases. The API enables users to
-// create, retrieve, update, and delete databases, servers, and other entities.
+// The Azure SQL Database management API provides a RESTful set of web APIs
+// that interact with Azure SQL Database services to manage your databases. The
+// API enables users to create, retrieve, update, and delete databases,
+// servers, and other entities.
 package blobauditingpolicies
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

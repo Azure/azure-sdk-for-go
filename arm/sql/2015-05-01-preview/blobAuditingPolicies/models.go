@@ -20,6 +20,7 @@ package blobauditingpolicies
 
 import (
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/satori/uuid"
 )
 
 // BlobAuditingPolicyState enumerates the values for blob auditing policy
@@ -33,27 +34,25 @@ const (
 	Enabled BlobAuditingPolicyState = "Enabled"
 )
 
-// DatabaseBlobAuditingPolicy is contains information about a database Blob
-// Auditing policy.
+// DatabaseBlobAuditingPolicy is a database blob auditing policy.
 type DatabaseBlobAuditingPolicy struct {
 	autorest.Response                     `json:"-"`
 	ID                                    *string `json:"id,omitempty"`
 	Name                                  *string `json:"name,omitempty"`
 	Type                                  *string `json:"type,omitempty"`
-	Location                              *string `json:"location,omitempty"`
 	Kind                                  *string `json:"kind,omitempty"`
 	*DatabaseBlobAuditingPolicyProperties `json:"properties,omitempty"`
 }
 
-// DatabaseBlobAuditingPolicyProperties is properties for a database Blob
-// Auditing policy.
+// DatabaseBlobAuditingPolicyProperties is properties of a database blob
+// auditing policy.
 type DatabaseBlobAuditingPolicyProperties struct {
 	State                        BlobAuditingPolicyState `json:"state,omitempty"`
 	StorageEndpoint              *string                 `json:"storageEndpoint,omitempty"`
 	StorageAccountAccessKey      *string                 `json:"storageAccountAccessKey,omitempty"`
 	RetentionDays                *int32                  `json:"retentionDays,omitempty"`
 	AuditActionsAndGroups        *[]string               `json:"auditActionsAndGroups,omitempty"`
-	StorageAccountSubscriptionID *string                 `json:"storageAccountSubscriptionId,omitempty"`
+	StorageAccountSubscriptionID *uuid.UUID              `json:"storageAccountSubscriptionId,omitempty"`
 	IsStorageSecondaryKeyInUse   *bool                   `json:"isStorageSecondaryKeyInUse,omitempty"`
 }
 
@@ -69,13 +68,4 @@ type Resource struct {
 	ID   *string `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`
 	Type *string `json:"type,omitempty"`
-}
-
-// TrackedResource is aRM tracked top level resource.
-type TrackedResource struct {
-	ID       *string             `json:"id,omitempty"`
-	Name     *string             `json:"name,omitempty"`
-	Type     *string             `json:"type,omitempty"`
-	Tags     *map[string]*string `json:"tags,omitempty"`
-	Location *string             `json:"location,omitempty"`
 }

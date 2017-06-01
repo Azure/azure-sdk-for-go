@@ -129,6 +129,7 @@ type Client struct {
 	apiVersion       string
 	userAgent        string
 	sasClient        bool
+	accountSASToken  url.Values
 }
 
 type storageResponse struct {
@@ -262,6 +263,20 @@ func IsValidStorageAccount(account string) bool {
 	return validStorageAccount.MatchString(account)
 }
 
+// NewAccountSASClient contructs a client that uses accountSAS authorization
+// for its operations.
+func NewAccountSASClient(account string, token url.Values, env azure.Environment) Client {
+	c := newSASClient()
+	c.accountSASToken = token
+	c.accountName = account
+	c.baseURL = env.StorageEndpointSuffix
+
+	// Get API version and protocol from token
+	c.apiVersion = token.Get("sv")
+	c.useHTTPS = token.Get("spr") == "https"
+	return c
+}
+
 func newSASClient() Client {
 	c := Client{
 		HTTPClient: http.DefaultClient,
@@ -275,6 +290,14 @@ func newSASClient() Client {
 	}
 	c.userAgent = c.getDefaultUserAgent()
 	return c
+}
+
+func (c Client) isServiceSASClient() bool {
+	return c.sasClient && c.accountSASToken == nil
+}
+
+func (c Client) isAccountSASClient() bool {
+	return c.sasClient && c.accountSASToken != nil
 }
 
 func (c Client) getDefaultUserAgent() string {
@@ -347,6 +370,157 @@ func (c Client) getEndpoint(service, path string, params url.Values) string {
 	u.Path = path
 	u.RawQuery = params.Encode()
 	return u.String()
+}
+
+type AccountSASTokenOptions struct {
+	APIVersion    string
+	Services      Services
+	ResourceTypes ResourceTypes
+	Permissions   Permissions
+	Start         time.Time
+	Expiry        time.Time
+	IP            string
+	UseHTTPS      bool
+}
+
+type Services struct {
+	Blob  bool
+	Queue bool
+	Table bool
+	File  bool
+}
+
+type ResourceTypes struct {
+	Service   bool
+	Container bool
+	Object    bool
+}
+
+type Permissions struct {
+	Read    bool
+	Write   bool
+	Delete  bool
+	List    bool
+	Add     bool
+	Create  bool
+	Update  bool
+	Process bool
+}
+
+// GetAccountSASToken creates an account SAS token
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas
+func (c Client) GetAccountSASToken(options AccountSASTokenOptions) (url.Values, error) {
+	if options.APIVersion == "" {
+		options.APIVersion = c.apiVersion
+	}
+
+	if options.APIVersion < "2015-04-05" {
+		return url.Values{}, fmt.Errorf("account SAS does not support API versions prior to 2015-04-05. API version : %s", options.APIVersion)
+	}
+
+	// build services string
+	services := ""
+	if options.Services.Blob {
+		services += "b"
+	}
+	if options.Services.Queue {
+		services += "q"
+	}
+	if options.Services.Table {
+		services += "t"
+	}
+	if options.Services.File {
+		services += "f"
+	}
+
+	// build resources string
+	resources := ""
+	if options.ResourceTypes.Service {
+		resources += "s"
+	}
+	if options.ResourceTypes.Container {
+		resources += "c"
+	}
+	if options.ResourceTypes.Object {
+		resources += "o"
+	}
+
+	// build permissions string
+	permissions := ""
+	if options.Permissions.Read {
+		permissions += "r"
+	}
+	if options.Permissions.Write {
+		permissions += "w"
+	}
+	if options.Permissions.Delete {
+		permissions += "d"
+	}
+	if options.Permissions.List {
+		permissions += "l"
+	}
+	if options.Permissions.Add {
+		permissions += "a"
+	}
+	if options.Permissions.Create {
+		permissions += "c"
+	}
+	if options.Permissions.Update {
+		permissions += "u"
+	}
+	if options.Permissions.Process {
+		permissions += "p"
+	}
+
+	// build start time, if exists
+	start := ""
+	if options.Start != (time.Time{}) {
+		start = options.Start.Format(time.RFC3339)
+		// For some reason I don't understand, it fails when the rest of the string is included
+		start = start[:10]
+	}
+
+	// build expiry time
+	expiry := options.Expiry.Format(time.RFC3339)
+	// For some reason I don't understand, it fails when the rest of the string is included
+	expiry = expiry[:10]
+
+	protocol := "https,http"
+	if options.UseHTTPS {
+		protocol = "https"
+	}
+
+	stringToSign := strings.Join([]string{
+		c.accountName,
+		permissions,
+		services,
+		resources,
+		start,
+		expiry,
+		options.IP,
+		protocol,
+		options.APIVersion,
+		"",
+	}, "\n")
+	signature := c.computeHmac256(stringToSign)
+
+	sasParams := url.Values{
+		"sv":  {options.APIVersion},
+		"ss":  {services},
+		"srt": {resources},
+		"sp":  {permissions},
+		"se":  {expiry},
+		"spr": {protocol},
+		"sig": {signature},
+	}
+	if start != "" {
+		sasParams.Add("st", start)
+	}
+	if options.IP != "" {
+		sasParams.Add("sip", options.IP)
+	}
+
+	return sasParams, nil
 }
 
 // GetBlobService returns a BlobStorageClient which can operate on the blob

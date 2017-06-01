@@ -1,10 +1,12 @@
 package storage
 
 import (
+	"net/url"
 	"sort"
 	"strconv"
 	"time"
 
+	"github.com/Azure/go-autorest/autorest/azure"
 	chk "gopkg.in/check.v1"
 )
 
@@ -91,25 +93,45 @@ func (s *ContainerSuite) TestContainerExists(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, true)
 
-	// SASURI test
-	// SASURI test fails, I wonder if SASURI is good enough to do HEAD operations?
-	sasuri1, err := cnt1.GetSASURI(fixedTime, "racwdl")
+	// Service SASURI test (funcs should fail, service SAS has not enough permissions)
+	sasuriString1, err := cnt1.GetSASURI(fixedTime, "racwdl")
 	c.Assert(err, chk.IsNil)
-	cntSAS1, err := GetContainerReferenceFromSASURI(sasuri1)
+	sasuri1, err := url.Parse(sasuriString1)
 	c.Assert(err, chk.IsNil)
-	cntSAS1.Client().HTTPClient = cli.client.HTTPClient
+	cntServiceSAS1, err := GetContainerReferenceFromSASURI(*sasuri1)
+	c.Assert(err, chk.IsNil)
+	cntServiceSAS1.Client().HTTPClient = cli.client.HTTPClient
 
-	ok, err = cntSAS1.Exists()
+	ok, err = cntServiceSAS1.Exists()
+	c.Assert(err, chk.NotNil)
+	c.Assert(ok, chk.Equals, false)
+
+	sasuriString2, err := cnt2.GetSASURI(fixedTime, "racwdl")
+	c.Assert(err, chk.IsNil)
+	sasuri2, err := url.Parse(sasuriString2)
+	c.Assert(err, chk.IsNil)
+	cntServiceSAS2, err := GetContainerReferenceFromSASURI(*sasuri2)
+	c.Assert(err, chk.IsNil)
+	cntServiceSAS2.Client().HTTPClient = cli.client.HTTPClient
+
+	ok, err = cntServiceSAS2.Exists()
+	c.Assert(err, chk.NotNil)
+	c.Assert(ok, chk.Equals, false)
+
+	// Account SASURI test
+	token, err := cli.client.GetAccountSASToken(accountSASOptions)
+	c.Assert(err, chk.IsNil)
+	SAScli := NewAccountSASClient(cli.client.accountName, token, azure.PublicCloud).GetBlobService()
+
+	cntAccountSAS1 := SAScli.GetContainerReference(cnt1.Name)
+	cntAccountSAS1.Client().HTTPClient = cli.client.HTTPClient
+	ok, err = cntAccountSAS1.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
-	sasuri2, err := cnt2.GetSASURI(fixedTime, "racwdl")
-	c.Assert(err, chk.IsNil)
-	cntSAS2, err := GetContainerReferenceFromSASURI(sasuri2)
-	c.Assert(err, chk.IsNil)
-	cntSAS2.Client().HTTPClient = cli.client.HTTPClient
-
-	ok, err = cntSAS2.Exists()
+	cntAccountSAS2 := SAScli.GetContainerReference(cnt2.Name)
+	cntAccountSAS2.Client().HTTPClient = cli.client.HTTPClient
+	ok, err = cntAccountSAS2.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, true)
 }
@@ -197,14 +219,26 @@ func (s *ContainerSuite) TestListBlobsPagination(c *chk.C) {
 
 	listBlobsPagination(c, cnt, pageSize, blobs)
 
-	// SASURI test
-	sasuri, err := cnt.GetSASURI(fixedTime, "racwdl")
+	// Service SAS test
+	sasuriString, err := cnt.GetSASURI(fixedTime, "racwdl")
 	c.Assert(err, chk.IsNil)
-	cntSAS, err := GetContainerReferenceFromSASURI(sasuri)
+	sasuri, err := url.Parse(sasuriString)
 	c.Assert(err, chk.IsNil)
-	cntSAS.Client().HTTPClient = cli.client.HTTPClient
+	cntServiceSAS, err := GetContainerReferenceFromSASURI(*sasuri)
+	c.Assert(err, chk.IsNil)
+	cntServiceSAS.Client().HTTPClient = cli.client.HTTPClient
 
-	listBlobsPagination(c, cntSAS, pageSize, blobs)
+	listBlobsPagination(c, cntServiceSAS, pageSize, blobs)
+
+	// Account SAS test
+	token, err := cli.client.GetAccountSASToken(accountSASOptions)
+	c.Assert(err, chk.IsNil)
+	SAScli := NewAccountSASClient(cli.client.accountName, token, azure.PublicCloud).GetBlobService()
+
+	cntAccountSAS := SAScli.GetContainerReference(cnt.Name)
+	cntAccountSAS.Client().HTTPClient = cli.client.HTTPClient
+
+	listBlobsPagination(c, cntAccountSAS, pageSize, blobs)
 }
 
 func listBlobsPagination(c *chk.C, cnt *Container, pageSize uint, blobs []string) {

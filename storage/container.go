@@ -18,7 +18,7 @@ type Container struct {
 	Name       string              `xml:"Name"`
 	Properties ContainerProperties `xml:"Properties"`
 	Metadata   map[string]string
-	sasuri     string
+	sasuri     url.URL
 }
 
 func (c *Container) Client() *Client {
@@ -253,15 +253,16 @@ func (c *Container) create(options *CreateContainerOptions) (*storageResponse, e
 func (c *Container) Exists() (bool, error) {
 	q := url.Values{"restype": {"container"}}
 	var uri string
-	if c.bsc.client.sasClient {
-		newURI, err := url.Parse(c.sasuri)
-		if err != nil {
-			return false, err
-		}
-		q = mergeParams(newURI.Query(), q)
+	if c.bsc.client.isServiceSASClient() {
+		q = mergeParams(q, c.sasuri.Query())
+		newURI := c.sasuri
 		newURI.RawQuery = q.Encode()
 		uri = newURI.String()
+
 	} else {
+		if c.bsc.client.isAccountSASClient() {
+			q = mergeParams(q, c.bsc.client.accountSASToken)
+		}
 		uri = c.bsc.client.getEndpoint(blobServiceName, c.buildPath(), q)
 	}
 	headers := c.bsc.client.getStandardHeaders()
@@ -441,15 +442,15 @@ func (c *Container) ListBlobs(params ListBlobsParameters) (BlobListResponse, err
 		"comp":    {"list"},
 	})
 	var uri string
-	if c.bsc.client.sasClient {
-		newURI, err := url.Parse(c.sasuri)
-		if err != nil {
-			return BlobListResponse{}, err
-		}
-		q = mergeParams(newURI.Query(), q)
+	if c.bsc.client.isServiceSASClient() {
+		q = mergeParams(q, c.sasuri.Query())
+		newURI := c.sasuri
 		newURI.RawQuery = q.Encode()
 		uri = newURI.String()
 	} else {
+		if c.bsc.client.isAccountSASClient() {
+			q = mergeParams(q, c.bsc.client.accountSASToken)
+		}
 		uri = c.bsc.client.getEndpoint(blobServiceName, c.buildPath(), q)
 	}
 

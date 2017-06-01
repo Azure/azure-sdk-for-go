@@ -16,18 +16,18 @@ interactions:
     method: DELETE
   response:
     body: '{"odata.error":{"code":"ResourceNotFound","message":{"lang":"en-US","value":"The
-      specified resource does not exist.\nRequestId:1e62b9a3-0002-00dd-3ba2-d55117000000\nTime:2017-05-25T22:03:25.1052096Z"}}}'
+      specified resource does not exist.\nRequestId:395e1eb1-0002-003a-2b22-db411a000000\nTime:2017-06-01T21:59:19.1338954Z"}}}'
     headers:
       Content-Length:
       - "202"
       Content-Type:
       - application/json
       Date:
-      - Thu, 25 May 2017 22:03:24 GMT
+      - Thu, 01 Jun 2017 21:59:18 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1e62b9a3-0002-00dd-3ba2-d55117000000
+      - 395e1eb1-0002-003a-2b22-db411a000000
       X-Ms-Version:
       - 2016-05-31
     status: 404 The specified resource does not exist.
@@ -46,18 +46,18 @@ interactions:
     method: DELETE
   response:
     body: '{"odata.error":{"code":"ResourceNotFound","message":{"lang":"en-US","value":"The
-      specified resource does not exist.\nRequestId:1e62ba76-0002-00dd-80a2-d55117000000\nTime:2017-05-25T22:03:26.3380789Z"}}}'
+      specified resource does not exist.\nRequestId:395e1fbd-0002-003a-2722-db411a000000\nTime:2017-06-01T21:59:20.2246781Z"}}}'
     headers:
       Content-Length:
       - "202"
       Content-Type:
       - application/json
       Date:
-      - Thu, 25 May 2017 22:03:25 GMT
+      - Thu, 01 Jun 2017 21:59:19 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1e62ba76-0002-00dd-80a2-d55117000000
+      - 395e1fbd-0002-003a-2722-db411a000000
       X-Ms-Version:
       - 2016-05-31
     status: 404 The specified resource does not exist.
@@ -76,18 +76,18 @@ interactions:
     method: DELETE
   response:
     body: '{"odata.error":{"code":"ResourceNotFound","message":{"lang":"en-US","value":"The
-      specified resource does not exist.\nRequestId:1e62bc09-0002-00dd-05a2-d55117000000\nTime:2017-05-25T22:03:28.3815194Z"}}}'
+      specified resource does not exist.\nRequestId:395e21c0-0002-003a-1422-db411a000000\nTime:2017-06-01T21:59:22.2691459Z"}}}'
     headers:
       Content-Length:
       - "202"
       Content-Type:
       - application/json
       Date:
-      - Thu, 25 May 2017 22:03:28 GMT
+      - Thu, 01 Jun 2017 21:59:21 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 1e62bc09-0002-00dd-05a2-d55117000000
+      - 395e21c0-0002-003a-1422-db411a000000
       X-Ms-Version:
       - 2016-05-31
     status: 404 The specified resource does not exist.
@@ -99,7 +99,7 @@ interactions:
       User-Agent:
       - Go/go1.8 (amd64-windows) azure-storage-go/0.1.0 api-version/2016-05-31 blob
       X-Ms-Date:
-      - Thu, 25 May 2017 22:03:32 GMT
+      - Thu, 01 Jun 2017 21:59:25 GMT
       X-Ms-Version:
       - 2016-05-31
     url: https://golangrocksonazure.blob.core.windows.net/cnt-31storageclientsuitetestdore?restype=container&se=2050-12-20T21%3A55%3A06Z&sig=anFBh1cx4yvNQR7UnWhLHBl41qTZupiG2q42jBA7NVY%3D&sp=racwdl&spr=https%2Chttp&sr=c&sv=2016-05-31
@@ -108,11 +108,11 @@ interactions:
     body: ""
     headers:
       Date:
-      - Thu, 25 May 2017 22:03:32 GMT
+      - Thu, 01 Jun 2017 21:59:24 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 7d545025-0001-0083-56a2-d5a214000000
+      - 935b519e-0001-0077-3722-db87f8000000
       X-Ms-Version:
       - 2016-05-31
     status: 403 This request is not authorized to perform this operation.
@@ -124,7 +124,7 @@ interactions:
       User-Agent:
       - Go/go1.8 (amd64-windows) azure-storage-go/0.1.0 api-version/2016-05-31 blob
       X-Ms-Date:
-      - Thu, 25 May 2017 22:03:32 GMT
+      - Thu, 01 Jun 2017 21:59:25 GMT
       X-Ms-Version:
       - 2016-05-31
     url: https://golangrocksonazure.blob.core.windows.net/cnt-31storageclientsuitetestdore?restype=container&se=2050-12-20T21%3A55%3A06Z&sig=anFBh1cx4yvNQR7UnWhLHBl41qTZupiG2q42jBA7NVY%3D&sp=racwdl&spr=https%2Chttp&sr=c&sv=2016-05-31
@@ -133,11 +133,11 @@ interactions:
     body: ""
     headers:
       Date:
-      - Thu, 25 May 2017 22:03:33 GMT
+      - Thu, 01 Jun 2017 21:59:25 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 7d54520d-0001-0083-1ea2-d5a214000000
+      - 935b52bf-0001-0077-3122-db87f8000000
       X-Ms-Version:
       - 2016-05-31
     status: 403 This request is not authorized to perform this operation.
@@ -149,7 +149,7 @@ interactions:
       User-Agent:
       - Go/go1.8 (amd64-windows) azure-storage-go/0.1.0 api-version/2016-05-31 blob
       X-Ms-Date:
-      - Thu, 25 May 2017 22:03:32 GMT
+      - Thu, 01 Jun 2017 21:59:25 GMT
       X-Ms-Version:
       - 2016-05-31
     url: https://golangrocksonazure.blob.core.windows.net/cnt-31storageclientsuitetestdore?restype=container&se=2050-12-20T21%3A55%3A06Z&sig=anFBh1cx4yvNQR7UnWhLHBl41qTZupiG2q42jBA7NVY%3D&sp=racwdl&spr=https%2Chttp&sr=c&sv=2016-05-31
@@ -158,12 +158,87 @@ interactions:
     body: ""
     headers:
       Date:
-      - Thu, 25 May 2017 22:03:35 GMT
+      - Thu, 01 Jun 2017 21:59:27 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 7d5454f1-0001-0083-3fa2-d5a214000000
+      - 935b53db-0001-0077-1822-db87f8000000
       X-Ms-Version:
       - 2016-05-31
     status: 403 This request is not authorized to perform this operation.
     code: 403
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Go/go1.8 (amd64-windows) azure-storage-go/0.1.0 api-version/2016-05-31 blob
+      X-Ms-Date:
+      - Thu, 01 Jun 2017 21:59:33 GMT
+      X-Ms-Version:
+      - 2016-05-31
+    url: https://golangrocksonazure.blob.core.windows.net/cnt-31storageclientsuitetestdore?restype=container&se=2050-12-20&sig=H47yV%2BBZqUb6EMXkxCwBoRUjUuBNbwqnUdArMgO3agQ%3D&sp=rwdlacup&spr=https&srt=sco&ss=b&sv=2016-05-31
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Date:
+      - Thu, 01 Jun 2017 21:59:31 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 935b5767-0001-0077-0a22-db87f8000000
+      X-Ms-Version:
+      - 2016-05-31
+    status: 404 The specified container does not exist.
+    code: 404
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Go/go1.8 (amd64-windows) azure-storage-go/0.1.0 api-version/2016-05-31 blob
+      X-Ms-Date:
+      - Thu, 01 Jun 2017 21:59:33 GMT
+      X-Ms-Version:
+      - 2016-05-31
+    url: https://golangrocksonazure.blob.core.windows.net/cnt-31storageclientsuitetestdore?restype=container&se=2050-12-20&sig=H47yV%2BBZqUb6EMXkxCwBoRUjUuBNbwqnUdArMgO3agQ%3D&sp=rwdlacup&spr=https&srt=sco&ss=b&sv=2016-05-31
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Date:
+      - Thu, 01 Jun 2017 21:59:32 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 935b5823-0001-0077-2822-db87f8000000
+      X-Ms-Version:
+      - 2016-05-31
+    status: 404 The specified container does not exist.
+    code: 404
+- request:
+    body: ""
+    form: {}
+    headers:
+      User-Agent:
+      - Go/go1.8 (amd64-windows) azure-storage-go/0.1.0 api-version/2016-05-31 blob
+      X-Ms-Date:
+      - Thu, 01 Jun 2017 21:59:33 GMT
+      X-Ms-Version:
+      - 2016-05-31
+    url: https://golangrocksonazure.blob.core.windows.net/cnt-31storageclientsuitetestdore?restype=container&se=2050-12-20&sig=H47yV%2BBZqUb6EMXkxCwBoRUjUuBNbwqnUdArMgO3agQ%3D&sp=rwdlacup&spr=https&srt=sco&ss=b&sv=2016-05-31
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Date:
+      - Thu, 01 Jun 2017 21:59:34 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 935b597d-0001-0077-5922-db87f8000000
+      X-Ms-Version:
+      - 2016-05-31
+    status: 404 The specified container does not exist.
+    code: 404

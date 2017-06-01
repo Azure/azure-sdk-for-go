@@ -498,25 +498,47 @@ func (s *StorageClientSuite) Test_doRetry(c *chk.C) {
 	}
 	c.Assert(int(afterRetries.Seconds()), chk.Equals, sum)
 
-	// SASURI test
+	// Service SAS test
 	blobCli := getBlobClient(c)
 	cnt := blobCli.GetContainerReference(containerName(c))
-	sasuri, err := cnt.GetSASURI(fixedTime, "racwdl")
+	sasuriString, err := cnt.GetSASURI(fixedTime, "racwdl")
 	c.Assert(err, chk.IsNil)
 
-	cntSAS, err := GetContainerReferenceFromSASURI(sasuri)
+	sasuri, err := url.Parse(sasuriString)
 	c.Assert(err, chk.IsNil)
-	cntSAS.bsc.client.HTTPClient = cli.HTTPClient
+
+	cntServiceSAS, err := GetContainerReferenceFromSASURI(*sasuri)
+	c.Assert(err, chk.IsNil)
+	cntServiceSAS.Client().HTTPClient = cli.HTTPClient
 
 	// This request will fail with 403
 	ds.ValidStatusCodes = []int{http.StatusForbidden}
-	cntSAS.Client().Sender = ds
+	cntServiceSAS.Client().Sender = ds
 
 	now = time.Now()
-	_, err = cntSAS.Exists()
+	_, err = cntServiceSAS.Exists()
 	afterRetries = time.Since(now)
 	c.Assert(err, chk.NotNil)
 
-	c.Assert(cntSAS.Client().Sender.(*DefaultSender).attempts, chk.Equals, ds.RetryAttempts)
+	c.Assert(cntServiceSAS.Client().Sender.(*DefaultSender).attempts, chk.Equals, ds.RetryAttempts)
+	c.Assert(int(afterRetries.Seconds()), chk.Equals, sum)
+
+	// Account SAS test
+	token, err := cli.GetAccountSASToken(accountSASOptions)
+	c.Assert(err, chk.IsNil)
+
+	SAScli := NewAccountSASClient(cli.accountName, token, azure.PublicCloud).GetBlobService()
+	cntAccountSAS := SAScli.GetContainerReference(cnt.Name)
+	cntAccountSAS.Client().HTTPClient = cli.HTTPClient
+
+	ds.ValidStatusCodes = []int{http.StatusNotFound}
+	cntAccountSAS.Client().Sender = ds
+
+	now = time.Now()
+	_, err = cntAccountSAS.Exists()
+	afterRetries = time.Since(now)
+	c.Assert(err, chk.IsNil)
+
+	c.Assert(cntAccountSAS.Client().Sender.(*DefaultSender).attempts, chk.Equals, ds.RetryAttempts)
 	c.Assert(int(afterRetries.Seconds()), chk.Equals, sum)
 }

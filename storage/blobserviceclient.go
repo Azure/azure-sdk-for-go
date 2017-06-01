@@ -49,14 +49,10 @@ func (b *BlobStorageClient) GetContainerReference(name string) *Container {
 
 // GetContainerReferenceFromSASURI returns a Container object for the specified
 // container SASURI
-func GetContainerReferenceFromSASURI(sasuri string) (*Container, error) {
-	uri, err := url.Parse(sasuri)
-	if err != nil {
-		return nil, err
-	}
-	path := strings.Split(uri.Path, "/")
+func GetContainerReferenceFromSASURI(sasuri url.URL) (*Container, error) {
+	path := strings.Split(sasuri.Path, "/")
 	if len(path) <= 1 {
-		return nil, fmt.Errorf("could not find a container in URI: %s", sasuri)
+		return nil, fmt.Errorf("could not find a container in URI: %s", sasuri.String())
 	}
 	cli := newSASClient().GetBlobService()
 	return &Container{

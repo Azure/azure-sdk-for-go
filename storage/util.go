@@ -18,7 +18,29 @@ import (
 )
 
 var (
-	fixedTime = time.Date(2050, time.December, 20, 21, 55, 0, 0, time.FixedZone("GMT", -6))
+	fixedTime         = time.Date(2050, time.December, 20, 21, 55, 0, 0, time.FixedZone("GMT", -6))
+	accountSASOptions = AccountSASTokenOptions{
+		Services: Services{
+			Blob: true,
+		},
+		ResourceTypes: ResourceTypes{
+			Service:   true,
+			Container: true,
+			Object:    true,
+		},
+		Permissions: Permissions{
+			Read:    true,
+			Write:   true,
+			Delete:  true,
+			List:    true,
+			Add:     true,
+			Create:  true,
+			Update:  true,
+			Process: true,
+		},
+		Expiry:   fixedTime,
+		UseHTTPS: true,
+	}
 )
 
 func (c Client) computeHmac256(message string) string {

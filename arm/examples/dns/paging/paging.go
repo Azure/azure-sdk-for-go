@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"strconv"
 
 	"github.com/Azure/go-autorest/autorest"
@@ -16,10 +17,10 @@ func main() {
 	resourceGroup := "delete-dns"
 
 	c := map[string]string{
-		"AZURE_CLIENT_ID":       "eebec4ca-c175-45dc-b763-943607ce4838",
-		"AZURE_CLIENT_SECRET":   "9f4ba4e0-be35-4821-9aa6-4caadfaba4fa",
-		"AZURE_SUBSCRIPTION_ID": "ffa90503-6fe8-4ab5-9bf1-059f81a6d8bb",
-		"AZURE_TENANT_ID":       "66841164-1e0e-4ffc-a0d2-ce36f95ec41d"}
+		"AZURE_CLIENT_ID":       os.Getenv("AZURE_CLIENT_ID"),
+		"AZURE_CLIENT_SECRET":   os.Getenv("AZURE_CLIENT_SECRET"),
+		"AZURE_SUBSCRIPTION_ID": os.Getenv("AZURE_SUBSCRIPTION_ID"),
+		"AZURE_TENANT_ID":       os.Getenv("AZURE_TENANT_ID")}
 	if err := checkEnvVar(&c); err != nil {
 		log.Fatalf("Error: %v", err)
 		return

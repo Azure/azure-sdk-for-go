@@ -49,7 +49,7 @@ func main() {
 		return
 	}
 	ac := storage.NewAccountsClient(c["AZURE_SUBSCRIPTION_ID"])
-	ac.Authorizer = spt
+	ac.Authorizer = autorest.NewBearerAuthorizer(spt)
 
 	ac.Sender = autorest.CreateSender(
 		autorest.WithLogging(log.New(os.Stdout, "sdk-example: ", log.LstdFlags)))

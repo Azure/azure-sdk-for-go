@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/arm/examples/helpers"
 	"github.com/Azure/azure-sdk-for-go/arm/storage"
+	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/to"
 )
@@ -31,7 +32,7 @@ func main() {
 	}
 
 	ac := storage.NewAccountsClient(c["AZURE_SUBSCRIPTION_ID"])
-	ac.Authorizer = spt
+	ac.Authorizer = autorest.NewBearerAuthorizer(spt)
 
 	cna, err := ac.CheckNameAvailability(
 		storage.AccountCheckNameAvailabilityParameters{
@@ -53,7 +54,10 @@ func main() {
 			Tier: storage.Standard},
 		Location: to.StringPtr("westus")}
 	cancel := make(chan struct{})
-	if _, err = ac.Create(resourceGroup, name, cp, cancel); err != nil {
+
+	_, errchan := ac.Create(resourceGroup, name, cp, cancel)
+	err = <-errchan
+	if err != nil {
 		fmt.Printf("Create '%s' storage account failed: %v\n", name, err)
 		return
 	}

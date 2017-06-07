@@ -12,7 +12,7 @@ cd $GOPATH/src/k8s.io/kubernetes/vendor
 #replace vendored SDK in kubernetes with the latest version
 files=()
 
-while IFS= read -d $'\0' -r files; do
+while IFS= read -d $'\0' -r file; do
     files+=("$file")
 done < <(find github.com/Azure/azure-sdk-for-go -name '*.go' -print0)
 

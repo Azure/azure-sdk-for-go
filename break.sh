@@ -1,5 +1,5 @@
 # This should only run on cronjobs
-if [ "cron" != $TRAVIS_EVENT_TYPE ]; then
+if [ "pull_request" != $TRAVIS_EVENT_TYPE ]; then
    exit 0
 fi
 

@@ -9,7 +9,7 @@ fi
 go get k8s.io/kubernetes
 cd $GOPATH/src/k8s.io/kubernetes/vendor
 
-#replace vendored SDK in kubernetes with the latest version
+#replace vendored SDK in kubernetes with the latest SDK version
 files=()
 
 while IFS= read -d $'\0' -r file; do
@@ -23,5 +23,5 @@ done
 
 # try to build
 cd $GOPATH/src/k8s.io/kubernetes
-make
+test -z "$(make 2> >(grep 'azure-sdk-for-go')
 exit $?

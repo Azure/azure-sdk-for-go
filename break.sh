@@ -23,5 +23,5 @@ done
 
 # try to build
 cd $GOPATH/src/k8s.io/kubernetes
-test -z "$(make 2> >(grep 'azure-sdk-for-go')
+test -z "$(make 2> >(grep 'azure-sdk-for-go'))"
 exit $?

@@ -1,7 +1,7 @@
 set -x
 
 # This should only run on cronjobs
-if [ "pull_request" != $TRAVIS_EVENT_TYPE ]; then
+if [ "cron" != $TRAVIS_EVENT_TYPE ]; then
    exit 0
 fi
 

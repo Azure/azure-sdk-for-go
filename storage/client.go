@@ -399,7 +399,7 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	}
 
 	for k, v := range headers {
-		req.Header.Add(k, v)
+		req.Header[k] = append(req.Header[k], v)
 	}
 
 	resp, err := c.Sender.Send(&c, req)

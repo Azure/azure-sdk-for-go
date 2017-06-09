@@ -31,5 +31,5 @@ script:
   - go vet ./storage/...
   - test -z "$(golint ./Gododir/... | tee /dev/stderr)"
   - go vet ./Gododir/...
-  - bash break.sh
+  - bash buildKube.sh
   

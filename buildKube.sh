@@ -1,3 +1,6 @@
+# This script tries to build Kubernetes, and find possible
+# breaking changes regarding the Azure SDK for Go
+
 set -x
 
 # This should only run on cronjobs

@@ -176,6 +176,7 @@ type PutBlockListOptions struct {
 	IfMatch           string     `header:"If-Match"`
 	IfNoneMatch       string     `header:"If-None-Match"`
 	RequestID         string     `header:"x-ms-client-request-id"`
+	BlobContentMD5    string     `header:"x-ms-blob-content-md5"`
 }
 
 // PutBlockList saves list of blocks to the specified block blob.

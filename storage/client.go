@@ -75,19 +75,13 @@ type DefaultSender struct {
 
 // Send is the default retry strategy in the client
 func (ds *DefaultSender) Send(c *Client, req *http.Request) (resp *http.Response, err error) {
-	b := []byte{}
-	if req.Body != nil {
-		b, err = ioutil.ReadAll(req.Body)
+	rr := autorest.NewRetriableRequest(req)
+	for attempts := 0; attempts < ds.RetryAttempts; attempts++ {
+		err = rr.Prepare()
 		if err != nil {
 			return resp, err
 		}
-	}
-
-	for attempts := 0; attempts < ds.RetryAttempts; attempts++ {
-		if len(b) > 0 {
-			req.Body = ioutil.NopCloser(bytes.NewBuffer(b))
-		}
-		resp, err = c.HTTPClient.Do(req)
+		resp, err = c.HTTPClient.Do(rr.Request())
 		if err != nil || !autorest.ResponseHasStatusCode(resp, ds.ValidStatusCodes...) {
 			return resp, err
 		}

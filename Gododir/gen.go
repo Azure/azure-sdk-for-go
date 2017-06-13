@@ -550,6 +550,7 @@ func generate(service *service) {
 
 	execCommand := "autorest"
 	commandArgs := []string{
+		"-LEGACY",
 		"-Input", filepath.Join(swaggersDir, "azure-rest-api-specs", service.Input+"."+string(service.Extension)),
 		"-CodeGenerator", codegen,
 		"-Header", "MICROSOFT_APACHE",

@@ -20,17 +20,8 @@ for package in ${packages[*]}; do
     go get $package
     cd $GOPATH/src/$package
 
-    # get list of dependencies on the SDK
-    govendor list -no-status | grep 'azure-sdk-for-go' | tee deps.txt
-
-    # update list of dependencies
-    while read dep; do
-        govendor remove $dep
-    done <deps.txt
-
-    while read dep; do
-        govendor add $dep
-    done <deps.txt
+    # update to latest SDK
+    govendor update github.com/Azure/azure-sdk-for-go/...
 
     # try to build
     make

@@ -9,6 +9,11 @@ if [ "pull_request" != $TRAVIS_EVENT_TYPE ]; then
     exit 0
 fi
 
+# Only meant to run on latest go version
+if [ "go version go1.8 linux/amd64" != "$(go version)" ]; then
+    exit 0
+fi
+
 go get github.com/kardianos/govendor
 REALEXITSTATUS=0
 

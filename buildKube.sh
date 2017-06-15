@@ -27,20 +27,32 @@ cd $KPATH/src/k8s.io/kubernetes
 
 # update SDK (https://github.com/kubernetes/community/blob/master/contributors/devel/godep.md)
 ./hack/godep-restore.sh
-DEP='github.com/Azure/azure-sdk-for-go'
-rm -rf $KPATH/src/$DEP
-godep get $DEP/...
+
+deps=(
+    github.com/Azure/azure-sdk-for-go
+    github.com/Azure/go-autorest
+)
+
+for dep in ${deps[*]}; do
+    rm -rf $KPATH/src/$dep
+    godep get $dep/...
+done
+
 rm -rf Godeps
 rm -rf vendor
 ./hack/godep-save.sh
+
+# sorcery so ./hack/update-bazel.sh does not fail
+rm -rf vendor/github.com/docker/docker/project/CONTRIBUTORS.md
+cp $KPATH/src/github.com/docker/docker/CONTRIBUTING.md vendor/github.com/docker/docker/project
+mv vendor/github.com/docker/docker/project/CONTRIBUTING.md vendor/github.com/docker/docker/project/CONTRIBUTORS.md
+
 ./hack/update-bazel.sh
-./hack/update-godeps-licenses.sh
-./hack/update-staging-client-go.sh
-git checkout -- $(git status -s | grep "^ D" | awk '{print $2}' | grep ^Godeps)
+./hack/update-godep-licenses.sh
 
 # try to build
 EXITCODE=0
-test -z "$(make 2> >(grep 'azure-sdk-for-go'))"
+test -z "$(make 2> >(grep 'azure'))"
 EXITCODE=$?
 
 export GOPATH=$TGOPATH

@@ -4,27 +4,39 @@
 set -x
 
 # This should only run on cronjobs
-if [ "cron" != $TRAVIS_EVENT_TYPE ]; then
+if [ "pull_request" != $TRAVIS_EVENT_TYPE ]; then
    exit 0
 fi
 
+go get github.com/tools/godep
+
+# This need to run in a different GOPATH
+TGOPATH=$GOPATH
+
 # get kubernetes
+export KPATH=$HOME/code/kubernetes
+export GOPATH=$KPATH
+mkdir -p $KPATH/src
 go get k8s.io/kubernetes
-cd $GOPATH/src/k8s.io/kubernetes/vendor
+cd $KPATH/src/k8s.io/kubernetes
 
-#replace vendored SDK in kubernetes with the latest SDK version
-files=()
-
-while IFS= read -d $'\0' -r file; do
-    files+=("$file")
-done < <(find github.com/Azure/azure-sdk-for-go -name '*.go' -print0)
-
-for i in "${files[@]}"; do
-    rm $i
-    cp $GOPATH/src/$i $(dirname $i)
-done
+# update SDK (https://github.com/kubernetes/community/blob/master/contributors/devel/godep.md)
+./hack/godep-restore.sh
+DEP='github.com/Azure/azure-sdk-for-go'
+rm -rf $KPATH/src/$DEP
+godep get $DEP/...
+rm -rf Godeps
+rm -rf vendor
+./hack/godep-save.sh
+./hack/update-bazel.sh
+./hack/update-godeps-licenses.sh
+./hack/update-staging-client-go.sh
+git checkout -- $(git status -s | grep "^ D" | awk '{print $2}' | grep ^Godeps)
 
 # try to build
-cd $GOPATH/src/k8s.io/kubernetes
+EXITCODE=0
 test -z "$(make 2> >(grep 'azure-sdk-for-go'))"
-exit $?
+EXITCODE=$?
+
+export GOPATH=$TGOPATH
+exit EXITCODE

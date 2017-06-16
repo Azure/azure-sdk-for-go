@@ -34,15 +34,15 @@ deps=(
 for dep in ${deps[*]}; do
     go get -u $dep
     godep update $dep/...
+    ./hack/update-bazel.sh
 done
 
-./hack/update-bazel.sh
 ./hack/update-godep-licenses.sh
 
 # try to build
 EXITCODE=0
-test -z "$(make 2> >(grep 'azure'))"
+test -z "$(make 2> >(grep 'azure' | tee /dev/stderr))"
 EXITCODE=$?
 
 export GOPATH=$TGOPATH
-exit EXITCODE
+exit $EXITCODE

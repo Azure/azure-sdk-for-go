@@ -16,7 +16,7 @@ import (
 // See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
 func (q *Queue) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions string, signedIPRange string, HTTPSOnly bool) (string, error) {
 
-	canonicalizedResource := fmt.Sprintf("queue/%s/%s\n", q.qsc.client.accountName, q.Name)
+	canonicalizedResource := fmt.Sprintf("/%s/%s", q.qsc.client.accountName, q.Name)
 
 	// "The canonicalizedresouce portion of the string is a canonical path to the signed resource.
 	// It must include the service name (blob, table, queue or file) for version 2015-02-21 or
@@ -32,19 +32,17 @@ func (q *Queue) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions s
 
 	signedExpiry := expiry.UTC().Format(time.RFC3339)
 	signedStart := time.Now().UTC().Format(time.RFC3339)
+	signedIdentifier := ""
+	protocols := ""
 
-	protocols := "https,http"
-	if HTTPSOnly {
-		protocols = "https"
-	}
-
-	signedIdentifier := "" // really unsure about this one!
-
+	// q.qsc.client.apiVersion
 	stringToSign, err := queueSASStringToSign(q.qsc.client.apiVersion, canonicalizedResource,
 		signedStart, signedExpiry, signedIPRange, permissions, protocols, signedIdentifier)
 	if err != nil {
 		return "", err
 	}
+
+	fmt.Printf("stringToSign\n%s\n", stringToSign)
 
 	sig := q.qsc.client.computeHmac256(stringToSign)
 	sasParams := url.Values{
@@ -56,7 +54,9 @@ func (q *Queue) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions s
 	}
 
 	// making this up for now.
-	queueURL := "https://kenfau.queue.core.windows.net"
+	queueURL := fmt.Sprintf("https://%s.queue.core.windows.net:443/temp", q.qsc.client.accountName)
+	//queueURL := fmt.Sprintf("http://localhost:10001")
+
 	sasURL, err := url.Parse(queueURL)
 	if err != nil {
 		return "", err
@@ -81,7 +81,17 @@ func queueSASStringToSign(signedVersion, canonicalizedResource, signedStart, sig
 
 	// https://msdn.microsoft.com/en-us/library/azure/dn140255.aspx#Anchor_12
 	if signedVersion >= "2015-04-05" {
-		return fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s", signedPermissions, signedStart, signedExpiry, canonicalizedResource, signedIdentifier, signedIP, protocols, signedVersion), nil
+		return fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s",
+			signedPermissions,
+			signedStart,
+			signedExpiry,
+			canonicalizedResource,
+			signedIdentifier,
+			signedIP,
+			protocols,
+			signedVersion), nil
+		// return fmt.Sprintf("%s\n%s\n%s\n%s\n%s", signedPermissions, signedStart, signedExpiry, canonicalizedResource, signedVersion), nil
+		//return fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n", signedPermissions, signedStart, signedExpiry, canonicalizedResource, signedVersion), nil
 	}
 
 	// reference: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx

@@ -51,6 +51,10 @@ func (q *Queue) GetSASURIWithSignedIP(expiry time.Time, permissions string, sign
 		"sig": {sig},
 	}
 
+	if q.qsc.client.apiVersion >= "2015-04-05" && signedIPRange != "" {
+		sasParams.Add("sip", signedIPRange)
+	}
+
 	uri := q.qsc.client.getEndpoint(queueServiceName, q.buildPath(), nil)
 	sasURL, err := url.Parse(uri)
 	if err != nil {

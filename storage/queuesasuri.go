@@ -8,13 +8,11 @@ import (
 	"time"
 )
 
-// GetSASURIWithSignedIPAndProtocol creates an URL to the specified blob which contains the Shared
-// Access Signature with specified permissions and expiration time. Also includes signedIPRange and allowed protocols.
-// If old API version is used but no signedIP is passed (ie empty string) then this should still work.
-// We only populate the signedIP when it non-empty.
+// GetSASURIWithSignedIP creates an URL to the specified queue which contains the Shared
+// Access Signature with specified permissions and expiration time.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
-func (q *Queue) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions string, signedIPRange string, HTTPSOnly bool) (string, error) {
+func (q *Queue) GetSASURIWithSignedIP(expiry time.Time, permissions string, signedIPRange string) (string, error) {
 	canonicalizedResource, err := q.qsc.client.buildCanonicalizedResource(q.buildPath(), q.qsc.auth)
 	if err != nil {
 		return "", err
@@ -24,7 +22,6 @@ func (q *Queue) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions s
 	// It must include the service name (blob, table, queue or file) for version 2015-02-21 or
 	// later, the storage account name, and the resource name, and must be URL-decoded.
 	// -- https://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
-
 	// We need to replace + with %2b first to avoid being treated as a space (which is correct for query strings, but not the path component).
 	canonicalizedResource = strings.Replace(canonicalizedResource, "+", "%2b", -1)
 	canonicalizedResource, err = url.QueryUnescape(canonicalizedResource)
@@ -33,24 +30,23 @@ func (q *Queue) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions s
 	}
 
 	// assumption that start time is now.
-	signedStart := time.Now().UTC().Format(time.RFC3339)
+	//signedStart := time.Now().UTC().Format(time.RFC3339)
 	signedExpiry := expiry.UTC().Format(time.RFC3339)
-	signedIdentifier := ""
+
+	// Cannot get this working yet. Any values entered generates bad URL.
 	protocols := ""
+	signedIdentifier := ""
 
 	stringToSign, err := queueSASStringToSign(q.qsc.client.apiVersion, canonicalizedResource,
-		signedStart, signedExpiry, signedIPRange, permissions, protocols, signedIdentifier)
+		signedExpiry, signedIPRange, permissions, protocols, signedIdentifier)
 	if err != nil {
 		return "", err
 	}
-
-	fmt.Printf("stringToSign\n%s\n", stringToSign)
 
 	sig := q.qsc.client.computeHmac256(stringToSign)
 	sasParams := url.Values{
 		"sv":  {q.qsc.client.apiVersion},
 		"se":  {signedExpiry},
-		"st":  {signedStart},
 		"sp":  {permissions},
 		"sig": {sig},
 	}
@@ -64,15 +60,16 @@ func (q *Queue) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions s
 	return sasURL.String(), nil
 }
 
-// GetSASURI creates an URL to the specified blob which contains the Shared
+// GetSASURI creates an URL to the specified queue which contains the Shared
 // Access Signature with specified permissions and expiration time.
 //
 // See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
 func (q *Queue) GetSASURI(expiry time.Time, permissions string) (string, error) {
-	return q.GetSASURIWithSignedIPAndProtocol(expiry, permissions, "", false)
+	return q.GetSASURIWithSignedIP(expiry, permissions, "")
 }
 
-func queueSASStringToSign(signedVersion, canonicalizedResource, signedStart, signedExpiry, signedIP string, signedPermissions string, protocols string, signedIdentifier string) (string, error) {
+func queueSASStringToSign(signedVersion, canonicalizedResource, signedExpiry, signedIP string, signedPermissions string, protocols string, signedIdentifier string) (string, error) {
+	var signedStart string
 
 	if signedVersion >= "2015-02-21" {
 		canonicalizedResource = "/queue" + canonicalizedResource
@@ -89,6 +86,7 @@ func queueSASStringToSign(signedVersion, canonicalizedResource, signedStart, sig
 			signedIP,
 			protocols,
 			signedVersion), nil
+
 	}
 
 	// reference: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx

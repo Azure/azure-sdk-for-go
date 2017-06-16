@@ -38,6 +38,7 @@ for dep in ${deps[*]}; do
 done
 
 ./hack/update-godep-licenses.sh
+git status
 
 # try to build
 EXITCODE=0

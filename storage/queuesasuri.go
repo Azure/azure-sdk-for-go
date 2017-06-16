@@ -15,8 +15,10 @@ import (
 //
 // See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
 func (q *Queue) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions string, signedIPRange string, HTTPSOnly bool) (string, error) {
-
-	canonicalizedResource := fmt.Sprintf("/%s/%s", q.qsc.client.accountName, q.Name)
+	canonicalizedResource, err := q.qsc.client.buildCanonicalizedResource(q.buildPath(), q.qsc.auth)
+	if err != nil {
+		return "", err
+	}
 
 	// "The canonicalizedresouce portion of the string is a canonical path to the signed resource.
 	// It must include the service name (blob, table, queue or file) for version 2015-02-21 or
@@ -25,17 +27,17 @@ func (q *Queue) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions s
 
 	// We need to replace + with %2b first to avoid being treated as a space (which is correct for query strings, but not the path component).
 	canonicalizedResource = strings.Replace(canonicalizedResource, "+", "%2b", -1)
-	canonicalizedResource, err := url.QueryUnescape(canonicalizedResource)
+	canonicalizedResource, err = url.QueryUnescape(canonicalizedResource)
 	if err != nil {
 		return "", err
 	}
 
-	signedExpiry := expiry.UTC().Format(time.RFC3339)
+	// assumption that start time is now.
 	signedStart := time.Now().UTC().Format(time.RFC3339)
+	signedExpiry := expiry.UTC().Format(time.RFC3339)
 	signedIdentifier := ""
 	protocols := ""
 
-	// q.qsc.client.apiVersion
 	stringToSign, err := queueSASStringToSign(q.qsc.client.apiVersion, canonicalizedResource,
 		signedStart, signedExpiry, signedIPRange, permissions, protocols, signedIdentifier)
 	if err != nil {
@@ -53,11 +55,8 @@ func (q *Queue) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions s
 		"sig": {sig},
 	}
 
-	// making this up for now.
-	queueURL := fmt.Sprintf("https://%s.queue.core.windows.net:443/temp", q.qsc.client.accountName)
-	//queueURL := fmt.Sprintf("http://localhost:10001")
-
-	sasURL, err := url.Parse(queueURL)
+	uri := q.qsc.client.getEndpoint(queueServiceName, q.buildPath(), nil)
+	sasURL, err := url.Parse(uri)
 	if err != nil {
 		return "", err
 	}
@@ -90,8 +89,6 @@ func queueSASStringToSign(signedVersion, canonicalizedResource, signedStart, sig
 			signedIP,
 			protocols,
 			signedVersion), nil
-		// return fmt.Sprintf("%s\n%s\n%s\n%s\n%s", signedPermissions, signedStart, signedExpiry, canonicalizedResource, signedVersion), nil
-		//return fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n", signedPermissions, signedStart, signedExpiry, canonicalizedResource, signedVersion), nil
 	}
 
 	// reference: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx

@@ -26,26 +26,15 @@ go get k8s.io/kubernetes
 cd $KPATH/src/k8s.io/kubernetes
 
 # update SDK (https://github.com/kubernetes/community/blob/master/contributors/devel/godep.md)
-./hack/godep-restore.sh
-
 deps=(
     github.com/Azure/azure-sdk-for-go
     github.com/Azure/go-autorest
 )
 
 for dep in ${deps[*]}; do
-    rm -rf $KPATH/src/$dep
-    godep get $dep/...
+    go get -u $dep
+    godep update $dep/...
 done
-
-rm -rf Godeps
-rm -rf vendor
-./hack/godep-save.sh
-
-# sorcery so ./hack/update-bazel.sh does not fail
-rm -rf vendor/github.com/docker/docker/project/CONTRIBUTORS.md
-cp $KPATH/src/github.com/docker/docker/CONTRIBUTING.md vendor/github.com/docker/docker/project
-mv vendor/github.com/docker/docker/project/CONTRIBUTING.md vendor/github.com/docker/docker/project/CONTRIBUTORS.md
 
 ./hack/update-bazel.sh
 ./hack/update-godep-licenses.sh

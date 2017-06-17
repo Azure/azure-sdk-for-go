@@ -32,13 +32,14 @@ deps=(
 )
 
 for dep in ${deps[*]}; do
-    go get -u $dep
+    rm -rf vendor/$dep
     godep update $dep/...
-    ./hack/update-bazel.sh
 done
 
+./hack/update-bazel.sh
 ./hack/update-godep-licenses.sh
 git status
+git diff Godeps/Godeps.json
 
 # try to build
 EXITCODE=0

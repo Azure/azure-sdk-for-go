@@ -33,12 +33,11 @@ deps=(
 
 for dep in ${deps[*]}; do
     rm -rf vendor/$dep
-    go get $dep
-    godep update $dep/...
+    go get -u $dep
+    godep update $dep
 done
 
 ./hack/update-bazel.sh
-./hack/update-godep-licenses.sh
 git status
 git diff Godeps/Godeps.json
 

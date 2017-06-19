@@ -33,6 +33,7 @@ deps=(
 
 for dep in ${deps[*]}; do
     rm -rf vendor/$dep
+    go get $dep
     godep update $dep/...
 done
 

@@ -41,11 +41,13 @@ const (
 )
 
 func (c *Client) addAuthorizationHeader(verb, url string, headers map[string]string, auth authentication) (map[string]string, error) {
-	authHeader, err := c.getSharedKey(verb, url, headers, auth)
-	if err != nil {
-		return nil, err
+	if !c.sasClient {
+		authHeader, err := c.getSharedKey(verb, url, headers, auth)
+		if err != nil {
+			return nil, err
+		}
+		headers[headerAuthorization] = authHeader
 	}
-	headers[headerAuthorization] = authHeader
 	return headers, nil
 }
 

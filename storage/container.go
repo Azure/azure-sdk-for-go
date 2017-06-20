@@ -18,10 +18,37 @@ type Container struct {
 	Name       string              `xml:"Name"`
 	Properties ContainerProperties `xml:"Properties"`
 	Metadata   map[string]string
+	sasuri     url.URL
+}
+
+func (c *Container) Client() *Client {
+	return &c.bsc.client
 }
 
 func (c *Container) buildPath() string {
 	return fmt.Sprintf("/%s", c.Name)
+}
+
+func (c *Container) GetURL() string {
+	container := c.Name
+	if container == "" {
+		container = "$root"
+	}
+	return c.bsc.client.getEndpoint(blobServiceName, pathForResource(container, ""), nil)
+}
+
+func (c *Container) GetSASURI(expiry time.Time, permissions string) (string, error) {
+	return c.GetSASURIWithSignedIPAndProtocol(expiry, permissions, "", false)
+}
+
+func (c *Container) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions string, signedIPRange string, HTTPSOnly bool) (string, error) {
+	uri := c.GetURL()
+	signedResource := "c"
+	canonicalizedResource, err := c.bsc.client.buildCanonicalizedResource(uri, c.bsc.auth)
+	if err != nil {
+		return "", err
+	}
+	return c.bsc.client.commonSASURI(expiry, uri, permissions, signedIPRange, canonicalizedResource, signedResource, HTTPSOnly)
 }
 
 // ContainerProperties contains various properties of a container returned from
@@ -224,7 +251,20 @@ func (c *Container) create(options *CreateContainerOptions) (*storageResponse, e
 // Exists returns true if a container with given name exists
 // on the storage account, otherwise returns false.
 func (c *Container) Exists() (bool, error) {
-	uri := c.bsc.client.getEndpoint(blobServiceName, c.buildPath(), url.Values{"restype": {"container"}})
+	q := url.Values{"restype": {"container"}}
+	var uri string
+	if c.bsc.client.isServiceSASClient() {
+		q = mergeParams(q, c.sasuri.Query())
+		newURI := c.sasuri
+		newURI.RawQuery = q.Encode()
+		uri = newURI.String()
+
+	} else {
+		if c.bsc.client.isAccountSASClient() {
+			q = mergeParams(q, c.bsc.client.accountSASToken)
+		}
+		uri = c.bsc.client.getEndpoint(blobServiceName, c.buildPath(), q)
+	}
 	headers := c.bsc.client.getStandardHeaders()
 
 	resp, err := c.bsc.client.exec(http.MethodHead, uri, headers, nil, c.bsc.auth)
@@ -399,9 +439,20 @@ func (c *Container) delete(options *DeleteContainerOptions) (*storageResponse, e
 func (c *Container) ListBlobs(params ListBlobsParameters) (BlobListResponse, error) {
 	q := mergeParams(params.getParameters(), url.Values{
 		"restype": {"container"},
-		"comp":    {"list"}},
-	)
-	uri := c.bsc.client.getEndpoint(blobServiceName, c.buildPath(), q)
+		"comp":    {"list"},
+	})
+	var uri string
+	if c.bsc.client.isServiceSASClient() {
+		q = mergeParams(q, c.sasuri.Query())
+		newURI := c.sasuri
+		newURI.RawQuery = q.Encode()
+		uri = newURI.String()
+	} else {
+		if c.bsc.client.isAccountSASClient() {
+			q = mergeParams(q, c.bsc.client.accountSASToken)
+		}
+		uri = c.bsc.client.getEndpoint(blobServiceName, c.buildPath(), q)
+	}
 
 	headers := c.bsc.client.getStandardHeaders()
 	headers = addToHeaders(headers, "x-ms-client-request-id", params.RequestID)

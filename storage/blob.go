@@ -192,7 +192,7 @@ func (b *Blob) Get(options *GetBlobOptions) (io.ReadCloser, error) {
 	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return nil, err
 	}
-	if err := b.writePropoerties(resp.headers); err != nil {
+	if err := b.writeProperties(resp.headers, true); err != nil {
 		return resp.body, err
 	}
 	return resp.body, nil
@@ -212,7 +212,9 @@ func (b *Blob) GetRange(options *GetBlobRangeOptions) (io.ReadCloser, error) {
 	if err := checkRespCode(resp.statusCode, []int{http.StatusPartialContent}); err != nil {
 		return nil, err
 	}
-	if err := b.writePropoerties(resp.headers); err != nil {
+	// Content-Length header should not be updated, as the service returns the range length
+	// (which is not alwys the full blob length)
+	if err := b.writeProperties(resp.headers, false); err != nil {
 		return resp.body, err
 	}
 	return resp.body, nil
@@ -322,18 +324,20 @@ func (b *Blob) GetProperties(options *GetBlobPropertiesOptions) error {
 	if err = checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
 		return err
 	}
-	return b.writePropoerties(resp.headers)
+	return b.writeProperties(resp.headers, true)
 }
 
-func (b *Blob) writePropoerties(h http.Header) error {
+func (b *Blob) writeProperties(h http.Header, includeContentLen bool) error {
 	var err error
 
-	var contentLength int64
-	contentLengthStr := h.Get("Content-Length")
-	if contentLengthStr != "" {
-		contentLength, err = strconv.ParseInt(contentLengthStr, 0, 64)
-		if err != nil {
-			return err
+	contentLength := b.Properties.ContentLength
+	if includeContentLen {
+		contentLengthStr := h.Get("Content-Length")
+		if contentLengthStr != "" {
+			contentLength, err = strconv.ParseInt(contentLengthStr, 0, 64)
+			if err != nil {
+				return err
+			}
 		}
 	}
 

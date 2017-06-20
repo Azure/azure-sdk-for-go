@@ -32,5 +32,5 @@ script:
   - test -z "$(golint ./Gododir/... | tee /dev/stderr)"
   - go vet ./Gododir/...
   - bash buildKube.sh
-  - bash buildTerraform.sh
+  - travis_wait bash buildTerraform.sh
   

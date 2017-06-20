@@ -16,7 +16,7 @@ fi
 go get github.com/tools/godep
 
 # This need to run in a different GOPATH
-TGOPATH=$GOPATH
+export TGOPATH=$GOPATH
 
 # get kubernetes
 export KPATH=$HOME/code/kubernetes
@@ -32,12 +32,23 @@ deps=(
 )
 
 for dep in ${deps[*]}; do
-    rm -rf vendor/$dep
-    go get -u $dep
-    godep update $dep
+    rm -rf $KPATH/src/$dep
+    godep get $dep/...
 done
 
+rm -rf Godeps
+rm -rf vendor
+./hack/godep-save.sh
+
+git status
+# sorcery so ./hack/update-bazel.sh does not fail
+rm -rf vendor/github.com/docker/docker/project/CONTRIBUTORS.md
+cp $KPATH/src/github.com/docker/docker/CONTRIBUTING.md vendor/github.com/docker/docker/project
+mv vendor/github.com/docker/docker/project/CONTRIBUTING.md vendor/github.com/docker/docker/project/CONTRIBUTORS.md
+
+git status
 ./hack/update-bazel.sh
+./hack/update-godep-licenses.sh
 git status
 git diff Godeps/Godeps.json
 

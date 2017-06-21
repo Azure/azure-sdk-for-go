@@ -37,18 +37,51 @@ func (c *Container) GetURL() string {
 	return c.bsc.client.getEndpoint(blobServiceName, pathForResource(container, ""), nil)
 }
 
-func (c *Container) GetSASURI(expiry time.Time, permissions string) (string, error) {
-	return c.GetSASURIWithSignedIPAndProtocol(expiry, permissions, "", false)
+type ContainerSASOptions struct {
+	ContainerSASPermissions
+	OverrideHeaders
+	SASOptions
 }
 
-func (c *Container) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions string, signedIPRange string, HTTPSOnly bool) (string, error) {
+type ContainerSASPermissions struct {
+	Read   bool
+	Add    bool
+	Create bool
+	Write  bool
+	Delete bool
+	List   bool
+}
+
+func (c *Container) GetSASURI(options ContainerSASOptions) (string, error) {
 	uri := c.GetURL()
 	signedResource := "c"
 	canonicalizedResource, err := c.bsc.client.buildCanonicalizedResource(uri, c.bsc.auth)
 	if err != nil {
 		return "", err
 	}
-	return c.bsc.client.commonSASURI(expiry, uri, permissions, signedIPRange, canonicalizedResource, signedResource, HTTPSOnly)
+
+	// build permissions string
+	permissions := ""
+	if options.Read {
+		permissions += "r"
+	}
+	if options.Add {
+		permissions += "a"
+	}
+	if options.Create {
+		permissions += "c"
+	}
+	if options.Write {
+		permissions += "w"
+	}
+	if options.Delete {
+		permissions += "d"
+	}
+	if options.List {
+		permissions += "l"
+	}
+
+	return c.bsc.client.commonSASURI(options.SASOptions, uri, permissions, canonicalizedResource, signedResource, options.OverrideHeaders)
 }
 
 // ContainerProperties contains various properties of a container returned from

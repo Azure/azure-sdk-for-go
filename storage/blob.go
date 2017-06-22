@@ -174,6 +174,9 @@ type BlobRange struct {
 }
 
 func (br BlobRange) String() string {
+	if br.End == 0 {
+		return fmt.Sprintf("bytes=%d-", br.Start)
+	}
 	return fmt.Sprintf("bytes=%d-%d", br.Start, br.End)
 }
 

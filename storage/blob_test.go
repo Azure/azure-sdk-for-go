@@ -428,6 +428,15 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 		{
 			options: GetBlobRangeOptions{
 				Range: &BlobRange{
+					Start: 0,
+					End:   0,
+				},
+			},
+			expected: body,
+		},
+		{
+			options: GetBlobRangeOptions{
+				Range: &BlobRange{
 					Start: 1,
 					End:   3,
 				},
@@ -439,6 +448,15 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 				Range: &BlobRange{
 					Start: 3,
 					End:   uint64(len(body)),
+				},
+			},
+			expected: body[3:],
+		},
+		{
+			options: GetBlobRangeOptions{
+				Range: &BlobRange{
+					Start: 3,
+					End:   0,
 				},
 			},
 			expected: body[3:],

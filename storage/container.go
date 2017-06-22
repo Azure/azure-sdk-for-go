@@ -21,6 +21,7 @@ type Container struct {
 	sasuri     url.URL
 }
 
+// Client returns the HTTP client used by the Container reference.
 func (c *Container) Client() *Client {
 	return &c.bsc.client
 }
@@ -29,6 +30,9 @@ func (c *Container) buildPath() string {
 	return fmt.Sprintf("/%s", c.Name)
 }
 
+// GetURL gets the canonical URL to the container.
+// This method does not create a publicly accessible URL if the container
+// is private and this method does not check if the blob exists.
 func (c *Container) GetURL() string {
 	container := c.Name
 	if container == "" {
@@ -37,12 +41,17 @@ func (c *Container) GetURL() string {
 	return c.bsc.client.getEndpoint(blobServiceName, pathForResource(container, ""), nil)
 }
 
+// ContainerSASOptions are options to construct a container SAS
+// URI.
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 type ContainerSASOptions struct {
 	ContainerSASPermissions
 	OverrideHeaders
 	SASOptions
 }
 
+// ContainerSASPermissions includes the available permissions for
+// a container SAS URI.
 type ContainerSASPermissions struct {
 	Read   bool
 	Add    bool
@@ -52,6 +61,10 @@ type ContainerSASPermissions struct {
 	List   bool
 }
 
+// GetSASURI creates an URL to the container which contains the Shared
+// Access Signature with the specified options.
+//
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 func (c *Container) GetSASURI(options ContainerSASOptions) (string, error) {
 	uri := c.GetURL()
 	signedResource := "c"

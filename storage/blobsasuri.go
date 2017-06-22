@@ -8,6 +8,9 @@ import (
 	"time"
 )
 
+// OverrideHeaders defines overridable response heaedrs in
+// a request using a SAS URI.
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 type OverrideHeaders struct {
 	CacheControl       string
 	ContentDisposition string
@@ -16,12 +19,17 @@ type OverrideHeaders struct {
 	ContentType        string
 }
 
+// BlobSASOptions are options to construct a blob SAS
+// URI.
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 type BlobSASOptions struct {
 	BlobSASPermissions
 	OverrideHeaders
 	SASOptions
 }
 
+// SASOptions includes options used by SAS URIs for diffrenet
+// services and resources.
 type SASOptions struct {
 	APIVersion string
 	Start      time.Time
@@ -31,6 +39,8 @@ type SASOptions struct {
 	Identifier string
 }
 
+// BlobSASPermissions includes the available permissions for
+// a blob SAS URI.
 type BlobSASPermissions struct {
 	Read   bool
 	Add    bool
@@ -39,12 +49,10 @@ type BlobSASPermissions struct {
 	Delete bool
 }
 
-// GetSASURI creates an URL to the specified blob which contains the Shared
-// Access Signature with specified permissions and expiration time. Also includes signedIPRange and allowed protocols.
-// If old API version is used but no signedIP is passed (ie empty string) then this should still work.
-// We only populate the signedIP when it non-empty.
+// GetSASURI creates an URL to the blob which contains the Shared
+// Access Signature with the specified options.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 func (b *Blob) GetSASURI(options BlobSASOptions) (string, error) {
 	uri := b.GetURL()
 	signedResource := "b"

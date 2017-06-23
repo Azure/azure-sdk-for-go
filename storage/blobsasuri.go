@@ -23,12 +23,12 @@ type OverrideHeaders struct {
 // URI.
 // See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 type BlobSASOptions struct {
-	BlobSASPermissions
+	BlobServiceSASPermissions
 	OverrideHeaders
 	SASOptions
 }
 
-// SASOptions includes options used by SAS URIs for diffrenet
+// SASOptions includes options used by SAS URIs for different
 // services and resources.
 type SASOptions struct {
 	APIVersion string
@@ -39,14 +39,34 @@ type SASOptions struct {
 	Identifier string
 }
 
-// BlobSASPermissions includes the available permissions for
-// a blob SAS URI.
-type BlobSASPermissions struct {
+// BlobServiceSASPermissions includes the available permissions for
+// blob service SAS URI.
+type BlobServiceSASPermissions struct {
 	Read   bool
 	Add    bool
 	Create bool
 	Write  bool
 	Delete bool
+}
+
+func (p BlobServiceSASPermissions) buildString() string {
+	permissions := ""
+	if p.Read {
+		permissions += "r"
+	}
+	if p.Add {
+		permissions += "a"
+	}
+	if p.Create {
+		permissions += "c"
+	}
+	if p.Write {
+		permissions += "w"
+	}
+	if p.Delete {
+		permissions += "d"
+	}
+	return permissions
 }
 
 // GetSASURI creates an URL to the blob which contains the Shared
@@ -61,24 +81,7 @@ func (b *Blob) GetSASURI(options BlobSASOptions) (string, error) {
 		return "", err
 	}
 
-	// build permissions string
-	permissions := ""
-	if options.Read {
-		permissions += "r"
-	}
-	if options.Add {
-		permissions += "a"
-	}
-	if options.Create {
-		permissions += "c"
-	}
-	if options.Write {
-		permissions += "w"
-	}
-	if options.Delete {
-		permissions += "d"
-	}
-
+	permissions := options.BlobServiceSASPermissions.buildString()
 	return b.Container.bsc.client.commonSASURI(options.SASOptions, uri, permissions, canonicalizedResource, signedResource, options.OverrideHeaders)
 }
 

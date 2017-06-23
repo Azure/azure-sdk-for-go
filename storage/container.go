@@ -53,12 +53,8 @@ type ContainerSASOptions struct {
 // ContainerSASPermissions includes the available permissions for
 // a container SAS URI.
 type ContainerSASPermissions struct {
-	Read   bool
-	Add    bool
-	Create bool
-	Write  bool
-	Delete bool
-	List   bool
+	BlobServiceSASPermissions
+	List bool
 }
 
 // GetSASURI creates an URL to the container which contains the Shared
@@ -74,22 +70,7 @@ func (c *Container) GetSASURI(options ContainerSASOptions) (string, error) {
 	}
 
 	// build permissions string
-	permissions := ""
-	if options.Read {
-		permissions += "r"
-	}
-	if options.Add {
-		permissions += "a"
-	}
-	if options.Create {
-		permissions += "c"
-	}
-	if options.Write {
-		permissions += "w"
-	}
-	if options.Delete {
-		permissions += "d"
-	}
+	permissions := options.BlobServiceSASPermissions.buildString()
 	if options.List {
 		permissions += "l"
 	}

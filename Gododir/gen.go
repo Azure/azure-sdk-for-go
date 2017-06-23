@@ -280,6 +280,11 @@ var (
 					Swagger: "backupManagement",
 				},
 				{
+					Name:    "recoveryservicessiterecovery",
+					Version: "2016-08-10",
+					Swagger: "service",
+				},
+				{
 					Name:    "redis",
 					Version: "2016-04-01",
 				},
@@ -305,6 +310,10 @@ var (
 						{
 							Name:    "locks",
 							Version: "2016-09-01",
+						},
+						{
+							Name:    "managedapplications",
+							Version: "2016-09-01-preview",
 						},
 						{
 							Name:    "policy",
@@ -359,12 +368,16 @@ var (
 					Name:    "storageimportexport",
 					Version: "2016-11-01",
 				},
-				// {
-				// Too soon to release
-				// 	Name: "storsimple8000series",
-				// 	Version: "2017-06-01".
-				// 	Swagger: "storsimple",
-				// },
+				{
+					Name:    "storsimple8000series",
+					Version: "2017-06-01",
+					Swagger: "storsimple",
+				},
+				{
+					Name:    "streamanalytics",
+					Swagger: "compositeStreamAnalytics",
+					Modeler: compSwagger,
+				},
 				// {
 				// error in the modeler
 				// 	Name:    "timeseriesinsights",

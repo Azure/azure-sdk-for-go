@@ -75,7 +75,7 @@ func (c *Container) GetSASURI(options ContainerSASOptions) (string, error) {
 		permissions += "l"
 	}
 
-	return c.bsc.client.commonSASURI(options.SASOptions, uri, permissions, canonicalizedResource, signedResource, options.OverrideHeaders)
+	return c.bsc.client.blobAndFileSASURI(options.SASOptions, uri, permissions, canonicalizedResource, signedResource, options.OverrideHeaders)
 }
 
 // ContainerProperties contains various properties of a container returned from

@@ -82,10 +82,10 @@ func (b *Blob) GetSASURI(options BlobSASOptions) (string, error) {
 	}
 
 	permissions := options.BlobServiceSASPermissions.buildString()
-	return b.Container.bsc.client.commonSASURI(options.SASOptions, uri, permissions, canonicalizedResource, signedResource, options.OverrideHeaders)
+	return b.Container.bsc.client.blobAndFileSASURI(options.SASOptions, uri, permissions, canonicalizedResource, signedResource, options.OverrideHeaders)
 }
 
-func (c *Client) commonSASURI(options SASOptions, uri, permissions, canonicalizedResource, signedResource string, headers OverrideHeaders) (string, error) {
+func (c *Client) blobAndFileSASURI(options SASOptions, uri, permissions, canonicalizedResource, signedResource string, headers OverrideHeaders) (string, error) {
 	start := ""
 	if options.Start != (time.Time{}) {
 		start = options.Start.UTC().Format(time.RFC3339)

@@ -84,10 +84,9 @@ func (q *Queue) GetSASURI(options QueueSASOptions) (string, error) {
 
 	// Cannot get this working yet. Any values entered generates bad URL.
 	protocols := ""
-	signedIdentifier := ""
 
 	permissions := options.QueueSASPermissions.buildString()
-	stringToSign, err := queueSASStringToSign(q.qsc.client.apiVersion, canonicalizedResource, signedStart, signedExpiry, options.IP, permissions, protocols, signedIdentifier)
+	stringToSign, err := queueSASStringToSign(q.qsc.client.apiVersion, canonicalizedResource, signedStart, signedExpiry, options.IP, permissions, protocols, options.Identifier)
 	if err != nil {
 		return "", err
 	}

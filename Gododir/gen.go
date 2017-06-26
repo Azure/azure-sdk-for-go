@@ -67,403 +67,403 @@ var (
 			Plane:       "arm",
 			InputPrefix: "arm-",
 			Services: []service{
-				// {
-				// 	Name:    "advisor",
-				// 	Version: "2017-04-19",
-				// },
-				// {
-				// 	Name:    "analysisservices",
-				// 	Version: "2016-05-16",
-				// },
-				// {
-				// 	Name:    "apimanagement",
-				// 	Swagger: "compositeApiManagementClient",
-				// 	Modeler: compSwagger,
-				// },
-				// {
-				// 	Name:    "appinsights",
-				// 	Swagger: "compositeAppInsightsManagementClient",
-				// 	Modeler: compSwagger,
-				// },
-				// {
-				// 	Name:    "authorization",
-				// 	Version: "2015-07-01",
-				// },
-				// {
-				// 	Name:    "automation",
-				// 	Swagger: "compositeAutomation",
-				// 	Modeler: compSwagger,
-				// },
-				// {
-				// 	Name:    "batch",
-				// 	Version: "2017-01-01",
-				// 	Swagger: "BatchManagement",
-				// },
-				// {
-				// 	Name:    "billing",
-				// 	Version: "2017-04-24-preview",
-				// },
-				// {
-				// 	Name:    "cdn",
-				// 	Version: "2016-10-02",
-				// },
-				// {
-				// 	// bug in AutoRest (duplicated files)
-				// 	Name: "cognitiveservices",
-				// 	// Version: "2017-04-18",
-				// 	Version: "2016-02-01-preview",
-				// },
-				// {
-				// 	Name:    "commerce",
-				// 	Version: "2015-06-01-preview",
-				// },
-				// {
-				// 	Name:    "compute",
-				// 	Version: "2016-04-30-preview",
-				// },
-				// {
-				// 	Name:    "containerservice",
-				// 	Version: "2017-01-31",
-				// 	Swagger: "containerService",
-				// 	Input:   "compute",
-				// },
-				// {
-				// 	Name:    "consumption",
-				// 	Version: "2017-04-24-preview",
-				// },
-				// {
-				// 	Name:    "containerregistry",
-				// 	Version: "2017-03-01",
-				// },
-				// {
-				// 	Name:    "customer-insights",
-				// 	Version: "2017-01-01",
-				// },
-				// {
-				// 	Name: "datalake-analytics",
-				// 	SubServices: []service{
-				// 		{
-				// 			Name:    "account",
-				// 			Version: "2016-11-01",
-				// 		},
-				// 	},
-				// },
-				// {
-				// 	Name: "datalake-store",
-				// 	SubServices: []service{
-				// 		{
-				// 			Name:    "account",
-				// 			Version: "2016-11-01",
-				// 		},
-				// 	},
-				// },
-				// {
-				// 	Name:    "devtestlabs",
-				// 	Version: "2016-05-15",
-				// 	Swagger: "DTL",
-				// },
-				// {
-				// 	Name:    "disk",
-				// 	Version: "2016-04-30-preview",
-				// 	Swagger: "disk",
-				// 	Input:   "compute",
-				// },
-				// {
-				// 	Name:    "dns",
-				// 	Version: "2016-04-01",
-				// },
-				// {
-				// 	Name:    "documentdb",
-				// 	Version: "2015-04-08",
-				// },
-				// {
-				// 	Name:    "eventhub",
-				// 	Version: "2015-08-01",
-				// 	Swagger: "EventHub",
-				// },
-				// {
-				// 	Name:    "graphrbac",
-				// 	Swagger: "compositeGraphRbacManagementClient",
-				// 	Modeler: compSwagger,
-				// },
-				// {
-				// 	Name:    "hdinsight",
-				// 	Swagger: "compositeHDInsight",
-				// 	Modeler: compSwagger,
-				// },
-				// {
-				// 	Name:    "insights",
-				// 	Swagger: "compositeInsightsManagementClient",
-				// 	Modeler: compSwagger,
-				// },
-				// {
-				// 	Name:    "intune",
-				// 	Version: "2015-01-14-preview",
-				// },
-				// {
-				// 	Name:    "iothub",
-				// 	Version: "2016-02-03",
-				// },
-				// {
-				// 	Name:    "keyvault",
-				// 	Version: "2015-06-01",
-				// },
-				// {
-				// 	Name:    "logic",
-				// 	Version: "2016-06-01",
-				// },
-				// {
-				// 	Name: "machinelearning",
-				// 	SubServices: []service{
-				// 		{
-				// 			Name:    "commitmentplans",
-				// 			Version: "2016-05-01-preview",
-				// 			Swagger: "commitmentPlans",
-				// 			Input:   "machinelearning",
-				// 		},
-				// 		{
-				// 			Name:    "webservices",
-				// 			Version: "2017-01-01",
-				// 			Input:   "machinelearning",
-				// 		},
-				// 	},
-				// },
-				// {
-				// 	Name:    "mediaservices",
-				// 	Version: "2015-10-01",
-				// 	Swagger: "media",
-				// },
-				// {
-				// 	Name:    "mobileengagement",
-				// 	Version: "2014-12-01",
-				// 	Swagger: "mobile-engagement",
-				// },
-				// {
-				// 	Name:    "monitor",
-				// 	Swagger: "compositeMonitorManagementClient",
-				// 	Modeler: compSwagger,
-				// },
-				// {
-				// 	Name:    "network",
-				// 	Swagger: "compositeNetworkClient",
-				// 	Modeler: compSwagger,
-				// },
-				// {
-				// 	Name:    "notificationhubs",
-				// 	Version: "2017-04-01",
-				// },
-				// {
-				// 	// bug in the Go generator https://github.com/Azure/autorest/issues/2219
-				// 	Name: "operationalinsights",
-				// 	// Swagger: "compositeOperationalInsights",
-				// 	// Modeler: compSwagger,
-				// 	Version: "2015-11-01-preview",
-				// },
-				// {
-				// 	Name:    "powerbiembedded",
-				// 	Version: "2016-01-29",
-				// },
-				// {
-				// 	// bug in the go generator
-				// 	Name: "recoveryservices",
-				// 	// 	Swagger: "compositeRecoveryServicesClient",
-				// 	// 	Modeler: compSwagger,
-				// 	Version: "2016-06-01",
-				// 	Swagger: "vaults",
-				// },
-				// {
-				// 	// When using the readme.md, there is an exception in the modeler
-				// 	Name:    "recoveryservicesbackup",
-				// 	Version: "2016-12-01",
-				// 	// Swagger:   "readme",
-				// 	// Extension: md,
-				// 	Swagger: "backupManagement",
-				// },
+				{
+					Name:    "advisor",
+					Version: "2017-04-19",
+				},
+				{
+					Name:    "analysisservices",
+					Version: "2016-05-16",
+				},
+				{
+					Name:    "apimanagement",
+					Swagger: "compositeApiManagementClient",
+					Modeler: compSwagger,
+				},
+				{
+					Name:    "appinsights",
+					Swagger: "compositeAppInsightsManagementClient",
+					Modeler: compSwagger,
+				},
+				{
+					Name:    "authorization",
+					Version: "2015-07-01",
+				},
+				{
+					Name:    "automation",
+					Swagger: "compositeAutomation",
+					Modeler: compSwagger,
+				},
+				{
+					Name:    "batch",
+					Version: "2017-01-01",
+					Swagger: "BatchManagement",
+				},
+				{
+					Name:    "billing",
+					Version: "2017-04-24-preview",
+				},
+				{
+					Name:    "cdn",
+					Version: "2016-10-02",
+				},
+				{
+					// bug in AutoRest (duplicated files)
+					Name: "cognitiveservices",
+					// Version: "2017-04-18",
+					Version: "2016-02-01-preview",
+				},
+				{
+					Name:    "commerce",
+					Version: "2015-06-01-preview",
+				},
+				{
+					Name:    "compute",
+					Version: "2016-04-30-preview",
+				},
+				{
+					Name:    "containerservice",
+					Version: "2017-01-31",
+					Swagger: "containerService",
+					Input:   "compute",
+				},
+				{
+					Name:    "consumption",
+					Version: "2017-04-24-preview",
+				},
+				{
+					Name:    "containerregistry",
+					Version: "2017-03-01",
+				},
+				{
+					Name:    "customer-insights",
+					Version: "2017-01-01",
+				},
+				{
+					Name: "datalake-analytics",
+					SubServices: []service{
+						{
+							Name:    "account",
+							Version: "2016-11-01",
+						},
+					},
+				},
+				{
+					Name: "datalake-store",
+					SubServices: []service{
+						{
+							Name:    "account",
+							Version: "2016-11-01",
+						},
+					},
+				},
+				{
+					Name:    "devtestlabs",
+					Version: "2016-05-15",
+					Swagger: "DTL",
+				},
+				{
+					Name:    "disk",
+					Version: "2016-04-30-preview",
+					Swagger: "disk",
+					Input:   "compute",
+				},
+				{
+					Name:    "dns",
+					Version: "2016-04-01",
+				},
+				{
+					Name:    "documentdb",
+					Version: "2015-04-08",
+				},
+				{
+					Name:    "eventhub",
+					Version: "2015-08-01",
+					Swagger: "EventHub",
+				},
+				{
+					Name:    "graphrbac",
+					Swagger: "compositeGraphRbacManagementClient",
+					Modeler: compSwagger,
+				},
+				{
+					Name:    "hdinsight",
+					Swagger: "compositeHDInsight",
+					Modeler: compSwagger,
+				},
+				{
+					Name:    "insights",
+					Swagger: "compositeInsightsManagementClient",
+					Modeler: compSwagger,
+				},
+				{
+					Name:    "intune",
+					Version: "2015-01-14-preview",
+				},
+				{
+					Name:    "iothub",
+					Version: "2016-02-03",
+				},
+				{
+					Name:    "keyvault",
+					Version: "2015-06-01",
+				},
+				{
+					Name:    "logic",
+					Version: "2016-06-01",
+				},
+				{
+					Name: "machinelearning",
+					SubServices: []service{
+						{
+							Name:    "commitmentplans",
+							Version: "2016-05-01-preview",
+							Swagger: "commitmentPlans",
+							Input:   "machinelearning",
+						},
+						{
+							Name:    "webservices",
+							Version: "2017-01-01",
+							Input:   "machinelearning",
+						},
+					},
+				},
+				{
+					Name:    "mediaservices",
+					Version: "2015-10-01",
+					Swagger: "media",
+				},
+				{
+					Name:    "mobileengagement",
+					Version: "2014-12-01",
+					Swagger: "mobile-engagement",
+				},
+				{
+					Name:    "monitor",
+					Swagger: "compositeMonitorManagementClient",
+					Modeler: compSwagger,
+				},
+				{
+					Name:    "network",
+					Swagger: "compositeNetworkClient",
+					Modeler: compSwagger,
+				},
+				{
+					Name:    "notificationhubs",
+					Version: "2017-04-01",
+				},
+				{
+					// bug in the Go generator https://github.com/Azure/autorest/issues/2219
+					Name: "operationalinsights",
+					// Swagger: "compositeOperationalInsights",
+					// Modeler: compSwagger,
+					Version: "2015-11-01-preview",
+				},
+				{
+					Name:    "powerbiembedded",
+					Version: "2016-01-29",
+				},
+				{
+					// bug in the go generator
+					Name: "recoveryservices",
+					// 	Swagger: "compositeRecoveryServicesClient",
+					// 	Modeler: compSwagger,
+					Version: "2016-06-01",
+					Swagger: "vaults",
+				},
+				{
+					// When using the readme.md, there is an exception in the modeler
+					Name:    "recoveryservicesbackup",
+					Version: "2016-12-01",
+					// Swagger:   "readme",
+					// Extension: md,
+					Swagger: "backupManagement",
+				},
 				{
 					Name:    "recoveryservicessiterecovery",
 					Version: "2016-08-10",
 					Swagger: "service",
 				},
-				// {
-				// 	Name:    "redis",
-				// 	Version: "2016-04-01",
-				// },
-				// {
-				// 	Name:    "relay",
-				// 	Version: "2016-07-01",
-				// },
-				// {
-				// 	Name:    "resourcehealth",
-				// 	Version: "2015-01-01",
-				// },
-				// {
-				// 	Name: "resources",
-				// 	SubServices: []service{
-				// 		{
-				// 			Name:    "features",
-				// 			Version: "2015-12-01",
-				// 		},
-				// 		{
-				// 			Name:    "links",
-				// 			Version: "2016-09-01",
-				// 		},
-				// 		{
-				// 			Name:    "locks",
-				// 			Version: "2016-09-01",
-				// 		},
-				// 		{
-				// 			Name:    "managedapplications",
-				// 			Version: "2016-09-01-preview",
-				// 		},
-				// 		{
-				// 			Name:    "policy",
-				// 			Version: "2016-12-01",
-				// 		},
-				// 		{
-				// 			Name:    "resources",
-				// 			Version: "2016-09-01",
-				// 			// Version: "2017-05-10",
-				// 		},
-				// 		{
-				// 			Name:    "subscriptions",
-				// 			Version: "2016-06-01",
-				// 		},
-				// 	},
-				// },
-				// {
-				// 	Name:    "scheduler",
-				// 	Version: "2016-03-01",
-				// },
-				// {
-				// 	Name:    "search",
-				// 	Version: "2015-08-19",
-				// },
-				// {
-				// 	Name:    "servermanagement",
-				// 	Version: "2016-07-01-preview",
-				// },
-				// {
-				// 	Name:    "service-map",
-				// 	Version: "2015-11-01-preview",
-				// 	Swagger: "arm-service-map",
-				// },
-				// {
-				// 	Name:    "servicebus",
-				// 	Version: "2015-08-01",
-				// },
-				// {
-				// 	Name:    "servicefabric",
-				// 	Version: "2016-09-01",
-				// },
-				// {
-				// 	Name:    "sql",
-				// 	Swagger: "compositeSql",
-				// 	Modeler: compSwagger,
-				// },
-				// {
-				// 	Name:    "storage",
-				// 	Version: "2016-12-01",
-				// },
-				// {
-				// 	Name:    "storageimportexport",
-				// 	Version: "2016-11-01",
-				// },
-				// {
-				// 	Name:    "storsimple8000series",
-				// 	Version: "2017-06-01",
-				// 	Swagger: "storsimple",
-				// },
-				// {
-				// 	Name:    "streamanalytics",
-				// 	Swagger: "compositeStreamAnalytics",
-				// 	Modeler: compSwagger,
-				// },
+				{
+					Name:    "redis",
+					Version: "2016-04-01",
+				},
+				{
+					Name:    "relay",
+					Version: "2016-07-01",
+				},
+				{
+					Name:    "resourcehealth",
+					Version: "2015-01-01",
+				},
+				{
+					Name: "resources",
+					SubServices: []service{
+						{
+							Name:    "features",
+							Version: "2015-12-01",
+						},
+						{
+							Name:    "links",
+							Version: "2016-09-01",
+						},
+						{
+							Name:    "locks",
+							Version: "2016-09-01",
+						},
+						{
+							Name:    "managedapplications",
+							Version: "2016-09-01-preview",
+						},
+						{
+							Name:    "policy",
+							Version: "2016-12-01",
+						},
+						{
+							Name:    "resources",
+							Version: "2016-09-01",
+							// Version: "2017-05-10",
+						},
+						{
+							Name:    "subscriptions",
+							Version: "2016-06-01",
+						},
+					},
+				},
+				{
+					Name:    "scheduler",
+					Version: "2016-03-01",
+				},
+				{
+					Name:    "search",
+					Version: "2015-08-19",
+				},
+				{
+					Name:    "servermanagement",
+					Version: "2016-07-01-preview",
+				},
+				{
+					Name:    "service-map",
+					Version: "2015-11-01-preview",
+					Swagger: "arm-service-map",
+				},
+				{
+					Name:    "servicebus",
+					Version: "2015-08-01",
+				},
+				{
+					Name:    "servicefabric",
+					Version: "2016-09-01",
+				},
+				{
+					Name:    "sql",
+					Swagger: "compositeSql",
+					Modeler: compSwagger,
+				},
+				{
+					Name:    "storage",
+					Version: "2016-12-01",
+				},
+				{
+					Name:    "storageimportexport",
+					Version: "2016-11-01",
+				},
+				{
+					Name:    "storsimple8000series",
+					Version: "2017-06-01",
+					Swagger: "storsimple",
+				},
+				{
+					Name:    "streamanalytics",
+					Swagger: "compositeStreamAnalytics",
+					Modeler: compSwagger,
+				},
 				// {
 				// error in the modeler
 				// 	Name:    "timeseriesinsights",
 				// 	Version: "2017-02-28-preview",
 				// },
-				// {
-				// 	Name:    "trafficmanager",
-				// 	Version: "2015-11-01",
-				// },
-				// {
-				// 	Name:    "web",
-				// 	Swagger: "compositeWebAppClient",
-				// 	Modeler: compSwagger,
-				// },
+				{
+					Name:    "trafficmanager",
+					Version: "2015-11-01",
+				},
+				{
+					Name:    "web",
+					Swagger: "compositeWebAppClient",
+					Modeler: compSwagger,
+				},
 			},
 		},
 		{
 			Plane:       "dataplane",
 			InputPrefix: "",
-			Services:    []service{
-			// {
-			// 	Name:    "batch",
-			// 	Version: "2017-01-01.4.0",
-			// 	Swagger: "BatchService",
-			// },
-			// {
-			// 	Name:    "insights",
-			// 	Swagger: "compositeInsightsClient",
-			// 	Modeler: compSwagger,
-			// },
-			// {
-			// 	Name:    "keyvault",
-			// 	Version: "2016-10-01",
-			// },
-			// {
-			// 	Name:    "monitor",
-			// 	Swagger: "compositeMonitorClient",
-			// 	Modeler: compSwagger,
-			// },
-			// 	{
-			// 		Name: "search",
-			// 		SubServices: []service{
-			// 			{
-			// 				Name:    "searchindex",
-			// 				Version: "2016-09-01",
-			// 				Input:   "search",
-			// 			},
-			// 			{
-			// 				Name:    "searchservice",
-			// 				Version: "2016-09-01",
-			// 				Input:   "search",
-			// 			},
-			// 		},
-			// 	},
-			// 	{
-			// 		Name:    "servicefabric",
-			// 		Version: "2016-01-28",
-			// 	},
+			Services: []service{
+				// {
+				// 	Name:    "batch",
+				// 	Version: "2017-01-01.4.0",
+				// 	Swagger: "BatchService",
+				// },
+				// {
+				// 	Name:    "insights",
+				// 	Swagger: "compositeInsightsClient",
+				// 	Modeler: compSwagger,
+				// },
+				{
+					Name:    "keyvault",
+					Version: "2016-10-01",
+				},
+				// {
+				// 	Name:    "monitor",
+				// 	Swagger: "compositeMonitorClient",
+				// 	Modeler: compSwagger,
+				// },
+				// 	{
+				// 		Name: "search",
+				// 		SubServices: []service{
+				// 			{
+				// 				Name:    "searchindex",
+				// 				Version: "2016-09-01",
+				// 				Input:   "search",
+				// 			},
+				// 			{
+				// 				Name:    "searchservice",
+				// 				Version: "2016-09-01",
+				// 				Input:   "search",
+				// 			},
+				// 		},
+				// 	},
+				// 	{
+				// 		Name:    "servicefabric",
+				// 		Version: "2016-01-28",
+				// 	},
 			},
 		},
 		{
 			Plane:       "",
 			InputPrefix: "arm-",
-			Services:    []service{
-			// {
-			// 	Name: "datalake-store",
-			// 	SubServices: []service{
-			// 		{
-			// 			Name:    "filesystem",
-			// 			Version: "2016-11-01",
-			// 		},
-			// 	},
-			// },
-			// {
-			// 	Name: "datalake-analytics",
-			// 	SubServices: []service{
-			// 		{
-			// 			Name:    "catalog",
-			// 			Version: "2016-11-01",
-			// 		},
-			// 		{
-			// 			Name:    "job",
-			// 			Version: "2016-11-01",
-			// 		},
-			// 	},
-			// },
+			Services: []service{
+				{
+					Name: "datalake-store",
+					SubServices: []service{
+						{
+							Name:    "filesystem",
+							Version: "2016-11-01",
+						},
+					},
+				},
+				// {
+				// 	Name: "datalake-analytics",
+				// 	SubServices: []service{
+				// 		{
+				// 			Name:    "catalog",
+				// 			Version: "2016-11-01",
+				// 		},
+				// 		{
+				// 			Name:    "job",
+				// 			Version: "2016-11-01",
+				// 		},
+				// 	},
+				// },
 			},
 		},
 	}

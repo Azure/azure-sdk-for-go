@@ -19,7 +19,6 @@ func (s *QueueSASURISuite) TestGetQueueSASURI(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	cli := api.GetQueueService()
 	q := cli.GetQueueReference("name")
-	expiry := time.Time{}
 
 	expectedParts := url.URL{
 		Scheme: "https",
@@ -32,7 +31,11 @@ func (s *QueueSASURISuite) TestGetQueueSASURI(c *chk.C) {
 			"se":  {"0001-01-01T00:00:00Z"},
 		}.Encode()}
 
-	u, err := q.GetSASURI(expiry, "p")
+	options := QueueSASOptions{}
+	options.Process = true
+	options.Expiry = time.Time{}
+
+	u, err := q.GetSASURI(options)
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)
@@ -45,7 +48,6 @@ func (s *QueueSASURISuite) TestGetQueueSASURIWithSignedIPValidAPIVersionPassed(c
 	c.Assert(err, chk.IsNil)
 	cli := api.GetQueueService()
 	q := cli.GetQueueReference("name")
-	expiry := time.Time{}
 
 	expectedParts := url.URL{
 		Scheme: "https",
@@ -59,7 +61,12 @@ func (s *QueueSASURISuite) TestGetQueueSASURIWithSignedIPValidAPIVersionPassed(c
 			"se":  {"0001-01-01T00:00:00Z"},
 		}.Encode()}
 
-	u, err := q.GetSASURIWithSignedIP(expiry, "p", "127.0.0.1")
+	options := QueueSASOptions{}
+	options.Process = true
+	options.Expiry = time.Time{}
+	options.IP = "127.0.0.1"
+
+	u, err := q.GetSASURI(options)
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)
@@ -73,7 +80,6 @@ func (s *QueueSASURISuite) TestGetQueueSASURIWithSignedIPUsingOldAPIVersion(c *c
 	c.Assert(err, chk.IsNil)
 	cli := api.GetQueueService()
 	q := cli.GetQueueReference("name")
-	expiry := time.Time{}
 
 	expectedParts := url.URL{
 		Scheme: "https",
@@ -86,7 +92,12 @@ func (s *QueueSASURISuite) TestGetQueueSASURIWithSignedIPUsingOldAPIVersion(c *c
 			"se":  {"0001-01-01T00:00:00Z"},
 		}.Encode()}
 
-	u, err := q.GetSASURIWithSignedIP(expiry, "p", "127.0.0.1")
+	options := QueueSASOptions{}
+	options.Process = true
+	options.Expiry = time.Time{}
+	options.IP = "127.0.0.1"
+
+	u, err := q.GetSASURI(options)
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)

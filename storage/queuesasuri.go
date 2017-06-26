@@ -8,11 +8,57 @@ import (
 	"time"
 )
 
-// GetSASURIWithSignedIP creates an URL to the specified queue which contains the Shared
+// QueueSASOptions are options to construct a blob SAS
+// URI.
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
+type QueueSASOptions struct {
+	QueueSASPermissions
+	SASOptions
+}
+
+// SASOptions includes options used by SAS URIs for diffrenet
+// services and resources.
+// Will remove once PR 662 is merged.
+type SASOptions struct {
+	APIVersion string
+	Start      time.Time
+	Expiry     time.Time
+	IP         string
+	UseHTTPS   bool
+	Identifier string
+}
+
+// QueueSASPermissions includes the available permissions for
+// a queue SAS URI.
+type QueueSASPermissions struct {
+	Read    bool
+	Add     bool
+	Update  bool
+	Process bool
+}
+
+func (q QueueSASPermissions) buildString() string {
+	permissions := ""
+	if q.Read {
+		permissions += "r"
+	}
+	if q.Add {
+		permissions += "a"
+	}
+	if q.Update {
+		permissions += "u"
+	}
+	if q.Process {
+		permissions += "p"
+	}
+	return permissions
+}
+
+// GetSASURI creates an URL to the specified queue which contains the Shared
 // Access Signature with specified permissions and expiration time.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
-func (q *Queue) GetSASURIWithSignedIP(expiry time.Time, permissions string, signedIPRange string) (string, error) {
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
+func (q *Queue) GetSASURI(options QueueSASOptions) (string, error) {
 	canonicalizedResource, err := q.qsc.client.buildCanonicalizedResource(q.buildPath(), q.qsc.auth)
 	if err != nil {
 		return "", err
@@ -30,15 +76,18 @@ func (q *Queue) GetSASURIWithSignedIP(expiry time.Time, permissions string, sign
 	}
 
 	// assumption that start time is now.
-	//signedStart := time.Now().UTC().Format(time.RFC3339)
-	signedExpiry := expiry.UTC().Format(time.RFC3339)
+	signedStart := ""
+	if options.Start != (time.Time{}) {
+		signedStart = options.Start.UTC().Format(time.RFC3339)
+	}
+	signedExpiry := options.Expiry.UTC().Format(time.RFC3339)
 
 	// Cannot get this working yet. Any values entered generates bad URL.
 	protocols := ""
 	signedIdentifier := ""
 
-	stringToSign, err := queueSASStringToSign(q.qsc.client.apiVersion, canonicalizedResource,
-		signedExpiry, signedIPRange, permissions, protocols, signedIdentifier)
+	permissions := options.QueueSASPermissions.buildString()
+	stringToSign, err := queueSASStringToSign(q.qsc.client.apiVersion, canonicalizedResource, signedStart, signedExpiry, options.IP, permissions, protocols, signedIdentifier)
 	if err != nil {
 		return "", err
 	}
@@ -51,8 +100,8 @@ func (q *Queue) GetSASURIWithSignedIP(expiry time.Time, permissions string, sign
 		"sig": {sig},
 	}
 
-	if q.qsc.client.apiVersion >= "2015-04-05" && signedIPRange != "" {
-		sasParams.Add("sip", signedIPRange)
+	if q.qsc.client.apiVersion >= "2015-04-05" && options.IP != "" {
+		addQueryParameter(sasParams, "sip", options.IP)
 	}
 
 	uri := q.qsc.client.getEndpoint(queueServiceName, q.buildPath(), nil)
@@ -64,16 +113,14 @@ func (q *Queue) GetSASURIWithSignedIP(expiry time.Time, permissions string, sign
 	return sasURL.String(), nil
 }
 
-// GetSASURI creates an URL to the specified queue which contains the Shared
-// Access Signature with specified permissions and expiration time.
-//
-// See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
-func (q *Queue) GetSASURI(expiry time.Time, permissions string) (string, error) {
-	return q.GetSASURIWithSignedIP(expiry, permissions, "")
+func addQueryParameter(query url.Values, key, value string) url.Values {
+	if value != "" {
+		query.Add(key, value)
+	}
+	return query
 }
 
-func queueSASStringToSign(signedVersion, canonicalizedResource, signedExpiry, signedIP string, signedPermissions string, protocols string, signedIdentifier string) (string, error) {
-	var signedStart string
+func queueSASStringToSign(signedVersion, canonicalizedResource, signedStart, signedExpiry, signedIP string, signedPermissions string, protocols string, signedIdentifier string) (string, error) {
 
 	if signedVersion >= "2015-02-21" {
 		canonicalizedResource = "/queue" + canonicalizedResource

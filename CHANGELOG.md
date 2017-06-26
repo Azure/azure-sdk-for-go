@@ -13,6 +13,10 @@
 ### Storage
 - Bug fixes.
 
+### Generated code notes
+- [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) commit: a2cdf005407b81edb161c1f7b5c49b5ce8e7f041
+- [AutoRest](https://github.com/Azure/autorest) commit: 8e9c2d3704a04913a175ab76972b7d9597c77687
+
 -----
 ## `v10.0.0-beta`
 ### ARM

@@ -94,7 +94,16 @@ func (s *ContainerSuite) TestContainerExists(c *chk.C) {
 	c.Assert(ok, chk.Equals, true)
 
 	// Service SASURI test (funcs should fail, service SAS has not enough permissions)
-	sasuriString1, err := cnt1.GetSASURI(fixedTime, "racwdl")
+	sasuriOptions := ContainerSASOptions{}
+	sasuriOptions.Expiry = fixedTime
+	sasuriOptions.Read = true
+	sasuriOptions.Add = true
+	sasuriOptions.Create = true
+	sasuriOptions.Write = true
+	sasuriOptions.Delete = true
+	sasuriOptions.List = true
+
+	sasuriString1, err := cnt1.GetSASURI(sasuriOptions)
 	c.Assert(err, chk.IsNil)
 	sasuri1, err := url.Parse(sasuriString1)
 	c.Assert(err, chk.IsNil)
@@ -106,7 +115,7 @@ func (s *ContainerSuite) TestContainerExists(c *chk.C) {
 	c.Assert(err, chk.NotNil)
 	c.Assert(ok, chk.Equals, false)
 
-	sasuriString2, err := cnt2.GetSASURI(fixedTime, "racwdl")
+	sasuriString2, err := cnt2.GetSASURI(sasuriOptions)
 	c.Assert(err, chk.IsNil)
 	sasuri2, err := url.Parse(sasuriString2)
 	c.Assert(err, chk.IsNil)
@@ -220,7 +229,16 @@ func (s *ContainerSuite) TestListBlobsPagination(c *chk.C) {
 	listBlobsPagination(c, cnt, pageSize, blobs)
 
 	// Service SAS test
-	sasuriString, err := cnt.GetSASURI(fixedTime, "racwdl")
+	sasuriOptions := ContainerSASOptions{}
+	sasuriOptions.Expiry = fixedTime
+	sasuriOptions.Read = true
+	sasuriOptions.Add = true
+	sasuriOptions.Create = true
+	sasuriOptions.Write = true
+	sasuriOptions.Delete = true
+	sasuriOptions.List = true
+
+	sasuriString, err := cnt.GetSASURI(sasuriOptions)
 	c.Assert(err, chk.IsNil)
 	sasuri, err := url.Parse(sasuriString)
 	c.Assert(err, chk.IsNil)

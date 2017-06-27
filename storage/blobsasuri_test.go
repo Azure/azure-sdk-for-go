@@ -22,7 +22,6 @@ func (s *BlobSASURISuite) TestGetBlobSASURI(c *chk.C) {
 	cli := api.GetBlobService()
 	cnt := cli.GetContainerReference("container")
 	b := cnt.GetBlobReference("name")
-	expiry := time.Time{}
 
 	expectedParts := url.URL{
 		Scheme: "https",
@@ -34,9 +33,14 @@ func (s *BlobSASURISuite) TestGetBlobSASURI(c *chk.C) {
 			"sr":  {"b"},
 			"sp":  {"r"},
 			"se":  {"0001-01-01T00:00:00Z"},
-		}.Encode()}
+		}.Encode(),
+	}
 
-	u, err := b.GetSASURI(expiry, "r")
+	sasuriOptions := BlobSASOptions{}
+	sasuriOptions.Read = true
+	sasuriOptions.UseHTTPS = true
+
+	u, err := b.GetSASURI(sasuriOptions)
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)
@@ -50,7 +54,6 @@ func (s *BlobSASURISuite) TestGetBlobSASURIContainer(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	cli := api.GetBlobService()
 	cnt := cli.GetContainerReference("container")
-	expiry := time.Time{}
 
 	expectedParts := url.URL{
 		Scheme: "https",
@@ -62,9 +65,13 @@ func (s *BlobSASURISuite) TestGetBlobSASURIContainer(c *chk.C) {
 			"sr":  {"c"},
 			"sp":  {"r"},
 			"se":  {"0001-01-01T00:00:00Z"},
-		}.Encode()}
+		}.Encode(),
+	}
 
-	u, err := cnt.GetSASURI(expiry, "r")
+	sasuriOptions := ContainerSASOptions{}
+	sasuriOptions.Read = true
+
+	u, err := cnt.GetSASURI(sasuriOptions)
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)
@@ -78,7 +85,6 @@ func (s *BlobSASURISuite) TestGetBlobSASURIWithSignedIPAndProtocolValidAPIVersio
 	cli := api.GetBlobService()
 	cnt := cli.GetContainerReference("container")
 	b := cnt.GetBlobReference("name")
-	expiry := time.Time{}
 
 	expectedParts := url.URL{
 		Scheme: "https",
@@ -92,9 +98,15 @@ func (s *BlobSASURISuite) TestGetBlobSASURIWithSignedIPAndProtocolValidAPIVersio
 			"sp":  {"r"},
 			"se":  {"0001-01-01T00:00:00Z"},
 			"spr": {"https"},
-		}.Encode()}
+		}.Encode(),
+	}
 
-	u, err := b.GetSASURIWithSignedIPAndProtocol(expiry, "r", "127.0.0.1", true)
+	sasuriOptions := BlobSASOptions{}
+	sasuriOptions.Read = true
+	sasuriOptions.IP = "127.0.0.1"
+	sasuriOptions.UseHTTPS = true
+
+	u, err := b.GetSASURI(sasuriOptions)
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)
@@ -109,7 +121,6 @@ func (s *BlobSASURISuite) TestGetBlobSASURIWithSignedIPAndProtocolUsingOldAPIVer
 	cli := api.GetBlobService()
 	cnt := cli.GetContainerReference("container")
 	b := cnt.GetBlobReference("name")
-	expiry := time.Time{}
 
 	expectedParts := url.URL{
 		Scheme: "https",
@@ -121,9 +132,14 @@ func (s *BlobSASURISuite) TestGetBlobSASURIWithSignedIPAndProtocolUsingOldAPIVer
 			"sr":  {"b"},
 			"sp":  {"r"},
 			"se":  {"0001-01-01T00:00:00Z"},
-		}.Encode()}
+		}.Encode(),
+	}
 
-	u, err := b.GetSASURIWithSignedIPAndProtocol(expiry, "r", "", true)
+	sasuriOptions := BlobSASOptions{}
+	sasuriOptions.Read = true
+	sasuriOptions.UseHTTPS = true
+
+	u, err := b.GetSASURI(sasuriOptions)
 	c.Assert(err, chk.IsNil)
 	sasParts, err := url.Parse(u)
 	c.Assert(err, chk.IsNil)
@@ -133,11 +149,6 @@ func (s *BlobSASURISuite) TestGetBlobSASURIWithSignedIPAndProtocolUsingOldAPIVer
 
 func (s *BlobSASURISuite) TestBlobSASURICorrectness(c *chk.C) {
 	cli := getBlobClient(c)
-
-	if cli.client.usesDummies() {
-		c.Skip("As GetSASURI result depends on the account key, it is not practical to test it with a dummy key.")
-	}
-
 	simpleClient := &http.Client{}
 	rec := cli.client.appendRecorder(c)
 	simpleClient.Transport = rec
@@ -149,12 +160,13 @@ func (s *BlobSASURISuite) TestBlobSASURICorrectness(c *chk.C) {
 	defer cnt.Delete(nil)
 
 	body := content(100)
-	expiry := fixedTime.UTC().Add(time.Hour)
-	permissions := "r"
-
 	c.Assert(b.putSingleBlockBlob(body), chk.IsNil)
 
-	sasURI, err := b.GetSASURI(expiry, permissions)
+	sasuriOptions := BlobSASOptions{}
+	sasuriOptions.Expiry = fixedTime.UTC().Add(time.Hour)
+	sasuriOptions.Read = true
+
+	sasURI, err := b.GetSASURI(sasuriOptions)
 	c.Assert(err, chk.IsNil)
 
 	resp, err := simpleClient.Get(sasURI)
@@ -170,15 +182,15 @@ func (s *BlobSASURISuite) TestBlobSASURICorrectness(c *chk.C) {
 }
 
 func (s *BlobSASURISuite) Test_blobSASStringToSign(c *chk.C) {
-	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP", "", "")
+	_, err := blobSASStringToSign("2012-02-12", "CS", "SE", "SP", "", "", "", "", OverrideHeaders{})
 	c.Assert(err, chk.NotNil) // not implemented SAS for versions earlier than 2013-08-15
 
-	out, err := blobSASStringToSign(oldAPIVer, "CS", "SE", "SP", "", "")
+	out, err := blobSASStringToSign("SP", "", "SE", "CS", "", "", "", oldAPIVer, OverrideHeaders{})
 	c.Assert(err, chk.IsNil)
 	c.Assert(out, chk.Equals, "SP\n\nSE\nCS\n\n2013-08-15\n\n\n\n\n")
 
 	// check format for 2015-04-05 version
-	out, err = blobSASStringToSign(newerAPIVer, "CS", "SE", "SP", "127.0.0.1", "https,http")
+	out, err = blobSASStringToSign("SP", "", "SE", "CS", "", "127.0.0.1", "https,http", newerAPIVer, OverrideHeaders{})
 	c.Assert(err, chk.IsNil)
 	c.Assert(out, chk.Equals, "SP\n\nSE\n/blobCS\n\n127.0.0.1\nhttps,http\n2015-04-05\n\n\n\n\n")
 }

@@ -366,6 +366,9 @@ func (c Client) getEndpoint(service, path string, params url.Values) string {
 	return u.String()
 }
 
+// AccountSASTokenOptions includes options for constructing
+// an account SAS token.
+// https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas
 type AccountSASTokenOptions struct {
 	APIVersion    string
 	Services      Services
@@ -377,6 +380,7 @@ type AccountSASTokenOptions struct {
 	UseHTTPS      bool
 }
 
+// Services specify services accessible with an account SAS.
 type Services struct {
 	Blob  bool
 	Queue bool
@@ -384,12 +388,15 @@ type Services struct {
 	File  bool
 }
 
+// ResourceTypes specify the resources accesible with an
+// account SAS.
 type ResourceTypes struct {
 	Service   bool
 	Container bool
 	Object    bool
 }
 
+// Permissions specifies permissions for an accountSAS.
 type Permissions struct {
 	Read    bool
 	Write   bool

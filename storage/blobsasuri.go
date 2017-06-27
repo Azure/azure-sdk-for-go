@@ -8,25 +8,90 @@ import (
 	"time"
 )
 
-// GetSASURIWithSignedIPAndProtocol creates an URL to the specified blob which contains the Shared
-// Access Signature with specified permissions and expiration time. Also includes signedIPRange and allowed protocols.
-// If old API version is used but no signedIP is passed (ie empty string) then this should still work.
-// We only populate the signedIP when it non-empty.
+// OverrideHeaders defines overridable response heaedrs in
+// a request using a SAS URI.
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
+type OverrideHeaders struct {
+	CacheControl       string
+	ContentDisposition string
+	ContentEncoding    string
+	ContentLanguage    string
+	ContentType        string
+}
+
+// BlobSASOptions are options to construct a blob SAS
+// URI.
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
+type BlobSASOptions struct {
+	BlobServiceSASPermissions
+	OverrideHeaders
+	SASOptions
+}
+
+// SASOptions includes options used by SAS URIs for different
+// services and resources.
+type SASOptions struct {
+	APIVersion string
+	Start      time.Time
+	Expiry     time.Time
+	IP         string
+	UseHTTPS   bool
+	Identifier string
+}
+
+// BlobServiceSASPermissions includes the available permissions for
+// blob service SAS URI.
+type BlobServiceSASPermissions struct {
+	Read   bool
+	Add    bool
+	Create bool
+	Write  bool
+	Delete bool
+}
+
+func (p BlobServiceSASPermissions) buildString() string {
+	permissions := ""
+	if p.Read {
+		permissions += "r"
+	}
+	if p.Add {
+		permissions += "a"
+	}
+	if p.Create {
+		permissions += "c"
+	}
+	if p.Write {
+		permissions += "w"
+	}
+	if p.Delete {
+		permissions += "d"
+	}
+	return permissions
+}
+
+// GetSASURI creates an URL to the blob which contains the Shared
+// Access Signature with the specified options.
 //
-// See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
-func (b *Blob) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions string, signedIPRange string, HTTPSOnly bool) (string, error) {
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
+func (b *Blob) GetSASURI(options BlobSASOptions) (string, error) {
 	uri := b.GetURL()
 	signedResource := "b"
 	canonicalizedResource, err := b.Container.bsc.client.buildCanonicalizedResource(uri, b.Container.bsc.auth)
 	if err != nil {
 		return "", err
 	}
-	return b.Container.bsc.client.commonSASURI(expiry, uri, permissions, signedIPRange, canonicalizedResource, signedResource, HTTPSOnly)
+
+	permissions := options.BlobServiceSASPermissions.buildString()
+	return b.Container.bsc.client.blobAndFileSASURI(options.SASOptions, uri, permissions, canonicalizedResource, signedResource, options.OverrideHeaders)
 }
 
-func (c *Client) commonSASURI(expiry time.Time, uri, permissions, signedIPRange, canonicalizedResource, signedResource string, HTTPSOnly bool) (string, error) {
+func (c *Client) blobAndFileSASURI(options SASOptions, uri, permissions, canonicalizedResource, signedResource string, headers OverrideHeaders) (string, error) {
+	start := ""
+	if options.Start != (time.Time{}) {
+		start = options.Start.UTC().Format(time.RFC3339)
+	}
 
-	signedExpiry := expiry.UTC().Format(time.RFC3339)
+	expiry := options.Expiry.UTC().Format(time.RFC3339)
 
 	// We need to replace + with %2b first to avoid being treated as a space (which is correct for query strings, but not the path component).
 	canonicalizedResource = strings.Replace(canonicalizedResource, "+", "%2b", -1)
@@ -36,10 +101,10 @@ func (c *Client) commonSASURI(expiry time.Time, uri, permissions, signedIPRange,
 	}
 
 	protocols := "https,http"
-	if HTTPSOnly {
+	if options.UseHTTPS {
 		protocols = "https"
 	}
-	stringToSign, err := blobSASStringToSign(c.apiVersion, canonicalizedResource, signedExpiry, permissions, signedIPRange, protocols)
+	stringToSign, err := blobSASStringToSign(permissions, start, expiry, canonicalizedResource, options.Identifier, options.IP, protocols, c.apiVersion, headers)
 	if err != nil {
 		return "", err
 	}
@@ -47,18 +112,26 @@ func (c *Client) commonSASURI(expiry time.Time, uri, permissions, signedIPRange,
 	sig := c.computeHmac256(stringToSign)
 	sasParams := url.Values{
 		"sv":  {c.apiVersion},
-		"se":  {signedExpiry},
+		"se":  {expiry},
 		"sr":  {signedResource},
 		"sp":  {permissions},
 		"sig": {sig},
 	}
 
+	addQueryParameter(sasParams, "st", start)
+	addQueryParameter(sasParams, "si", options.Identifier)
+
 	if c.apiVersion >= "2015-04-05" {
 		sasParams.Add("spr", protocols)
-		if signedIPRange != "" {
-			sasParams.Add("sip", signedIPRange)
-		}
+		addQueryParameter(sasParams, "sip", options.IP)
 	}
+
+	// Add override response hedaers
+	addQueryParameter(sasParams, "rscc", headers.CacheControl)
+	addQueryParameter(sasParams, "rscd", headers.ContentDisposition)
+	addQueryParameter(sasParams, "rsce", headers.ContentEncoding)
+	addQueryParameter(sasParams, "rscl", headers.ContentLanguage)
+	addQueryParameter(sasParams, "rsct", headers.ContentType)
 
 	sasURL, err := url.Parse(uri)
 	if err != nil {
@@ -68,16 +141,19 @@ func (c *Client) commonSASURI(expiry time.Time, uri, permissions, signedIPRange,
 	return sasURL.String(), nil
 }
 
-// GetSASURI creates an URL to the specified blob which contains the Shared
-// Access Signature with specified permissions and expiration time.
-//
-// See https://msdn.microsoft.com/en-us/library/azure/ee395415.aspx
-func (b *Blob) GetSASURI(expiry time.Time, permissions string) (string, error) {
-	return b.GetSASURIWithSignedIPAndProtocol(expiry, permissions, "", false)
+func addQueryParameter(query url.Values, key, value string) url.Values {
+	if value != "" {
+		query.Add(key, value)
+	}
+	return query
 }
 
-func blobSASStringToSign(signedVersion, canonicalizedResource, signedExpiry, signedPermissions string, signedIP string, protocols string) (string, error) {
-	var signedStart, signedIdentifier, rscc, rscd, rsce, rscl, rsct string
+func blobSASStringToSign(signedPermissions, signedStart, signedExpiry, canonicalizedResource, signedIdentifier, signedIP, protocols, signedVersion string, headers OverrideHeaders) (string, error) {
+	rscc := headers.CacheControl
+	rscd := headers.ContentDisposition
+	rsce := headers.ContentEncoding
+	rscl := headers.ContentLanguage
+	rsct := headers.ContentType
 
 	if signedVersion >= "2015-02-21" {
 		canonicalizedResource = "/blob" + canonicalizedResource

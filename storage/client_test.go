@@ -518,7 +518,16 @@ func (s *StorageClientSuite) Test_doRetry(c *chk.C) {
 	// Service SAS test
 	blobCli := getBlobClient(c)
 	cnt := blobCli.GetContainerReference(containerName(c))
-	sasuriString, err := cnt.GetSASURI(fixedTime, "racwdl")
+	sasuriOptions := ContainerSASOptions{}
+	sasuriOptions.Expiry = fixedTime
+	sasuriOptions.Read = true
+	sasuriOptions.Add = true
+	sasuriOptions.Create = true
+	sasuriOptions.Write = true
+	sasuriOptions.Delete = true
+	sasuriOptions.List = true
+
+	sasuriString, err := cnt.GetSASURI(sasuriOptions)
 	c.Assert(err, chk.IsNil)
 
 	sasuri, err := url.Parse(sasuriString)

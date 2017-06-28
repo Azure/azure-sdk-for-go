@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/hex"
 	"encoding/xml"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/url"
@@ -16,9 +17,21 @@ import (
 	chk "gopkg.in/check.v1"
 )
 
+var (
+	overwriteRec *bool
+	pwd          string
+)
+
 func TestMain(m *testing.M) {
+	var err error
+	overwriteRec = flag.Bool("ow", false, "Regenerate recordings for testing")
+	pwd, err = os.Getwd()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to get current working directory: %v\n", err)
+		os.Exit(1)
+	}
 	exitStatus := m.Run()
-	err := fixRecordings()
+	err = fixRecordings()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "After test run, fixing recordings failed with error: %v\n", err)
 		exitStatus = 1

@@ -16,18 +16,6 @@ type QueueSASOptions struct {
 	SASOptions
 }
 
-// SASOptions includes options used by SAS URIs for diffrenet
-// services and resources.
-// Will remove once PR 662 is merged.
-type SASOptions struct {
-	APIVersion string
-	Start      time.Time
-	Expiry     time.Time
-	IP         string
-	UseHTTPS   bool
-	Identifier string
-}
-
 // QueueSASPermissions includes the available permissions for
 // a queue SAS URI.
 type QueueSASPermissions struct {
@@ -110,13 +98,6 @@ func (q *Queue) GetSASURI(options QueueSASOptions) (string, error) {
 	}
 	sasURL.RawQuery = sasParams.Encode()
 	return sasURL.String(), nil
-}
-
-func addQueryParameter(query url.Values, key, value string) url.Values {
-	if value != "" {
-		query.Add(key, value)
-	}
-	return query
 }
 
 func queueSASStringToSign(signedVersion, canonicalizedResource, signedStart, signedExpiry, signedIP string, signedPermissions string, protocols string, signedIdentifier string) (string, error) {

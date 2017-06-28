@@ -28,17 +28,6 @@ type BlobSASOptions struct {
 	SASOptions
 }
 
-// SASOptions includes options used by SAS URIs for different
-// services and resources.
-type SASOptions struct {
-	APIVersion string
-	Start      time.Time
-	Expiry     time.Time
-	IP         string
-	UseHTTPS   bool
-	Identifier string
-}
-
 // BlobServiceSASPermissions includes the available permissions for
 // blob service SAS URI.
 type BlobServiceSASPermissions struct {
@@ -139,13 +128,6 @@ func (c *Client) blobAndFileSASURI(options SASOptions, uri, permissions, canonic
 	}
 	sasURL.RawQuery = sasParams.Encode()
 	return sasURL.String(), nil
-}
-
-func addQueryParameter(query url.Values, key, value string) url.Values {
-	if value != "" {
-		query.Add(key, value)
-	}
-	return query
 }
 
 func blobSASStringToSign(signedPermissions, signedStart, signedExpiry, canonicalizedResource, signedIdentifier, signedIP, protocols, signedVersion string, headers OverrideHeaders) (string, error) {

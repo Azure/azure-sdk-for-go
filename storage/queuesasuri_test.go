@@ -55,7 +55,7 @@ func (s *QueueSASURISuite) TestGetQueueSASURIWithSignedIPValidAPIVersionPassed(c
 		Path:   "/name",
 		RawQuery: url.Values{
 			"sv":  {newerAPIVer},
-			"sig": {"I3RI/B4B7VxYDvKdHc4iXCxY1iIMIVdoNV7ENEJOe6A="},
+			"sig": {"8uvfE93HdYxQ3xvt/CUN3S7sYEl1LcuHBC0oYoGDnfw="},
 			"sip": {"127.0.0.1"},
 			"sp":  {"p"},
 			"se":  {"0001-01-01T00:00:00Z"},

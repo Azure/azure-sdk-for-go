@@ -70,8 +70,10 @@ func (q *Queue) GetSASURI(options QueueSASOptions) (string, error) {
 	}
 	signedExpiry := options.Expiry.UTC().Format(time.RFC3339)
 
-	// Cannot get this working yet. Any values entered generates bad URL.
-	protocols := ""
+	protocols := "https,http"
+	if options.UseHTTPS {
+		protocols = "https"
+	}
 
 	permissions := options.QueueSASPermissions.buildString()
 	stringToSign, err := queueSASStringToSign(q.qsc.client.apiVersion, canonicalizedResource, signedStart, signedExpiry, options.IP, permissions, protocols, options.Identifier)
@@ -87,7 +89,8 @@ func (q *Queue) GetSASURI(options QueueSASOptions) (string, error) {
 		"sig": {sig},
 	}
 
-	if q.qsc.client.apiVersion >= "2015-04-05" && options.IP != "" {
+	if q.qsc.client.apiVersion >= "2015-04-05" {
+		sasParams.Add("spr", protocols)
 		addQueryParameter(sasParams, "sip", options.IP)
 	}
 

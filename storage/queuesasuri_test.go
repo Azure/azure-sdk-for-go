@@ -29,7 +29,6 @@ func (s *QueueSASURISuite) TestGetQueueSASURI(c *chk.C) {
 			"sig": {"dYZ+elcEz3ZXEnTDKR5+RCrMzk0L7/ATWsemNzb36VM="},
 			"sp":  {"p"},
 			"se":  {"0001-01-01T00:00:00Z"},
-			"spr": {"https,http"},
 		}.Encode()}
 
 	options := QueueSASOptions{}
@@ -92,7 +91,6 @@ func (s *QueueSASURISuite) TestGetQueueSASURIWithSignedIPUsingOldAPIVersion(c *c
 			"sig": {"dYZ+elcEz3ZXEnTDKR5+RCrMzk0L7/ATWsemNzb36VM="},
 			"sp":  {"p"},
 			"se":  {"0001-01-01T00:00:00Z"},
-			"spr": {"https,http"},
 		}.Encode()}
 
 	options := QueueSASOptions{}

@@ -27,6 +27,7 @@ type QueueSASPermissions struct {
 
 func (q QueueSASPermissions) buildString() string {
 	permissions := ""
+
 	if q.Read {
 		permissions += "r"
 	}
@@ -63,7 +64,6 @@ func (q *Queue) GetSASURI(options QueueSASOptions) (string, error) {
 		return "", err
 	}
 
-	// assumption that start time is now.
 	signedStart := ""
 	if options.Start != (time.Time{}) {
 		signedStart = options.Start.UTC().Format(time.RFC3339)
@@ -103,7 +103,7 @@ func (q *Queue) GetSASURI(options QueueSASOptions) (string, error) {
 	return sasURL.String(), nil
 }
 
-func queueSASStringToSign(signedVersion, canonicalizedResource, signedStart, signedExpiry, signedIP string, signedPermissions string, protocols string, signedIdentifier string) (string, error) {
+func queueSASStringToSign(signedVersion, canonicalizedResource, signedStart, signedExpiry, signedIP, signedPermissions, protocols, signedIdentifier string) (string, error) {
 
 	if signedVersion >= "2015-02-21" {
 		canonicalizedResource = "/queue" + canonicalizedResource

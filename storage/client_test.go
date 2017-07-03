@@ -48,6 +48,16 @@ func getBasicClient(c *chk.C) *Client {
 func (client *Client) appendRecorder(c *chk.C) *recorder.Recorder {
 	tests := strings.Split(c.TestName(), ".")
 	path := filepath.Join(recordingsFolder, tests[0], tests[1])
+
+	if overwriteRec {
+		fullPath := filepath.Join(pwd, path+".yaml")
+		_, err := os.Stat(fullPath)
+		if err == nil {
+			err := os.Remove(fullPath)
+			c.Assert(err, chk.IsNil)
+		}
+	}
+
 	rec, err := recorder.New(path)
 	c.Assert(err, chk.IsNil)
 	client.HTTPClient = &http.Client{

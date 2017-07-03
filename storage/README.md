@@ -26,28 +26,6 @@ When contributing, please conform to the following practices:
    - This project uses HTTP recordings for testing.
    - The recorder should be attached to the client before calling the functions to test and later stopped.
    - If you updated an existing test, its recording might need to be updated. Run `go test ./storage/... -ow -check.f TestName` to rerecord the test.
-
-``` go
-func (s *StorageQueueSuite) TestQueueExists(c *chk.C) {
-cli := getQueueClient(c)
-rec := cli.client.appendRecorder(c)
-defer rec.Stop()
-
-queue1 := cli.GetQueueReference(queueName(c, "nonexistent"))
-ok, err := queue1.Exists()
-c.Assert(err, chk.IsNil)
-c.Assert(ok, chk.Equals, false)
-
-queue2 := cli.GetQueueReference(queueName(c, "exisiting"))
-c.Assert(queue2.Create(nil), chk.IsNil)
-defer queue2.Delete(nil)
-
-ok, err = queue2.Exists()
-c.Assert(err, chk.IsNil)
-c.Assert(ok, chk.Equals, true)
-}
-```
-
    - Important note: all HTTP requests in the recording must be unique: different bodies, headers (`User-Agent`, `Authorization` and `Date` or `x-ms-date` headers are ignored), URLs and methods. As opposed to the example above, the following test is not suitable for recording:
 
 ``` go
@@ -66,6 +44,29 @@ defer queue.Delete(nil)
 
 ok, err = queue.Exists() // This is the very same request as the one 5 lines above
 // The test replayer gets confused and the test fails in the last line
+c.Assert(err, chk.IsNil)
+c.Assert(ok, chk.Equals, true)
+}
+```
+
+  - On the other side, this test does not repeat requests: the URLs are different.
+
+``` go
+func (s *StorageQueueSuite) TestQueueExists(c *chk.C) {
+cli := getQueueClient(c)
+rec := cli.client.appendRecorder(c)
+defer rec.Stop()
+
+queue1 := cli.GetQueueReference(queueName(c, "nonexistent"))
+ok, err := queue1.Exists()
+c.Assert(err, chk.IsNil)
+c.Assert(ok, chk.Equals, false)
+
+queue2 := cli.GetQueueReference(queueName(c, "exisiting"))
+c.Assert(queue2.Create(nil), chk.IsNil)
+defer queue2.Delete(nil)
+
+ok, err = queue2.Exists()
 c.Assert(err, chk.IsNil)
 c.Assert(ok, chk.Equals, true)
 }

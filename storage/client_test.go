@@ -49,7 +49,7 @@ func (client *Client) appendRecorder(c *chk.C) *recorder.Recorder {
 	tests := strings.Split(c.TestName(), ".")
 	path := filepath.Join(recordingsFolder, tests[0], tests[1])
 
-	if *overwriteRec {
+	if overwriteRec {
 		fullPath := filepath.Join(pwd, path+".yaml")
 		_, err := os.Stat(fullPath)
 		if err == nil {

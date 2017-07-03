@@ -18,13 +18,13 @@ import (
 )
 
 var (
-	overwriteRec *bool
+	overwriteRec bool
 	pwd          string
 )
 
 func TestMain(m *testing.M) {
 	var err error
-	overwriteRec = flag.Bool("ow", false, "Regenerate recordings for testing")
+	flag.BoolVar(&overwriteRec, "ow", false, "Regenerate recordings for testing")
 	pwd, err = os.Getwd()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to get current working directory: %v\n", err)

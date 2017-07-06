@@ -20,10 +20,10 @@ package consumption
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v10.0.2-beta arm-consumption/2017-04-24-preview"
+	return "Azure-SDK-For-Go/v10.1.0-beta arm-consumption/2017-04-24-preview"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.
 func Version() string {
-	return "v10.0.2-beta"
+	return "v10.1.0-beta"
 }

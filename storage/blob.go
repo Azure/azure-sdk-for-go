@@ -230,7 +230,9 @@ func (b *Blob) getRange(options *GetBlobRangeOptions) (*storageResponse, error) 
 	if options != nil {
 		if options.Range != nil {
 			headers["Range"] = options.Range.String()
-			headers["x-ms-range-get-content-md5"] = fmt.Sprintf("%v", options.GetRangeContentMD5)
+			if options.GetRangeContentMD5 {
+				headers["x-ms-range-get-content-md5"] = "true"
+			}
 		}
 		if options.GetBlobOptions != nil {
 			headers = mergeHeaders(headers, headersFromStruct(*options.GetBlobOptions))

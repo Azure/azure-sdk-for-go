@@ -136,6 +136,10 @@ var (
 					Version: "2017-03-01",
 				},
 				{
+					Name:    "cosmos-db",
+					Version: "2015-04-08",
+				},
+				{
 					Name:    "customer-insights",
 					Version: "2017-01-01",
 				},
@@ -244,6 +248,10 @@ var (
 					Modeler: compSwagger,
 				},
 				{
+					Name:    "mysql",
+					Version: "2017-04-30-preview",
+				},
+				{
 					Name:    "network",
 					Swagger: "compositeNetworkClient",
 					Modeler: compSwagger,
@@ -258,6 +266,10 @@ var (
 					// Swagger: "compositeOperationalInsights",
 					// Modeler: compSwagger,
 					Version: "2015-11-01-preview",
+				},
+				{
+					Name:    "postgresql",
+					Version: "2017-04-30-preview",
 				},
 				{
 					Name:    "powerbiembedded",

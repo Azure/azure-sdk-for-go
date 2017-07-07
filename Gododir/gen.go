@@ -176,10 +176,10 @@ var (
 					Name:    "dns",
 					Version: "2016-04-01",
 				},
-				{
-					Name:    "documentdb",
-					Version: "2015-04-08",
-				},
+				// {
+				// 	Name:    "documentdb",
+				// 	Version: "2015-04-08",
+				// },
 				{
 					Name:    "eventhub",
 					Version: "2015-08-01",
@@ -367,11 +367,11 @@ var (
 					Name:    "servicefabric",
 					Version: "2016-09-01",
 				},
-				{
-					Name:    "sql",
-					Swagger: "compositeSql",
-					Modeler: compSwagger,
-				},
+				// {
+				// 	Name:    "sql",
+				// 	Swagger: "compositeSql",
+				// 	Modeler: compSwagger,
+				// },
 				{
 					Name:    "storage",
 					Version: "2016-12-01",

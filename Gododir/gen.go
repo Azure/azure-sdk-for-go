@@ -544,6 +544,7 @@ func tasks(p *do.Project) {
 	p.Use("govet", vetTasks)
 	p.Use("delete", deleteTasks)
 	p.Task("management", do.S{"setvars"}, managementVersion)
+	p.Task("addVersion", nil, addVersion)
 }
 
 func setVars(c *do.Context) {
@@ -601,7 +602,7 @@ func generate(service *service) {
 	autorest := exec.Command(execCommand, commandArgs...)
 	autorest.Dir = workingDir
 
-	if err := runner(autorest); err != nil {
+	if _, err := runner(autorest); err != nil {
 		panic(fmt.Errorf("Autorest error: %s", err))
 	}
 
@@ -630,7 +631,7 @@ func formatTasks(p *do.Project) {
 func format(service *service) {
 	fmt.Printf("Formatting %s...\n\n", service.Fullname)
 	gofmt := exec.Command("gofmt", "-w", service.Output)
-	err := runner(gofmt)
+	_, err := runner(gofmt)
 	if err != nil {
 		panic(fmt.Errorf("gofmt error: %s", err))
 	}
@@ -643,7 +644,7 @@ func buildTasks(p *do.Project) {
 func build(service *service) {
 	fmt.Printf("Building %s...\n\n", service.Fullname)
 	gobuild := exec.Command("go", "build", service.Namespace)
-	err := runner(gobuild)
+	_, err := runner(gobuild)
 	if err != nil {
 		panic(fmt.Errorf("go build error: %s", err))
 	}
@@ -656,7 +657,7 @@ func lintTasks(p *do.Project) {
 func lint(service *service) {
 	fmt.Printf("Linting %s...\n\n", service.Fullname)
 	golint := exec.Command(filepath.Join(gopath, "bin", "golint"), service.Namespace)
-	err := runner(golint)
+	_, err := runner(golint)
 	if err != nil {
 		panic(fmt.Errorf("golint error: %s", err))
 	}
@@ -669,9 +670,28 @@ func vetTasks(p *do.Project) {
 func vet(service *service) {
 	fmt.Printf("Vetting %s...\n\n", service.Fullname)
 	govet := exec.Command("go", "vet", service.Namespace)
-	err := runner(govet)
+	_, err := runner(govet)
 	if err != nil {
 		panic(fmt.Errorf("go vet error: %s", err))
+	}
+}
+
+func addVersion(c *do.Context) {
+	gitStatus := exec.Command("git", "status", "-s")
+	out, err := runner(gitStatus)
+	if err != nil {
+		panic(fmt.Errorf("Git error: %s", err))
+	}
+	files := strings.Split(out, "\n")
+
+	for _, f := range files {
+		if strings.HasPrefix(f, " M ") && strings.HasSuffix(f, "version.go") {
+			gitAdd := exec.Command("git", "add", f[3:])
+			_, err := runner(gitAdd)
+			if err != nil {
+				panic(fmt.Errorf("Git error: %s", err))
+			}
+		}
 	}
 }
 
@@ -702,7 +722,7 @@ func addTasks(fn func(*service), p *do.Project) {
 	p.Task("all", deps, nil)
 }
 
-func runner(cmd *exec.Cmd) error {
+func runner(cmd *exec.Cmd) (string, error) {
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout, cmd.Stderr = &stdout, &stderr
 	err := cmd.Run()
@@ -712,5 +732,5 @@ func runner(cmd *exec.Cmd) error {
 	if stderr.Len() > 0 {
 		fmt.Println(stderr.String())
 	}
-	return err
+	return stdout.String(), err
 }

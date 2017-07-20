@@ -185,8 +185,7 @@ func compareHeaders(r *http.Request, i cassette.Request) bool {
 		deleteHeaders(cassetteHeaders, isContentType)
 	}
 
-	b := reflect.DeepEqual(requestHeaders, cassetteHeaders)
-	return b
+	return reflect.DeepEqual(requestHeaders, cassetteHeaders)
 }
 
 func compareBodies(r *http.Request, i cassette.Request) bool {

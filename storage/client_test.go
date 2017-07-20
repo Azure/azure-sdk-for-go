@@ -44,6 +44,14 @@ func deleteHeaders(haystack http.Header, predicate func(string) bool) {
 		}
 	}
 }
+func getHeaders(haystack http.Header, predicate func(string) bool) string {
+	for key, value := range haystack {
+		if predicate(key) && len(value) > 0 {
+			return value[0]
+		}
+	}
+	return ""
+}
 
 // getBasicClient returns a test client from storage credentials in the env
 func getBasicClient(c *chk.C) *Client {
@@ -148,14 +156,14 @@ func compareHeaders(r *http.Request, i cassette.Request) bool {
 	deleteHeaders(cassetteHeaders, isAuthorization)
 	deleteHeaders(cassetteHeaders, isDate)
 
-	srcURLstr := requestHeaders.Get("X-Ms-Copy-Source")
+	isCopySource := getHeaderMatchPredicate("X-Ms-Copy-Source")
+	srcURLstr := getHeaders(requestHeaders, isCopySource)
 	if srcURLstr != "" {
 		srcURL, err := url.Parse(srcURLstr)
 		if err != nil {
 			return false
 		}
 		modifiedURL := modifyURL(srcURL)
-		isCopySource := getHeaderMatchPredicate("X-Ms-Copy-Source")
 		setHeaders(requestHeaders, isCopySource, modifiedURL.String())
 	}
 
@@ -163,14 +171,16 @@ func compareHeaders(r *http.Request, i cassette.Request) bool {
 	if isBatchOp(r.URL.String()) {
 		// They all start like this, but then they have a UUID...
 		ctPrefixBatch := "multipart/mixed; boundary=batch_"
-		contentTypeRequest := requestHeaders.Get("Content-Type")
-		contentTypeCassette := cassetteHeaders.Get("Content-Type")
+
+		isContentType := getHeaderMatchPredicate("Content-Type")
+
+		contentTypeRequest := getHeaders(requestHeaders, isContentType)
+		contentTypeCassette := getHeaders(cassetteHeaders, isContentType)
 		if !(strings.HasPrefix(contentTypeRequest, ctPrefixBatch) &&
 			strings.HasPrefix(contentTypeCassette, ctPrefixBatch)) {
 			return false
 		}
 
-		isContentType := getHeaderMatchPredicate("Content-Type")
 		deleteHeaders(requestHeaders, isContentType)
 		deleteHeaders(cassetteHeaders, isContentType)
 	}

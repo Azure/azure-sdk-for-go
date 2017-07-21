@@ -399,7 +399,7 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	}
 
 	for k, v := range headers {
-		req.Header.Add(k, v)
+		req.Header[k] = append(req.Header[k], v) // Must bypass case munging present in `Add` by using map functions directly. See https://github.com/Azure/azure-sdk-for-go/issues/645
 	}
 
 	resp, err := c.Sender.Send(&c, req)

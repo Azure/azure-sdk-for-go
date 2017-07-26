@@ -325,7 +325,7 @@ type IServerPropertiesForCreate interface {
 
 // ServerPropertiesForCreate is the properties used to create a new server.
 type ServerPropertiesForCreate struct {
-	CreateMode     CreateMode         `json:"createMode,omitemty"`
+	CreateMode     CreateMode         `json:"createMode,omitempty"`
 	StorageMB      *int64             `json:"storageMB,omitempty"`
 	Version        ServerVersion      `json:"version,omitempty"`
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
@@ -348,7 +348,7 @@ func (spfc ServerPropertiesForCreate) AsServerPropertiesForRestore() (*ServerPro
 
 // ServerPropertiesForDefaultCreate is the properties used to create a new server.
 type ServerPropertiesForDefaultCreate struct {
-	CreateMode                 CreateMode         `json:"createMode,omitemty"`
+	CreateMode                 CreateMode         `json:"createMode,omitempty"`
 	StorageMB                  *int64             `json:"storageMB,omitempty"`
 	Version                    ServerVersion      `json:"version,omitempty"`
 	SslEnforcement             SslEnforcementEnum `json:"sslEnforcement,omitempty"`
@@ -384,7 +384,7 @@ func (spfdc ServerPropertiesForDefaultCreate) AsServerPropertiesForRestore() (*S
 
 // ServerPropertiesForRestore is the properties to a new server by restoring from a backup.
 type ServerPropertiesForRestore struct {
-	CreateMode         CreateMode         `json:"createMode,omitemty"`
+	CreateMode         CreateMode         `json:"createMode,omitempty"`
 	StorageMB          *int64             `json:"storageMB,omitempty"`
 	Version            ServerVersion      `json:"version,omitempty"`
 	SslEnforcement     SslEnforcementEnum `json:"sslEnforcement,omitempty"`

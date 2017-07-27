@@ -30,7 +30,7 @@ func NewSwaggerFinder(targetDir string, output io.Writer) (constructed *SwaggerF
 }
 
 // Enumerate lists out all instances of Swagger files in the SwaggerFinder's `Root`.
-func (f *SwaggerFinder) Enumerate() collection.Enumerator {
+func (f *SwaggerFinder) Enumerate(cancel <-chan struct{}) collection.Enumerator {
 	retval := make(chan interface{})
 
 	go func() {
@@ -85,7 +85,11 @@ func (f *SwaggerFinder) Enumerate() collection.Enumerator {
 				} else {
 					seen[manifest.Info.Title] = []string{manifest.Info.Version}
 				}
-				retval <- manifest
+				select {
+				case retval <- manifest:
+				case <-cancel:
+					return
+				}
 			}
 			return
 		})

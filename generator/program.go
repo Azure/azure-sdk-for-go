@@ -27,6 +27,7 @@ const (
 	ExitCodeOkay int = iota
 	ExitCodeMissingRequirements
 	ExitCodeFailedToClone
+	ExitCodeFinderFailure
 )
 
 var (
@@ -104,7 +105,7 @@ func init() {
 		localAzureRESTAPISpecsPath = remoteAzureRESTAPISpecsPath
 	} else {
 		var err error
-		localAzureRESTAPISpecsPath, err = ioutil.TempDir("./", "")
+		localAzureRESTAPISpecsPath, err = ioutil.TempDir("", "")
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(ExitCodeFailedToClone)
@@ -116,7 +117,7 @@ func main() {
 	var repoLoc string
 	exitStatus := ExitCodeOkay
 	var err error
-	defer os.Exit(exitStatus)
+	defer func() { os.Exit(exitStatus) }()
 
 	errLog := log.New(os.Stderr, "[ERROR] ", 0)
 
@@ -130,24 +131,24 @@ func main() {
 		return
 	}
 
-	if noClone == false {
-		if temp, err := cloneAPISpecs(remoteAzureRESTAPISpecsPath, localAzureRESTAPISpecsPath); err == nil {
-			repoLoc = temp
-			defer func() {
-				if wait {
-					fmt.Print("Press ENTER to continue...")
-					fmt.Scanln()
-				}
+	if noClone {
+		repoLoc = localAzureRESTAPISpecsPath
+	} else if temp, err := cloneAPISpecs(remoteAzureRESTAPISpecsPath, localAzureRESTAPISpecsPath); err == nil {
+		repoLoc = temp
+		defer func() {
+			if wait {
+				fmt.Print("Press ENTER to continue...")
+				fmt.Scanln()
+			}
 
-				if err := os.RemoveAll(repoLoc); err != nil {
-					errLog.Print(err)
-				}
-			}()
-		} else {
-			errLog.Print(err)
-			exitStatus = ExitCodeFailedToClone
-			return
-		}
+			if err := os.RemoveAll(repoLoc); err != nil {
+				errLog.Print(err)
+			}
+		}()
+	} else {
+		errLog.Print(err)
+		exitStatus = ExitCodeFailedToClone
+		return
 	}
 
 	if err = checkoutAPISpecsVer(azureRESTAPIBranch, repoLoc); err != nil {
@@ -162,9 +163,15 @@ func main() {
 	}
 
 	finder, err := NewSwaggerFinder(repoLoc, finderOutput)
+	if err != nil {
+		errLog.Print(err)
+		exitStatus = ExitCodeFinderFailure
+		return
+	}
 
 	if dryRun {
-		namespaces := finder.Enumerate().Select(func(x interface{}) interface{} {
+		fmt.Println("Executing Preview")
+		namespaces := finder.Enumerate(nil).Select(func(x interface{}) interface{} {
 			namespace, err := getNamespace(x.(metaSwagger))
 			if err != nil {
 				return err
@@ -196,7 +203,7 @@ func main() {
 
 	found, generated, formatted, vetted := 0, 0, 0, 0
 
-	processor := finder.Enumerate().Select(func(x interface{}) interface{} {
+	processor := finder.Enumerate(nil).Select(func(x interface{}) interface{} {
 		found++
 		return x
 	}).ParallelSelect(func(x interface{}) interface{} {
@@ -259,16 +266,19 @@ func main() {
 
 func cloneAPISpecs(origin, local string) (string, error) {
 	_, cloneLoc := filepath.Split(local)
+	if verbose {
+		fmt.Println("Cloning Azure REST API Specs to: ", cloneLoc)
+	}
 	clone := exec.Command("git", "clone", origin, cloneLoc)
-	clone.Stderr = ioutil.Discard
-	clone.Stdout = ioutil.Discard
+	clone.Stdout = os.Stdout
+	clone.Stderr = os.Stderr
 	return cloneLoc, clone.Run()
 }
 
 func checkoutAPISpecsVer(target, repoLocation string) error {
 	checkout := exec.Command("git", "checkout", target)
-	checkout.Stdout = ioutil.Discard
-	checkout.Stderr = ioutil.Discard
+	checkout.Stdout = os.Stdout
+	checkout.Stderr = os.Stderr
 	checkout.Dir = repoLocation
 	return checkout.Run()
 }
@@ -355,14 +365,19 @@ func vet(path string) (err error) {
 // getNamespace takes a swagger and finds the appropriate namespace to be fed into Autorest.
 var getNamespace = func() func(metaSwagger) (string, error) {
 	//Defining the Regexp strategies statically like this helps improve perf by ensuring they only get compiled once.
-	standardPattern := regexp.MustCompile(`(?:(?P<plane>\w+)-)?(?P<package>[\w\d\.\-]+)(?:[/\\](?P<subpackage>(?:[\w\d]+[/\\]?)+))?[/\\](?P<version>\d{4}-\d{2}-\d{2}[\w\d\-\.]*)[/\\]swagger[/\\](?P<filename>.+)\.json`)
-	semverPattern := regexp.MustCompile(`(?:(?P<plane>\w+)-)?(?P<package>[\w\d\.\-]+)(?:[/\\](?P<subpackage>(?:[\w\d]+[/\\]?)+))?[/\\](?P<version>v?\d+(?:\.\d+){0,2}(?:-[\w\d\-\.]+)?)[/\\]swagger[/\\](?P<filename>.+)\.json`)
+	armPattern := getAzureSpecsPattern("resource-manager")
+	dataPattern := getAzureSpecsPattern("data-plane")
+
+	fmt.Printf("ARM  Pattern Names: %q\n", armPattern.SubexpNames())
+	fmt.Printf("Data Pattern Names: %q\n", dataPattern.SubexpNames())
 
 	return func(swag metaSwagger) (result string, err error) {
 		strategies := []*regexp.Regexp{
-			standardPattern,
-			semverPattern,
+			armPattern,
+			dataPattern,
 		}
+
+		debugLog.Println("Inspecting path:", swag.Path)
 
 		for _, currentStrategy := range strategies {
 			results := currentStrategy.FindAllStringSubmatch(swag.Path, -1)
@@ -370,20 +385,17 @@ var getNamespace = func() func(metaSwagger) (string, error) {
 				continue
 			}
 
-			plane := results[0][1]
-			if plane == "" {
-				plane = "services"
+			plane := ""
+			if currentStrategy == armPattern {
+				plane = "management"
 			}
-			pkg := results[0][2]
-			subPkg := results[0][3]
+
+			pkg := results[0][1]
 			version := results[0][4]
 			filename := results[0][5]
 			filename = strings.ToLower(filename[:1]) + filename[1:]
 
 			namespace := []string{plane, pkg}
-			if subPkg != "" {
-				namespace = append(namespace, subPkg)
-			}
 			namespace = append(namespace, version, filename)
 			result = strings.Replace(strings.Join(namespace, "/"), `\`, "/", -1)
 			return
@@ -392,3 +404,14 @@ var getNamespace = func() func(metaSwagger) (string, error) {
 		return
 	}
 }()
+
+func getAzureSpecsPattern(plane string) *regexp.Regexp {
+	elements := []string{
+		`specification`,
+		`(?P<package>\w+)`,
+		plane,
+		`Microsoft.(?P<category>\w+)`,
+		`(?P<apiVersion>v?\d{4}-\d{2}-\d{2}(?:[\w\d\-\.])?)`,
+	}
+	return regexp.MustCompile(strings.Join(elements, `[/\\]`))
+}

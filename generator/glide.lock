@@ -1,10 +1,10 @@
 hash: 03ae8717518d4f2676c2b993b277c91d5a70c01aba51ff90b77537ddf568b77f
-updated: 2017-05-31T14:58:07.7642223-07:00
+updated: 2017-07-28T10:48:35.5632413-07:00
 imports:
 - name: github.com/marstr/collection
-  version: 165abaa88296e36dc3961e1a284e00414190ac43
+  version: f389671128d7a9d1fb3a271a8878d0191a4baf31
 - name: github.com/marstr/swagger
-  version: 44c49199802a0f94d9dc9ac7efe3fa5f5c3e3de3
+  version: f5db4ed2802c335b4fb1b5c60d2da5ea62ba8055
 - name: github.com/Masterminds/semver
-  version: abff1900528dbdaf6f3f5aa92c398be1eaf2a9f7
+  version: 517734cc7d6470c0d07130e40fd40bdeb9bcd3fd
 testImports: []

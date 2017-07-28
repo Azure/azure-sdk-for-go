@@ -14,7 +14,6 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver"
-	"github.com/marstr/swagger"
 )
 
 const (
@@ -45,11 +44,6 @@ var (
 	debugLog                    *log.Logger
 	version                     *semver.Version
 )
-
-type metaSwagger struct {
-	swagger.Swagger
-	Path string
-}
 
 func init() {
 	var err error
@@ -172,7 +166,7 @@ func main() {
 	if dryRun {
 		fmt.Println("Executing Preview")
 		namespaces := finder.Enumerate(nil).Select(func(x interface{}) interface{} {
-			namespace, err := getNamespace(x.(metaSwagger))
+			namespace, err := getNamespace(x.(SwaggerFile))
 			if err != nil {
 				return err
 			}
@@ -207,7 +201,7 @@ func main() {
 		found++
 		return x
 	}).ParallelSelect(func(x interface{}) interface{} {
-		cast := x.(metaSwagger)
+		cast := x.(SwaggerFile)
 		var err error
 		var logWriter io.Writer
 		var outputFile *os.File
@@ -314,7 +308,7 @@ func isGitDir(dir string) bool {
 	return retval
 }
 
-func generate(swag metaSwagger, outputRootPath, specsRootPath string, output io.Writer) (outputDir string, err error) {
+func generate(swag SwaggerFile, outputRootPath, specsRootPath string, output io.Writer) (outputDir string, err error) {
 	if output == nil {
 		output = ioutil.Discard
 	}
@@ -363,39 +357,37 @@ func vet(path string) (err error) {
 }
 
 // getNamespace takes a swagger and finds the appropriate namespace to be fed into Autorest.
-var getNamespace = func() func(metaSwagger) (string, error) {
+var getNamespace = func() func(SwaggerFile) (string, error) {
 	//Defining the Regexp strategies statically like this helps improve perf by ensuring they only get compiled once.
 	armPattern := getAzureSpecsPattern("resource-manager")
 	dataPattern := getAzureSpecsPattern("data-plane")
 
-	fmt.Printf("ARM  Pattern Names: %q\n", armPattern.SubexpNames())
-	fmt.Printf("Data Pattern Names: %q\n", dataPattern.SubexpNames())
-
-	return func(swag metaSwagger) (result string, err error) {
-		strategies := []*regexp.Regexp{
-			armPattern,
-			dataPattern,
+	return func(swag SwaggerFile) (result string, err error) {
+		strategies := []struct {
+			pattern *regexp.Regexp
+			plane   string
+		}{
+			{armPattern, "management"},
+			{dataPattern, ""},
 		}
 
 		debugLog.Println("Inspecting path:", swag.Path)
 
 		for _, currentStrategy := range strategies {
-			results := currentStrategy.FindAllStringSubmatch(swag.Path, -1)
+			results := currentStrategy.pattern.FindAllStringSubmatch(swag.Path, -1)
 			if len(results) == 0 {
 				continue
 			}
 
-			plane := ""
-			if currentStrategy == armPattern {
-				plane = "management"
-			}
-
 			pkg := results[0][1]
-			version := results[0][4]
-			filename := results[0][5]
+			version := results[0][3]
+			filename := results[0][4]
 			filename = strings.ToLower(filename[:1]) + filename[1:]
 
-			namespace := []string{plane, pkg}
+			namespace := []string{"services", pkg}
+			if currentStrategy.plane != "" {
+				namespace = append(namespace, currentStrategy.plane)
+			}
 			namespace = append(namespace, version, filename)
 			result = strings.Replace(strings.Join(namespace, "/"), `\`, "/", -1)
 			return
@@ -410,8 +402,9 @@ func getAzureSpecsPattern(plane string) *regexp.Regexp {
 		`specification`,
 		`(?P<package>\w+)`,
 		plane,
-		`Microsoft.(?P<category>\w+)`,
+		`[Mm]icrosoft\.(?P<category>[\w\-]+)`,
 		`(?P<apiVersion>v?\d{4}-\d{2}-\d{2}(?:[\w\d\-\.])?)`,
+		`(?P<group>[\w\-\d\.]+)\.json`,
 	}
 	return regexp.MustCompile(strings.Join(elements, `[/\\]`))
 }

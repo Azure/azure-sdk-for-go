@@ -1,9 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
-	"path/filepath"
 	"testing"
 )
 
@@ -13,48 +14,36 @@ func TestGetNamespace(t *testing.T) {
 		expected string
 	}{
 		{
-			filepath.Join("plane-package", "2016-02-17", "swagger", "example.json"),
-			"plane/package/2016-02-17/example",
+			"testdata/azure-rest-api-specs/specification/cdn/resource-manager/Microsoft.Cdn/2016-10-02/cdn.json",
+			"services/cdn/management/2016-10-02/cdn",
 		},
 		{
-			filepath.Join("plane-split-name", "dir3", "2016-02-09-preview", "swagger", "example.json"),
-			"plane/split-name/dir3/2016-02-09-preview/example",
+			`testdata\azure-rest-api-specs\specification\keyvault\data-plane\Microsoft.KeyVault\2015-06-01\keyvault.json`,
+			"services/keyvault/2015-06-01/keyvault",
 		},
 		{
-			filepath.Join("plane-split-name", "dir3", "dir4", "2016-02-17", "swagger", "example.json"),
-			"plane/split-name/dir3/dir4/2016-02-17/example",
-		},
-		{
-			filepath.Join("plane-split-name", "dir3", "2016-02-09-preview", "swagger", "example.json"),
-			"plane/split-name/dir3/2016-02-09-preview/example",
-		},
-		{
-			filepath.Join("myService/2015-06-01/swagger/example.json"),
-			"services/myService/2015-06-01/example",
-		},
-		{
-			filepath.Join("plane-split-name", "v1.8", "swagger", "example.json"),
-			"plane/split-name/v1.8/example",
-		},
-		{
-			filepath.Join("plane-split-name", "1.8", "swagger", "example.json"),
-			"plane/split-name/1.8/example",
-		},
-		{
-			filepath.Join("plane-split-name", "subname", "v1.8", "swagger", "example.json"),
-			"plane/split-name/subname/v1.8/example",
-		},
-		{
-			filepath.Join("plane-name", "subname", "2015-12-29", "swagger", "Example.json"),
-			"plane/name/subname/2015-12-29/example",
+			`testdata\azure-rest-api-specs\specification\keyvault\resource-manager\Microsoft.KeyVault\2015-06-01\keyvault.json`,
+			"services/keyvault/management/2015-06-01/keyvault",
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.given, func(t *testing.T) {
-			result, err := getNamespace(metaSwagger{
-				Path: tc.given,
-			})
+			var subject SwaggerFile
+			contents, err := ioutil.ReadFile(tc.given)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			err = json.Unmarshal(contents, &subject)
+			if err != nil {
+				t.Error(err)
+				return
+			}
+			subject.Path = tc.given
+
+			result, err := getNamespace(subject)
 			if err != nil {
 				t.Error(err)
 			}

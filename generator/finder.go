@@ -2,16 +2,21 @@ package main
 
 import (
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"io"
-
 	"github.com/marstr/collection"
+	"github.com/marstr/swagger"
 )
+
+type SwaggerFile struct {
+	swagger.Swagger
+	Path string
+}
 
 // SwaggerFinder will enumerate all Swaggers in a particular directory.
 type SwaggerFinder struct {
@@ -38,7 +43,7 @@ func (f *SwaggerFinder) Enumerate(cancel <-chan struct{}) collection.Enumerator 
 
 		seen := map[string][]string{}
 
-		seenContains := func(needle metaSwagger) bool {
+		seenContains := func(needle SwaggerFile) bool {
 			if previouslySeen, ok := seen[needle.Info.Title]; ok {
 				for _, version := range previouslySeen {
 					if version == needle.Info.Version {
@@ -63,7 +68,7 @@ func (f *SwaggerFinder) Enumerate(cancel <-chan struct{}) collection.Enumerator 
 					return
 				}
 
-				var manifest metaSwagger
+				var manifest SwaggerFile
 				if err := json.Unmarshal(contents, &manifest); err != nil {
 					f.output.Print(path, " was not a Swagger file.")
 					return

@@ -384,7 +384,7 @@ var getNamespace = func() func(SwaggerFile) (string, error) {
 			filename := results[0][4]
 			filename = strings.ToLower(filename[:1]) + filename[1:]
 
-			namespace := []string{"services", pkg}
+			namespace := []string{"service", pkg}
 			if currentStrategy.plane != "" {
 				namespace = append(namespace, currentStrategy.plane)
 			}
@@ -400,10 +400,10 @@ var getNamespace = func() func(SwaggerFile) (string, error) {
 func getAzureSpecsPattern(plane string) *regexp.Regexp {
 	elements := []string{
 		`specification`,
-		`(?P<package>\w+)`,
+		`(?P<package>[\w\-\d\.]+)`,
 		plane,
 		`[Mm]icrosoft\.(?P<category>[\w\-]+)`,
-		`(?P<apiVersion>v?\d{4}-\d{2}-\d{2}(?:[\w\d\-\.])?)`,
+		`(?P<apiVersion>v?\d{4}-\d{2}-\d{2}(?:[\-\.][\w\d\-\.]+)?)`,
 		`(?P<group>[\w\-\d\.]+)\.json`,
 	}
 	return regexp.MustCompile(strings.Join(elements, `[/\\]`))

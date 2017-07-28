@@ -32,6 +32,7 @@ type PutBlobOptions struct {
 	IfMatch           string     `header:"If-Match"`
 	IfNoneMatch       string     `header:"If-None-Match"`
 	RequestID         string     `header:"x-ms-client-request-id"`
+	ContentType       string     `header:"Content-Type"`
 }
 
 // BlobMetadata is a set of custom name/value pairs.

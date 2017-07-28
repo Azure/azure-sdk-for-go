@@ -165,6 +165,7 @@ type GetBlobOptions struct {
 	IfMatch           string     `header:"If-Match"`
 	IfNoneMatch       string     `header:"If-None-Match"`
 	RequestID         string     `header:"x-ms-client-request-id"`
+	Range             string     `header:"Range"`
 }
 
 // BlobRange represents the bytes range to be get
@@ -192,7 +193,7 @@ func (b *Blob) Get(options *GetBlobOptions) (io.ReadCloser, error) {
 		return nil, err
 	}
 
-	if err := checkRespCode(resp.statusCode, []int{http.StatusOK}); err != nil {
+	if err := checkRespCode(resp.statusCode, []int{http.StatusOK, http.StatusPartialContent}); err != nil {
 		return nil, err
 	}
 	if err := b.writeProperties(resp.headers, true); err != nil {

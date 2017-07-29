@@ -48,53 +48,30 @@ var (
 			PlaneOutput: "arm",
 			PlaneInput:  "resource-manager",
 			Services: []service{
-				{
-					Name: "advisor",
-				},
-				{
-					Name: "analysisservices",
-				},
-				{
-					Name: "apimanagement",
-				},
-				{
-					Name: "appinsights",
-				},
-				{
-					Name: "authorization",
-				},
-				{
-					Name: "automation",
-				},
-				{
-					Name: "batch",
-				},
-				{
-					Name: "billing",
-				},
-				{
-					Name: "cdn",
-				},
-				{
-					// bug in AutoRest (duplicated files)
-					Name: "cognitiveservices",
-				},
-				{
-					Name: "commerce",
-				},
-				{
-					Name: "compute",
-				},
+				{Name: "advisor"},
+				{Name: "analysisservices"},
+				// {
+				// Autorest Bug
+				// Name: "apimanagement",
+				// },
+				{Name: "appinsights"},
+				{Name: "authorization"},
+				{Name: "automation"},
+				{Name: "batch"},
+				{Name: "billing"},
+				{Name: "cdn"},
+				// {
+				// bug in AutoRest (duplicated files)
+				// Name: "cognitiveservices",
+				// },
+				{Name: "commerce"},
+				{Name: "compute"},
 				{
 					Name:  "containerservice",
 					Input: "compute",
 				},
-				{
-					Name: "consumption",
-				},
-				{
-					Name: "containerregistry",
-				},
+				{Name: "consumption"},
+				{Name: "containerregistry"},
 				{
 					Name: "customer-insights",
 				},
@@ -306,9 +283,15 @@ func main() {
 }
 
 func initAndAddService(service *service, planeInput, planeOutput string) {
-	packages := []string{service.Name}
-	service.TaskName = fmt.Sprintf("%s>%s", planeOutput, strings.Join(packages, ">"))
-	service.Fullname = filepath.Join(planeOutput, strings.Join(packages, string(os.PathSeparator)))
+	if service.Input == "" {
+		service.Input = service.Name
+	}
+	service.Input = filepath.Join(service.Input, planeInput, "readme.md")
+	if service.Output == "" {
+		service.Output = service.Name
+	}
+	service.TaskName = fmt.Sprintf("%s>%s", planeOutput, strings.Join(strings.Split(service.Output, "/"), ">"))
+	service.Fullname = filepath.Join(planeOutput, service.Output)
 	service.Namespace = filepath.Join("github.com", "Azure", "azure-sdk-for-go", service.Fullname)
 	service.Output = filepath.Join(gopath, "src", service.Namespace)
 
@@ -383,6 +366,8 @@ func generate(service *service) {
 
 	autorest := exec.Command(execCommand, commandArgs...)
 	autorest.Dir = workingDir
+
+	fmt.Println(commandArgs)
 
 	if err := runner(autorest); err != nil {
 		panic(fmt.Errorf("Autorest error: %s", err))

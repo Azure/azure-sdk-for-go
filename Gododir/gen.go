@@ -48,40 +48,34 @@ var (
 			PlaneOutput: "arm",
 			PlaneInput:  "resource-manager",
 			Services: []service{
-				/*
-					{Name: "advisor"},
-					{Name: "analysisservices"},
-				*/
+				{Name: "advisor"},
+				{Name: "analysisservices"},
 				// {
 				// Autorest Bug
 				// Name: "apimanagement",
 				// },
-				/*
-					{Name: "appinsights"},
-					{Name: "authorization"},
-					{Name: "automation"},
-					{Name: "batch"},
-					{Name: "billing"},
-				*/
+				{Name: "appinsights"},
+				{Name: "authorization"},
+				{Name: "automation"},
+				{Name: "batch"},
+				{Name: "billing"},
 				{Name: "cdn"},
 				// {
 				// bug in AutoRest (duplicated files)
 				// Name: "cognitiveservices",
 				// },
-				/*
-					{Name: "commerce"},
-					{Name: "compute"},
-				*/
+				{Name: "commerce"},
+				{Name: "compute"},
 				{
 					Name:  "containerservice",
 					Input: "compute",
 					Tag:   "package-container-service-2017-01",
 				},
-				/*
-					{Name: "consumption"},
-					{Name: "containerregistry"},
-					{Name: "customer-insights"},
-				*/
+				{Name: "consumption"},
+				{Name: "containerinstance"},
+				{Name: "containerregistry"},
+				{Name: "cosmos-db"},
+				{Name: "customer-insights"},
 				{
 					Name:   "account",
 					Input:  "datalake-analytics",
@@ -92,16 +86,14 @@ var (
 					Input:  "datalake-store",
 					Output: "datalake-store/account",
 				},
-				/*
-					{Name: "devtestlabs"},
-					{Name: "dns"},
-					{Name: "eventhub"},
-					{Name: "hdinsight"},
-					{Name: "intune"},
-					{Name: "iothub"},
-					{Name: "keyvault"},
-					{Name: "logic"},
-				*/
+				{Name: "devtestlabs"},
+				{Name: "dns"},
+				{Name: "eventhub"},
+				{Name: "hdinsight"},
+				{Name: "intune"},
+				{Name: "iothub"},
+				{Name: "keyvault"},
+				{Name: "logic"},
 				{
 					Name:   "commitmentplans",
 					Input:  "machinelearning",
@@ -111,29 +103,27 @@ var (
 				{
 					Name:   "webservices",
 					Input:  "machinelearning",
-					Output: "machinelearning/webservice",
+					Output: "machinelearning/webservices",
 					Tag:    "package-webservices-2017-01",
 				},
-				/*
-					{Name: "mediaservices"},
-					{Name: "mobileengagement"},
-					{Name: "monitor"},
-					{Name: "network"},
-					{Name: "notificationhubs"},
-				*/
+				{Name: "mediaservices"},
+				{Name: "mobileengagement"},
+				{Name: "monitor"},
+				{Name: "mysql"},
+				{Name: "network"},
+				{Name: "notificationhubs"},
 				// {
 				// bug in the Go generator https://github.com/Azure/autorest/issues/2219
 				// Name: "operationalinsights",
 				// },
-				/*
-					{Name: "powerbiembedded"},
-					{Name: "recoveryservices"},
-					{Name: "recoveryservicesbackup"},
-					{Name: "recoveryservicessiterecovery"},
-					{Name: "redis"},
-					{Name: "relay"},
-					{Name: "resourcehealth"},
-				*/
+				{Name: "postgresql"},
+				{Name: "powerbiembedded"},
+				{Name: "recoveryservices"},
+				{Name: "recoveryservicesbackup"},
+				{Name: "recoveryservicessiterecovery"},
+				{Name: "redis"},
+				{Name: "relay"},
+				{Name: "resourcehealth"},
 				{
 					Name:   "features",
 					Input:  "resources",
@@ -176,27 +166,24 @@ var (
 					Output: "resources/subscriptions",
 					Tag:    "package-subscriptions-2016-06",
 				},
-				/*
-					{Name: "scheduler"},
-					{Name: "search"},
-					{Name: "servermanagement"},
-					{Name: "service-map"},
-					{Name: "servicebus"},
-					{Name: "servicefabric"},
-					{Name: "sql"},
-					{Name: "storage"},
-					{Name: "storageimportexport"},
-					{Name: "storsimple8000series"},
-					{Name: "streamanalytics"},
-				*/
+				{Name: "scheduler"},
+				{Name: "search"},
+				{Name: "servermanagement"},
+				{Name: "service-map"},
+				{Name: "servicebus"},
+				{Name: "servicefabric"},
+				{Name: "sql"},
+				{Name: "storage"},
+				{Name: "storageimportexport"},
+				{Name: "storsimple8000series"},
+				{Name: "streamanalytics"},
 				// {
 				// error in the modeler
 				// 	Name:    "timeseriesinsights",
 				// },
-				/*
-					{Name: "trafficmanager"},
-					{Name: "web"},
-				*/
+				{Name: "trafficmanager"},
+				{Name: "visualstudio"},
+				{Name: "web"},
 			},
 		},
 		{

@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v10.2.0-beta`
+### ARM
+
+| api                                 | version            | note                                |
+|:------------------------------------|:-------------------|:------------------------------------|
+| arm/cosmos-db                       | 2015-04-08         | new                                 |
+| arm/mysql                           | 2017-04-30-preview | new                                 |
+| arm/postgresql                      | 2017-04-30-preview | new                                 |
+
+### Storage
+- Bug fixes.
+
+### Generated code notes
+- [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) commit: 485ded7560c6309efb2f795ec6e46b7436dc6fdb
+- [AutoRest](https://github.com/Azure/autorest) commit: c180952b850e677a8624655abeaded307d95cae3
+
 ## `v10.1.0-beta`
 ### ARM
 

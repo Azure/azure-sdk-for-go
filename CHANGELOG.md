@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## `v10.2.1-beta`
+- Fixes polymorphic structs in `mysql` and `postgresql` packages.
+
 ## `v10.2.0-beta`
 ### ARM
 

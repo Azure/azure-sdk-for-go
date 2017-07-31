@@ -281,7 +281,7 @@ func generate(service *service) {
 
 	fmt.Printf("Working on %s...\n\n", service.Fullname)
 
-	delete(service)
+	// delete(service)
 
 	fmt.Printf("Generating on %s...\n\n", service.Fullname)
 
@@ -293,6 +293,8 @@ func generate(service *service) {
 		fmt.Sprintf("--namespace=%s", service.Name),
 		fmt.Sprintf("--output-folder=%s", service.Output),
 		fmt.Sprintf("--package-version=%s", sdkVersion),
+		"--clear-output-folder",
+		"--can-clear-output-folder",
 	}
 	if service.Tag != "" {
 		commandArgs = append(commandArgs, fmt.Sprintf("--tag=%s", service.Tag))

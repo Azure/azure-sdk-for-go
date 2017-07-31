@@ -398,8 +398,22 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 		return nil, errors.New("azure/storage: error creating request: " + err.Error())
 	}
 
+	// if a body was provided ensure that the content length was set.
+	// http.NewRequest() will automatically do this for a handful of types
+	// and for those that it doesn't we will handle here.
+	if body != nil && req.ContentLength < 1 {
+		if lr, ok := body.(*io.LimitedReader); ok {
+			req.ContentLength = lr.N
+			snapshot := *lr
+			req.GetBody = func() (io.ReadCloser, error) {
+				r := snapshot
+				return ioutil.NopCloser(&r), nil
+			}
+		}
+	}
+
 	for k, v := range headers {
-		req.Header.Add(k, v)
+		req.Header[k] = append(req.Header[k], v) // Must bypass case munging present in `Add` by using map functions directly. See https://github.com/Azure/azure-sdk-for-go/issues/645
 	}
 
 	resp, err := c.Sender.Send(&c, req)

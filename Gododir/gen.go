@@ -48,33 +48,40 @@ var (
 			PlaneOutput: "arm",
 			PlaneInput:  "resource-manager",
 			Services: []service{
-				{Name: "advisor"},
-				{Name: "analysisservices"},
+				/*
+					{Name: "advisor"},
+					{Name: "analysisservices"},
+				*/
 				// {
 				// Autorest Bug
 				// Name: "apimanagement",
 				// },
-				{Name: "appinsights"},
-				{Name: "authorization"},
-				{Name: "automation"},
-				{Name: "batch"},
-				{Name: "billing"},
+				/*
+					{Name: "appinsights"},
+					{Name: "authorization"},
+					{Name: "automation"},
+					{Name: "batch"},
+					{Name: "billing"},
+				*/
 				{Name: "cdn"},
 				// {
 				// bug in AutoRest (duplicated files)
 				// Name: "cognitiveservices",
 				// },
-				{Name: "commerce"},
-				{Name: "compute"},
+				/*
+					{Name: "commerce"},
+					{Name: "compute"},
+				*/
 				{
 					Name:  "containerservice",
 					Input: "compute",
+					Tag:   "package-container-service-2017-01",
 				},
-				{Name: "consumption"},
-				{Name: "containerregistry"},
-				{
-					Name: "customer-insights",
-				},
+				/*
+					{Name: "consumption"},
+					{Name: "containerregistry"},
+					{Name: "customer-insights"},
+				*/
 				{
 					Name:   "account",
 					Input:  "datalake-analytics",
@@ -85,160 +92,111 @@ var (
 					Input:  "datalake-store",
 					Output: "datalake-store/account",
 				},
-				{
-					Name: "devtestlabs",
-				},
-				{
-					Name: "dns",
-				},
-				{
-					Name: "eventhub",
-				},
-				{
-					Name: "hdinsight",
-				},
-				{
-					Name: "intune",
-				},
-				{
-					Name: "iothub",
-				},
-				{
-					Name: "keyvault",
-				},
-				{
-					Name: "logic",
-				},
+				/*
+					{Name: "devtestlabs"},
+					{Name: "dns"},
+					{Name: "eventhub"},
+					{Name: "hdinsight"},
+					{Name: "intune"},
+					{Name: "iothub"},
+					{Name: "keyvault"},
+					{Name: "logic"},
+				*/
 				{
 					Name:   "commitmentplans",
 					Input:  "machinelearning",
 					Output: "machinelearning/commitmentPlans",
+					Tag:    "package-commitmentPlans-2016-05-preview",
 				},
 				{
 					Name:   "webservices",
 					Input:  "machinelearning",
 					Output: "machinelearning/webservice",
+					Tag:    "package-webservices-2017-01",
 				},
-				{
-					Name: "mediaservices",
-				},
-				{
-					Name: "mobileengagement",
-				},
-				{
-					Name: "monitor",
-				},
-				{
-					Name: "network",
-				},
-				{
-					Name: "notificationhubs",
-				},
-				{
-					// bug in the Go generator https://github.com/Azure/autorest/issues/2219
-					Name: "operationalinsights",
-				},
-				{
-					Name: "powerbiembedded",
-				},
-				{
-					// bug in the go generator
-					Name: "recoveryservices",
-				},
-				{
-					// When using the readme.md, there is an exception in the modeler
-					Name: "recoveryservicesbackup",
-				},
-				{
-					Name: "recoveryservicessiterecovery",
-				},
-				{
-					Name: "redis",
-				},
-				{
-					Name: "relay",
-				},
-				{
-					Name: "resourcehealth",
-				},
+				/*
+					{Name: "mediaservices"},
+					{Name: "mobileengagement"},
+					{Name: "monitor"},
+					{Name: "network"},
+					{Name: "notificationhubs"},
+				*/
+				// {
+				// bug in the Go generator https://github.com/Azure/autorest/issues/2219
+				// Name: "operationalinsights",
+				// },
+				/*
+					{Name: "powerbiembedded"},
+					{Name: "recoveryservices"},
+					{Name: "recoveryservicesbackup"},
+					{Name: "recoveryservicessiterecovery"},
+					{Name: "redis"},
+					{Name: "relay"},
+					{Name: "resourcehealth"},
+				*/
 				{
 					Name:   "features",
 					Input:  "resources",
 					Output: "resources/features",
+					Tag:    "package-features-2015-12",
 				},
 				{
 					Name:   "links",
 					Input:  "resources",
 					Output: "resources/links",
+					Tag:    "package-links-2016-09",
 				},
 				{
 					Name:   "locks",
 					Input:  "resources",
 					Output: "resources/locks",
+					Tag:    "package-locks-2016-09",
 				},
 				{
 					Name:   "managedapplications",
 					Input:  "resources",
 					Output: "resources/managedapplications",
+					Tag:    "package-managedapplications-2016-09",
 				},
 				{
 					Name:   "policy",
 					Input:  "resources",
 					Output: "resources/policy",
+					Tag:    "package-policy-2016-12",
 				},
 				{
 					Name:   "resources",
 					Input:  "resources",
 					Output: "resources/resources",
+					Tag:    "package-resources-2017-05",
 				},
 				{
 					Name:   "subscriptions",
 					Input:  "resources",
 					Output: "resources/subscriptions",
+					Tag:    "package-subscriptions-2016-06",
 				},
-				{
-					Name: "scheduler",
-				},
-				{
-					Name: "search",
-				},
-				{
-					Name: "servermanagement",
-				},
-				{
-					Name: "service-map",
-				},
-				{
-					Name: "servicebus",
-				},
-				{
-					Name: "servicefabric",
-				},
-				{
-					Name: "sql",
-				},
-				{
-					Name: "storage",
-				},
-				{
-					Name: "storageimportexport",
-				},
-				{
-					Name: "storsimple8000series",
-				},
-				{
-					Name: "streamanalytics",
-				},
+				/*
+					{Name: "scheduler"},
+					{Name: "search"},
+					{Name: "servermanagement"},
+					{Name: "service-map"},
+					{Name: "servicebus"},
+					{Name: "servicefabric"},
+					{Name: "sql"},
+					{Name: "storage"},
+					{Name: "storageimportexport"},
+					{Name: "storsimple8000series"},
+					{Name: "streamanalytics"},
+				*/
 				// {
 				// error in the modeler
 				// 	Name:    "timeseriesinsights",
 				// },
-				{
-					Name: "trafficmanager",
-				},
-				{
-					Name: "web",
-				},
+				/*
+					{Name: "trafficmanager"},
+					{Name: "web"},
+				*/
 			},
 		},
 		{
@@ -348,6 +306,9 @@ func generate(service *service) {
 		fmt.Sprintf("--namespace=%s", service.Name),
 		fmt.Sprintf("--output-folder=%s", service.Output),
 		fmt.Sprintf("--package-version=%s", sdkVersion),
+	}
+	if service.Tag != "" {
+		commandArgs = append(commandArgs, fmt.Sprintf("--tag=%s", service.Tag))
 	}
 	if testGen {
 		commandArgs = append([]string{"-LEGACY"}, commandArgs...)

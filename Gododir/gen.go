@@ -274,15 +274,12 @@ func generateTasks(p *do.Project) {
 func generate(service *service) {
 	codegen := "--go"
 	if testGen {
-		codegen = "--go.namespace=TestGen"
+		codegen = "--go.testgen"
 		service.Fullname = strings.Join([]string{service.Fullname, testsSubDir}, string(os.PathSeparator))
 		service.Output = filepath.Join(service.Output, testsSubDir)
 	}
 
 	fmt.Printf("Working on %s...\n\n", service.Fullname)
-
-	// delete(service)
-
 	fmt.Printf("Generating on %s...\n\n", service.Fullname)
 
 	execCommand := "autorest"

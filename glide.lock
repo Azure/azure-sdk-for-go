@@ -1,5 +1,5 @@
 hash: bdeb606eca05304f80e5577159227ae4f00a002213f353e304066c593419a31b
-updated: 2017-07-31T14:04:06.0188318-07:00
+updated: 2017-07-31T15:32:36.5529621-07:00
 imports:
 - name: github.com/Azure/go-autorest
   version: f6e08fe5e4d45c9a66e40196d3fed5f37331d224
@@ -11,7 +11,7 @@ imports:
   - autorest/to
   - autorest/validation
 - name: github.com/dgrijalva/jwt-go
-  version: a601269ab70c205d26370c16f7c81e9017c14e04
+  version: a539ee1a749a2b895533f979515ac7e6e0f5b650
 - name: github.com/howeyc/gopass
   version: bf9dde6d0d2c004a008c27aaee91170c786f6db8
 - name: github.com/mattn/go-colorable

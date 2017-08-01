@@ -263,7 +263,7 @@ func setVars(c *do.Context) {
 
 	sdkVersion = c.Args.MustString("s", "sdk", "version")
 	autorestDir = c.Args.MayString("", "a", "ar", "autorest")
-	swaggersDir = c.Args.MayString("C:/", "w", "sw", "swagger")
+	swaggersDir = c.Args.MayString("", "w", "sw", "swagger")
 	testGen = c.Args.MayBool(false, "t", "testgen")
 }
 
@@ -279,12 +279,18 @@ func generate(service *service) {
 		service.Output = filepath.Join(service.Output, testsSubDir)
 	}
 
-	fmt.Printf("Working on %s...\n\n", service.Fullname)
-	fmt.Printf("Generating on %s...\n\n", service.Fullname)
+	fmt.Printf("Generating %s...\n\n", service.Fullname)
+
+	fullInput := ""
+	if swaggersDir == "" {
+		fullInput = fmt.Sprintf("https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current/specification/%s", service.Input)
+	} else {
+		fullInput = filepath.Join(swaggersDir, "azure-rest-api-specs", "specification", service.Input)
+	}
 
 	execCommand := "autorest"
 	commandArgs := []string{
-		fmt.Sprintf("https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current/specification/%s", service.Input),
+		fullInput,
 		codegen,
 		"--license-header=MICROSOFT_APACHE",
 		fmt.Sprintf("--namespace=%s", service.Name),

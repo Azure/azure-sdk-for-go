@@ -18,8 +18,21 @@ package mysql
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
+	"errors"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
+)
+
+// CreateMode enumerates the mode to create a new server
+type CreateMode string
+
+const (
+	// CreateModeDefault specifies the mode to create a new server
+	CreateModeDefault CreateMode = "Default"
+	// CreateModePointInTimeRestore specifies the mode to create a new server
+	CreateModePointInTimeRestore CreateMode = "PointInTimeRestore"
 )
 
 // OperationOrigin enumerates the values for operation origin.
@@ -210,10 +223,81 @@ type Server struct {
 
 // ServerForCreate is represents a server to be created.
 type ServerForCreate struct {
-	Sku        *Sku                       `json:"sku,omitempty"`
-	Properties *ServerPropertiesForCreate `json:"properties,omitempty"`
-	Location   *string                    `json:"location,omitempty"`
-	Tags       *map[string]*string        `json:"tags,omitempty"`
+	Sku        *Sku                      `json:"sku,omitempty"`
+	Properties ServerPropertiesForCreate `json:"properties,omitempty"`
+	Location   *string                   `json:"location,omitempty"`
+	Tags       *map[string]*string       `json:"tags,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServerForCreate model
+func (sfc *ServerForCreate) UnmarshalJSON(b []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(b, &m)
+	if err != nil {
+		return err
+	}
+
+	v := m["sku"]
+	if v != nil {
+		var sku Sku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		sfc.Sku = &sku
+	}
+
+	v = m["properties"]
+	if v != nil {
+		p, err := unmarshalServerPropertiesForCreate(*m["properties"])
+		if err != nil {
+			return err
+		}
+		sfc.Properties = p
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		sfc.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		sfc.Tags = &tags
+	}
+
+	return nil
+}
+
+func unmarshalServerPropertiesForCreate(b []byte) (ServerPropertiesForCreate, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(b, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["createMode"] {
+	case string(CreateModeDefault):
+		var spfdc ServerPropertiesForDefaultCreate
+		err := json.Unmarshal(b, &spfdc)
+		return spfdc, err
+	case string(CreateModePointInTimeRestore):
+		var spfr ServerPropertiesForRestore
+		err := json.Unmarshal(b, &spfr)
+		return spfr, err
+	default:
+		return nil, errors.New("Unsupported type")
+	}
 }
 
 // ServerListResult is a list of servers.
@@ -232,15 +316,15 @@ type ServerProperties struct {
 	FullyQualifiedDomainName *string            `json:"fullyQualifiedDomainName,omitempty"`
 }
 
-// ServerPropertiesForCreate is the properties used to create a new server.
-type ServerPropertiesForCreate struct {
-	StorageMB      *int64             `json:"storageMB,omitempty"`
-	Version        ServerVersion      `json:"version,omitempty"`
-	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
+// ServerPropertiesForCreate is interface used for polymorphic Properties in ServerForCreate
+type ServerPropertiesForCreate interface {
+	AsServerPropertiesForDefaultCreate() (*ServerPropertiesForDefaultCreate, bool)
+	AsServerPropertiesForRestore() (*ServerPropertiesForRestore, bool)
 }
 
 // ServerPropertiesForDefaultCreate is the properties used to create a new server.
 type ServerPropertiesForDefaultCreate struct {
+	CreateMode                 CreateMode         `json:"createMode,omitempty"`
 	StorageMB                  *int64             `json:"storageMB,omitempty"`
 	Version                    ServerVersion      `json:"version,omitempty"`
 	SslEnforcement             SslEnforcementEnum `json:"sslEnforcement,omitempty"`
@@ -248,13 +332,56 @@ type ServerPropertiesForDefaultCreate struct {
 	AdministratorLoginPassword *string            `json:"administratorLoginPassword,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServerPropertiesForDefaultCreate
+func (spfdc ServerPropertiesForDefaultCreate) MarshalJSON() ([]byte, error) {
+	spfdc.CreateMode = CreateModeDefault
+	type Alias ServerPropertiesForDefaultCreate
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(spfdc),
+	})
+}
+
+// AsServerPropertiesForDefaultCreate is the IServerPropertiesForCreate for ServerPropertiesForDefaultCreate
+func (spfdc ServerPropertiesForDefaultCreate) AsServerPropertiesForDefaultCreate() (*ServerPropertiesForDefaultCreate, bool) {
+	return &spfdc, true
+}
+
+// AsServerPropertiesForRestore is the IServerPropertiesForCreate for ServerPropertiesForDefaultCreate
+func (spfdc ServerPropertiesForDefaultCreate) AsServerPropertiesForRestore() (*ServerPropertiesForRestore, bool) {
+	return nil, false
+}
+
 // ServerPropertiesForRestore is the properties to a new server by restoring from a backup.
 type ServerPropertiesForRestore struct {
+	CreateMode         CreateMode         `json:"createMode,omitempty"`
 	StorageMB          *int64             `json:"storageMB,omitempty"`
 	Version            ServerVersion      `json:"version,omitempty"`
 	SslEnforcement     SslEnforcementEnum `json:"sslEnforcement,omitempty"`
 	SourceServerID     *string            `json:"sourceServerId,omitempty"`
 	RestorePointInTime *date.Time         `json:"restorePointInTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerPropertiesForRestore
+func (spfr ServerPropertiesForRestore) MarshalJSON() ([]byte, error) {
+	spfr.CreateMode = CreateModePointInTimeRestore
+	type Alias ServerPropertiesForRestore
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(spfr),
+	})
+}
+
+// AsServerPropertiesForDefaultCreate is the IServerPropertiesForCreate for ServerPropertiesForRestore
+func (spfr ServerPropertiesForRestore) AsServerPropertiesForDefaultCreate() (*ServerPropertiesForDefaultCreate, bool) {
+	return nil, false
+}
+
+// AsServerPropertiesForRestore is the IServerPropertiesForCreate for ServerPropertiesForRestore
+func (spfr ServerPropertiesForRestore) AsServerPropertiesForRestore() (*ServerPropertiesForRestore, bool) {
+	return &spfr, false
 }
 
 // ServerUpdateParameters is parameters allowd to update for a server.

@@ -1,5 +1,5 @@
 hash: bdeb606eca05304f80e5577159227ae4f00a002213f353e304066c593419a31b
-updated: 2017-07-31T14:04:06.0188318-07:00
+updated: 2017-07-31T15:32:36.5529621-07:00
 imports:
 - name: github.com/Azure/go-autorest
   version: f6e08fe5e4d45c9a66e40196d3fed5f37331d224

@@ -249,7 +249,7 @@ func (sfc *ServerForCreate) UnmarshalJSON(b []byte) error {
 
 	v = m["properties"]
 	if v != nil {
-		p, err := unmarshalIServerPropertiesForCreate(*m["properties"])
+		p, err := unmarshalServerPropertiesForCreate(*m["properties"])
 		if err != nil {
 			return err
 		}
@@ -279,7 +279,7 @@ func (sfc *ServerForCreate) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-func unmarshalIServerPropertiesForCreate(b []byte) (ServerPropertiesForCreate, error) {
+func unmarshalServerPropertiesForCreate(b []byte) (ServerPropertiesForCreate, error) {
 	var m map[string]interface{}
 	err := json.Unmarshal(b, &m)
 	if err != nil {

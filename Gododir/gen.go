@@ -252,7 +252,6 @@ func tasks(p *do.Project) {
 	p.Use("gobuild", buildTasks)
 	p.Use("golint", lintTasks)
 	p.Use("govet", vetTasks)
-	p.Use("delete", deleteTasks)
 	p.Task("management", do.S{"setvars"}, managementVersion)
 	p.Task("addVersion", nil, addVersion)
 }
@@ -317,7 +316,7 @@ func generate(service *service) {
 
 	fmt.Println(commandArgs)
 
-	if err := runner(autorest); err != nil {
+	if _, err := runner(autorest); err != nil {
 		panic(fmt.Errorf("Autorest error: %s", err))
 	}
 
@@ -325,21 +324,6 @@ func generate(service *service) {
 	build(service)
 	lint(service)
 	vet(service)
-}
-
-func deleteTasks(p *do.Project) {
-	addTasks(format, p)
-}
-
-func delete(service *service) {
-	fmt.Printf("Deleting %s...\n\n", service.Fullname)
-	if service.Fullname == "" || service.Output == gopath+"/src/github.com/Azure/azure-sdk-for-go" {
-		panic(fmt.Sprintf("attempted to remove %s", service.Output))
-	}
-	err := os.RemoveAll(service.Output)
-	if err != nil {
-		panic(fmt.Sprintf("Error deleting %s : %s\n", service.Output, err))
-	}
 }
 
 func formatTasks(p *do.Project) {

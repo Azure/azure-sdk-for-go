@@ -223,10 +223,10 @@ type Server struct {
 
 // ServerForCreate is represents a server to be created.
 type ServerForCreate struct {
-	Sku        *Sku                       `json:"sku,omitempty"`
-	Properties IServerPropertiesForCreate `json:"properties,omitempty"`
-	Location   *string                    `json:"location,omitempty"`
-	Tags       *map[string]*string        `json:"tags,omitempty"`
+	Sku        *Sku                      `json:"sku,omitempty"`
+	Properties ServerPropertiesForCreate `json:"properties,omitempty"`
+	Location   *string                   `json:"location,omitempty"`
+	Tags       *map[string]*string       `json:"tags,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for ServerForCreate model
@@ -279,7 +279,7 @@ func (sfc *ServerForCreate) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-func unmarshalIServerPropertiesForCreate(b []byte) (IServerPropertiesForCreate, error) {
+func unmarshalIServerPropertiesForCreate(b []byte) (ServerPropertiesForCreate, error) {
 	var m map[string]interface{}
 	err := json.Unmarshal(b, &m)
 	if err != nil {
@@ -316,34 +316,10 @@ type ServerProperties struct {
 	FullyQualifiedDomainName *string            `json:"fullyQualifiedDomainName,omitempty"`
 }
 
-// IServerPropertiesForCreate is interface used for polymorphic Properties in ServerForCreate
-type IServerPropertiesForCreate interface {
-	AsServerPropertiesForCreate() (*ServerPropertiesForCreate, bool)
+// ServerPropertiesForCreate is interface used for polymorphic Properties in ServerForCreate
+type ServerPropertiesForCreate interface {
 	AsServerPropertiesForDefaultCreate() (*ServerPropertiesForDefaultCreate, bool)
 	AsServerPropertiesForRestore() (*ServerPropertiesForRestore, bool)
-}
-
-// ServerPropertiesForCreate is the properties used to create a new server.
-type ServerPropertiesForCreate struct {
-	CreateMode     CreateMode         `json:"createMode,omitempty"`
-	StorageMB      *int64             `json:"storageMB,omitempty"`
-	Version        ServerVersion      `json:"version,omitempty"`
-	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
-}
-
-// AsServerPropertiesForCreate is the IServerPropertiesForCreate for ServerPropertiesForCreate
-func (spfc ServerPropertiesForCreate) AsServerPropertiesForCreate() (*ServerPropertiesForCreate, bool) {
-	return &spfc, true
-}
-
-// AsServerPropertiesForDefaultCreate is the IServerPropertiesForCreate for ServerPropertiesForCreate
-func (spfc ServerPropertiesForCreate) AsServerPropertiesForDefaultCreate() (*ServerPropertiesForDefaultCreate, bool) {
-	return nil, false
-}
-
-// AsServerPropertiesForRestore is the IServerPropertiesForCreate for ServerPropertiesForCreate
-func (spfc ServerPropertiesForCreate) AsServerPropertiesForRestore() (*ServerPropertiesForRestore, bool) {
-	return nil, false
 }
 
 // ServerPropertiesForDefaultCreate is the properties used to create a new server.
@@ -365,11 +341,6 @@ func (spfdc ServerPropertiesForDefaultCreate) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(spfdc),
 	})
-}
-
-// AsServerPropertiesForCreate is the IServerPropertiesForCreate for ServerPropertiesForDefaultCreate
-func (spfdc ServerPropertiesForDefaultCreate) AsServerPropertiesForCreate() (*ServerPropertiesForCreate, bool) {
-	return nil, false
 }
 
 // AsServerPropertiesForDefaultCreate is the IServerPropertiesForCreate for ServerPropertiesForDefaultCreate
@@ -401,11 +372,6 @@ func (spfr ServerPropertiesForRestore) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(spfr),
 	})
-}
-
-// AsServerPropertiesForCreate is the IServerPropertiesForCreate for ServerPropertiesForRestore
-func (spfr ServerPropertiesForRestore) AsServerPropertiesForCreate() (*ServerPropertiesForCreate, bool) {
-	return nil, false
 }
 
 // AsServerPropertiesForDefaultCreate is the IServerPropertiesForCreate for ServerPropertiesForRestore

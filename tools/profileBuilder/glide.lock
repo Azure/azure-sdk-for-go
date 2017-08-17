@@ -1,0 +1,8 @@
+hash: 3781c867d04eb548e26f51c40a69dad48453df552f9c181b7d2c2150630d9e5f
+updated: 2017-08-16T19:50:23.1778905-07:00
+imports:
+- name: github.com/marstr/collection
+  version: b500cc5ead2f54bc213f11de40f8e1f748d986dc
+- name: github.com/marstr/randname
+  version: 6dd4fdb5aa401961bd04bb5d84c692ab874bd68c
+testImports: []

@@ -1,0 +1,5 @@
+package: github.com/Azure/azure-sdk-for-go/tools/profileBuilder
+import:
+- package: github.com/marstr/collection
+  version: ^0.3.1
+- package: github.com/marstr/randname

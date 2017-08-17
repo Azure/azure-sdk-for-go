@@ -3,11 +3,15 @@ package main
 import (
 	"flag"
 	"fmt"
+	"go/ast"
+	"go/printer"
+	"go/token"
 	"io"
 	"os"
 	"path"
 
 	"github.com/marstr/collection"
+	goalias "github.com/marstr/goalias/model"
 	"github.com/marstr/randname"
 )
 
@@ -29,7 +33,20 @@ const (
 )
 
 func main() {
+	for entry := range packageStrategy.Enumerate(nil) {
+		pkg, ok := entry.(*ast.Package)
+		if !ok {
+			continue
+		}
 
+		alias, err := goalias.NewAliasPackage(pkg)
+		if err != nil {
+			continue
+		}
+
+		files := token.NewFileSet()
+		printer.Fprint(os.Stdout, files, alias.ModelFile())
+	}
 }
 
 func init() {
@@ -42,7 +59,7 @@ func init() {
 	flag.StringVar(&outputLocation, "o", getDefaultOutputLocation(), "The output location for the package generated as a profile.")
 	flag.StringVar(&inputRoot, "root", getDefaultInputRoot(), "The location of the Azure REST OpenAPI Specs repository.")
 	flag.StringVar(&inputListLocation, "l", "", "If the `list` strategy is chosen, -l is the location of the file to read for said list. If not present, stdin is used.")
-	flag.StringVar(&selectedStrategy, "s", "latest", "The strategy to employ for finding packages to put in a profile.")
+	flag.StringVar(&selectedStrategy, "s", string(WellKnownStrategyLatest), "The strategy to employ for finding packages to put in a profile.")
 	flag.Parse()
 
 	if profileName == defaultName {

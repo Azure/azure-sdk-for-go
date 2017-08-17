@@ -2,20 +2,38 @@ package main
 
 import (
 	"fmt"
+	"go/parser"
+	"go/token"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/marstr/collection"
 )
 
 type LatestStrategy struct {
 	Root      string
-	predicate func(packageName string) bool
+	Predicate func(packageName string) bool
 }
 
-var packageName = regexp.MustCompile(`service/(?P<provider>[\w\-\.\d]+)/(?P<type>[\w\-\.\d]+)/(?P<version>[\d\-\w\.]+)/(?P<group>[\w\d\-\.]+)`)
+// AcceptAll is a predefined value for `LatestStrategy.Predicate` which always returns true.
+func AcceptAll(name string) (result bool) {
+	result = true
+	return
+}
+
+// IgnorePreview searches a packages "API Version" to see if it contains the word "preview". It only returns true when a package is not a preview.
+func IgnorePreview(name string) (result bool) {
+	matches := packageName.FindStringSubmatch(name)
+	if len(matches) >= 4 {
+		result = !strings.Contains(matches[3], "preview")
+	}
+	return
+}
+
+var packageName = regexp.MustCompile(`service[/\\](?P<provider>[\w\-\.\d]+)[/\\](?P<type>[\w\-\.\d]+)[/\\](?:management[/\\])?(?P<version>[\d\-\w\.]+)[/\\](?P<group>[\w\d\-\.]+)`)
 
 // Enumerate scans through the known Azure SDK for Go packages and finds each
 func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumerator {
@@ -30,11 +48,21 @@ func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumer
 			group        string
 		}
 
-		maxFound := make(map[operationGroup]string)
+		type operInfo struct {
+			version string
+			rawpath string
+		}
+
+		maxFound := make(map[operationGroup]operInfo)
 
 		filepath.Walk(latest.Root, func(currentPath string, info os.FileInfo, openErr error) (err error) {
 			pathMatches := packageName.FindStringSubmatch(currentPath)
-			if len(pathMatches) == 0 {
+
+			if latest.Predicate == nil {
+				latest.Predicate = AcceptAll
+			}
+
+			if len(pathMatches) == 0 || !info.IsDir() || !latest.Predicate(currentPath) {
 				return
 			}
 
@@ -47,18 +75,33 @@ func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumer
 
 			prev, ok := maxFound[currentGroup]
 			if !ok {
-				maxFound[currentGroup] = version
+				maxFound[currentGroup] = operInfo{version, currentPath}
 				return
 			}
 
-			if le, _ := versionle(prev, version); le {
-				maxFound[currentGroup] = version
+			if le, _ := versionle(prev.version, version); le {
+				maxFound[currentGroup] = operInfo{version, currentPath}
 			}
 
 			return
 		})
 
-		// TODO: regurgitate the packages that were found to be the most recent versions.
+		for _, entry := range maxFound {
+			files := token.NewFileSet()
+			parsed, err := parser.ParseDir(files, entry.rawpath, nil, parser.ParseComments)
+			if err != nil {
+				continue
+			}
+
+			for _, pkg := range parsed {
+				select {
+				case results <- pkg:
+					// Intentionally Left Blank
+				case <-cancel:
+					return
+				}
+			}
+		}
 	}()
 
 	return results

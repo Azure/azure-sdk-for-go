@@ -1,8 +1,8 @@
-hash: bdeb606eca05304f80e5577159227ae4f00a002213f353e304066c593419a31b
-updated: 2017-07-31T15:32:36.5529621-07:00
+hash: f52476dff67b66fe9fffe35b63ac0c06962fcaacd326b66820a33edf53b01a16
+updated: 2017-08-14T15:40:55.888398-07:00
 imports:
 - name: github.com/Azure/go-autorest
-  version: f6e08fe5e4d45c9a66e40196d3fed5f37331d224
+  version: 48a8154950f853ae1f2a9c409e0eb1fb71119bc8
   subpackages:
   - autorest
   - autorest/adal
@@ -11,11 +11,11 @@ imports:
   - autorest/to
   - autorest/validation
 - name: github.com/dgrijalva/jwt-go
-  version: a539ee1a749a2b895533f979515ac7e6e0f5b650
+  version: a601269ab70c205d26370c16f7c81e9017c14e04
 - name: github.com/howeyc/gopass
   version: bf9dde6d0d2c004a008c27aaee91170c786f6db8
 - name: github.com/mattn/go-colorable
-  version: 040dd0b833b34b4182673409ada4df2853b26537
+  version: 6df6d4d004b64986bbb0d1b25945f42b44787e90
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
 - name: github.com/mgutz/ansi
@@ -35,15 +35,16 @@ imports:
 - name: github.com/shopspring/decimal
   version: 3c692774ac4c47c7a296ec96e553719dba1a68fc
 - name: golang.org/x/crypto
-  version: 558b6879de74bc843225cde5686419267ff707ca
+  version: b176d7def5d71bdd214203491f89843ed217f420
   subpackages:
   - pkcs12
   - pkcs12/internal/rc2
   - ssh/terminal
 - name: golang.org/x/sys
-  version: 0f826bdd13b500be0f1d4004938ad978fcc6031e
+  version: 2d3e384235de683634e9080b58f757466840aa48
   subpackages:
   - unix
+  - windows
 - name: gopkg.in/check.v1
   version: 20d25e2804050c1cd24a7eea1e7a6447dd0e74ec
 - name: gopkg.in/godo.v2
@@ -60,4 +61,4 @@ testImports:
   - cassette
   - recorder
 - name: gopkg.in/yaml.v2
-  version: 25c4ec802a7d637f88d584ab26798e94ad14c13b
+  version: eb3733d160e74a9c7e442f435eb3bea458e1d19f

@@ -88,6 +88,7 @@ var (
 				},
 				{Name: "devtestlabs"},
 				{Name: "dns"},
+				{Name: "eventgrid"},
 				{Name: "eventhub"},
 				{Name: "hdinsight"},
 				{Name: "intune"},

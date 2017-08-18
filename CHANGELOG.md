@@ -8,7 +8,7 @@
 | arm/containerinstance               | 2017-08-01-preview | new                                 |
 | arm/eventgrid                       | 2017-06-15-preview | new                                 |
 
-### Storage
+### ASM
 - Marked as deprecated.
 - Added Go 1.7 build tags.
 

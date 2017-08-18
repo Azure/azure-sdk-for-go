@@ -8,6 +8,13 @@
 | arm/containerinstance               | 2017-08-01-preview | new                                 |
 | arm/eventgrid                       | 2017-06-15-preview | new                                 |
 
+### Storage
+- Marked as deprecated.
+- Added Go 1.7 build tags.
+
+### Storage
+- Support for Go 1.7 and Go 1.6 (except table batch operation tests).
+
 ### Generated code notes
 - [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) commit: ad55af74f3f0e2b390a4306532528168ba742fef
 - [AutoRest](https://github.com/Azure/autorest) commit: cfb296f153f948f85afab637f7212fcfdc4a8bbb

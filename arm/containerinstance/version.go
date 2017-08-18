@@ -1,4 +1,4 @@
-package dns
+package containerinstance
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,7 +19,7 @@ package dns
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v10.3.0-beta arm-dns/2016-04-01"
+	return "Azure-SDK-For-Go/v10.3.0-beta arm-containerinstance/2017-08-01-preview"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

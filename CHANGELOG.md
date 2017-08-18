@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## `v10.3.0-beta`
+### ARM
+
+| api                                 | version            | note                                |
+|:------------------------------------|:-------------------|:------------------------------------|
+| arm/containerinstance               | 2017-08-01-preview | new                                 |
+| arm/eventgrid                       | 2017-06-15-preview | new                                 |
+
+### Generated code notes
+- [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) commit: ad55af74f3f0e2b390a4306532528168ba742fef
+- [AutoRest](https://github.com/Azure/autorest) commit: cfb296f153f948f85afab637f7212fcfdc4a8bbb
+
 ## `v10.2.1-beta`
 - Fixes polymorphic structs in `mysql` and `postgresql` packages.
 

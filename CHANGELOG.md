@@ -9,7 +9,7 @@
 | arm/eventgrid                       | 2017-06-15-preview | new                                 |
 
 ### ASM
-- Marked as deprecated.
+- Marked as in mainteinance mode.
 - Added Go 1.7 build tags.
 
 ### Storage

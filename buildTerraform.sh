@@ -27,6 +27,7 @@ for package in ${packages[*]}; do
 
     # update to latest SDK
     govendor update github.com/Azure/azure-sdk-for-go/...
+    govendor update github.com/Azure/go-autorest/...
 
     # try to build
     make

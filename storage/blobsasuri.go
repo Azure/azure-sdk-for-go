@@ -44,7 +44,7 @@ func (b *Blob) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions st
 		signedResource = "b"
 	}
 
-	protocols := "https,http"
+	protocols := ""
 	if HTTPSOnly {
 		protocols = "https"
 	}
@@ -63,7 +63,9 @@ func (b *Blob) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions st
 	}
 
 	if b.Container.bsc.client.apiVersion >= "2015-04-05" {
-		sasParams.Add("spr", protocols)
+		if protocols != "" {
+			sasParams.Add("spr", protocols)
+		}
 		if signedIPRange != "" {
 			sasParams.Add("sip", signedIPRange)
 		}

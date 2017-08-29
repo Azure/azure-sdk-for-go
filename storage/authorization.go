@@ -69,8 +69,11 @@ func (c *Client) buildCanonicalizedResource(uri string, auth authentication) (st
 		return "", fmt.Errorf(errMsg, err.Error())
 	}
 
-	cr := bytes.NewBufferString("/")
-	cr.WriteString(c.getCanonicalizedAccountName())
+	cr := bytes.NewBufferString("")
+	if c.accountName != StorageEmulatorAccountName {
+		cr.WriteString("/")
+		cr.WriteString(c.getCanonicalizedAccountName())
+	}
 
 	if len(u.Path) > 0 {
 		// Any portion of the CanonicalizedResource string that is derived from

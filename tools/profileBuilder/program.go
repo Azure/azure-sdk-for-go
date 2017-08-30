@@ -7,8 +7,11 @@ import (
 	"go/printer"
 	"go/token"
 	"io"
+	"io/ioutil"
+	"log"
 	"os"
 	"path"
+	"reflect"
 
 	"github.com/marstr/collection"
 	goalias "github.com/marstr/goalias/model"
@@ -21,6 +24,7 @@ var (
 	inputRoot       string
 	inputList       io.Reader
 	packageStrategy collection.Enumerable
+	outputLog       *log.Logger
 )
 
 // WellKnownStrategy is an Enumerable which lists all known strategies for choosing packages for a profile.
@@ -36,11 +40,14 @@ func main() {
 	for entry := range packageStrategy.Enumerate(nil) {
 		pkg, ok := entry.(*ast.Package)
 		if !ok {
+			outputLog.Print("Unexpected type when searching for type `*ast.Package`: ", reflect.TypeOf(entry).Name())
 			continue
 		}
+		outputLog.Print("Package Found: ", pkg.Name)
 
 		alias, err := goalias.NewAliasPackage(pkg)
 		if err != nil {
+			outputLog.Print("Could not create alias because: ", err)
 			continue
 		}
 
@@ -54,17 +61,29 @@ func init() {
 
 	var selectedStrategy string
 	var inputListLocation string
+	var useVerbose bool
 
 	flag.StringVar(&profileName, "name", defaultName, "The name that should be given to the generated profile.")
 	flag.StringVar(&outputLocation, "o", getDefaultOutputLocation(), "The output location for the package generated as a profile.")
 	flag.StringVar(&inputRoot, "root", getDefaultInputRoot(), "The location of the Azure REST OpenAPI Specs repository.")
 	flag.StringVar(&inputListLocation, "l", "", "If the `list` strategy is chosen, -l is the location of the file to read for said list. If not present, stdin is used.")
 	flag.StringVar(&selectedStrategy, "s", string(WellKnownStrategyLatest), "The strategy to employ for finding packages to put in a profile.")
+	flag.BoolVar(&useVerbose, "v", false, "Write status to stderr as the program progresses")
 	flag.Parse()
 
 	if profileName == defaultName {
 		profileName = randname.AdjNoun{}.Generate()
 	}
+
+	var logWriter io.Writer
+	if useVerbose {
+		logWriter = os.Stderr
+	} else {
+		logWriter = ioutil.Discard
+	}
+	outputLog = log.New(logWriter, "[STATUS] ", 0)
+
+	outputLog.Print("Status Logging Enabled")
 
 	inputList = os.Stdin
 	if inputListLocation != "" {

@@ -115,7 +115,7 @@ func (err ErrNotVersionString) Error() string {
 }
 
 var versionle = func() func(string, string) (bool, error) {
-	versionPattern := regexp.MustCompile(`^(?P<year>[\d]{4})-(?P<month>[\d]{2})-(?P<day>[\d]{2})(?:[\.\-](?P<tag>.+))?$`)
+	versionPattern := regexp.MustCompile(`^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})(?:[\.\-](?P<tag>.+))?$`)
 
 	return func(left, right string) (result bool, err error) {
 		leftMatch := versionPattern.FindStringSubmatch(left)
@@ -131,36 +131,36 @@ var versionle = func() func(string, string) (bool, error) {
 			return
 		}
 
-		var leftLERight = func(left, right string) (result bool, err error) {
-			var leftNum, rightNum int
-			leftNum, err = strconv.Atoi(left)
-			if err != nil {
-				return
-			}
-			rightNum, err = strconv.Atoi(right)
-			if err != nil {
-				return
-			}
-
-			result = leftNum <= rightNum
-			return
-		}
-
 		for i := 1; i <= 3; i++ {
-			var canShortCircuit bool
-			canShortCircuit, err = leftLERight(leftMatch[i], rightMatch[i])
+			if leftMatch[i] == rightMatch[i] {
+				continue
+			}
+
+			var leftNum, rightNum int
+			leftNum, err = strconv.Atoi(leftMatch[i])
 			if err != nil {
 				return
 			}
 
-			if canShortCircuit {
+			rightNum, err = strconv.Atoi(rightMatch[i])
+			if err != nil {
+				return
+			}
+
+			if leftNum < rightNum {
 				result = true
 				return
 			}
+
+			result = false // This line only here for readability
+			return
 		}
 
-		result = leftMatch[4] <= rightMatch[4]
-
+		if len(leftMatch) == 5 && len(rightMatch) == 5 {
+			result = leftMatch[4] <= rightMatch[4]
+			return
+		}
+		result = true
 		return
 	}
 }()

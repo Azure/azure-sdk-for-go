@@ -1,10 +1,12 @@
 hash: 3781c867d04eb548e26f51c40a69dad48453df552f9c181b7d2c2150630d9e5f
-updated: 2017-08-17T10:46:31.2338974-07:00
+updated: 2017-08-31T12:56:44.426584807-07:00
 imports:
 - name: github.com/marstr/collection
   version: b500cc5ead2f54bc213f11de40f8e1f748d986dc
 - name: github.com/marstr/goalias
-  version: 23c8ed425b15045bf719855882e652ce2f371608
+  version: c4b7ba27ecbc4bacd7e290c6f0ad268930d5033e
+  subpackages:
+  - model
 - name: github.com/marstr/randname
   version: 6dd4fdb5aa401961bd04bb5d84c692ab874bd68c
 testImports: []

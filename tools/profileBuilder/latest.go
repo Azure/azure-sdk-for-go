@@ -1,9 +1,21 @@
 package main
 
+// Copyright 2017 Microsoft Corporation
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import (
 	"fmt"
-	"go/parser"
-	"go/token"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -13,6 +25,7 @@ import (
 	"github.com/marstr/collection"
 )
 
+// LatestStrategy evaluates the Azure-SDK-for-Go repository for the latest available API versions of each service.
 type LatestStrategy struct {
 	Root      string
 	Predicate func(packageName string) bool
@@ -33,7 +46,7 @@ func IgnorePreview(name string) (result bool) {
 	return
 }
 
-var packageName = regexp.MustCompile(`service[/\\](?P<provider>[\w\-\.\d]+)[/\\](?P<type>[\w\-\.\d]+)[/\\](?P<version>[\d\-\w\.]+)[/\\](?P<group>[\w\d\-\.]+)`)
+var packageName = regexp.MustCompile(`service[/\\](?P<provider>[\w\-\.\d]+)[/\\](?P<type>[\w\-\.\d]+)(?:[/\\]management)?[/\\](?P<version>[\d\-\w\.]+)[/\\](?P<group>[\w\d\-\.]+)`)
 
 // Enumerate scans through the known Azure SDK for Go packages and finds each
 func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumerator {
@@ -87,19 +100,16 @@ func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumer
 		})
 
 		for _, entry := range maxFound {
-			files := token.NewFileSet()
-			parsed, err := parser.ParseDir(files, entry.rawpath, nil, parser.ParseComments)
+			absolute, err := filepath.Abs(entry.rawpath)
 			if err != nil {
 				continue
 			}
 
-			for _, pkg := range parsed {
-				select {
-				case results <- pkg:
-					// Intentionally Left Blank
-				case <-cancel:
-					return
-				}
+			select {
+			case results <- absolute:
+				// Intionally Left Blank
+			case <-cancel:
+				return
 			}
 		}
 	}()
@@ -158,6 +168,9 @@ var versionle = func() func(string, string) (bool, error) {
 
 		if len(leftMatch) == 5 && len(rightMatch) == 5 {
 			result = leftMatch[4] <= rightMatch[4]
+			return
+		} else if len(leftMatch) == 4 {
+			result = false
 			return
 		}
 		result = true

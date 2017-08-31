@@ -120,6 +120,8 @@ func main() {
 	})
 	cleanPackages()
 
+	generated := 0
+
 	// Write each aliased package that was found
 	for entry := range packages.Enumerate(nil) {
 		cast, ok := entry.(*goalias.AliasPackage)
@@ -127,10 +129,14 @@ func main() {
 			continue
 		}
 
+		generated++
+
 		files := token.NewFileSet()
 		outputLog.Printf("Writing Package: %s", cast.Name)
 		printer.Fprint(ioutil.Discard, files, cast.ModelFile())
 	}
+
+	outputLog.Print(generated, " packages generated.")
 
 }
 

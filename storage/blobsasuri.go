@@ -19,7 +19,7 @@ func (b *Blob) GetSASURIWithSignedIPAndProtocol(expiry time.Time, permissions st
 		signedPermissions = permissions
 		blobURL           = b.GetURL()
 	)
-	canonicalizedResource, err := b.Container.bsc.client.buildCanonicalizedResource(blobURL, b.Container.bsc.auth)
+	canonicalizedResource, err := b.Container.bsc.client.buildCanonicalizedResource(blobURL, b.Container.bsc.auth, true)
 	if err != nil {
 		return "", err
 	}

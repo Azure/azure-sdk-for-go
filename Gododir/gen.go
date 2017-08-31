@@ -307,19 +307,13 @@ func generate(service *service) {
 		commandArgs = append([]string{"-LEGACY"}, commandArgs...)
 	}
 
-	// default to the current directory
-	workingDir := ""
-
 	if autorestDir != "" {
 		// if an AutoRest directory was specified then assume
 		// the caller wants to use a locally-built version.
-		execCommand = "gulp"
-		commandArgs = append([]string{"autorest"}, commandArgs...)
-		workingDir = filepath.Join(autorestDir, "autorest")
+		commandArgs = append(commandArgs, fmt.Sprintf("--use=%s", autorestDir))
 	}
 
 	autorest := exec.Command(execCommand, commandArgs...)
-	autorest.Dir = workingDir
 
 	fmt.Println(commandArgs)
 

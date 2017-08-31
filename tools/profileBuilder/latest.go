@@ -166,14 +166,13 @@ var versionle = func() func(string, string) (bool, error) {
 			return
 		}
 
-		if len(leftMatch) == 5 && len(rightMatch) == 5 {
-			result = leftMatch[4] <= rightMatch[4]
-			return
-		} else if len(leftMatch) == 4 {
+		if leftTag, rightTag := leftMatch[4], rightMatch[4]; leftTag == "" && rightTag != "" {
 			result = false
-			return
+		} else if leftTag != "" && rightTag != "" {
+			result = leftTag <= rightTag
+		} else {
+			result = true
 		}
-		result = true
 		return
 	}
 }()

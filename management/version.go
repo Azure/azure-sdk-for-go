@@ -3,5 +3,5 @@
 package management
 
 var (
-	sdkVersion = "v10.3.0-beta"
+	sdkVersion = "v10.3.1-beta"
 )

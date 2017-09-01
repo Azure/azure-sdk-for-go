@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## `v10.3.1-beta`
+- Added Apache notice file.
+
+### ARM
+- Fixed package name on some `version.go` files.
+
+### Storage
+- Fixed bug related to SAS URI generation and storage emulator support.
+
+### Generated code notes
+- [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) commit: ad55af74f3f0e2b390a4306532528168ba742fef
+- [AutoRest Go extension](https://github.com/Azure/autorest.go) commit: 28a531c59c82cf67bc90c87095c1d34a936461b4
+
 ## `v10.3.0-beta`
 ### ARM
 

@@ -437,12 +437,12 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 			// response contains storage service error object, unmarshal
 			if resp.Header.Get("Content-Type") == "application/xml" {
 				errIn := serviceErrFromXML(respBody, &storageErr)
-				if err != nil { // error unmarshaling the error response
+				if errIn != nil { // error unmarshaling the error response
 					err = errIn
 				}
 			} else {
 				errIn := serviceErrFromJSON(respBody, &storageErr)
-				if err != nil { // error unmarshaling the error response
+				if errIn != nil { // error unmarshaling the error response
 					err = errIn
 				}
 			}

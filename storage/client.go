@@ -15,6 +15,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/url"
+	"os"
 	"regexp"
 	"runtime"
 	"strings"
@@ -403,7 +404,12 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	// and for those that it doesn't we will handle here.
 	if body != nil && req.ContentLength < 1 {
 		if lr, ok := body.(*io.LimitedReader); ok {
-			setContentLengthFromLimitedReader(req, lr)
+			err = setContentLengthFromLimitedReader(req, lr)
+		} else if f, ok := body.(*os.File); ok {
+			err = setContentLengthFromFile(req, f)
+		}
+		if err != nil {
+			return nil, err
 		}
 	}
 

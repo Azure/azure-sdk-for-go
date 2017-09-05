@@ -15,6 +15,7 @@ package main
 //    limitations under the License.
 
 import (
+	"errors"
 	"flag"
 	"go/ast"
 	"go/parser"
@@ -26,6 +27,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"github.com/marstr/collection"
 	goalias "github.com/marstr/goalias/model"
@@ -56,16 +58,17 @@ const (
 var version string
 
 func main() {
-	var packages collection.Enumerable
+	var packages collection.Enumerator
 
-	cleanPackages := func() {
-		packages = collection.Where(packages, func(x interface{}) bool {
-			return x != nil
-		})
+	done := make(chan struct{})
+
+	type alias struct {
+		*goalias.AliasPackage
+		TargetPath string
 	}
 
 	// Convert paths that were found to Absolute paths if they were not already.
-	packages = collection.Select(packageStrategy, func(x interface{}) interface{} {
+	packages = packageStrategy.Enumerate(done).Select(func(x interface{}) interface{} {
 		if cast, ok := x.(string); ok {
 			abs, err := filepath.Abs(cast)
 			if err != nil {
@@ -74,11 +77,7 @@ func main() {
 			return abs
 		}
 		return nil
-	})
-	cleanPackages()
-
-	// Parse any packages that existed in the paths
-	packages = collection.SelectMany(packages, func(x interface{}) collection.Enumerator {
+	}).SelectMany(func(x interface{}) collection.Enumerator {
 		results := make(chan interface{})
 
 		go func() {
@@ -101,40 +100,71 @@ func main() {
 		}()
 
 		return results
-	})
-	cleanPackages()
-
-	// Create packages that contain only aliases to the original.
-	packages = collection.ParallelSelect(packages, func(x interface{}) interface{} {
+	}).ParallelSelect(func(x interface{}) interface{} {
 		cast, ok := x.(*ast.Package)
 		if !ok {
 			return nil
 		}
 
-		alias, err := goalias.NewAliasPackage(cast)
+		var bundle alias
+		subject, err := goalias.NewAliasPackage(cast)
 		if err != nil {
 			return nil
 		}
+
+		bundle.AliasPackage = subject
+		for filename := range cast.Files {
+			bundle.TargetPath = filepath.Dir(filename)
+			bundle.TargetPath, err = getAliasPath(bundle.TargetPath, profileName)
+			if err != nil {
+				errLog.Print(err)
+				return nil
+			}
+			break
+		}
+
 		outputLog.Printf("Alias created for package: %s", cast.Name)
-		return alias
+		return &bundle
+	}).Where(func(x interface{}) bool {
+		return x != nil
+	}).ParallelSelect(func(x interface{}) interface{} {
+		cast, ok := x.(*alias)
+		if !ok {
+			return false
+		}
+
+		files := token.NewFileSet()
+
+		outputPath := filepath.Join(outputLocation, cast.TargetPath, "models.go")
+		outputPath = strings.Replace(outputPath, `\`, `/`, -1)
+		outputLog.Print("Making directory: ", path.Dir(outputPath))
+		err := os.MkdirAll(path.Dir(outputPath), os.ModePerm|os.ModeDir)
+		if err != nil {
+			errLog.Print("error creating directory:", err)
+			return false
+		}
+
+		outputFile, err := os.Create(outputPath)
+		if err != nil {
+			errLog.Print("error creating file: ", err)
+			return false
+		}
+
+		outputLog.Printf("Writing File: %s", outputPath)
+		printer.Fprint(outputFile, files, cast.ModelFile())
+
+		return true
 	})
-	cleanPackages()
 
 	generated := 0
 
 	// Write each aliased package that was found
-	for entry := range packages.Enumerate(nil) {
-		cast, ok := entry.(*goalias.AliasPackage)
-		if !ok {
-			continue
+	for entry := range packages {
+		if entry.(bool) {
+			generated++
 		}
-
-		generated++
-
-		files := token.NewFileSet()
-		outputLog.Printf("Writing Package: %s", cast.Name)
-		printer.Fprint(ioutil.Discard, files, cast.ModelFile())
 	}
+	close(done)
 
 	outputLog.Print(generated, " packages generated.")
 
@@ -223,3 +253,47 @@ func defaultOutputLocation() string {
 func defaultInputRoot() string {
 	return path.Join(AzureSDKforGoLocation(), "service")
 }
+
+// getAliasPath takes an existing API Version path and a package name, and converts the path
+// to a path which uses the new profile layout.
+func getAliasPath(subject, profile string) (transformed string, err error) {
+	subject = strings.TrimSuffix(subject, "/")
+	subject = trimGoPath(subject)
+
+	matches := packageName.FindAllStringSubmatch(subject, -1)
+	if matches == nil {
+		err = errors.New("path does not resemble a known package path")
+		return
+	}
+
+	output := []string{
+		profile,
+		matches[0][1],
+	}
+
+	if matches[0][2] == "management/" {
+		output = append(output, "management")
+	}
+
+	output = append(output, matches[0][3])
+
+	transformed = strings.Join(output, "/")
+	return
+}
+
+// trimGoPath removes the prefix defined in the environment variabe GOPATH if it is present in the string provided.
+var trimGoPath = func() func(string) string {
+	splitGo := strings.Split(os.Getenv("GOPATH"), string(os.PathSeparator))
+	splitGo = append(splitGo, "src")
+
+	return func(subject string) string {
+		splitPath := strings.Split(subject, string(os.PathSeparator))
+		for i, dir := range splitGo {
+			if splitPath[i] != dir {
+				return subject
+			}
+		}
+		packageIdentifier := splitPath[len(splitGo):]
+		return path.Join(packageIdentifier...)
+	}
+}()

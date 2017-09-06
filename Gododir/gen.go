@@ -200,7 +200,8 @@ var (
 			PlaneInput: "data-plane",
 			Services: []service{
 				{
-					Name:   "datalake-store",
+					Name:   "filesystem",
+					Input:  "datalake-store",
 					Output: "datalake-store/filesystem",
 				},
 			},
@@ -405,7 +406,9 @@ func managementVersion(c *do.Context) {
 func version(packageName string) {
 	versionFile := filepath.Join(packageName, "version.go")
 	os.Remove(versionFile)
-	template := `package %s
+	template := `// +build go1.7	
+	
+package %s
 
 var (
 	sdkVersion = "%s"

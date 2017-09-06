@@ -44,7 +44,9 @@ our objective is to reorganize and publish an independent package for each stamp
 in a single SDK Version.
 
 Knowing which API Versions of services are compatbile with one another, and finding which API Versions are available in which environments
-has been a common source of frustration for users. Along with Azure Stack, these problems have led to the development of 
+has been a common source of frustration for users. Along with Azure Stack, these problems have led to the development of "Profiles" which are
+aggregations of multiple services at particular API Versions. Using profiles with our SDK will be optional, and to opt-in you will need to be
+running Go 1.9 or higher.
 
 # Documentation
 

@@ -109,13 +109,13 @@ var (
 				},
 				{Name: "mediaservices"},
 				{Name: "mobileengagement"},
-				{Name: "monitor"},
+				// {Name: "monitor"},
 				{Name: "mysql"},
 				{Name: "network"},
 				{Name: "notificationhubs"},
 				// {
 				// bug in the Go generator https://github.com/Azure/autorest/issues/2219
-				// Name: "operationalinsights",
+				// 	Name: "operationalinsights",
 				// },
 				{Name: "postgresql"},
 				{Name: "powerbiembedded"},
@@ -180,11 +180,11 @@ var (
 				{Name: "streamanalytics"},
 				// {
 				// error in the modeler
-				// 	Name:    "timeseriesinsights",
+				// 	Name: "timeseriesinsights",
 				// },
 				{Name: "trafficmanager"},
-				{Name: "visualstudio"},
-				{Name: "web"},
+				// {Name: "visualstudio"},
+				// {Name: "web"},
 			},
 		},
 		{

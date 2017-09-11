@@ -2,6 +2,8 @@
 
 ## Installation
 
+*Note:* These installation notes assume that you have [Go 1.9](https://blog.golang.org/go1.9) or higher, [Glide](http://github.com/Masterminds/glide), and [Git](https://git-scm.com/) installed.
+
 The simplest version of installation is simple, just run the follwoing command:
 
 ``` bash
@@ -40,6 +42,7 @@ go install -ldflags "-X main.version=$currentCommit"
 # PowerShell
 go get -d github.com/Azure/azure-sdk-for-go/tools/profileBuilder
 cd $env:GOPATH\src\github.com\Azure\azure-sdk-for-go\tools\profileBuilder
+glide install
 $currentCommit = git rev-parse HEAD
 go install -ldflags "-X main.version=$currentCommit"
 ```

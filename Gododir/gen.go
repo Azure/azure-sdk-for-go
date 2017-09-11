@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
 	do "gopkg.in/godo.v2"
 )
@@ -36,12 +37,13 @@ type mapping struct {
 }
 
 var (
+	start           time.Time
 	gopath          = os.Getenv("GOPATH")
 	sdkVersion      string
 	autorestDir     string
 	swaggersDir     string
 	testGen         bool
-	deps            do.S
+	deps            do.P
 	services        = []*service{}
 	servicesMapping = []mapping{
 		{
@@ -50,20 +52,20 @@ var (
 			Services: []service{
 				{Name: "advisor"},
 				{Name: "analysisservices"},
-				// {
-				// Autorest Bug
-				// Name: "apimanagement",
-				// },
+				{
+					// Autorest Bug
+					Name: "apimanagement",
+				},
 				{Name: "appinsights"},
 				{Name: "authorization"},
 				{Name: "automation"},
 				{Name: "batch"},
 				{Name: "billing"},
 				{Name: "cdn"},
-				// {
-				// bug in AutoRest (duplicated files)
-				// Name: "cognitiveservices",
-				// },
+				{
+					// bug in AutoRest (duplicated files)
+					Name: "cognitiveservices",
+				},
 				{Name: "commerce"},
 				{Name: "compute"},
 				{
@@ -113,10 +115,10 @@ var (
 				{Name: "mysql"},
 				{Name: "network"},
 				{Name: "notificationhubs"},
-				// {
-				// bug in the Go generator https://github.com/Azure/autorest/issues/2219
-				// Name: "operationalinsights",
-				// },
+				{
+					// bug in the Go generator https://github.com/Azure/autorest/issues/2219
+					Name: "operationalinsights",
+				},
 				{Name: "postgresql"},
 				{Name: "powerbiembedded"},
 				{Name: "recoveryservices"},
@@ -178,10 +180,10 @@ var (
 				{Name: "storageimportexport"},
 				{Name: "storsimple8000series"},
 				{Name: "streamanalytics"},
-				// {
-				// error in the modeler
-				// 	Name:    "timeseriesinsights",
-				// },
+				{
+					// error in the modeler
+					Name: "timeseriesinsights",
+				},
 				{Name: "trafficmanager"},
 				{Name: "visualstudio"},
 				{Name: "web"},
@@ -216,9 +218,11 @@ var (
 			},
 		},
 	}
+	failed []string
 )
 
-func main() {
+func init() {
+	start = time.Now()
 	for _, swaggerGroup := range servicesMapping {
 		swg := swaggerGroup
 		for _, service := range swg.Services {
@@ -226,6 +230,9 @@ func main() {
 			initAndAddService(&s, swg.PlaneInput, swg.PlaneOutput)
 		}
 	}
+}
+
+func main() {
 	do.Godo(tasks)
 }
 
@@ -247,7 +254,7 @@ func initAndAddService(service *service, planeInput, planeOutput string) {
 }
 
 func tasks(p *do.Project) {
-	p.Task("default", do.S{"setvars", "generate:all", "management"}, nil)
+	p.Task("default", do.S{"setvars", "generate:all", "management", "report"}, nil)
 	p.Task("setvars", nil, setVars)
 	p.Use("generate", generateTasks)
 	p.Use("gofmt", formatTasks)
@@ -256,6 +263,7 @@ func tasks(p *do.Project) {
 	p.Use("govet", vetTasks)
 	p.Task("management", do.S{"setvars"}, managementVersion)
 	p.Task("addVersion", nil, addVersion)
+	p.Task("report", nil, report)
 }
 
 func setVars(c *do.Context) {
@@ -318,8 +326,8 @@ func generate(service *service) {
 
 	fmt.Println(commandArgs)
 
-	if _, err := runner(autorest); err != nil {
-		panic(fmt.Errorf("Autorest error: %s", err))
+	if _, stderr, err := runner(autorest); err != nil {
+		failed = append(failed, fmt.Sprintf("%s: autorest error: %s: %s", service.Fullname, err, stderr))
 	}
 
 	format(service)
@@ -335,9 +343,9 @@ func formatTasks(p *do.Project) {
 func format(service *service) {
 	fmt.Printf("Formatting %s...\n\n", service.Fullname)
 	gofmt := exec.Command("gofmt", "-w", service.Output)
-	_, err := runner(gofmt)
+	_, stderr, err := runner(gofmt)
 	if err != nil {
-		panic(fmt.Errorf("gofmt error: %s", err))
+		failed = append(failed, fmt.Sprintf("%s: gofmt error:%s: %s", service.Fullname, err, stderr))
 	}
 }
 
@@ -348,9 +356,9 @@ func buildTasks(p *do.Project) {
 func build(service *service) {
 	fmt.Printf("Building %s...\n\n", service.Fullname)
 	gobuild := exec.Command("go", "build", service.Namespace)
-	_, err := runner(gobuild)
+	_, stderr, err := runner(gobuild)
 	if err != nil {
-		panic(fmt.Errorf("go build error: %s", err))
+		failed = append(failed, fmt.Sprintf("%s: build error: %s: %s", service.Fullname, err, stderr))
 	}
 }
 
@@ -361,9 +369,9 @@ func lintTasks(p *do.Project) {
 func lint(service *service) {
 	fmt.Printf("Linting %s...\n\n", service.Fullname)
 	golint := exec.Command(filepath.Join(gopath, "bin", "golint"), service.Namespace)
-	_, err := runner(golint)
+	_, stderr, err := runner(golint)
 	if err != nil {
-		panic(fmt.Errorf("golint error: %s", err))
+		failed = append(failed, fmt.Sprintf("%s: golint error: %s: %s", service.Fullname, err, stderr))
 	}
 }
 
@@ -374,15 +382,15 @@ func vetTasks(p *do.Project) {
 func vet(service *service) {
 	fmt.Printf("Vetting %s...\n\n", service.Fullname)
 	govet := exec.Command("go", "vet", service.Namespace)
-	_, err := runner(govet)
+	_, stderr, err := runner(govet)
 	if err != nil {
-		panic(fmt.Errorf("go vet error: %s", err))
+		failed = append(failed, fmt.Sprintf("%s: go vet error: %s: %s", service.Fullname, err, stderr))
 	}
 }
 
 func addVersion(c *do.Context) {
 	gitStatus := exec.Command("git", "status", "-s")
-	out, err := runner(gitStatus)
+	out, _, err := runner(gitStatus)
 	if err != nil {
 		panic(fmt.Errorf("Git error: %s", err))
 	}
@@ -391,7 +399,7 @@ func addVersion(c *do.Context) {
 	for _, f := range files {
 		if strings.HasPrefix(f, " M ") && strings.HasSuffix(f, "version.go") {
 			gitAdd := exec.Command("git", "add", f[3:])
-			_, err := runner(gitAdd)
+			_, _, err := runner(gitAdd)
 			if err != nil {
 				panic(fmt.Errorf("Git error: %s", err))
 			}
@@ -428,7 +436,7 @@ func addTasks(fn func(*service), p *do.Project) {
 	p.Task("all", deps, nil)
 }
 
-func runner(cmd *exec.Cmd) (string, error) {
+func runner(cmd *exec.Cmd) (string, string, error) {
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout, cmd.Stderr = &stdout, &stderr
 	err := cmd.Run()
@@ -438,5 +446,13 @@ func runner(cmd *exec.Cmd) (string, error) {
 	if stderr.Len() > 0 {
 		fmt.Println(stderr.String())
 	}
-	return stdout.String(), err
+	return stdout.String(), stderr.String(), err
+}
+
+func report(c *do.Context) {
+	fmt.Printf("Script ran for %s\n", time.Since(start))
+	for _, f := range failed {
+		fmt.Println(f)
+		fmt.Println("==========")
+	}
 }

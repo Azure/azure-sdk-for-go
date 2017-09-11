@@ -59,6 +59,7 @@ var (
 				{Name: "appinsights"},
 				{Name: "authorization"},
 				{Name: "automation"},
+				{Name: "azsadmin"},
 				{Name: "batch"},
 				{Name: "billing"},
 				{Name: "cdn"},
@@ -119,6 +120,7 @@ var (
 					// bug in the Go generator https://github.com/Azure/autorest/issues/2219
 					Name: "operationalinsights",
 				},
+				{Name: "operationsmanagement"},
 				{Name: "postgresql"},
 				{Name: "powerbiembedded"},
 				{Name: "recoveryservices"},

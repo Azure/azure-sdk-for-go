@@ -114,6 +114,7 @@ func main() {
 		var bundle alias
 		for filename := range cast.Files {
 			bundle.TargetPath = filepath.Dir(filename)
+			bundle.TargetPath = trimGoPath(bundle.TargetPath)
 			subject, err = goalias.NewAliasPackage(cast, bundle.TargetPath)
 			if err != nil {
 				errLog.Print(err)

@@ -41,7 +41,7 @@ func AcceptAll(name string) (result bool) {
 func IgnorePreview(name string) (result bool) {
 	matches := packageName.FindStringSubmatch(name)
 	if len(matches) >= 4 {
-		result = !strings.Contains(matches[3], "preview")
+		result = !strings.Contains(matches[2], "preview")
 	}
 	return
 }

@@ -248,7 +248,6 @@ func init() {
 		outputLog.Print("Profile Name Set to: ", profileName)
 	}
 
-	//
 	inputList = os.Stdin
 	if inputListLocation == "" {
 		outputLog.Print("Reading input from standard input")

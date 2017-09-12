@@ -32,7 +32,7 @@ import (
 
 const (
 	defaultRemoteAzureRestAPISpecsPath = "https://github.com/Azure/azure-rest-api-specs.git"
-	defaultAzureRESTAPIBranch          = "master"
+	defaultAzureRESTAPIBranch          = "current"
 )
 
 // ExitCode gives a hint to the end user about why the program exited without relying on seeing stderr.

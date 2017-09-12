@@ -32,16 +32,15 @@ type LatestStrategy struct {
 }
 
 // AcceptAll is a predefined value for `LatestStrategy.Predicate` which always returns true.
-func AcceptAll(name string) (result bool) {
-	result = true
-	return
+func AcceptAll(name string) bool {
+	return true
 }
 
 // IgnorePreview searches a packages "API Version" to see if it contains the word "preview". It only returns true when a package is not a preview.
 func IgnorePreview(name string) (result bool) {
 	matches := packageName.FindStringSubmatch(name)
-	if len(matches) >= 4 {
-		result = !strings.Contains(matches[2], "preview")
+	if len(matches) >= 4 { // Each group was captured.
+		result = !strings.Contains(matches[2], "preview") // matches[2] is the `version` group
 	}
 	return
 }
@@ -131,17 +130,17 @@ var versionle = func() func(string, string) (bool, error) {
 		leftMatch := versionPattern.FindStringSubmatch(left)
 		rightMatch := versionPattern.FindStringSubmatch(right)
 
-		if len(leftMatch) < 3 {
+		if len(leftMatch) < 3 { // No match found
 			err = ErrNotVersionString(left)
 			return
 		}
 
-		if len(rightMatch) < 3 {
+		if len(rightMatch) < 3 { // No match found
 			err = ErrNotVersionString(right)
 			return
 		}
 
-		for i := 1; i <= 3; i++ {
+		for i := 1; i <= 3; i++ { // Start with index 1 because the first element is then entire match, not just a group. End at 3 because there are three numeric groups.
 			if leftMatch[i] == rightMatch[i] {
 				continue
 			}
@@ -166,7 +165,7 @@ var versionle = func() func(string, string) (bool, error) {
 			return
 		}
 
-		if leftTag, rightTag := leftMatch[4], rightMatch[4]; leftTag == "" && rightTag != "" {
+		if leftTag, rightTag := leftMatch[4], rightMatch[4]; leftTag == "" && rightTag != "" { // match[4] is the tag portion of a date based API Version label
 			result = false
 		} else if leftTag != "" && rightTag != "" {
 			result = leftTag <= rightTag

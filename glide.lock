@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 hash: 7a8f8652a17526f090124ace3974ce9bff3d6d09a83ab94841d377c1125111f7
 updated: 2017-06-12T16:27:58.5460985-07:00
-=======
-hash: fc11c273a4bfae9a077f2238a4693fa3af3d815dfc1b1e9ec75d9eb8e6428993
-updated: 2017-05-23T10:47:59.5894489-07:00
->>>>>>> c9acadb... Fixing glide defs to include Masterminds/semver
 imports:
 - name: github.com/Azure/go-autorest
   version: ""

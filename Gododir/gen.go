@@ -52,26 +52,40 @@ var (
 			Services: []service{
 				{Name: "advisor"},
 				{Name: "analysisservices"},
-				{
-					// Autorest Bug
-					Name: "apimanagement",
-				},
+				// {
+				// Autorest Bug, duplicate files
+				// 	Name: "apimanagement",
+				// },
 				{Name: "appinsights"},
 				{Name: "authorization"},
 				{Name: "automation"},
-				{Name: "azsadmin"},
+				{
+					Name:   "commerce",
+					Input:  "azsadmin/resource-manager/commerce",
+					Output: "azsadmin/commerce",
+				},
+				{
+					Name:   "fabric",
+					Input:  "azsadmin/resource-manager/fabric",
+					Output: "azsadmin/fabric",
+				},
+				{
+					Name:   "infrastructureinsights",
+					Input:  "azsadmin/resource-manager/InfrastructureInsights",
+					Output: "azsadmin/infrastructureinsights",
+				},
 				{Name: "batch"},
 				{Name: "billing"},
 				{Name: "cdn"},
-				{
-					// bug in AutoRest (duplicated files)
-					Name: "cognitiveservices",
-				},
+				// {
+				// bug in AutoRest (duplicated files)
+				// 	Name: "cognitiveservices",
+				// },
 				{Name: "commerce"},
 				{Name: "compute"},
 				{
 					Name:  "containerservice",
-					Input: "compute",
+					Input: "compute/resource-manager",
 					Tag:   "package-container-service-2017-01",
 				},
 				{Name: "consumption"},
@@ -81,12 +95,12 @@ var (
 				{Name: "customer-insights"},
 				{
 					Name:   "account",
-					Input:  "datalake-analytics",
+					Input:  "datalake-analytics/resource-manager",
 					Output: "datalake-analytics/account",
 				},
 				{
 					Name:   "account",
-					Input:  "datalake-store",
+					Input:  "datalake-store/resource-manager",
 					Output: "datalake-store/account",
 				},
 				{Name: "devtestlabs"},
@@ -100,13 +114,13 @@ var (
 				{Name: "logic"},
 				{
 					Name:   "commitmentplans",
-					Input:  "machinelearning",
+					Input:  "machinelearning/resource-manager",
 					Output: "machinelearning/commitmentPlans",
 					Tag:    "package-commitmentPlans-2016-05-preview",
 				},
 				{
 					Name:   "webservices",
-					Input:  "machinelearning",
+					Input:  "machinelearning/resource-manager",
 					Output: "machinelearning/webservices",
 					Tag:    "package-webservices-2017-01",
 				},
@@ -116,10 +130,10 @@ var (
 				{Name: "mysql"},
 				{Name: "network"},
 				{Name: "notificationhubs"},
-				{
-					// bug in the Go generator https://github.com/Azure/autorest/issues/2219
-					Name: "operationalinsights",
-				},
+				// {
+				// bug in the Go generator https://github.com/Azure/autorest/issues/2219
+				// 	Name: "operationalinsights",
+				// },
 				{Name: "operationsmanagement"},
 				{Name: "postgresql"},
 				{Name: "powerbiembedded"},
@@ -131,43 +145,43 @@ var (
 				{Name: "resourcehealth"},
 				{
 					Name:   "features",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/features",
 					Tag:    "package-features-2015-12",
 				},
 				{
 					Name:   "links",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/links",
 					Tag:    "package-links-2016-09",
 				},
 				{
 					Name:   "locks",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/locks",
 					Tag:    "package-locks-2016-09",
 				},
 				{
 					Name:   "managedapplications",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/managedapplications",
 					Tag:    "package-managedapplications-2016-09",
 				},
 				{
 					Name:   "policy",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/policy",
 					Tag:    "package-policy-2016-12",
 				},
 				{
 					Name:   "resources",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/resources",
 					Tag:    "package-resources-2017-05",
 				},
 				{
 					Name:   "subscriptions",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/subscriptions",
 					Tag:    "package-subscriptions-2016-06",
 				},
@@ -182,13 +196,17 @@ var (
 				{Name: "storageimportexport"},
 				{Name: "storsimple8000series"},
 				{Name: "streamanalytics"},
-				{
-					// error in the modeler
-					Name: "timeseriesinsights",
-				},
+				// {
+				// error in the modeler
+				// https://github.com/Azure/autorest/issues/2579
+				// Name: "timeseriesinsights",
+				// },
 				{Name: "trafficmanager"},
 				{Name: "visualstudio"},
-				{Name: "web"},
+				// {
+				// bug on methods
+				// Name: "web",
+				// },
 			},
 		},
 		{
@@ -205,7 +223,7 @@ var (
 			Services: []service{
 				{
 					Name:   "filesystem",
-					Input:  "datalake-store",
+					Input:  "datalake-store/data-plane",
 					Output: "datalake-store/filesystem",
 				},
 			},
@@ -242,7 +260,13 @@ func initAndAddService(service *service, planeInput, planeOutput string) {
 	if service.Input == "" {
 		service.Input = service.Name
 	}
-	service.Input = filepath.Join(service.Input, planeInput, "readme.md")
+	path := []string{service.Input}
+	if service.Input == service.Name {
+		path = append(path, planeInput)
+	}
+	path = append(path, "readme.md")
+	service.Input = filepath.Join(path...)
+
 	if service.Output == "" {
 		service.Output = service.Name
 	}

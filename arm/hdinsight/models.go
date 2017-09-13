@@ -18,11 +18,10 @@ package hdinsight
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"net/http"
-
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // ApplicationName enumerates the values for application name.
@@ -44,20 +43,19 @@ const (
 type ClusterProvisioningState string
 
 const (
-	// ClusterProvisioningStateCanceled specifies the cluster provisioning state canceled state for cluster
-	// provisioning state.
-	ClusterProvisioningStateCanceled ClusterProvisioningState = "Canceled"
-	// ClusterProvisioningStateDeleting specifies the cluster provisioning state deleting state for cluster
-	// provisioning state.
-	ClusterProvisioningStateDeleting ClusterProvisioningState = "Deleting"
-	// ClusterProvisioningStateFailed specifies the cluster provisioning state failed state for cluster provisioning
+	// ClusterProvisioningStateCanceled specifies the cluster provisioning state canceled state for cluster provisioning
 	// state.
+	ClusterProvisioningStateCanceled ClusterProvisioningState = "Canceled"
+	// ClusterProvisioningStateDeleting specifies the cluster provisioning state deleting state for cluster provisioning
+	// state.
+	ClusterProvisioningStateDeleting ClusterProvisioningState = "Deleting"
+	// ClusterProvisioningStateFailed specifies the cluster provisioning state failed state for cluster provisioning state.
 	ClusterProvisioningStateFailed ClusterProvisioningState = "Failed"
 	// ClusterProvisioningStateInProgress specifies the cluster provisioning state in progress state for cluster
 	// provisioning state.
 	ClusterProvisioningStateInProgress ClusterProvisioningState = "InProgress"
-	// ClusterProvisioningStateSucceeded specifies the cluster provisioning state succeeded state for cluster
-	// provisioning state.
+	// ClusterProvisioningStateSucceeded specifies the cluster provisioning state succeeded state for cluster provisioning
+	// state.
 	ClusterProvisioningStateSucceeded ClusterProvisioningState = "Succeeded"
 )
 

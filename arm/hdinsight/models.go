@@ -18,16 +18,15 @@ package hdinsight
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
-	"net/http"
 )
 
 // ApplicationName enumerates the values for application name.
 type ApplicationName string
-
-const ()
 
 // AsyncOperationState enumerates the values for async operation state.
 type AsyncOperationState string

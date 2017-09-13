@@ -446,8 +446,8 @@ func managementVersion(c *do.Context) {
 func version(packageName string) {
 	versionFile := filepath.Join(packageName, "version.go")
 	os.Remove(versionFile)
-	template := `// +build go1.7	
-	
+	template := `// +build go1.7
+
 package %s
 
 var (

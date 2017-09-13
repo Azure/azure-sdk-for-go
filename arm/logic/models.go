@@ -84,8 +84,7 @@ type EdifactCharacterSet string
 const (
 	// EdifactCharacterSetKECA specifies the edifact character set keca state for edifact character set.
 	EdifactCharacterSetKECA EdifactCharacterSet = "KECA"
-	// EdifactCharacterSetNotSpecified specifies the edifact character set not specified state for edifact character
-	// set.
+	// EdifactCharacterSetNotSpecified specifies the edifact character set not specified state for edifact character set.
 	EdifactCharacterSetNotSpecified EdifactCharacterSet = "NotSpecified"
 	// EdifactCharacterSetUNOA specifies the edifact character set unoa state for edifact character set.
 	EdifactCharacterSetUNOA EdifactCharacterSet = "UNOA"
@@ -121,11 +120,10 @@ type EdifactDecimalIndicator string
 const (
 	// EdifactDecimalIndicatorComma specifies the edifact decimal indicator comma state for edifact decimal indicator.
 	EdifactDecimalIndicatorComma EdifactDecimalIndicator = "Comma"
-	// EdifactDecimalIndicatorDecimal specifies the edifact decimal indicator decimal state for edifact decimal
-	// indicator.
+	// EdifactDecimalIndicatorDecimal specifies the edifact decimal indicator decimal state for edifact decimal indicator.
 	EdifactDecimalIndicatorDecimal EdifactDecimalIndicator = "Decimal"
-	// EdifactDecimalIndicatorNotSpecified specifies the edifact decimal indicator not specified state for edifact
-	// decimal indicator.
+	// EdifactDecimalIndicatorNotSpecified specifies the edifact decimal indicator not specified state for edifact decimal
+	// indicator.
 	EdifactDecimalIndicatorNotSpecified EdifactDecimalIndicator = "NotSpecified"
 )
 
@@ -176,11 +174,11 @@ const (
 	// IntegrationAccountSkuNameFree specifies the integration account sku name free state for integration account sku
 	// name.
 	IntegrationAccountSkuNameFree IntegrationAccountSkuName = "Free"
-	// IntegrationAccountSkuNameNotSpecified specifies the integration account sku name not specified state for
-	// integration account sku name.
-	IntegrationAccountSkuNameNotSpecified IntegrationAccountSkuName = "NotSpecified"
-	// IntegrationAccountSkuNameStandard specifies the integration account sku name standard state for integration
+	// IntegrationAccountSkuNameNotSpecified specifies the integration account sku name not specified state for integration
 	// account sku name.
+	IntegrationAccountSkuNameNotSpecified IntegrationAccountSkuName = "NotSpecified"
+	// IntegrationAccountSkuNameStandard specifies the integration account sku name standard state for integration account
+	// sku name.
 	IntegrationAccountSkuNameStandard IntegrationAccountSkuName = "Standard"
 )
 
@@ -344,8 +342,8 @@ const (
 	// TrailingSeparatorPolicyMandatory specifies the trailing separator policy mandatory state for trailing separator
 	// policy.
 	TrailingSeparatorPolicyMandatory TrailingSeparatorPolicy = "Mandatory"
-	// TrailingSeparatorPolicyNotAllowed specifies the trailing separator policy not allowed state for trailing
-	// separator policy.
+	// TrailingSeparatorPolicyNotAllowed specifies the trailing separator policy not allowed state for trailing separator
+	// policy.
 	TrailingSeparatorPolicyNotAllowed TrailingSeparatorPolicy = "NotAllowed"
 	// TrailingSeparatorPolicyNotSpecified specifies the trailing separator policy not specified state for trailing
 	// separator policy.
@@ -373,26 +371,26 @@ const (
 type WorkflowProvisioningState string
 
 const (
-	// WorkflowProvisioningStateAccepted specifies the workflow provisioning state accepted state for workflow
-	// provisioning state.
+	// WorkflowProvisioningStateAccepted specifies the workflow provisioning state accepted state for workflow provisioning
+	// state.
 	WorkflowProvisioningStateAccepted WorkflowProvisioningState = "Accepted"
-	// WorkflowProvisioningStateCanceled specifies the workflow provisioning state canceled state for workflow
-	// provisioning state.
+	// WorkflowProvisioningStateCanceled specifies the workflow provisioning state canceled state for workflow provisioning
+	// state.
 	WorkflowProvisioningStateCanceled WorkflowProvisioningState = "Canceled"
 	// WorkflowProvisioningStateCompleted specifies the workflow provisioning state completed state for workflow
 	// provisioning state.
 	WorkflowProvisioningStateCompleted WorkflowProvisioningState = "Completed"
-	// WorkflowProvisioningStateCreated specifies the workflow provisioning state created state for workflow
-	// provisioning state.
+	// WorkflowProvisioningStateCreated specifies the workflow provisioning state created state for workflow provisioning
+	// state.
 	WorkflowProvisioningStateCreated WorkflowProvisioningState = "Created"
-	// WorkflowProvisioningStateCreating specifies the workflow provisioning state creating state for workflow
-	// provisioning state.
+	// WorkflowProvisioningStateCreating specifies the workflow provisioning state creating state for workflow provisioning
+	// state.
 	WorkflowProvisioningStateCreating WorkflowProvisioningState = "Creating"
-	// WorkflowProvisioningStateDeleted specifies the workflow provisioning state deleted state for workflow
-	// provisioning state.
+	// WorkflowProvisioningStateDeleted specifies the workflow provisioning state deleted state for workflow provisioning
+	// state.
 	WorkflowProvisioningStateDeleted WorkflowProvisioningState = "Deleted"
-	// WorkflowProvisioningStateDeleting specifies the workflow provisioning state deleting state for workflow
-	// provisioning state.
+	// WorkflowProvisioningStateDeleting specifies the workflow provisioning state deleting state for workflow provisioning
+	// state.
 	WorkflowProvisioningStateDeleting WorkflowProvisioningState = "Deleting"
 	// WorkflowProvisioningStateFailed specifies the workflow provisioning state failed state for workflow provisioning
 	// state.
@@ -412,8 +410,8 @@ const (
 	// WorkflowProvisioningStateRegistering specifies the workflow provisioning state registering state for workflow
 	// provisioning state.
 	WorkflowProvisioningStateRegistering WorkflowProvisioningState = "Registering"
-	// WorkflowProvisioningStateRunning specifies the workflow provisioning state running state for workflow
-	// provisioning state.
+	// WorkflowProvisioningStateRunning specifies the workflow provisioning state running state for workflow provisioning
+	// state.
 	WorkflowProvisioningStateRunning WorkflowProvisioningState = "Running"
 	// WorkflowProvisioningStateSucceeded specifies the workflow provisioning state succeeded state for workflow
 	// provisioning state.
@@ -421,11 +419,11 @@ const (
 	// WorkflowProvisioningStateUnregistered specifies the workflow provisioning state unregistered state for workflow
 	// provisioning state.
 	WorkflowProvisioningStateUnregistered WorkflowProvisioningState = "Unregistered"
-	// WorkflowProvisioningStateUnregistering specifies the workflow provisioning state unregistering state for
-	// workflow provisioning state.
-	WorkflowProvisioningStateUnregistering WorkflowProvisioningState = "Unregistering"
-	// WorkflowProvisioningStateUpdating specifies the workflow provisioning state updating state for workflow
+	// WorkflowProvisioningStateUnregistering specifies the workflow provisioning state unregistering state for workflow
 	// provisioning state.
+	WorkflowProvisioningStateUnregistering WorkflowProvisioningState = "Unregistering"
+	// WorkflowProvisioningStateUpdating specifies the workflow provisioning state updating state for workflow provisioning
+	// state.
 	WorkflowProvisioningStateUpdating WorkflowProvisioningState = "Updating"
 )
 
@@ -492,47 +490,47 @@ const (
 	// WorkflowTriggerProvisioningStateCompleted specifies the workflow trigger provisioning state completed state for
 	// workflow trigger provisioning state.
 	WorkflowTriggerProvisioningStateCompleted WorkflowTriggerProvisioningState = "Completed"
-	// WorkflowTriggerProvisioningStateCreated specifies the workflow trigger provisioning state created state for
-	// workflow trigger provisioning state.
+	// WorkflowTriggerProvisioningStateCreated specifies the workflow trigger provisioning state created state for workflow
+	// trigger provisioning state.
 	WorkflowTriggerProvisioningStateCreated WorkflowTriggerProvisioningState = "Created"
 	// WorkflowTriggerProvisioningStateCreating specifies the workflow trigger provisioning state creating state for
 	// workflow trigger provisioning state.
 	WorkflowTriggerProvisioningStateCreating WorkflowTriggerProvisioningState = "Creating"
-	// WorkflowTriggerProvisioningStateDeleted specifies the workflow trigger provisioning state deleted state for
-	// workflow trigger provisioning state.
+	// WorkflowTriggerProvisioningStateDeleted specifies the workflow trigger provisioning state deleted state for workflow
+	// trigger provisioning state.
 	WorkflowTriggerProvisioningStateDeleted WorkflowTriggerProvisioningState = "Deleted"
 	// WorkflowTriggerProvisioningStateDeleting specifies the workflow trigger provisioning state deleting state for
 	// workflow trigger provisioning state.
 	WorkflowTriggerProvisioningStateDeleting WorkflowTriggerProvisioningState = "Deleting"
-	// WorkflowTriggerProvisioningStateFailed specifies the workflow trigger provisioning state failed state for
-	// workflow trigger provisioning state.
+	// WorkflowTriggerProvisioningStateFailed specifies the workflow trigger provisioning state failed state for workflow
+	// trigger provisioning state.
 	WorkflowTriggerProvisioningStateFailed WorkflowTriggerProvisioningState = "Failed"
-	// WorkflowTriggerProvisioningStateMoving specifies the workflow trigger provisioning state moving state for
-	// workflow trigger provisioning state.
+	// WorkflowTriggerProvisioningStateMoving specifies the workflow trigger provisioning state moving state for workflow
+	// trigger provisioning state.
 	WorkflowTriggerProvisioningStateMoving WorkflowTriggerProvisioningState = "Moving"
-	// WorkflowTriggerProvisioningStateNotSpecified specifies the workflow trigger provisioning state not specified
-	// state for workflow trigger provisioning state.
+	// WorkflowTriggerProvisioningStateNotSpecified specifies the workflow trigger provisioning state not specified state
+	// for workflow trigger provisioning state.
 	WorkflowTriggerProvisioningStateNotSpecified WorkflowTriggerProvisioningState = "NotSpecified"
 	// WorkflowTriggerProvisioningStateReady specifies the workflow trigger provisioning state ready state for workflow
 	// trigger provisioning state.
 	WorkflowTriggerProvisioningStateReady WorkflowTriggerProvisioningState = "Ready"
-	// WorkflowTriggerProvisioningStateRegistered specifies the workflow trigger provisioning state registered state
-	// for workflow trigger provisioning state.
-	WorkflowTriggerProvisioningStateRegistered WorkflowTriggerProvisioningState = "Registered"
-	// WorkflowTriggerProvisioningStateRegistering specifies the workflow trigger provisioning state registering state
-	// for workflow trigger provisioning state.
-	WorkflowTriggerProvisioningStateRegistering WorkflowTriggerProvisioningState = "Registering"
-	// WorkflowTriggerProvisioningStateRunning specifies the workflow trigger provisioning state running state for
+	// WorkflowTriggerProvisioningStateRegistered specifies the workflow trigger provisioning state registered state for
 	// workflow trigger provisioning state.
+	WorkflowTriggerProvisioningStateRegistered WorkflowTriggerProvisioningState = "Registered"
+	// WorkflowTriggerProvisioningStateRegistering specifies the workflow trigger provisioning state registering state for
+	// workflow trigger provisioning state.
+	WorkflowTriggerProvisioningStateRegistering WorkflowTriggerProvisioningState = "Registering"
+	// WorkflowTriggerProvisioningStateRunning specifies the workflow trigger provisioning state running state for workflow
+	// trigger provisioning state.
 	WorkflowTriggerProvisioningStateRunning WorkflowTriggerProvisioningState = "Running"
 	// WorkflowTriggerProvisioningStateSucceeded specifies the workflow trigger provisioning state succeeded state for
 	// workflow trigger provisioning state.
 	WorkflowTriggerProvisioningStateSucceeded WorkflowTriggerProvisioningState = "Succeeded"
-	// WorkflowTriggerProvisioningStateUnregistered specifies the workflow trigger provisioning state unregistered
-	// state for workflow trigger provisioning state.
+	// WorkflowTriggerProvisioningStateUnregistered specifies the workflow trigger provisioning state unregistered state
+	// for workflow trigger provisioning state.
 	WorkflowTriggerProvisioningStateUnregistered WorkflowTriggerProvisioningState = "Unregistered"
-	// WorkflowTriggerProvisioningStateUnregistering specifies the workflow trigger provisioning state unregistering
-	// state for workflow trigger provisioning state.
+	// WorkflowTriggerProvisioningStateUnregistering specifies the workflow trigger provisioning state unregistering state
+	// for workflow trigger provisioning state.
 	WorkflowTriggerProvisioningStateUnregistering WorkflowTriggerProvisioningState = "Unregistering"
 	// WorkflowTriggerProvisioningStateUpdating specifies the workflow trigger provisioning state updating state for
 	// workflow trigger provisioning state.

@@ -139,77 +139,69 @@ const (
 type ApplicationGatewaySslCipherSuite string
 
 const (
-	// TLSDHEDSSWITHAES128CBCSHA specifies the tlsdhedsswithaes128cbcsha state for application gateway ssl cipher
-	// suite.
+	// TLSDHEDSSWITHAES128CBCSHA specifies the tlsdhedsswithaes128cbcsha state for application gateway ssl cipher suite.
 	TLSDHEDSSWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_AES_128_CBC_SHA"
 	// TLSDHEDSSWITHAES128CBCSHA256 specifies the tlsdhedsswithaes128cbcsha256 state for application gateway ssl cipher
 	// suite.
 	TLSDHEDSSWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256"
-	// TLSDHEDSSWITHAES256CBCSHA specifies the tlsdhedsswithaes256cbcsha state for application gateway ssl cipher
-	// suite.
+	// TLSDHEDSSWITHAES256CBCSHA specifies the tlsdhedsswithaes256cbcsha state for application gateway ssl cipher suite.
 	TLSDHEDSSWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_AES_256_CBC_SHA"
 	// TLSDHEDSSWITHAES256CBCSHA256 specifies the tlsdhedsswithaes256cbcsha256 state for application gateway ssl cipher
 	// suite.
 	TLSDHEDSSWITHAES256CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_AES_256_CBC_SHA256"
-	// TLSDHERSAWITHAES128CBCSHA specifies the tlsdhersawithaes128cbcsha state for application gateway ssl cipher
-	// suite.
+	// TLSDHERSAWITHAES128CBCSHA specifies the tlsdhersawithaes128cbcsha state for application gateway ssl cipher suite.
 	TLSDHERSAWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_RSA_WITH_AES_128_CBC_SHA"
 	// TLSDHERSAWITHAES128GCMSHA256 specifies the tlsdhersawithaes128gcmsha256 state for application gateway ssl cipher
 	// suite.
 	TLSDHERSAWITHAES128GCMSHA256 ApplicationGatewaySslCipherSuite = "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256"
-	// TLSDHERSAWITHAES256CBCSHA specifies the tlsdhersawithaes256cbcsha state for application gateway ssl cipher
-	// suite.
+	// TLSDHERSAWITHAES256CBCSHA specifies the tlsdhersawithaes256cbcsha state for application gateway ssl cipher suite.
 	TLSDHERSAWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_RSA_WITH_AES_256_CBC_SHA"
 	// TLSDHERSAWITHAES256GCMSHA384 specifies the tlsdhersawithaes256gcmsha384 state for application gateway ssl cipher
 	// suite.
 	TLSDHERSAWITHAES256GCMSHA384 ApplicationGatewaySslCipherSuite = "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384"
-	// TLSECDHEECDSAWITHAES128CBCSHA specifies the tlsecdheecdsawithaes128cbcsha state for application gateway ssl
-	// cipher suite.
+	// TLSECDHEECDSAWITHAES128CBCSHA specifies the tlsecdheecdsawithaes128cbcsha state for application gateway ssl cipher
+	// suite.
 	TLSECDHEECDSAWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA"
-	// TLSECDHEECDSAWITHAES128CBCSHA256 specifies the tlsecdheecdsawithaes128cbcsha256 state for application gateway
-	// ssl cipher suite.
-	TLSECDHEECDSAWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256"
-	// TLSECDHEECDSAWITHAES128GCMSHA256 specifies the tlsecdheecdsawithaes128gcmsha256 state for application gateway
-	// ssl cipher suite.
-	TLSECDHEECDSAWITHAES128GCMSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
-	// TLSECDHEECDSAWITHAES256CBCSHA specifies the tlsecdheecdsawithaes256cbcsha state for application gateway ssl
+	// TLSECDHEECDSAWITHAES128CBCSHA256 specifies the tlsecdheecdsawithaes128cbcsha256 state for application gateway ssl
 	// cipher suite.
+	TLSECDHEECDSAWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256"
+	// TLSECDHEECDSAWITHAES128GCMSHA256 specifies the tlsecdheecdsawithaes128gcmsha256 state for application gateway ssl
+	// cipher suite.
+	TLSECDHEECDSAWITHAES128GCMSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+	// TLSECDHEECDSAWITHAES256CBCSHA specifies the tlsecdheecdsawithaes256cbcsha state for application gateway ssl cipher
+	// suite.
 	TLSECDHEECDSAWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA"
-	// TLSECDHEECDSAWITHAES256CBCSHA384 specifies the tlsecdheecdsawithaes256cbcsha384 state for application gateway
-	// ssl cipher suite.
+	// TLSECDHEECDSAWITHAES256CBCSHA384 specifies the tlsecdheecdsawithaes256cbcsha384 state for application gateway ssl
+	// cipher suite.
 	TLSECDHEECDSAWITHAES256CBCSHA384 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384"
-	// TLSECDHEECDSAWITHAES256GCMSHA384 specifies the tlsecdheecdsawithaes256gcmsha384 state for application gateway
-	// ssl cipher suite.
+	// TLSECDHEECDSAWITHAES256GCMSHA384 specifies the tlsecdheecdsawithaes256gcmsha384 state for application gateway ssl
+	// cipher suite.
 	TLSECDHEECDSAWITHAES256GCMSHA384 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"
 	// TLSECDHERSAWITHAES128CBCSHA specifies the tlsecdhersawithaes128cbcsha state for application gateway ssl cipher
 	// suite.
 	TLSECDHERSAWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA"
-	// TLSECDHERSAWITHAES128CBCSHA256 specifies the tlsecdhersawithaes128cbcsha256 state for application gateway ssl
-	// cipher suite.
+	// TLSECDHERSAWITHAES128CBCSHA256 specifies the tlsecdhersawithaes128cbcsha256 state for application gateway ssl cipher
+	// suite.
 	TLSECDHERSAWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
 	// TLSECDHERSAWITHAES256CBCSHA specifies the tlsecdhersawithaes256cbcsha state for application gateway ssl cipher
 	// suite.
 	TLSECDHERSAWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"
-	// TLSECDHERSAWITHAES256CBCSHA384 specifies the tlsecdhersawithaes256cbcsha384 state for application gateway ssl
-	// cipher suite.
+	// TLSECDHERSAWITHAES256CBCSHA384 specifies the tlsecdhersawithaes256cbcsha384 state for application gateway ssl cipher
+	// suite.
 	TLSECDHERSAWITHAES256CBCSHA384 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384"
 	// TLSRSAWITH3DESEDECBCSHA specifies the tlsrsawith3desedecbcsha state for application gateway ssl cipher suite.
 	TLSRSAWITH3DESEDECBCSHA ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_3DES_EDE_CBC_SHA"
 	// TLSRSAWITHAES128CBCSHA specifies the tlsrsawithaes128cbcsha state for application gateway ssl cipher suite.
 	TLSRSAWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_128_CBC_SHA"
-	// TLSRSAWITHAES128CBCSHA256 specifies the tlsrsawithaes128cbcsha256 state for application gateway ssl cipher
-	// suite.
+	// TLSRSAWITHAES128CBCSHA256 specifies the tlsrsawithaes128cbcsha256 state for application gateway ssl cipher suite.
 	TLSRSAWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_128_CBC_SHA256"
-	// TLSRSAWITHAES128GCMSHA256 specifies the tlsrsawithaes128gcmsha256 state for application gateway ssl cipher
-	// suite.
+	// TLSRSAWITHAES128GCMSHA256 specifies the tlsrsawithaes128gcmsha256 state for application gateway ssl cipher suite.
 	TLSRSAWITHAES128GCMSHA256 ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_128_GCM_SHA256"
 	// TLSRSAWITHAES256CBCSHA specifies the tlsrsawithaes256cbcsha state for application gateway ssl cipher suite.
 	TLSRSAWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_256_CBC_SHA"
-	// TLSRSAWITHAES256CBCSHA256 specifies the tlsrsawithaes256cbcsha256 state for application gateway ssl cipher
-	// suite.
+	// TLSRSAWITHAES256CBCSHA256 specifies the tlsrsawithaes256cbcsha256 state for application gateway ssl cipher suite.
 	TLSRSAWITHAES256CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_256_CBC_SHA256"
-	// TLSRSAWITHAES256GCMSHA384 specifies the tlsrsawithaes256gcmsha384 state for application gateway ssl cipher
-	// suite.
+	// TLSRSAWITHAES256GCMSHA384 specifies the tlsrsawithaes256gcmsha384 state for application gateway ssl cipher suite.
 	TLSRSAWITHAES256GCMSHA384 ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_256_GCM_SHA384"
 )
 
@@ -395,11 +387,10 @@ const (
 	Configured ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "Configured"
 	// Configuring specifies the configuring state for express route circuit peering advertised public prefix state.
 	Configuring ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "Configuring"
-	// NotConfigured specifies the not configured state for express route circuit peering advertised public prefix
-	// state.
+	// NotConfigured specifies the not configured state for express route circuit peering advertised public prefix state.
 	NotConfigured ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "NotConfigured"
-	// ValidationNeeded specifies the validation needed state for express route circuit peering advertised public
-	// prefix state.
+	// ValidationNeeded specifies the validation needed state for express route circuit peering advertised public prefix
+	// state.
 	ValidationNeeded ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "ValidationNeeded"
 )
 
@@ -407,11 +398,11 @@ const (
 type ExpressRouteCircuitPeeringState string
 
 const (
-	// ExpressRouteCircuitPeeringStateDisabled specifies the express route circuit peering state disabled state for
-	// express route circuit peering state.
+	// ExpressRouteCircuitPeeringStateDisabled specifies the express route circuit peering state disabled state for express
+	// route circuit peering state.
 	ExpressRouteCircuitPeeringStateDisabled ExpressRouteCircuitPeeringState = "Disabled"
-	// ExpressRouteCircuitPeeringStateEnabled specifies the express route circuit peering state enabled state for
-	// express route circuit peering state.
+	// ExpressRouteCircuitPeeringStateEnabled specifies the express route circuit peering state enabled state for express
+	// route circuit peering state.
 	ExpressRouteCircuitPeeringStateEnabled ExpressRouteCircuitPeeringState = "Enabled"
 )
 
@@ -756,11 +747,10 @@ const (
 	RouteNextHopTypeInternet RouteNextHopType = "Internet"
 	// RouteNextHopTypeNone specifies the route next hop type none state for route next hop type.
 	RouteNextHopTypeNone RouteNextHopType = "None"
-	// RouteNextHopTypeVirtualAppliance specifies the route next hop type virtual appliance state for route next hop
-	// type.
+	// RouteNextHopTypeVirtualAppliance specifies the route next hop type virtual appliance state for route next hop type.
 	RouteNextHopTypeVirtualAppliance RouteNextHopType = "VirtualAppliance"
-	// RouteNextHopTypeVirtualNetworkGateway specifies the route next hop type virtual network gateway state for route
-	// next hop type.
+	// RouteNextHopTypeVirtualNetworkGateway specifies the route next hop type virtual network gateway state for route next
+	// hop type.
 	RouteNextHopTypeVirtualNetworkGateway RouteNextHopType = "VirtualNetworkGateway"
 	// RouteNextHopTypeVnetLocal specifies the route next hop type vnet local state for route next hop type.
 	RouteNextHopTypeVnetLocal RouteNextHopType = "VnetLocal"
@@ -841,14 +831,14 @@ const (
 	// VirtualNetworkGatewayConnectionStatusConnected specifies the virtual network gateway connection status connected
 	// state for virtual network gateway connection status.
 	VirtualNetworkGatewayConnectionStatusConnected VirtualNetworkGatewayConnectionStatus = "Connected"
-	// VirtualNetworkGatewayConnectionStatusConnecting specifies the virtual network gateway connection status
-	// connecting state for virtual network gateway connection status.
+	// VirtualNetworkGatewayConnectionStatusConnecting specifies the virtual network gateway connection status connecting
+	// state for virtual network gateway connection status.
 	VirtualNetworkGatewayConnectionStatusConnecting VirtualNetworkGatewayConnectionStatus = "Connecting"
 	// VirtualNetworkGatewayConnectionStatusNotConnected specifies the virtual network gateway connection status not
 	// connected state for virtual network gateway connection status.
 	VirtualNetworkGatewayConnectionStatusNotConnected VirtualNetworkGatewayConnectionStatus = "NotConnected"
-	// VirtualNetworkGatewayConnectionStatusUnknown specifies the virtual network gateway connection status unknown
-	// state for virtual network gateway connection status.
+	// VirtualNetworkGatewayConnectionStatusUnknown specifies the virtual network gateway connection status unknown state
+	// for virtual network gateway connection status.
 	VirtualNetworkGatewayConnectionStatusUnknown VirtualNetworkGatewayConnectionStatus = "Unknown"
 )
 
@@ -873,23 +863,23 @@ const (
 	// VirtualNetworkGatewaySkuNameBasic specifies the virtual network gateway sku name basic state for virtual network
 	// gateway sku name.
 	VirtualNetworkGatewaySkuNameBasic VirtualNetworkGatewaySkuName = "Basic"
-	// VirtualNetworkGatewaySkuNameHighPerformance specifies the virtual network gateway sku name high performance
-	// state for virtual network gateway sku name.
+	// VirtualNetworkGatewaySkuNameHighPerformance specifies the virtual network gateway sku name high performance state
+	// for virtual network gateway sku name.
 	VirtualNetworkGatewaySkuNameHighPerformance VirtualNetworkGatewaySkuName = "HighPerformance"
 	// VirtualNetworkGatewaySkuNameStandard specifies the virtual network gateway sku name standard state for virtual
 	// network gateway sku name.
 	VirtualNetworkGatewaySkuNameStandard VirtualNetworkGatewaySkuName = "Standard"
-	// VirtualNetworkGatewaySkuNameUltraPerformance specifies the virtual network gateway sku name ultra performance
-	// state for virtual network gateway sku name.
+	// VirtualNetworkGatewaySkuNameUltraPerformance specifies the virtual network gateway sku name ultra performance state
+	// for virtual network gateway sku name.
 	VirtualNetworkGatewaySkuNameUltraPerformance VirtualNetworkGatewaySkuName = "UltraPerformance"
-	// VirtualNetworkGatewaySkuNameVpnGw1 specifies the virtual network gateway sku name vpn gw 1 state for virtual
-	// network gateway sku name.
+	// VirtualNetworkGatewaySkuNameVpnGw1 specifies the virtual network gateway sku name vpn gw 1 state for virtual network
+	// gateway sku name.
 	VirtualNetworkGatewaySkuNameVpnGw1 VirtualNetworkGatewaySkuName = "VpnGw1"
-	// VirtualNetworkGatewaySkuNameVpnGw2 specifies the virtual network gateway sku name vpn gw 2 state for virtual
-	// network gateway sku name.
+	// VirtualNetworkGatewaySkuNameVpnGw2 specifies the virtual network gateway sku name vpn gw 2 state for virtual network
+	// gateway sku name.
 	VirtualNetworkGatewaySkuNameVpnGw2 VirtualNetworkGatewaySkuName = "VpnGw2"
-	// VirtualNetworkGatewaySkuNameVpnGw3 specifies the virtual network gateway sku name vpn gw 3 state for virtual
-	// network gateway sku name.
+	// VirtualNetworkGatewaySkuNameVpnGw3 specifies the virtual network gateway sku name vpn gw 3 state for virtual network
+	// gateway sku name.
 	VirtualNetworkGatewaySkuNameVpnGw3 VirtualNetworkGatewaySkuName = "VpnGw3"
 )
 
@@ -900,23 +890,23 @@ const (
 	// VirtualNetworkGatewaySkuTierBasic specifies the virtual network gateway sku tier basic state for virtual network
 	// gateway sku tier.
 	VirtualNetworkGatewaySkuTierBasic VirtualNetworkGatewaySkuTier = "Basic"
-	// VirtualNetworkGatewaySkuTierHighPerformance specifies the virtual network gateway sku tier high performance
-	// state for virtual network gateway sku tier.
+	// VirtualNetworkGatewaySkuTierHighPerformance specifies the virtual network gateway sku tier high performance state
+	// for virtual network gateway sku tier.
 	VirtualNetworkGatewaySkuTierHighPerformance VirtualNetworkGatewaySkuTier = "HighPerformance"
 	// VirtualNetworkGatewaySkuTierStandard specifies the virtual network gateway sku tier standard state for virtual
 	// network gateway sku tier.
 	VirtualNetworkGatewaySkuTierStandard VirtualNetworkGatewaySkuTier = "Standard"
-	// VirtualNetworkGatewaySkuTierUltraPerformance specifies the virtual network gateway sku tier ultra performance
-	// state for virtual network gateway sku tier.
+	// VirtualNetworkGatewaySkuTierUltraPerformance specifies the virtual network gateway sku tier ultra performance state
+	// for virtual network gateway sku tier.
 	VirtualNetworkGatewaySkuTierUltraPerformance VirtualNetworkGatewaySkuTier = "UltraPerformance"
-	// VirtualNetworkGatewaySkuTierVpnGw1 specifies the virtual network gateway sku tier vpn gw 1 state for virtual
-	// network gateway sku tier.
+	// VirtualNetworkGatewaySkuTierVpnGw1 specifies the virtual network gateway sku tier vpn gw 1 state for virtual network
+	// gateway sku tier.
 	VirtualNetworkGatewaySkuTierVpnGw1 VirtualNetworkGatewaySkuTier = "VpnGw1"
-	// VirtualNetworkGatewaySkuTierVpnGw2 specifies the virtual network gateway sku tier vpn gw 2 state for virtual
-	// network gateway sku tier.
+	// VirtualNetworkGatewaySkuTierVpnGw2 specifies the virtual network gateway sku tier vpn gw 2 state for virtual network
+	// gateway sku tier.
 	VirtualNetworkGatewaySkuTierVpnGw2 VirtualNetworkGatewaySkuTier = "VpnGw2"
-	// VirtualNetworkGatewaySkuTierVpnGw3 specifies the virtual network gateway sku tier vpn gw 3 state for virtual
-	// network gateway sku tier.
+	// VirtualNetworkGatewaySkuTierVpnGw3 specifies the virtual network gateway sku tier vpn gw 3 state for virtual network
+	// gateway sku tier.
 	VirtualNetworkGatewaySkuTierVpnGw3 VirtualNetworkGatewaySkuTier = "VpnGw3"
 )
 
@@ -927,8 +917,7 @@ const (
 	// VirtualNetworkGatewayTypeExpressRoute specifies the virtual network gateway type express route state for virtual
 	// network gateway type.
 	VirtualNetworkGatewayTypeExpressRoute VirtualNetworkGatewayType = "ExpressRoute"
-	// VirtualNetworkGatewayTypeVpn specifies the virtual network gateway type vpn state for virtual network gateway
-	// type.
+	// VirtualNetworkGatewayTypeVpn specifies the virtual network gateway type vpn state for virtual network gateway type.
 	VirtualNetworkGatewayTypeVpn VirtualNetworkGatewayType = "Vpn"
 )
 

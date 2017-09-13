@@ -55,8 +55,7 @@ const (
 	ConditionOperatorGreaterThanOrEqual ConditionOperator = "GreaterThanOrEqual"
 	// ConditionOperatorLessThan specifies the condition operator less than state for condition operator.
 	ConditionOperatorLessThan ConditionOperator = "LessThan"
-	// ConditionOperatorLessThanOrEqual specifies the condition operator less than or equal state for condition
-	// operator.
+	// ConditionOperatorLessThanOrEqual specifies the condition operator less than or equal state for condition operator.
 	ConditionOperatorLessThanOrEqual ConditionOperator = "LessThanOrEqual"
 )
 
@@ -78,8 +77,8 @@ const (
 type Odatatype string
 
 const (
-	// OdatatypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource specifies the odatatype microsoft
-	// azure management insights models rule management event data source state for odatatype.
+	// OdatatypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource specifies the odatatype microsoft azure
+	// management insights models rule management event data source state for odatatype.
 	OdatatypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource Odatatype = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource"
 	// OdatatypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource specifies the odatatype microsoft azure
 	// management insights models rule metric data source state for odatatype.
@@ -93,8 +92,8 @@ const (
 	// OdatatypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition specifies the odatatype microsoft
 	// azure management insights models location threshold rule condition state for odatatype 1.
 	OdatatypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition Odatatype1 = "Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition"
-	// OdatatypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition specifies the odatatype microsoft
-	// azure management insights models management event rule condition state for odatatype 1.
+	// OdatatypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition specifies the odatatype microsoft azure
+	// management insights models management event rule condition state for odatatype 1.
 	OdatatypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition Odatatype1 = "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition"
 	// OdatatypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition specifies the odatatype microsoft azure
 	// management insights models threshold rule condition state for odatatype 1.
@@ -105,11 +104,11 @@ const (
 type Odatatype2 string
 
 const (
-	// OdatatypeMicrosoftAzureManagementInsightsModelsRuleEmailAction specifies the odatatype microsoft azure
-	// management insights models rule email action state for odatatype 2.
+	// OdatatypeMicrosoftAzureManagementInsightsModelsRuleEmailAction specifies the odatatype microsoft azure management
+	// insights models rule email action state for odatatype 2.
 	OdatatypeMicrosoftAzureManagementInsightsModelsRuleEmailAction Odatatype2 = "Microsoft.Azure.Management.Insights.Models.RuleEmailAction"
-	// OdatatypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction specifies the odatatype microsoft azure
-	// management insights models rule webhook action state for odatatype 2.
+	// OdatatypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction specifies the odatatype microsoft azure management
+	// insights models rule webhook action state for odatatype 2.
 	OdatatypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction Odatatype2 = "Microsoft.Azure.Management.Insights.Models.RuleWebhookAction"
 )
 
@@ -175,16 +174,13 @@ const (
 type TimeAggregationOperator string
 
 const (
-	// TimeAggregationOperatorAverage specifies the time aggregation operator average state for time aggregation
-	// operator.
+	// TimeAggregationOperatorAverage specifies the time aggregation operator average state for time aggregation operator.
 	TimeAggregationOperatorAverage TimeAggregationOperator = "Average"
 	// TimeAggregationOperatorLast specifies the time aggregation operator last state for time aggregation operator.
 	TimeAggregationOperatorLast TimeAggregationOperator = "Last"
-	// TimeAggregationOperatorMaximum specifies the time aggregation operator maximum state for time aggregation
-	// operator.
+	// TimeAggregationOperatorMaximum specifies the time aggregation operator maximum state for time aggregation operator.
 	TimeAggregationOperatorMaximum TimeAggregationOperator = "Maximum"
-	// TimeAggregationOperatorMinimum specifies the time aggregation operator minimum state for time aggregation
-	// operator.
+	// TimeAggregationOperatorMinimum specifies the time aggregation operator minimum state for time aggregation operator.
 	TimeAggregationOperatorMinimum TimeAggregationOperator = "Minimum"
 	// TimeAggregationOperatorTotal specifies the time aggregation operator total state for time aggregation operator.
 	TimeAggregationOperatorTotal TimeAggregationOperator = "Total"

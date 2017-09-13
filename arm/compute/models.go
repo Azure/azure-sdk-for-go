@@ -192,8 +192,7 @@ const (
 	DiskCreateOptionTypesAttach DiskCreateOptionTypes = "attach"
 	// DiskCreateOptionTypesEmpty specifies the disk create option types empty state for disk create option types.
 	DiskCreateOptionTypesEmpty DiskCreateOptionTypes = "empty"
-	// DiskCreateOptionTypesFromImage specifies the disk create option types from image state for disk create option
-	// types.
+	// DiskCreateOptionTypesFromImage specifies the disk create option types from image state for disk create option types.
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = "fromImage"
 )
 
@@ -283,14 +282,14 @@ const (
 type ResourceSkuCapacityScaleType string
 
 const (
-	// ResourceSkuCapacityScaleTypeAutomatic specifies the resource sku capacity scale type automatic state for
-	// resource sku capacity scale type.
+	// ResourceSkuCapacityScaleTypeAutomatic specifies the resource sku capacity scale type automatic state for resource
+	// sku capacity scale type.
 	ResourceSkuCapacityScaleTypeAutomatic ResourceSkuCapacityScaleType = "Automatic"
 	// ResourceSkuCapacityScaleTypeManual specifies the resource sku capacity scale type manual state for resource sku
 	// capacity scale type.
 	ResourceSkuCapacityScaleTypeManual ResourceSkuCapacityScaleType = "Manual"
-	// ResourceSkuCapacityScaleTypeNone specifies the resource sku capacity scale type none state for resource sku
-	// capacity scale type.
+	// ResourceSkuCapacityScaleTypeNone specifies the resource sku capacity scale type none state for resource sku capacity
+	// scale type.
 	ResourceSkuCapacityScaleTypeNone ResourceSkuCapacityScaleType = "None"
 )
 
@@ -298,8 +297,8 @@ const (
 type ResourceSkuRestrictionsReasonCode string
 
 const (
-	// NotAvailableForSubscription specifies the not available for subscription state for resource sku restrictions
-	// reason code.
+	// NotAvailableForSubscription specifies the not available for subscription state for resource sku restrictions reason
+	// code.
 	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = "NotAvailableForSubscription"
 	// QuotaID specifies the quota id state for resource sku restrictions reason code.
 	QuotaID ResourceSkuRestrictionsReasonCode = "QuotaId"
@@ -359,11 +358,11 @@ const (
 type VirtualMachineScaleSetSkuScaleType string
 
 const (
-	// VirtualMachineScaleSetSkuScaleTypeAutomatic specifies the virtual machine scale set sku scale type automatic
-	// state for virtual machine scale set sku scale type.
+	// VirtualMachineScaleSetSkuScaleTypeAutomatic specifies the virtual machine scale set sku scale type automatic state
+	// for virtual machine scale set sku scale type.
 	VirtualMachineScaleSetSkuScaleTypeAutomatic VirtualMachineScaleSetSkuScaleType = "Automatic"
-	// VirtualMachineScaleSetSkuScaleTypeNone specifies the virtual machine scale set sku scale type none state for
-	// virtual machine scale set sku scale type.
+	// VirtualMachineScaleSetSkuScaleTypeNone specifies the virtual machine scale set sku scale type none state for virtual
+	// machine scale set sku scale type.
 	VirtualMachineScaleSetSkuScaleTypeNone VirtualMachineScaleSetSkuScaleType = "None"
 )
 
@@ -392,14 +391,14 @@ const (
 	// VirtualMachineSizeTypesStandardA1 specifies the virtual machine size types standard a1 state for virtual machine
 	// size types.
 	VirtualMachineSizeTypesStandardA1 VirtualMachineSizeTypes = "Standard_A1"
-	// VirtualMachineSizeTypesStandardA10 specifies the virtual machine size types standard a10 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardA10 specifies the virtual machine size types standard a10 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardA10 VirtualMachineSizeTypes = "Standard_A10"
-	// VirtualMachineSizeTypesStandardA11 specifies the virtual machine size types standard a11 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardA11 specifies the virtual machine size types standard a11 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardA11 VirtualMachineSizeTypes = "Standard_A11"
-	// VirtualMachineSizeTypesStandardA1V2 specifies the virtual machine size types standard a1v2 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardA1V2 specifies the virtual machine size types standard a1v2 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardA1V2 VirtualMachineSizeTypes = "Standard_A1_v2"
 	// VirtualMachineSizeTypesStandardA2 specifies the virtual machine size types standard a2 state for virtual machine
 	// size types.
@@ -407,8 +406,8 @@ const (
 	// VirtualMachineSizeTypesStandardA2mV2 specifies the virtual machine size types standard a2mv2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardA2mV2 VirtualMachineSizeTypes = "Standard_A2m_v2"
-	// VirtualMachineSizeTypesStandardA2V2 specifies the virtual machine size types standard a2v2 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardA2V2 specifies the virtual machine size types standard a2v2 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardA2V2 VirtualMachineSizeTypes = "Standard_A2_v2"
 	// VirtualMachineSizeTypesStandardA3 specifies the virtual machine size types standard a3 state for virtual machine
 	// size types.
@@ -419,8 +418,8 @@ const (
 	// VirtualMachineSizeTypesStandardA4mV2 specifies the virtual machine size types standard a4mv2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardA4mV2 VirtualMachineSizeTypes = "Standard_A4m_v2"
-	// VirtualMachineSizeTypesStandardA4V2 specifies the virtual machine size types standard a4v2 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardA4V2 specifies the virtual machine size types standard a4v2 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardA4V2 VirtualMachineSizeTypes = "Standard_A4_v2"
 	// VirtualMachineSizeTypesStandardA5 specifies the virtual machine size types standard a5 state for virtual machine
 	// size types.
@@ -437,8 +436,8 @@ const (
 	// VirtualMachineSizeTypesStandardA8mV2 specifies the virtual machine size types standard a8mv2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardA8mV2 VirtualMachineSizeTypes = "Standard_A8m_v2"
-	// VirtualMachineSizeTypesStandardA8V2 specifies the virtual machine size types standard a8v2 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardA8V2 specifies the virtual machine size types standard a8v2 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardA8V2 VirtualMachineSizeTypes = "Standard_A8_v2"
 	// VirtualMachineSizeTypesStandardA9 specifies the virtual machine size types standard a9 state for virtual machine
 	// size types.
@@ -446,26 +445,26 @@ const (
 	// VirtualMachineSizeTypesStandardD1 specifies the virtual machine size types standard d1 state for virtual machine
 	// size types.
 	VirtualMachineSizeTypesStandardD1 VirtualMachineSizeTypes = "Standard_D1"
-	// VirtualMachineSizeTypesStandardD11 specifies the virtual machine size types standard d11 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardD11 specifies the virtual machine size types standard d11 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardD11 VirtualMachineSizeTypes = "Standard_D11"
 	// VirtualMachineSizeTypesStandardD11V2 specifies the virtual machine size types standard d11v2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardD11V2 VirtualMachineSizeTypes = "Standard_D11_v2"
-	// VirtualMachineSizeTypesStandardD12 specifies the virtual machine size types standard d12 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardD12 specifies the virtual machine size types standard d12 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardD12 VirtualMachineSizeTypes = "Standard_D12"
 	// VirtualMachineSizeTypesStandardD12V2 specifies the virtual machine size types standard d12v2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardD12V2 VirtualMachineSizeTypes = "Standard_D12_v2"
-	// VirtualMachineSizeTypesStandardD13 specifies the virtual machine size types standard d13 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardD13 specifies the virtual machine size types standard d13 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardD13 VirtualMachineSizeTypes = "Standard_D13"
 	// VirtualMachineSizeTypesStandardD13V2 specifies the virtual machine size types standard d13v2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardD13V2 VirtualMachineSizeTypes = "Standard_D13_v2"
-	// VirtualMachineSizeTypesStandardD14 specifies the virtual machine size types standard d14 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardD14 specifies the virtual machine size types standard d14 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardD14 VirtualMachineSizeTypes = "Standard_D14"
 	// VirtualMachineSizeTypesStandardD14V2 specifies the virtual machine size types standard d14v2 state for virtual
 	// machine size types.
@@ -473,53 +472,53 @@ const (
 	// VirtualMachineSizeTypesStandardD15V2 specifies the virtual machine size types standard d15v2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardD15V2 VirtualMachineSizeTypes = "Standard_D15_v2"
-	// VirtualMachineSizeTypesStandardD1V2 specifies the virtual machine size types standard d1v2 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardD1V2 specifies the virtual machine size types standard d1v2 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardD1V2 VirtualMachineSizeTypes = "Standard_D1_v2"
 	// VirtualMachineSizeTypesStandardD2 specifies the virtual machine size types standard d2 state for virtual machine
 	// size types.
 	VirtualMachineSizeTypesStandardD2 VirtualMachineSizeTypes = "Standard_D2"
-	// VirtualMachineSizeTypesStandardD2V2 specifies the virtual machine size types standard d2v2 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardD2V2 specifies the virtual machine size types standard d2v2 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardD2V2 VirtualMachineSizeTypes = "Standard_D2_v2"
 	// VirtualMachineSizeTypesStandardD3 specifies the virtual machine size types standard d3 state for virtual machine
 	// size types.
 	VirtualMachineSizeTypesStandardD3 VirtualMachineSizeTypes = "Standard_D3"
-	// VirtualMachineSizeTypesStandardD3V2 specifies the virtual machine size types standard d3v2 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardD3V2 specifies the virtual machine size types standard d3v2 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardD3V2 VirtualMachineSizeTypes = "Standard_D3_v2"
 	// VirtualMachineSizeTypesStandardD4 specifies the virtual machine size types standard d4 state for virtual machine
 	// size types.
 	VirtualMachineSizeTypesStandardD4 VirtualMachineSizeTypes = "Standard_D4"
-	// VirtualMachineSizeTypesStandardD4V2 specifies the virtual machine size types standard d4v2 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardD4V2 specifies the virtual machine size types standard d4v2 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardD4V2 VirtualMachineSizeTypes = "Standard_D4_v2"
-	// VirtualMachineSizeTypesStandardD5V2 specifies the virtual machine size types standard d5v2 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardD5V2 specifies the virtual machine size types standard d5v2 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardD5V2 VirtualMachineSizeTypes = "Standard_D5_v2"
-	// VirtualMachineSizeTypesStandardDS1 specifies the virtual machine size types standard ds1 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardDS1 specifies the virtual machine size types standard ds1 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardDS1 VirtualMachineSizeTypes = "Standard_DS1"
-	// VirtualMachineSizeTypesStandardDS11 specifies the virtual machine size types standard ds11 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardDS11 specifies the virtual machine size types standard ds11 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardDS11 VirtualMachineSizeTypes = "Standard_DS11"
 	// VirtualMachineSizeTypesStandardDS11V2 specifies the virtual machine size types standard ds11v2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardDS11V2 VirtualMachineSizeTypes = "Standard_DS11_v2"
-	// VirtualMachineSizeTypesStandardDS12 specifies the virtual machine size types standard ds12 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardDS12 specifies the virtual machine size types standard ds12 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardDS12 VirtualMachineSizeTypes = "Standard_DS12"
 	// VirtualMachineSizeTypesStandardDS12V2 specifies the virtual machine size types standard ds12v2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardDS12V2 VirtualMachineSizeTypes = "Standard_DS12_v2"
-	// VirtualMachineSizeTypesStandardDS13 specifies the virtual machine size types standard ds13 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardDS13 specifies the virtual machine size types standard ds13 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardDS13 VirtualMachineSizeTypes = "Standard_DS13"
 	// VirtualMachineSizeTypesStandardDS13V2 specifies the virtual machine size types standard ds13v2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardDS13V2 VirtualMachineSizeTypes = "Standard_DS13_v2"
-	// VirtualMachineSizeTypesStandardDS14 specifies the virtual machine size types standard ds14 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardDS14 specifies the virtual machine size types standard ds14 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardDS14 VirtualMachineSizeTypes = "Standard_DS14"
 	// VirtualMachineSizeTypesStandardDS14V2 specifies the virtual machine size types standard ds14v2 state for virtual
 	// machine size types.
@@ -530,20 +529,20 @@ const (
 	// VirtualMachineSizeTypesStandardDS1V2 specifies the virtual machine size types standard ds1v2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardDS1V2 VirtualMachineSizeTypes = "Standard_DS1_v2"
-	// VirtualMachineSizeTypesStandardDS2 specifies the virtual machine size types standard ds2 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardDS2 specifies the virtual machine size types standard ds2 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardDS2 VirtualMachineSizeTypes = "Standard_DS2"
 	// VirtualMachineSizeTypesStandardDS2V2 specifies the virtual machine size types standard ds2v2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardDS2V2 VirtualMachineSizeTypes = "Standard_DS2_v2"
-	// VirtualMachineSizeTypesStandardDS3 specifies the virtual machine size types standard ds3 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardDS3 specifies the virtual machine size types standard ds3 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardDS3 VirtualMachineSizeTypes = "Standard_DS3"
 	// VirtualMachineSizeTypesStandardDS3V2 specifies the virtual machine size types standard ds3v2 state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardDS3V2 VirtualMachineSizeTypes = "Standard_DS3_v2"
-	// VirtualMachineSizeTypesStandardDS4 specifies the virtual machine size types standard ds4 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardDS4 specifies the virtual machine size types standard ds4 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardDS4 VirtualMachineSizeTypes = "Standard_DS4"
 	// VirtualMachineSizeTypesStandardDS4V2 specifies the virtual machine size types standard ds4v2 state for virtual
 	// machine size types.
@@ -554,32 +553,32 @@ const (
 	// VirtualMachineSizeTypesStandardF1 specifies the virtual machine size types standard f1 state for virtual machine
 	// size types.
 	VirtualMachineSizeTypesStandardF1 VirtualMachineSizeTypes = "Standard_F1"
-	// VirtualMachineSizeTypesStandardF16 specifies the virtual machine size types standard f16 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardF16 specifies the virtual machine size types standard f16 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardF16 VirtualMachineSizeTypes = "Standard_F16"
-	// VirtualMachineSizeTypesStandardF16s specifies the virtual machine size types standard f16s state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardF16s specifies the virtual machine size types standard f16s state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardF16s VirtualMachineSizeTypes = "Standard_F16s"
-	// VirtualMachineSizeTypesStandardF1s specifies the virtual machine size types standard f1s state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardF1s specifies the virtual machine size types standard f1s state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardF1s VirtualMachineSizeTypes = "Standard_F1s"
 	// VirtualMachineSizeTypesStandardF2 specifies the virtual machine size types standard f2 state for virtual machine
 	// size types.
 	VirtualMachineSizeTypesStandardF2 VirtualMachineSizeTypes = "Standard_F2"
-	// VirtualMachineSizeTypesStandardF2s specifies the virtual machine size types standard f2s state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardF2s specifies the virtual machine size types standard f2s state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardF2s VirtualMachineSizeTypes = "Standard_F2s"
 	// VirtualMachineSizeTypesStandardF4 specifies the virtual machine size types standard f4 state for virtual machine
 	// size types.
 	VirtualMachineSizeTypesStandardF4 VirtualMachineSizeTypes = "Standard_F4"
-	// VirtualMachineSizeTypesStandardF4s specifies the virtual machine size types standard f4s state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardF4s specifies the virtual machine size types standard f4s state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardF4s VirtualMachineSizeTypes = "Standard_F4s"
 	// VirtualMachineSizeTypesStandardF8 specifies the virtual machine size types standard f8 state for virtual machine
 	// size types.
 	VirtualMachineSizeTypesStandardF8 VirtualMachineSizeTypes = "Standard_F8"
-	// VirtualMachineSizeTypesStandardF8s specifies the virtual machine size types standard f8s state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardF8s specifies the virtual machine size types standard f8s state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardF8s VirtualMachineSizeTypes = "Standard_F8s"
 	// VirtualMachineSizeTypesStandardG1 specifies the virtual machine size types standard g1 state for virtual machine
 	// size types.
@@ -596,71 +595,71 @@ const (
 	// VirtualMachineSizeTypesStandardG5 specifies the virtual machine size types standard g5 state for virtual machine
 	// size types.
 	VirtualMachineSizeTypesStandardG5 VirtualMachineSizeTypes = "Standard_G5"
-	// VirtualMachineSizeTypesStandardGS1 specifies the virtual machine size types standard gs1 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardGS1 specifies the virtual machine size types standard gs1 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardGS1 VirtualMachineSizeTypes = "Standard_GS1"
-	// VirtualMachineSizeTypesStandardGS2 specifies the virtual machine size types standard gs2 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardGS2 specifies the virtual machine size types standard gs2 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardGS2 VirtualMachineSizeTypes = "Standard_GS2"
-	// VirtualMachineSizeTypesStandardGS3 specifies the virtual machine size types standard gs3 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardGS3 specifies the virtual machine size types standard gs3 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardGS3 VirtualMachineSizeTypes = "Standard_GS3"
-	// VirtualMachineSizeTypesStandardGS4 specifies the virtual machine size types standard gs4 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardGS4 specifies the virtual machine size types standard gs4 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardGS4 VirtualMachineSizeTypes = "Standard_GS4"
-	// VirtualMachineSizeTypesStandardGS5 specifies the virtual machine size types standard gs5 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardGS5 specifies the virtual machine size types standard gs5 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardGS5 VirtualMachineSizeTypes = "Standard_GS5"
-	// VirtualMachineSizeTypesStandardH16 specifies the virtual machine size types standard h16 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardH16 specifies the virtual machine size types standard h16 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardH16 VirtualMachineSizeTypes = "Standard_H16"
-	// VirtualMachineSizeTypesStandardH16m specifies the virtual machine size types standard h16m state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardH16m specifies the virtual machine size types standard h16m state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardH16m VirtualMachineSizeTypes = "Standard_H16m"
 	// VirtualMachineSizeTypesStandardH16mr specifies the virtual machine size types standard h16mr state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardH16mr VirtualMachineSizeTypes = "Standard_H16mr"
-	// VirtualMachineSizeTypesStandardH16r specifies the virtual machine size types standard h16r state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardH16r specifies the virtual machine size types standard h16r state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardH16r VirtualMachineSizeTypes = "Standard_H16r"
 	// VirtualMachineSizeTypesStandardH8 specifies the virtual machine size types standard h8 state for virtual machine
 	// size types.
 	VirtualMachineSizeTypesStandardH8 VirtualMachineSizeTypes = "Standard_H8"
-	// VirtualMachineSizeTypesStandardH8m specifies the virtual machine size types standard h8m state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardH8m specifies the virtual machine size types standard h8m state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardH8m VirtualMachineSizeTypes = "Standard_H8m"
-	// VirtualMachineSizeTypesStandardL16s specifies the virtual machine size types standard l16s state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardL16s specifies the virtual machine size types standard l16s state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardL16s VirtualMachineSizeTypes = "Standard_L16s"
-	// VirtualMachineSizeTypesStandardL32s specifies the virtual machine size types standard l32s state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardL32s specifies the virtual machine size types standard l32s state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardL32s VirtualMachineSizeTypes = "Standard_L32s"
-	// VirtualMachineSizeTypesStandardL4s specifies the virtual machine size types standard l4s state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardL4s specifies the virtual machine size types standard l4s state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardL4s VirtualMachineSizeTypes = "Standard_L4s"
-	// VirtualMachineSizeTypesStandardL8s specifies the virtual machine size types standard l8s state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardL8s specifies the virtual machine size types standard l8s state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardL8s VirtualMachineSizeTypes = "Standard_L8s"
-	// VirtualMachineSizeTypesStandardNC12 specifies the virtual machine size types standard nc12 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardNC12 specifies the virtual machine size types standard nc12 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardNC12 VirtualMachineSizeTypes = "Standard_NC12"
-	// VirtualMachineSizeTypesStandardNC24 specifies the virtual machine size types standard nc24 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardNC24 specifies the virtual machine size types standard nc24 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardNC24 VirtualMachineSizeTypes = "Standard_NC24"
 	// VirtualMachineSizeTypesStandardNC24r specifies the virtual machine size types standard nc24r state for virtual
 	// machine size types.
 	VirtualMachineSizeTypesStandardNC24r VirtualMachineSizeTypes = "Standard_NC24r"
-	// VirtualMachineSizeTypesStandardNC6 specifies the virtual machine size types standard nc6 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardNC6 specifies the virtual machine size types standard nc6 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardNC6 VirtualMachineSizeTypes = "Standard_NC6"
-	// VirtualMachineSizeTypesStandardNV12 specifies the virtual machine size types standard nv12 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardNV12 specifies the virtual machine size types standard nv12 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardNV12 VirtualMachineSizeTypes = "Standard_NV12"
-	// VirtualMachineSizeTypesStandardNV24 specifies the virtual machine size types standard nv24 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardNV24 specifies the virtual machine size types standard nv24 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardNV24 VirtualMachineSizeTypes = "Standard_NV24"
-	// VirtualMachineSizeTypesStandardNV6 specifies the virtual machine size types standard nv6 state for virtual
-	// machine size types.
+	// VirtualMachineSizeTypesStandardNV6 specifies the virtual machine size types standard nv6 state for virtual machine
+	// size types.
 	VirtualMachineSizeTypesStandardNV6 VirtualMachineSizeTypes = "Standard_NV6"
 )
 

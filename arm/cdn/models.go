@@ -69,16 +69,16 @@ const (
 	// DomainControlValidationRequestRejected specifies the domain control validation request rejected state for custom
 	// https provisioning substate.
 	DomainControlValidationRequestRejected CustomHTTPSProvisioningSubstate = "DomainControlValidationRequestRejected"
-	// DomainControlValidationRequestTimedOut specifies the domain control validation request timed out state for
-	// custom https provisioning substate.
+	// DomainControlValidationRequestTimedOut specifies the domain control validation request timed out state for custom
+	// https provisioning substate.
 	DomainControlValidationRequestTimedOut CustomHTTPSProvisioningSubstate = "DomainControlValidationRequestTimedOut"
 	// IssuingCertificate specifies the issuing certificate state for custom https provisioning substate.
 	IssuingCertificate CustomHTTPSProvisioningSubstate = "IssuingCertificate"
 	// PendingDomainControlValidationREquestApproval specifies the pending domain control validation r equest approval
 	// state for custom https provisioning substate.
 	PendingDomainControlValidationREquestApproval CustomHTTPSProvisioningSubstate = "PendingDomainControlValidationREquestApproval"
-	// SubmittingDomainControlValidationRequest specifies the submitting domain control validation request state for
-	// custom https provisioning substate.
+	// SubmittingDomainControlValidationRequest specifies the submitting domain control validation request state for custom
+	// https provisioning substate.
 	SubmittingDomainControlValidationRequest CustomHTTPSProvisioningSubstate = "SubmittingDomainControlValidationRequest"
 )
 

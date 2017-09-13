@@ -264,14 +264,14 @@ const (
 	// PredictionModelLifeCycleActive specifies the prediction model life cycle active state for prediction model life
 	// cycle.
 	PredictionModelLifeCycleActive PredictionModelLifeCycle = "Active"
-	// PredictionModelLifeCycleDeleted specifies the prediction model life cycle deleted state for prediction model
-	// life cycle.
+	// PredictionModelLifeCycleDeleted specifies the prediction model life cycle deleted state for prediction model life
+	// cycle.
 	PredictionModelLifeCycleDeleted PredictionModelLifeCycle = "Deleted"
-	// PredictionModelLifeCycleDiscovering specifies the prediction model life cycle discovering state for prediction
-	// model life cycle.
+	// PredictionModelLifeCycleDiscovering specifies the prediction model life cycle discovering state for prediction model
+	// life cycle.
 	PredictionModelLifeCycleDiscovering PredictionModelLifeCycle = "Discovering"
-	// PredictionModelLifeCycleEvaluating specifies the prediction model life cycle evaluating state for prediction
-	// model life cycle.
+	// PredictionModelLifeCycleEvaluating specifies the prediction model life cycle evaluating state for prediction model
+	// life cycle.
 	PredictionModelLifeCycleEvaluating PredictionModelLifeCycle = "Evaluating"
 	// PredictionModelLifeCycleEvaluatingFailed specifies the prediction model life cycle evaluating failed state for
 	// prediction model life cycle.
@@ -290,8 +290,8 @@ const (
 	PredictionModelLifeCycleHumanIntervention PredictionModelLifeCycle = "HumanIntervention"
 	// PredictionModelLifeCycleNew specifies the prediction model life cycle new state for prediction model life cycle.
 	PredictionModelLifeCycleNew PredictionModelLifeCycle = "New"
-	// PredictionModelLifeCyclePendingDiscovering specifies the prediction model life cycle pending discovering state
-	// for prediction model life cycle.
+	// PredictionModelLifeCyclePendingDiscovering specifies the prediction model life cycle pending discovering state for
+	// prediction model life cycle.
 	PredictionModelLifeCyclePendingDiscovering PredictionModelLifeCycle = "PendingDiscovering"
 	// PredictionModelLifeCyclePendingFeaturing specifies the prediction model life cycle pending featuring state for
 	// prediction model life cycle.
@@ -305,11 +305,11 @@ const (
 	// PredictionModelLifeCycleProvisioning specifies the prediction model life cycle provisioning state for prediction
 	// model life cycle.
 	PredictionModelLifeCycleProvisioning PredictionModelLifeCycle = "Provisioning"
-	// PredictionModelLifeCycleProvisioningFailed specifies the prediction model life cycle provisioning failed state
-	// for prediction model life cycle.
+	// PredictionModelLifeCycleProvisioningFailed specifies the prediction model life cycle provisioning failed state for
+	// prediction model life cycle.
 	PredictionModelLifeCycleProvisioningFailed PredictionModelLifeCycle = "ProvisioningFailed"
-	// PredictionModelLifeCycleTraining specifies the prediction model life cycle training state for prediction model
-	// life cycle.
+	// PredictionModelLifeCycleTraining specifies the prediction model life cycle training state for prediction model life
+	// cycle.
 	PredictionModelLifeCycleTraining PredictionModelLifeCycle = "Training"
 	// PredictionModelLifeCycleTrainingFailed specifies the prediction model life cycle training failed state for
 	// prediction model life cycle.

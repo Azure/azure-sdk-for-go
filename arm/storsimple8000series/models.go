@@ -126,8 +126,8 @@ const (
 type BackupPolicyCreationType string
 
 const (
-	// BackupPolicyCreationTypeBySaaS specifies the backup policy creation type by saa s state for backup policy
-	// creation type.
+	// BackupPolicyCreationTypeBySaaS specifies the backup policy creation type by saa s state for backup policy creation
+	// type.
 	BackupPolicyCreationTypeBySaaS BackupPolicyCreationType = "BySaaS"
 	// BackupPolicyCreationTypeBySSM specifies the backup policy creation type by ssm state for backup policy creation
 	// type.
@@ -265,8 +265,7 @@ const (
 	// DeviceTypeSeries8000PhysicalAppliance specifies the device type series 8000 physical appliance state for device
 	// type.
 	DeviceTypeSeries8000PhysicalAppliance DeviceType = "Series8000PhysicalAppliance"
-	// DeviceTypeSeries8000VirtualAppliance specifies the device type series 8000 virtual appliance state for device
-	// type.
+	// DeviceTypeSeries8000VirtualAppliance specifies the device type series 8000 virtual appliance state for device type.
 	DeviceTypeSeries8000VirtualAppliance DeviceType = "Series8000VirtualAppliance"
 )
 
@@ -278,8 +277,7 @@ const (
 	EncryptionAlgorithmAES256 EncryptionAlgorithm = "AES256"
 	// EncryptionAlgorithmNone specifies the encryption algorithm none state for encryption algorithm.
 	EncryptionAlgorithmNone EncryptionAlgorithm = "None"
-	// EncryptionAlgorithmRSAESPKCS1V15 specifies the encryption algorithm rsaespkcs1v15 state for encryption
-	// algorithm.
+	// EncryptionAlgorithmRSAESPKCS1V15 specifies the encryption algorithm rsaespkcs1v15 state for encryption algorithm.
 	EncryptionAlgorithmRSAESPKCS1V15 EncryptionAlgorithm = "RSAES_PKCS1_v_1_5"
 )
 
@@ -309,25 +307,22 @@ const (
 type HardwareComponentStatus string
 
 const (
-	// HardwareComponentStatusFailure specifies the hardware component status failure state for hardware component
-	// status.
+	// HardwareComponentStatusFailure specifies the hardware component status failure state for hardware component status.
 	HardwareComponentStatusFailure HardwareComponentStatus = "Failure"
-	// HardwareComponentStatusNotPresent specifies the hardware component status not present state for hardware
-	// component status.
+	// HardwareComponentStatusNotPresent specifies the hardware component status not present state for hardware component
+	// status.
 	HardwareComponentStatusNotPresent HardwareComponentStatus = "NotPresent"
 	// HardwareComponentStatusOk specifies the hardware component status ok state for hardware component status.
 	HardwareComponentStatusOk HardwareComponentStatus = "Ok"
-	// HardwareComponentStatusPoweredOff specifies the hardware component status powered off state for hardware
-	// component status.
+	// HardwareComponentStatusPoweredOff specifies the hardware component status powered off state for hardware component
+	// status.
 	HardwareComponentStatusPoweredOff HardwareComponentStatus = "PoweredOff"
-	// HardwareComponentStatusRecovering specifies the hardware component status recovering state for hardware
-	// component status.
+	// HardwareComponentStatusRecovering specifies the hardware component status recovering state for hardware component
+	// status.
 	HardwareComponentStatusRecovering HardwareComponentStatus = "Recovering"
-	// HardwareComponentStatusUnknown specifies the hardware component status unknown state for hardware component
-	// status.
+	// HardwareComponentStatusUnknown specifies the hardware component status unknown state for hardware component status.
 	HardwareComponentStatusUnknown HardwareComponentStatus = "Unknown"
-	// HardwareComponentStatusWarning specifies the hardware component status warning state for hardware component
-	// status.
+	// HardwareComponentStatusWarning specifies the hardware component status warning state for hardware component status.
 	HardwareComponentStatusWarning HardwareComponentStatus = "Warning"
 )
 
@@ -347,16 +342,14 @@ const (
 type ISCSIAndCloudStatus string
 
 const (
-	// ISCSIAndCloudStatusCloudEnabled specifies the iscsi and cloud status cloud enabled state for iscsi and cloud
-	// status.
+	// ISCSIAndCloudStatusCloudEnabled specifies the iscsi and cloud status cloud enabled state for iscsi and cloud status.
 	ISCSIAndCloudStatusCloudEnabled ISCSIAndCloudStatus = "CloudEnabled"
 	// ISCSIAndCloudStatusDisabled specifies the iscsi and cloud status disabled state for iscsi and cloud status.
 	ISCSIAndCloudStatusDisabled ISCSIAndCloudStatus = "Disabled"
-	// ISCSIAndCloudStatusIscsiAndCloudEnabled specifies the iscsi and cloud status iscsi and cloud enabled state for
-	// iscsi and cloud status.
+	// ISCSIAndCloudStatusIscsiAndCloudEnabled specifies the iscsi and cloud status iscsi and cloud enabled state for iscsi
+	// and cloud status.
 	ISCSIAndCloudStatusIscsiAndCloudEnabled ISCSIAndCloudStatus = "IscsiAndCloudEnabled"
-	// ISCSIAndCloudStatusIscsiEnabled specifies the iscsi and cloud status iscsi enabled state for iscsi and cloud
-	// status.
+	// ISCSIAndCloudStatusIscsiEnabled specifies the iscsi and cloud status iscsi enabled state for iscsi and cloud status.
 	ISCSIAndCloudStatusIscsiEnabled ISCSIAndCloudStatus = "IscsiEnabled"
 )
 
@@ -563,14 +556,14 @@ const (
 	// RemoteManagementModeConfigurationDisabled specifies the remote management mode configuration disabled state for
 	// remote management mode configuration.
 	RemoteManagementModeConfigurationDisabled RemoteManagementModeConfiguration = "Disabled"
-	// RemoteManagementModeConfigurationHTTPSAndHTTPEnabled specifies the remote management mode configuration https
-	// and http enabled state for remote management mode configuration.
+	// RemoteManagementModeConfigurationHTTPSAndHTTPEnabled specifies the remote management mode configuration https and
+	// http enabled state for remote management mode configuration.
 	RemoteManagementModeConfigurationHTTPSAndHTTPEnabled RemoteManagementModeConfiguration = "HttpsAndHttpEnabled"
-	// RemoteManagementModeConfigurationHTTPSEnabled specifies the remote management mode configuration https enabled
-	// state for remote management mode configuration.
+	// RemoteManagementModeConfigurationHTTPSEnabled specifies the remote management mode configuration https enabled state
+	// for remote management mode configuration.
 	RemoteManagementModeConfigurationHTTPSEnabled RemoteManagementModeConfiguration = "HttpsEnabled"
-	// RemoteManagementModeConfigurationUnknown specifies the remote management mode configuration unknown state for
-	// remote management mode configuration.
+	// RemoteManagementModeConfigurationUnknown specifies the remote management mode configuration unknown state for remote
+	// management mode configuration.
 	RemoteManagementModeConfigurationUnknown RemoteManagementModeConfiguration = "Unknown"
 )
 
@@ -611,11 +604,11 @@ const (
 	// LocalToTieredVolumesConversionWarning specifies the local to tiered volumes conversion warning state for target
 	// eligibility result code.
 	LocalToTieredVolumesConversionWarning TargetEligibilityResultCode = "LocalToTieredVolumesConversionWarning"
-	// TargetAndSourceCannotBeSameError specifies the target and source cannot be same error state for target
-	// eligibility result code.
-	TargetAndSourceCannotBeSameError TargetEligibilityResultCode = "TargetAndSourceCannotBeSameError"
-	// TargetInsufficientCapacityError specifies the target insufficient capacity error state for target eligibility
+	// TargetAndSourceCannotBeSameError specifies the target and source cannot be same error state for target eligibility
 	// result code.
+	TargetAndSourceCannotBeSameError TargetEligibilityResultCode = "TargetAndSourceCannotBeSameError"
+	// TargetInsufficientCapacityError specifies the target insufficient capacity error state for target eligibility result
+	// code.
 	TargetInsufficientCapacityError TargetEligibilityResultCode = "TargetInsufficientCapacityError"
 	// TargetInsufficientLocalVolumeMemoryError specifies the target insufficient local volume memory error state for
 	// target eligibility result code.
@@ -637,8 +630,8 @@ const (
 	// TargetEligibilityStatusEligible specifies the target eligibility status eligible state for target eligibility
 	// status.
 	TargetEligibilityStatusEligible TargetEligibilityStatus = "Eligible"
-	// TargetEligibilityStatusNotEligible specifies the target eligibility status not eligible state for target
-	// eligibility status.
+	// TargetEligibilityStatusNotEligible specifies the target eligibility status not eligible state for target eligibility
+	// status.
 	TargetEligibilityStatusNotEligible TargetEligibilityStatus = "NotEligible"
 )
 

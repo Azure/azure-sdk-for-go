@@ -42,8 +42,7 @@ const (
 	Purgeable DeletionRecoveryLevel = "Purgeable"
 	// Recoverable specifies the recoverable state for deletion recovery level.
 	Recoverable DeletionRecoveryLevel = "Recoverable"
-	// RecoverableProtectedSubscription specifies the recoverable protected subscription state for deletion recovery
-	// level.
+	// RecoverableProtectedSubscription specifies the recoverable protected subscription state for deletion recovery level.
 	RecoverableProtectedSubscription DeletionRecoveryLevel = "Recoverable+ProtectedSubscription"
 	// RecoverablePurgeable specifies the recoverable purgeable state for deletion recovery level.
 	RecoverablePurgeable DeletionRecoveryLevel = "Recoverable+Purgeable"

@@ -98,8 +98,8 @@ const (
 type HyperVReplicaAzureRpRecoveryPointType string
 
 const (
-	// HyperVReplicaAzureRpRecoveryPointTypeLatest specifies the hyper v replica azure rp recovery point type latest
-	// state for hyper v replica azure rp recovery point type.
+	// HyperVReplicaAzureRpRecoveryPointTypeLatest specifies the hyper v replica azure rp recovery point type latest state
+	// for hyper v replica azure rp recovery point type.
 	HyperVReplicaAzureRpRecoveryPointTypeLatest HyperVReplicaAzureRpRecoveryPointType = "Latest"
 	// HyperVReplicaAzureRpRecoveryPointTypeLatestApplicationConsistent specifies the hyper v replica azure rp recovery
 	// point type latest application consistent state for hyper v replica azure rp recovery point type.
@@ -115,8 +115,7 @@ type IdentityProviderType string
 const (
 	// CustomerActiveDirectory specifies the customer active directory state for identity provider type.
 	CustomerActiveDirectory IdentityProviderType = "CustomerActiveDirectory"
-	// RecoveryServicesActiveDirectory specifies the recovery services active directory state for identity provider
-	// type.
+	// RecoveryServicesActiveDirectory specifies the recovery services active directory state for identity provider type.
 	RecoveryServicesActiveDirectory IdentityProviderType = "RecoveryServicesActiveDirectory"
 )
 
@@ -133,8 +132,8 @@ const (
 	// InMageV2RpRecoveryPointTypeLatestCrashConsistent specifies the in mage v2 rp recovery point type latest crash
 	// consistent state for in mage v2 rp recovery point type.
 	InMageV2RpRecoveryPointTypeLatestCrashConsistent InMageV2RpRecoveryPointType = "LatestCrashConsistent"
-	// InMageV2RpRecoveryPointTypeLatestProcessed specifies the in mage v2 rp recovery point type latest processed
-	// state for in mage v2 rp recovery point type.
+	// InMageV2RpRecoveryPointTypeLatestProcessed specifies the in mage v2 rp recovery point type latest processed state
+	// for in mage v2 rp recovery point type.
 	InMageV2RpRecoveryPointTypeLatestProcessed InMageV2RpRecoveryPointType = "LatestProcessed"
 )
 
@@ -150,8 +149,8 @@ const (
 	InstanceTypeHyperVReplica2012R2 InstanceType = "HyperVReplica2012R2"
 	// InstanceTypeHyperVReplicaAzure specifies the instance type hyper v replica azure state for instance type.
 	InstanceTypeHyperVReplicaAzure InstanceType = "HyperVReplicaAzure"
-	// InstanceTypeHyperVReplicaBaseEventDetails specifies the instance type hyper v replica base event details state
-	// for instance type.
+	// InstanceTypeHyperVReplicaBaseEventDetails specifies the instance type hyper v replica base event details state for
+	// instance type.
 	InstanceTypeHyperVReplicaBaseEventDetails InstanceType = "HyperVReplicaBaseEventDetails"
 	// InstanceTypeInMageAzureV2 specifies the instance type in mage azure v2 state for instance type.
 	InstanceTypeInMageAzureV2 InstanceType = "InMageAzureV2"
@@ -164,8 +163,8 @@ const (
 	// InstanceTypeHyperVVirtualMachine specifies the instance type hyper v virtual machine state for instance type
 	// configuration settings.
 	InstanceTypeHyperVVirtualMachine InstanceTypeConfigurationSettings = "HyperVVirtualMachine"
-	// InstanceTypeReplicationGroupDetails specifies the instance type replication group details state for instance
-	// type configuration settings.
+	// InstanceTypeReplicationGroupDetails specifies the instance type replication group details state for instance type
+	// configuration settings.
 	InstanceTypeReplicationGroupDetails InstanceTypeConfigurationSettings = "ReplicationGroupDetails"
 	// InstanceTypeVMwareVirtualMachine specifies the instance type v mware virtual machine state for instance type
 	// configuration settings.
@@ -177,8 +176,8 @@ const (
 type InstanceTypeDisableProtectionProviderSpecificInput string
 
 const (
-	// InstanceTypeInMage specifies the instance type in mage state for instance type disable protection provider
-	// specific input.
+	// InstanceTypeInMage specifies the instance type in mage state for instance type disable protection provider specific
+	// input.
 	InstanceTypeInMage InstanceTypeDisableProtectionProviderSpecificInput = "InMage"
 )
 
@@ -190,17 +189,16 @@ const (
 	// InstanceTypeEnableProtectionProviderSpecificInputInstanceTypeA2A specifies the instance type enable protection
 	// provider specific input instance type a2a state for instance type enable protection provider specific input.
 	InstanceTypeEnableProtectionProviderSpecificInputInstanceTypeA2A InstanceTypeEnableProtectionProviderSpecificInput = "A2A"
-	// InstanceTypeEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure specifies the instance type
-	// enable protection provider specific input instance type hyper v replica azure state for instance type enable
-	// protection provider specific input.
+	// InstanceTypeEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure specifies the instance type enable
+	// protection provider specific input instance type hyper v replica azure state for instance type enable protection
+	// provider specific input.
 	InstanceTypeEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure InstanceTypeEnableProtectionProviderSpecificInput = "HyperVReplicaAzure"
-	// InstanceTypeEnableProtectionProviderSpecificInputInstanceTypeInMage specifies the instance type enable
-	// protection provider specific input instance type in mage state for instance type enable protection provider
-	// specific input.
+	// InstanceTypeEnableProtectionProviderSpecificInputInstanceTypeInMage specifies the instance type enable protection
+	// provider specific input instance type in mage state for instance type enable protection provider specific input.
 	InstanceTypeEnableProtectionProviderSpecificInputInstanceTypeInMage InstanceTypeEnableProtectionProviderSpecificInput = "InMage"
 	// InstanceTypeEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2 specifies the instance type enable
-	// protection provider specific input instance type in mage azure v2 state for instance type enable protection
-	// provider specific input.
+	// protection provider specific input instance type in mage azure v2 state for instance type enable protection provider
+	// specific input.
 	InstanceTypeEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2 InstanceTypeEnableProtectionProviderSpecificInput = "InMageAzureV2"
 	// InstanceTypeEnableProtectionProviderSpecificInputInstanceTypeSan specifies the instance type enable protection
 	// provider specific input instance type san state for instance type enable protection provider specific input.
@@ -220,14 +218,14 @@ const (
 type InstanceTypeFabricSpecificCreateNetworkMappingInput string
 
 const (
-	// InstanceTypeAzureToAzure specifies the instance type azure to azure state for instance type fabric specific
-	// create network mapping input.
+	// InstanceTypeAzureToAzure specifies the instance type azure to azure state for instance type fabric specific create
+	// network mapping input.
 	InstanceTypeAzureToAzure InstanceTypeFabricSpecificCreateNetworkMappingInput = "AzureToAzure"
 	// InstanceTypeVmmToAzure specifies the instance type vmm to azure state for instance type fabric specific create
 	// network mapping input.
 	InstanceTypeVmmToAzure InstanceTypeFabricSpecificCreateNetworkMappingInput = "VmmToAzure"
-	// InstanceTypeVmmToVmm specifies the instance type vmm to vmm state for instance type fabric specific create
-	// network mapping input.
+	// InstanceTypeVmmToVmm specifies the instance type vmm to vmm state for instance type fabric specific create network
+	// mapping input.
 	InstanceTypeVmmToVmm InstanceTypeFabricSpecificCreateNetworkMappingInput = "VmmToVmm"
 )
 
@@ -235,8 +233,8 @@ const (
 type InstanceTypeFabricSpecificCreationInput string
 
 const (
-	// InstanceTypeFabricSpecificCreationInputInstanceTypeA2A specifies the instance type fabric specific creation
-	// input instance type a2a state for instance type fabric specific creation input.
+	// InstanceTypeFabricSpecificCreationInputInstanceTypeA2A specifies the instance type fabric specific creation input
+	// instance type a2a state for instance type fabric specific creation input.
 	InstanceTypeFabricSpecificCreationInputInstanceTypeA2A InstanceTypeFabricSpecificCreationInput = "A2A"
 	// InstanceTypeFabricSpecificCreationInputInstanceTypeVMwareV2 specifies the instance type fabric specific creation
 	// input instance type v mware v2 state for instance type fabric specific creation input.
@@ -265,16 +263,16 @@ type InstanceTypeFabricSpecificUpdateNetworkMappingInput string
 
 const (
 	// InstanceTypeFabricSpecificUpdateNetworkMappingInputInstanceTypeAzureToAzure specifies the instance type fabric
-	// specific update network mapping input instance type azure to azure state for instance type fabric specific
-	// update network mapping input.
+	// specific update network mapping input instance type azure to azure state for instance type fabric specific update
+	// network mapping input.
 	InstanceTypeFabricSpecificUpdateNetworkMappingInputInstanceTypeAzureToAzure InstanceTypeFabricSpecificUpdateNetworkMappingInput = "AzureToAzure"
 	// InstanceTypeFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToAzure specifies the instance type fabric
 	// specific update network mapping input instance type vmm to azure state for instance type fabric specific update
 	// network mapping input.
 	InstanceTypeFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToAzure InstanceTypeFabricSpecificUpdateNetworkMappingInput = "VmmToAzure"
-	// InstanceTypeFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToVmm specifies the instance type fabric
-	// specific update network mapping input instance type vmm to vmm state for instance type fabric specific update
-	// network mapping input.
+	// InstanceTypeFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToVmm specifies the instance type fabric specific
+	// update network mapping input instance type vmm to vmm state for instance type fabric specific update network mapping
+	// input.
 	InstanceTypeFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToVmm InstanceTypeFabricSpecificUpdateNetworkMappingInput = "VmmToVmm"
 )
 
@@ -282,8 +280,8 @@ const (
 type InstanceTypeGroupTaskDetails string
 
 const (
-	// InstanceTypeInlineWorkflowTaskDetails specifies the instance type inline workflow task details state for
-	// instance type group task details.
+	// InstanceTypeInlineWorkflowTaskDetails specifies the instance type inline workflow task details state for instance
+	// type group task details.
 	InstanceTypeInlineWorkflowTaskDetails InstanceTypeGroupTaskDetails = "InlineWorkflowTaskDetails"
 	// InstanceTypeRecoveryPlanGroupTaskDetails specifies the instance type recovery plan group task details state for
 	// instance type group task details.
@@ -301,14 +299,13 @@ const (
 	InstanceTypeAsrJobDetails InstanceTypeJobDetails = "AsrJobDetails"
 	// InstanceTypeExportJobDetails specifies the instance type export job details state for instance type job details.
 	InstanceTypeExportJobDetails InstanceTypeJobDetails = "ExportJobDetails"
-	// InstanceTypeFailoverJobDetails specifies the instance type failover job details state for instance type job
-	// details.
+	// InstanceTypeFailoverJobDetails specifies the instance type failover job details state for instance type job details.
 	InstanceTypeFailoverJobDetails InstanceTypeJobDetails = "FailoverJobDetails"
-	// InstanceTypeSwitchProtectionJobDetails specifies the instance type switch protection job details state for
-	// instance type job details.
+	// InstanceTypeSwitchProtectionJobDetails specifies the instance type switch protection job details state for instance
+	// type job details.
 	InstanceTypeSwitchProtectionJobDetails InstanceTypeJobDetails = "SwitchProtectionJobDetails"
-	// InstanceTypeTestFailoverJobDetails specifies the instance type test failover job details state for instance type
-	// job details.
+	// InstanceTypeTestFailoverJobDetails specifies the instance type test failover job details state for instance type job
+	// details.
 	InstanceTypeTestFailoverJobDetails InstanceTypeJobDetails = "TestFailoverJobDetails"
 )
 
@@ -317,17 +314,16 @@ const (
 type InstanceTypeNetworkMappingFabricSpecificSettings string
 
 const (
-	// InstanceTypeNetworkMappingFabricSpecificSettingsInstanceTypeAzureToAzure specifies the instance type network
-	// mapping fabric specific settings instance type azure to azure state for instance type network mapping fabric
-	// specific settings.
+	// InstanceTypeNetworkMappingFabricSpecificSettingsInstanceTypeAzureToAzure specifies the instance type network mapping
+	// fabric specific settings instance type azure to azure state for instance type network mapping fabric specific
+	// settings.
 	InstanceTypeNetworkMappingFabricSpecificSettingsInstanceTypeAzureToAzure InstanceTypeNetworkMappingFabricSpecificSettings = "AzureToAzure"
-	// InstanceTypeNetworkMappingFabricSpecificSettingsInstanceTypeVmmToAzure specifies the instance type network
-	// mapping fabric specific settings instance type vmm to azure state for instance type network mapping fabric
-	// specific settings.
+	// InstanceTypeNetworkMappingFabricSpecificSettingsInstanceTypeVmmToAzure specifies the instance type network mapping
+	// fabric specific settings instance type vmm to azure state for instance type network mapping fabric specific
+	// settings.
 	InstanceTypeNetworkMappingFabricSpecificSettingsInstanceTypeVmmToAzure InstanceTypeNetworkMappingFabricSpecificSettings = "VmmToAzure"
 	// InstanceTypeNetworkMappingFabricSpecificSettingsInstanceTypeVmmToVmm specifies the instance type network mapping
-	// fabric specific settings instance type vmm to vmm state for instance type network mapping fabric specific
-	// settings.
+	// fabric specific settings instance type vmm to vmm state for instance type network mapping fabric specific settings.
 	InstanceTypeNetworkMappingFabricSpecificSettingsInstanceTypeVmmToVmm InstanceTypeNetworkMappingFabricSpecificSettings = "VmmToVmm"
 )
 
@@ -338,21 +334,18 @@ const (
 	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeA2A specifies the instance type policy provider specific
 	// details instance type a2a state for instance type policy provider specific details.
 	InstanceTypePolicyProviderSpecificDetailsInstanceTypeA2A InstanceTypePolicyProviderSpecificDetails = "A2A"
-	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012 specifies the instance type policy
-	// provider specific details instance type hyper v replica 2012 state for instance type policy provider specific
-	// details.
+	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012 specifies the instance type policy provider
+	// specific details instance type hyper v replica 2012 state for instance type policy provider specific details.
 	InstanceTypePolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012 InstanceTypePolicyProviderSpecificDetails = "HyperVReplica2012"
-	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2 specifies the instance type policy
-	// provider specific details instance type hyper v replica 2012r2 state for instance type policy provider specific
-	// details.
+	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2 specifies the instance type policy provider
+	// specific details instance type hyper v replica 2012r2 state for instance type policy provider specific details.
 	InstanceTypePolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2 InstanceTypePolicyProviderSpecificDetails = "HyperVReplica2012R2"
-	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure specifies the instance type policy
-	// provider specific details instance type hyper v replica azure state for instance type policy provider specific
-	// details.
+	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure specifies the instance type policy provider
+	// specific details instance type hyper v replica azure state for instance type policy provider specific details.
 	InstanceTypePolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure InstanceTypePolicyProviderSpecificDetails = "HyperVReplicaAzure"
 	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails specifies the instance type
-	// policy provider specific details instance type hyper v replica base policy details state for instance type
-	// policy provider specific details.
+	// policy provider specific details instance type hyper v replica base policy details state for instance type policy
+	// provider specific details.
 	InstanceTypePolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails InstanceTypePolicyProviderSpecificDetails = "HyperVReplicaBasePolicyDetails"
 	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeInMage specifies the instance type policy provider specific
 	// details instance type in mage state for instance type policy provider specific details.
@@ -361,15 +354,14 @@ const (
 	// specific details instance type in mage azure v2 state for instance type policy provider specific details.
 	InstanceTypePolicyProviderSpecificDetailsInstanceTypeInMageAzureV2 InstanceTypePolicyProviderSpecificDetails = "InMageAzureV2"
 	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails specifies the instance type policy
-	// provider specific details instance type in mage base policy details state for instance type policy provider
-	// specific details.
-	InstanceTypePolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails InstanceTypePolicyProviderSpecificDetails = "InMageBasePolicyDetails"
-	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration specifies the instance type policy
-	// provider specific details instance type rcm azure migration state for instance type policy provider specific
+	// provider specific details instance type in mage base policy details state for instance type policy provider specific
 	// details.
+	InstanceTypePolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails InstanceTypePolicyProviderSpecificDetails = "InMageBasePolicyDetails"
+	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration specifies the instance type policy provider
+	// specific details instance type rcm azure migration state for instance type policy provider specific details.
 	InstanceTypePolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration InstanceTypePolicyProviderSpecificDetails = "RcmAzureMigration"
-	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeVMwareCbt specifies the instance type policy provider
-	// specific details instance type v mware cbt state for instance type policy provider specific details.
+	// InstanceTypePolicyProviderSpecificDetailsInstanceTypeVMwareCbt specifies the instance type policy provider specific
+	// details instance type v mware cbt state for instance type policy provider specific details.
 	InstanceTypePolicyProviderSpecificDetailsInstanceTypeVMwareCbt InstanceTypePolicyProviderSpecificDetails = "VMwareCbt"
 )
 
@@ -377,28 +369,26 @@ const (
 type InstanceTypePolicyProviderSpecificInput string
 
 const (
-	// InstanceTypePolicyProviderSpecificInputInstanceTypeA2A specifies the instance type policy provider specific
-	// input instance type a2a state for instance type policy provider specific input.
+	// InstanceTypePolicyProviderSpecificInputInstanceTypeA2A specifies the instance type policy provider specific input
+	// instance type a2a state for instance type policy provider specific input.
 	InstanceTypePolicyProviderSpecificInputInstanceTypeA2A InstanceTypePolicyProviderSpecificInput = "A2A"
 	// InstanceTypePolicyProviderSpecificInputInstanceTypeHyperVReplica2012 specifies the instance type policy provider
 	// specific input instance type hyper v replica 2012 state for instance type policy provider specific input.
 	InstanceTypePolicyProviderSpecificInputInstanceTypeHyperVReplica2012 InstanceTypePolicyProviderSpecificInput = "HyperVReplica2012"
-	// InstanceTypePolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2 specifies the instance type policy
-	// provider specific input instance type hyper v replica 2012r2 state for instance type policy provider specific
-	// input.
+	// InstanceTypePolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2 specifies the instance type policy provider
+	// specific input instance type hyper v replica 2012r2 state for instance type policy provider specific input.
 	InstanceTypePolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2 InstanceTypePolicyProviderSpecificInput = "HyperVReplica2012R2"
-	// InstanceTypePolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure specifies the instance type policy
-	// provider specific input instance type hyper v replica azure state for instance type policy provider specific
-	// input.
+	// InstanceTypePolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure specifies the instance type policy provider
+	// specific input instance type hyper v replica azure state for instance type policy provider specific input.
 	InstanceTypePolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure InstanceTypePolicyProviderSpecificInput = "HyperVReplicaAzure"
-	// InstanceTypePolicyProviderSpecificInputInstanceTypeInMage specifies the instance type policy provider specific
-	// input instance type in mage state for instance type policy provider specific input.
+	// InstanceTypePolicyProviderSpecificInputInstanceTypeInMage specifies the instance type policy provider specific input
+	// instance type in mage state for instance type policy provider specific input.
 	InstanceTypePolicyProviderSpecificInputInstanceTypeInMage InstanceTypePolicyProviderSpecificInput = "InMage"
 	// InstanceTypePolicyProviderSpecificInputInstanceTypeInMageAzureV2 specifies the instance type policy provider
 	// specific input instance type in mage azure v2 state for instance type policy provider specific input.
 	InstanceTypePolicyProviderSpecificInputInstanceTypeInMageAzureV2 InstanceTypePolicyProviderSpecificInput = "InMageAzureV2"
-	// InstanceTypePolicyProviderSpecificInputInstanceTypeVMwareCbt specifies the instance type policy provider
-	// specific input instance type v mware cbt state for instance type policy provider specific input.
+	// InstanceTypePolicyProviderSpecificInputInstanceTypeVMwareCbt specifies the instance type policy provider specific
+	// input instance type v mware cbt state for instance type policy provider specific input.
 	InstanceTypePolicyProviderSpecificInputInstanceTypeVMwareCbt InstanceTypePolicyProviderSpecificInput = "VMwareCbt"
 )
 
@@ -413,12 +403,12 @@ const (
 	// specific failover input instance type hyper v replica azure state for instance type provider specific failover
 	// input.
 	InstanceTypeProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure InstanceTypeProviderSpecificFailoverInput = "HyperVReplicaAzure"
-	// InstanceTypeProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback specifies the instance type
-	// provider specific failover input instance type hyper v replica azure failback state for instance type provider
-	// specific failover input.
+	// InstanceTypeProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback specifies the instance type provider
+	// specific failover input instance type hyper v replica azure failback state for instance type provider specific
+	// failover input.
 	InstanceTypeProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback InstanceTypeProviderSpecificFailoverInput = "HyperVReplicaAzureFailback"
-	// InstanceTypeProviderSpecificFailoverInputInstanceTypeInMage specifies the instance type provider specific
-	// failover input instance type in mage state for instance type provider specific failover input.
+	// InstanceTypeProviderSpecificFailoverInputInstanceTypeInMage specifies the instance type provider specific failover
+	// input instance type in mage state for instance type provider specific failover input.
 	InstanceTypeProviderSpecificFailoverInputInstanceTypeInMage InstanceTypeProviderSpecificFailoverInput = "InMage"
 	// InstanceTypeProviderSpecificFailoverInputInstanceTypeInMageAzureV2 specifies the instance type provider specific
 	// failover input instance type in mage azure v2 state for instance type provider specific failover input.
@@ -429,14 +419,14 @@ const (
 type InstanceTypeRecoveryPlanActionDetails string
 
 const (
-	// InstanceTypeAutomationRunbookActionDetails specifies the instance type automation runbook action details state
-	// for instance type recovery plan action details.
+	// InstanceTypeAutomationRunbookActionDetails specifies the instance type automation runbook action details state for
+	// instance type recovery plan action details.
 	InstanceTypeAutomationRunbookActionDetails InstanceTypeRecoveryPlanActionDetails = "AutomationRunbookActionDetails"
-	// InstanceTypeManualActionDetails specifies the instance type manual action details state for instance type
-	// recovery plan action details.
+	// InstanceTypeManualActionDetails specifies the instance type manual action details state for instance type recovery
+	// plan action details.
 	InstanceTypeManualActionDetails InstanceTypeRecoveryPlanActionDetails = "ManualActionDetails"
-	// InstanceTypeScriptActionDetails specifies the instance type script action details state for instance type
-	// recovery plan action details.
+	// InstanceTypeScriptActionDetails specifies the instance type script action details state for instance type recovery
+	// plan action details.
 	InstanceTypeScriptActionDetails InstanceTypeRecoveryPlanActionDetails = "ScriptActionDetails"
 )
 
@@ -446,24 +436,24 @@ type InstanceTypeRecoveryPlanProviderSpecificFailoverInput string
 
 const (
 	// InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A specifies the instance type recovery plan
-	// provider specific failover input instance type a2a state for instance type recovery plan provider specific
-	// failover input.
+	// provider specific failover input instance type a2a state for instance type recovery plan provider specific failover
+	// input.
 	InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A InstanceTypeRecoveryPlanProviderSpecificFailoverInput = "A2A"
 	// InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure specifies the instance type
-	// recovery plan provider specific failover input instance type hyper v replica azure state for instance type
-	// recovery plan provider specific failover input.
-	InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure InstanceTypeRecoveryPlanProviderSpecificFailoverInput = "HyperVReplicaAzure"
-	// InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback specifies the
-	// instance type recovery plan provider specific failover input instance type hyper v replica azure failback state
-	// for instance type recovery plan provider specific failover input.
-	InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback InstanceTypeRecoveryPlanProviderSpecificFailoverInput = "HyperVReplicaAzureFailback"
-	// InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage specifies the instance type recovery
-	// plan provider specific failover input instance type in mage state for instance type recovery plan provider
-	// specific failover input.
-	InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage InstanceTypeRecoveryPlanProviderSpecificFailoverInput = "InMage"
-	// InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2 specifies the instance type
-	// recovery plan provider specific failover input instance type in mage azure v2 state for instance type recovery
+	// recovery plan provider specific failover input instance type hyper v replica azure state for instance type recovery
 	// plan provider specific failover input.
+	InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure InstanceTypeRecoveryPlanProviderSpecificFailoverInput = "HyperVReplicaAzure"
+	// InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback specifies the instance
+	// type recovery plan provider specific failover input instance type hyper v replica azure failback state for instance
+	// type recovery plan provider specific failover input.
+	InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback InstanceTypeRecoveryPlanProviderSpecificFailoverInput = "HyperVReplicaAzureFailback"
+	// InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage specifies the instance type recovery plan
+	// provider specific failover input instance type in mage state for instance type recovery plan provider specific
+	// failover input.
+	InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage InstanceTypeRecoveryPlanProviderSpecificFailoverInput = "InMage"
+	// InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2 specifies the instance type recovery
+	// plan provider specific failover input instance type in mage azure v2 state for instance type recovery plan provider
+	// specific failover input.
 	InstanceTypeRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2 InstanceTypeRecoveryPlanProviderSpecificFailoverInput = "InMageAzureV2"
 )
 
@@ -475,9 +465,9 @@ const (
 	// InstanceTypeReplicationProviderSpecificSettingsInstanceTypeA2A specifies the instance type replication provider
 	// specific settings instance type a2a state for instance type replication provider specific settings.
 	InstanceTypeReplicationProviderSpecificSettingsInstanceTypeA2A InstanceTypeReplicationProviderSpecificSettings = "A2A"
-	// InstanceTypeReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012 specifies the instance type
-	// replication provider specific settings instance type hyper v replica 2012 state for instance type replication
-	// provider specific settings.
+	// InstanceTypeReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012 specifies the instance type replication
+	// provider specific settings instance type hyper v replica 2012 state for instance type replication provider specific
+	// settings.
 	InstanceTypeReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012 InstanceTypeReplicationProviderSpecificSettings = "HyperVReplica2012"
 	// InstanceTypeReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2 specifies the instance type
 	// replication provider specific settings instance type hyper v replica 2012r2 state for instance type replication
@@ -488,11 +478,11 @@ const (
 	// provider specific settings.
 	InstanceTypeReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure InstanceTypeReplicationProviderSpecificSettings = "HyperVReplicaAzure"
 	// InstanceTypeReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails specifies the
-	// instance type replication provider specific settings instance type hyper v replica base replication details
-	// state for instance type replication provider specific settings.
+	// instance type replication provider specific settings instance type hyper v replica base replication details state
+	// for instance type replication provider specific settings.
 	InstanceTypeReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails InstanceTypeReplicationProviderSpecificSettings = "HyperVReplicaBaseReplicationDetails"
-	// InstanceTypeReplicationProviderSpecificSettingsInstanceTypeInMage specifies the instance type replication
-	// provider specific settings instance type in mage state for instance type replication provider specific settings.
+	// InstanceTypeReplicationProviderSpecificSettingsInstanceTypeInMage specifies the instance type replication provider
+	// specific settings instance type in mage state for instance type replication provider specific settings.
 	InstanceTypeReplicationProviderSpecificSettingsInstanceTypeInMage InstanceTypeReplicationProviderSpecificSettings = "InMage"
 	// InstanceTypeReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2 specifies the instance type replication
 	// provider specific settings instance type in mage azure v2 state for instance type replication provider specific
@@ -505,9 +495,8 @@ const (
 type InstanceTypeReverseReplicationProviderSpecificInput string
 
 const (
-	// InstanceTypeReverseReplicationProviderSpecificInputInstanceTypeA2A specifies the instance type reverse
-	// replication provider specific input instance type a2a state for instance type reverse replication provider
-	// specific input.
+	// InstanceTypeReverseReplicationProviderSpecificInputInstanceTypeA2A specifies the instance type reverse replication
+	// provider specific input instance type a2a state for instance type reverse replication provider specific input.
 	InstanceTypeReverseReplicationProviderSpecificInputInstanceTypeA2A InstanceTypeReverseReplicationProviderSpecificInput = "A2A"
 	// InstanceTypeReverseReplicationProviderSpecificInputInstanceTypeHyperVReplicaAzure specifies the instance type
 	// reverse replication provider specific input instance type hyper v replica azure state for instance type reverse
@@ -536,20 +525,19 @@ const (
 	// InstanceTypeFabricReplicationGroupTaskDetails specifies the instance type fabric replication group task details
 	// state for instance type task type details.
 	InstanceTypeFabricReplicationGroupTaskDetails InstanceTypeTaskTypeDetails = "FabricReplicationGroupTaskDetails"
-	// InstanceTypeJobTaskDetails specifies the instance type job task details state for instance type task type
-	// details.
+	// InstanceTypeJobTaskDetails specifies the instance type job task details state for instance type task type details.
 	InstanceTypeJobTaskDetails InstanceTypeTaskTypeDetails = "JobTaskDetails"
-	// InstanceTypeManualActionTaskDetails specifies the instance type manual action task details state for instance
-	// type task type details.
+	// InstanceTypeManualActionTaskDetails specifies the instance type manual action task details state for instance type
+	// task type details.
 	InstanceTypeManualActionTaskDetails InstanceTypeTaskTypeDetails = "ManualActionTaskDetails"
-	// InstanceTypeScriptActionTaskDetails specifies the instance type script action task details state for instance
-	// type task type details.
+	// InstanceTypeScriptActionTaskDetails specifies the instance type script action task details state for instance type
+	// task type details.
 	InstanceTypeScriptActionTaskDetails InstanceTypeTaskTypeDetails = "ScriptActionTaskDetails"
-	// InstanceTypeVirtualMachineTaskDetails specifies the instance type virtual machine task details state for
-	// instance type task type details.
-	InstanceTypeVirtualMachineTaskDetails InstanceTypeTaskTypeDetails = "VirtualMachineTaskDetails"
-	// InstanceTypeVMNicUpdatesTaskDetails specifies the instance type vm nic updates task details state for instance
+	// InstanceTypeVirtualMachineTaskDetails specifies the instance type virtual machine task details state for instance
 	// type task type details.
+	InstanceTypeVirtualMachineTaskDetails InstanceTypeTaskTypeDetails = "VirtualMachineTaskDetails"
+	// InstanceTypeVMNicUpdatesTaskDetails specifies the instance type vm nic updates task details state for instance type
+	// task type details.
 	InstanceTypeVMNicUpdatesTaskDetails InstanceTypeTaskTypeDetails = "VmNicUpdatesTaskDetails"
 )
 
@@ -623,8 +611,8 @@ const (
 type ReplicationProtectedItemOperation string
 
 const (
-	// ReplicationProtectedItemOperationChangePit specifies the replication protected item operation change pit state
-	// for replication protected item operation.
+	// ReplicationProtectedItemOperationChangePit specifies the replication protected item operation change pit state for
+	// replication protected item operation.
 	ReplicationProtectedItemOperationChangePit ReplicationProtectedItemOperation = "ChangePit"
 	// ReplicationProtectedItemOperationCommit specifies the replication protected item operation commit state for
 	// replication protected item operation.
@@ -641,8 +629,8 @@ const (
 	// ReplicationProtectedItemOperationFinalizeFailback specifies the replication protected item operation finalize
 	// failback state for replication protected item operation.
 	ReplicationProtectedItemOperationFinalizeFailback ReplicationProtectedItemOperation = "FinalizeFailback"
-	// ReplicationProtectedItemOperationPlannedFailover specifies the replication protected item operation planned
-	// failover state for replication protected item operation.
+	// ReplicationProtectedItemOperationPlannedFailover specifies the replication protected item operation planned failover
+	// state for replication protected item operation.
 	ReplicationProtectedItemOperationPlannedFailover ReplicationProtectedItemOperation = "PlannedFailover"
 	// ReplicationProtectedItemOperationRepairReplication specifies the replication protected item operation repair
 	// replication state for replication protected item operation.
@@ -653,8 +641,8 @@ const (
 	// ReplicationProtectedItemOperationSwitchProtection specifies the replication protected item operation switch
 	// protection state for replication protected item operation.
 	ReplicationProtectedItemOperationSwitchProtection ReplicationProtectedItemOperation = "SwitchProtection"
-	// ReplicationProtectedItemOperationTestFailover specifies the replication protected item operation test failover
-	// state for replication protected item operation.
+	// ReplicationProtectedItemOperationTestFailover specifies the replication protected item operation test failover state
+	// for replication protected item operation.
 	ReplicationProtectedItemOperationTestFailover ReplicationProtectedItemOperation = "TestFailover"
 	// ReplicationProtectedItemOperationTestFailoverCleanup specifies the replication protected item operation test
 	// failover cleanup state for replication protected item operation.
@@ -668,14 +656,14 @@ const (
 type RpInMageRecoveryPointType string
 
 const (
-	// RpInMageRecoveryPointTypeCustom specifies the rp in mage recovery point type custom state for rp in mage
-	// recovery point type.
+	// RpInMageRecoveryPointTypeCustom specifies the rp in mage recovery point type custom state for rp in mage recovery
+	// point type.
 	RpInMageRecoveryPointTypeCustom RpInMageRecoveryPointType = "Custom"
 	// RpInMageRecoveryPointTypeLatestTag specifies the rp in mage recovery point type latest tag state for rp in mage
 	// recovery point type.
 	RpInMageRecoveryPointTypeLatestTag RpInMageRecoveryPointType = "LatestTag"
-	// RpInMageRecoveryPointTypeLatestTime specifies the rp in mage recovery point type latest time state for rp in
-	// mage recovery point type.
+	// RpInMageRecoveryPointTypeLatestTime specifies the rp in mage recovery point type latest time state for rp in mage
+	// recovery point type.
 	RpInMageRecoveryPointTypeLatestTime RpInMageRecoveryPointType = "LatestTime"
 )
 

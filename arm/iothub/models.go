@@ -36,19 +36,19 @@ const (
 	RegistryReadDeviceConnect AccessRights = "RegistryRead, DeviceConnect"
 	// RegistryReadRegistryWrite specifies the registry read registry write state for access rights.
 	RegistryReadRegistryWrite AccessRights = "RegistryRead, RegistryWrite"
-	// RegistryReadRegistryWriteDeviceConnect specifies the registry read registry write device connect state for
-	// access rights.
+	// RegistryReadRegistryWriteDeviceConnect specifies the registry read registry write device connect state for access
+	// rights.
 	RegistryReadRegistryWriteDeviceConnect AccessRights = "RegistryRead, RegistryWrite, DeviceConnect"
-	// RegistryReadRegistryWriteServiceConnect specifies the registry read registry write service connect state for
-	// access rights.
+	// RegistryReadRegistryWriteServiceConnect specifies the registry read registry write service connect state for access
+	// rights.
 	RegistryReadRegistryWriteServiceConnect AccessRights = "RegistryRead, RegistryWrite, ServiceConnect"
 	// RegistryReadRegistryWriteServiceConnectDeviceConnect specifies the registry read registry write service connect
 	// device connect state for access rights.
 	RegistryReadRegistryWriteServiceConnectDeviceConnect AccessRights = "RegistryRead, RegistryWrite, ServiceConnect, DeviceConnect"
 	// RegistryReadServiceConnect specifies the registry read service connect state for access rights.
 	RegistryReadServiceConnect AccessRights = "RegistryRead, ServiceConnect"
-	// RegistryReadServiceConnectDeviceConnect specifies the registry read service connect device connect state for
-	// access rights.
+	// RegistryReadServiceConnectDeviceConnect specifies the registry read service connect device connect state for access
+	// rights.
 	RegistryReadServiceConnectDeviceConnect AccessRights = "RegistryRead, ServiceConnect, DeviceConnect"
 	// RegistryWrite specifies the registry write state for access rights.
 	RegistryWrite AccessRights = "RegistryWrite"
@@ -143,8 +143,7 @@ const (
 type OperationMonitoringLevel string
 
 const (
-	// OperationMonitoringLevelError specifies the operation monitoring level error state for operation monitoring
-	// level.
+	// OperationMonitoringLevelError specifies the operation monitoring level error state for operation monitoring level.
 	OperationMonitoringLevelError OperationMonitoringLevel = "Error"
 	// OperationMonitoringLevelErrorInformation specifies the operation monitoring level error information state for
 	// operation monitoring level.

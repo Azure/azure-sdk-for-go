@@ -177,8 +177,8 @@ const (
 	// ServiceBusAuthenticationTypeNotSpecified specifies the service bus authentication type not specified state for
 	// service bus authentication type.
 	ServiceBusAuthenticationTypeNotSpecified ServiceBusAuthenticationType = "NotSpecified"
-	// ServiceBusAuthenticationTypeSharedAccessKey specifies the service bus authentication type shared access key
-	// state for service bus authentication type.
+	// ServiceBusAuthenticationTypeSharedAccessKey specifies the service bus authentication type shared access key state
+	// for service bus authentication type.
 	ServiceBusAuthenticationTypeSharedAccessKey ServiceBusAuthenticationType = "SharedAccessKey"
 )
 

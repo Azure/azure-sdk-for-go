@@ -73,22 +73,17 @@ const (
 type TopicProvisioningState string
 
 const (
-	// TopicProvisioningStateCanceled specifies the topic provisioning state canceled state for topic provisioning
-	// state.
+	// TopicProvisioningStateCanceled specifies the topic provisioning state canceled state for topic provisioning state.
 	TopicProvisioningStateCanceled TopicProvisioningState = "Canceled"
-	// TopicProvisioningStateCreating specifies the topic provisioning state creating state for topic provisioning
-	// state.
+	// TopicProvisioningStateCreating specifies the topic provisioning state creating state for topic provisioning state.
 	TopicProvisioningStateCreating TopicProvisioningState = "Creating"
-	// TopicProvisioningStateDeleting specifies the topic provisioning state deleting state for topic provisioning
-	// state.
+	// TopicProvisioningStateDeleting specifies the topic provisioning state deleting state for topic provisioning state.
 	TopicProvisioningStateDeleting TopicProvisioningState = "Deleting"
 	// TopicProvisioningStateFailed specifies the topic provisioning state failed state for topic provisioning state.
 	TopicProvisioningStateFailed TopicProvisioningState = "Failed"
-	// TopicProvisioningStateSucceeded specifies the topic provisioning state succeeded state for topic provisioning
-	// state.
+	// TopicProvisioningStateSucceeded specifies the topic provisioning state succeeded state for topic provisioning state.
 	TopicProvisioningStateSucceeded TopicProvisioningState = "Succeeded"
-	// TopicProvisioningStateUpdating specifies the topic provisioning state updating state for topic provisioning
-	// state.
+	// TopicProvisioningStateUpdating specifies the topic provisioning state updating state for topic provisioning state.
 	TopicProvisioningStateUpdating TopicProvisioningState = "Updating"
 )
 

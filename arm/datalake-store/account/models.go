@@ -95,8 +95,8 @@ const (
 type FirewallAllowAzureIpsState string
 
 const (
-	// FirewallAllowAzureIpsStateDisabled specifies the firewall allow azure ips state disabled state for firewall
-	// allow azure ips state.
+	// FirewallAllowAzureIpsStateDisabled specifies the firewall allow azure ips state disabled state for firewall allow
+	// azure ips state.
 	FirewallAllowAzureIpsStateDisabled FirewallAllowAzureIpsState = "Disabled"
 	// FirewallAllowAzureIpsStateEnabled specifies the firewall allow azure ips state enabled state for firewall allow
 	// azure ips state.
@@ -137,11 +137,9 @@ const (
 type TrustedIDProviderState string
 
 const (
-	// TrustedIDProviderStateDisabled specifies the trusted id provider state disabled state for trusted id provider
-	// state.
+	// TrustedIDProviderStateDisabled specifies the trusted id provider state disabled state for trusted id provider state.
 	TrustedIDProviderStateDisabled TrustedIDProviderState = "Disabled"
-	// TrustedIDProviderStateEnabled specifies the trusted id provider state enabled state for trusted id provider
-	// state.
+	// TrustedIDProviderStateEnabled specifies the trusted id provider state enabled state for trusted id provider state.
 	TrustedIDProviderStateEnabled TrustedIDProviderState = "Enabled"
 )
 

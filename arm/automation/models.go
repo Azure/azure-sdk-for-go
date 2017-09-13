@@ -74,8 +74,7 @@ const (
 	DscConfigurationStateEdit DscConfigurationState = "Edit"
 	// DscConfigurationStateNew specifies the dsc configuration state new state for dsc configuration state.
 	DscConfigurationStateNew DscConfigurationState = "New"
-	// DscConfigurationStatePublished specifies the dsc configuration state published state for dsc configuration
-	// state.
+	// DscConfigurationStatePublished specifies the dsc configuration state published state for dsc configuration state.
 	DscConfigurationStatePublished DscConfigurationState = "Published"
 )
 
@@ -235,38 +234,36 @@ const (
 type ModuleProvisioningState string
 
 const (
-	// ModuleProvisioningStateActivitiesStored specifies the module provisioning state activities stored state for
-	// module provisioning state.
+	// ModuleProvisioningStateActivitiesStored specifies the module provisioning state activities stored state for module
+	// provisioning state.
 	ModuleProvisioningStateActivitiesStored ModuleProvisioningState = "ActivitiesStored"
 	// ModuleProvisioningStateCancelled specifies the module provisioning state cancelled state for module provisioning
 	// state.
 	ModuleProvisioningStateCancelled ModuleProvisioningState = "Cancelled"
-	// ModuleProvisioningStateConnectionTypeImported specifies the module provisioning state connection type imported
-	// state for module provisioning state.
+	// ModuleProvisioningStateConnectionTypeImported specifies the module provisioning state connection type imported state
+	// for module provisioning state.
 	ModuleProvisioningStateConnectionTypeImported ModuleProvisioningState = "ConnectionTypeImported"
-	// ModuleProvisioningStateContentDownloaded specifies the module provisioning state content downloaded state for
-	// module provisioning state.
+	// ModuleProvisioningStateContentDownloaded specifies the module provisioning state content downloaded state for module
+	// provisioning state.
 	ModuleProvisioningStateContentDownloaded ModuleProvisioningState = "ContentDownloaded"
-	// ModuleProvisioningStateContentRetrieved specifies the module provisioning state content retrieved state for
-	// module provisioning state.
+	// ModuleProvisioningStateContentRetrieved specifies the module provisioning state content retrieved state for module
+	// provisioning state.
 	ModuleProvisioningStateContentRetrieved ModuleProvisioningState = "ContentRetrieved"
 	// ModuleProvisioningStateContentStored specifies the module provisioning state content stored state for module
 	// provisioning state.
 	ModuleProvisioningStateContentStored ModuleProvisioningState = "ContentStored"
-	// ModuleProvisioningStateContentValidated specifies the module provisioning state content validated state for
-	// module provisioning state.
+	// ModuleProvisioningStateContentValidated specifies the module provisioning state content validated state for module
+	// provisioning state.
 	ModuleProvisioningStateContentValidated ModuleProvisioningState = "ContentValidated"
-	// ModuleProvisioningStateCreated specifies the module provisioning state created state for module provisioning
-	// state.
+	// ModuleProvisioningStateCreated specifies the module provisioning state created state for module provisioning state.
 	ModuleProvisioningStateCreated ModuleProvisioningState = "Created"
 	// ModuleProvisioningStateCreating specifies the module provisioning state creating state for module provisioning
 	// state.
 	ModuleProvisioningStateCreating ModuleProvisioningState = "Creating"
-	// ModuleProvisioningStateFailed specifies the module provisioning state failed state for module provisioning
-	// state.
+	// ModuleProvisioningStateFailed specifies the module provisioning state failed state for module provisioning state.
 	ModuleProvisioningStateFailed ModuleProvisioningState = "Failed"
-	// ModuleProvisioningStateModuleDataStored specifies the module provisioning state module data stored state for
-	// module provisioning state.
+	// ModuleProvisioningStateModuleDataStored specifies the module provisioning state module data stored state for module
+	// provisioning state.
 	ModuleProvisioningStateModuleDataStored ModuleProvisioningState = "ModuleDataStored"
 	// ModuleProvisioningStateModuleImportRunbookComplete specifies the module provisioning state module import runbook
 	// complete state for module provisioning state.
@@ -274,8 +271,8 @@ const (
 	// ModuleProvisioningStateRunningImportModuleRunbook specifies the module provisioning state running import module
 	// runbook state for module provisioning state.
 	ModuleProvisioningStateRunningImportModuleRunbook ModuleProvisioningState = "RunningImportModuleRunbook"
-	// ModuleProvisioningStateStartingImportModuleRunbook specifies the module provisioning state starting import
-	// module runbook state for module provisioning state.
+	// ModuleProvisioningStateStartingImportModuleRunbook specifies the module provisioning state starting import module
+	// runbook state for module provisioning state.
 	ModuleProvisioningStateStartingImportModuleRunbook ModuleProvisioningState = "StartingImportModuleRunbook"
 	// ModuleProvisioningStateSucceeded specifies the module provisioning state succeeded state for module provisioning
 	// state.
@@ -289,8 +286,8 @@ const (
 type RunbookProvisioningState string
 
 const (
-	// RunbookProvisioningStateSucceeded specifies the runbook provisioning state succeeded state for runbook
-	// provisioning state.
+	// RunbookProvisioningStateSucceeded specifies the runbook provisioning state succeeded state for runbook provisioning
+	// state.
 	RunbookProvisioningStateSucceeded RunbookProvisioningState = "Succeeded"
 )
 

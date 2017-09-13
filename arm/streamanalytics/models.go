@@ -33,8 +33,8 @@ const (
 	// BindingTypeMicrosoftMachineLearningWebService specifies the binding type microsoft machine learning web service
 	// state for binding type.
 	BindingTypeMicrosoftMachineLearningWebService BindingType = "Microsoft.MachineLearning/WebService"
-	// BindingTypeMicrosoftStreamAnalyticsJavascriptUdf specifies the binding type microsoft stream analytics
-	// javascript udf state for binding type.
+	// BindingTypeMicrosoftStreamAnalyticsJavascriptUdf specifies the binding type microsoft stream analytics javascript
+	// udf state for binding type.
 	BindingTypeMicrosoftStreamAnalyticsJavascriptUdf BindingType = "Microsoft.StreamAnalytics/JavascriptUdf"
 )
 
@@ -159,13 +159,11 @@ const (
 	TypeMicrosoftServiceBusQueue TypeOutputDataSource = "Microsoft.ServiceBus/Queue"
 	// TypeMicrosoftServiceBusTopic specifies the type microsoft service bus topic state for type output data source.
 	TypeMicrosoftServiceBusTopic TypeOutputDataSource = "Microsoft.ServiceBus/Topic"
-	// TypeMicrosoftSQLServerDatabase specifies the type microsoft sql server database state for type output data
-	// source.
+	// TypeMicrosoftSQLServerDatabase specifies the type microsoft sql server database state for type output data source.
 	TypeMicrosoftSQLServerDatabase TypeOutputDataSource = "Microsoft.Sql/Server/Database"
 	// TypeMicrosoftStorageBlob specifies the type microsoft storage blob state for type output data source.
 	TypeMicrosoftStorageBlob TypeOutputDataSource = "Microsoft.Storage/Blob"
-	// TypeMicrosoftStorageDocumentDB specifies the type microsoft storage document db state for type output data
-	// source.
+	// TypeMicrosoftStorageDocumentDB specifies the type microsoft storage document db state for type output data source.
 	TypeMicrosoftStorageDocumentDB TypeOutputDataSource = "Microsoft.Storage/DocumentDB"
 	// TypeMicrosoftStorageTable specifies the type microsoft storage table state for type output data source.
 	TypeMicrosoftStorageTable TypeOutputDataSource = "Microsoft.Storage/Table"
@@ -177,8 +175,8 @@ const (
 type TypeReferenceInputDataSource string
 
 const (
-	// TypeReferenceInputDataSourceTypeMicrosoftStorageBlob specifies the type reference input data source type
-	// microsoft storage blob state for type reference input data source.
+	// TypeReferenceInputDataSourceTypeMicrosoftStorageBlob specifies the type reference input data source type microsoft
+	// storage blob state for type reference input data source.
 	TypeReferenceInputDataSourceTypeMicrosoftStorageBlob TypeReferenceInputDataSource = "Microsoft.Storage/Blob"
 )
 
@@ -189,11 +187,11 @@ const (
 	// TypeStreamInputDataSourceTypeMicrosoftDevicesIotHubs specifies the type stream input data source type microsoft
 	// devices iot hubs state for type stream input data source.
 	TypeStreamInputDataSourceTypeMicrosoftDevicesIotHubs TypeStreamInputDataSource = "Microsoft.Devices/IotHubs"
-	// TypeStreamInputDataSourceTypeMicrosoftServiceBusEventHub specifies the type stream input data source type
-	// microsoft service bus event hub state for type stream input data source.
+	// TypeStreamInputDataSourceTypeMicrosoftServiceBusEventHub specifies the type stream input data source type microsoft
+	// service bus event hub state for type stream input data source.
 	TypeStreamInputDataSourceTypeMicrosoftServiceBusEventHub TypeStreamInputDataSource = "Microsoft.ServiceBus/EventHub"
-	// TypeStreamInputDataSourceTypeMicrosoftStorageBlob specifies the type stream input data source type microsoft
-	// storage blob state for type stream input data source.
+	// TypeStreamInputDataSourceTypeMicrosoftStorageBlob specifies the type stream input data source type microsoft storage
+	// blob state for type stream input data source.
 	TypeStreamInputDataSourceTypeMicrosoftStorageBlob TypeStreamInputDataSource = "Microsoft.Storage/Blob"
 )
 

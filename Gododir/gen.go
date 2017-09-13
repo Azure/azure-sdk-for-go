@@ -143,10 +143,7 @@ var (
 				{Name: "recoveryservicesbackup"},
 				{Name: "recoveryservicessiterecovery"},
 				{Name: "redis"},
-				// {
-				// https://github.com/Azure/azure-rest-api-specs/pull/1674
-				// Name: "relay",
-				// },
+				{Name: "relay"},
 				{Name: "resourcehealth"},
 				{
 					Name:   "features",

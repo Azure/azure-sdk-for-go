@@ -54,8 +54,7 @@ const (
 	ExceptionSecurityException Exception = "SecurityException"
 	// ExceptionThrottledException specifies the exception throttled exception state for exception.
 	ExceptionThrottledException Exception = "ThrottledException"
-	// ExceptionUnsupportedOperationException specifies the exception unsupported operation exception state for
-	// exception.
+	// ExceptionUnsupportedOperationException specifies the exception unsupported operation exception state for exception.
 	ExceptionUnsupportedOperationException Exception = "UnsupportedOperationException"
 )
 

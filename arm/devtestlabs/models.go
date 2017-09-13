@@ -147,14 +147,13 @@ const (
 	PolicyFactNameLabVMCount PolicyFactName = "LabVmCount"
 	// PolicyFactNameLabVMSize specifies the policy fact name lab vm size state for policy fact name.
 	PolicyFactNameLabVMSize PolicyFactName = "LabVmSize"
-	// PolicyFactNameUserOwnedLabPremiumVMCount specifies the policy fact name user owned lab premium vm count state
-	// for policy fact name.
+	// PolicyFactNameUserOwnedLabPremiumVMCount specifies the policy fact name user owned lab premium vm count state for
+	// policy fact name.
 	PolicyFactNameUserOwnedLabPremiumVMCount PolicyFactName = "UserOwnedLabPremiumVmCount"
-	// PolicyFactNameUserOwnedLabVMCount specifies the policy fact name user owned lab vm count state for policy fact
-	// name.
+	// PolicyFactNameUserOwnedLabVMCount specifies the policy fact name user owned lab vm count state for policy fact name.
 	PolicyFactNameUserOwnedLabVMCount PolicyFactName = "UserOwnedLabVmCount"
-	// PolicyFactNameUserOwnedLabVMCountInSubnet specifies the policy fact name user owned lab vm count in subnet state
-	// for policy fact name.
+	// PolicyFactNameUserOwnedLabVMCountInSubnet specifies the policy fact name user owned lab vm count in subnet state for
+	// policy fact name.
 	PolicyFactNameUserOwnedLabVMCountInSubnet PolicyFactName = "UserOwnedLabVmCountInSubnet"
 )
 

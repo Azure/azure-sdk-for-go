@@ -128,8 +128,8 @@ const (
 	None UnavailableReason = "None"
 	// SubscriptionIsDisabled specifies the subscription is disabled state for unavailable reason.
 	SubscriptionIsDisabled UnavailableReason = "SubscriptionIsDisabled"
-	// TooManyNamespaceInCurrentSubscription specifies the too many namespace in current subscription state for
-	// unavailable reason.
+	// TooManyNamespaceInCurrentSubscription specifies the too many namespace in current subscription state for unavailable
+	// reason.
 	TooManyNamespaceInCurrentSubscription UnavailableReason = "TooManyNamespaceInCurrentSubscription"
 )
 

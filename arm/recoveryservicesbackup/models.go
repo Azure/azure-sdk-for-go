@@ -30,8 +30,8 @@ import (
 type BackupEngineType string
 
 const (
-	// BackupEngineTypeAzureBackupServerEngine specifies the backup engine type azure backup server engine state for
-	// backup engine type.
+	// BackupEngineTypeAzureBackupServerEngine specifies the backup engine type azure backup server engine state for backup
+	// engine type.
 	BackupEngineTypeAzureBackupServerEngine BackupEngineType = "AzureBackupServerEngine"
 	// BackupEngineTypeDpmBackupEngine specifies the backup engine type dpm backup engine state for backup engine type.
 	BackupEngineTypeDpmBackupEngine BackupEngineType = "DpmBackupEngine"
@@ -72,8 +72,7 @@ const (
 	// BackupManagementTypeAzureBackupServer specifies the backup management type azure backup server state for backup
 	// management type.
 	BackupManagementTypeAzureBackupServer BackupManagementType = "AzureBackupServer"
-	// BackupManagementTypeAzureIaasVM specifies the backup management type azure iaas vm state for backup management
-	// type.
+	// BackupManagementTypeAzureIaasVM specifies the backup management type azure iaas vm state for backup management type.
 	BackupManagementTypeAzureIaasVM BackupManagementType = "AzureIaasVM"
 	// BackupManagementTypeAzureSQL specifies the backup management type azure sql state for backup management type.
 	BackupManagementTypeAzureSQL BackupManagementType = "AzureSql"
@@ -100,8 +99,7 @@ const (
 	ContainerTypeDPMContainer ContainerType = "DPMContainer"
 	// ContainerTypeIaasVMContainer specifies the container type iaas vm container state for container type.
 	ContainerTypeIaasVMContainer ContainerType = "IaasVMContainer"
-	// ContainerTypeIaasVMServiceContainer specifies the container type iaas vm service container state for container
-	// type.
+	// ContainerTypeIaasVMServiceContainer specifies the container type iaas vm service container state for container type.
 	ContainerTypeIaasVMServiceContainer ContainerType = "IaasVMServiceContainer"
 	// ContainerTypeInvalid specifies the container type invalid state for container type.
 	ContainerTypeInvalid ContainerType = "Invalid"
@@ -311,8 +309,7 @@ const (
 	JobOperationTypeBackup JobOperationType = "Backup"
 	// JobOperationTypeConfigureBackup specifies the job operation type configure backup state for job operation type.
 	JobOperationTypeConfigureBackup JobOperationType = "ConfigureBackup"
-	// JobOperationTypeDeleteBackupData specifies the job operation type delete backup data state for job operation
-	// type.
+	// JobOperationTypeDeleteBackupData specifies the job operation type delete backup data state for job operation type.
 	JobOperationTypeDeleteBackupData JobOperationType = "DeleteBackupData"
 	// JobOperationTypeDisableBackup specifies the job operation type disable backup state for job operation type.
 	JobOperationTypeDisableBackup JobOperationType = "DisableBackup"
@@ -374,8 +371,8 @@ const (
 type MabServerType string
 
 const (
-	// MabServerTypeAzureBackupServerContainer specifies the mab server type azure backup server container state for
-	// mab server type.
+	// MabServerTypeAzureBackupServerContainer specifies the mab server type azure backup server container state for mab
+	// server type.
 	MabServerTypeAzureBackupServerContainer MabServerType = "AzureBackupServerContainer"
 	// MabServerTypeAzureSQLContainer specifies the mab server type azure sql container state for mab server type.
 	MabServerTypeAzureSQLContainer MabServerType = "AzureSqlContainer"
@@ -444,8 +441,8 @@ const (
 type ObjectTypeILRRequest string
 
 const (
-	// ObjectTypeIaasVMILRRegistrationRequest specifies the object type iaas vmilr registration request state for
-	// object type ilr request.
+	// ObjectTypeIaasVMILRRegistrationRequest specifies the object type iaas vmilr registration request state for object
+	// type ilr request.
 	ObjectTypeIaasVMILRRegistrationRequest ObjectTypeILRRequest = "IaasVMILRRegistrationRequest"
 )
 
@@ -453,11 +450,11 @@ const (
 type ObjectTypeOperationResultInfoBase string
 
 const (
-	// ObjectTypeExportJobsOperationResultInfo specifies the object type export jobs operation result info state for
-	// object type operation result info base.
+	// ObjectTypeExportJobsOperationResultInfo specifies the object type export jobs operation result info state for object
+	// type operation result info base.
 	ObjectTypeExportJobsOperationResultInfo ObjectTypeOperationResultInfoBase = "ExportJobsOperationResultInfo"
-	// ObjectTypeOperationResultInfo specifies the object type operation result info state for object type operation
-	// result info base.
+	// ObjectTypeOperationResultInfo specifies the object type operation result info state for object type operation result
+	// info base.
 	ObjectTypeOperationResultInfo ObjectTypeOperationResultInfoBase = "OperationResultInfo"
 )
 
@@ -468,11 +465,11 @@ const (
 	// ObjectTypeOperationStatusJobExtendedInfo specifies the object type operation status job extended info state for
 	// object type operation status extended info.
 	ObjectTypeOperationStatusJobExtendedInfo ObjectTypeOperationStatusExtendedInfo = "OperationStatusJobExtendedInfo"
-	// ObjectTypeOperationStatusJobsExtendedInfo specifies the object type operation status jobs extended info state
-	// for object type operation status extended info.
+	// ObjectTypeOperationStatusJobsExtendedInfo specifies the object type operation status jobs extended info state for
+	// object type operation status extended info.
 	ObjectTypeOperationStatusJobsExtendedInfo ObjectTypeOperationStatusExtendedInfo = "OperationStatusJobsExtendedInfo"
-	// ObjectTypeOperationStatusProvisionILRExtendedInfo specifies the object type operation status provision ilr
-	// extended info state for object type operation status extended info.
+	// ObjectTypeOperationStatusProvisionILRExtendedInfo specifies the object type operation status provision ilr extended
+	// info state for object type operation status extended info.
 	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeOperationStatusExtendedInfo = "OperationStatusProvisionILRExtendedInfo"
 )
 
@@ -483,8 +480,7 @@ const (
 	// ObjectTypeGenericRecoveryPoint specifies the object type generic recovery point state for object type recovery
 	// point.
 	ObjectTypeGenericRecoveryPoint ObjectTypeRecoveryPoint = "GenericRecoveryPoint"
-	// ObjectTypeIaasVMRecoveryPoint specifies the object type iaas vm recovery point state for object type recovery
-	// point.
+	// ObjectTypeIaasVMRecoveryPoint specifies the object type iaas vm recovery point state for object type recovery point.
 	ObjectTypeIaasVMRecoveryPoint ObjectTypeRecoveryPoint = "IaasVMRecoveryPoint"
 )
 
@@ -505,13 +501,11 @@ const (
 	OperationStatusValuesCanceled OperationStatusValues = "Canceled"
 	// OperationStatusValuesFailed specifies the operation status values failed state for operation status values.
 	OperationStatusValuesFailed OperationStatusValues = "Failed"
-	// OperationStatusValuesInProgress specifies the operation status values in progress state for operation status
-	// values.
+	// OperationStatusValuesInProgress specifies the operation status values in progress state for operation status values.
 	OperationStatusValuesInProgress OperationStatusValues = "InProgress"
 	// OperationStatusValuesInvalid specifies the operation status values invalid state for operation status values.
 	OperationStatusValuesInvalid OperationStatusValues = "Invalid"
-	// OperationStatusValuesSucceeded specifies the operation status values succeeded state for operation status
-	// values.
+	// OperationStatusValuesSucceeded specifies the operation status values succeeded state for operation status values.
 	OperationStatusValuesSucceeded OperationStatusValues = "Succeeded"
 )
 
@@ -534,26 +528,26 @@ const (
 type ProtectableObjectType string
 
 const (
-	// ProtectableObjectTypeAzureBackupServerContainer specifies the protectable object type azure backup server
-	// container state for protectable object type.
+	// ProtectableObjectTypeAzureBackupServerContainer specifies the protectable object type azure backup server container
+	// state for protectable object type.
 	ProtectableObjectTypeAzureBackupServerContainer ProtectableObjectType = "AzureBackupServerContainer"
 	// ProtectableObjectTypeAzureSQLContainer specifies the protectable object type azure sql container state for
 	// protectable object type.
 	ProtectableObjectTypeAzureSQLContainer ProtectableObjectType = "AzureSqlContainer"
-	// ProtectableObjectTypeDPMContainer specifies the protectable object type dpm container state for protectable
-	// object type.
+	// ProtectableObjectTypeDPMContainer specifies the protectable object type dpm container state for protectable object
+	// type.
 	ProtectableObjectTypeDPMContainer ProtectableObjectType = "DPMContainer"
-	// ProtectableObjectTypeIaaSVMContainer specifies the protectable object type iaa svm container state for
-	// protectable object type.
+	// ProtectableObjectTypeIaaSVMContainer specifies the protectable object type iaa svm container state for protectable
+	// object type.
 	ProtectableObjectTypeIaaSVMContainer ProtectableObjectType = "IaaSVMContainer"
 	// ProtectableObjectTypeMABWindowsContainer specifies the protectable object type mab windows container state for
 	// protectable object type.
 	ProtectableObjectTypeMABWindowsContainer ProtectableObjectType = "MABWindowsContainer"
-	// ProtectableObjectTypeMicrosoftClassicComputevirtualMachines specifies the protectable object type microsoft
-	// classic computevirtual machines state for protectable object type.
-	ProtectableObjectTypeMicrosoftClassicComputevirtualMachines ProtectableObjectType = "Microsoft.ClassicCompute/virtualMachines"
-	// ProtectableObjectTypeMicrosoftComputevirtualMachines specifies the protectable object type microsoft
+	// ProtectableObjectTypeMicrosoftClassicComputevirtualMachines specifies the protectable object type microsoft classic
 	// computevirtual machines state for protectable object type.
+	ProtectableObjectTypeMicrosoftClassicComputevirtualMachines ProtectableObjectType = "Microsoft.ClassicCompute/virtualMachines"
+	// ProtectableObjectTypeMicrosoftComputevirtualMachines specifies the protectable object type microsoft computevirtual
+	// machines state for protectable object type.
 	ProtectableObjectTypeMicrosoftComputevirtualMachines ProtectableObjectType = "Microsoft.Compute/virtualMachines"
 )
 
@@ -573,8 +567,8 @@ const (
 	// ProtectedItemStateProtectionPaused specifies the protected item state protection paused state for protected item
 	// state.
 	ProtectedItemStateProtectionPaused ProtectedItemState = "ProtectionPaused"
-	// ProtectedItemStateProtectionStopped specifies the protected item state protection stopped state for protected
-	// item state.
+	// ProtectedItemStateProtectionStopped specifies the protected item state protection stopped state for protected item
+	// state.
 	ProtectedItemStateProtectionStopped ProtectedItemState = "ProtectionStopped"
 )
 
@@ -582,23 +576,23 @@ const (
 type ProtectedItemType string
 
 const (
-	// ProtectedItemTypeAzureIaaSVMProtectedItem specifies the protected item type azure iaa svm protected item state
-	// for protected item type.
+	// ProtectedItemTypeAzureIaaSVMProtectedItem specifies the protected item type azure iaa svm protected item state for
+	// protected item type.
 	ProtectedItemTypeAzureIaaSVMProtectedItem ProtectedItemType = "AzureIaaSVMProtectedItem"
 	// ProtectedItemTypeDPMProtectedItem specifies the protected item type dpm protected item state for protected item
 	// type.
 	ProtectedItemTypeDPMProtectedItem ProtectedItemType = "DPMProtectedItem"
-	// ProtectedItemTypeMabFileFolderProtectedItem specifies the protected item type mab file folder protected item
-	// state for protected item type.
+	// ProtectedItemTypeMabFileFolderProtectedItem specifies the protected item type mab file folder protected item state
+	// for protected item type.
 	ProtectedItemTypeMabFileFolderProtectedItem ProtectedItemType = "MabFileFolderProtectedItem"
 	// ProtectedItemTypeMicrosoftClassicComputevirtualMachines specifies the protected item type microsoft classic
 	// computevirtual machines state for protected item type.
 	ProtectedItemTypeMicrosoftClassicComputevirtualMachines ProtectedItemType = "Microsoft.ClassicCompute/virtualMachines"
-	// ProtectedItemTypeMicrosoftComputevirtualMachines specifies the protected item type microsoft computevirtual
-	// machines state for protected item type.
-	ProtectedItemTypeMicrosoftComputevirtualMachines ProtectedItemType = "Microsoft.Compute/virtualMachines"
-	// ProtectedItemTypeMicrosoftSqlserversdatabases specifies the protected item type microsoft sqlserversdatabases
+	// ProtectedItemTypeMicrosoftComputevirtualMachines specifies the protected item type microsoft computevirtual machines
 	// state for protected item type.
+	ProtectedItemTypeMicrosoftComputevirtualMachines ProtectedItemType = "Microsoft.Compute/virtualMachines"
+	// ProtectedItemTypeMicrosoftSqlserversdatabases specifies the protected item type microsoft sqlserversdatabases state
+	// for protected item type.
 	ProtectedItemTypeMicrosoftSqlserversdatabases ProtectedItemType = "Microsoft.Sql/servers/databases"
 )
 
@@ -647,8 +641,7 @@ const (
 	// RecoveryPointTierStatusInvalid specifies the recovery point tier status invalid state for recovery point tier
 	// status.
 	RecoveryPointTierStatusInvalid RecoveryPointTierStatus = "Invalid"
-	// RecoveryPointTierStatusValid specifies the recovery point tier status valid state for recovery point tier
-	// status.
+	// RecoveryPointTierStatusValid specifies the recovery point tier status valid state for recovery point tier status.
 	RecoveryPointTierStatusValid RecoveryPointTierStatus = "Valid"
 )
 
@@ -659,8 +652,7 @@ const (
 	// RecoveryPointTierTypeHardenedRP specifies the recovery point tier type hardened rp state for recovery point tier
 	// type.
 	RecoveryPointTierTypeHardenedRP RecoveryPointTierType = "HardenedRP"
-	// RecoveryPointTierTypeInstantRP specifies the recovery point tier type instant rp state for recovery point tier
-	// type.
+	// RecoveryPointTierTypeInstantRP specifies the recovery point tier type instant rp state for recovery point tier type.
 	RecoveryPointTierTypeInstantRP RecoveryPointTierType = "InstantRP"
 	// RecoveryPointTierTypeInvalid specifies the recovery point tier type invalid state for recovery point tier type.
 	RecoveryPointTierTypeInvalid RecoveryPointTierType = "Invalid"
@@ -700,8 +692,8 @@ const (
 type RetentionPolicyType string
 
 const (
-	// RetentionPolicyTypeLongTermRetentionPolicy specifies the retention policy type long term retention policy state
-	// for retention policy type.
+	// RetentionPolicyTypeLongTermRetentionPolicy specifies the retention policy type long term retention policy state for
+	// retention policy type.
 	RetentionPolicyTypeLongTermRetentionPolicy RetentionPolicyType = "LongTermRetentionPolicy"
 	// RetentionPolicyTypeSimpleRetentionPolicy specifies the retention policy type simple retention policy state for
 	// retention policy type.
@@ -714,11 +706,9 @@ type RetentionScheduleFormat string
 const (
 	// RetentionScheduleFormatDaily specifies the retention schedule format daily state for retention schedule format.
 	RetentionScheduleFormatDaily RetentionScheduleFormat = "Daily"
-	// RetentionScheduleFormatInvalid specifies the retention schedule format invalid state for retention schedule
-	// format.
+	// RetentionScheduleFormatInvalid specifies the retention schedule format invalid state for retention schedule format.
 	RetentionScheduleFormatInvalid RetentionScheduleFormat = "Invalid"
-	// RetentionScheduleFormatWeekly specifies the retention schedule format weekly state for retention schedule
-	// format.
+	// RetentionScheduleFormatWeekly specifies the retention schedule format weekly state for retention schedule format.
 	RetentionScheduleFormatWeekly RetentionScheduleFormat = "Weekly"
 )
 
@@ -729,8 +719,8 @@ const (
 	// SchedulePolicyTypeLongTermSchedulePolicy specifies the schedule policy type long term schedule policy state for
 	// schedule policy type.
 	SchedulePolicyTypeLongTermSchedulePolicy SchedulePolicyType = "LongTermSchedulePolicy"
-	// SchedulePolicyTypeSimpleSchedulePolicy specifies the schedule policy type simple schedule policy state for
-	// schedule policy type.
+	// SchedulePolicyTypeSimpleSchedulePolicy specifies the schedule policy type simple schedule policy state for schedule
+	// policy type.
 	SchedulePolicyTypeSimpleSchedulePolicy SchedulePolicyType = "SimpleSchedulePolicy"
 )
 

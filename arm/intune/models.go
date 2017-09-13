@@ -44,8 +44,8 @@ const (
 	AppSharingToLevelAllApps AppSharingToLevel = "allApps"
 	// AppSharingToLevelNone specifies the app sharing to level none state for app sharing to level.
 	AppSharingToLevelNone AppSharingToLevel = "none"
-	// AppSharingToLevelPolicyManagedApps specifies the app sharing to level policy managed apps state for app sharing
-	// to level.
+	// AppSharingToLevelPolicyManagedApps specifies the app sharing to level policy managed apps state for app sharing to
+	// level.
 	AppSharingToLevelPolicyManagedApps AppSharingToLevel = "policyManagedApps"
 )
 
@@ -67,8 +67,8 @@ const (
 	ClipboardSharingLevelAllApps ClipboardSharingLevel = "allApps"
 	// ClipboardSharingLevelBlocked specifies the clipboard sharing level blocked state for clipboard sharing level.
 	ClipboardSharingLevelBlocked ClipboardSharingLevel = "blocked"
-	// ClipboardSharingLevelPolicyManagedApps specifies the clipboard sharing level policy managed apps state for
-	// clipboard sharing level.
+	// ClipboardSharingLevelPolicyManagedApps specifies the clipboard sharing level policy managed apps state for clipboard
+	// sharing level.
 	ClipboardSharingLevelPolicyManagedApps ClipboardSharingLevel = "policyManagedApps"
 	// ClipboardSharingLevelPolicyManagedAppsWithPasteIn specifies the clipboard sharing level policy managed apps with
 	// paste in state for clipboard sharing level.

@@ -291,11 +291,11 @@ const (
 type ReadOnlyEndpointFailoverPolicy string
 
 const (
-	// ReadOnlyEndpointFailoverPolicyDisabled specifies the read only endpoint failover policy disabled state for read
-	// only endpoint failover policy.
+	// ReadOnlyEndpointFailoverPolicyDisabled specifies the read only endpoint failover policy disabled state for read only
+	// endpoint failover policy.
 	ReadOnlyEndpointFailoverPolicyDisabled ReadOnlyEndpointFailoverPolicy = "Disabled"
-	// ReadOnlyEndpointFailoverPolicyEnabled specifies the read only endpoint failover policy enabled state for read
-	// only endpoint failover policy.
+	// ReadOnlyEndpointFailoverPolicyEnabled specifies the read only endpoint failover policy enabled state for read only
+	// endpoint failover policy.
 	ReadOnlyEndpointFailoverPolicyEnabled ReadOnlyEndpointFailoverPolicy = "Enabled"
 )
 
@@ -339,8 +339,7 @@ const (
 	RecommendedIndexStateActive RecommendedIndexState = "Active"
 	// RecommendedIndexStateBlocked specifies the recommended index state blocked state for recommended index state.
 	RecommendedIndexStateBlocked RecommendedIndexState = "Blocked"
-	// RecommendedIndexStateExecuting specifies the recommended index state executing state for recommended index
-	// state.
+	// RecommendedIndexStateExecuting specifies the recommended index state executing state for recommended index state.
 	RecommendedIndexStateExecuting RecommendedIndexState = "Executing"
 	// RecommendedIndexStateExpired specifies the recommended index state expired state for recommended index state.
 	RecommendedIndexStateExpired RecommendedIndexState = "Expired"
@@ -348,18 +347,16 @@ const (
 	RecommendedIndexStateIgnored RecommendedIndexState = "Ignored"
 	// RecommendedIndexStatePending specifies the recommended index state pending state for recommended index state.
 	RecommendedIndexStatePending RecommendedIndexState = "Pending"
-	// RecommendedIndexStatePendingRevert specifies the recommended index state pending revert state for recommended
-	// index state.
+	// RecommendedIndexStatePendingRevert specifies the recommended index state pending revert state for recommended index
+	// state.
 	RecommendedIndexStatePendingRevert RecommendedIndexState = "Pending Revert"
 	// RecommendedIndexStateReverted specifies the recommended index state reverted state for recommended index state.
 	RecommendedIndexStateReverted RecommendedIndexState = "Reverted"
-	// RecommendedIndexStateReverting specifies the recommended index state reverting state for recommended index
-	// state.
+	// RecommendedIndexStateReverting specifies the recommended index state reverting state for recommended index state.
 	RecommendedIndexStateReverting RecommendedIndexState = "Reverting"
 	// RecommendedIndexStateSuccess specifies the recommended index state success state for recommended index state.
 	RecommendedIndexStateSuccess RecommendedIndexState = "Success"
-	// RecommendedIndexStateVerifying specifies the recommended index state verifying state for recommended index
-	// state.
+	// RecommendedIndexStateVerifying specifies the recommended index state verifying state for recommended index state.
 	RecommendedIndexStateVerifying RecommendedIndexState = "Verifying"
 )
 
@@ -433,8 +430,8 @@ const (
 	// SecurityAlertPolicyEmailAccountAdminsDisabled specifies the security alert policy email account admins disabled
 	// state for security alert policy email account admins.
 	SecurityAlertPolicyEmailAccountAdminsDisabled SecurityAlertPolicyEmailAccountAdmins = "Disabled"
-	// SecurityAlertPolicyEmailAccountAdminsEnabled specifies the security alert policy email account admins enabled
-	// state for security alert policy email account admins.
+	// SecurityAlertPolicyEmailAccountAdminsEnabled specifies the security alert policy email account admins enabled state
+	// for security alert policy email account admins.
 	SecurityAlertPolicyEmailAccountAdminsEnabled SecurityAlertPolicyEmailAccountAdmins = "Enabled"
 )
 
@@ -442,11 +439,11 @@ const (
 type SecurityAlertPolicyState string
 
 const (
-	// SecurityAlertPolicyStateDisabled specifies the security alert policy state disabled state for security alert
-	// policy state.
+	// SecurityAlertPolicyStateDisabled specifies the security alert policy state disabled state for security alert policy
+	// state.
 	SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = "Disabled"
-	// SecurityAlertPolicyStateEnabled specifies the security alert policy state enabled state for security alert
-	// policy state.
+	// SecurityAlertPolicyStateEnabled specifies the security alert policy state enabled state for security alert policy
+	// state.
 	SecurityAlertPolicyStateEnabled SecurityAlertPolicyState = "Enabled"
 	// SecurityAlertPolicyStateNew specifies the security alert policy state new state for security alert policy state.
 	SecurityAlertPolicyStateNew SecurityAlertPolicyState = "New"
@@ -456,11 +453,11 @@ const (
 type SecurityAlertPolicyUseServerDefault string
 
 const (
-	// SecurityAlertPolicyUseServerDefaultDisabled specifies the security alert policy use server default disabled
-	// state for security alert policy use server default.
-	SecurityAlertPolicyUseServerDefaultDisabled SecurityAlertPolicyUseServerDefault = "Disabled"
-	// SecurityAlertPolicyUseServerDefaultEnabled specifies the security alert policy use server default enabled state
+	// SecurityAlertPolicyUseServerDefaultDisabled specifies the security alert policy use server default disabled state
 	// for security alert policy use server default.
+	SecurityAlertPolicyUseServerDefaultDisabled SecurityAlertPolicyUseServerDefault = "Disabled"
+	// SecurityAlertPolicyUseServerDefaultEnabled specifies the security alert policy use server default enabled state for
+	// security alert policy use server default.
 	SecurityAlertPolicyUseServerDefaultEnabled SecurityAlertPolicyUseServerDefault = "Enabled"
 )
 
@@ -492,8 +489,7 @@ type ServiceObjectiveName string
 const (
 	// ServiceObjectiveNameBasic specifies the service objective name basic state for service objective name.
 	ServiceObjectiveNameBasic ServiceObjectiveName = "Basic"
-	// ServiceObjectiveNameElasticPool specifies the service objective name elastic pool state for service objective
-	// name.
+	// ServiceObjectiveNameElasticPool specifies the service objective name elastic pool state for service objective name.
 	ServiceObjectiveNameElasticPool ServiceObjectiveName = "ElasticPool"
 	// ServiceObjectiveNameP1 specifies the service objective name p1 state for service objective name.
 	ServiceObjectiveNameP1 ServiceObjectiveName = "P1"
@@ -677,13 +673,11 @@ type UnitDefinitionType string
 const (
 	// UnitDefinitionTypeBytes specifies the unit definition type bytes state for unit definition type.
 	UnitDefinitionTypeBytes UnitDefinitionType = "Bytes"
-	// UnitDefinitionTypeBytesPerSecond specifies the unit definition type bytes per second state for unit definition
-	// type.
+	// UnitDefinitionTypeBytesPerSecond specifies the unit definition type bytes per second state for unit definition type.
 	UnitDefinitionTypeBytesPerSecond UnitDefinitionType = "BytesPerSecond"
 	// UnitDefinitionTypeCount specifies the unit definition type count state for unit definition type.
 	UnitDefinitionTypeCount UnitDefinitionType = "Count"
-	// UnitDefinitionTypeCountPerSecond specifies the unit definition type count per second state for unit definition
-	// type.
+	// UnitDefinitionTypeCountPerSecond specifies the unit definition type count per second state for unit definition type.
 	UnitDefinitionTypeCountPerSecond UnitDefinitionType = "CountPerSecond"
 	// UnitDefinitionTypePercent specifies the unit definition type percent state for unit definition type.
 	UnitDefinitionTypePercent UnitDefinitionType = "Percent"

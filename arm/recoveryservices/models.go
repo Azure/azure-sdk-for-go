@@ -72,8 +72,7 @@ const (
 	StorageModelTypeGeoRedundant StorageModelType = "GeoRedundant"
 	// StorageModelTypeInvalid specifies the storage model type invalid state for storage model type.
 	StorageModelTypeInvalid StorageModelType = "Invalid"
-	// StorageModelTypeLocallyRedundant specifies the storage model type locally redundant state for storage model
-	// type.
+	// StorageModelTypeLocallyRedundant specifies the storage model type locally redundant state for storage model type.
 	StorageModelTypeLocallyRedundant StorageModelType = "LocallyRedundant"
 )
 

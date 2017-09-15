@@ -37,6 +37,13 @@ type mapping struct {
 	Services    []service
 }
 
+type failList []string
+
+type failLocker struct {
+	sync.Mutex
+	failList
+}
+
 var (
 	start           time.Time
 	gopath          = os.Getenv("GOPATH")
@@ -239,8 +246,7 @@ var (
 			},
 		},
 	}
-	failLock = &sync.Mutex{}
-	fails    []string
+	fails = failLocker{}
 )
 
 func init() {
@@ -355,7 +361,7 @@ func generate(service *service) {
 	fmt.Println(commandArgs)
 
 	if _, stderr, err := runner(autorest); err != nil {
-		addFail(fmt.Sprintf("%s: autorest error: %s: %s", service.Fullname, err, stderr))
+		fails.Add(fmt.Sprintf("%s: autorest error: %s: %s", service.Fullname, err, stderr))
 	}
 
 	format(service)
@@ -373,7 +379,7 @@ func format(service *service) {
 	gofmt := exec.Command("gofmt", "-w", service.Output)
 	_, stderr, err := runner(gofmt)
 	if err != nil {
-		addFail(fmt.Sprintf("%s: gofmt error:%s: %s", service.Fullname, err, stderr))
+		fails.Add(fmt.Sprintf("%s: gofmt error:%s: %s", service.Fullname, err, stderr))
 	}
 }
 
@@ -386,7 +392,7 @@ func build(service *service) {
 	gobuild := exec.Command("go", "build", service.Namespace)
 	_, stderr, err := runner(gobuild)
 	if err != nil {
-		addFail(fmt.Sprintf("%s: build error: %s: %s", service.Fullname, err, stderr))
+		fails.Add(fmt.Sprintf("%s: build error: %s: %s", service.Fullname, err, stderr))
 	}
 }
 
@@ -399,7 +405,7 @@ func lint(service *service) {
 	golint := exec.Command(filepath.Join(gopath, "bin", "golint"), service.Namespace)
 	_, stderr, err := runner(golint)
 	if err != nil {
-		addFail(fmt.Sprintf("%s: golint error: %s: %s", service.Fullname, err, stderr))
+		fails.Add(fmt.Sprintf("%s: golint error: %s: %s", service.Fullname, err, stderr))
 	}
 }
 
@@ -412,7 +418,7 @@ func vet(service *service) {
 	govet := exec.Command("go", "vet", service.Namespace)
 	_, stderr, err := runner(govet)
 	if err != nil {
-		addFail(fmt.Sprintf("%s: go vet error: %s: %s", service.Fullname, err, stderr))
+		fails.Add(fmt.Sprintf("%s: go vet error: %s: %s", service.Fullname, err, stderr))
 	}
 }
 
@@ -477,15 +483,15 @@ func runner(cmd *exec.Cmd) (string, string, error) {
 	return stdout.String(), stderr.String(), err
 }
 
-func addFail(fail string) {
-	failLock.Lock()
-	fails = append(fails, fail)
-	failLock.Unlock()
+func (fl *failLocker) Add(fail string) {
+	fl.Lock()
+	defer fl.Unlock()
+	fl.failList = append(fl.failList, fail)
 }
 
 func report(c *do.Context) {
 	fmt.Printf("Script ran for %s\n", time.Since(start))
-	for _, f := range fails {
+	for _, f := range fails.failList {
 		fmt.Println(f)
 		fmt.Println("==========")
 	}

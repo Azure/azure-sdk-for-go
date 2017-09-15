@@ -239,8 +239,8 @@ var (
 			},
 		},
 	}
-	mutex = &sync.Mutex{}
-	fails []string
+	failLock = &sync.Mutex{}
+	fails    []string
 )
 
 func init() {
@@ -478,9 +478,9 @@ func runner(cmd *exec.Cmd) (string, string, error) {
 }
 
 func addFail(fail string) {
-	mutex.Lock()
+	failLock.Lock()
 	fails = append(fails, fail)
-	mutex.Unlock()
+	failLock.Unlock()
 }
 
 func report(c *do.Context) {

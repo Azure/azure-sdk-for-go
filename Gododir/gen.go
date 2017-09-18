@@ -53,36 +53,36 @@ var (
 			Services: []service{
 				{Name: "advisor"},
 				{Name: "analysisservices"},
-				// {
-				// Autorest Bug, duplicate files
-				// 	Name: "apimanagement",
-				// },
+				{
+					// Autorest Bug, duplicate files
+					Name: "apimanagement",
+				},
 				{Name: "appinsights"},
 				{Name: "authorization"},
 				{Name: "automation"},
 				// https://github.com/Azure/azure-rest-api-specs/pull/1667
-				// {
-				// 	Name:   "commerce",
-				// 	Input:  "azsadmin/resource-manager/commerce",
-				// 	Output: "azsadmin/commerce",
-				// },
-				// {
-				// 	Name:   "fabric",
-				// 	Input:  "azsadmin/resource-manager/fabric",
-				// 	Output: "azsadmin/fabric",
-				// },
-				// {
-				// 	Name:   "infrastructureinsights",
-				// 	Input:  "azsadmin/resource-manager/InfrastructureInsights",
-				// 	Output: "azsadmin/infrastructureinsights",
-				// },
+				{
+					Name:   "commerce",
+					Input:  "azsadmin/resource-manager/commerce",
+					Output: "azsadmin/commerce",
+				},
+				{
+					Name:   "fabric",
+					Input:  "azsadmin/resource-manager/fabric",
+					Output: "azsadmin/fabric",
+				},
+				{
+					Name:   "infrastructureinsights",
+					Input:  "azsadmin/resource-manager/InfrastructureInsights",
+					Output: "azsadmin/infrastructureinsights",
+				},
 				{Name: "batch"},
 				{Name: "billing"},
 				{Name: "cdn"},
-				// {
-				// bug in AutoRest (duplicated files)
-				// 	Name: "cognitiveservices",
-				// },
+				{
+					// bug in AutoRest (duplicated files)
+					Name: "cognitiveservices",
+				},
 				{Name: "commerce"},
 				{Name: "compute"},
 				{
@@ -126,16 +126,17 @@ var (
 					Output: "machinelearning/webservices",
 					Tag:    "package-webservices-2017-01",
 				},
+				{Name: "marketplaceordering"},
 				{Name: "mediaservices"},
 				{Name: "mobileengagement"},
 				{Name: "monitor"},
 				{Name: "mysql"},
 				{Name: "network"},
 				{Name: "notificationhubs"},
-				// {
-				// bug in the Go generator https://github.com/Azure/autorest/issues/2219
-				// 	Name: "operationalinsights",
-				// },
+				{
+					// bug in the Go generator https://github.com/Azure/autorest/issues/2219
+					Name: "operationalinsights",
+				},
 				{Name: "operationsmanagement"},
 				{Name: "postgresql"},
 				{Name: "powerbiembedded"},
@@ -198,25 +199,33 @@ var (
 				{Name: "storageimportexport"},
 				{Name: "storsimple8000series"},
 				{Name: "streamanalytics"},
-				// {
-				// error in the modeler
-				// https://github.com/Azure/autorest/issues/2579
-				// Name: "timeseriesinsights",
-				// },
+				{
+					// error in the modeler
+					// https://github.com/Azure/autorest/issues/2579
+					Name: "timeseriesinsights",
+				},
 				{Name: "trafficmanager"},
 				{Name: "visualstudio"},
-				// {
-				// bug on methods
-				// Name: "web",
-				// },
+				{
+					// bug on methods
+					Name: "web",
+				},
 			},
 		},
 		{
 			PlaneOutput: "dataplane",
 			PlaneInput:  "data-plane",
 			Services: []service{
+				{Name: "keyvault"},
 				{
-					Name: "keyvault",
+					Name:   "face",
+					Input:  "cognitiveservices/data-plane/Face",
+					Output: "cognitiveservices/face",
+				},
+				{
+					Name:   "textanalytics",
+					Input:  "cognitiveservices/data-plane/TextAnalytics",
+					Output: "cognitiveservices/textanalytics",
 				},
 			},
 		},
@@ -234,9 +243,7 @@ var (
 			PlaneOutput: "arm",
 			PlaneInput:  "data-plane",
 			Services: []service{
-				{
-					Name: "graphrbac",
-				},
+				{Name: "graphrbac"},
 			},
 		},
 	}

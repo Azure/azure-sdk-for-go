@@ -1,4 +1,4 @@
-package helpers
+package deployment
 
 import (
 	"encoding/json"
@@ -7,13 +7,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/arm/resources/resources"
 )
 
-// BuildDeployment is a helper method that create a deployment object
+// BuildDeployment is a helper that creates a resources.Deployment, which can
+// be used as a parameter for a CreateOrUpdate deployment operation.
+// templateFile is a local Azure template.
+// See https://github.com/Azure-Samples/resource-manager-go-template-deployment
 func BuildDeployment(mode resources.DeploymentMode, templateFile string, parameters map[string]interface{}) (deployment resources.Deployment, err error) {
-	fileMap, err := parseJSONFromFile(templateFile)
+	template, err := parseJSONFromFile(templateFile)
 	if err != nil {
 		return
 	}
-	template := (*fileMap)["template"].(map[string]interface{})
 
 	finalParameters := map[string]interface{}{}
 	for k, v := range parameters {
@@ -22,7 +24,7 @@ func BuildDeployment(mode resources.DeploymentMode, templateFile string, paramet
 
 	deployment.Properties = &resources.DeploymentProperties{
 		Mode:       mode,
-		Template:   &template,
+		Template:   template,
 		Parameters: &finalParameters,
 	}
 	return

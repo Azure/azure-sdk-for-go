@@ -11,6 +11,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"sync"
+	"time"
 
 	do "gopkg.in/godo.v2"
 )
@@ -35,13 +37,21 @@ type mapping struct {
 	Services    []service
 }
 
+type failList []string
+
+type failLocker struct {
+	sync.Mutex
+	failList
+}
+
 var (
+	start           time.Time
 	gopath          = os.Getenv("GOPATH")
 	sdkVersion      string
 	autorestDir     string
 	swaggersDir     string
 	testGen         bool
-	deps            do.S
+	deps            do.P
 	services        = []*service{}
 	servicesMapping = []mapping{
 		{
@@ -51,24 +61,39 @@ var (
 				{Name: "advisor"},
 				{Name: "analysisservices"},
 				// {
-				// Autorest Bug
-				// Name: "apimanagement",
+				// Autorest Bug, duplicate files
+				// 	Name: "apimanagement",
 				// },
 				{Name: "appinsights"},
 				{Name: "authorization"},
 				{Name: "automation"},
+				{
+					Name:   "commerce",
+					Input:  "azsadmin/resource-manager/commerce",
+					Output: "azsadmin/commerce",
+				},
+				{
+					Name:   "fabric",
+					Input:  "azsadmin/resource-manager/fabric",
+					Output: "azsadmin/fabric",
+				},
+				{
+					Name:   "infrastructureinsights",
+					Input:  "azsadmin/resource-manager/InfrastructureInsights",
+					Output: "azsadmin/infrastructureinsights",
+				},
 				{Name: "batch"},
 				{Name: "billing"},
 				{Name: "cdn"},
 				// {
 				// bug in AutoRest (duplicated files)
-				// Name: "cognitiveservices",
+				// 	Name: "cognitiveservices",
 				// },
 				{Name: "commerce"},
 				{Name: "compute"},
 				{
 					Name:  "containerservice",
-					Input: "compute",
+					Input: "compute/resource-manager",
 					Tag:   "package-container-service-2017-01",
 				},
 				{Name: "consumption"},
@@ -78,12 +103,12 @@ var (
 				{Name: "customer-insights"},
 				{
 					Name:   "account",
-					Input:  "datalake-analytics",
+					Input:  "datalake-analytics/resource-manager",
 					Output: "datalake-analytics/account",
 				},
 				{
 					Name:   "account",
-					Input:  "datalake-store",
+					Input:  "datalake-store/resource-manager",
 					Output: "datalake-store/account",
 				},
 				{Name: "devtestlabs"},
@@ -97,13 +122,13 @@ var (
 				{Name: "logic"},
 				{
 					Name:   "commitmentplans",
-					Input:  "machinelearning",
+					Input:  "machinelearning/resource-manager",
 					Output: "machinelearning/commitmentPlans",
 					Tag:    "package-commitmentPlans-2016-05-preview",
 				},
 				{
 					Name:   "webservices",
-					Input:  "machinelearning",
+					Input:  "machinelearning/resource-manager",
 					Output: "machinelearning/webservices",
 					Tag:    "package-webservices-2017-01",
 				},
@@ -115,8 +140,9 @@ var (
 				{Name: "notificationhubs"},
 				// {
 				// bug in the Go generator https://github.com/Azure/autorest/issues/2219
-				// Name: "operationalinsights",
+				// 	Name: "operationalinsights",
 				// },
+				{Name: "operationsmanagement"},
 				{Name: "postgresql"},
 				{Name: "powerbiembedded"},
 				{Name: "recoveryservices"},
@@ -127,43 +153,43 @@ var (
 				{Name: "resourcehealth"},
 				{
 					Name:   "features",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/features",
 					Tag:    "package-features-2015-12",
 				},
 				{
 					Name:   "links",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/links",
 					Tag:    "package-links-2016-09",
 				},
 				{
 					Name:   "locks",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/locks",
 					Tag:    "package-locks-2016-09",
 				},
 				{
 					Name:   "managedapplications",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/managedapplications",
 					Tag:    "package-managedapplications-2016-09",
 				},
 				{
 					Name:   "policy",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/policy",
 					Tag:    "package-policy-2016-12",
 				},
 				{
 					Name:   "resources",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/resources",
 					Tag:    "package-resources-2017-05",
 				},
 				{
 					Name:   "subscriptions",
-					Input:  "resources",
+					Input:  "resources/resource-manager",
 					Output: "resources/subscriptions",
 					Tag:    "package-subscriptions-2016-06",
 				},
@@ -180,11 +206,15 @@ var (
 				{Name: "streamanalytics"},
 				// {
 				// error in the modeler
-				// 	Name:    "timeseriesinsights",
+				// https://github.com/Azure/autorest/issues/2579
+				// Name: "timeseriesinsights",
 				// },
 				{Name: "trafficmanager"},
 				{Name: "visualstudio"},
-				{Name: "web"},
+				// {
+				// bug on methods
+				// Name: "web",
+				// },
 			},
 		},
 		{
@@ -201,7 +231,7 @@ var (
 			Services: []service{
 				{
 					Name:   "filesystem",
-					Input:  "datalake-store",
+					Input:  "datalake-store/data-plane",
 					Output: "datalake-store/filesystem",
 				},
 			},
@@ -216,9 +246,11 @@ var (
 			},
 		},
 	}
+	fails = failLocker{}
 )
 
-func main() {
+func init() {
+	start = time.Now()
 	for _, swaggerGroup := range servicesMapping {
 		swg := swaggerGroup
 		for _, service := range swg.Services {
@@ -226,6 +258,9 @@ func main() {
 			initAndAddService(&s, swg.PlaneInput, swg.PlaneOutput)
 		}
 	}
+}
+
+func main() {
 	do.Godo(tasks)
 }
 
@@ -233,7 +268,13 @@ func initAndAddService(service *service, planeInput, planeOutput string) {
 	if service.Input == "" {
 		service.Input = service.Name
 	}
-	service.Input = filepath.Join(service.Input, planeInput, "readme.md")
+	path := []string{service.Input}
+	if service.Input == service.Name {
+		path = append(path, planeInput)
+	}
+	path = append(path, "readme.md")
+	service.Input = filepath.Join(path...)
+
 	if service.Output == "" {
 		service.Output = service.Name
 	}
@@ -247,7 +288,7 @@ func initAndAddService(service *service, planeInput, planeOutput string) {
 }
 
 func tasks(p *do.Project) {
-	p.Task("default", do.S{"setvars", "generate:all", "management"}, nil)
+	p.Task("default", do.S{"setvars", "generate:all", "management", "report"}, nil)
 	p.Task("setvars", nil, setVars)
 	p.Use("generate", generateTasks)
 	p.Use("gofmt", formatTasks)
@@ -256,6 +297,7 @@ func tasks(p *do.Project) {
 	p.Use("govet", vetTasks)
 	p.Task("management", do.S{"setvars"}, managementVersion)
 	p.Task("addVersion", nil, addVersion)
+	p.Task("report", nil, report)
 }
 
 func setVars(c *do.Context) {
@@ -318,8 +360,8 @@ func generate(service *service) {
 
 	fmt.Println(commandArgs)
 
-	if _, err := runner(autorest); err != nil {
-		panic(fmt.Errorf("Autorest error: %s", err))
+	if _, stderr, err := runner(autorest); err != nil {
+		fails.Add(fmt.Sprintf("%s: autorest error: %s: %s", service.Fullname, err, stderr))
 	}
 
 	format(service)
@@ -335,9 +377,9 @@ func formatTasks(p *do.Project) {
 func format(service *service) {
 	fmt.Printf("Formatting %s...\n\n", service.Fullname)
 	gofmt := exec.Command("gofmt", "-w", service.Output)
-	_, err := runner(gofmt)
+	_, stderr, err := runner(gofmt)
 	if err != nil {
-		panic(fmt.Errorf("gofmt error: %s", err))
+		fails.Add(fmt.Sprintf("%s: gofmt error:%s: %s", service.Fullname, err, stderr))
 	}
 }
 
@@ -348,9 +390,9 @@ func buildTasks(p *do.Project) {
 func build(service *service) {
 	fmt.Printf("Building %s...\n\n", service.Fullname)
 	gobuild := exec.Command("go", "build", service.Namespace)
-	_, err := runner(gobuild)
+	_, stderr, err := runner(gobuild)
 	if err != nil {
-		panic(fmt.Errorf("go build error: %s", err))
+		fails.Add(fmt.Sprintf("%s: build error: %s: %s", service.Fullname, err, stderr))
 	}
 }
 
@@ -361,9 +403,9 @@ func lintTasks(p *do.Project) {
 func lint(service *service) {
 	fmt.Printf("Linting %s...\n\n", service.Fullname)
 	golint := exec.Command(filepath.Join(gopath, "bin", "golint"), service.Namespace)
-	_, err := runner(golint)
+	_, stderr, err := runner(golint)
 	if err != nil {
-		panic(fmt.Errorf("golint error: %s", err))
+		fails.Add(fmt.Sprintf("%s: golint error: %s: %s", service.Fullname, err, stderr))
 	}
 }
 
@@ -374,15 +416,15 @@ func vetTasks(p *do.Project) {
 func vet(service *service) {
 	fmt.Printf("Vetting %s...\n\n", service.Fullname)
 	govet := exec.Command("go", "vet", service.Namespace)
-	_, err := runner(govet)
+	_, stderr, err := runner(govet)
 	if err != nil {
-		panic(fmt.Errorf("go vet error: %s", err))
+		fails.Add(fmt.Sprintf("%s: go vet error: %s: %s", service.Fullname, err, stderr))
 	}
 }
 
 func addVersion(c *do.Context) {
 	gitStatus := exec.Command("git", "status", "-s")
-	out, err := runner(gitStatus)
+	out, _, err := runner(gitStatus)
 	if err != nil {
 		panic(fmt.Errorf("Git error: %s", err))
 	}
@@ -391,7 +433,7 @@ func addVersion(c *do.Context) {
 	for _, f := range files {
 		if strings.HasPrefix(f, " M ") && strings.HasSuffix(f, "version.go") {
 			gitAdd := exec.Command("git", "add", f[3:])
-			_, err := runner(gitAdd)
+			_, _, err := runner(gitAdd)
 			if err != nil {
 				panic(fmt.Errorf("Git error: %s", err))
 			}
@@ -428,7 +470,7 @@ func addTasks(fn func(*service), p *do.Project) {
 	p.Task("all", deps, nil)
 }
 
-func runner(cmd *exec.Cmd) (string, error) {
+func runner(cmd *exec.Cmd) (string, string, error) {
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout, cmd.Stderr = &stdout, &stderr
 	err := cmd.Run()
@@ -438,5 +480,19 @@ func runner(cmd *exec.Cmd) (string, error) {
 	if stderr.Len() > 0 {
 		fmt.Println(stderr.String())
 	}
-	return stdout.String(), err
+	return stdout.String(), stderr.String(), err
+}
+
+func (fl *failLocker) Add(fail string) {
+	fl.Lock()
+	defer fl.Unlock()
+	fl.failList = append(fl.failList, fail)
+}
+
+func report(c *do.Context) {
+	fmt.Printf("Script ran for %s\n", time.Since(start))
+	for _, f := range fails.failList {
+		fmt.Println(f)
+		fmt.Println("==========")
+	}
 }

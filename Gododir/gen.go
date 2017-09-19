@@ -60,7 +60,6 @@ var (
 				{Name: "appinsights"},
 				{Name: "authorization"},
 				{Name: "automation"},
-				// https://github.com/Azure/azure-rest-api-specs/pull/1667
 				{
 					Name:   "commerce",
 					Input:  "azsadmin/resource-manager/commerce",

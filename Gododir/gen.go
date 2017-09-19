@@ -67,21 +67,21 @@ var (
 				{Name: "appinsights"},
 				{Name: "authorization"},
 				{Name: "automation"},
-				{
-					Name:   "commerce",
-					Input:  "azsadmin/resource-manager/commerce",
-					Output: "azsadmin/commerce",
-				},
-				{
-					Name:   "fabric",
-					Input:  "azsadmin/resource-manager/fabric",
-					Output: "azsadmin/fabric",
-				},
-				{
-					Name:   "infrastructureinsights",
-					Input:  "azsadmin/resource-manager/InfrastructureInsights",
-					Output: "azsadmin/infrastructureinsights",
-				},
+				// {
+				// 	Name:   "commerce",
+				// 	Input:  "azsadmin/resource-manager/commerce",
+				// 	Output: "azsadmin/commerce",
+				// },
+				// {
+				// 	Name:   "fabric",
+				// 	Input:  "azsadmin/resource-manager/fabric",
+				// 	Output: "azsadmin/fabric",
+				// },
+				// {
+				// 	Name:   "infrastructureinsights",
+				// 	Input:  "azsadmin/resource-manager/InfrastructureInsights",
+				// 	Output: "azsadmin/infrastructureinsights",
+				// },
 				{Name: "batch"},
 				{Name: "billing"},
 				{Name: "cdn"},

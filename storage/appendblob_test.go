@@ -62,7 +62,10 @@ func (s *AppendBlobSuite) TestPutAppendBlobAppendBlocks(c *chk.C) {
 	c.Assert(blobContents, chk.DeepEquals, chunk1)
 
 	// Append second block
-	c.Assert(b.AppendBlock(chunk2, nil), chk.IsNil)
+	op := AppendBlockOptions{
+		ContentMD5: true,
+	}
+	c.Assert(b.AppendBlock(chunk2, &op), chk.IsNil)
 
 	// Verify contents
 	options.Range.End = uint64(len(chunk1) + len(chunk2) - 1)

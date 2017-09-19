@@ -116,7 +116,7 @@ var (
 				{
 					Name:   "commitmentplans",
 					Input:  "machinelearning/resource-manager",
-					Output: "machinelearning/commitmentPlans",
+					Output: "machinelearning/commitmentplans",
 					Tag:    "package-commitmentPlans-2016-05-preview",
 				},
 				{

@@ -53,6 +53,11 @@ const (
 	userAgentHeader = "User-Agent"
 
 	userDefinedMetadataHeaderPrefix = "x-ms-meta-"
+
+	connectionStringAccountName      = "accountname"
+	connectionStringAccountKey       = "accountkey"
+	connectionStringEndpointSuffix   = "endpointsuffix"
+	connectionStringEndpointProtocol = "defaultendpointsprotocol"
 )
 
 var (
@@ -197,17 +202,18 @@ func NewClientFromConnectionString(input string) (Client, error) {
 		}
 
 		value := pair[equalDex+1:]
-		switch strings.ToLower(pair[:equalDex]) {
-		case "accountname":
+		key := strings.ToLower(pair[:equalDex])
+		switch key {
+		case connectionStringAccountName:
 			accountName = value
-		case "accountkey":
+		case connectionStringAccountKey:
 			accountKey = value
-		case "endpointsuffix":
+		case connectionStringEndpointSuffix:
 			endpointSuffix = value
-		case "defaultendpointsprotocol":
+		case connectionStringEndpointProtocol:
 			useHTTPS = value == "https"
 		default:
-			// ignore
+			return Client{}, fmt.Errorf("Unrecognized key in Azure storage connection string: %q", key)
 		}
 	}
 

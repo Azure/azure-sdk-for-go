@@ -20,7 +20,6 @@ package recoveryservicesbackup
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewBackupResourceVaultConfigsClientWithBaseURI(baseURI string, subscription
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the
 // recovery services vault is present.
 func (client BackupResourceVaultConfigsClient) Get(vaultName string, resourceGroupName string) (result BackupResourceVaultConfigResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.BackupResourceVaultConfigsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(vaultName, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.BackupResourceVaultConfigsClient", "Get", nil, "Failure preparing request")
@@ -114,10 +109,6 @@ func (client BackupResourceVaultConfigsClient) GetResponder(resp *http.Response)
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the
 // recovery services vault is present. parameters is resource config request
 func (client BackupResourceVaultConfigsClient) Update(vaultName string, resourceGroupName string, parameters BackupResourceVaultConfigResource) (result BackupResourceVaultConfigResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.BackupResourceVaultConfigsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(vaultName, resourceGroupName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.BackupResourceVaultConfigsClient", "Update", nil, "Failure preparing request")

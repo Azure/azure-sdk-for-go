@@ -354,13 +354,6 @@ func (client AppliancesClient) DeleteResponder(resp *http.Response) (result auto
 func (client AppliancesClient) DeleteByID(applianceID string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "managedapplications.AppliancesClient", "DeleteByID")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -515,10 +508,6 @@ func (client AppliancesClient) GetResponder(resp *http.Response) (result Applian
 // type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/appliances/{appliance-name}
 func (client AppliancesClient) GetByID(applianceID string) (result Appliance, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "managedapplications.AppliancesClient", "GetByID")
-	}
-
 	req, err := client.GetByIDPreparer(applianceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesClient", "GetByID", nil, "Failure preparing request")
@@ -721,10 +710,6 @@ func (client AppliancesClient) ListByResourceGroupComplete(resourceGroupName str
 
 // ListBySubscription gets all the appliances within a subscription.
 func (client AppliancesClient) ListBySubscription() (result ApplianceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "managedapplications.AppliancesClient", "ListBySubscription")
-	}
-
 	req, err := client.ListBySubscriptionPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesClient", "ListBySubscription", nil, "Failure preparing request")
@@ -942,10 +927,6 @@ func (client AppliancesClient) UpdateResponder(resp *http.Response) (result Appl
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/appliances/{appliance-name}
 // parameters is parameters supplied to update an existing appliance.
 func (client AppliancesClient) UpdateByID(applianceID string, parameters *Appliance) (result Appliance, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "managedapplications.AppliancesClient", "UpdateByID")
-	}
-
 	req, err := client.UpdateByIDPreparer(applianceID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.AppliancesClient", "UpdateByID", nil, "Failure preparing request")

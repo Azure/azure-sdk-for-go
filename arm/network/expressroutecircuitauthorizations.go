@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -51,13 +50,6 @@ func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subsc
 func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdate(resourceGroupName string, circuitName string, authorizationName string, authorizationParameters ExpressRouteCircuitAuthorization, cancel <-chan struct{}) (<-chan ExpressRouteCircuitAuthorization, <-chan error) {
 	resultChan := make(chan ExpressRouteCircuitAuthorization, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitAuthorizationsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ExpressRouteCircuitAuthorization
@@ -144,13 +136,6 @@ func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdateResponder(re
 func (client ExpressRouteCircuitAuthorizationsClient) Delete(resourceGroupName string, circuitName string, authorizationName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitAuthorizationsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -230,10 +215,6 @@ func (client ExpressRouteCircuitAuthorizationsClient) DeleteResponder(resp *http
 // resourceGroupName is the name of the resource group. circuitName is the name of the express route circuit.
 // authorizationName is the name of the authorization.
 func (client ExpressRouteCircuitAuthorizationsClient) Get(resourceGroupName string, circuitName string, authorizationName string) (result ExpressRouteCircuitAuthorization, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitAuthorizationsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, circuitName, authorizationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsClient", "Get", nil, "Failure preparing request")
@@ -300,10 +281,6 @@ func (client ExpressRouteCircuitAuthorizationsClient) GetResponder(resp *http.Re
 //
 // resourceGroupName is the name of the resource group. circuitName is the name of the circuit.
 func (client ExpressRouteCircuitAuthorizationsClient) List(resourceGroupName string, circuitName string) (result AuthorizationListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitAuthorizationsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, circuitName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsClient", "List", nil, "Failure preparing request")

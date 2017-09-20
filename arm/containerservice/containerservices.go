@@ -171,13 +171,6 @@ func (client ContainerServicesClient) CreateOrUpdateResponder(resp *http.Respons
 func (client ContainerServicesClient) Delete(resourceGroupName string, containerServiceName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "containerservice.ContainerServicesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -258,10 +251,6 @@ func (client ContainerServicesClient) DeleteResponder(resp *http.Response) (resu
 // resourceGroupName is the name of the resource group. containerServiceName is the name of the container service in
 // the specified subscription and resource group.
 func (client ContainerServicesClient) Get(resourceGroupName string, containerServiceName string) (result ContainerService, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "containerservice.ContainerServicesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, containerServiceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "Get", nil, "Failure preparing request")
@@ -326,10 +315,6 @@ func (client ContainerServicesClient) GetResponder(resp *http.Response) (result 
 // List gets a list of container services in the specified subscription. The operation returns properties of each
 // container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
 func (client ContainerServicesClient) List() (result ListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "containerservice.ContainerServicesClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "List", nil, "Failure preparing request")
@@ -464,10 +449,6 @@ func (client ContainerServicesClient) ListComplete(cancel <-chan struct{}) (<-ch
 //
 // resourceGroupName is the name of the resource group.
 func (client ContainerServicesClient) ListByResourceGroup(resourceGroupName string) (result ListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "containerservice.ContainerServicesClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "ListByResourceGroup", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package graphrbac
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,10 +42,6 @@ func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient 
 //
 // domainName is name of the domain.
 func (client DomainsClient) Get(domainName string) (result Domain, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.DomainsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(domainName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.DomainsClient", "Get", nil, "Failure preparing request")
@@ -111,10 +106,6 @@ func (client DomainsClient) GetResponder(resp *http.Response) (result Domain, er
 //
 // filter is the filter to apply to the operation.
 func (client DomainsClient) List(filter string) (result DomainListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.DomainsClient", "List")
-	}
-
 	req, err := client.ListPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.DomainsClient", "List", nil, "Failure preparing request")

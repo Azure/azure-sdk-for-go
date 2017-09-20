@@ -126,10 +126,6 @@ func (client FirewallRulesClient) CreateOrUpdateResponder(resp *http.Response) (
 // Azure Resource Manager API or the portal. serverName is the name of the server. firewallRuleName is the name of the
 // firewall rule.
 func (client FirewallRulesClient) Delete(resourceGroupName string, serverName string, firewallRuleName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.FirewallRulesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, serverName, firewallRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.FirewallRulesClient", "Delete", nil, "Failure preparing request")
@@ -197,10 +193,6 @@ func (client FirewallRulesClient) DeleteResponder(resp *http.Response) (result a
 // Azure Resource Manager API or the portal. serverName is the name of the server. firewallRuleName is the name of the
 // firewall rule.
 func (client FirewallRulesClient) Get(resourceGroupName string, serverName string, firewallRuleName string) (result FirewallRule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.FirewallRulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, firewallRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.FirewallRulesClient", "Get", nil, "Failure preparing request")
@@ -268,10 +260,6 @@ func (client FirewallRulesClient) GetResponder(resp *http.Response) (result Fire
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client FirewallRulesClient) ListByServer(resourceGroupName string, serverName string) (result FirewallRuleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.FirewallRulesClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.FirewallRulesClient", "ListByServer", nil, "Failure preparing request")

@@ -125,10 +125,6 @@ func (client ViewsClient) CreateOrUpdateResponder(resp *http.Response) (result V
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. viewName is the name of the
 // view. userID is the user ID. Use * to retreive hub level view.
 func (client ViewsClient) Delete(resourceGroupName string, hubName string, viewName string, userID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.ViewsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, hubName, viewName, userID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "Delete", nil, "Failure preparing request")
@@ -196,10 +192,6 @@ func (client ViewsClient) DeleteResponder(resp *http.Response) (result autorest.
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. viewName is the name of the
 // view. userID is the user ID. Use * to retreive hub level view.
 func (client ViewsClient) Get(resourceGroupName string, hubName string, viewName string, userID string) (result ViewResourceFormat, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.ViewsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, hubName, viewName, userID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "Get", nil, "Failure preparing request")
@@ -268,10 +260,6 @@ func (client ViewsClient) GetResponder(resp *http.Response) (result ViewResource
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. userID is the user ID. Use * to
 // retreive hub level views.
 func (client ViewsClient) ListByHub(resourceGroupName string, hubName string, userID string) (result ViewListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.ViewsClient", "ListByHub")
-	}
-
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName, userID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "ListByHub", nil, "Failure preparing request")

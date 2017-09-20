@@ -20,7 +20,6 @@ package recoveryservices
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the
 // name of the recovery services vault.
 func (client UsagesClient) ListByVaults(resourceGroupName string, vaultName string) (result VaultUsageList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.UsagesClient", "ListByVaults")
-	}
-
 	req, err := client.ListByVaultsPreparer(resourceGroupName, vaultName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.UsagesClient", "ListByVaults", nil, "Failure preparing request")

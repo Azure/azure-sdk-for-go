@@ -137,13 +137,6 @@ func (client HubsClient) CreateOrUpdateResponder(resp *http.Response) (result Hu
 func (client HubsClient) Delete(resourceGroupName string, hubName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "customerinsights.HubsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -221,10 +214,6 @@ func (client HubsClient) DeleteResponder(resp *http.Response) (result autorest.R
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub.
 func (client HubsClient) Get(resourceGroupName string, hubName string) (result Hub, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.HubsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, hubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "Get", nil, "Failure preparing request")
@@ -288,10 +277,6 @@ func (client HubsClient) GetResponder(resp *http.Response) (result Hub, err erro
 
 // List gets all hubs in the specified subscription.
 func (client HubsClient) List() (result HubListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.HubsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "List", nil, "Failure preparing request")
@@ -424,10 +409,6 @@ func (client HubsClient) ListComplete(cancel <-chan struct{}) (<-chan Hub, <-cha
 //
 // resourceGroupName is the name of the resource group.
 func (client HubsClient) ListByResourceGroup(resourceGroupName string) (result HubListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.HubsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -562,10 +543,6 @@ func (client HubsClient) ListByResourceGroupComplete(resourceGroupName string, c
 // resourceGroupName is the name of the resource group. hubName is the name of the Hub. parameters is parameters
 // supplied to the Update Hub operation.
 func (client HubsClient) Update(resourceGroupName string, hubName string, parameters Hub) (result Hub, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.HubsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, hubName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "Update", nil, "Failure preparing request")

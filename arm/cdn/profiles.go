@@ -385,10 +385,6 @@ func (client ProfilesClient) GetResponder(resp *http.Response) (result Profile, 
 
 // List lists all of the CDN profiles within an Azure subscription.
 func (client ProfilesClient) List() (result ProfileListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "cdn.ProfilesClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "List", nil, "Failure preparing request")

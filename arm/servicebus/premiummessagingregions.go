@@ -20,7 +20,6 @@ package servicebus
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -41,10 +40,6 @@ func NewPremiumMessagingRegionsClientWithBaseURI(baseURI string, subscriptionID 
 
 // List gets the available premium messaging regions for servicebus
 func (client PremiumMessagingRegionsClient) List() (result PremiumMessagingRegionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servicebus.PremiumMessagingRegionsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.PremiumMessagingRegionsClient", "List", nil, "Failure preparing request")

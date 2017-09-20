@@ -144,13 +144,6 @@ func (client ReplicationRecoveryPlansClient) CreateResponder(resp *http.Response
 func (client ReplicationRecoveryPlansClient) Delete(recoveryPlanName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationRecoveryPlansClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -233,13 +226,6 @@ func (client ReplicationRecoveryPlansClient) DeleteResponder(resp *http.Response
 func (client ReplicationRecoveryPlansClient) FailoverCommit(recoveryPlanName string, cancel <-chan struct{}) (<-chan RecoveryPlan, <-chan error) {
 	resultChan := make(chan RecoveryPlan, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationRecoveryPlansClient", "FailoverCommit")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result RecoveryPlan
@@ -319,10 +305,6 @@ func (client ReplicationRecoveryPlansClient) FailoverCommitResponder(resp *http.
 //
 // recoveryPlanName is name of the recovery plan.
 func (client ReplicationRecoveryPlansClient) Get(recoveryPlanName string) (result RecoveryPlan, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationRecoveryPlansClient", "Get")
-	}
-
 	req, err := client.GetPreparer(recoveryPlanName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationRecoveryPlansClient", "Get", nil, "Failure preparing request")
@@ -387,10 +369,6 @@ func (client ReplicationRecoveryPlansClient) GetResponder(resp *http.Response) (
 
 // List lists the recovery plans in the vault.
 func (client ReplicationRecoveryPlansClient) List() (result RecoveryPlanCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationRecoveryPlansClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationRecoveryPlansClient", "List", nil, "Failure preparing request")
@@ -623,13 +601,6 @@ func (client ReplicationRecoveryPlansClient) PlannedFailoverResponder(resp *http
 func (client ReplicationRecoveryPlansClient) Reprotect(recoveryPlanName string, cancel <-chan struct{}) (<-chan RecoveryPlan, <-chan error) {
 	resultChan := make(chan RecoveryPlan, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationRecoveryPlansClient", "Reprotect")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result RecoveryPlan
@@ -995,13 +966,6 @@ func (client ReplicationRecoveryPlansClient) UnplannedFailoverResponder(resp *ht
 func (client ReplicationRecoveryPlansClient) Update(recoveryPlanName string, input UpdateRecoveryPlanInput, cancel <-chan struct{}) (<-chan RecoveryPlan, <-chan error) {
 	resultChan := make(chan RecoveryPlan, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationRecoveryPlansClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result RecoveryPlan

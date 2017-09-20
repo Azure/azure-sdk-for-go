@@ -20,7 +20,6 @@ package logic
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewIntegrationAccountsClientWithBaseURI(baseURI string, subscriptionID stri
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name.
 // integrationAccount is the integration account.
 func (client IntegrationAccountsClient) CreateOrUpdate(resourceGroupName string, integrationAccountName string, integrationAccount IntegrationAccount) (result IntegrationAccount, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.IntegrationAccountsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, integrationAccountName, integrationAccount)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -115,10 +110,6 @@ func (client IntegrationAccountsClient) CreateOrUpdateResponder(resp *http.Respo
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name.
 func (client IntegrationAccountsClient) Delete(resourceGroupName string, integrationAccountName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.IntegrationAccountsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Delete", nil, "Failure preparing request")
@@ -183,10 +174,6 @@ func (client IntegrationAccountsClient) DeleteResponder(resp *http.Response) (re
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name.
 func (client IntegrationAccountsClient) Get(resourceGroupName string, integrationAccountName string) (result IntegrationAccount, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.IntegrationAccountsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, integrationAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Get", nil, "Failure preparing request")
@@ -253,10 +240,6 @@ func (client IntegrationAccountsClient) GetResponder(resp *http.Response) (resul
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. parameters is
 // the callback URL parameters.
 func (client IntegrationAccountsClient) GetCallbackURL(resourceGroupName string, integrationAccountName string, parameters GetCallbackURLParameters) (result CallbackURL, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.IntegrationAccountsClient", "GetCallbackURL")
-	}
-
 	req, err := client.GetCallbackURLPreparer(resourceGroupName, integrationAccountName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "GetCallbackURL", nil, "Failure preparing request")
@@ -324,10 +307,6 @@ func (client IntegrationAccountsClient) GetCallbackURLResponder(resp *http.Respo
 //
 // resourceGroupName is the resource group name. top is the number of items to be included in the result.
 func (client IntegrationAccountsClient) ListByResourceGroup(resourceGroupName string, top *int32) (result IntegrationAccountListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.IntegrationAccountsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -464,10 +443,6 @@ func (client IntegrationAccountsClient) ListByResourceGroupComplete(resourceGrou
 //
 // top is the number of items to be included in the result.
 func (client IntegrationAccountsClient) ListBySubscription(top *int32) (result IntegrationAccountListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.IntegrationAccountsClient", "ListBySubscription")
-	}
-
 	req, err := client.ListBySubscriptionPreparer(top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListBySubscription", nil, "Failure preparing request")
@@ -604,10 +579,6 @@ func (client IntegrationAccountsClient) ListBySubscriptionComplete(top *int32, c
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name.
 // integrationAccount is the integration account.
 func (client IntegrationAccountsClient) Update(resourceGroupName string, integrationAccountName string, integrationAccount IntegrationAccount) (result IntegrationAccount, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.IntegrationAccountsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, integrationAccountName, integrationAccount)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "Update", nil, "Failure preparing request")

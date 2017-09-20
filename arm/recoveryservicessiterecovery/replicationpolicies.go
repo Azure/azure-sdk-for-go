@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,13 +46,6 @@ func NewReplicationPoliciesClientWithBaseURI(baseURI string, subscriptionID stri
 func (client ReplicationPoliciesClient) Create(policyName string, input CreatePolicyInput, cancel <-chan struct{}) (<-chan Policy, <-chan error) {
 	resultChan := make(chan Policy, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationPoliciesClient", "Create")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Policy
@@ -138,13 +130,6 @@ func (client ReplicationPoliciesClient) CreateResponder(resp *http.Response) (re
 func (client ReplicationPoliciesClient) Delete(policyName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationPoliciesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -223,10 +208,6 @@ func (client ReplicationPoliciesClient) DeleteResponder(resp *http.Response) (re
 //
 // policyName is replication policy name.
 func (client ReplicationPoliciesClient) Get(policyName string) (result Policy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationPoliciesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(policyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationPoliciesClient", "Get", nil, "Failure preparing request")
@@ -291,10 +272,6 @@ func (client ReplicationPoliciesClient) GetResponder(resp *http.Response) (resul
 
 // List lists the replication policies for a vault.
 func (client ReplicationPoliciesClient) List() (result PolicyCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationPoliciesClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationPoliciesClient", "List", nil, "Failure preparing request")
@@ -432,13 +409,6 @@ func (client ReplicationPoliciesClient) ListComplete(cancel <-chan struct{}) (<-
 func (client ReplicationPoliciesClient) Update(policyName string, input UpdatePolicyInput, cancel <-chan struct{}) (<-chan Policy, <-chan error) {
 	resultChan := make(chan Policy, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationPoliciesClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Policy

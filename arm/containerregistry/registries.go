@@ -386,10 +386,6 @@ func (client RegistriesClient) GetResponder(resp *http.Response) (result Registr
 
 // List lists all the container registries under the specified subscription.
 func (client RegistriesClient) List() (result RegistryListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "containerregistry.RegistriesClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "List", nil, "Failure preparing request")
@@ -522,10 +518,6 @@ func (client RegistriesClient) ListComplete(cancel <-chan struct{}) (<-chan Regi
 //
 // resourceGroupName is the name of the resource group to which the container registry belongs.
 func (client RegistriesClient) ListByResourceGroup(resourceGroupName string) (result RegistryListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "containerregistry.RegistriesClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ListByResourceGroup", nil, "Failure preparing request")

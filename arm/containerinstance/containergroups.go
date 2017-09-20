@@ -125,10 +125,6 @@ func (client ContainerGroupsClient) CreateOrUpdateResponder(resp *http.Response)
 // resourceGroupName is the name of the resource group that contains the container group. containerGroupName is the
 // name of the container group to be deleted.
 func (client ContainerGroupsClient) Delete(resourceGroupName string, containerGroupName string) (result ContainerGroup, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "containerinstance.ContainerGroupsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, containerGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "Delete", nil, "Failure preparing request")
@@ -197,10 +193,6 @@ func (client ContainerGroupsClient) DeleteResponder(resp *http.Response) (result
 // resourceGroupName is the name of the resource group that contains the container group. containerGroupName is the
 // name of the container group.
 func (client ContainerGroupsClient) Get(resourceGroupName string, containerGroupName string) (result ContainerGroup, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "containerinstance.ContainerGroupsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, containerGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "Get", nil, "Failure preparing request")
@@ -266,10 +258,6 @@ func (client ContainerGroupsClient) GetResponder(resp *http.Response) (result Co
 // container group including containers, image registry credentials, restart policy, IP address type, OS type, state,
 // and volumes.
 func (client ContainerGroupsClient) List() (result ContainerGroupListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "containerinstance.ContainerGroupsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "List", nil, "Failure preparing request")
@@ -404,10 +392,6 @@ func (client ContainerGroupsClient) ListComplete(cancel <-chan struct{}) (<-chan
 //
 // resourceGroupName is the name of the resource group that contains the container group.
 func (client ContainerGroupsClient) ListByResourceGroup(resourceGroupName string) (result ContainerGroupListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "containerinstance.ContainerGroupsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "ListByResourceGroup", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package search
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	uuid "github.com/satori/go.uuid"
 	"net/http"
 )
@@ -47,10 +46,6 @@ func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminK
 // with the specified resource group. clientRequestID is a client-generated GUID value that identifies this request. If
 // specified, this will be included in response information as a way to track the request.
 func (client AdminKeysClient) Get(resourceGroupName string, searchServiceName string, clientRequestID *uuid.UUID) (result AdminKeyResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "search.AdminKeysClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, searchServiceName, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.AdminKeysClient", "Get", nil, "Failure preparing request")
@@ -124,10 +119,6 @@ func (client AdminKeysClient) GetResponder(resp *http.Response) (result AdminKey
 // 'secondary'. Possible values include: 'Primary', 'Secondary' clientRequestID is a client-generated GUID value that
 // identifies this request. If specified, this will be included in response information as a way to track the request.
 func (client AdminKeysClient) Regenerate(resourceGroupName string, searchServiceName string, keyKind AdminKeyKind, clientRequestID *uuid.UUID) (result AdminKeyResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "search.AdminKeysClient", "Regenerate")
-	}
-
 	req, err := client.RegeneratePreparer(resourceGroupName, searchServiceName, keyKind, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.AdminKeysClient", "Regenerate", nil, "Failure preparing request")

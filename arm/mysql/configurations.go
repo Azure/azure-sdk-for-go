@@ -20,7 +20,6 @@ package mysql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,13 +48,6 @@ func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) C
 func (client ConfigurationsClient) CreateOrUpdate(resourceGroupName string, serverName string, configurationName string, parameters Configuration, cancel <-chan struct{}) (<-chan Configuration, <-chan error) {
 	resultChan := make(chan Configuration, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "mysql.ConfigurationsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Configuration
@@ -139,10 +131,6 @@ func (client ConfigurationsClient) CreateOrUpdateResponder(resp *http.Response) 
 // Azure Resource Manager API or the portal. serverName is the name of the server. configurationName is the name of the
 // server configuration.
 func (client ConfigurationsClient) Get(resourceGroupName string, serverName string, configurationName string) (result Configuration, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mysql.ConfigurationsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, configurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysql.ConfigurationsClient", "Get", nil, "Failure preparing request")
@@ -210,10 +198,6 @@ func (client ConfigurationsClient) GetResponder(resp *http.Response) (result Con
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client ConfigurationsClient) ListByServer(resourceGroupName string, serverName string) (result ConfigurationListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mysql.ConfigurationsClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysql.ConfigurationsClient", "ListByServer", nil, "Failure preparing request")

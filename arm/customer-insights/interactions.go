@@ -143,10 +143,6 @@ func (client InteractionsClient) CreateOrUpdateResponder(resp *http.Response) (r
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. interactionName is the name of
 // the interaction. localeCode is locale of interaction to retrieve, default is en-us.
 func (client InteractionsClient) Get(resourceGroupName string, hubName string, interactionName string, localeCode string) (result InteractionResourceFormat, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.InteractionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, hubName, interactionName, localeCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.InteractionsClient", "Get", nil, "Failure preparing request")
@@ -217,10 +213,6 @@ func (client InteractionsClient) GetResponder(resp *http.Response) (result Inter
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. localeCode is locale of
 // interaction to retrieve, default is en-us.
 func (client InteractionsClient) ListByHub(resourceGroupName string, hubName string, localeCode string) (result InteractionListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.InteractionsClient", "ListByHub")
-	}
-
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName, localeCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.InteractionsClient", "ListByHub", nil, "Failure preparing request")
@@ -359,10 +351,6 @@ func (client InteractionsClient) ListByHubComplete(resourceGroupName string, hub
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. interactionName is the name of
 // the interaction.
 func (client InteractionsClient) SuggestRelationshipLinks(resourceGroupName string, hubName string, interactionName string) (result SuggestRelationshipLinksResponse, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.InteractionsClient", "SuggestRelationshipLinks")
-	}
-
 	req, err := client.SuggestRelationshipLinksPreparer(resourceGroupName, hubName, interactionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.InteractionsClient", "SuggestRelationshipLinks", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewServerConnectionPoliciesClientWithBaseURI(baseURI string, subscriptionID
 // Azure Resource Manager API or the portal. serverName is the name of the server. connectionPolicyName is the name of
 // the connection policy. parameters is the required parameters for updating a secure connection policy.
 func (client ServerConnectionPoliciesClient) CreateOrUpdate(resourceGroupName string, serverName string, connectionPolicyName string, parameters ServerConnectionPolicy) (result ServerConnectionPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ServerConnectionPoliciesClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, connectionPolicyName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerConnectionPoliciesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -121,10 +116,6 @@ func (client ServerConnectionPoliciesClient) CreateOrUpdateResponder(resp *http.
 // Azure Resource Manager API or the portal. serverName is the name of the server. connectionPolicyName is the name of
 // the connection policy.
 func (client ServerConnectionPoliciesClient) Get(resourceGroupName string, serverName string, connectionPolicyName string) (result ServerConnectionPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ServerConnectionPoliciesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, connectionPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerConnectionPoliciesClient", "Get", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package hdinsight
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) C
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. configurationName is
 // the constant for configuration type of gateway. Possible values include: 'Gateway', 'CoreSite'
 func (client ConfigurationsClient) Get(resourceGroupName string, clusterName string, configurationName Configurationname) (result HTTPConnectivitySettings, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.ConfigurationsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, clusterName, configurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ConfigurationsClient", "Get", nil, "Failure preparing request")
@@ -119,13 +114,6 @@ func (client ConfigurationsClient) GetResponder(resp *http.Response) (result HTT
 func (client ConfigurationsClient) UpdateHTTPSettings(resourceGroupName string, clusterName string, configurationName string, parameters HTTPConnectivitySettings, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "hdinsight.ConfigurationsClient", "UpdateHTTPSettings")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response

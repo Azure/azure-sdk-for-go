@@ -118,10 +118,6 @@ func (client PatchSchedulesClient) CreateOrUpdateResponder(resp *http.Response) 
 //
 // resourceGroupName is the name of the resource group. name is the name of the redis cache.
 func (client PatchSchedulesClient) Delete(resourceGroupName string, name string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "redis.PatchSchedulesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.PatchSchedulesClient", "Delete", nil, "Failure preparing request")
@@ -186,10 +182,6 @@ func (client PatchSchedulesClient) DeleteResponder(resp *http.Response) (result 
 //
 // resourceGroupName is the name of the resource group. name is the name of the redis cache.
 func (client PatchSchedulesClient) Get(resourceGroupName string, name string) (result PatchSchedule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "redis.PatchSchedulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.PatchSchedulesClient", "Get", nil, "Failure preparing request")

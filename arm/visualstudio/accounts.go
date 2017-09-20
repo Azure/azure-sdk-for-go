@@ -20,7 +20,6 @@ package visualstudio
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 //
 // body is parameters describing the name to check availability for.
 func (client AccountsClient) CheckNameAvailability(body CheckNameAvailabilityParameter) (result CheckNameAvailabilityResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.AccountsClient", "CheckNameAvailability")
-	}
-
 	req, err := client.CheckNameAvailabilityPreparer(body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.AccountsClient", "CheckNameAvailability", nil, "Failure preparing request")
@@ -117,10 +112,6 @@ func (client AccountsClient) CheckNameAvailabilityResponder(resp *http.Response)
 // resourceGroupName is name of the resource group within the Azure subscription. body is the request data.
 // resourceName is name of the resource.
 func (client AccountsClient) CreateOrUpdate(resourceGroupName string, body AccountResourceRequest, resourceName string) (result AccountResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.AccountsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, body, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.AccountsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -188,10 +179,6 @@ func (client AccountsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 //
 // resourceGroupName is name of the resource group within the Azure subscription. resourceName is name of the resource.
 func (client AccountsClient) Delete(resourceGroupName string, resourceName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.AccountsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.AccountsClient", "Delete", nil, "Failure preparing request")
@@ -256,10 +243,6 @@ func (client AccountsClient) DeleteResponder(resp *http.Response) (result autore
 //
 // resourceGroupName is name of the resource group within the Azure subscription. resourceName is name of the resource.
 func (client AccountsClient) Get(resourceGroupName string, resourceName string) (result AccountResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.AccountsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.AccountsClient", "Get", nil, "Failure preparing request")
@@ -326,10 +309,6 @@ func (client AccountsClient) GetResponder(resp *http.Response) (result AccountRe
 //
 // resourceGroupName is name of the resource group within the Azure subscription.
 func (client AccountsClient) ListByResourceGroup(resourceGroupName string) (result AccountResourceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.AccountsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.AccountsClient", "ListByResourceGroup", nil, "Failure preparing request")

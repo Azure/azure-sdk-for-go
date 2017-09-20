@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,13 +48,6 @@ func NewReplicationNetworkMappingsClientWithBaseURI(baseURI string, subscription
 func (client ReplicationNetworkMappingsClient) Create(fabricName string, networkName string, networkMappingName string, input CreateNetworkMappingInput, cancel <-chan struct{}) (<-chan NetworkMapping, <-chan error) {
 	resultChan := make(chan NetworkMapping, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationNetworkMappingsClient", "Create")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result NetworkMapping
@@ -143,13 +135,6 @@ func (client ReplicationNetworkMappingsClient) CreateResponder(resp *http.Respon
 func (client ReplicationNetworkMappingsClient) Delete(fabricName string, networkName string, networkMappingName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationNetworkMappingsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -230,10 +215,6 @@ func (client ReplicationNetworkMappingsClient) DeleteResponder(resp *http.Respon
 //
 // fabricName is primary fabric name. networkName is primary network name. networkMappingName is network mapping name.
 func (client ReplicationNetworkMappingsClient) Get(fabricName string, networkName string, networkMappingName string) (result NetworkMapping, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationNetworkMappingsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(fabricName, networkName, networkMappingName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationNetworkMappingsClient", "Get", nil, "Failure preparing request")
@@ -300,10 +281,6 @@ func (client ReplicationNetworkMappingsClient) GetResponder(resp *http.Response)
 
 // List lists all ASR network mappings in the vault.
 func (client ReplicationNetworkMappingsClient) List() (result NetworkMappingCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationNetworkMappingsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationNetworkMappingsClient", "List", nil, "Failure preparing request")
@@ -438,10 +415,6 @@ func (client ReplicationNetworkMappingsClient) ListComplete(cancel <-chan struct
 //
 // fabricName is primary fabric name. networkName is primary network name.
 func (client ReplicationNetworkMappingsClient) ListByReplicationNetworks(fabricName string, networkName string) (result NetworkMappingCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationNetworkMappingsClient", "ListByReplicationNetworks")
-	}
-
 	req, err := client.ListByReplicationNetworksPreparer(fabricName, networkName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationNetworkMappingsClient", "ListByReplicationNetworks", nil, "Failure preparing request")
@@ -583,13 +556,6 @@ func (client ReplicationNetworkMappingsClient) ListByReplicationNetworksComplete
 func (client ReplicationNetworkMappingsClient) Update(fabricName string, networkName string, networkMappingName string, input UpdateNetworkMappingInput, cancel <-chan struct{}) (<-chan NetworkMapping, <-chan error) {
 	resultChan := make(chan NetworkMapping, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationNetworkMappingsClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result NetworkMapping

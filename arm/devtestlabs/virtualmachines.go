@@ -48,13 +48,6 @@ func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client VirtualMachinesClient) AddDataDisk(resourceGroupName string, labName string, name string, dataDiskProperties DataDiskProperties, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.VirtualMachinesClient", "AddDataDisk")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -140,13 +133,6 @@ func (client VirtualMachinesClient) AddDataDiskResponder(resp *http.Response) (r
 func (client VirtualMachinesClient) ApplyArtifacts(resourceGroupName string, labName string, name string, applyArtifactsRequest ApplyArtifactsRequest, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.VirtualMachinesClient", "ApplyArtifacts")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -232,13 +218,6 @@ func (client VirtualMachinesClient) ApplyArtifactsResponder(resp *http.Response)
 func (client VirtualMachinesClient) Claim(resourceGroupName string, labName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.VirtualMachinesClient", "Claim")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -426,13 +405,6 @@ func (client VirtualMachinesClient) CreateOrUpdateResponder(resp *http.Response)
 func (client VirtualMachinesClient) Delete(resourceGroupName string, labName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.VirtualMachinesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -516,13 +488,6 @@ func (client VirtualMachinesClient) DeleteResponder(resp *http.Response) (result
 func (client VirtualMachinesClient) DetachDataDisk(resourceGroupName string, labName string, name string, detachDataDiskProperties DetachDataDiskProperties, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.VirtualMachinesClient", "DetachDataDisk")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -605,10 +570,6 @@ func (client VirtualMachinesClient) DetachDataDiskResponder(resp *http.Response)
 // machine. expand is specify the $expand query. Example:
 // 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'
 func (client VirtualMachinesClient) Get(resourceGroupName string, labName string, name string, expand string) (result LabVirtualMachine, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.VirtualMachinesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.VirtualMachinesClient", "Get", nil, "Failure preparing request")
@@ -681,10 +642,6 @@ func (client VirtualMachinesClient) GetResponder(resp *http.Response) (result La
 // to apply to the operation. top is the maximum number of resources to return from the operation. orderby is the
 // ordering expression for the results, using OData notation.
 func (client VirtualMachinesClient) List(resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationLabVirtualMachine, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.VirtualMachinesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.VirtualMachinesClient", "List", nil, "Failure preparing request")
@@ -832,10 +789,6 @@ func (client VirtualMachinesClient) ListComplete(resourceGroupName string, labNa
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the virtual
 // machine.
 func (client VirtualMachinesClient) ListApplicableSchedules(resourceGroupName string, labName string, name string) (result ApplicableSchedule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.VirtualMachinesClient", "ListApplicableSchedules")
-	}
-
 	req, err := client.ListApplicableSchedulesPreparer(resourceGroupName, labName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.VirtualMachinesClient", "ListApplicableSchedules", nil, "Failure preparing request")
@@ -907,13 +860,6 @@ func (client VirtualMachinesClient) ListApplicableSchedulesResponder(resp *http.
 func (client VirtualMachinesClient) Start(resourceGroupName string, labName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.VirtualMachinesClient", "Start")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -997,13 +943,6 @@ func (client VirtualMachinesClient) StartResponder(resp *http.Response) (result 
 func (client VirtualMachinesClient) Stop(resourceGroupName string, labName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.VirtualMachinesClient", "Stop")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -1083,10 +1022,6 @@ func (client VirtualMachinesClient) StopResponder(resp *http.Response) (result a
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the virtual
 // machine. labVirtualMachine is a virtual machine.
 func (client VirtualMachinesClient) Update(resourceGroupName string, labName string, name string, labVirtualMachine LabVirtualMachineFragment) (result LabVirtualMachine, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.VirtualMachinesClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, labName, name, labVirtualMachine)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.VirtualMachinesClient", "Update", nil, "Failure preparing request")

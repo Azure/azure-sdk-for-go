@@ -20,7 +20,6 @@ package recoveryservices
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -41,10 +40,6 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 
 // List returns the list of available operations.
 func (client OperationsClient) List() (result ClientDiscoveryResponse, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.OperationsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.OperationsClient", "List", nil, "Failure preparing request")

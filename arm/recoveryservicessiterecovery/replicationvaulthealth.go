@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -42,10 +41,6 @@ func NewReplicationVaultHealthClientWithBaseURI(baseURI string, subscriptionID s
 
 // Get gets the health details of the vault.
 func (client ReplicationVaultHealthClient) Get() (result VaultHealthDetails, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationVaultHealthClient", "Get")
-	}
-
 	req, err := client.GetPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationVaultHealthClient", "Get", nil, "Failure preparing request")

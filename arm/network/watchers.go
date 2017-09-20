@@ -141,10 +141,6 @@ func (client WatchersClient) CheckConnectivityResponder(resp *http.Response) (re
 // resourceGroupName is the name of the resource group. networkWatcherName is the name of the network watcher.
 // parameters is parameters that define the network watcher resource.
 func (client WatchersClient) CreateOrUpdate(resourceGroupName string, networkWatcherName string, parameters Watcher) (result Watcher, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.WatchersClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, networkWatcherName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WatchersClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -216,13 +212,6 @@ func (client WatchersClient) CreateOrUpdateResponder(resp *http.Response) (resul
 func (client WatchersClient) Delete(resourceGroupName string, networkWatcherName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.WatchersClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -300,10 +289,6 @@ func (client WatchersClient) DeleteResponder(resp *http.Response) (result autore
 //
 // resourceGroupName is the name of the resource group. networkWatcherName is the name of the network watcher.
 func (client WatchersClient) Get(resourceGroupName string, networkWatcherName string) (result Watcher, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.WatchersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, networkWatcherName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WatchersClient", "Get", nil, "Failure preparing request")
@@ -918,10 +903,6 @@ func (client WatchersClient) GetVMSecurityRulesResponder(resp *http.Response) (r
 //
 // resourceGroupName is the name of the resource group.
 func (client WatchersClient) List(resourceGroupName string) (result WatcherListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.WatchersClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WatchersClient", "List", nil, "Failure preparing request")
@@ -984,10 +965,6 @@ func (client WatchersClient) ListResponder(resp *http.Response) (result WatcherL
 
 // ListAll gets all network watchers by subscription.
 func (client WatchersClient) ListAll() (result WatcherListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.WatchersClient", "ListAll")
-	}
-
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WatchersClient", "ListAll", nil, "Failure preparing request")

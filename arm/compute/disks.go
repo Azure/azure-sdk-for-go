@@ -155,13 +155,6 @@ func (client DisksClient) CreateOrUpdateResponder(resp *http.Response) (result D
 func (client DisksClient) Delete(resourceGroupName string, diskName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.DisksClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -241,10 +234,6 @@ func (client DisksClient) DeleteResponder(resp *http.Response) (result Operation
 // resourceGroupName is the name of the resource group. diskName is the name of the disk within the given subscription
 // and resource group.
 func (client DisksClient) Get(resourceGroupName string, diskName string) (result Disk, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.DisksClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, diskName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "Get", nil, "Failure preparing request")
@@ -401,10 +390,6 @@ func (client DisksClient) GrantAccessResponder(resp *http.Response) (result Acce
 
 // List lists all the disks under a subscription.
 func (client DisksClient) List() (result DiskList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.DisksClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "List", nil, "Failure preparing request")
@@ -537,10 +522,6 @@ func (client DisksClient) ListComplete(cancel <-chan struct{}) (<-chan Disk, <-c
 //
 // resourceGroupName is the name of the resource group.
 func (client DisksClient) ListByResourceGroup(resourceGroupName string) (result DiskList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.DisksClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -678,13 +659,6 @@ func (client DisksClient) ListByResourceGroupComplete(resourceGroupName string, 
 func (client DisksClient) RevokeAccess(resourceGroupName string, diskName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.DisksClient", "RevokeAccess")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -767,13 +741,6 @@ func (client DisksClient) RevokeAccessResponder(resp *http.Response) (result Ope
 func (client DisksClient) Update(resourceGroupName string, diskName string, disk DiskUpdate, cancel <-chan struct{}) (<-chan Disk, <-chan error) {
 	resultChan := make(chan Disk, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.DisksClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Disk

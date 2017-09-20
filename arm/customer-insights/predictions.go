@@ -155,13 +155,6 @@ func (client PredictionsClient) CreateOrUpdateResponder(resp *http.Response) (re
 func (client PredictionsClient) Delete(resourceGroupName string, hubName string, predictionName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "customerinsights.PredictionsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -241,10 +234,6 @@ func (client PredictionsClient) DeleteResponder(resp *http.Response) (result aut
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. predictionName is the name of
 // the Prediction.
 func (client PredictionsClient) Get(resourceGroupName string, hubName string, predictionName string) (result PredictionResourceFormat, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.PredictionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, hubName, predictionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "Get", nil, "Failure preparing request")
@@ -312,10 +301,6 @@ func (client PredictionsClient) GetResponder(resp *http.Response) (result Predic
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. predictionName is the name of
 // the Prediction.
 func (client PredictionsClient) GetModelStatus(resourceGroupName string, hubName string, predictionName string) (result PredictionModelStatus, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.PredictionsClient", "GetModelStatus")
-	}
-
 	req, err := client.GetModelStatusPreparer(resourceGroupName, hubName, predictionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "GetModelStatus", nil, "Failure preparing request")
@@ -383,10 +368,6 @@ func (client PredictionsClient) GetModelStatusResponder(resp *http.Response) (re
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. predictionName is the name of
 // the Prediction.
 func (client PredictionsClient) GetTrainingResults(resourceGroupName string, hubName string, predictionName string) (result PredictionTrainingResults, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.PredictionsClient", "GetTrainingResults")
-	}
-
 	req, err := client.GetTrainingResultsPreparer(resourceGroupName, hubName, predictionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "GetTrainingResults", nil, "Failure preparing request")
@@ -453,10 +434,6 @@ func (client PredictionsClient) GetTrainingResultsResponder(resp *http.Response)
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub.
 func (client PredictionsClient) ListByHub(resourceGroupName string, hubName string) (result PredictionListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.PredictionsClient", "ListByHub")
-	}
-
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "ListByHub", nil, "Failure preparing request")
@@ -592,10 +569,6 @@ func (client PredictionsClient) ListByHubComplete(resourceGroupName string, hubN
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. predictionName is the name of
 // the Prediction. parameters is parameters supplied to the create/update prediction model status operation.
 func (client PredictionsClient) ModelStatus(resourceGroupName string, hubName string, predictionName string, parameters PredictionModelStatus) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.PredictionsClient", "ModelStatus")
-	}
-
 	req, err := client.ModelStatusPreparer(resourceGroupName, hubName, predictionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "ModelStatus", nil, "Failure preparing request")

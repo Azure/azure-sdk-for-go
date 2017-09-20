@@ -20,7 +20,6 @@ package compute
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -50,13 +49,6 @@ func NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI string, subscr
 func (client VirtualMachineScaleSetExtensionsClient) CreateOrUpdate(resourceGroupName string, VMScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtension, cancel <-chan struct{}) (<-chan VirtualMachineScaleSetExtension, <-chan error) {
 	resultChan := make(chan VirtualMachineScaleSetExtension, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetExtensionsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result VirtualMachineScaleSetExtension
@@ -142,13 +134,6 @@ func (client VirtualMachineScaleSetExtensionsClient) CreateOrUpdateResponder(res
 func (client VirtualMachineScaleSetExtensionsClient) Delete(resourceGroupName string, VMScaleSetName string, vmssExtensionName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetExtensionsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -230,10 +215,6 @@ func (client VirtualMachineScaleSetExtensionsClient) DeleteResponder(resp *http.
 // extension. vmssExtensionName is the name of the VM scale set extension. expand is the expand expression to apply on
 // the operation.
 func (client VirtualMachineScaleSetExtensionsClient) Get(resourceGroupName string, VMScaleSetName string, vmssExtensionName string, expand string) (result VirtualMachineScaleSetExtension, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetExtensionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, VMScaleSetName, vmssExtensionName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsClient", "Get", nil, "Failure preparing request")
@@ -304,10 +285,6 @@ func (client VirtualMachineScaleSetExtensionsClient) GetResponder(resp *http.Res
 // resourceGroupName is the name of the resource group. VMScaleSetName is the name of the VM scale set containing the
 // extension.
 func (client VirtualMachineScaleSetExtensionsClient) List(resourceGroupName string, VMScaleSetName string) (result VirtualMachineScaleSetExtensionListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetExtensionsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, VMScaleSetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsClient", "List", nil, "Failure preparing request")

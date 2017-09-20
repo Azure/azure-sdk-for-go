@@ -116,10 +116,6 @@ func (client GlobalSchedulesClient) CreateOrUpdateResponder(resp *http.Response)
 //
 // resourceGroupName is the name of the resource group. name is the name of the schedule.
 func (client GlobalSchedulesClient) Delete(resourceGroupName string, name string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.GlobalSchedulesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.GlobalSchedulesClient", "Delete", nil, "Failure preparing request")
@@ -188,13 +184,6 @@ func (client GlobalSchedulesClient) DeleteResponder(resp *http.Response) (result
 func (client GlobalSchedulesClient) Execute(resourceGroupName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.GlobalSchedulesClient", "Execute")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -273,10 +262,6 @@ func (client GlobalSchedulesClient) ExecuteResponder(resp *http.Response) (resul
 // resourceGroupName is the name of the resource group. name is the name of the schedule. expand is specify the $expand
 // query. Example: 'properties($select=status)'
 func (client GlobalSchedulesClient) Get(resourceGroupName string, name string, expand string) (result Schedule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.GlobalSchedulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.GlobalSchedulesClient", "Get", nil, "Failure preparing request")
@@ -347,10 +332,6 @@ func (client GlobalSchedulesClient) GetResponder(resp *http.Response) (result Sc
 // 'properties($select=status)' filter is the filter to apply to the operation. top is the maximum number of resources
 // to return from the operation. orderby is the ordering expression for the results, using OData notation.
 func (client GlobalSchedulesClient) ListByResourceGroup(resourceGroupName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationSchedule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.GlobalSchedulesClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.GlobalSchedulesClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -498,10 +479,6 @@ func (client GlobalSchedulesClient) ListByResourceGroupComplete(resourceGroupNam
 // operation. top is the maximum number of resources to return from the operation. orderby is the ordering expression
 // for the results, using OData notation.
 func (client GlobalSchedulesClient) ListBySubscription(expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationSchedule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.GlobalSchedulesClient", "ListBySubscription")
-	}
-
 	req, err := client.ListBySubscriptionPreparer(expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.GlobalSchedulesClient", "ListBySubscription", nil, "Failure preparing request")
@@ -651,13 +628,6 @@ func (client GlobalSchedulesClient) ListBySubscriptionComplete(expand string, fi
 func (client GlobalSchedulesClient) Retarget(resourceGroupName string, name string, retargetScheduleProperties RetargetScheduleProperties, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.GlobalSchedulesClient", "Retarget")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -737,10 +707,6 @@ func (client GlobalSchedulesClient) RetargetResponder(resp *http.Response) (resu
 //
 // resourceGroupName is the name of the resource group. name is the name of the schedule. schedule is a schedule.
 func (client GlobalSchedulesClient) Update(resourceGroupName string, name string, schedule ScheduleFragment) (result Schedule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.GlobalSchedulesClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, name, schedule)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.GlobalSchedulesClient", "Update", nil, "Failure preparing request")

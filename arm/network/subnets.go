@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,13 +48,6 @@ func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsC
 func (client SubnetsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet, cancel <-chan struct{}) (<-chan Subnet, <-chan error) {
 	resultChan := make(chan Subnet, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.SubnetsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Subnet
@@ -141,13 +133,6 @@ func (client SubnetsClient) CreateOrUpdateResponder(resp *http.Response) (result
 func (client SubnetsClient) Delete(resourceGroupName string, virtualNetworkName string, subnetName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.SubnetsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -227,10 +212,6 @@ func (client SubnetsClient) DeleteResponder(resp *http.Response) (result autores
 // resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
 // subnetName is the name of the subnet. expand is expands referenced resources.
 func (client SubnetsClient) Get(resourceGroupName string, virtualNetworkName string, subnetName string, expand string) (result Subnet, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.SubnetsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, virtualNetworkName, subnetName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SubnetsClient", "Get", nil, "Failure preparing request")
@@ -300,10 +281,6 @@ func (client SubnetsClient) GetResponder(resp *http.Response) (result Subnet, er
 //
 // resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
 func (client SubnetsClient) List(resourceGroupName string, virtualNetworkName string) (result SubnetListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.SubnetsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, virtualNetworkName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SubnetsClient", "List", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package subscriptions
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,10 +42,6 @@ func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
 
 // List gets the tenants for your account.
 func (client TenantsClient) List() (result TenantListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "subscriptions.TenantsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscriptions.TenantsClient", "List", nil, "Failure preparing request")

@@ -119,10 +119,6 @@ func (client SchemasClient) CreateOrUpdateResponder(resp *http.Response) (result
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. schemaName is
 // the integration account schema name.
 func (client SchemasClient) Delete(resourceGroupName string, integrationAccountName string, schemaName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.SchemasClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, schemaName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "Delete", nil, "Failure preparing request")
@@ -189,10 +185,6 @@ func (client SchemasClient) DeleteResponder(resp *http.Response) (result autores
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. schemaName is
 // the integration account schema name.
 func (client SchemasClient) Get(resourceGroupName string, integrationAccountName string, schemaName string) (result IntegrationAccountSchema, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.SchemasClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, integrationAccountName, schemaName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "Get", nil, "Failure preparing request")
@@ -260,10 +252,6 @@ func (client SchemasClient) GetResponder(resp *http.Response) (result Integratio
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. top is the
 // number of items to be included in the result. filter is the filter to apply on the operation.
 func (client SchemasClient) ListByIntegrationAccounts(resourceGroupName string, integrationAccountName string, top *int32, filter string) (result IntegrationAccountSchemaListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.SchemasClient", "ListByIntegrationAccounts")
-	}
-
 	req, err := client.ListByIntegrationAccountsPreparer(resourceGroupName, integrationAccountName, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "ListByIntegrationAccounts", nil, "Failure preparing request")

@@ -810,10 +810,6 @@ func (client ExportTasksClient) CreateTokensTaskResponder(resp *http.Response) (
 // resourceGroupName is the name of the resource group. appCollection is application collection. appName is application
 // resource name. ID is export task identifier.
 func (client ExportTasksClient) Get(resourceGroupName string, appCollection string, appName string, ID string) (result ExportTaskResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ExportTasksClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, appCollection, appName, ID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.ExportTasksClient", "Get", nil, "Failure preparing request")

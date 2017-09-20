@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,13 +46,6 @@ func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) Lo
 func (client LoadBalancersClient) CreateOrUpdate(resourceGroupName string, loadBalancerName string, parameters LoadBalancer, cancel <-chan struct{}) (<-chan LoadBalancer, <-chan error) {
 	resultChan := make(chan LoadBalancer, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.LoadBalancersClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result LoadBalancer
@@ -137,13 +129,6 @@ func (client LoadBalancersClient) CreateOrUpdateResponder(resp *http.Response) (
 func (client LoadBalancersClient) Delete(resourceGroupName string, loadBalancerName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.LoadBalancersClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -222,10 +207,6 @@ func (client LoadBalancersClient) DeleteResponder(resp *http.Response) (result a
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer. expand is
 // expands referenced resources.
 func (client LoadBalancersClient) Get(resourceGroupName string, loadBalancerName string, expand string) (result LoadBalancer, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.LoadBalancersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, loadBalancerName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancersClient", "Get", nil, "Failure preparing request")
@@ -294,10 +275,6 @@ func (client LoadBalancersClient) GetResponder(resp *http.Response) (result Load
 //
 // resourceGroupName is the name of the resource group.
 func (client LoadBalancersClient) List(resourceGroupName string) (result LoadBalancerListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.LoadBalancersClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancersClient", "List", nil, "Failure preparing request")
@@ -429,10 +406,6 @@ func (client LoadBalancersClient) ListComplete(resourceGroupName string, cancel 
 
 // ListAll gets all the load balancers in a subscription.
 func (client LoadBalancersClient) ListAll() (result LoadBalancerListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.LoadBalancersClient", "ListAll")
-	}
-
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancersClient", "ListAll", nil, "Failure preparing request")

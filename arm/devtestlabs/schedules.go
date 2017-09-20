@@ -119,10 +119,6 @@ func (client SchedulesClient) CreateOrUpdateResponder(resp *http.Response) (resu
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the
 // schedule.
 func (client SchedulesClient) Delete(resourceGroupName string, labName string, name string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.SchedulesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, labName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.SchedulesClient", "Delete", nil, "Failure preparing request")
@@ -193,13 +189,6 @@ func (client SchedulesClient) DeleteResponder(resp *http.Response) (result autor
 func (client SchedulesClient) Execute(resourceGroupName string, labName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.SchedulesClient", "Execute")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -279,10 +268,6 @@ func (client SchedulesClient) ExecuteResponder(resp *http.Response) (result auto
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the
 // schedule. expand is specify the $expand query. Example: 'properties($select=status)'
 func (client SchedulesClient) Get(resourceGroupName string, labName string, name string, expand string) (result Schedule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.SchedulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.SchedulesClient", "Get", nil, "Failure preparing request")
@@ -355,10 +340,6 @@ func (client SchedulesClient) GetResponder(resp *http.Response) (result Schedule
 // number of resources to return from the operation. orderby is the ordering expression for the results, using OData
 // notation.
 func (client SchedulesClient) List(resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationSchedule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.SchedulesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.SchedulesClient", "List", nil, "Failure preparing request")
@@ -506,10 +487,6 @@ func (client SchedulesClient) ListComplete(resourceGroupName string, labName str
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the
 // schedule.
 func (client SchedulesClient) ListApplicable(resourceGroupName string, labName string, name string) (result ResponseWithContinuationSchedule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.SchedulesClient", "ListApplicable")
-	}
-
 	req, err := client.ListApplicablePreparer(resourceGroupName, labName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.SchedulesClient", "ListApplicable", nil, "Failure preparing request")
@@ -646,10 +623,6 @@ func (client SchedulesClient) ListApplicableComplete(resourceGroupName string, l
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the
 // schedule. schedule is a schedule.
 func (client SchedulesClient) Update(resourceGroupName string, labName string, name string, schedule ScheduleFragment) (result Schedule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.SchedulesClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, labName, name, schedule)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.SchedulesClient", "Update", nil, "Failure preparing request")

@@ -46,10 +46,6 @@ func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) Assi
 // scope is the scope of the policy assignment. policyAssignmentName is the name of the policy assignment. parameters
 // is parameters for the policy assignment.
 func (client AssignmentsClient) Create(scope string, policyAssignmentName string, parameters Assignment) (result Assignment, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "policy.AssignmentsClient", "Create")
-	}
-
 	req, err := client.CreatePreparer(scope, policyAssignmentName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Create", nil, "Failure preparing request")
@@ -123,10 +119,6 @@ func (client AssignmentsClient) CreateResponder(resp *http.Response) (result Ass
 // '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'. parameters is parameters
 // for policy assignment.
 func (client AssignmentsClient) CreateByID(policyAssignmentID string, parameters Assignment) (result Assignment, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "policy.AssignmentsClient", "CreateByID")
-	}
-
 	req, err := client.CreateByIDPreparer(policyAssignmentID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "CreateByID", nil, "Failure preparing request")
@@ -192,10 +184,6 @@ func (client AssignmentsClient) CreateByIDResponder(resp *http.Response) (result
 //
 // scope is the scope of the policy assignment. policyAssignmentName is the name of the policy assignment to delete.
 func (client AssignmentsClient) Delete(scope string, policyAssignmentName string) (result Assignment, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "policy.AssignmentsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(scope, policyAssignmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Delete", nil, "Failure preparing request")
@@ -264,10 +252,6 @@ func (client AssignmentsClient) DeleteResponder(resp *http.Response) (result Ass
 // policyAssignmentID is the ID of the policy assignment to delete. Use the format
 // '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
 func (client AssignmentsClient) DeleteByID(policyAssignmentID string) (result Assignment, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "policy.AssignmentsClient", "DeleteByID")
-	}
-
 	req, err := client.DeleteByIDPreparer(policyAssignmentID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "DeleteByID", nil, "Failure preparing request")
@@ -331,10 +315,6 @@ func (client AssignmentsClient) DeleteByIDResponder(resp *http.Response) (result
 //
 // scope is the scope of the policy assignment. policyAssignmentName is the name of the policy assignment to get.
 func (client AssignmentsClient) Get(scope string, policyAssignmentName string) (result Assignment, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "policy.AssignmentsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(scope, policyAssignmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "Get", nil, "Failure preparing request")
@@ -403,10 +383,6 @@ func (client AssignmentsClient) GetResponder(resp *http.Response) (result Assign
 // policyAssignmentID is the ID of the policy assignment to get. Use the format
 // '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
 func (client AssignmentsClient) GetByID(policyAssignmentID string) (result Assignment, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "policy.AssignmentsClient", "GetByID")
-	}
-
 	req, err := client.GetByIDPreparer(policyAssignmentID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "GetByID", nil, "Failure preparing request")
@@ -470,10 +446,6 @@ func (client AssignmentsClient) GetByIDResponder(resp *http.Response) (result As
 //
 // filter is the filter to apply on the operation.
 func (client AssignmentsClient) List(filter string) (result AssignmentListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "policy.AssignmentsClient", "List")
-	}
-
 	req, err := client.ListPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.AssignmentsClient", "List", nil, "Failure preparing request")

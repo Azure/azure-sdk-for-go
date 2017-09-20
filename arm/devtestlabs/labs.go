@@ -47,13 +47,6 @@ func NewLabsClientWithBaseURI(baseURI string, subscriptionID string) LabsClient 
 func (client LabsClient) ClaimAnyVM(resourceGroupName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.LabsClient", "ClaimAnyVM")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -237,13 +230,6 @@ func (client LabsClient) CreateEnvironmentResponder(resp *http.Response) (result
 func (client LabsClient) CreateOrUpdate(resourceGroupName string, name string, lab Lab, cancel <-chan struct{}) (<-chan Lab, <-chan error) {
 	resultChan := make(chan Lab, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.LabsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Lab
@@ -328,13 +314,6 @@ func (client LabsClient) CreateOrUpdateResponder(resp *http.Response) (result La
 func (client LabsClient) Delete(resourceGroupName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.LabsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -417,13 +396,6 @@ func (client LabsClient) DeleteResponder(resp *http.Response) (result autorest.R
 func (client LabsClient) ExportResourceUsage(resourceGroupName string, name string, exportResourceUsageParameters ExportResourceUsageParameters, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.LabsClient", "ExportResourceUsage")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -504,10 +476,6 @@ func (client LabsClient) ExportResourceUsageResponder(resp *http.Response) (resu
 // resourceGroupName is the name of the resource group. name is the name of the lab. generateUploadURIParameter is
 // properties for generating an upload URI.
 func (client LabsClient) GenerateUploadURI(resourceGroupName string, name string, generateUploadURIParameter GenerateUploadURIParameter) (result GenerateUploadURIResponse, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.LabsClient", "GenerateUploadURI")
-	}
-
 	req, err := client.GenerateUploadURIPreparer(resourceGroupName, name, generateUploadURIParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.LabsClient", "GenerateUploadURI", nil, "Failure preparing request")
@@ -576,10 +544,6 @@ func (client LabsClient) GenerateUploadURIResponder(resp *http.Response) (result
 // resourceGroupName is the name of the resource group. name is the name of the lab. expand is specify the $expand
 // query. Example: 'properties($select=defaultStorageAccount)'
 func (client LabsClient) Get(resourceGroupName string, name string, expand string) (result Lab, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.LabsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.LabsClient", "Get", nil, "Failure preparing request")
@@ -651,10 +615,6 @@ func (client LabsClient) GetResponder(resp *http.Response) (result Lab, err erro
 // number of resources to return from the operation. orderby is the ordering expression for the results, using OData
 // notation.
 func (client LabsClient) ListByResourceGroup(resourceGroupName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationLab, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.LabsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.LabsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -802,10 +762,6 @@ func (client LabsClient) ListByResourceGroupComplete(resourceGroupName string, e
 // apply to the operation. top is the maximum number of resources to return from the operation. orderby is the ordering
 // expression for the results, using OData notation.
 func (client LabsClient) ListBySubscription(expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationLab, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.LabsClient", "ListBySubscription")
-	}
-
 	req, err := client.ListBySubscriptionPreparer(expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.LabsClient", "ListBySubscription", nil, "Failure preparing request")
@@ -950,10 +906,6 @@ func (client LabsClient) ListBySubscriptionComplete(expand string, filter string
 //
 // resourceGroupName is the name of the resource group. name is the name of the lab.
 func (client LabsClient) ListVhds(resourceGroupName string, name string) (result ResponseWithContinuationLabVhd, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.LabsClient", "ListVhds")
-	}
-
 	req, err := client.ListVhdsPreparer(resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.LabsClient", "ListVhds", nil, "Failure preparing request")
@@ -1088,10 +1040,6 @@ func (client LabsClient) ListVhdsComplete(resourceGroupName string, name string,
 //
 // resourceGroupName is the name of the resource group. name is the name of the lab. lab is a lab.
 func (client LabsClient) Update(resourceGroupName string, name string, lab LabFragment) (result Lab, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.LabsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, name, lab)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.LabsClient", "Update", nil, "Failure preparing request")

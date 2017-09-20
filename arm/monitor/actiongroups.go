@@ -121,10 +121,6 @@ func (client ActionGroupsClient) CreateOrUpdateResponder(resp *http.Response) (r
 //
 // resourceGroupName is the name of the resource group. actionGroupName is the name of the action group.
 func (client ActionGroupsClient) Delete(resourceGroupName string, actionGroupName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.ActionGroupsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, actionGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.ActionGroupsClient", "Delete", nil, "Failure preparing request")
@@ -262,10 +258,6 @@ func (client ActionGroupsClient) EnableReceiverResponder(resp *http.Response) (r
 //
 // resourceGroupName is the name of the resource group. actionGroupName is the name of the action group.
 func (client ActionGroupsClient) Get(resourceGroupName string, actionGroupName string) (result ActionGroupResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.ActionGroupsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, actionGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.ActionGroupsClient", "Get", nil, "Failure preparing request")
@@ -331,10 +323,6 @@ func (client ActionGroupsClient) GetResponder(resp *http.Response) (result Actio
 //
 // resourceGroupName is the name of the resource group.
 func (client ActionGroupsClient) ListByResourceGroup(resourceGroupName string) (result ActionGroupList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.ActionGroupsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.ActionGroupsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -397,10 +385,6 @@ func (client ActionGroupsClient) ListByResourceGroupResponder(resp *http.Respons
 
 // ListBySubscriptionID get a list of all action groups in a subscription.
 func (client ActionGroupsClient) ListBySubscriptionID() (result ActionGroupList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.ActionGroupsClient", "ListBySubscriptionID")
-	}
-
 	req, err := client.ListBySubscriptionIDPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.ActionGroupsClient", "ListBySubscriptionID", nil, "Failure preparing request")

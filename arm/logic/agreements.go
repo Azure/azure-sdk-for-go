@@ -548,10 +548,6 @@ func (client AgreementsClient) CreateOrUpdateResponder(resp *http.Response) (res
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. agreementName
 // is the integration account agreement name.
 func (client AgreementsClient) Delete(resourceGroupName string, integrationAccountName string, agreementName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.AgreementsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, agreementName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "Delete", nil, "Failure preparing request")
@@ -618,10 +614,6 @@ func (client AgreementsClient) DeleteResponder(resp *http.Response) (result auto
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. agreementName
 // is the integration account agreement name.
 func (client AgreementsClient) Get(resourceGroupName string, integrationAccountName string, agreementName string) (result IntegrationAccountAgreement, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.AgreementsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, integrationAccountName, agreementName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "Get", nil, "Failure preparing request")
@@ -689,10 +681,6 @@ func (client AgreementsClient) GetResponder(resp *http.Response) (result Integra
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. top is the
 // number of items to be included in the result. filter is the filter to apply on the operation.
 func (client AgreementsClient) ListByIntegrationAccounts(resourceGroupName string, integrationAccountName string, top *int32, filter string) (result IntegrationAccountAgreementListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.AgreementsClient", "ListByIntegrationAccounts")
-	}
-
 	req, err := client.ListByIntegrationAccountsPreparer(resourceGroupName, integrationAccountName, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.AgreementsClient", "ListByIntegrationAccounts", nil, "Failure preparing request")

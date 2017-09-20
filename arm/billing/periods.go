@@ -45,10 +45,6 @@ func NewPeriodsClientWithBaseURI(baseURI string, subscriptionID string) PeriodsC
 //
 // billingPeriodName is the name of a BillingPeriod resource.
 func (client PeriodsClient) Get(billingPeriodName string) (result Period, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "billing.PeriodsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(billingPeriodName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PeriodsClient", "Get", nil, "Failure preparing request")

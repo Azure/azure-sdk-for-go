@@ -148,13 +148,6 @@ func (client VirtualNetworkRulesClient) CreateOrUpdateResponder(resp *http.Respo
 func (client VirtualNetworkRulesClient) Delete(resourceGroupName string, serverName string, virtualNetworkRuleName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.VirtualNetworkRulesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -235,10 +228,6 @@ func (client VirtualNetworkRulesClient) DeleteResponder(resp *http.Response) (re
 // Azure Resource Manager API or the portal. serverName is the name of the server. virtualNetworkRuleName is the name
 // of the virtual network rule.
 func (client VirtualNetworkRulesClient) Get(resourceGroupName string, serverName string, virtualNetworkRuleName string) (result VirtualNetworkRule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.VirtualNetworkRulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, virtualNetworkRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesClient", "Get", nil, "Failure preparing request")
@@ -306,10 +295,6 @@ func (client VirtualNetworkRulesClient) GetResponder(resp *http.Response) (resul
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client VirtualNetworkRulesClient) ListByServer(resourceGroupName string, serverName string) (result VirtualNetworkRuleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.VirtualNetworkRulesClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesClient", "ListByServer", nil, "Failure preparing request")

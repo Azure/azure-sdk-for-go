@@ -116,10 +116,6 @@ func (client ApplicationsClient) CreateResponder(resp *http.Response) (result Ap
 //
 // applicationObjectID is application object ID.
 func (client ApplicationsClient) Delete(applicationObjectID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ApplicationsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(applicationObjectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "Delete", nil, "Failure preparing request")
@@ -183,10 +179,6 @@ func (client ApplicationsClient) DeleteResponder(resp *http.Response) (result au
 //
 // applicationObjectID is application object ID.
 func (client ApplicationsClient) Get(applicationObjectID string) (result Application, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ApplicationsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(applicationObjectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "Get", nil, "Failure preparing request")
@@ -251,10 +243,6 @@ func (client ApplicationsClient) GetResponder(resp *http.Response) (result Appli
 //
 // filter is the filters to apply to the operation.
 func (client ApplicationsClient) List(filter string) (result ApplicationListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ApplicationsClient", "List")
-	}
-
 	req, err := client.ListPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "List", nil, "Failure preparing request")
@@ -366,10 +354,6 @@ func (client ApplicationsClient) ListComplete(filter string, cancel <-chan struc
 //
 // applicationObjectID is application object ID.
 func (client ApplicationsClient) ListKeyCredentials(applicationObjectID string) (result KeyCredentialListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ApplicationsClient", "ListKeyCredentials")
-	}
-
 	req, err := client.ListKeyCredentialsPreparer(applicationObjectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "ListKeyCredentials", nil, "Failure preparing request")
@@ -434,10 +418,6 @@ func (client ApplicationsClient) ListKeyCredentialsResponder(resp *http.Response
 //
 // nextLink is next link for the list operation.
 func (client ApplicationsClient) ListNext(nextLink string) (result ApplicationListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ApplicationsClient", "ListNext")
-	}
-
 	req, err := client.ListNextPreparer(nextLink)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "ListNext", nil, "Failure preparing request")
@@ -502,10 +482,6 @@ func (client ApplicationsClient) ListNextResponder(resp *http.Response) (result 
 //
 // applicationObjectID is application object ID.
 func (client ApplicationsClient) ListPasswordCredentials(applicationObjectID string) (result PasswordCredentialListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ApplicationsClient", "ListPasswordCredentials")
-	}
-
 	req, err := client.ListPasswordCredentialsPreparer(applicationObjectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "ListPasswordCredentials", nil, "Failure preparing request")
@@ -570,10 +546,6 @@ func (client ApplicationsClient) ListPasswordCredentialsResponder(resp *http.Res
 //
 // applicationObjectID is application object ID. parameters is parameters to update an existing application.
 func (client ApplicationsClient) Patch(applicationObjectID string, parameters ApplicationUpdateParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ApplicationsClient", "Patch")
-	}
-
 	req, err := client.PatchPreparer(applicationObjectID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "Patch", nil, "Failure preparing request")
@@ -640,10 +612,6 @@ func (client ApplicationsClient) PatchResponder(resp *http.Response) (result aut
 // applicationObjectID is application object ID. parameters is parameters to update the keyCredentials of an existing
 // application.
 func (client ApplicationsClient) UpdateKeyCredentials(applicationObjectID string, parameters KeyCredentialsUpdateParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ApplicationsClient", "UpdateKeyCredentials")
-	}
-
 	req, err := client.UpdateKeyCredentialsPreparer(applicationObjectID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "UpdateKeyCredentials", nil, "Failure preparing request")
@@ -710,10 +678,6 @@ func (client ApplicationsClient) UpdateKeyCredentialsResponder(resp *http.Respon
 // applicationObjectID is application object ID. parameters is parameters to update passwordCredentials of an existing
 // application.
 func (client ApplicationsClient) UpdatePasswordCredentials(applicationObjectID string, parameters PasswordCredentialsUpdateParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ApplicationsClient", "UpdatePasswordCredentials")
-	}
-
 	req, err := client.UpdatePasswordCredentialsPreparer(applicationObjectID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ApplicationsClient", "UpdatePasswordCredentials", nil, "Failure preparing request")

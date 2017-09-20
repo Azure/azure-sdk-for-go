@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,13 +46,6 @@ func NewReplicationJobsClientWithBaseURI(baseURI string, subscriptionID string, 
 func (client ReplicationJobsClient) Cancel(jobName string, cancel <-chan struct{}) (<-chan Job, <-chan error) {
 	resultChan := make(chan Job, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationJobsClient", "Cancel")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Job
@@ -137,13 +129,6 @@ func (client ReplicationJobsClient) CancelResponder(resp *http.Response) (result
 func (client ReplicationJobsClient) Export(jobQueryParameter JobQueryParameter, cancel <-chan struct{}) (<-chan Job, <-chan error) {
 	resultChan := make(chan Job, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationJobsClient", "Export")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Job
@@ -224,10 +209,6 @@ func (client ReplicationJobsClient) ExportResponder(resp *http.Response) (result
 //
 // jobName is job identifier
 func (client ReplicationJobsClient) Get(jobName string) (result Job, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationJobsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(jobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationJobsClient", "Get", nil, "Failure preparing request")
@@ -294,10 +275,6 @@ func (client ReplicationJobsClient) GetResponder(resp *http.Response) (result Jo
 //
 // filter is oData filter options.
 func (client ReplicationJobsClient) List(filter string) (result JobCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationJobsClient", "List")
-	}
-
 	req, err := client.ListPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationJobsClient", "List", nil, "Failure preparing request")
@@ -439,13 +416,6 @@ func (client ReplicationJobsClient) ListComplete(filter string, cancel <-chan st
 func (client ReplicationJobsClient) Restart(jobName string, cancel <-chan struct{}) (<-chan Job, <-chan error) {
 	resultChan := make(chan Job, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationJobsClient", "Restart")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Job
@@ -529,13 +499,6 @@ func (client ReplicationJobsClient) RestartResponder(resp *http.Response) (resul
 func (client ReplicationJobsClient) Resume(jobName string, resumeJobParams ResumeJobParams, cancel <-chan struct{}) (<-chan Job, <-chan error) {
 	resultChan := make(chan Job, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationJobsClient", "Resume")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Job

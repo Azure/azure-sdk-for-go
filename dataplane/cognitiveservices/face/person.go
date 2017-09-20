@@ -44,10 +44,6 @@ func NewPersonClient(subscriptionKey string, azureRegion AzureRegions) PersonCli
 // targetFace is required to specify which face to add. No targetFace means there is only one face detected in the
 // entire image.
 func (client PersonClient) AddFace(personGroupID string, personID string, userData string, targetFace string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "AddFace")
-	}
-
 	req, err := client.AddFacePreparer(personGroupID, personID, userData, targetFace)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "AddFace", nil, "Failure preparing request")
@@ -125,10 +121,6 @@ func (client PersonClient) AddFaceResponder(resp *http.Response) (result autores
 // targetFace is required to specify which face to add. No targetFace means there is only one face detected in the
 // entire image.
 func (client PersonClient) AddFaceFromStream(personGroupID string, personID string, userData string, targetFace string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "AddFaceFromStream")
-	}
-
 	req, err := client.AddFaceFromStreamPreparer(personGroupID, personID, userData, targetFace)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "AddFaceFromStream", nil, "Failure preparing request")
@@ -273,10 +265,6 @@ func (client PersonClient) CreateResponder(resp *http.Response) (result CreatePe
 //
 // personGroupID is specifying the person group containing the person. personID is the target personId to delete.
 func (client PersonClient) Delete(personGroupID string, personID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(personGroupID, personID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "Delete", nil, "Failure preparing request")
@@ -340,10 +328,6 @@ func (client PersonClient) DeleteResponder(resp *http.Response) (result autorest
 // personGroupID is specifying the person group containing the target person. personID is specifying the person that
 // the target persisted face belong to. persistedFaceID is the persisted face to remove.
 func (client PersonClient) DeleteFace(personGroupID string, personID string, persistedFaceID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "DeleteFace")
-	}
-
 	req, err := client.DeleteFacePreparer(personGroupID, personID, persistedFaceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "DeleteFace", nil, "Failure preparing request")
@@ -407,10 +391,6 @@ func (client PersonClient) DeleteFaceResponder(resp *http.Response) (result auto
 //
 // personGroupID is specifying the person group containing the target person. personID is specifying the target person.
 func (client PersonClient) Get(personGroupID string, personID string) (result PersonResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "Get")
-	}
-
 	req, err := client.GetPreparer(personGroupID, personID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "Get", nil, "Failure preparing request")
@@ -476,10 +456,6 @@ func (client PersonClient) GetResponder(resp *http.Response) (result PersonResul
 // personGroupID is specifying the person group containing the target person. personID is specifying the target person
 // that the face belongs to. persistedFaceID is the persistedFaceId of the target persisted face of the person.
 func (client PersonClient) GetFace(personGroupID string, personID string, persistedFaceID string) (result PersonFaceResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "GetFace")
-	}
-
 	req, err := client.GetFacePreparer(personGroupID, personID, persistedFaceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "GetFace", nil, "Failure preparing request")
@@ -545,10 +521,6 @@ func (client PersonClient) GetFaceResponder(resp *http.Response) (result PersonF
 //
 // personGroupID is personGroupId of the target person group.
 func (client PersonClient) List(personGroupID string) (result ListPersonResultWrapper, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "List")
-	}
-
 	req, err := client.ListPreparer(personGroupID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "List", nil, "Failure preparing request")
@@ -612,10 +584,6 @@ func (client PersonClient) ListResponder(resp *http.Response) (result ListPerson
 // personGroupID is specifying the person group containing the target person. personID is personId of the target
 // person.
 func (client PersonClient) Update(personGroupID string, personID string, body CreatePersonRequest) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(personGroupID, personID, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "Update", nil, "Failure preparing request")
@@ -681,10 +649,6 @@ func (client PersonClient) UpdateResponder(resp *http.Response) (result autorest
 // personGroupID is specifying the person group containing the target person. personID is personId of the target
 // person. persistedFaceID is persistedFaceId of target face, which is persisted and will not expire.
 func (client PersonClient) UpdateFace(personGroupID string, personID string, persistedFaceID string, body UpdatePersonFaceDataRequest) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "UpdateFace")
-	}
-
 	req, err := client.UpdateFacePreparer(personGroupID, personID, persistedFaceID, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "UpdateFace", nil, "Failure preparing request")

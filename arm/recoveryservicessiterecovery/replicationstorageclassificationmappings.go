@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -51,13 +50,6 @@ func NewReplicationStorageClassificationMappingsClientWithBaseURI(baseURI string
 func (client ReplicationStorageClassificationMappingsClient) Create(fabricName string, storageClassificationName string, storageClassificationMappingName string, pairingInput StorageClassificationMappingInput, cancel <-chan struct{}) (<-chan StorageClassificationMapping, <-chan error) {
 	resultChan := make(chan StorageClassificationMapping, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationMappingsClient", "Create")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result StorageClassificationMapping
@@ -146,13 +138,6 @@ func (client ReplicationStorageClassificationMappingsClient) CreateResponder(res
 func (client ReplicationStorageClassificationMappingsClient) Delete(fabricName string, storageClassificationName string, storageClassificationMappingName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationMappingsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -234,10 +219,6 @@ func (client ReplicationStorageClassificationMappingsClient) DeleteResponder(res
 // fabricName is fabric name. storageClassificationName is storage classification name.
 // storageClassificationMappingName is storage classification mapping name.
 func (client ReplicationStorageClassificationMappingsClient) Get(fabricName string, storageClassificationName string, storageClassificationMappingName string) (result StorageClassificationMapping, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationMappingsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(fabricName, storageClassificationName, storageClassificationMappingName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationMappingsClient", "Get", nil, "Failure preparing request")
@@ -304,10 +285,6 @@ func (client ReplicationStorageClassificationMappingsClient) GetResponder(resp *
 
 // List lists the storage classification mappings in the vault.
 func (client ReplicationStorageClassificationMappingsClient) List() (result StorageClassificationMappingCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationMappingsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationMappingsClient", "List", nil, "Failure preparing request")
@@ -442,10 +419,6 @@ func (client ReplicationStorageClassificationMappingsClient) ListComplete(cancel
 //
 // fabricName is fabric name. storageClassificationName is storage classfication name.
 func (client ReplicationStorageClassificationMappingsClient) ListByReplicationStorageClassifications(fabricName string, storageClassificationName string) (result StorageClassificationMappingCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationMappingsClient", "ListByReplicationStorageClassifications")
-	}
-
 	req, err := client.ListByReplicationStorageClassificationsPreparer(fabricName, storageClassificationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationMappingsClient", "ListByReplicationStorageClassifications", nil, "Failure preparing request")

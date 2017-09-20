@@ -48,13 +48,6 @@ func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsCli
 func (client TopicsClient) CreateOrUpdate(resourceGroupName string, topicName string, topicInfo Topic, cancel <-chan struct{}) (<-chan Topic, <-chan error) {
 	resultChan := make(chan Topic, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "eventgrid.TopicsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Topic
@@ -138,13 +131,6 @@ func (client TopicsClient) CreateOrUpdateResponder(resp *http.Response) (result 
 func (client TopicsClient) Delete(resourceGroupName string, topicName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "eventgrid.TopicsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -222,10 +208,6 @@ func (client TopicsClient) DeleteResponder(resp *http.Response) (result autorest
 //
 // resourceGroupName is the name of the resource group within the user's subscription. topicName is name of the topic
 func (client TopicsClient) Get(resourceGroupName string, topicName string) (result Topic, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.TopicsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, topicName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "Get", nil, "Failure preparing request")
@@ -291,10 +273,6 @@ func (client TopicsClient) GetResponder(resp *http.Response) (result Topic, err 
 //
 // resourceGroupName is the name of the resource group within the user's subscription.
 func (client TopicsClient) ListByResourceGroup(resourceGroupName string) (result TopicsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.TopicsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -357,10 +335,6 @@ func (client TopicsClient) ListByResourceGroupResponder(resp *http.Response) (re
 
 // ListBySubscription list all the topics under an Azure subscription
 func (client TopicsClient) ListBySubscription() (result TopicsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.TopicsClient", "ListBySubscription")
-	}
-
 	req, err := client.ListBySubscriptionPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "ListBySubscription", nil, "Failure preparing request")
@@ -425,10 +399,6 @@ func (client TopicsClient) ListBySubscriptionResponder(resp *http.Response) (res
 // resourceGroupName is the name of the resource group within the user's subscription. providerNamespace is namespace
 // of the provider of the topic resourceTypeName is name of the topic type resourceName is name of the topic
 func (client TopicsClient) ListEventTypes(resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string) (result EventTypesListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.TopicsClient", "ListEventTypes")
-	}
-
 	req, err := client.ListEventTypesPreparer(resourceGroupName, providerNamespace, resourceTypeName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "ListEventTypes", nil, "Failure preparing request")
@@ -496,10 +466,6 @@ func (client TopicsClient) ListEventTypesResponder(resp *http.Response) (result 
 //
 // resourceGroupName is the name of the resource group within the user's subscription. topicName is name of the topic
 func (client TopicsClient) ListSharedAccessKeys(resourceGroupName string, topicName string) (result TopicSharedAccessKeys, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.TopicsClient", "ListSharedAccessKeys")
-	}
-
 	req, err := client.ListSharedAccessKeysPreparer(resourceGroupName, topicName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "ListSharedAccessKeys", nil, "Failure preparing request")

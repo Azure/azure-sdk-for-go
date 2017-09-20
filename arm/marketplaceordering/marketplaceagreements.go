@@ -20,7 +20,6 @@ package marketplaceordering
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewMarketplaceAgreementsClientWithBaseURI(baseURI string, subscriptionID st
 // of image being deployed. offerID is offer identifier string of image being deployed. planID is plan identifier
 // string of image being deployed. parameters is parameters supplied to the Create Marketplace Terms operation.
 func (client MarketplaceAgreementsClient) Create(offerType string, publisherID string, offerID string, planID string, parameters AgreementTerms) (result AgreementTerms, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "marketplaceordering.MarketplaceAgreementsClient", "Create")
-	}
-
 	req, err := client.CreatePreparer(offerType, publisherID, offerID, planID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Create", nil, "Failure preparing request")
@@ -120,10 +115,6 @@ func (client MarketplaceAgreementsClient) CreateResponder(resp *http.Response) (
 // of image being deployed. offerID is offer identifier string of image being deployed. planID is plan identifier
 // string of image being deployed.
 func (client MarketplaceAgreementsClient) Get(offerType string, publisherID string, offerID string, planID string) (result AgreementTerms, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "marketplaceordering.MarketplaceAgreementsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(offerType, publisherID, offerID, planID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "marketplaceordering.MarketplaceAgreementsClient", "Get", nil, "Failure preparing request")

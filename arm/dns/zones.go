@@ -20,7 +20,6 @@ package dns
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClien
 // overwritting any concurrent changes. ifNoneMatch is set to '*' to allow a new DNS zone to be created, but to prevent
 // updating an existing zone. Other values will be ignored.
 func (client ZonesClient) CreateOrUpdate(resourceGroupName string, zoneName string, parameters Zone, ifMatch string, ifNoneMatch string) (result Zone, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "dns.ZonesClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -132,13 +127,6 @@ func (client ZonesClient) CreateOrUpdateResponder(resp *http.Response) (result Z
 func (client ZonesClient) Delete(resourceGroupName string, zoneName string, ifMatch string, cancel <-chan struct{}) (<-chan ZoneDeleteResult, <-chan error) {
 	resultChan := make(chan ZoneDeleteResult, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "dns.ZonesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ZoneDeleteResult
@@ -222,10 +210,6 @@ func (client ZonesClient) DeleteResponder(resp *http.Response) (result ZoneDelet
 // resourceGroupName is the name of the resource group. zoneName is the name of the DNS zone (without a terminating
 // dot).
 func (client ZonesClient) Get(resourceGroupName string, zoneName string) (result Zone, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "dns.ZonesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, zoneName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "Get", nil, "Failure preparing request")
@@ -291,10 +275,6 @@ func (client ZonesClient) GetResponder(resp *http.Response) (result Zone, err er
 //
 // top is the maximum number of DNS zones to return. If not specified, returns up to 100 zones.
 func (client ZonesClient) List(top *int32) (result ZoneListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "dns.ZonesClient", "List")
-	}
-
 	req, err := client.ListPreparer(top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "List", nil, "Failure preparing request")
@@ -431,10 +411,6 @@ func (client ZonesClient) ListComplete(top *int32, cancel <-chan struct{}) (<-ch
 // resourceGroupName is the name of the resource group. top is the maximum number of record sets to return. If not
 // specified, returns up to 100 record sets.
 func (client ZonesClient) ListByResourceGroup(resourceGroupName string, top *int32) (result ZoneListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "dns.ZonesClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListByResourceGroup", nil, "Failure preparing request")

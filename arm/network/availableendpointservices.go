@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,10 +42,6 @@ func NewAvailableEndpointServicesClientWithBaseURI(baseURI string, subscriptionI
 //
 // location is the location to check available endpoint services.
 func (client AvailableEndpointServicesClient) List(location string) (result EndpointServicesListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.AvailableEndpointServicesClient", "List")
-	}
-
 	req, err := client.ListPreparer(location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.AvailableEndpointServicesClient", "List", nil, "Failure preparing request")

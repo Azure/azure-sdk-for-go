@@ -120,10 +120,6 @@ func (client AutoscaleSettingsClient) CreateOrUpdateResponder(resp *http.Respons
 //
 // resourceGroupName is the name of the resource group. autoscaleSettingName is the autoscale setting name.
 func (client AutoscaleSettingsClient) Delete(resourceGroupName string, autoscaleSettingName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.AutoscaleSettingsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, autoscaleSettingName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.AutoscaleSettingsClient", "Delete", nil, "Failure preparing request")
@@ -188,10 +184,6 @@ func (client AutoscaleSettingsClient) DeleteResponder(resp *http.Response) (resu
 //
 // resourceGroupName is the name of the resource group. autoscaleSettingName is the autoscale setting name.
 func (client AutoscaleSettingsClient) Get(resourceGroupName string, autoscaleSettingName string) (result AutoscaleSettingResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.AutoscaleSettingsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, autoscaleSettingName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.AutoscaleSettingsClient", "Get", nil, "Failure preparing request")
@@ -257,10 +249,6 @@ func (client AutoscaleSettingsClient) GetResponder(resp *http.Response) (result 
 //
 // resourceGroupName is the name of the resource group.
 func (client AutoscaleSettingsClient) ListByResourceGroup(resourceGroupName string) (result AutoscaleSettingResourceCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.AutoscaleSettingsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.AutoscaleSettingsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -395,10 +383,6 @@ func (client AutoscaleSettingsClient) ListByResourceGroupComplete(resourceGroupN
 // resourceGroupName is the name of the resource group. autoscaleSettingName is the autoscale setting name.
 // autoscaleSettingResource is parameters supplied to the operation.
 func (client AutoscaleSettingsClient) Update(resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch) (result AutoscaleSettingResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.AutoscaleSettingsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, autoscaleSettingName, autoscaleSettingResource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.AutoscaleSettingsClient", "Update", nil, "Failure preparing request")

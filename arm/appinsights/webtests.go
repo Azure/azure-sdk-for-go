@@ -123,10 +123,6 @@ func (client WebTestsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // resourceGroupName is the name of the resource group. webTestName is the name of the Application Insights webtest
 // resource.
 func (client WebTestsClient) Delete(resourceGroupName string, webTestName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "appinsights.WebTestsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, webTestName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appinsights.WebTestsClient", "Delete", nil, "Failure preparing request")
@@ -192,10 +188,6 @@ func (client WebTestsClient) DeleteResponder(resp *http.Response) (result autore
 // resourceGroupName is the name of the resource group. webTestName is the name of the Application Insights webtest
 // resource.
 func (client WebTestsClient) Get(resourceGroupName string, webTestName string) (result WebTest, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "appinsights.WebTestsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, webTestName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appinsights.WebTestsClient", "Get", nil, "Failure preparing request")
@@ -259,10 +251,6 @@ func (client WebTestsClient) GetResponder(resp *http.Response) (result WebTest, 
 
 // List get all Application Insights web test alerts definitioned within a subscription.
 func (client WebTestsClient) List() (result WebTestListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "appinsights.WebTestsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appinsights.WebTestsClient", "List", nil, "Failure preparing request")
@@ -395,10 +383,6 @@ func (client WebTestsClient) ListComplete(cancel <-chan struct{}) (<-chan WebTes
 //
 // resourceGroupName is the name of the resource group.
 func (client WebTestsClient) ListByResourceGroup(resourceGroupName string) (result WebTestListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "appinsights.WebTestsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appinsights.WebTestsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -533,10 +517,6 @@ func (client WebTestsClient) ListByResourceGroupComplete(resourceGroupName strin
 // resourceGroupName is the name of the resource group. webTestName is the name of the Application Insights webtest
 // resource. webTestTags is updated tag information to set into the web test instance.
 func (client WebTestsClient) UpdateTags(resourceGroupName string, webTestName string, webTestTags TagsResource) (result WebTest, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "appinsights.WebTestsClient", "UpdateTags")
-	}
-
 	req, err := client.UpdateTagsPreparer(resourceGroupName, webTestName, webTestTags)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appinsights.WebTestsClient", "UpdateTags", nil, "Failure preparing request")

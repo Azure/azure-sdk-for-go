@@ -157,13 +157,6 @@ func (client InboundNatRulesClient) CreateOrUpdateResponder(resp *http.Response)
 func (client InboundNatRulesClient) Delete(resourceGroupName string, loadBalancerName string, inboundNatRuleName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.InboundNatRulesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -243,10 +236,6 @@ func (client InboundNatRulesClient) DeleteResponder(resp *http.Response) (result
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
 // inboundNatRuleName is the name of the inbound nat rule. expand is expands referenced resources.
 func (client InboundNatRulesClient) Get(resourceGroupName string, loadBalancerName string, inboundNatRuleName string, expand string) (result InboundNatRule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.InboundNatRulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, loadBalancerName, inboundNatRuleName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InboundNatRulesClient", "Get", nil, "Failure preparing request")
@@ -316,10 +305,6 @@ func (client InboundNatRulesClient) GetResponder(resp *http.Response) (result In
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
 func (client InboundNatRulesClient) List(resourceGroupName string, loadBalancerName string) (result InboundNatRuleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.InboundNatRulesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, loadBalancerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InboundNatRulesClient", "List", nil, "Failure preparing request")

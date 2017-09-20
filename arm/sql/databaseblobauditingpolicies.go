@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,10 +48,6 @@ func NewDatabaseBlobAuditingPoliciesClientWithBaseURI(baseURI string, subscripti
 // database for which the blob auditing policy will be defined. blobAuditingPolicyName is the name of the blob auditing
 // policy. parameters is the database blob auditing policy.
 func (client DatabaseBlobAuditingPoliciesClient) CreateOrUpdate(resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName string, parameters DatabaseBlobAuditingPolicy) (result DatabaseBlobAuditingPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.DatabaseBlobAuditingPoliciesClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, databaseName, blobAuditingPolicyName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseBlobAuditingPoliciesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -124,10 +119,6 @@ func (client DatabaseBlobAuditingPoliciesClient) CreateOrUpdateResponder(resp *h
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database for which the blob audit policy is defined. blobAuditingPolicyName is the name of the blob auditing policy.
 func (client DatabaseBlobAuditingPoliciesClient) Get(resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName string) (result DatabaseBlobAuditingPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.DatabaseBlobAuditingPoliciesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, databaseName, blobAuditingPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseBlobAuditingPoliciesClient", "Get", nil, "Failure preparing request")

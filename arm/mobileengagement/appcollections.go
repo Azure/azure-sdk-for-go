@@ -20,7 +20,6 @@ package mobileengagement
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -42,10 +41,6 @@ func NewAppCollectionsClientWithBaseURI(baseURI string, subscriptionID string) A
 // CheckNameAvailability checks availability of an app collection name in the Engagement domain.
 //
 func (client AppCollectionsClient) CheckNameAvailability(parameters AppCollectionNameAvailability) (result AppCollectionNameAvailability, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.AppCollectionsClient", "CheckNameAvailability")
-	}
-
 	req, err := client.CheckNameAvailabilityPreparer(parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "CheckNameAvailability", nil, "Failure preparing request")
@@ -109,10 +104,6 @@ func (client AppCollectionsClient) CheckNameAvailabilityResponder(resp *http.Res
 
 // List lists app collections in a subscription.
 func (client AppCollectionsClient) List() (result AppCollectionListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.AppCollectionsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.AppCollectionsClient", "List", nil, "Failure preparing request")

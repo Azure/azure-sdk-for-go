@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewElasticPoolActivitiesClientWithBaseURI(baseURI string, subscriptionID st
 // Azure Resource Manager API or the portal. serverName is the name of the server. elasticPoolName is the name of the
 // elastic pool for which to get the current activity.
 func (client ElasticPoolActivitiesClient) ListByElasticPool(resourceGroupName string, serverName string, elasticPoolName string) (result ElasticPoolActivityListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ElasticPoolActivitiesClient", "ListByElasticPool")
-	}
-
 	req, err := client.ListByElasticPoolPreparer(resourceGroupName, serverName, elasticPoolName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ElasticPoolActivitiesClient", "ListByElasticPool", nil, "Failure preparing request")

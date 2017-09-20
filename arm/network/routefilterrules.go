@@ -147,13 +147,6 @@ func (client RouteFilterRulesClient) CreateOrUpdateResponder(resp *http.Response
 func (client RouteFilterRulesClient) Delete(resourceGroupName string, routeFilterName string, ruleName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.RouteFilterRulesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -233,10 +226,6 @@ func (client RouteFilterRulesClient) DeleteResponder(resp *http.Response) (resul
 // resourceGroupName is the name of the resource group. routeFilterName is the name of the route filter. ruleName is
 // the name of the rule.
 func (client RouteFilterRulesClient) Get(resourceGroupName string, routeFilterName string, ruleName string) (result RouteFilterRule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.RouteFilterRulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, routeFilterName, ruleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteFilterRulesClient", "Get", nil, "Failure preparing request")
@@ -303,10 +292,6 @@ func (client RouteFilterRulesClient) GetResponder(resp *http.Response) (result R
 //
 // resourceGroupName is the name of the resource group. routeFilterName is the name of the route filter.
 func (client RouteFilterRulesClient) ListByRouteFilter(resourceGroupName string, routeFilterName string) (result RouteFilterRuleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.RouteFilterRulesClient", "ListByRouteFilter")
-	}
-
 	req, err := client.ListByRouteFilterPreparer(resourceGroupName, routeFilterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteFilterRulesClient", "ListByRouteFilter", nil, "Failure preparing request")
@@ -447,13 +432,6 @@ func (client RouteFilterRulesClient) ListByRouteFilterComplete(resourceGroupName
 func (client RouteFilterRulesClient) Update(resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters PatchRouteFilterRule, cancel <-chan struct{}) (<-chan RouteFilterRule, <-chan error) {
 	resultChan := make(chan RouteFilterRule, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.RouteFilterRulesClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result RouteFilterRule

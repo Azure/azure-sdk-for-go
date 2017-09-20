@@ -321,10 +321,6 @@ func (client ServersClient) GetDetailsResponder(resp *http.Response) (result Ser
 
 // List lists all the Analysis Services servers for the given subscription.
 func (client ServersClient) List() (result Servers, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "analysisservices.ServersClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "List", nil, "Failure preparing request")
@@ -617,10 +613,6 @@ func (client ServersClient) ListSkusForExistingResponder(resp *http.Response) (r
 
 // ListSkusForNew lists eligible SKUs for Analysis Services resource provider.
 func (client ServersClient) ListSkusForNew() (result SkuEnumerationForNewResourceResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "analysisservices.ServersClient", "ListSkusForNew")
-	}
-
 	req, err := client.ListSkusForNewPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "ListSkusForNew", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package compute
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string)
 // resourceGroupName is the name of the resource group. availabilitySetName is the name of the availability set.
 // parameters is parameters supplied to the Create Availability Set operation.
 func (client AvailabilitySetsClient) CreateOrUpdate(resourceGroupName string, availabilitySetName string, parameters AvailabilitySet) (result AvailabilitySet, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.AvailabilitySetsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, availabilitySetName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -115,10 +110,6 @@ func (client AvailabilitySetsClient) CreateOrUpdateResponder(resp *http.Response
 //
 // resourceGroupName is the name of the resource group. availabilitySetName is the name of the availability set.
 func (client AvailabilitySetsClient) Delete(resourceGroupName string, availabilitySetName string) (result OperationStatusResponse, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.AvailabilitySetsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, availabilitySetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Delete", nil, "Failure preparing request")
@@ -184,10 +175,6 @@ func (client AvailabilitySetsClient) DeleteResponder(resp *http.Response) (resul
 //
 // resourceGroupName is the name of the resource group. availabilitySetName is the name of the availability set.
 func (client AvailabilitySetsClient) Get(resourceGroupName string, availabilitySetName string) (result AvailabilitySet, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.AvailabilitySetsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, availabilitySetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Get", nil, "Failure preparing request")
@@ -253,10 +240,6 @@ func (client AvailabilitySetsClient) GetResponder(resp *http.Response) (result A
 //
 // resourceGroupName is the name of the resource group.
 func (client AvailabilitySetsClient) List(resourceGroupName string) (result AvailabilitySetListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.AvailabilitySetsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "List", nil, "Failure preparing request")
@@ -322,10 +305,6 @@ func (client AvailabilitySetsClient) ListResponder(resp *http.Response) (result 
 //
 // resourceGroupName is the name of the resource group. availabilitySetName is the name of the availability set.
 func (client AvailabilitySetsClient) ListAvailableSizes(resourceGroupName string, availabilitySetName string) (result VirtualMachineSizeListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.AvailabilitySetsClient", "ListAvailableSizes")
-	}
-
 	req, err := client.ListAvailableSizesPreparer(resourceGroupName, availabilitySetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "ListAvailableSizes", nil, "Failure preparing request")

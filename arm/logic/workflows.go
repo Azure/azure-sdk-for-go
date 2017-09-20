@@ -20,7 +20,6 @@ package logic
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,10 +42,6 @@ func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) Workfl
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. workflow is the workflow.
 func (client WorkflowsClient) CreateOrUpdate(resourceGroupName string, workflowName string, workflow Workflow) (result Workflow, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, workflowName, workflow)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -114,10 +109,6 @@ func (client WorkflowsClient) CreateOrUpdateResponder(resp *http.Response) (resu
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name.
 func (client WorkflowsClient) Delete(resourceGroupName string, workflowName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, workflowName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Delete", nil, "Failure preparing request")
@@ -182,10 +173,6 @@ func (client WorkflowsClient) DeleteResponder(resp *http.Response) (result autor
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name.
 func (client WorkflowsClient) Disable(resourceGroupName string, workflowName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowsClient", "Disable")
-	}
-
 	req, err := client.DisablePreparer(resourceGroupName, workflowName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Disable", nil, "Failure preparing request")
@@ -250,10 +237,6 @@ func (client WorkflowsClient) DisableResponder(resp *http.Response) (result auto
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name.
 func (client WorkflowsClient) Enable(resourceGroupName string, workflowName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowsClient", "Enable")
-	}
-
 	req, err := client.EnablePreparer(resourceGroupName, workflowName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Enable", nil, "Failure preparing request")
@@ -319,10 +302,6 @@ func (client WorkflowsClient) EnableResponder(resp *http.Response) (result autor
 // resourceGroupName is the resource group name. workflowName is the workflow name. parameters is parameters for
 // generating an upgraded definition.
 func (client WorkflowsClient) GenerateUpgradedDefinition(resourceGroupName string, workflowName string, parameters GenerateUpgradedDefinitionParameters) (result SetObject, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowsClient", "GenerateUpgradedDefinition")
-	}
-
 	req, err := client.GenerateUpgradedDefinitionPreparer(resourceGroupName, workflowName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "GenerateUpgradedDefinition", nil, "Failure preparing request")
@@ -390,10 +369,6 @@ func (client WorkflowsClient) GenerateUpgradedDefinitionResponder(resp *http.Res
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name.
 func (client WorkflowsClient) Get(resourceGroupName string, workflowName string) (result Workflow, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, workflowName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Get", nil, "Failure preparing request")
@@ -460,10 +435,6 @@ func (client WorkflowsClient) GetResponder(resp *http.Response) (result Workflow
 // resourceGroupName is the resource group name. top is the number of items to be included in the result. filter is the
 // filter to apply on the operation.
 func (client WorkflowsClient) ListByResourceGroup(resourceGroupName string, top *int32, filter string) (result WorkflowListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -603,10 +574,6 @@ func (client WorkflowsClient) ListByResourceGroupComplete(resourceGroupName stri
 //
 // top is the number of items to be included in the result. filter is the filter to apply on the operation.
 func (client WorkflowsClient) ListBySubscription(top *int32, filter string) (result WorkflowListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowsClient", "ListBySubscription")
-	}
-
 	req, err := client.ListBySubscriptionPreparer(top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListBySubscription", nil, "Failure preparing request")
@@ -745,10 +712,6 @@ func (client WorkflowsClient) ListBySubscriptionComplete(top *int32, filter stri
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name.
 func (client WorkflowsClient) ListSwagger(resourceGroupName string, workflowName string) (result SetObject, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowsClient", "ListSwagger")
-	}
-
 	req, err := client.ListSwaggerPreparer(resourceGroupName, workflowName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListSwagger", nil, "Failure preparing request")
@@ -814,10 +777,6 @@ func (client WorkflowsClient) ListSwaggerResponder(resp *http.Response) (result 
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. keyType is the access key type.
 func (client WorkflowsClient) RegenerateAccessKey(resourceGroupName string, workflowName string, keyType RegenerateActionParameter) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowsClient", "RegenerateAccessKey")
-	}
-
 	req, err := client.RegenerateAccessKeyPreparer(resourceGroupName, workflowName, keyType)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "RegenerateAccessKey", nil, "Failure preparing request")
@@ -884,10 +843,6 @@ func (client WorkflowsClient) RegenerateAccessKeyResponder(resp *http.Response) 
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. workflow is the workflow.
 func (client WorkflowsClient) Update(resourceGroupName string, workflowName string, workflow Workflow) (result Workflow, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, workflowName, workflow)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Update", nil, "Failure preparing request")
@@ -956,10 +911,6 @@ func (client WorkflowsClient) UpdateResponder(resp *http.Response) (result Workf
 // resourceGroupName is the resource group name. location is the workflow location. workflowName is the workflow name.
 // workflow is the workflow definition.
 func (client WorkflowsClient) Validate(resourceGroupName string, location string, workflowName string, workflow Workflow) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowsClient", "Validate")
-	}
-
 	req, err := client.ValidatePreparer(resourceGroupName, location, workflowName, workflow)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Validate", nil, "Failure preparing request")

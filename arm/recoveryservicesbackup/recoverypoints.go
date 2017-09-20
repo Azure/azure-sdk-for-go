@@ -20,7 +20,6 @@ package recoveryservicesbackup
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string) R
 // container name associated with backed up item. protectedItemName is backed up item name whose backup data needs to
 // be fetched. recoveryPointID is recoveryPointID represents the backed up data to be fetched.
 func (client RecoveryPointsClient) Get(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result RecoveryPointResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.RecoveryPointsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.RecoveryPointsClient", "Get", nil, "Failure preparing request")
@@ -123,10 +118,6 @@ func (client RecoveryPointsClient) GetResponder(resp *http.Response) (result Rec
 // container name associated with the backed up item. protectedItemName is backed up item whose backup copies are to be
 // fetched. filter is oData filter options.
 func (client RecoveryPointsClient) List(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result RecoveryPointResourceList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.RecoveryPointsClient", "List")
-	}
-
 	req, err := client.ListPreparer(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.RecoveryPointsClient", "List", nil, "Failure preparing request")

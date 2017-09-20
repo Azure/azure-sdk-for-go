@@ -149,13 +149,6 @@ func (client ConnectorsClient) CreateOrUpdateResponder(resp *http.Response) (res
 func (client ConnectorsClient) Delete(resourceGroupName string, hubName string, connectorName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "customerinsights.ConnectorsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -235,10 +228,6 @@ func (client ConnectorsClient) DeleteResponder(resp *http.Response) (result auto
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. connectorName is the name of
 // the connector.
 func (client ConnectorsClient) Get(resourceGroupName string, hubName string, connectorName string) (result ConnectorResourceFormat, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.ConnectorsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, hubName, connectorName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorsClient", "Get", nil, "Failure preparing request")
@@ -305,10 +294,6 @@ func (client ConnectorsClient) GetResponder(resp *http.Response) (result Connect
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub.
 func (client ConnectorsClient) ListByHub(resourceGroupName string, hubName string) (result ConnectorListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.ConnectorsClient", "ListByHub")
-	}
-
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorsClient", "ListByHub", nil, "Failure preparing request")

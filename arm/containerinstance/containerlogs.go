@@ -20,7 +20,6 @@ package containerinstance
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,10 +45,6 @@ func NewContainerLogsClientWithBaseURI(baseURI string, subscriptionID string) Co
 // tail is the number of lines to show from the tail of the container instance log. If not provided, all available logs
 // are shown up to 4mb.
 func (client ContainerLogsClient) List(resourceGroupName string, containerName string, containerGroupName string, tail *int32) (result Logs, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "containerinstance.ContainerLogsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, containerName, containerGroupName, tail)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.ContainerLogsClient", "List", nil, "Failure preparing request")

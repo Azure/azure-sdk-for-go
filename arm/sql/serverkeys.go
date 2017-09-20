@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -53,13 +52,6 @@ func NewServerKeysClientWithBaseURI(baseURI string, subscriptionID string) Serve
 func (client ServerKeysClient) CreateOrUpdate(resourceGroupName string, serverName string, keyName string, parameters ServerKey, cancel <-chan struct{}) (<-chan ServerKey, <-chan error) {
 	resultChan := make(chan ServerKey, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.ServerKeysClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ServerKey
@@ -146,13 +138,6 @@ func (client ServerKeysClient) CreateOrUpdateResponder(resp *http.Response) (res
 func (client ServerKeysClient) Delete(resourceGroupName string, serverName string, keyName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.ServerKeysClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -233,10 +218,6 @@ func (client ServerKeysClient) DeleteResponder(resp *http.Response) (result auto
 // Azure Resource Manager API or the portal. serverName is the name of the server. keyName is the name of the server
 // key to be retrieved.
 func (client ServerKeysClient) Get(resourceGroupName string, serverName string, keyName string) (result ServerKey, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ServerKeysClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, keyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerKeysClient", "Get", nil, "Failure preparing request")
@@ -304,10 +285,6 @@ func (client ServerKeysClient) GetResponder(resp *http.Response) (result ServerK
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client ServerKeysClient) ListByServer(resourceGroupName string, serverName string) (result ServerKeyListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ServerKeysClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerKeysClient", "ListByServer", nil, "Failure preparing request")

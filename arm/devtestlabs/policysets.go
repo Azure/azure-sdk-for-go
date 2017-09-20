@@ -20,7 +20,6 @@ package devtestlabs
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewPolicySetsClientWithBaseURI(baseURI string, subscriptionID string) Polic
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the policy
 // set. evaluatePoliciesRequest is request body for evaluating a policy set.
 func (client PolicySetsClient) EvaluatePolicies(resourceGroupName string, labName string, name string, evaluatePoliciesRequest EvaluatePoliciesRequest) (result EvaluatePoliciesResponse, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.PolicySetsClient", "EvaluatePolicies")
-	}
-
 	req, err := client.EvaluatePoliciesPreparer(resourceGroupName, labName, name, evaluatePoliciesRequest)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.PolicySetsClient", "EvaluatePolicies", nil, "Failure preparing request")

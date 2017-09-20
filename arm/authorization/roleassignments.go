@@ -20,7 +20,6 @@ package authorization
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -51,10 +50,6 @@ func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) 
 // for a resource. roleAssignmentName is the name of the role assignment to create. It can be any valid GUID.
 // parameters is parameters for the role assignment.
 func (client RoleAssignmentsClient) Create(scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters) (result RoleAssignment, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleAssignmentsClient", "Create")
-	}
-
 	req, err := client.CreatePreparer(scope, roleAssignmentName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Create", nil, "Failure preparing request")
@@ -121,10 +116,6 @@ func (client RoleAssignmentsClient) CreateResponder(resp *http.Response) (result
 //
 // roleAssignmentID is the ID of the role assignment to create. parameters is parameters for the role assignment.
 func (client RoleAssignmentsClient) CreateByID(roleAssignmentID string, parameters RoleAssignmentCreateParameters) (result RoleAssignment, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleAssignmentsClient", "CreateByID")
-	}
-
 	req, err := client.CreateByIDPreparer(roleAssignmentID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "CreateByID", nil, "Failure preparing request")
@@ -191,10 +182,6 @@ func (client RoleAssignmentsClient) CreateByIDResponder(resp *http.Response) (re
 // scope is the scope of the role assignment to delete. roleAssignmentName is the name of the role assignment to
 // delete.
 func (client RoleAssignmentsClient) Delete(scope string, roleAssignmentName string) (result RoleAssignment, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleAssignmentsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(scope, roleAssignmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Delete", nil, "Failure preparing request")
@@ -259,10 +246,6 @@ func (client RoleAssignmentsClient) DeleteResponder(resp *http.Response) (result
 //
 // roleAssignmentID is the ID of the role assignment to delete.
 func (client RoleAssignmentsClient) DeleteByID(roleAssignmentID string) (result RoleAssignment, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleAssignmentsClient", "DeleteByID")
-	}
-
 	req, err := client.DeleteByIDPreparer(roleAssignmentID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "DeleteByID", nil, "Failure preparing request")
@@ -326,10 +309,6 @@ func (client RoleAssignmentsClient) DeleteByIDResponder(resp *http.Response) (re
 //
 // scope is the scope of the role assignment. roleAssignmentName is the name of the role assignment to get.
 func (client RoleAssignmentsClient) Get(scope string, roleAssignmentName string) (result RoleAssignment, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleAssignmentsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(scope, roleAssignmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "Get", nil, "Failure preparing request")
@@ -394,10 +373,6 @@ func (client RoleAssignmentsClient) GetResponder(resp *http.Response) (result Ro
 //
 // roleAssignmentID is the ID of the role assignment to get.
 func (client RoleAssignmentsClient) GetByID(roleAssignmentID string) (result RoleAssignment, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleAssignmentsClient", "GetByID")
-	}
-
 	req, err := client.GetByIDPreparer(roleAssignmentID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "GetByID", nil, "Failure preparing request")
@@ -463,10 +438,6 @@ func (client RoleAssignmentsClient) GetByIDResponder(resp *http.Response) (resul
 // scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for the specified
 // principal.
 func (client RoleAssignmentsClient) List(filter string) (result RoleAssignmentListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleAssignmentsClient", "List")
-	}
-
 	req, err := client.ListPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "List", nil, "Failure preparing request")
@@ -606,10 +577,6 @@ func (client RoleAssignmentsClient) ListComplete(filter string, cancel <-chan st
 // operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq
 // {id} to return all role assignments at, above or below the scope for the specified principal.
 func (client RoleAssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result RoleAssignmentListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleAssignmentsClient", "ListForResource")
-	}
-
 	req, err := client.ListForResourcePreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResource", nil, "Failure preparing request")
@@ -752,10 +719,6 @@ func (client RoleAssignmentsClient) ListForResourceComplete(resourceGroupName st
 // $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to return
 // all role assignments at, above or below the scope for the specified principal.
 func (client RoleAssignmentsClient) ListForResourceGroup(resourceGroupName string, filter string) (result RoleAssignmentListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleAssignmentsClient", "ListForResourceGroup")
-	}
-
 	req, err := client.ListForResourceGroupPreparer(resourceGroupName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForResourceGroup", nil, "Failure preparing request")
@@ -894,10 +857,6 @@ func (client RoleAssignmentsClient) ListForResourceGroupComplete(resourceGroupNa
 // return all role assignments at or above the scope. Use $filter=principalId eq {id} to return all role assignments
 // at, above or below the scope for the specified principal.
 func (client RoleAssignmentsClient) ListForScope(scope string, filter string) (result RoleAssignmentListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleAssignmentsClient", "ListForScope")
-	}
-
 	req, err := client.ListForScopePreparer(scope, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleAssignmentsClient", "ListForScope", nil, "Failure preparing request")

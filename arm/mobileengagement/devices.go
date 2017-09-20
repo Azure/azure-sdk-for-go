@@ -44,10 +44,6 @@ func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesC
 // resourceGroupName is the name of the resource group. appCollection is application collection. appName is application
 // resource name. deviceID is device identifier.
 func (client DevicesClient) GetByDeviceID(resourceGroupName string, appCollection string, appName string, deviceID string) (result Device, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.DevicesClient", "GetByDeviceID")
-	}
-
 	req, err := client.GetByDeviceIDPreparer(resourceGroupName, appCollection, appName, deviceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "GetByDeviceID", nil, "Failure preparing request")
@@ -116,10 +112,6 @@ func (client DevicesClient) GetByDeviceIDResponder(resp *http.Response) (result 
 // resourceGroupName is the name of the resource group. appCollection is application collection. appName is application
 // resource name. userID is user identifier.
 func (client DevicesClient) GetByUserID(resourceGroupName string, appCollection string, appName string, userID string) (result Device, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.DevicesClient", "GetByUserID")
-	}
-
 	req, err := client.GetByUserIDPreparer(resourceGroupName, appCollection, appName, userID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "GetByUserID", nil, "Failure preparing request")
@@ -213,10 +205,6 @@ func (client DevicesClient) GetByUserIDResponder(resp *http.Response) (result De
 // timestamp criteria, like `$select`. Please note that the internal value of `lastModified` timestamp for a given
 // property is never part of the results.
 func (client DevicesClient) List(resourceGroupName string, appCollection string, appName string, top *int32, selectParameter string, filter string) (result DevicesQueryResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.DevicesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, appCollection, appName, top, selectParameter, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.DevicesClient", "List", nil, "Failure preparing request")

@@ -23,7 +23,6 @@ package logic
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -55,10 +54,6 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 
 // ListOperations lists all of the available Logic REST API operations.
 func (client ManagementClient) ListOperations() (result OperationListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.ManagementClient", "ListOperations")
-	}
-
 	req, err := client.ListOperationsPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.ManagementClient", "ListOperations", nil, "Failure preparing request")

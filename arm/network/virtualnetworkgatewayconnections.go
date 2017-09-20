@@ -151,13 +151,6 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdateResponder(res
 func (client VirtualNetworkGatewayConnectionsClient) Delete(resourceGroupName string, virtualNetworkGatewayConnectionName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewayConnectionsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -236,10 +229,6 @@ func (client VirtualNetworkGatewayConnectionsClient) DeleteResponder(resp *http.
 // resourceGroupName is the name of the resource group. virtualNetworkGatewayConnectionName is the name of the virtual
 // network gateway connection.
 func (client VirtualNetworkGatewayConnectionsClient) Get(resourceGroupName string, virtualNetworkGatewayConnectionName string) (result VirtualNetworkGatewayConnection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewayConnectionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, virtualNetworkGatewayConnectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "Get", nil, "Failure preparing request")
@@ -307,10 +296,6 @@ func (client VirtualNetworkGatewayConnectionsClient) GetResponder(resp *http.Res
 // resourceGroupName is the name of the resource group. virtualNetworkGatewayConnectionName is the virtual network
 // gateway connection shared key name.
 func (client VirtualNetworkGatewayConnectionsClient) GetSharedKey(resourceGroupName string, virtualNetworkGatewayConnectionName string) (result ConnectionSharedKey, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewayConnectionsClient", "GetSharedKey")
-	}
-
 	req, err := client.GetSharedKeyPreparer(resourceGroupName, virtualNetworkGatewayConnectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "GetSharedKey", nil, "Failure preparing request")
@@ -377,10 +362,6 @@ func (client VirtualNetworkGatewayConnectionsClient) GetSharedKeyResponder(resp 
 //
 // resourceGroupName is the name of the resource group.
 func (client VirtualNetworkGatewayConnectionsClient) List(resourceGroupName string) (result VirtualNetworkGatewayConnectionListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewayConnectionsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "List", nil, "Failure preparing request")

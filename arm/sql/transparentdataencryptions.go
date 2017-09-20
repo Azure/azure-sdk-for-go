@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,10 +48,6 @@ func NewTransparentDataEncryptionsClientWithBaseURI(baseURI string, subscription
 // transparent data encryption configuration. parameters is the required parameters for creating or updating
 // transparent data encryption.
 func (client TransparentDataEncryptionsClient) CreateOrUpdate(resourceGroupName string, serverName string, databaseName string, transparentDataEncryptionName string, parameters TransparentDataEncryption) (result TransparentDataEncryption, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.TransparentDataEncryptionsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, databaseName, transparentDataEncryptionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.TransparentDataEncryptionsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -125,10 +120,6 @@ func (client TransparentDataEncryptionsClient) CreateOrUpdateResponder(resp *htt
 // database for which the transparent data encryption applies. transparentDataEncryptionName is the name of the
 // transparent data encryption configuration.
 func (client TransparentDataEncryptionsClient) Get(resourceGroupName string, serverName string, databaseName string, transparentDataEncryptionName string) (result TransparentDataEncryption, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.TransparentDataEncryptionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, databaseName, transparentDataEncryptionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.TransparentDataEncryptionsClient", "Get", nil, "Failure preparing request")

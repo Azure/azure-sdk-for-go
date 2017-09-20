@@ -241,10 +241,6 @@ func (client ServicesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // with the specified resource group. clientRequestID is a client-generated GUID value that identifies this request. If
 // specified, this will be included in response information as a way to track the request.
 func (client ServicesClient) Delete(resourceGroupName string, searchServiceName string, clientRequestID *uuid.UUID) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "search.ServicesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, searchServiceName, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.ServicesClient", "Delete", nil, "Failure preparing request")
@@ -316,10 +312,6 @@ func (client ServicesClient) DeleteResponder(resp *http.Response) (result autore
 // with the specified resource group. clientRequestID is a client-generated GUID value that identifies this request. If
 // specified, this will be included in response information as a way to track the request.
 func (client ServicesClient) Get(resourceGroupName string, searchServiceName string, clientRequestID *uuid.UUID) (result Service, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "search.ServicesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, searchServiceName, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.ServicesClient", "Get", nil, "Failure preparing request")
@@ -391,10 +383,6 @@ func (client ServicesClient) GetResponder(resp *http.Response) (result Service, 
 // the Azure Resource Manager API or the portal. clientRequestID is a client-generated GUID value that identifies this
 // request. If specified, this will be included in response information as a way to track the request.
 func (client ServicesClient) ListByResourceGroup(resourceGroupName string, clientRequestID *uuid.UUID) (result ServiceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "search.ServicesClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.ServicesClient", "ListByResourceGroup", nil, "Failure preparing request")

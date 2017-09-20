@@ -143,10 +143,6 @@ func (client LinkedServerClient) CreateResponder(resp *http.Response) (result Li
 // resourceGroupName is the name of the resource group. name is the name of the redis cache. linkedServerName is the
 // name of the linked server that is being added to the Redis cache.
 func (client LinkedServerClient) Delete(resourceGroupName string, name string, linkedServerName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "redis.LinkedServerClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, name, linkedServerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.LinkedServerClient", "Delete", nil, "Failure preparing request")
@@ -213,10 +209,6 @@ func (client LinkedServerClient) DeleteResponder(resp *http.Response) (result au
 // resourceGroupName is the name of the resource group. name is the name of the redis cache. linkedServerName is the
 // name of the linked server.
 func (client LinkedServerClient) Get(resourceGroupName string, name string, linkedServerName string) (result LinkedServerWithProperties, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "redis.LinkedServerClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, name, linkedServerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.LinkedServerClient", "Get", nil, "Failure preparing request")
@@ -283,10 +275,6 @@ func (client LinkedServerClient) GetResponder(resp *http.Response) (result Linke
 //
 // resourceGroupName is the name of the resource group. name is the name of the redis cache.
 func (client LinkedServerClient) List(resourceGroupName string, name string) (result LinkedServerWithPropertiesList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "redis.LinkedServerClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.LinkedServerClient", "List", nil, "Failure preparing request")

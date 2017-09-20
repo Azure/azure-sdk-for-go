@@ -146,10 +146,6 @@ func (client RoleAssignmentsClient) CreateOrUpdateResponder(resp *http.Response)
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. assignmentName is the name of
 // the role assignment.
 func (client RoleAssignmentsClient) Delete(resourceGroupName string, hubName string, assignmentName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.RoleAssignmentsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, hubName, assignmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "Delete", nil, "Failure preparing request")
@@ -216,10 +212,6 @@ func (client RoleAssignmentsClient) DeleteResponder(resp *http.Response) (result
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. assignmentName is the name of
 // the role assignment.
 func (client RoleAssignmentsClient) Get(resourceGroupName string, hubName string, assignmentName string) (result RoleAssignmentResourceFormat, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.RoleAssignmentsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, hubName, assignmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "Get", nil, "Failure preparing request")
@@ -286,10 +278,6 @@ func (client RoleAssignmentsClient) GetResponder(resp *http.Response) (result Ro
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub.
 func (client RoleAssignmentsClient) ListByHub(resourceGroupName string, hubName string) (result RoleAssignmentListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.RoleAssignmentsClient", "ListByHub")
-	}
-
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsClient", "ListByHub", nil, "Failure preparing request")

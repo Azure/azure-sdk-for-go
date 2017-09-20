@@ -20,7 +20,6 @@ package recoveryservicesbackup
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewJobCancellationsClientWithBaseURI(baseURI string, subscriptionID string)
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the
 // recovery services vault is present. jobName is name of the job to cancel.
 func (client JobCancellationsClient) Trigger(vaultName string, resourceGroupName string, jobName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.JobCancellationsClient", "Trigger")
-	}
-
 	req, err := client.TriggerPreparer(vaultName, resourceGroupName, jobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.JobCancellationsClient", "Trigger", nil, "Failure preparing request")

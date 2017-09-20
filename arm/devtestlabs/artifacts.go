@@ -20,7 +20,6 @@ package devtestlabs
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,10 +45,6 @@ func NewArtifactsClientWithBaseURI(baseURI string, subscriptionID string) Artifa
 // of the artifact source. name is the name of the artifact. generateArmTemplateRequest is parameters for generating an
 // ARM template for deploying artifacts.
 func (client ArtifactsClient) GenerateArmTemplate(resourceGroupName string, labName string, artifactSourceName string, name string, generateArmTemplateRequest GenerateArmTemplateRequest) (result ArmTemplateInfo, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ArtifactsClient", "GenerateArmTemplate")
-	}
-
 	req, err := client.GenerateArmTemplatePreparer(resourceGroupName, labName, artifactSourceName, name, generateArmTemplateRequest)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ArtifactsClient", "GenerateArmTemplate", nil, "Failure preparing request")
@@ -121,10 +116,6 @@ func (client ArtifactsClient) GenerateArmTemplateResponder(resp *http.Response) 
 // of the artifact source. name is the name of the artifact. expand is specify the $expand query. Example:
 // 'properties($select=title)'
 func (client ArtifactsClient) Get(resourceGroupName string, labName string, artifactSourceName string, name string, expand string) (result Artifact, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ArtifactsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, artifactSourceName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ArtifactsClient", "Get", nil, "Failure preparing request")
@@ -198,10 +189,6 @@ func (client ArtifactsClient) GetResponder(resp *http.Response) (result Artifact
 // filter to apply to the operation. top is the maximum number of resources to return from the operation. orderby is
 // the ordering expression for the results, using OData notation.
 func (client ArtifactsClient) List(resourceGroupName string, labName string, artifactSourceName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationArtifact, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ArtifactsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ArtifactsClient", "List", nil, "Failure preparing request")

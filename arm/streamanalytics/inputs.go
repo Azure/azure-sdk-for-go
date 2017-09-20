@@ -20,7 +20,6 @@ package streamanalytics
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,10 +48,6 @@ func NewInputsClientWithBaseURI(baseURI string, subscriptionID string) InputsCli
 // a new input to be created, but to prevent updating an existing input. Other values will result in a 412
 // Pre-condition Failed response.
 func (client InputsClient) CreateOrReplace(input Input, resourceGroupName string, jobName string, inputName string, ifMatch string, ifNoneMatch string) (result Input, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.InputsClient", "CreateOrReplace")
-	}
-
 	req, err := client.CreateOrReplacePreparer(input, resourceGroupName, jobName, inputName, ifMatch, ifNoneMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.InputsClient", "CreateOrReplace", nil, "Failure preparing request")
@@ -131,10 +126,6 @@ func (client InputsClient) CreateOrReplaceResponder(resp *http.Response) (result
 // Azure Resource Manager API or the portal. jobName is the name of the streaming job. inputName is the name of the
 // input.
 func (client InputsClient) Delete(resourceGroupName string, jobName string, inputName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.InputsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, jobName, inputName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.InputsClient", "Delete", nil, "Failure preparing request")
@@ -202,10 +193,6 @@ func (client InputsClient) DeleteResponder(resp *http.Response) (result autorest
 // Azure Resource Manager API or the portal. jobName is the name of the streaming job. inputName is the name of the
 // input.
 func (client InputsClient) Get(resourceGroupName string, jobName string, inputName string) (result Input, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.InputsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, jobName, inputName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.InputsClient", "Get", nil, "Failure preparing request")
@@ -276,10 +263,6 @@ func (client InputsClient) GetResponder(resp *http.Response) (result Input, err 
 // include all properties. By default, all properties are returned except diagnostics. Currently only accepts '*' as a
 // valid value.
 func (client InputsClient) ListByStreamingJob(resourceGroupName string, jobName string, selectParameter string) (result InputListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.InputsClient", "ListByStreamingJob")
-	}
-
 	req, err := client.ListByStreamingJobPreparer(resourceGroupName, jobName, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.InputsClient", "ListByStreamingJob", nil, "Failure preparing request")
@@ -426,13 +409,6 @@ func (client InputsClient) ListByStreamingJobComplete(resourceGroupName string, 
 func (client InputsClient) Test(resourceGroupName string, jobName string, inputName string, input *Input, cancel <-chan struct{}) (<-chan ResourceTestStatus, <-chan error) {
 	resultChan := make(chan ResourceTestStatus, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "streamanalytics.InputsClient", "Test")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ResourceTestStatus
@@ -524,10 +500,6 @@ func (client InputsClient) TestResponder(resp *http.Response) (result ResourceTe
 // of the input. ifMatch is the ETag of the input. Omit this value to always overwrite the current input. Specify the
 // last-seen ETag value to prevent accidentally overwritting concurrent changes.
 func (client InputsClient) Update(input Input, resourceGroupName string, jobName string, inputName string, ifMatch string) (result Input, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.InputsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(input, resourceGroupName, jobName, inputName, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.InputsClient", "Update", nil, "Failure preparing request")

@@ -142,13 +142,6 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdateResponder(resp *http.Re
 func (client VirtualNetworkGatewaysClient) Delete(resourceGroupName string, virtualNetworkGatewayName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewaysClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -231,13 +224,6 @@ func (client VirtualNetworkGatewaysClient) DeleteResponder(resp *http.Response) 
 func (client VirtualNetworkGatewaysClient) Generatevpnclientpackage(resourceGroupName string, virtualNetworkGatewayName string, parameters VpnClientParameters, cancel <-chan struct{}) (<-chan String, <-chan error) {
 	resultChan := make(chan String, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewaysClient", "Generatevpnclientpackage")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result String
@@ -324,13 +310,6 @@ func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackageResponder(res
 func (client VirtualNetworkGatewaysClient) GenerateVpnProfile(resourceGroupName string, virtualNetworkGatewayName string, parameters VpnClientParameters, cancel <-chan struct{}) (<-chan String, <-chan error) {
 	resultChan := make(chan String, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewaysClient", "GenerateVpnProfile")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result String
@@ -412,10 +391,6 @@ func (client VirtualNetworkGatewaysClient) GenerateVpnProfileResponder(resp *htt
 // resourceGroupName is the name of the resource group. virtualNetworkGatewayName is the name of the virtual network
 // gateway.
 func (client VirtualNetworkGatewaysClient) Get(resourceGroupName string, virtualNetworkGatewayName string) (result VirtualNetworkGateway, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewaysClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Get", nil, "Failure preparing request")
@@ -486,13 +461,6 @@ func (client VirtualNetworkGatewaysClient) GetResponder(resp *http.Response) (re
 func (client VirtualNetworkGatewaysClient) GetAdvertisedRoutes(resourceGroupName string, virtualNetworkGatewayName string, peer string, cancel <-chan struct{}) (<-chan GatewayRouteListResult, <-chan error) {
 	resultChan := make(chan GatewayRouteListResult, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewaysClient", "GetAdvertisedRoutes")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result GatewayRouteListResult
@@ -577,13 +545,6 @@ func (client VirtualNetworkGatewaysClient) GetAdvertisedRoutesResponder(resp *ht
 func (client VirtualNetworkGatewaysClient) GetBgpPeerStatus(resourceGroupName string, virtualNetworkGatewayName string, peer string, cancel <-chan struct{}) (<-chan BgpPeerStatusListResult, <-chan error) {
 	resultChan := make(chan BgpPeerStatusListResult, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewaysClient", "GetBgpPeerStatus")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result BgpPeerStatusListResult
@@ -670,13 +631,6 @@ func (client VirtualNetworkGatewaysClient) GetBgpPeerStatusResponder(resp *http.
 func (client VirtualNetworkGatewaysClient) GetLearnedRoutes(resourceGroupName string, virtualNetworkGatewayName string, cancel <-chan struct{}) (<-chan GatewayRouteListResult, <-chan error) {
 	resultChan := make(chan GatewayRouteListResult, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewaysClient", "GetLearnedRoutes")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result GatewayRouteListResult
@@ -761,13 +715,6 @@ func (client VirtualNetworkGatewaysClient) GetLearnedRoutesResponder(resp *http.
 func (client VirtualNetworkGatewaysClient) GetVpnProfilePackageURL(resourceGroupName string, virtualNetworkGatewayName string, cancel <-chan struct{}) (<-chan String, <-chan error) {
 	resultChan := make(chan String, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewaysClient", "GetVpnProfilePackageURL")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result String
@@ -846,10 +793,6 @@ func (client VirtualNetworkGatewaysClient) GetVpnProfilePackageURLResponder(resp
 //
 // resourceGroupName is the name of the resource group.
 func (client VirtualNetworkGatewaysClient) List(resourceGroupName string) (result VirtualNetworkGatewayListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewaysClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "List", nil, "Failure preparing request")
@@ -984,10 +927,6 @@ func (client VirtualNetworkGatewaysClient) ListComplete(resourceGroupName string
 // resourceGroupName is the name of the resource group. virtualNetworkGatewayName is the name of the virtual network
 // gateway.
 func (client VirtualNetworkGatewaysClient) ListConnections(resourceGroupName string, virtualNetworkGatewayName string) (result VirtualNetworkGatewayListConnectionsResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewaysClient", "ListConnections")
-	}
-
 	req, err := client.ListConnectionsPreparer(resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "ListConnections", nil, "Failure preparing request")
@@ -1128,13 +1067,6 @@ func (client VirtualNetworkGatewaysClient) ListConnectionsComplete(resourceGroup
 func (client VirtualNetworkGatewaysClient) Reset(resourceGroupName string, virtualNetworkGatewayName string, gatewayVip string, cancel <-chan struct{}) (<-chan VirtualNetworkGateway, <-chan error) {
 	resultChan := make(chan VirtualNetworkGateway, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworkGatewaysClient", "Reset")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result VirtualNetworkGateway

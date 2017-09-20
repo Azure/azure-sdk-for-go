@@ -122,10 +122,6 @@ func (client StorageAccountsClient) AddResponder(resp *http.Response) (result au
 // is the name of the Data Lake Analytics account from which to remove the Azure Storage account. storageAccountName is
 // the name of the Azure Storage account to remove
 func (client StorageAccountsClient) Delete(resourceGroupName string, accountName string, storageAccountName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.StorageAccountsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, accountName, storageAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Delete", nil, "Failure preparing request")
@@ -193,10 +189,6 @@ func (client StorageAccountsClient) DeleteResponder(resp *http.Response) (result
 // is the name of the Data Lake Analytics account from which to retrieve Azure storage account details.
 // storageAccountName is the name of the Azure Storage account for which to retrieve the details.
 func (client StorageAccountsClient) Get(resourceGroupName string, accountName string, storageAccountName string) (result StorageAccountInfo, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.StorageAccountsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, accountName, storageAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Get", nil, "Failure preparing request")
@@ -267,10 +259,6 @@ func (client StorageAccountsClient) GetResponder(resp *http.Response) (result St
 // of the Azure storage account from which to retrieve the blob container. containerName is the name of the Azure
 // storage container to retrieve
 func (client StorageAccountsClient) GetStorageContainer(resourceGroupName string, accountName string, storageAccountName string, containerName string) (result StorageContainer, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.StorageAccountsClient", "GetStorageContainer")
-	}
-
 	req, err := client.GetStorageContainerPreparer(resourceGroupName, accountName, storageAccountName, containerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "GetStorageContainer", nil, "Failure preparing request")
@@ -513,10 +501,6 @@ func (client StorageAccountsClient) ListByAccountComplete(resourceGroupName stri
 // storageAccountName is the name of the Azure storage account for which the SAS token is being requested.
 // containerName is the name of the Azure storage container for which the SAS token is being requested.
 func (client StorageAccountsClient) ListSasTokens(resourceGroupName string, accountName string, storageAccountName string, containerName string) (result ListSasTokensResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.StorageAccountsClient", "ListSasTokens")
-	}
-
 	req, err := client.ListSasTokensPreparer(resourceGroupName, accountName, storageAccountName, containerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListSasTokens", nil, "Failure preparing request")
@@ -656,10 +640,6 @@ func (client StorageAccountsClient) ListSasTokensComplete(resourceGroupName stri
 // is the name of the Data Lake Analytics account for which to list Azure Storage blob containers. storageAccountName
 // is the name of the Azure storage account from which to list blob containers.
 func (client StorageAccountsClient) ListStorageContainers(resourceGroupName string, accountName string, storageAccountName string) (result ListStorageContainersResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.StorageAccountsClient", "ListStorageContainers")
-	}
-
 	req, err := client.ListStorageContainersPreparer(resourceGroupName, accountName, storageAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "ListStorageContainers", nil, "Failure preparing request")
@@ -799,10 +779,6 @@ func (client StorageAccountsClient) ListStorageContainersComplete(resourceGroupN
 // account to modify parameters is the parameters containing the access key and suffix to update the storage account
 // with, if any. Passing nothing results in no change.
 func (client StorageAccountsClient) Update(resourceGroupName string, accountName string, storageAccountName string, parameters *UpdateStorageAccountParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.StorageAccountsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, storageAccountName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.StorageAccountsClient", "Update", nil, "Failure preparing request")

@@ -151,13 +151,6 @@ func (client FirewallRulesClient) CreateOrUpdateResponder(resp *http.Response) (
 func (client FirewallRulesClient) Delete(resourceGroupName string, serverName string, firewallRuleName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "postgresql.FirewallRulesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -238,10 +231,6 @@ func (client FirewallRulesClient) DeleteResponder(resp *http.Response) (result a
 // Azure Resource Manager API or the portal. serverName is the name of the server. firewallRuleName is the name of the
 // server firewall rule.
 func (client FirewallRulesClient) Get(resourceGroupName string, serverName string, firewallRuleName string) (result FirewallRule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "postgresql.FirewallRulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, firewallRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "postgresql.FirewallRulesClient", "Get", nil, "Failure preparing request")
@@ -309,10 +298,6 @@ func (client FirewallRulesClient) GetResponder(resp *http.Response) (result Fire
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client FirewallRulesClient) ListByServer(resourceGroupName string, serverName string) (result FirewallRuleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "postgresql.FirewallRulesClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "postgresql.FirewallRulesClient", "ListByServer", nil, "Failure preparing request")

@@ -143,13 +143,6 @@ func (client VirtualMachinesClient) CaptureResponder(resp *http.Response) (resul
 func (client VirtualMachinesClient) ConvertToManagedDisks(resourceGroupName string, VMName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "ConvertToManagedDisks")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -341,13 +334,6 @@ func (client VirtualMachinesClient) CreateOrUpdateResponder(resp *http.Response)
 func (client VirtualMachinesClient) Deallocate(resourceGroupName string, VMName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "Deallocate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -429,13 +415,6 @@ func (client VirtualMachinesClient) DeallocateResponder(resp *http.Response) (re
 func (client VirtualMachinesClient) Delete(resourceGroupName string, VMName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -514,10 +493,6 @@ func (client VirtualMachinesClient) DeleteResponder(resp *http.Response) (result
 //
 // resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
 func (client VirtualMachinesClient) Generalize(resourceGroupName string, VMName string) (result OperationStatusResponse, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "Generalize")
-	}
-
 	req, err := client.GeneralizePreparer(resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Generalize", nil, "Failure preparing request")
@@ -584,10 +559,6 @@ func (client VirtualMachinesClient) GeneralizeResponder(resp *http.Response) (re
 // resourceGroupName is the name of the resource group. VMName is the name of the virtual machine. expand is the expand
 // expression to apply on the operation. Possible values include: 'InstanceView'
 func (client VirtualMachinesClient) Get(resourceGroupName string, VMName string, expand InstanceViewTypes) (result VirtualMachine, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, VMName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "Get", nil, "Failure preparing request")
@@ -657,10 +628,6 @@ func (client VirtualMachinesClient) GetResponder(resp *http.Response) (result Vi
 //
 // resourceGroupName is the name of the resource group.
 func (client VirtualMachinesClient) List(resourceGroupName string) (result VirtualMachineListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "List", nil, "Failure preparing request")
@@ -793,10 +760,6 @@ func (client VirtualMachinesClient) ListComplete(resourceGroupName string, cance
 // ListAll lists all of the virtual machines in the specified subscription. Use the nextLink property in the response
 // to get the next page of virtual machines.
 func (client VirtualMachinesClient) ListAll() (result VirtualMachineListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "ListAll")
-	}
-
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListAll", nil, "Failure preparing request")
@@ -929,10 +892,6 @@ func (client VirtualMachinesClient) ListAllComplete(cancel <-chan struct{}) (<-c
 //
 // resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
 func (client VirtualMachinesClient) ListAvailableSizes(resourceGroupName string, VMName string) (result VirtualMachineSizeListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "ListAvailableSizes")
-	}
-
 	req, err := client.ListAvailableSizesPreparer(resourceGroupName, VMName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesClient", "ListAvailableSizes", nil, "Failure preparing request")
@@ -1002,13 +961,6 @@ func (client VirtualMachinesClient) ListAvailableSizesResponder(resp *http.Respo
 func (client VirtualMachinesClient) PerformMaintenance(resourceGroupName string, VMName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "PerformMaintenance")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -1092,13 +1044,6 @@ func (client VirtualMachinesClient) PerformMaintenanceResponder(resp *http.Respo
 func (client VirtualMachinesClient) PowerOff(resourceGroupName string, VMName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "PowerOff")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -1181,13 +1126,6 @@ func (client VirtualMachinesClient) PowerOffResponder(resp *http.Response) (resu
 func (client VirtualMachinesClient) Redeploy(resourceGroupName string, VMName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "Redeploy")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -1269,13 +1207,6 @@ func (client VirtualMachinesClient) RedeployResponder(resp *http.Response) (resu
 func (client VirtualMachinesClient) Restart(resourceGroupName string, VMName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "Restart")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -1450,13 +1381,6 @@ func (client VirtualMachinesClient) RunCommandResponder(resp *http.Response) (re
 func (client VirtualMachinesClient) Start(resourceGroupName string, VMName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachinesClient", "Start")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse

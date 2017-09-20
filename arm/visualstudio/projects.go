@@ -20,7 +20,6 @@ package visualstudio
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	uuid "github.com/satori/go.uuid"
 	"net/http"
 )
@@ -56,13 +55,6 @@ func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) Project
 func (client ProjectsClient) Create(body ProjectResource, resourceGroupName string, rootResourceName string, resourceName string, validating string, cancel <-chan struct{}) (<-chan ProjectResource, <-chan error) {
 	resultChan := make(chan ProjectResource, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "visualstudio.ProjectsClient", "Create")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ProjectResource
@@ -148,10 +140,6 @@ func (client ProjectsClient) CreateResponder(resp *http.Response) (result Projec
 // resourceGroupName is name of the resource group within the Azure subscription. rootResourceName is name of the Team
 // Services account. resourceName is name of the Team Services project.
 func (client ProjectsClient) Get(resourceGroupName string, rootResourceName string, resourceName string) (result ProjectResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.ProjectsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, rootResourceName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsClient", "Get", nil, "Failure preparing request")
@@ -221,10 +209,6 @@ func (client ProjectsClient) GetResponder(resp *http.Response) (result ProjectRe
 // set to the resourceName. operation is the operation type. The only supported value is 'put'. jobID is the job
 // identifier.
 func (client ProjectsClient) GetJobStatus(resourceGroupName string, rootResourceName string, resourceName string, subContainerName string, operation string, jobID *uuid.UUID) (result ProjectResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.ProjectsClient", "GetJobStatus")
-	}
-
 	req, err := client.GetJobStatusPreparer(resourceGroupName, rootResourceName, resourceName, subContainerName, operation, jobID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsClient", "GetJobStatus", nil, "Failure preparing request")
@@ -298,10 +282,6 @@ func (client ProjectsClient) GetJobStatusResponder(resp *http.Response) (result 
 // resourceGroupName is name of the resource group within the Azure subscription. rootResourceName is name of the Team
 // Services account.
 func (client ProjectsClient) ListByResourceGroup(resourceGroupName string, rootResourceName string) (result ProjectResourceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.ProjectsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, rootResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -368,10 +348,6 @@ func (client ProjectsClient) ListByResourceGroupResponder(resp *http.Response) (
 // resourceGroupName is name of the resource group within the Azure subscription. body is the request data.
 // rootResourceName is name of the Team Services account. resourceName is name of the Team Services project.
 func (client ProjectsClient) Update(resourceGroupName string, body ProjectResource, rootResourceName string, resourceName string) (result ProjectResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.ProjectsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, body, rootResourceName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsClient", "Update", nil, "Failure preparing request")

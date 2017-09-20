@@ -20,7 +20,6 @@ package resources
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient 
 //
 // tagName is the name of the tag to create.
 func (client TagsClient) CreateOrUpdate(tagName string) (result TagDetails, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resources.TagsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(tagName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.TagsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -112,10 +107,6 @@ func (client TagsClient) CreateOrUpdateResponder(resp *http.Response) (result Ta
 //
 // tagName is the name of the tag. tagValue is the value of the tag to create.
 func (client TagsClient) CreateOrUpdateValue(tagName string, tagValue string) (result TagValue, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resources.TagsClient", "CreateOrUpdateValue")
-	}
-
 	req, err := client.CreateOrUpdateValuePreparer(tagName, tagValue)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.TagsClient", "CreateOrUpdateValue", nil, "Failure preparing request")
@@ -181,10 +172,6 @@ func (client TagsClient) CreateOrUpdateValueResponder(resp *http.Response) (resu
 //
 // tagName is the name of the tag.
 func (client TagsClient) Delete(tagName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resources.TagsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(tagName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.TagsClient", "Delete", nil, "Failure preparing request")
@@ -248,10 +235,6 @@ func (client TagsClient) DeleteResponder(resp *http.Response) (result autorest.R
 //
 // tagName is the name of the tag. tagValue is the value of the tag to delete.
 func (client TagsClient) DeleteValue(tagName string, tagValue string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resources.TagsClient", "DeleteValue")
-	}
-
 	req, err := client.DeleteValuePreparer(tagName, tagValue)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.TagsClient", "DeleteValue", nil, "Failure preparing request")
@@ -314,10 +297,6 @@ func (client TagsClient) DeleteValueResponder(resp *http.Response) (result autor
 
 // List gets the names and values of all resource tags that are defined in a subscription.
 func (client TagsClient) List() (result TagsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resources.TagsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.TagsClient", "List", nil, "Failure preparing request")

@@ -23,7 +23,6 @@ package intune
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -56,10 +55,6 @@ func NewWithBaseURI(baseURI string) ManagementClient {
 // hostName is location hostName for the tenant filter is the filter to apply on the operation. selectParameter is
 // select specific fields in entity.
 func (client ManagementClient) GetApps(hostName string, filter string, top *int32, selectParameter string) (result ApplicationCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.ManagementClient", "GetApps")
-	}
-
 	req, err := client.GetAppsPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetApps", nil, "Failure preparing request")
@@ -199,10 +194,6 @@ func (client ManagementClient) GetAppsComplete(hostName string, filter string, t
 
 // GetLocationByHostName returns location for given tenant.
 func (client ManagementClient) GetLocationByHostName() (result Location, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.ManagementClient", "GetLocationByHostName")
-	}
-
 	req, err := client.GetLocationByHostNamePreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocationByHostName", nil, "Failure preparing request")
@@ -260,10 +251,6 @@ func (client ManagementClient) GetLocationByHostNameResponder(resp *http.Respons
 
 // GetLocations returns location for user tenant.
 func (client ManagementClient) GetLocations() (result LocationCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.ManagementClient", "GetLocations")
-	}
-
 	req, err := client.GetLocationsPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetLocations", nil, "Failure preparing request")
@@ -393,10 +380,6 @@ func (client ManagementClient) GetLocationsComplete(cancel <-chan struct{}) (<-c
 // hostName is location hostName for the tenant userName is flagged userName selectParameter is select specific fields
 // in entity.
 func (client ManagementClient) GetMAMFlaggedUserByName(hostName string, userName string, selectParameter string) (result FlaggedUser, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.ManagementClient", "GetMAMFlaggedUserByName")
-	}
-
 	req, err := client.GetMAMFlaggedUserByNamePreparer(hostName, userName, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUserByName", nil, "Failure preparing request")
@@ -465,10 +448,6 @@ func (client ManagementClient) GetMAMFlaggedUserByNameResponder(resp *http.Respo
 // hostName is location hostName for the tenant filter is the filter to apply on the operation. selectParameter is
 // select specific fields in entity.
 func (client ManagementClient) GetMAMFlaggedUsers(hostName string, filter string, top *int32, selectParameter string) (result FlaggedUserCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.ManagementClient", "GetMAMFlaggedUsers")
-	}
-
 	req, err := client.GetMAMFlaggedUsersPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMFlaggedUsers", nil, "Failure preparing request")
@@ -610,10 +589,6 @@ func (client ManagementClient) GetMAMFlaggedUsersComplete(hostName string, filte
 //
 // hostName is location hostName for the tenant
 func (client ManagementClient) GetMAMStatuses(hostName string) (result StatusesDefault, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.ManagementClient", "GetMAMStatuses")
-	}
-
 	req, err := client.GetMAMStatusesPreparer(hostName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMStatuses", nil, "Failure preparing request")
@@ -702,10 +677,6 @@ func (client ManagementClient) GetMAMStatusesNextResults(lastResults StatusesDef
 // hostName is location hostName for the tenant userName is unique user name deviceName is device name selectParameter
 // is select specific fields in entity.
 func (client ManagementClient) GetMAMUserDeviceByDeviceName(hostName string, userName string, deviceName string, selectParameter string) (result Device, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.ManagementClient", "GetMAMUserDeviceByDeviceName")
-	}
-
 	req, err := client.GetMAMUserDeviceByDeviceNamePreparer(hostName, userName, deviceName, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDeviceByDeviceName", nil, "Failure preparing request")
@@ -775,10 +746,6 @@ func (client ManagementClient) GetMAMUserDeviceByDeviceNameResponder(resp *http.
 // hostName is location hostName for the tenant userName is user unique Name filter is the filter to apply on the
 // operation. selectParameter is select specific fields in entity.
 func (client ManagementClient) GetMAMUserDevices(hostName string, userName string, filter string, top *int32, selectParameter string) (result DeviceCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.ManagementClient", "GetMAMUserDevices")
-	}
-
 	req, err := client.GetMAMUserDevicesPreparer(hostName, userName, filter, top, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserDevices", nil, "Failure preparing request")
@@ -922,10 +889,6 @@ func (client ManagementClient) GetMAMUserDevicesComplete(hostName string, userNa
 // hostName is location hostName for the tenant userName is user name for the tenant filter is the filter to apply on
 // the operation. selectParameter is select specific fields in entity.
 func (client ManagementClient) GetMAMUserFlaggedEnrolledApps(hostName string, userName string, filter string, top *int32, selectParameter string) (result FlaggedEnrolledAppCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.ManagementClient", "GetMAMUserFlaggedEnrolledApps")
-	}
-
 	req, err := client.GetMAMUserFlaggedEnrolledAppsPreparer(hostName, userName, filter, top, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetMAMUserFlaggedEnrolledApps", nil, "Failure preparing request")
@@ -1069,10 +1032,6 @@ func (client ManagementClient) GetMAMUserFlaggedEnrolledAppsComplete(hostName st
 // hostName is location hostName for the tenant filter is the filter to apply on the operation. selectParameter is
 // select specific fields in entity.
 func (client ManagementClient) GetOperationResults(hostName string, filter string, top *int32, selectParameter string) (result OperationResultCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.ManagementClient", "GetOperationResults")
-	}
-
 	req, err := client.GetOperationResultsPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "GetOperationResults", nil, "Failure preparing request")
@@ -1214,10 +1173,6 @@ func (client ManagementClient) GetOperationResultsComplete(hostName string, filt
 //
 // hostName is location hostName for the tenant userName is unique user name deviceName is device name
 func (client ManagementClient) WipeMAMUserDevice(hostName string, userName string, deviceName string) (result WipeDeviceOperationResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.ManagementClient", "WipeMAMUserDevice")
-	}
-
 	req, err := client.WipeMAMUserDevicePreparer(hostName, userName, deviceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.ManagementClient", "WipeMAMUserDevice", nil, "Failure preparing request")

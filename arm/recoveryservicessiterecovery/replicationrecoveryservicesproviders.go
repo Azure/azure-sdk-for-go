@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -50,13 +49,6 @@ func NewReplicationRecoveryServicesProvidersClientWithBaseURI(baseURI string, su
 func (client ReplicationRecoveryServicesProvidersClient) Delete(fabricName string, providerName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationRecoveryServicesProvidersClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -136,10 +128,6 @@ func (client ReplicationRecoveryServicesProvidersClient) DeleteResponder(resp *h
 //
 // fabricName is fabric name. providerName is recovery services provider name
 func (client ReplicationRecoveryServicesProvidersClient) Get(fabricName string, providerName string) (result RecoveryServicesProvider, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationRecoveryServicesProvidersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(fabricName, providerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationRecoveryServicesProvidersClient", "Get", nil, "Failure preparing request")
@@ -205,10 +193,6 @@ func (client ReplicationRecoveryServicesProvidersClient) GetResponder(resp *http
 
 // List lists the registered recovery services providers in the vault
 func (client ReplicationRecoveryServicesProvidersClient) List() (result RecoveryServicesProviderCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationRecoveryServicesProvidersClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationRecoveryServicesProvidersClient", "List", nil, "Failure preparing request")
@@ -343,10 +327,6 @@ func (client ReplicationRecoveryServicesProvidersClient) ListComplete(cancel <-c
 //
 // fabricName is fabric name
 func (client ReplicationRecoveryServicesProvidersClient) ListByReplicationFabrics(fabricName string) (result RecoveryServicesProviderCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationRecoveryServicesProvidersClient", "ListByReplicationFabrics")
-	}
-
 	req, err := client.ListByReplicationFabricsPreparer(fabricName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationRecoveryServicesProvidersClient", "ListByReplicationFabrics", nil, "Failure preparing request")
@@ -486,13 +466,6 @@ func (client ReplicationRecoveryServicesProvidersClient) ListByReplicationFabric
 func (client ReplicationRecoveryServicesProvidersClient) Purge(fabricName string, providerName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationRecoveryServicesProvidersClient", "Purge")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -576,13 +549,6 @@ func (client ReplicationRecoveryServicesProvidersClient) PurgeResponder(resp *ht
 func (client ReplicationRecoveryServicesProvidersClient) RefreshProvider(fabricName string, providerName string, cancel <-chan struct{}) (<-chan RecoveryServicesProvider, <-chan error) {
 	resultChan := make(chan RecoveryServicesProvider, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationRecoveryServicesProvidersClient", "RefreshProvider")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result RecoveryServicesProvider

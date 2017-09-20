@@ -20,7 +20,6 @@ package recoveryservicesbackup
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewSecurityPINsClientWithBaseURI(baseURI string, subscriptionID string) Sec
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the
 // recovery services vault is present.
 func (client SecurityPINsClient) Get(vaultName string, resourceGroupName string) (result TokenInformation, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.SecurityPINsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(vaultName, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.SecurityPINsClient", "Get", nil, "Failure preparing request")

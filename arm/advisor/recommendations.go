@@ -20,7 +20,6 @@ package advisor
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	uuid "github.com/satori/go.uuid"
 	"net/http"
 )
@@ -43,10 +42,6 @@ func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) 
 // Generate initiates the recommendation generation or computation process for a subscription. This operation is
 // asynchronous. The generated recommendations are stored in a cache in the Advisor service.
 func (client RecommendationsClient) Generate() (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "advisor.RecommendationsClient", "Generate")
-	}
-
 	req, err := client.GeneratePreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "advisor.RecommendationsClient", "Generate", nil, "Failure preparing request")
@@ -110,10 +105,6 @@ func (client RecommendationsClient) GenerateResponder(resp *http.Response) (resu
 // resourceURI is the fully qualified Azure Resource Manager identifier of the resource to which the recommendation
 // applies. recommendationID is the recommendation ID.
 func (client RecommendationsClient) Get(resourceURI string, recommendationID string) (result ResourceRecommendationBase, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "advisor.RecommendationsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceURI, recommendationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "advisor.RecommendationsClient", "Get", nil, "Failure preparing request")
@@ -181,10 +172,6 @@ func (client RecommendationsClient) GetResponder(resp *http.Response) (result Re
 // operationID is the operation ID, which can be found from the Location field in the generate recommendation response
 // header.
 func (client RecommendationsClient) GetGenerateStatus(operationID uuid.UUID) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "advisor.RecommendationsClient", "GetGenerateStatus")
-	}
-
 	req, err := client.GetGenerateStatusPreparer(operationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "advisor.RecommendationsClient", "GetGenerateStatus", nil, "Failure preparing request")
@@ -250,10 +237,6 @@ func (client RecommendationsClient) GetGenerateStatusResponder(resp *http.Respon
 // filter is the filter to apply to the recommendations. top is the number of recommendations per page if a paged
 // version of this API is being used. skipToken is the page-continuation token to use with a paged version of this API.
 func (client RecommendationsClient) List(filter string, top *int32, skipToken string) (result ResourceRecommendationBaseListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "advisor.RecommendationsClient", "List")
-	}
-
 	req, err := client.ListPreparer(filter, top, skipToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "advisor.RecommendationsClient", "List", nil, "Failure preparing request")

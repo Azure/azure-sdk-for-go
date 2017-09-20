@@ -337,10 +337,6 @@ func (client SolutionsClient) ListByResourceGroupResponder(resp *http.Response) 
 
 // ListBySubscription retrieves the solution list. It will retrieve both first party and third party solutions
 func (client SolutionsClient) ListBySubscription() (result SolutionPropertiesList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "operationsmanagement.SolutionsClient", "ListBySubscription")
-	}
-
 	req, err := client.ListBySubscriptionPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationsmanagement.SolutionsClient", "ListBySubscription", nil, "Failure preparing request")

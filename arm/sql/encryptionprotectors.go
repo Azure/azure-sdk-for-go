@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -51,13 +50,6 @@ func NewEncryptionProtectorsClientWithBaseURI(baseURI string, subscriptionID str
 func (client EncryptionProtectorsClient) CreateOrUpdate(resourceGroupName string, serverName string, encryptionProtectorName string, parameters EncryptionProtector, cancel <-chan struct{}) (<-chan EncryptionProtector, <-chan error) {
 	resultChan := make(chan EncryptionProtector, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.EncryptionProtectorsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result EncryptionProtector
@@ -141,10 +133,6 @@ func (client EncryptionProtectorsClient) CreateOrUpdateResponder(resp *http.Resp
 // Azure Resource Manager API or the portal. serverName is the name of the server. encryptionProtectorName is the name
 // of the encryption protector to be retrieved.
 func (client EncryptionProtectorsClient) Get(resourceGroupName string, serverName string, encryptionProtectorName string) (result EncryptionProtector, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.EncryptionProtectorsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, encryptionProtectorName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsClient", "Get", nil, "Failure preparing request")
@@ -212,10 +200,6 @@ func (client EncryptionProtectorsClient) GetResponder(resp *http.Response) (resu
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client EncryptionProtectorsClient) ListByServer(resourceGroupName string, serverName string) (result EncryptionProtectorListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.EncryptionProtectorsClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsClient", "ListByServer", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package authorization
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,10 +48,6 @@ func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) Perm
 // identity. resourceType is the resource type of the resource. resourceName is the name of the resource to get the
 // permissions for.
 func (client PermissionsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (result PermissionGetResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.PermissionsClient", "ListForResource")
-	}
-
 	req, err := client.ListForResourcePreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", nil, "Failure preparing request")
@@ -190,10 +185,6 @@ func (client PermissionsClient) ListForResourceComplete(resourceGroupName string
 //
 // resourceGroupName is the name of the resource group to get the permissions for. The name is case insensitive.
 func (client PermissionsClient) ListForResourceGroup(resourceGroupName string) (result PermissionGetResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.PermissionsClient", "ListForResourceGroup")
-	}
-
 	req, err := client.ListForResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", nil, "Failure preparing request")

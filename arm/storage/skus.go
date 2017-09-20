@@ -20,7 +20,6 @@ package storage
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -41,10 +40,6 @@ func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient 
 
 // List lists the available SKUs supported by Microsoft.Storage for given subscription.
 func (client SkusClient) List() (result SkuListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storage.SkusClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.SkusClient", "List", nil, "Failure preparing request")

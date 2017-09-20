@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,10 +45,6 @@ func NewReplicationStorageClassificationsClientWithBaseURI(baseURI string, subsc
 //
 // fabricName is fabric name. storageClassificationName is storage classification name.
 func (client ReplicationStorageClassificationsClient) Get(fabricName string, storageClassificationName string) (result StorageClassification, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(fabricName, storageClassificationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationsClient", "Get", nil, "Failure preparing request")
@@ -115,10 +110,6 @@ func (client ReplicationStorageClassificationsClient) GetResponder(resp *http.Re
 
 // List lists the storage classifications in the vault.
 func (client ReplicationStorageClassificationsClient) List() (result StorageClassificationCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationsClient", "List", nil, "Failure preparing request")
@@ -253,10 +244,6 @@ func (client ReplicationStorageClassificationsClient) ListComplete(cancel <-chan
 //
 // fabricName is site name of interest.
 func (client ReplicationStorageClassificationsClient) ListByReplicationFabrics(fabricName string) (result StorageClassificationCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationsClient", "ListByReplicationFabrics")
-	}
-
 	req, err := client.ListByReplicationFabricsPreparer(fabricName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationStorageClassificationsClient", "ListByReplicationFabrics", nil, "Failure preparing request")

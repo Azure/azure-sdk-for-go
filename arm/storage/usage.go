@@ -20,7 +20,6 @@ package storage
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -41,10 +40,6 @@ func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClien
 
 // List gets the current usage count and the limit for the resources under the subscription.
 func (client UsageClient) List() (result UsageListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storage.UsageClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.UsageClient", "List", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewLoadBalancerLoadBalancingRulesClientWithBaseURI(baseURI string, subscrip
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
 // loadBalancingRuleName is the name of the load balancing rule.
 func (client LoadBalancerLoadBalancingRulesClient) Get(resourceGroupName string, loadBalancerName string, loadBalancingRuleName string) (result LoadBalancingRule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.LoadBalancerLoadBalancingRulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, loadBalancerName, loadBalancingRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancerLoadBalancingRulesClient", "Get", nil, "Failure preparing request")
@@ -115,10 +110,6 @@ func (client LoadBalancerLoadBalancingRulesClient) GetResponder(resp *http.Respo
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
 func (client LoadBalancerLoadBalancingRulesClient) List(resourceGroupName string, loadBalancerName string) (result LoadBalancerLoadBalancingRuleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.LoadBalancerLoadBalancingRulesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, loadBalancerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancerLoadBalancingRulesClient", "List", nil, "Failure preparing request")

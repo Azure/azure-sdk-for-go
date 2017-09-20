@@ -20,7 +20,6 @@ package dns
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -50,10 +49,6 @@ func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) Recor
 // overwritting any concurrent changes. ifNoneMatch is set to '*' to allow a new record set to be created, but to
 // prevent updating an existing record set. Other values will be ignored.
 func (client RecordSetsClient) CreateOrUpdate(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string, ifNoneMatch string) (result RecordSet, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "dns.RecordSetsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch, ifNoneMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -136,10 +131,6 @@ func (client RecordSetsClient) CreateOrUpdateResponder(resp *http.Response) (res
 // of the record set. Omit this value to always delete the current record set. Specify the last-seen etag value to
 // prevent accidentally deleting any concurrent changes.
 func (client RecordSetsClient) Delete(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, ifMatch string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "dns.RecordSetsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Delete", nil, "Failure preparing request")
@@ -213,10 +204,6 @@ func (client RecordSetsClient) DeleteResponder(resp *http.Response) (result auto
 // of DNS record in this record set. Possible values include: 'A', 'AAAA', 'CNAME', 'MX', 'NS', 'PTR', 'SOA', 'SRV',
 // 'TXT'
 func (client RecordSetsClient) Get(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType) (result RecordSet, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "dns.RecordSetsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Get", nil, "Failure preparing request")
@@ -288,10 +275,6 @@ func (client RecordSetsClient) GetResponder(resp *http.Response) (result RecordS
 // enumerations. If this parameter is specified, Enumeration will return only records that end with
 // .<recordSetNameSuffix>
 func (client RecordSetsClient) ListByDNSZone(resourceGroupName string, zoneName string, top *int32, recordsetnamesuffix string) (result RecordSetListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "dns.RecordSetsClient", "ListByDNSZone")
-	}
-
 	req, err := client.ListByDNSZonePreparer(resourceGroupName, zoneName, top, recordsetnamesuffix)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByDNSZone", nil, "Failure preparing request")
@@ -437,10 +420,6 @@ func (client RecordSetsClient) ListByDNSZoneComplete(resourceGroupName string, z
 // set enumerations. If this parameter is specified, Enumeration will return only records that end with
 // .<recordSetNameSuffix>
 func (client RecordSetsClient) ListByType(resourceGroupName string, zoneName string, recordType RecordType, top *int32, recordsetnamesuffix string) (result RecordSetListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "dns.RecordSetsClient", "ListByType")
-	}
-
 	req, err := client.ListByTypePreparer(resourceGroupName, zoneName, recordType, top, recordsetnamesuffix)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListByType", nil, "Failure preparing request")
@@ -587,10 +566,6 @@ func (client RecordSetsClient) ListByTypeComplete(resourceGroupName string, zone
 // value to always overwrite the current record set. Specify the last-seen etag value to prevent accidentally
 // overwritting concurrent changes.
 func (client RecordSetsClient) Update(resourceGroupName string, zoneName string, relativeRecordSetName string, recordType RecordType, parameters RecordSet, ifMatch string) (result RecordSet, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "dns.RecordSetsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, zoneName, relativeRecordSetName, recordType, parameters, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "Update", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string, r
 // fabricName is the fabric name. protectionContainerName is the protection container name. replicatedProtectedItemName
 // is the replication protected item's name. recoveryPointName is the recovery point name.
 func (client RecoveryPointsClient) Get(fabricName string, protectionContainerName string, replicatedProtectedItemName string, recoveryPointName string) (result RecoveryPoint, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.RecoveryPointsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(fabricName, protectionContainerName, replicatedProtectedItemName, recoveryPointName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.RecoveryPointsClient", "Get", nil, "Failure preparing request")
@@ -118,10 +113,6 @@ func (client RecoveryPointsClient) GetResponder(resp *http.Response) (result Rec
 // fabricName is the fabric name. protectionContainerName is the protection container name. replicatedProtectedItemName
 // is the replication protected item's name.
 func (client RecoveryPointsClient) ListByReplicationProtectedItems(fabricName string, protectionContainerName string, replicatedProtectedItemName string) (result RecoveryPointCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.RecoveryPointsClient", "ListByReplicationProtectedItems")
-	}
-
 	req, err := client.ListByReplicationProtectedItemsPreparer(fabricName, protectionContainerName, replicatedProtectedItemName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.RecoveryPointsClient", "ListByReplicationProtectedItems", nil, "Failure preparing request")

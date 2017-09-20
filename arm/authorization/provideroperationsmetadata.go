@@ -20,7 +20,6 @@ package authorization
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewProviderOperationsMetadataClientWithBaseURI(baseURI string, subscription
 // resourceProviderNamespace is the namespace of the resource provider. expand is specifies whether to expand the
 // values.
 func (client ProviderOperationsMetadataClient) Get(resourceProviderNamespace string, expand string) (result ProviderOperationsMetadata, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.ProviderOperationsMetadataClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceProviderNamespace, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "Get", nil, "Failure preparing request")
@@ -117,10 +112,6 @@ func (client ProviderOperationsMetadataClient) GetResponder(resp *http.Response)
 //
 // expand is specifies whether to expand the values.
 func (client ProviderOperationsMetadataClient) List(expand string) (result ProviderOperationsMetadataListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.ProviderOperationsMetadataClient", "List")
-	}
-
 	req, err := client.ListPreparer(expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "List", nil, "Failure preparing request")

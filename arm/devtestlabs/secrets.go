@@ -120,10 +120,6 @@ func (client SecretsClient) CreateOrUpdateResponder(resp *http.Response) (result
 // resourceGroupName is the name of the resource group. labName is the name of the lab. userName is the name of the
 // user profile. name is the name of the secret.
 func (client SecretsClient) Delete(resourceGroupName string, labName string, userName string, name string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.SecretsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, labName, userName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.SecretsClient", "Delete", nil, "Failure preparing request")
@@ -192,10 +188,6 @@ func (client SecretsClient) DeleteResponder(resp *http.Response) (result autores
 // user profile. name is the name of the secret. expand is specify the $expand query. Example:
 // 'properties($select=value)'
 func (client SecretsClient) Get(resourceGroupName string, labName string, userName string, name string, expand string) (result Secret, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.SecretsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, userName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.SecretsClient", "Get", nil, "Failure preparing request")
@@ -269,10 +261,6 @@ func (client SecretsClient) GetResponder(resp *http.Response) (result Secret, er
 // apply to the operation. top is the maximum number of resources to return from the operation. orderby is the ordering
 // expression for the results, using OData notation.
 func (client SecretsClient) List(resourceGroupName string, labName string, userName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationSecret, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.SecretsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, userName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.SecretsClient", "List", nil, "Failure preparing request")

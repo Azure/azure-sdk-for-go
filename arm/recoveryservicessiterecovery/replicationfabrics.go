@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,13 +47,6 @@ func NewReplicationFabricsClientWithBaseURI(baseURI string, subscriptionID strin
 func (client ReplicationFabricsClient) CheckConsistency(fabricName string, cancel <-chan struct{}) (<-chan Fabric, <-chan error) {
 	resultChan := make(chan Fabric, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationFabricsClient", "CheckConsistency")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Fabric
@@ -138,13 +130,6 @@ func (client ReplicationFabricsClient) CheckConsistencyResponder(resp *http.Resp
 func (client ReplicationFabricsClient) Create(fabricName string, input FabricCreationInput, cancel <-chan struct{}) (<-chan Fabric, <-chan error) {
 	resultChan := make(chan Fabric, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationFabricsClient", "Create")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Fabric
@@ -230,13 +215,6 @@ func (client ReplicationFabricsClient) CreateResponder(resp *http.Response) (res
 func (client ReplicationFabricsClient) Delete(fabricName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationFabricsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -315,10 +293,6 @@ func (client ReplicationFabricsClient) DeleteResponder(resp *http.Response) (res
 //
 // fabricName is fabric name.
 func (client ReplicationFabricsClient) Get(fabricName string) (result Fabric, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationFabricsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(fabricName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationFabricsClient", "Get", nil, "Failure preparing request")
@@ -383,10 +357,6 @@ func (client ReplicationFabricsClient) GetResponder(resp *http.Response) (result
 
 // List gets a list of the Azure Site Recovery fabrics in the vault.
 func (client ReplicationFabricsClient) List() (result FabricCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationFabricsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationFabricsClient", "List", nil, "Failure preparing request")
@@ -525,13 +495,6 @@ func (client ReplicationFabricsClient) ListComplete(cancel <-chan struct{}) (<-c
 func (client ReplicationFabricsClient) MigrateToAad(fabricName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationFabricsClient", "MigrateToAad")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -614,13 +577,6 @@ func (client ReplicationFabricsClient) MigrateToAadResponder(resp *http.Response
 func (client ReplicationFabricsClient) Purge(fabricName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationFabricsClient", "Purge")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -704,13 +660,6 @@ func (client ReplicationFabricsClient) PurgeResponder(resp *http.Response) (resu
 func (client ReplicationFabricsClient) ReassociateGateway(fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, cancel <-chan struct{}) (<-chan Fabric, <-chan error) {
 	resultChan := make(chan Fabric, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationFabricsClient", "ReassociateGateway")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Fabric
@@ -796,13 +745,6 @@ func (client ReplicationFabricsClient) ReassociateGatewayResponder(resp *http.Re
 func (client ReplicationFabricsClient) RenewCertificate(fabricName string, renewCertificate RenewCertificateInput, cancel <-chan struct{}) (<-chan Fabric, <-chan error) {
 	resultChan := make(chan Fabric, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationFabricsClient", "RenewCertificate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Fabric

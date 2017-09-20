@@ -20,7 +20,6 @@ package eventgrid
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,10 +42,6 @@ func NewTopicTypesClientWithBaseURI(baseURI string, subscriptionID string) Topic
 //
 // topicTypeName is name of the topic type
 func (client TopicTypesClient) Get(topicTypeName string) (result TopicTypeInfo, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.TopicTypesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(topicTypeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.TopicTypesClient", "Get", nil, "Failure preparing request")
@@ -108,10 +103,6 @@ func (client TopicTypesClient) GetResponder(resp *http.Response) (result TopicTy
 
 // List list all registered topic types
 func (client TopicTypesClient) List() (result TopicTypesListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.TopicTypesClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.TopicTypesClient", "List", nil, "Failure preparing request")
@@ -171,10 +162,6 @@ func (client TopicTypesClient) ListResponder(resp *http.Response) (result TopicT
 //
 // topicTypeName is name of the topic type
 func (client TopicTypesClient) ListEventTypes(topicTypeName string) (result EventTypesListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.TopicTypesClient", "ListEventTypes")
-	}
-
 	req, err := client.ListEventTypesPreparer(topicTypeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.TopicTypesClient", "ListEventTypes", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package streamanalytics
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -53,13 +52,6 @@ func NewStreamingJobsClientWithBaseURI(baseURI string, subscriptionID string) St
 func (client StreamingJobsClient) CreateOrReplace(streamingJob StreamingJob, resourceGroupName string, jobName string, ifMatch string, ifNoneMatch string, cancel <-chan struct{}) (<-chan StreamingJob, <-chan error) {
 	resultChan := make(chan StreamingJob, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "streamanalytics.StreamingJobsClient", "CreateOrReplace")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result StreamingJob
@@ -152,13 +144,6 @@ func (client StreamingJobsClient) CreateOrReplaceResponder(resp *http.Response) 
 func (client StreamingJobsClient) Delete(resourceGroupName string, jobName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "streamanalytics.StreamingJobsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -240,10 +225,6 @@ func (client StreamingJobsClient) DeleteResponder(resp *http.Response) (result a
 // beyond the default set returned when this parameter is absent. The default set is all streaming job properties other
 // than 'inputs', 'transformation', 'outputs', and 'functions'.
 func (client StreamingJobsClient) Get(resourceGroupName string, jobName string, expand string) (result StreamingJob, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.StreamingJobsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, jobName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsClient", "Get", nil, "Failure preparing request")
@@ -314,10 +295,6 @@ func (client StreamingJobsClient) GetResponder(resp *http.Response) (result Stre
 // to include in the response, beyond the default set returned when this parameter is absent. The default set is all
 // streaming job properties other than 'inputs', 'transformation', 'outputs', and 'functions'.
 func (client StreamingJobsClient) List(expand string) (result StreamingJobListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.StreamingJobsClient", "List")
-	}
-
 	req, err := client.ListPreparer(expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsClient", "List", nil, "Failure preparing request")
@@ -457,10 +434,6 @@ func (client StreamingJobsClient) ListComplete(expand string, cancel <-chan stru
 // parameter is absent. The default set is all streaming job properties other than 'inputs', 'transformation',
 // 'outputs', and 'functions'.
 func (client StreamingJobsClient) ListByResourceGroup(resourceGroupName string, expand string) (result StreamingJobListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.StreamingJobsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -603,13 +576,6 @@ func (client StreamingJobsClient) ListByResourceGroupComplete(resourceGroupName 
 func (client StreamingJobsClient) Start(resourceGroupName string, jobName string, startJobParameters *StartStreamingJobParameters, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "streamanalytics.StreamingJobsClient", "Start")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -697,13 +663,6 @@ func (client StreamingJobsClient) StartResponder(resp *http.Response) (result au
 func (client StreamingJobsClient) Stop(resourceGroupName string, jobName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "streamanalytics.StreamingJobsClient", "Stop")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -788,10 +747,6 @@ func (client StreamingJobsClient) StopResponder(resp *http.Response) (result aut
 // ETag of the streaming job. Omit this value to always overwrite the current record set. Specify the last-seen ETag
 // value to prevent accidentally overwritting concurrent changes.
 func (client StreamingJobsClient) Update(streamingJob StreamingJob, resourceGroupName string, jobName string, ifMatch string) (result StreamingJob, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.StreamingJobsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(streamingJob, resourceGroupName, jobName, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsClient", "Update", nil, "Failure preparing request")

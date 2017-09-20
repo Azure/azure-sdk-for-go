@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,13 +48,6 @@ func NewVirtualNetworkPeeringsClientWithBaseURI(baseURI string, subscriptionID s
 func (client VirtualNetworkPeeringsClient) CreateOrUpdate(resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, cancel <-chan struct{}) (<-chan VirtualNetworkPeering, <-chan error) {
 	resultChan := make(chan VirtualNetworkPeering, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworkPeeringsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result VirtualNetworkPeering
@@ -142,13 +134,6 @@ func (client VirtualNetworkPeeringsClient) CreateOrUpdateResponder(resp *http.Re
 func (client VirtualNetworkPeeringsClient) Delete(resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworkPeeringsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -228,10 +213,6 @@ func (client VirtualNetworkPeeringsClient) DeleteResponder(resp *http.Response) 
 // resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
 // virtualNetworkPeeringName is the name of the virtual network peering.
 func (client VirtualNetworkPeeringsClient) Get(resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string) (result VirtualNetworkPeering, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworkPeeringsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkPeeringsClient", "Get", nil, "Failure preparing request")
@@ -298,10 +279,6 @@ func (client VirtualNetworkPeeringsClient) GetResponder(resp *http.Response) (re
 //
 // resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
 func (client VirtualNetworkPeeringsClient) List(resourceGroupName string, virtualNetworkName string) (result VirtualNetworkPeeringListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworkPeeringsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, virtualNetworkName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkPeeringsClient", "List", nil, "Failure preparing request")

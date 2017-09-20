@@ -20,7 +20,6 @@ package powerbiembedded
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,10 +42,6 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 //
 // resourceGroupName is azure resource group workspaceCollectionName is power BI Embedded Workspace Collection name
 func (client WorkspacesClient) List(resourceGroupName string, workspaceCollectionName string) (result WorkspaceList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "powerbiembedded.WorkspacesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, workspaceCollectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerbiembedded.WorkspacesClient", "List", nil, "Failure preparing request")

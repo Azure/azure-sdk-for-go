@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewRestorePointsClientWithBaseURI(baseURI string, subscriptionID string) Re
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database to get available restore points.
 func (client RestorePointsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string) (result RestorePointListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.RestorePointsClient", "ListByDatabase")
-	}
-
 	req, err := client.ListByDatabasePreparer(resourceGroupName, serverName, databaseName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.RestorePointsClient", "ListByDatabase", nil, "Failure preparing request")

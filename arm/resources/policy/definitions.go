@@ -20,7 +20,6 @@ package policy
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) Defi
 //
 // policyDefinitionName is the name of the policy definition to create. parameters is the policy definition properties.
 func (client DefinitionsClient) CreateOrUpdate(policyDefinitionName string, parameters Definition) (result Definition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "policy.DefinitionsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(policyDefinitionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -114,10 +109,6 @@ func (client DefinitionsClient) CreateOrUpdateResponder(resp *http.Response) (re
 //
 // policyDefinitionName is the name of the policy definition to delete.
 func (client DefinitionsClient) Delete(policyDefinitionName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "policy.DefinitionsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(policyDefinitionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "Delete", nil, "Failure preparing request")
@@ -181,10 +172,6 @@ func (client DefinitionsClient) DeleteResponder(resp *http.Response) (result aut
 //
 // policyDefinitionName is the name of the policy definition to get.
 func (client DefinitionsClient) Get(policyDefinitionName string) (result Definition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "policy.DefinitionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(policyDefinitionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "Get", nil, "Failure preparing request")
@@ -249,10 +236,6 @@ func (client DefinitionsClient) GetResponder(resp *http.Response) (result Defini
 //
 // filter is the filter to apply on the operation.
 func (client DefinitionsClient) List(filter string) (result DefinitionListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "policy.DefinitionsClient", "List")
-	}
-
 	req, err := client.ListPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "List", nil, "Failure preparing request")

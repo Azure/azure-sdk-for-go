@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string) Cap
 //
 // locationID is the location id whose capabilities are retrieved.
 func (client CapabilitiesClient) ListByLocation(locationID string) (result LocationCapabilities, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.CapabilitiesClient", "ListByLocation")
-	}
-
 	req, err := client.ListByLocationPreparer(locationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.CapabilitiesClient", "ListByLocation", nil, "Failure preparing request")

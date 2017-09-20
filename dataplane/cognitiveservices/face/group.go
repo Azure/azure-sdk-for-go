@@ -130,10 +130,6 @@ func (client GroupClient) DetectResponder(resp *http.Response) (result ListDetec
 // headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional
 // computational and time cost.
 func (client GroupClient) DetectInStream(imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes string) (result ListDetectedFaceWrapper, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.GroupClient", "DetectInStream")
-	}
-
 	req, err := client.DetectInStreamPreparer(imageParameter, returnFaceID, returnFaceLandmarks, returnFaceAttributes)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.GroupClient", "DetectInStream", nil, "Failure preparing request")

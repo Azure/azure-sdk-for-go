@@ -119,10 +119,6 @@ func (client MapsClient) CreateOrUpdateResponder(resp *http.Response) (result In
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is the
 // integration account map name.
 func (client MapsClient) Delete(resourceGroupName string, integrationAccountName string, mapName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.MapsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, mapName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.MapsClient", "Delete", nil, "Failure preparing request")
@@ -189,10 +185,6 @@ func (client MapsClient) DeleteResponder(resp *http.Response) (result autorest.R
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is the
 // integration account map name.
 func (client MapsClient) Get(resourceGroupName string, integrationAccountName string, mapName string) (result IntegrationAccountMap, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.MapsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, integrationAccountName, mapName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.MapsClient", "Get", nil, "Failure preparing request")
@@ -260,10 +252,6 @@ func (client MapsClient) GetResponder(resp *http.Response) (result IntegrationAc
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. top is the
 // number of items to be included in the result. filter is the filter to apply on the operation.
 func (client MapsClient) ListByIntegrationAccounts(resourceGroupName string, integrationAccountName string, top *int32, filter string) (result IntegrationAccountMapListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.MapsClient", "ListByIntegrationAccounts")
-	}
-
 	req, err := client.ListByIntegrationAccountsPreparer(resourceGroupName, integrationAccountName, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.MapsClient", "ListByIntegrationAccounts", nil, "Failure preparing request")

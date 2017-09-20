@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewSyncGroupsClientWithBaseURI(baseURI string, subscriptionID string) SyncG
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database on which the sync group is hosted. syncGroupName is the name of the sync group.
 func (client SyncGroupsClient) CancelSync(resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.SyncGroupsClient", "CancelSync")
-	}
-
 	req, err := client.CancelSyncPreparer(resourceGroupName, serverName, databaseName, syncGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncGroupsClient", "CancelSync", nil, "Failure preparing request")
@@ -123,13 +118,6 @@ func (client SyncGroupsClient) CancelSyncResponder(resp *http.Response) (result 
 func (client SyncGroupsClient) CreateOrUpdate(resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, cancel <-chan struct{}) (<-chan SyncGroup, <-chan error) {
 	resultChan := make(chan SyncGroup, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.SyncGroupsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result SyncGroup
@@ -217,13 +205,6 @@ func (client SyncGroupsClient) CreateOrUpdateResponder(resp *http.Response) (res
 func (client SyncGroupsClient) Delete(resourceGroupName string, serverName string, databaseName string, syncGroupName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.SyncGroupsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -305,10 +286,6 @@ func (client SyncGroupsClient) DeleteResponder(resp *http.Response) (result auto
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database on which the sync group is hosted. syncGroupName is the name of the sync group.
 func (client SyncGroupsClient) Get(resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result SyncGroup, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.SyncGroupsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, databaseName, syncGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncGroupsClient", "Get", nil, "Failure preparing request")
@@ -378,10 +355,6 @@ func (client SyncGroupsClient) GetResponder(resp *http.Response) (result SyncGro
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database on which the sync group is hosted.
 func (client SyncGroupsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string) (result SyncGroupListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.SyncGroupsClient", "ListByDatabase")
-	}
-
 	req, err := client.ListByDatabasePreparer(resourceGroupName, serverName, databaseName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncGroupsClient", "ListByDatabase", nil, "Failure preparing request")
@@ -519,10 +492,6 @@ func (client SyncGroupsClient) ListByDatabaseComplete(resourceGroupName string, 
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database on which the sync group is hosted. syncGroupName is the name of the sync group.
 func (client SyncGroupsClient) ListHubSchemas(resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result SyncFullSchemaPropertiesListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.SyncGroupsClient", "ListHubSchemas")
-	}
-
 	req, err := client.ListHubSchemasPreparer(resourceGroupName, serverName, databaseName, syncGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncGroupsClient", "ListHubSchemas", nil, "Failure preparing request")
@@ -664,10 +633,6 @@ func (client SyncGroupsClient) ListHubSchemasComplete(resourceGroupName string, 
 // retrieve. Possible values include: 'All', 'Error', 'Warning', 'Success' continuationToken is the continuation token
 // for this operation.
 func (client SyncGroupsClient) ListLogs(resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParameter string, continuationToken string) (result SyncGroupLogListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.SyncGroupsClient", "ListLogs")
-	}
-
 	req, err := client.ListLogsPreparer(resourceGroupName, serverName, databaseName, syncGroupName, startTime, endTime, typeParameter, continuationToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncGroupsClient", "ListLogs", nil, "Failure preparing request")
@@ -810,10 +775,6 @@ func (client SyncGroupsClient) ListLogsComplete(resourceGroupName string, server
 //
 // locationName is the name of the region where the resource is located.
 func (client SyncGroupsClient) ListSyncDatabaseIds(locationName string) (result SyncDatabaseIDListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.SyncGroupsClient", "ListSyncDatabaseIds")
-	}
-
 	req, err := client.ListSyncDatabaseIdsPreparer(locationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncGroupsClient", "ListSyncDatabaseIds", nil, "Failure preparing request")
@@ -952,13 +913,6 @@ func (client SyncGroupsClient) ListSyncDatabaseIdsComplete(locationName string, 
 func (client SyncGroupsClient) RefreshHubSchema(resourceGroupName string, serverName string, databaseName string, syncGroupName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.SyncGroupsClient", "RefreshHubSchema")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -1040,10 +994,6 @@ func (client SyncGroupsClient) RefreshHubSchemaResponder(resp *http.Response) (r
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database on which the sync group is hosted. syncGroupName is the name of the sync group.
 func (client SyncGroupsClient) TriggerSync(resourceGroupName string, serverName string, databaseName string, syncGroupName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.SyncGroupsClient", "TriggerSync")
-	}
-
 	req, err := client.TriggerSyncPreparer(resourceGroupName, serverName, databaseName, syncGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncGroupsClient", "TriggerSync", nil, "Failure preparing request")
@@ -1116,13 +1066,6 @@ func (client SyncGroupsClient) TriggerSyncResponder(resp *http.Response) (result
 func (client SyncGroupsClient) Update(resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, cancel <-chan struct{}) (<-chan SyncGroup, <-chan error) {
 	resultChan := make(chan SyncGroup, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.SyncGroupsClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result SyncGroup

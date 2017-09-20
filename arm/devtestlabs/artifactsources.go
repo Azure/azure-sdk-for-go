@@ -119,10 +119,6 @@ func (client ArtifactSourcesClient) CreateOrUpdateResponder(resp *http.Response)
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the
 // artifact source.
 func (client ArtifactSourcesClient) Delete(resourceGroupName string, labName string, name string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ArtifactSourcesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, labName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ArtifactSourcesClient", "Delete", nil, "Failure preparing request")
@@ -189,10 +185,6 @@ func (client ArtifactSourcesClient) DeleteResponder(resp *http.Response) (result
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the
 // artifact source. expand is specify the $expand query. Example: 'properties($select=displayName)'
 func (client ArtifactSourcesClient) Get(resourceGroupName string, labName string, name string, expand string) (result ArtifactSource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ArtifactSourcesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ArtifactSourcesClient", "Get", nil, "Failure preparing request")
@@ -265,10 +257,6 @@ func (client ArtifactSourcesClient) GetResponder(resp *http.Response) (result Ar
 // number of resources to return from the operation. orderby is the ordering expression for the results, using OData
 // notation.
 func (client ArtifactSourcesClient) List(resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationArtifactSource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ArtifactSourcesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ArtifactSourcesClient", "List", nil, "Failure preparing request")
@@ -416,10 +404,6 @@ func (client ArtifactSourcesClient) ListComplete(resourceGroupName string, labNa
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the
 // artifact source. artifactSource is properties of an artifact source.
 func (client ArtifactSourcesClient) Update(resourceGroupName string, labName string, name string, artifactSource ArtifactSourceFragment) (result ArtifactSource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ArtifactSourcesClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, labName, name, artifactSource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ArtifactSourcesClient", "Update", nil, "Failure preparing request")

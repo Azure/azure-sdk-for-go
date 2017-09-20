@@ -20,7 +20,6 @@ package logic
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,10 +42,6 @@ func NewWorkflowRunsClientWithBaseURI(baseURI string, subscriptionID string) Wor
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. runName is the workflow run name.
 func (client WorkflowRunsClient) Cancel(resourceGroupName string, workflowName string, runName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowRunsClient", "Cancel")
-	}
-
 	req, err := client.CancelPreparer(resourceGroupName, workflowName, runName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "Cancel", nil, "Failure preparing request")
@@ -112,10 +107,6 @@ func (client WorkflowRunsClient) CancelResponder(resp *http.Response) (result au
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. runName is the workflow run name.
 func (client WorkflowRunsClient) Get(resourceGroupName string, workflowName string, runName string) (result WorkflowRun, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowRunsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, workflowName, runName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "Get", nil, "Failure preparing request")
@@ -183,10 +174,6 @@ func (client WorkflowRunsClient) GetResponder(resp *http.Response) (result Workf
 // resourceGroupName is the resource group name. workflowName is the workflow name. top is the number of items to be
 // included in the result. filter is the filter to apply on the operation.
 func (client WorkflowRunsClient) List(resourceGroupName string, workflowName string, top *int32, filter string) (result WorkflowRunListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowRunsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, workflowName, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunsClient", "List", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package visualstudio
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,10 +47,6 @@ func NewExtensionsClientWithBaseURI(baseURI string, subscriptionID string) Exten
 // additional information related to the extension request. accountResourceName is the name of the Visual Studio Team
 // Services account resource. extensionResourceName is the name of the extension.
 func (client ExtensionsClient) Create(resourceGroupName string, body ExtensionResourceRequest, accountResourceName string, extensionResourceName string) (result ExtensionResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.ExtensionsClient", "Create")
-	}
-
 	req, err := client.CreatePreparer(resourceGroupName, body, accountResourceName, extensionResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ExtensionsClient", "Create", nil, "Failure preparing request")
@@ -121,10 +116,6 @@ func (client ExtensionsClient) CreateResponder(resp *http.Response) (result Exte
 // resourceGroupName is name of the resource group within the Azure subscription. accountResourceName is the name of
 // the Visual Studio Team Services account resource. extensionResourceName is the name of the extension.
 func (client ExtensionsClient) Delete(resourceGroupName string, accountResourceName string, extensionResourceName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.ExtensionsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, accountResourceName, extensionResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ExtensionsClient", "Delete", nil, "Failure preparing request")
@@ -191,10 +182,6 @@ func (client ExtensionsClient) DeleteResponder(resp *http.Response) (result auto
 // resourceGroupName is name of the resource group within the Azure subscription. accountResourceName is the name of
 // the Visual Studio Team Services account resource. extensionResourceName is the name of the extension.
 func (client ExtensionsClient) Get(resourceGroupName string, accountResourceName string, extensionResourceName string) (result ExtensionResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.ExtensionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, accountResourceName, extensionResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ExtensionsClient", "Get", nil, "Failure preparing request")
@@ -262,10 +249,6 @@ func (client ExtensionsClient) GetResponder(resp *http.Response) (result Extensi
 // resourceGroupName is name of the resource group within the Azure subscription. accountResourceName is the name of
 // the Visual Studio Team Services account resource.
 func (client ExtensionsClient) ListByAccount(resourceGroupName string, accountResourceName string) (result ExtensionResourceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.ExtensionsClient", "ListByAccount")
-	}
-
 	req, err := client.ListByAccountPreparer(resourceGroupName, accountResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ExtensionsClient", "ListByAccount", nil, "Failure preparing request")
@@ -333,10 +316,6 @@ func (client ExtensionsClient) ListByAccountResponder(resp *http.Response) (resu
 // additional information related to the extension request. accountResourceName is the name of the Visual Studio Team
 // Services account resource. extensionResourceName is the name of the extension.
 func (client ExtensionsClient) Update(resourceGroupName string, body ExtensionResourceRequest, accountResourceName string, extensionResourceName string) (result ExtensionResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "visualstudio.ExtensionsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, body, accountResourceName, extensionResourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "visualstudio.ExtensionsClient", "Update", nil, "Failure preparing request")

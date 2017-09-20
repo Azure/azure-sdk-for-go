@@ -20,7 +20,6 @@ package compute
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,13 +48,6 @@ func NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI string, subscriptionI
 func (client VirtualMachineScaleSetVMsClient) Deallocate(resourceGroupName string, VMScaleSetName string, instanceID string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetVMsClient", "Deallocate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -140,13 +132,6 @@ func (client VirtualMachineScaleSetVMsClient) DeallocateResponder(resp *http.Res
 func (client VirtualMachineScaleSetVMsClient) Delete(resourceGroupName string, VMScaleSetName string, instanceID string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetVMsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -227,10 +212,6 @@ func (client VirtualMachineScaleSetVMsClient) DeleteResponder(resp *http.Respons
 // resourceGroupName is the name of the resource group. VMScaleSetName is the name of the VM scale set. instanceID is
 // the instance ID of the virtual machine.
 func (client VirtualMachineScaleSetVMsClient) Get(resourceGroupName string, VMScaleSetName string, instanceID string) (result VirtualMachineScaleSetVM, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetVMsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, VMScaleSetName, instanceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "Get", nil, "Failure preparing request")
@@ -298,10 +279,6 @@ func (client VirtualMachineScaleSetVMsClient) GetResponder(resp *http.Response) 
 // resourceGroupName is the name of the resource group. VMScaleSetName is the name of the VM scale set. instanceID is
 // the instance ID of the virtual machine.
 func (client VirtualMachineScaleSetVMsClient) GetInstanceView(resourceGroupName string, VMScaleSetName string, instanceID string) (result VirtualMachineScaleSetVMInstanceView, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetVMsClient", "GetInstanceView")
-	}
-
 	req, err := client.GetInstanceViewPreparer(resourceGroupName, VMScaleSetName, instanceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "GetInstanceView", nil, "Failure preparing request")
@@ -370,10 +347,6 @@ func (client VirtualMachineScaleSetVMsClient) GetInstanceViewResponder(resp *htt
 // filter is the filter to apply to the operation. selectParameter is the list parameters. expand is the expand
 // expression to apply to the operation.
 func (client VirtualMachineScaleSetVMsClient) List(resourceGroupName string, virtualMachineScaleSetName string, filter string, selectParameter string, expand string) (result VirtualMachineScaleSetVMListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetVMsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, virtualMachineScaleSetName, filter, selectParameter, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsClient", "List", nil, "Failure preparing request")
@@ -523,13 +496,6 @@ func (client VirtualMachineScaleSetVMsClient) ListComplete(resourceGroupName str
 func (client VirtualMachineScaleSetVMsClient) PowerOff(resourceGroupName string, VMScaleSetName string, instanceID string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetVMsClient", "PowerOff")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -614,13 +580,6 @@ func (client VirtualMachineScaleSetVMsClient) PowerOffResponder(resp *http.Respo
 func (client VirtualMachineScaleSetVMsClient) Reimage(resourceGroupName string, VMScaleSetName string, instanceID string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetVMsClient", "Reimage")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -705,13 +664,6 @@ func (client VirtualMachineScaleSetVMsClient) ReimageResponder(resp *http.Respon
 func (client VirtualMachineScaleSetVMsClient) ReimageAll(resourceGroupName string, VMScaleSetName string, instanceID string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetVMsClient", "ReimageAll")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -796,13 +748,6 @@ func (client VirtualMachineScaleSetVMsClient) ReimageAllResponder(resp *http.Res
 func (client VirtualMachineScaleSetVMsClient) Restart(resourceGroupName string, VMScaleSetName string, instanceID string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetVMsClient", "Restart")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -886,13 +831,6 @@ func (client VirtualMachineScaleSetVMsClient) RestartResponder(resp *http.Respon
 func (client VirtualMachineScaleSetVMsClient) Start(resourceGroupName string, VMScaleSetName string, instanceID string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.VirtualMachineScaleSetVMsClient", "Start")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse

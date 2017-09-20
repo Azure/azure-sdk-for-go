@@ -119,10 +119,6 @@ func (client CostsClient) CreateOrUpdateResponder(resp *http.Response) (result L
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the cost.
 // expand is specify the $expand query. Example: 'properties($expand=labCostDetails)'
 func (client CostsClient) Get(resourceGroupName string, labName string, name string, expand string) (result LabCost, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.CostsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.CostsClient", "Get", nil, "Failure preparing request")

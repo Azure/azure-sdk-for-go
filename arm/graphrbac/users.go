@@ -119,10 +119,6 @@ func (client UsersClient) CreateResponder(resp *http.Response) (result User, err
 //
 // upnOrObjectID is the object ID or principal name of the user to delete.
 func (client UsersClient) Delete(upnOrObjectID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.UsersClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(upnOrObjectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Delete", nil, "Failure preparing request")
@@ -186,10 +182,6 @@ func (client UsersClient) DeleteResponder(resp *http.Response) (result autorest.
 //
 // upnOrObjectID is the object ID or principal name of the user for which to get information.
 func (client UsersClient) Get(upnOrObjectID string) (result User, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.UsersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(upnOrObjectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Get", nil, "Failure preparing request")
@@ -326,10 +318,6 @@ func (client UsersClient) GetMemberGroupsResponder(resp *http.Response) (result 
 //
 // filter is the filter to apply to the operation.
 func (client UsersClient) List(filter string) (result UserListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.UsersClient", "List")
-	}
-
 	req, err := client.ListPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "List", nil, "Failure preparing request")
@@ -441,10 +429,6 @@ func (client UsersClient) ListComplete(filter string, cancel <-chan struct{}) (<
 //
 // nextLink is next link for the list operation.
 func (client UsersClient) ListNext(nextLink string) (result UserListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.UsersClient", "ListNext")
-	}
-
 	req, err := client.ListNextPreparer(nextLink)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "ListNext", nil, "Failure preparing request")
@@ -510,10 +494,6 @@ func (client UsersClient) ListNextResponder(resp *http.Response) (result UserLis
 // upnOrObjectID is the object ID or principal name of the user to update. parameters is parameters to update an
 // existing user.
 func (client UsersClient) Update(upnOrObjectID string, parameters UserUpdateParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.UsersClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(upnOrObjectID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Update", nil, "Failure preparing request")

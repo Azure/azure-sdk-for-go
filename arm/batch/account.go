@@ -401,10 +401,6 @@ func (client AccountClient) GetKeysResponder(resp *http.Response) (result Accoun
 
 // List gets information about the Batch accounts associated with the subscription.
 func (client AccountClient) List() (result AccountListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "List", nil, "Failure preparing request")

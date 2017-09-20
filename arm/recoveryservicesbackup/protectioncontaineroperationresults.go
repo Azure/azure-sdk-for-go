@@ -20,7 +20,6 @@ package recoveryservicesbackup
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,10 +47,6 @@ func NewProtectionContainerOperationResultsClientWithBaseURI(baseURI string, sub
 // container name whose information should be fetched. operationID is operation ID which represents the operation whose
 // result needs to be fetched.
 func (client ProtectionContainerOperationResultsClient) Get(vaultName string, resourceGroupName string, fabricName string, containerName string, operationID string) (result ProtectionContainerResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.ProtectionContainerOperationResultsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(vaultName, resourceGroupName, fabricName, containerName, operationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.ProtectionContainerOperationResultsClient", "Get", nil, "Failure preparing request")

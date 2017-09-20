@@ -20,7 +20,6 @@ package trafficmanager
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -41,10 +40,6 @@ func NewGeographicHierarchiesClientWithBaseURI(baseURI string, subscriptionID st
 
 // GetDefault gets the default Geographic Hierarchy used by the Geographic traffic routing method.
 func (client GeographicHierarchiesClient) GetDefault() (result GeographicHierarchy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "trafficmanager.GeographicHierarchiesClient", "GetDefault")
-	}
-
 	req, err := client.GetDefaultPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.GeographicHierarchiesClient", "GetDefault", nil, "Failure preparing request")

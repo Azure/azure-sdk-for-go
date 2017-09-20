@@ -20,7 +20,6 @@ package resourcehealth
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -50,10 +49,6 @@ func NewAvailabilityStatusesClientWithBaseURI(baseURI string, subscriptionID str
 // https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN expand is setting
 // $expand=recommendedactions in url query expands the recommendedactions in the response.
 func (client AvailabilityStatusesClient) GetByResource(resourceURI string, filter string, expand string) (result AvailabilityStatus, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resourcehealth.AvailabilityStatusesClient", "GetByResource")
-	}
-
 	req, err := client.GetByResourcePreparer(resourceURI, filter, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "GetByResource", nil, "Failure preparing request")
@@ -131,10 +126,6 @@ func (client AvailabilityStatusesClient) GetByResourceResponder(resp *http.Respo
 // https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN expand is setting
 // $expand=recommendedactions in url query expands the recommendedactions in the response.
 func (client AvailabilityStatusesClient) List(resourceURI string, filter string, expand string) (result AvailabilityStatusListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resourcehealth.AvailabilityStatusesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceURI, filter, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "List", nil, "Failure preparing request")
@@ -276,10 +267,6 @@ func (client AvailabilityStatusesClient) ListComplete(resourceURI string, filter
 // information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN expand is
 // setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 func (client AvailabilityStatusesClient) ListByResourceGroup(resourceGroupName string, filter string, expand string) (result AvailabilityStatusListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resourcehealth.AvailabilityStatusesClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, filter, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -422,10 +409,6 @@ func (client AvailabilityStatusesClient) ListByResourceGroupComplete(resourceGro
 // https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN expand is setting
 // $expand=recommendedactions in url query expands the recommendedactions in the response.
 func (client AvailabilityStatusesClient) ListBySubscriptionID(filter string, expand string) (result AvailabilityStatusListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resourcehealth.AvailabilityStatusesClient", "ListBySubscriptionID")
-	}
-
 	req, err := client.ListBySubscriptionIDPreparer(filter, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "ListBySubscriptionID", nil, "Failure preparing request")

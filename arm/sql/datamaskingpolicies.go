@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,10 +47,6 @@ func NewDataMaskingPoliciesClientWithBaseURI(baseURI string, subscriptionID stri
 // database. dataMaskingPolicyName is the name of the database for which the data masking rule applies. parameters is
 // parameters for creating or updating a data masking policy.
 func (client DataMaskingPoliciesClient) CreateOrUpdate(resourceGroupName string, serverName string, databaseName string, dataMaskingPolicyName string, parameters DataMaskingPolicy) (result DataMaskingPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.DataMaskingPoliciesClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, databaseName, dataMaskingPolicyName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DataMaskingPoliciesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -123,10 +118,6 @@ func (client DataMaskingPoliciesClient) CreateOrUpdateResponder(resp *http.Respo
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database. dataMaskingPolicyName is the name of the database for which the data masking rule applies.
 func (client DataMaskingPoliciesClient) Get(resourceGroupName string, serverName string, databaseName string, dataMaskingPolicyName string) (result DataMaskingPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.DataMaskingPoliciesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, databaseName, dataMaskingPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DataMaskingPoliciesClient", "Get", nil, "Failure preparing request")

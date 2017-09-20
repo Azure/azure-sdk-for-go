@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,10 +42,6 @@ func NewReplicationEventsClientWithBaseURI(baseURI string, subscriptionID string
 //
 // eventName is the name of the Azure Site Recovery event.
 func (client ReplicationEventsClient) Get(eventName string) (result Event, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationEventsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(eventName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationEventsClient", "Get", nil, "Failure preparing request")
@@ -113,10 +108,6 @@ func (client ReplicationEventsClient) GetResponder(resp *http.Response) (result 
 //
 // filter is oData filter options.
 func (client ReplicationEventsClient) List(filter string) (result EventCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationEventsClient", "List")
-	}
-
 	req, err := client.ListPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationEventsClient", "List", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewLoadBalancerBackendAddressPoolsClientWithBaseURI(baseURI string, subscri
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
 // backendAddressPoolName is the name of the backend address pool.
 func (client LoadBalancerBackendAddressPoolsClient) Get(resourceGroupName string, loadBalancerName string, backendAddressPoolName string) (result BackendAddressPool, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.LoadBalancerBackendAddressPoolsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, loadBalancerName, backendAddressPoolName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancerBackendAddressPoolsClient", "Get", nil, "Failure preparing request")
@@ -115,10 +110,6 @@ func (client LoadBalancerBackendAddressPoolsClient) GetResponder(resp *http.Resp
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
 func (client LoadBalancerBackendAddressPoolsClient) List(resourceGroupName string, loadBalancerName string) (result LoadBalancerBackendAddressPoolListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.LoadBalancerBackendAddressPoolsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, loadBalancerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancerBackendAddressPoolsClient", "List", nil, "Failure preparing request")

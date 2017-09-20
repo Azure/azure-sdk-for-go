@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,13 +47,6 @@ func NewRouteFiltersClientWithBaseURI(baseURI string, subscriptionID string) Rou
 func (client RouteFiltersClient) CreateOrUpdate(resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter, cancel <-chan struct{}) (<-chan RouteFilter, <-chan error) {
 	resultChan := make(chan RouteFilter, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.RouteFiltersClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result RouteFilter
@@ -138,13 +130,6 @@ func (client RouteFiltersClient) CreateOrUpdateResponder(resp *http.Response) (r
 func (client RouteFiltersClient) Delete(resourceGroupName string, routeFilterName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.RouteFiltersClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -223,10 +208,6 @@ func (client RouteFiltersClient) DeleteResponder(resp *http.Response) (result au
 // resourceGroupName is the name of the resource group. routeFilterName is the name of the route filter. expand is
 // expands referenced express route bgp peering resources.
 func (client RouteFiltersClient) Get(resourceGroupName string, routeFilterName string, expand string) (result RouteFilter, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.RouteFiltersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, routeFilterName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteFiltersClient", "Get", nil, "Failure preparing request")
@@ -293,10 +274,6 @@ func (client RouteFiltersClient) GetResponder(resp *http.Response) (result Route
 
 // List gets all route filters in a subscription.
 func (client RouteFiltersClient) List() (result RouteFilterListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.RouteFiltersClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteFiltersClient", "List", nil, "Failure preparing request")
@@ -429,10 +406,6 @@ func (client RouteFiltersClient) ListComplete(cancel <-chan struct{}) (<-chan Ro
 //
 // resourceGroupName is the name of the resource group.
 func (client RouteFiltersClient) ListByResourceGroup(resourceGroupName string) (result RouteFilterListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.RouteFiltersClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteFiltersClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -571,13 +544,6 @@ func (client RouteFiltersClient) ListByResourceGroupComplete(resourceGroupName s
 func (client RouteFiltersClient) Update(resourceGroupName string, routeFilterName string, routeFilterParameters PatchRouteFilter, cancel <-chan struct{}) (<-chan RouteFilter, <-chan error) {
 	resultChan := make(chan RouteFilter, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.RouteFiltersClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result RouteFilter

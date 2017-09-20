@@ -20,7 +20,6 @@ package cdn
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -42,10 +41,6 @@ func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string) Re
 
 // List check the quota and actual usage of the CDN profiles under the given subscription.
 func (client ResourceUsageClient) List() (result ResourceUsageListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "cdn.ResourceUsageClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "List", nil, "Failure preparing request")

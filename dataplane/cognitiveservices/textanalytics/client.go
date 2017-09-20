@@ -27,7 +27,6 @@ package textanalytics
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -60,10 +59,6 @@ func NewWithoutDefaults(subscriptionKey string, azureRegion AzureRegions) Manage
 // input is collection of documents to analyze. numberOfLanguagesToDetect is (Optional. Deprecated) Number of languages
 // to detect. Set to 1 by default. Irrespective of the value, the language with the highest score is returned.
 func (client ManagementClient) DetectLanguage(input BatchInput, numberOfLanguagesToDetect *int32) (result LanguageBatchResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "textanalytics.ManagementClient", "DetectLanguage")
-	}
-
 	req, err := client.DetectLanguagePreparer(input, numberOfLanguagesToDetect)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "textanalytics.ManagementClient", "DetectLanguage", nil, "Failure preparing request")
@@ -133,10 +128,6 @@ func (client ManagementClient) DetectLanguageResponder(resp *http.Response) (res
 // input is collection of documents to analyze. Documents can now contain a language field to indicate the text
 // language
 func (client ManagementClient) KeyPhrases(input MultiLanguageBatchInput) (result KeyPhraseBatchResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "textanalytics.ManagementClient", "KeyPhrases")
-	}
-
 	req, err := client.KeyPhrasesPreparer(input)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "textanalytics.ManagementClient", "KeyPhrases", nil, "Failure preparing request")
@@ -201,10 +192,6 @@ func (client ManagementClient) KeyPhrasesResponder(resp *http.Response) (result 
 //
 // input is collection of documents to analyze.
 func (client ManagementClient) Sentiment(input MultiLanguageBatchInput) (result SentimentBatchResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "textanalytics.ManagementClient", "Sentiment")
-	}
-
 	req, err := client.SentimentPreparer(input)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "textanalytics.ManagementClient", "Sentiment", nil, "Failure preparing request")

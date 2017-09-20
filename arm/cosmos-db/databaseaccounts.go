@@ -496,10 +496,6 @@ func (client DatabaseAccountsClient) GetResponder(resp *http.Response) (result D
 
 // List lists all the Azure Cosmos DB database accounts available under the subscription.
 func (client DatabaseAccountsClient) List() (result DatabaseAccountsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "cosmosdb.DatabaseAccountsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cosmosdb.DatabaseAccountsClient", "List", nil, "Failure preparing request")

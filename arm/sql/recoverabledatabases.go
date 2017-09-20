@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewRecoverableDatabasesClientWithBaseURI(baseURI string, subscriptionID str
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database
 func (client RecoverableDatabasesClient) Get(resourceGroupName string, serverName string, databaseName string) (result RecoverableDatabase, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.RecoverableDatabasesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, databaseName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.RecoverableDatabasesClient", "Get", nil, "Failure preparing request")
@@ -118,10 +113,6 @@ func (client RecoverableDatabasesClient) GetResponder(resp *http.Response) (resu
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client RecoverableDatabasesClient) ListByServer(resourceGroupName string, serverName string) (result RecoverableDatabaseListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.RecoverableDatabasesClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.RecoverableDatabasesClient", "ListByServer", nil, "Failure preparing request")

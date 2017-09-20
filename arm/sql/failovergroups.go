@@ -148,13 +148,6 @@ func (client FailoverGroupsClient) CreateOrUpdateResponder(resp *http.Response) 
 func (client FailoverGroupsClient) Delete(resourceGroupName string, serverName string, failoverGroupName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.FailoverGroupsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -239,13 +232,6 @@ func (client FailoverGroupsClient) DeleteResponder(resp *http.Response) (result 
 func (client FailoverGroupsClient) Failover(resourceGroupName string, serverName string, failoverGroupName string, cancel <-chan struct{}) (<-chan FailoverGroup, <-chan error) {
 	resultChan := make(chan FailoverGroup, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.FailoverGroupsClient", "Failover")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result FailoverGroup
@@ -331,13 +317,6 @@ func (client FailoverGroupsClient) FailoverResponder(resp *http.Response) (resul
 func (client FailoverGroupsClient) ForceFailoverAllowDataLoss(resourceGroupName string, serverName string, failoverGroupName string, cancel <-chan struct{}) (<-chan FailoverGroup, <-chan error) {
 	resultChan := make(chan FailoverGroup, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.FailoverGroupsClient", "ForceFailoverAllowDataLoss")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result FailoverGroup
@@ -419,10 +398,6 @@ func (client FailoverGroupsClient) ForceFailoverAllowDataLossResponder(resp *htt
 // Azure Resource Manager API or the portal. serverName is the name of the server containing the failover group.
 // failoverGroupName is the name of the failover group.
 func (client FailoverGroupsClient) Get(resourceGroupName string, serverName string, failoverGroupName string) (result FailoverGroup, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.FailoverGroupsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, failoverGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsClient", "Get", nil, "Failure preparing request")
@@ -490,10 +465,6 @@ func (client FailoverGroupsClient) GetResponder(resp *http.Response) (result Fai
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server containing the failover group.
 func (client FailoverGroupsClient) ListByServer(resourceGroupName string, serverName string) (result FailoverGroupListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.FailoverGroupsClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsClient", "ListByServer", nil, "Failure preparing request")
@@ -633,13 +604,6 @@ func (client FailoverGroupsClient) ListByServerComplete(resourceGroupName string
 func (client FailoverGroupsClient) Update(resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, cancel <-chan struct{}) (<-chan FailoverGroup, <-chan error) {
 	resultChan := make(chan FailoverGroup, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.FailoverGroupsClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result FailoverGroup

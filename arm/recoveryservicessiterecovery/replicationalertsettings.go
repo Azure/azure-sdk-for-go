@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewReplicationAlertSettingsClientWithBaseURI(baseURI string, subscriptionID
 // alertSettingName is the name of the email notification(alert) configuration. request is the input to configure the
 // email notification(alert).
 func (client ReplicationAlertSettingsClient) Create(alertSettingName string, request ConfigureAlertRequest) (result Alert, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationAlertSettingsClient", "Create")
-	}
-
 	req, err := client.CreatePreparer(alertSettingName, request)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationAlertSettingsClient", "Create", nil, "Failure preparing request")
@@ -117,10 +112,6 @@ func (client ReplicationAlertSettingsClient) CreateResponder(resp *http.Response
 //
 // alertSettingName is the name of the email notification configuration.
 func (client ReplicationAlertSettingsClient) Get(alertSettingName string) (result Alert, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationAlertSettingsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(alertSettingName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationAlertSettingsClient", "Get", nil, "Failure preparing request")
@@ -185,10 +176,6 @@ func (client ReplicationAlertSettingsClient) GetResponder(resp *http.Response) (
 
 // List gets the list of email notification(alert) configurations for the vault.
 func (client ReplicationAlertSettingsClient) List() (result AlertCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationAlertSettingsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationAlertSettingsClient", "List", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package scheduler
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewJobCollectionsClientWithBaseURI(baseURI string, subscriptionID string) J
 // resourceGroupName is the resource group name. jobCollectionName is the job collection name. jobCollection is the job
 // collection definition.
 func (client JobCollectionsClient) CreateOrUpdate(resourceGroupName string, jobCollectionName string, jobCollection JobCollectionDefinition) (result JobCollectionDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "scheduler.JobCollectionsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, jobCollectionName, jobCollection)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -118,13 +113,6 @@ func (client JobCollectionsClient) CreateOrUpdateResponder(resp *http.Response) 
 func (client JobCollectionsClient) Delete(resourceGroupName string, jobCollectionName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "scheduler.JobCollectionsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -206,13 +194,6 @@ func (client JobCollectionsClient) DeleteResponder(resp *http.Response) (result 
 func (client JobCollectionsClient) Disable(resourceGroupName string, jobCollectionName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "scheduler.JobCollectionsClient", "Disable")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -294,13 +275,6 @@ func (client JobCollectionsClient) DisableResponder(resp *http.Response) (result
 func (client JobCollectionsClient) Enable(resourceGroupName string, jobCollectionName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "scheduler.JobCollectionsClient", "Enable")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -378,10 +352,6 @@ func (client JobCollectionsClient) EnableResponder(resp *http.Response) (result 
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job collection name.
 func (client JobCollectionsClient) Get(resourceGroupName string, jobCollectionName string) (result JobCollectionDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "scheduler.JobCollectionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, jobCollectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Get", nil, "Failure preparing request")
@@ -447,10 +417,6 @@ func (client JobCollectionsClient) GetResponder(resp *http.Response) (result Job
 //
 // resourceGroupName is the resource group name.
 func (client JobCollectionsClient) ListByResourceGroup(resourceGroupName string) (result JobCollectionListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "scheduler.JobCollectionsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -582,10 +548,6 @@ func (client JobCollectionsClient) ListByResourceGroupComplete(resourceGroupName
 
 // ListBySubscription gets all job collections under specified subscription.
 func (client JobCollectionsClient) ListBySubscription() (result JobCollectionListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "scheduler.JobCollectionsClient", "ListBySubscription")
-	}
-
 	req, err := client.ListBySubscriptionPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "ListBySubscription", nil, "Failure preparing request")
@@ -719,10 +681,6 @@ func (client JobCollectionsClient) ListBySubscriptionComplete(cancel <-chan stru
 // resourceGroupName is the resource group name. jobCollectionName is the job collection name. jobCollection is the job
 // collection definition.
 func (client JobCollectionsClient) Patch(resourceGroupName string, jobCollectionName string, jobCollection JobCollectionDefinition) (result JobCollectionDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "scheduler.JobCollectionsClient", "Patch")
-	}
-
 	req, err := client.PatchPreparer(resourceGroupName, jobCollectionName, jobCollection)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Patch", nil, "Failure preparing request")

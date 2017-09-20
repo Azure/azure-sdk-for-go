@@ -23,7 +23,6 @@ package storageimportexport
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -62,10 +61,6 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 //
 // locationName is the name of the location. For example, 'West US' or 'westus'.
 func (client ManagementClient) GetLocation(locationName string) (result Location, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storageimportexport.ManagementClient", "GetLocation")
-	}
-
 	req, err := client.GetLocationPreparer(locationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "GetLocation", nil, "Failure preparing request")
@@ -129,10 +124,6 @@ func (client ManagementClient) GetLocationResponder(resp *http.Response) (result
 // ListLocations returns a list of locations to which you can ship the disks associated with an import or export job. A
 // location is a Microsoft data center region.
 func (client ManagementClient) ListLocations() (result LocationsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storageimportexport.ManagementClient", "ListLocations")
-	}
-
 	req, err := client.ListLocationsPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "ListLocations", nil, "Failure preparing request")
@@ -191,10 +182,6 @@ func (client ManagementClient) ListLocationsResponder(resp *http.Response) (resu
 
 // ListSupportedOperations returns the list of operations supported by the import/export resource provider.
 func (client ManagementClient) ListSupportedOperations() (result SupportedOperationsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storageimportexport.ManagementClient", "ListSupportedOperations")
-	}
-
 	req, err := client.ListSupportedOperationsPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.ManagementClient", "ListSupportedOperations", nil, "Failure preparing request")

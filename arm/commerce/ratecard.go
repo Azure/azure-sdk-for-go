@@ -20,7 +20,6 @@ package commerce
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -50,10 +49,6 @@ func NewRateCardClientWithBaseURI(baseURI string, subscriptionID string) RateCar
 // All the 4 query parameters 'OfferDurableId',  'Currency', 'Locale', 'Region' are required to be a part of the
 // $filter.
 func (client RateCardClient) Get(filter string) (result ResourceRateCardInfo, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "commerce.RateCardClient", "Get")
-	}
-
 	req, err := client.GetPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commerce.RateCardClient", "Get", nil, "Failure preparing request")

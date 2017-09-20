@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	uuid "github.com/satori/go.uuid"
 	"net/http"
 )
@@ -48,10 +47,6 @@ func NewDatabaseOperationsClientWithBaseURI(baseURI string, subscriptionID strin
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database. operationID is the operation identifier.
 func (client DatabaseOperationsClient) Cancel(resourceGroupName string, serverName string, databaseName string, operationID uuid.UUID) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.DatabaseOperationsClient", "Cancel")
-	}
-
 	req, err := client.CancelPreparer(resourceGroupName, serverName, databaseName, operationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseOperationsClient", "Cancel", nil, "Failure preparing request")
@@ -120,10 +115,6 @@ func (client DatabaseOperationsClient) CancelResponder(resp *http.Response) (res
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database.
 func (client DatabaseOperationsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string) (result DatabaseOperationListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.DatabaseOperationsClient", "ListByDatabase")
-	}
-
 	req, err := client.ListByDatabasePreparer(resourceGroupName, serverName, databaseName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseOperationsClient", "ListByDatabase", nil, "Failure preparing request")

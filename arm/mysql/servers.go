@@ -151,13 +151,6 @@ func (client ServersClient) CreateOrUpdateResponder(resp *http.Response) (result
 func (client ServersClient) Delete(resourceGroupName string, serverName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "mysql.ServersClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -236,10 +229,6 @@ func (client ServersClient) DeleteResponder(resp *http.Response) (result autores
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client ServersClient) Get(resourceGroupName string, serverName string) (result Server, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mysql.ServersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysql.ServersClient", "Get", nil, "Failure preparing request")
@@ -303,10 +292,6 @@ func (client ServersClient) GetResponder(resp *http.Response) (result Server, er
 
 // List list all the servers in a given subscription.
 func (client ServersClient) List() (result ServerListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mysql.ServersClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysql.ServersClient", "List", nil, "Failure preparing request")
@@ -371,10 +356,6 @@ func (client ServersClient) ListResponder(resp *http.Response) (result ServerLis
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal.
 func (client ServersClient) ListByResourceGroup(resourceGroupName string) (result ServerListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mysql.ServersClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysql.ServersClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -445,13 +426,6 @@ func (client ServersClient) ListByResourceGroupResponder(resp *http.Response) (r
 func (client ServersClient) Update(resourceGroupName string, serverName string, parameters ServerUpdateParameters, cancel <-chan struct{}) (<-chan Server, <-chan error) {
 	resultChan := make(chan Server, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "mysql.ServersClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Server

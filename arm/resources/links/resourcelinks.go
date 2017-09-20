@@ -125,10 +125,6 @@ func (client ResourceLinksClient) CreateOrUpdateResponder(resp *http.Response) (
 // For example,
 // /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite/Microsoft.Resources/links/myLink
 func (client ResourceLinksClient) Delete(linkID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "links.ResourceLinksClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(linkID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "Delete", nil, "Failure preparing request")
@@ -192,10 +188,6 @@ func (client ResourceLinksClient) DeleteResponder(resp *http.Response) (result a
 // linkID is the fully qualified Id of the resource link. For example,
 // /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite/Microsoft.Resources/links/myLink
 func (client ResourceLinksClient) Get(linkID string) (result ResourceLink, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "links.ResourceLinksClient", "Get")
-	}
-
 	req, err := client.GetPreparer(linkID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "Get", nil, "Failure preparing request")
@@ -263,10 +255,6 @@ func (client ResourceLinksClient) GetResponder(resp *http.Response) (result Reso
 // getting resource links. To get links only at the specified scope (not below the scope), use Filter.atScope().
 // Possible values include: 'AtScope'
 func (client ResourceLinksClient) ListAtSourceScope(scope string, filter Filter) (result ResourceLinkResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "links.ResourceLinksClient", "ListAtSourceScope")
-	}
-
 	req, err := client.ListAtSourceScopePreparer(scope, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSourceScope", nil, "Failure preparing request")
@@ -403,10 +391,6 @@ func (client ResourceLinksClient) ListAtSourceScopeComplete(scope string, filter
 // filter is the filter to apply on the list resource links operation. The supported filter for list resource links is
 // targetid. For example, $filter=targetid eq {value}
 func (client ResourceLinksClient) ListAtSubscription(filter string) (result ResourceLinkResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "links.ResourceLinksClient", "ListAtSubscription")
-	}
-
 	req, err := client.ListAtSubscriptionPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSubscription", nil, "Failure preparing request")

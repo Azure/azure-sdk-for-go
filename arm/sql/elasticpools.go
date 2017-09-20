@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -52,13 +51,6 @@ func NewElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) Ela
 func (client ElasticPoolsClient) CreateOrUpdate(resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPool, cancel <-chan struct{}) (<-chan ElasticPool, <-chan error) {
 	resultChan := make(chan ElasticPool, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.ElasticPoolsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ElasticPool
@@ -142,10 +134,6 @@ func (client ElasticPoolsClient) CreateOrUpdateResponder(resp *http.Response) (r
 // Azure Resource Manager API or the portal. serverName is the name of the server. elasticPoolName is the name of the
 // elastic pool to be deleted.
 func (client ElasticPoolsClient) Delete(resourceGroupName string, serverName string, elasticPoolName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ElasticPoolsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, serverName, elasticPoolName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "Delete", nil, "Failure preparing request")
@@ -213,10 +201,6 @@ func (client ElasticPoolsClient) DeleteResponder(resp *http.Response) (result au
 // Azure Resource Manager API or the portal. serverName is the name of the server. elasticPoolName is the name of the
 // elastic pool to be retrieved.
 func (client ElasticPoolsClient) Get(resourceGroupName string, serverName string, elasticPoolName string) (result ElasticPool, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ElasticPoolsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, elasticPoolName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "Get", nil, "Failure preparing request")
@@ -284,10 +268,6 @@ func (client ElasticPoolsClient) GetResponder(resp *http.Response) (result Elast
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client ElasticPoolsClient) ListByServer(resourceGroupName string, serverName string) (result ElasticPoolListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ElasticPoolsClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListByServer", nil, "Failure preparing request")
@@ -355,10 +335,6 @@ func (client ElasticPoolsClient) ListByServerResponder(resp *http.Response) (res
 // Azure Resource Manager API or the portal. serverName is the name of the server. elasticPoolName is the name of the
 // elastic pool.
 func (client ElasticPoolsClient) ListMetricDefinitions(resourceGroupName string, serverName string, elasticPoolName string) (result MetricDefinitionListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ElasticPoolsClient", "ListMetricDefinitions")
-	}
-
 	req, err := client.ListMetricDefinitionsPreparer(resourceGroupName, serverName, elasticPoolName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListMetricDefinitions", nil, "Failure preparing request")
@@ -427,10 +403,6 @@ func (client ElasticPoolsClient) ListMetricDefinitionsResponder(resp *http.Respo
 // Azure Resource Manager API or the portal. serverName is the name of the server. elasticPoolName is the name of the
 // elastic pool. filter is an OData filter expression that describes a subset of metrics to return.
 func (client ElasticPoolsClient) ListMetrics(resourceGroupName string, serverName string, elasticPoolName string, filter string) (result MetricListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ElasticPoolsClient", "ListMetrics")
-	}
-
 	req, err := client.ListMetricsPreparer(resourceGroupName, serverName, elasticPoolName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsClient", "ListMetrics", nil, "Failure preparing request")
@@ -503,13 +475,6 @@ func (client ElasticPoolsClient) ListMetricsResponder(resp *http.Response) (resu
 func (client ElasticPoolsClient) Update(resourceGroupName string, serverName string, elasticPoolName string, parameters ElasticPoolUpdate, cancel <-chan struct{}) (<-chan ElasticPool, <-chan error) {
 	resultChan := make(chan ElasticPool, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.ElasticPoolsClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ElasticPool

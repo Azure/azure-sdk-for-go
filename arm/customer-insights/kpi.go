@@ -155,13 +155,6 @@ func (client KpiClient) CreateOrUpdateResponder(resp *http.Response) (result Kpi
 func (client KpiClient) Delete(resourceGroupName string, hubName string, kpiName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "customerinsights.KpiClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -240,10 +233,6 @@ func (client KpiClient) DeleteResponder(resp *http.Response) (result autorest.Re
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. kpiName is the name of the KPI.
 func (client KpiClient) Get(resourceGroupName string, hubName string, kpiName string) (result KpiResourceFormat, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.KpiClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, hubName, kpiName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Get", nil, "Failure preparing request")
@@ -310,10 +299,6 @@ func (client KpiClient) GetResponder(resp *http.Response) (result KpiResourceFor
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub.
 func (client KpiClient) ListByHub(resourceGroupName string, hubName string) (result KpiListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.KpiClient", "ListByHub")
-	}
-
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "ListByHub", nil, "Failure preparing request")
@@ -448,10 +433,6 @@ func (client KpiClient) ListByHubComplete(resourceGroupName string, hubName stri
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. kpiName is the name of the KPI.
 func (client KpiClient) Reprocess(resourceGroupName string, hubName string, kpiName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.KpiClient", "Reprocess")
-	}
-
 	req, err := client.ReprocessPreparer(resourceGroupName, hubName, kpiName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Reprocess", nil, "Failure preparing request")

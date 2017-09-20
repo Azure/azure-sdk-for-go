@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewServiceTierAdvisorsClientWithBaseURI(baseURI string, subscriptionID stri
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of
 // database. serviceTierAdvisorName is the name of service tier advisor.
 func (client ServiceTierAdvisorsClient) Get(resourceGroupName string, serverName string, databaseName string, serviceTierAdvisorName string) (result ServiceTierAdvisor, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ServiceTierAdvisorsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, databaseName, serviceTierAdvisorName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServiceTierAdvisorsClient", "Get", nil, "Failure preparing request")
@@ -120,10 +115,6 @@ func (client ServiceTierAdvisorsClient) GetResponder(resp *http.Response) (resul
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of
 // database.
 func (client ServiceTierAdvisorsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string) (result ServiceTierAdvisorListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ServiceTierAdvisorsClient", "ListByDatabase")
-	}
-
 	req, err := client.ListByDatabasePreparer(resourceGroupName, serverName, databaseName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServiceTierAdvisorsClient", "ListByDatabase", nil, "Failure preparing request")

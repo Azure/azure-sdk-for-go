@@ -20,7 +20,6 @@ package monitor
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewAlertRuleIncidentsClientWithBaseURI(baseURI string, subscriptionID strin
 // resourceGroupName is the name of the resource group. ruleName is the name of the rule. incidentName is the name of
 // the incident to retrieve.
 func (client AlertRuleIncidentsClient) Get(resourceGroupName string, ruleName string, incidentName string) (result Incident, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.AlertRuleIncidentsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, ruleName, incidentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.AlertRuleIncidentsClient", "Get", nil, "Failure preparing request")
@@ -114,10 +109,6 @@ func (client AlertRuleIncidentsClient) GetResponder(resp *http.Response) (result
 //
 // resourceGroupName is the name of the resource group. ruleName is the name of the rule.
 func (client AlertRuleIncidentsClient) ListByAlertRule(resourceGroupName string, ruleName string) (result IncidentListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.AlertRuleIncidentsClient", "ListByAlertRule")
-	}
-
 	req, err := client.ListByAlertRulePreparer(resourceGroupName, ruleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.AlertRuleIncidentsClient", "ListByAlertRule", nil, "Failure preparing request")

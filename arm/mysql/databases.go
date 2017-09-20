@@ -20,7 +20,6 @@ package mysql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -50,13 +49,6 @@ func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) Databa
 func (client DatabasesClient) CreateOrUpdate(resourceGroupName string, serverName string, databaseName string, parameters Database, cancel <-chan struct{}) (<-chan Database, <-chan error) {
 	resultChan := make(chan Database, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "mysql.DatabasesClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Database
@@ -143,13 +135,6 @@ func (client DatabasesClient) CreateOrUpdateResponder(resp *http.Response) (resu
 func (client DatabasesClient) Delete(resourceGroupName string, serverName string, databaseName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "mysql.DatabasesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -230,10 +215,6 @@ func (client DatabasesClient) DeleteResponder(resp *http.Response) (result autor
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database.
 func (client DatabasesClient) Get(resourceGroupName string, serverName string, databaseName string) (result Database, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mysql.DatabasesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, databaseName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysql.DatabasesClient", "Get", nil, "Failure preparing request")
@@ -301,10 +282,6 @@ func (client DatabasesClient) GetResponder(resp *http.Response) (result Database
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client DatabasesClient) ListByServer(resourceGroupName string, serverName string) (result DatabaseListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mysql.DatabasesClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysql.DatabasesClient", "ListByServer", nil, "Failure preparing request")

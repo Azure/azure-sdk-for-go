@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) 
 // resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
 // IPAddress is the private IP address to be verified.
 func (client VirtualNetworksClient) CheckIPAddressAvailability(resourceGroupName string, virtualNetworkName string, IPAddress string) (result IPAddressAvailabilityResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworksClient", "CheckIPAddressAvailability")
-	}
-
 	req, err := client.CheckIPAddressAvailabilityPreparer(resourceGroupName, virtualNetworkName, IPAddress)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksClient", "CheckIPAddressAvailability", nil, "Failure preparing request")
@@ -121,13 +116,6 @@ func (client VirtualNetworksClient) CheckIPAddressAvailabilityResponder(resp *ht
 func (client VirtualNetworksClient) CreateOrUpdate(resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork, cancel <-chan struct{}) (<-chan VirtualNetwork, <-chan error) {
 	resultChan := make(chan VirtualNetwork, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworksClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result VirtualNetwork
@@ -211,13 +199,6 @@ func (client VirtualNetworksClient) CreateOrUpdateResponder(resp *http.Response)
 func (client VirtualNetworksClient) Delete(resourceGroupName string, virtualNetworkName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.VirtualNetworksClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -296,10 +277,6 @@ func (client VirtualNetworksClient) DeleteResponder(resp *http.Response) (result
 // resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network. expand
 // is expands referenced resources.
 func (client VirtualNetworksClient) Get(resourceGroupName string, virtualNetworkName string, expand string) (result VirtualNetwork, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworksClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, virtualNetworkName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksClient", "Get", nil, "Failure preparing request")
@@ -368,10 +345,6 @@ func (client VirtualNetworksClient) GetResponder(resp *http.Response) (result Vi
 //
 // resourceGroupName is the name of the resource group.
 func (client VirtualNetworksClient) List(resourceGroupName string) (result VirtualNetworkListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworksClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksClient", "List", nil, "Failure preparing request")
@@ -503,10 +476,6 @@ func (client VirtualNetworksClient) ListComplete(resourceGroupName string, cance
 
 // ListAll gets all virtual networks in a subscription.
 func (client VirtualNetworksClient) ListAll() (result VirtualNetworkListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworksClient", "ListAll")
-	}
-
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksClient", "ListAll", nil, "Failure preparing request")
@@ -639,10 +608,6 @@ func (client VirtualNetworksClient) ListAllComplete(cancel <-chan struct{}) (<-c
 //
 // resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
 func (client VirtualNetworksClient) ListUsage(resourceGroupName string, virtualNetworkName string) (result VirtualNetworkListUsageResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.VirtualNetworksClient", "ListUsage")
-	}
-
 	req, err := client.ListUsagePreparer(resourceGroupName, virtualNetworkName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksClient", "ListUsage", nil, "Failure preparing request")

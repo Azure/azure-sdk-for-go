@@ -125,10 +125,6 @@ func (client GeoBackupPoliciesClient) CreateOrUpdateResponder(resp *http.Respons
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database. geoBackupPolicyName is the name of the geo backup policy.
 func (client GeoBackupPoliciesClient) Get(resourceGroupName string, serverName string, databaseName string, geoBackupPolicyName string) (result GeoBackupPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.GeoBackupPoliciesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, databaseName, geoBackupPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.GeoBackupPoliciesClient", "Get", nil, "Failure preparing request")
@@ -198,10 +194,6 @@ func (client GeoBackupPoliciesClient) GetResponder(resp *http.Response) (result 
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database.
 func (client GeoBackupPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string) (result GeoBackupPolicyListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.GeoBackupPoliciesClient", "ListByDatabase")
-	}
-
 	req, err := client.ListByDatabasePreparer(resourceGroupName, serverName, databaseName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.GeoBackupPoliciesClient", "ListByDatabase", nil, "Failure preparing request")

@@ -271,10 +271,6 @@ func (client GroupClient) CreateOrUpdateAuthorizationRuleResponder(resp *http.Re
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name. notificationHubName is the
 // notification hub name.
 func (client GroupClient) Delete(resourceGroupName string, namespaceName string, notificationHubName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.GroupClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.GroupClient", "Delete", nil, "Failure preparing request")
@@ -341,10 +337,6 @@ func (client GroupClient) DeleteResponder(resp *http.Response) (result autorest.
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name. notificationHubName is the
 // notification hub name. authorizationRuleName is authorization Rule Name.
 func (client GroupClient) DeleteAuthorizationRule(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.GroupClient", "DeleteAuthorizationRule")
-	}
-
 	req, err := client.DeleteAuthorizationRulePreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.GroupClient", "DeleteAuthorizationRule", nil, "Failure preparing request")
@@ -412,10 +404,6 @@ func (client GroupClient) DeleteAuthorizationRuleResponder(resp *http.Response) 
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name. notificationHubName is the
 // notification hub name.
 func (client GroupClient) Get(resourceGroupName string, namespaceName string, notificationHubName string) (result ResourceType, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.GroupClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.GroupClient", "Get", nil, "Failure preparing request")
@@ -483,10 +471,6 @@ func (client GroupClient) GetResponder(resp *http.Response) (result ResourceType
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name notificationHubName is the
 // notification hub name. authorizationRuleName is authorization rule name.
 func (client GroupClient) GetAuthorizationRule(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result SharedAccessAuthorizationRuleResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.GroupClient", "GetAuthorizationRule")
-	}
-
 	req, err := client.GetAuthorizationRulePreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.GroupClient", "GetAuthorizationRule", nil, "Failure preparing request")
@@ -555,10 +539,6 @@ func (client GroupClient) GetAuthorizationRuleResponder(resp *http.Response) (re
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name. notificationHubName is the
 // notification hub name.
 func (client GroupClient) GetPnsCredentials(resourceGroupName string, namespaceName string, notificationHubName string) (result PnsCredentialsResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.GroupClient", "GetPnsCredentials")
-	}
-
 	req, err := client.GetPnsCredentialsPreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.GroupClient", "GetPnsCredentials", nil, "Failure preparing request")
@@ -625,10 +605,6 @@ func (client GroupClient) GetPnsCredentialsResponder(resp *http.Response) (resul
 //
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name.
 func (client GroupClient) List(resourceGroupName string, namespaceName string) (result ListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.GroupClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, namespaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.GroupClient", "List", nil, "Failure preparing request")
@@ -764,10 +740,6 @@ func (client GroupClient) ListComplete(resourceGroupName string, namespaceName s
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name notificationHubName is the
 // notification hub name.
 func (client GroupClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, notificationHubName string) (result SharedAccessAuthorizationRuleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.GroupClient", "ListAuthorizationRules")
-	}
-
 	req, err := client.ListAuthorizationRulesPreparer(resourceGroupName, namespaceName, notificationHubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.GroupClient", "ListAuthorizationRules", nil, "Failure preparing request")
@@ -905,10 +877,6 @@ func (client GroupClient) ListAuthorizationRulesComplete(resourceGroupName strin
 // notification hub name. authorizationRuleName is the connection string of the NotificationHub for the specified
 // authorizationRule.
 func (client GroupClient) ListKeys(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string) (result ResourceListKeys, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.GroupClient", "ListKeys")
-	}
-
 	req, err := client.ListKeysPreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.GroupClient", "ListKeys", nil, "Failure preparing request")
@@ -978,10 +946,6 @@ func (client GroupClient) ListKeysResponder(resp *http.Response) (result Resourc
 // notification hub name. authorizationRuleName is the connection string of the NotificationHub for the specified
 // authorizationRule. parameters is parameters supplied to regenerate the NotificationHub Authorization Rule Key.
 func (client GroupClient) RegenerateKeys(resourceGroupName string, namespaceName string, notificationHubName string, authorizationRuleName string, parameters PolicykeyResource) (result ResourceListKeys, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.GroupClient", "RegenerateKeys")
-	}
-
 	req, err := client.RegenerateKeysPreparer(resourceGroupName, namespaceName, notificationHubName, authorizationRuleName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.GroupClient", "RegenerateKeys", nil, "Failure preparing request")

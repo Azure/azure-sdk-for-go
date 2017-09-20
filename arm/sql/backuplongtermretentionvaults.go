@@ -146,10 +146,6 @@ func (client BackupLongTermRetentionVaultsClient) CreateOrUpdateResponder(resp *
 // Azure Resource Manager API or the portal. serverName is the name of the server. backupLongTermRetentionVaultName is
 // the name of the Azure SQL Server backup LongTermRetention vault
 func (client BackupLongTermRetentionVaultsClient) Get(resourceGroupName string, serverName string, backupLongTermRetentionVaultName string) (result BackupLongTermRetentionVault, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.BackupLongTermRetentionVaultsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, backupLongTermRetentionVaultName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionVaultsClient", "Get", nil, "Failure preparing request")

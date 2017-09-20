@@ -20,7 +20,6 @@ package compute
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscript
 //
 // location is the name of a supported Azure region.
 func (client VirtualMachineExtensionImagesClient) Get(location string, publisherName string, typeParameter string, version string) (result VirtualMachineExtensionImage, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineExtensionImagesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(location, publisherName, typeParameter, version)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionImagesClient", "Get", nil, "Failure preparing request")
@@ -115,10 +110,6 @@ func (client VirtualMachineExtensionImagesClient) GetResponder(resp *http.Respon
 //
 // location is the name of a supported Azure region.
 func (client VirtualMachineExtensionImagesClient) ListTypes(location string, publisherName string) (result ListVirtualMachineExtensionImageWrapper, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineExtensionImagesClient", "ListTypes")
-	}
-
 	req, err := client.ListTypesPreparer(location, publisherName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionImagesClient", "ListTypes", nil, "Failure preparing request")
@@ -184,10 +175,6 @@ func (client VirtualMachineExtensionImagesClient) ListTypesResponder(resp *http.
 //
 // location is the name of a supported Azure region. filter is the filter to apply on the operation.
 func (client VirtualMachineExtensionImagesClient) ListVersions(location string, publisherName string, typeParameter string, filter string, top *int32, orderby string) (result ListVirtualMachineExtensionImageWrapper, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineExtensionImagesClient", "ListVersions")
-	}
-
 	req, err := client.ListVersionsPreparer(location, publisherName, typeParameter, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionImagesClient", "ListVersions", nil, "Failure preparing request")

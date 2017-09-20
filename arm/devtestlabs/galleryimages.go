@@ -20,7 +20,6 @@ package devtestlabs
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,10 +45,6 @@ func NewGalleryImagesClientWithBaseURI(baseURI string, subscriptionID string) Ga
 // number of resources to return from the operation. orderby is the ordering expression for the results, using OData
 // notation.
 func (client GalleryImagesClient) List(resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationGalleryImage, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.GalleryImagesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.GalleryImagesClient", "List", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package hdinsight
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) App
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. applicationName is the
 // constant value for the applicationName parameters is the application create request.
 func (client ApplicationsClient) Create(resourceGroupName string, clusterName string, applicationName string, parameters ApplicationGetProperties) (result Application, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.ApplicationsClient", "Create")
-	}
-
 	req, err := client.CreatePreparer(resourceGroupName, clusterName, applicationName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "Create", nil, "Failure preparing request")
@@ -121,13 +116,6 @@ func (client ApplicationsClient) CreateResponder(resp *http.Response) (result Ap
 func (client ApplicationsClient) Delete(resourceGroupName string, clusterName string, applicationName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "hdinsight.ApplicationsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -207,10 +195,6 @@ func (client ApplicationsClient) DeleteResponder(resp *http.Response) (result au
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. applicationName is the
 // constant value for the applicationName. Possible values include:
 func (client ApplicationsClient) Get(resourceGroupName string, clusterName string, applicationName ApplicationName) (result Application, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.ApplicationsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, clusterName, applicationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "Get", nil, "Failure preparing request")
@@ -277,10 +261,6 @@ func (client ApplicationsClient) GetResponder(resp *http.Response) (result Appli
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster.
 func (client ApplicationsClient) List(resourceGroupName string, clusterName string) (result ApplicationListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.ApplicationsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, clusterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "List", nil, "Failure preparing request")

@@ -153,13 +153,6 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdateResponder(resp *ht
 func (client ServerAzureADAdministratorsClient) Delete(resourceGroupName string, serverName string, administratorName string, cancel <-chan struct{}) (<-chan ServerAzureADAdministrator, <-chan error) {
 	resultChan := make(chan ServerAzureADAdministrator, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.ServerAzureADAdministratorsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ServerAzureADAdministrator
@@ -241,10 +234,6 @@ func (client ServerAzureADAdministratorsClient) DeleteResponder(resp *http.Respo
 // Azure Resource Manager API or the portal. serverName is the name of the server. administratorName is name of the
 // server administrator resource.
 func (client ServerAzureADAdministratorsClient) Get(resourceGroupName string, serverName string, administratorName string) (result ServerAzureADAdministrator, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ServerAzureADAdministratorsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, administratorName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "Get", nil, "Failure preparing request")
@@ -312,10 +301,6 @@ func (client ServerAzureADAdministratorsClient) GetResponder(resp *http.Response
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client ServerAzureADAdministratorsClient) ListByServer(resourceGroupName string, serverName string) (result ServerAdministratorListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ServerAzureADAdministratorsClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "ListByServer", nil, "Failure preparing request")

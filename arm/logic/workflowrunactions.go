@@ -20,7 +20,6 @@ package logic
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewWorkflowRunActionsClientWithBaseURI(baseURI string, subscriptionID strin
 // resourceGroupName is the resource group name. workflowName is the workflow name. runName is the workflow run name.
 // actionName is the workflow action name.
 func (client WorkflowRunActionsClient) Get(resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunAction, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowRunActionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, workflowName, runName, actionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "Get", nil, "Failure preparing request")
@@ -116,10 +111,6 @@ func (client WorkflowRunActionsClient) GetResponder(resp *http.Response) (result
 // resourceGroupName is the resource group name. workflowName is the workflow name. runName is the workflow run name.
 // top is the number of items to be included in the result. filter is the filter to apply on the operation.
 func (client WorkflowRunActionsClient) List(resourceGroupName string, workflowName string, runName string, top *int32, filter string) (result WorkflowRunActionListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowRunActionsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, workflowName, runName, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "List", nil, "Failure preparing request")

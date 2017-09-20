@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewLoadBalancerProbesClientWithBaseURI(baseURI string, subscriptionID strin
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer. probeName is
 // the name of the probe.
 func (client LoadBalancerProbesClient) Get(resourceGroupName string, loadBalancerName string, probeName string) (result Probe, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.LoadBalancerProbesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, loadBalancerName, probeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancerProbesClient", "Get", nil, "Failure preparing request")
@@ -114,10 +109,6 @@ func (client LoadBalancerProbesClient) GetResponder(resp *http.Response) (result
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
 func (client LoadBalancerProbesClient) List(resourceGroupName string, loadBalancerName string) (result LoadBalancerProbeListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.LoadBalancerProbesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, loadBalancerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancerProbesClient", "List", nil, "Failure preparing request")

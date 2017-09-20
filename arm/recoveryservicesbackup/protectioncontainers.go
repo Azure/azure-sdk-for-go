@@ -20,7 +20,6 @@ package recoveryservicesbackup
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewProtectionContainersClientWithBaseURI(baseURI string, subscriptionID str
 // recovery services vault is present. fabricName is name of the fabric where the container belongs. containerName is
 // name of the container whose details need to be fetched.
 func (client ProtectionContainersClient) Get(vaultName string, resourceGroupName string, fabricName string, containerName string) (result ProtectionContainerResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.ProtectionContainersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(vaultName, resourceGroupName, fabricName, containerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.ProtectionContainersClient", "Get", nil, "Failure preparing request")
@@ -118,10 +113,6 @@ func (client ProtectionContainersClient) GetResponder(resp *http.Response) (resu
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the
 // recovery services vault is present. fabricName is fabric name associated the container.
 func (client ProtectionContainersClient) Refresh(vaultName string, resourceGroupName string, fabricName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.ProtectionContainersClient", "Refresh")
-	}
-
 	req, err := client.RefreshPreparer(vaultName, resourceGroupName, fabricName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.ProtectionContainersClient", "Refresh", nil, "Failure preparing request")

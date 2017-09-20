@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewDatabaseUsagesClientWithBaseURI(baseURI string, subscriptionID string) D
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database.
 func (client DatabaseUsagesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string) (result DatabaseUsageListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.DatabaseUsagesClient", "ListByDatabase")
-	}
-
 	req, err := client.ListByDatabasePreparer(resourceGroupName, serverName, databaseName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseUsagesClient", "ListByDatabase", nil, "Failure preparing request")

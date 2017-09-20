@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewRestorableDroppedDatabasesClientWithBaseURI(baseURI string, subscription
 // Azure Resource Manager API or the portal. serverName is the name of the server. restorableDroppededDatabaseID is the
 // id of the deleted database in the form of databaseName,deletionTimeInFileTimeFormat
 func (client RestorableDroppedDatabasesClient) Get(resourceGroupName string, serverName string, restorableDroppededDatabaseID string) (result RestorableDroppedDatabase, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.RestorableDroppedDatabasesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, restorableDroppededDatabaseID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.RestorableDroppedDatabasesClient", "Get", nil, "Failure preparing request")
@@ -118,10 +113,6 @@ func (client RestorableDroppedDatabasesClient) GetResponder(resp *http.Response)
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client RestorableDroppedDatabasesClient) ListByServer(resourceGroupName string, serverName string) (result RestorableDroppedDatabaseListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.RestorableDroppedDatabasesClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.RestorableDroppedDatabasesClient", "ListByServer", nil, "Failure preparing request")

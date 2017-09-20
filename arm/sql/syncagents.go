@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -50,13 +49,6 @@ func NewSyncAgentsClientWithBaseURI(baseURI string, subscriptionID string) SyncA
 func (client SyncAgentsClient) CreateOrUpdate(resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, cancel <-chan struct{}) (<-chan SyncAgent, <-chan error) {
 	resultChan := make(chan SyncAgent, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.SyncAgentsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result SyncAgent
@@ -143,13 +135,6 @@ func (client SyncAgentsClient) CreateOrUpdateResponder(resp *http.Response) (res
 func (client SyncAgentsClient) Delete(resourceGroupName string, serverName string, syncAgentName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.SyncAgentsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -230,10 +215,6 @@ func (client SyncAgentsClient) DeleteResponder(resp *http.Response) (result auto
 // Azure Resource Manager API or the portal. serverName is the name of the server on which the sync agent is hosted.
 // syncAgentName is the name of the sync agent.
 func (client SyncAgentsClient) GenerateKey(resourceGroupName string, serverName string, syncAgentName string) (result SyncAgentKeyProperties, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.SyncAgentsClient", "GenerateKey")
-	}
-
 	req, err := client.GenerateKeyPreparer(resourceGroupName, serverName, syncAgentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncAgentsClient", "GenerateKey", nil, "Failure preparing request")
@@ -302,10 +283,6 @@ func (client SyncAgentsClient) GenerateKeyResponder(resp *http.Response) (result
 // Azure Resource Manager API or the portal. serverName is the name of the server on which the sync agent is hosted.
 // syncAgentName is the name of the sync agent.
 func (client SyncAgentsClient) Get(resourceGroupName string, serverName string, syncAgentName string) (result SyncAgent, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.SyncAgentsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, syncAgentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncAgentsClient", "Get", nil, "Failure preparing request")
@@ -373,10 +350,6 @@ func (client SyncAgentsClient) GetResponder(resp *http.Response) (result SyncAge
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server on which the sync agent is hosted.
 func (client SyncAgentsClient) ListByServer(resourceGroupName string, serverName string) (result SyncAgentListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.SyncAgentsClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncAgentsClient", "ListByServer", nil, "Failure preparing request")
@@ -513,10 +486,6 @@ func (client SyncAgentsClient) ListByServerComplete(resourceGroupName string, se
 // Azure Resource Manager API or the portal. serverName is the name of the server on which the sync agent is hosted.
 // syncAgentName is the name of the sync agent.
 func (client SyncAgentsClient) ListLinkedDatabases(resourceGroupName string, serverName string, syncAgentName string) (result SyncAgentLinkedDatabaseListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.SyncAgentsClient", "ListLinkedDatabases")
-	}
-
 	req, err := client.ListLinkedDatabasesPreparer(resourceGroupName, serverName, syncAgentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.SyncAgentsClient", "ListLinkedDatabases", nil, "Failure preparing request")

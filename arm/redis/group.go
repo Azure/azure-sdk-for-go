@@ -143,13 +143,6 @@ func (client GroupClient) CreateResponder(resp *http.Response) (result ResourceT
 func (client GroupClient) Delete(resourceGroupName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "redis.GroupClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -323,10 +316,6 @@ func (client GroupClient) ExportDataResponder(resp *http.Response) (result autor
 // resourceGroupName is the name of the resource group. name is the name of the Redis cache. parameters is specifies
 // which Redis node(s) to reboot.
 func (client GroupClient) ForceReboot(resourceGroupName string, name string, parameters RebootParameters) (result ForceRebootResponse, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "redis.GroupClient", "ForceReboot")
-	}
-
 	req, err := client.ForceRebootPreparer(resourceGroupName, name, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.GroupClient", "ForceReboot", nil, "Failure preparing request")
@@ -394,10 +383,6 @@ func (client GroupClient) ForceRebootResponder(resp *http.Response) (result Forc
 //
 // resourceGroupName is the name of the resource group. name is the name of the Redis cache.
 func (client GroupClient) Get(resourceGroupName string, name string) (result ResourceType, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "redis.GroupClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.GroupClient", "Get", nil, "Failure preparing request")
@@ -553,10 +538,6 @@ func (client GroupClient) ImportDataResponder(resp *http.Response) (result autor
 
 // List gets all Redis caches in the specified subscription.
 func (client GroupClient) List() (result ListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "redis.GroupClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.GroupClient", "List", nil, "Failure preparing request")
@@ -689,10 +670,6 @@ func (client GroupClient) ListComplete(cancel <-chan struct{}) (<-chan ResourceT
 //
 // resourceGroupName is the name of the resource group.
 func (client GroupClient) ListByResourceGroup(resourceGroupName string) (result ListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "redis.GroupClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.GroupClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -826,10 +803,6 @@ func (client GroupClient) ListByResourceGroupComplete(resourceGroupName string, 
 //
 // resourceGroupName is the name of the resource group. name is the name of the Redis cache.
 func (client GroupClient) ListKeys(resourceGroupName string, name string) (result AccessKeys, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "redis.GroupClient", "ListKeys")
-	}
-
 	req, err := client.ListKeysPreparer(resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.GroupClient", "ListKeys", nil, "Failure preparing request")
@@ -896,10 +869,6 @@ func (client GroupClient) ListKeysResponder(resp *http.Response) (result AccessK
 // resourceGroupName is the name of the resource group. name is the name of the Redis cache. parameters is specifies
 // which key to regenerate.
 func (client GroupClient) RegenerateKey(resourceGroupName string, name string, parameters RegenerateKeyParameters) (result AccessKeys, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "redis.GroupClient", "RegenerateKey")
-	}
-
 	req, err := client.RegenerateKeyPreparer(resourceGroupName, name, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.GroupClient", "RegenerateKey", nil, "Failure preparing request")
@@ -968,10 +937,6 @@ func (client GroupClient) RegenerateKeyResponder(resp *http.Response) (result Ac
 // resourceGroupName is the name of the resource group. name is the name of the Redis cache. parameters is parameters
 // supplied to the Update Redis operation.
 func (client GroupClient) Update(resourceGroupName string, name string, parameters UpdateParameters) (result ResourceType, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "redis.GroupClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, name, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.GroupClient", "Update", nil, "Failure preparing request")

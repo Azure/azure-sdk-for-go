@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI string, subscript
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
 func (client LoadBalancerNetworkInterfacesClient) List(resourceGroupName string, loadBalancerName string) (result InterfaceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.LoadBalancerNetworkInterfacesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, loadBalancerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancerNetworkInterfacesClient", "List", nil, "Failure preparing request")

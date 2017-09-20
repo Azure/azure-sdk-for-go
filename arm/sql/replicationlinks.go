@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewReplicationLinksClientWithBaseURI(baseURI string, subscriptionID string)
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database that has the replication link to be dropped. linkID is the ID of the replication link to be deleted.
 func (client ReplicationLinksClient) Delete(resourceGroupName string, serverName string, databaseName string, linkID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ReplicationLinksClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, serverName, databaseName, linkID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksClient", "Delete", nil, "Failure preparing request")
@@ -124,13 +119,6 @@ func (client ReplicationLinksClient) DeleteResponder(resp *http.Response) (resul
 func (client ReplicationLinksClient) Failover(resourceGroupName string, serverName string, databaseName string, linkID string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.ReplicationLinksClient", "Failover")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -217,13 +205,6 @@ func (client ReplicationLinksClient) FailoverResponder(resp *http.Response) (res
 func (client ReplicationLinksClient) FailoverAllowDataLoss(resourceGroupName string, serverName string, databaseName string, linkID string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "sql.ReplicationLinksClient", "FailoverAllowDataLoss")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -305,10 +286,6 @@ func (client ReplicationLinksClient) FailoverAllowDataLossResponder(resp *http.R
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database to get the link for. linkID is the replication link ID to be retrieved.
 func (client ReplicationLinksClient) Get(resourceGroupName string, serverName string, databaseName string, linkID string) (result ReplicationLink, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ReplicationLinksClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, databaseName, linkID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksClient", "Get", nil, "Failure preparing request")
@@ -378,10 +355,6 @@ func (client ReplicationLinksClient) GetResponder(resp *http.Response) (result R
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database to retrieve links for.
 func (client ReplicationLinksClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string) (result ReplicationLinkListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ReplicationLinksClient", "ListByDatabase")
-	}
-
 	req, err := client.ListByDatabasePreparer(resourceGroupName, serverName, databaseName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksClient", "ListByDatabase", nil, "Failure preparing request")

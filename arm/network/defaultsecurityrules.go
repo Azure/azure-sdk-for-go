@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewDefaultSecurityRulesClientWithBaseURI(baseURI string, subscriptionID str
 // resourceGroupName is the name of the resource group. networkSecurityGroupName is the name of the network security
 // group. defaultSecurityRuleName is the name of the default security rule.
 func (client DefaultSecurityRulesClient) Get(resourceGroupName string, networkSecurityGroupName string, defaultSecurityRuleName string) (result SecurityRule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.DefaultSecurityRulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, networkSecurityGroupName, defaultSecurityRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.DefaultSecurityRulesClient", "Get", nil, "Failure preparing request")
@@ -115,10 +110,6 @@ func (client DefaultSecurityRulesClient) GetResponder(resp *http.Response) (resu
 // resourceGroupName is the name of the resource group. networkSecurityGroupName is the name of the network security
 // group.
 func (client DefaultSecurityRulesClient) List(resourceGroupName string, networkSecurityGroupName string) (result SecurityRuleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.DefaultSecurityRulesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, networkSecurityGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.DefaultSecurityRulesClient", "List", nil, "Failure preparing request")

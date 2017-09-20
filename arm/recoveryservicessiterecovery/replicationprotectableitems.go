@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewReplicationProtectableItemsClientWithBaseURI(baseURI string, subscriptio
 // fabricName is fabric name. protectionContainerName is protection container name. protectableItemName is protectable
 // item name.
 func (client ReplicationProtectableItemsClient) Get(fabricName string, protectionContainerName string, protectableItemName string) (result ProtectableItem, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectableItemsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(fabricName, protectionContainerName, protectableItemName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationProtectableItemsClient", "Get", nil, "Failure preparing request")
@@ -117,10 +112,6 @@ func (client ReplicationProtectableItemsClient) GetResponder(resp *http.Response
 //
 // fabricName is fabric name. protectionContainerName is protection container name.
 func (client ReplicationProtectableItemsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string) (result ProtectableItemCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectableItemsClient", "ListByReplicationProtectionContainers")
-	}
-
 	req, err := client.ListByReplicationProtectionContainersPreparer(fabricName, protectionContainerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationProtectableItemsClient", "ListByReplicationProtectionContainers", nil, "Failure preparing request")

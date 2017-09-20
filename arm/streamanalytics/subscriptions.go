@@ -20,7 +20,6 @@ package streamanalytics
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) Su
 // location is the region in which to retrieve the subscription's quota information. You can find out which regions
 // Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/
 func (client SubscriptionsClient) ListQuotas(location string) (result SubscriptionQuotasListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.SubscriptionsClient", "ListQuotas")
-	}
-
 	req, err := client.ListQuotasPreparer(location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsClient", "ListQuotas", nil, "Failure preparing request")

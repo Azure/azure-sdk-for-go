@@ -20,7 +20,6 @@ package devtestlabs
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,13 +47,6 @@ func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client VirtualNetworksClient) CreateOrUpdate(resourceGroupName string, labName string, name string, virtualNetwork VirtualNetwork, cancel <-chan struct{}) (<-chan VirtualNetwork, <-chan error) {
 	resultChan := make(chan VirtualNetwork, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.VirtualNetworksClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result VirtualNetwork
@@ -141,13 +133,6 @@ func (client VirtualNetworksClient) CreateOrUpdateResponder(resp *http.Response)
 func (client VirtualNetworksClient) Delete(resourceGroupName string, labName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.VirtualNetworksClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -227,10 +212,6 @@ func (client VirtualNetworksClient) DeleteResponder(resp *http.Response) (result
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the virtual
 // network. expand is specify the $expand query. Example: 'properties($expand=externalSubnets)'
 func (client VirtualNetworksClient) Get(resourceGroupName string, labName string, name string, expand string) (result VirtualNetwork, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.VirtualNetworksClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.VirtualNetworksClient", "Get", nil, "Failure preparing request")
@@ -303,10 +284,6 @@ func (client VirtualNetworksClient) GetResponder(resp *http.Response) (result Vi
 // maximum number of resources to return from the operation. orderby is the ordering expression for the results, using
 // OData notation.
 func (client VirtualNetworksClient) List(resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationVirtualNetwork, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.VirtualNetworksClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.VirtualNetworksClient", "List", nil, "Failure preparing request")
@@ -454,10 +431,6 @@ func (client VirtualNetworksClient) ListComplete(resourceGroupName string, labNa
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the virtual
 // network. virtualNetwork is a virtual network.
 func (client VirtualNetworksClient) Update(resourceGroupName string, labName string, name string, virtualNetwork VirtualNetworkFragment) (result VirtualNetwork, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.VirtualNetworksClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, labName, name, virtualNetwork)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.VirtualNetworksClient", "Update", nil, "Failure preparing request")

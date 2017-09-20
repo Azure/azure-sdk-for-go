@@ -119,10 +119,6 @@ func (client NotificationChannelsClient) CreateOrUpdateResponder(resp *http.Resp
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the
 // notificationChannel.
 func (client NotificationChannelsClient) Delete(resourceGroupName string, labName string, name string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.NotificationChannelsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, labName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.NotificationChannelsClient", "Delete", nil, "Failure preparing request")
@@ -189,10 +185,6 @@ func (client NotificationChannelsClient) DeleteResponder(resp *http.Response) (r
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the
 // notificationChannel. expand is specify the $expand query. Example: 'properties($select=webHookUrl)'
 func (client NotificationChannelsClient) Get(resourceGroupName string, labName string, name string, expand string) (result NotificationChannel, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.NotificationChannelsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.NotificationChannelsClient", "Get", nil, "Failure preparing request")
@@ -265,10 +257,6 @@ func (client NotificationChannelsClient) GetResponder(resp *http.Response) (resu
 // number of resources to return from the operation. orderby is the ordering expression for the results, using OData
 // notation.
 func (client NotificationChannelsClient) List(resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationNotificationChannel, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.NotificationChannelsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.NotificationChannelsClient", "List", nil, "Failure preparing request")
@@ -416,10 +404,6 @@ func (client NotificationChannelsClient) ListComplete(resourceGroupName string, 
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the
 // notificationChannel. notifyParameters is properties for generating a Notification.
 func (client NotificationChannelsClient) Notify(resourceGroupName string, labName string, name string, notifyParameters NotifyParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.NotificationChannelsClient", "Notify")
-	}
-
 	req, err := client.NotifyPreparer(resourceGroupName, labName, name, notifyParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.NotificationChannelsClient", "Notify", nil, "Failure preparing request")
@@ -488,10 +472,6 @@ func (client NotificationChannelsClient) NotifyResponder(resp *http.Response) (r
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the
 // notificationChannel. notificationChannel is a notification.
 func (client NotificationChannelsClient) Update(resourceGroupName string, labName string, name string, notificationChannel NotificationChannelFragment) (result NotificationChannel, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.NotificationChannelsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, labName, name, notificationChannel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.NotificationChannelsClient", "Update", nil, "Failure preparing request")

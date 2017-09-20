@@ -115,10 +115,6 @@ func (client ServicePrincipalsClient) CreateResponder(resp *http.Response) (resu
 //
 // objectID is the object ID of the service principal to delete.
 func (client ServicePrincipalsClient) Delete(objectID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ServicePrincipalsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(objectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Delete", nil, "Failure preparing request")
@@ -182,10 +178,6 @@ func (client ServicePrincipalsClient) DeleteResponder(resp *http.Response) (resu
 //
 // objectID is the object ID of the service principal to get.
 func (client ServicePrincipalsClient) Get(objectID string) (result ServicePrincipal, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ServicePrincipalsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(objectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "Get", nil, "Failure preparing request")
@@ -250,10 +242,6 @@ func (client ServicePrincipalsClient) GetResponder(resp *http.Response) (result 
 //
 // filter is the filter to apply to the operation.
 func (client ServicePrincipalsClient) List(filter string) (result ServicePrincipalListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ServicePrincipalsClient", "List")
-	}
-
 	req, err := client.ListPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "List", nil, "Failure preparing request")
@@ -365,10 +353,6 @@ func (client ServicePrincipalsClient) ListComplete(filter string, cancel <-chan 
 //
 // objectID is the object ID of the service principal for which to get keyCredentials.
 func (client ServicePrincipalsClient) ListKeyCredentials(objectID string) (result KeyCredentialListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ServicePrincipalsClient", "ListKeyCredentials")
-	}
-
 	req, err := client.ListKeyCredentialsPreparer(objectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListKeyCredentials", nil, "Failure preparing request")
@@ -433,10 +417,6 @@ func (client ServicePrincipalsClient) ListKeyCredentialsResponder(resp *http.Res
 //
 // nextLink is next link for the list operation.
 func (client ServicePrincipalsClient) ListNext(nextLink string) (result ServicePrincipalListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ServicePrincipalsClient", "ListNext")
-	}
-
 	req, err := client.ListNextPreparer(nextLink)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListNext", nil, "Failure preparing request")
@@ -501,10 +481,6 @@ func (client ServicePrincipalsClient) ListNextResponder(resp *http.Response) (re
 //
 // objectID is the object ID of the service principal.
 func (client ServicePrincipalsClient) ListPasswordCredentials(objectID string) (result PasswordCredentialListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ServicePrincipalsClient", "ListPasswordCredentials")
-	}
-
 	req, err := client.ListPasswordCredentialsPreparer(objectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "ListPasswordCredentials", nil, "Failure preparing request")
@@ -570,10 +546,6 @@ func (client ServicePrincipalsClient) ListPasswordCredentialsResponder(resp *htt
 // objectID is the object ID for which to get service principal information. parameters is parameters to update the
 // keyCredentials of an existing service principal.
 func (client ServicePrincipalsClient) UpdateKeyCredentials(objectID string, parameters KeyCredentialsUpdateParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ServicePrincipalsClient", "UpdateKeyCredentials")
-	}
-
 	req, err := client.UpdateKeyCredentialsPreparer(objectID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "UpdateKeyCredentials", nil, "Failure preparing request")
@@ -640,10 +612,6 @@ func (client ServicePrincipalsClient) UpdateKeyCredentialsResponder(resp *http.R
 // objectID is the object ID of the service principal. parameters is parameters to update the passwordCredentials of an
 // existing service principal.
 func (client ServicePrincipalsClient) UpdatePasswordCredentials(objectID string, parameters PasswordCredentialsUpdateParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ServicePrincipalsClient", "UpdatePasswordCredentials")
-	}
-
 	req, err := client.UpdatePasswordCredentialsPreparer(objectID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ServicePrincipalsClient", "UpdatePasswordCredentials", nil, "Failure preparing request")

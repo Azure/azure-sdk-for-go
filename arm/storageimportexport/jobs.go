@@ -158,10 +158,6 @@ func (client JobsClient) CreateOrUpdateResponder(resp *http.Response) (result Jo
 // resourceGroupName is the resource group name uniquely identifies the resource group within the user subscription.
 // jobName is the name of the import/export job.
 func (client JobsClient) Delete(resourceGroupName string, jobName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storageimportexport.JobsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, jobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Delete", nil, "Failure preparing request")
@@ -228,10 +224,6 @@ func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.R
 // resourceGroupName is the resource group name uniquely identifies the resource group within the user subscription.
 // jobName is the name of the import/export job.
 func (client JobsClient) Get(resourceGroupName string, jobName string) (result Job, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storageimportexport.JobsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, jobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Get", nil, "Failure preparing request")
@@ -452,10 +444,6 @@ func (client JobsClient) ListComplete(top *int32, filter string, cancel <-chan s
 // resourceGroupName is the resource group name uniquely identifies the resource group within the user subscription.
 // jobName is the name of the import/export job.
 func (client JobsClient) ListBitLockerKeys(resourceGroupName string, jobName string) (result BitLockerKeysListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storageimportexport.JobsClient", "ListBitLockerKeys")
-	}
-
 	req, err := client.ListBitLockerKeysPreparer(resourceGroupName, jobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBitLockerKeys", nil, "Failure preparing request")
@@ -755,10 +743,6 @@ func (client JobsClient) MoveResponder(resp *http.Response) (result autorest.Res
 // resourceGroupName is the resource group name uniquely identifies the resource group within the user subscription.
 // jobName is the name of the import/export job. jobProperties is import/export job properties that need to be updated.
 func (client JobsClient) Update(resourceGroupName string, jobName string, jobProperties MutableJob) (result Job, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storageimportexport.JobsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, jobName, jobProperties)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Update", nil, "Failure preparing request")

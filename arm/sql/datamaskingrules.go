@@ -131,10 +131,6 @@ func (client DataMaskingRulesClient) CreateOrUpdateResponder(resp *http.Response
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database. dataMaskingPolicyName is the name of the database for which the data masking rule applies.
 func (client DataMaskingRulesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, dataMaskingPolicyName string) (result DataMaskingRuleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.DataMaskingRulesClient", "ListByDatabase")
-	}
-
 	req, err := client.ListByDatabasePreparer(resourceGroupName, serverName, databaseName, dataMaskingPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DataMaskingRulesClient", "ListByDatabase", nil, "Failure preparing request")

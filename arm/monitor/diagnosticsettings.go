@@ -20,7 +20,6 @@ package monitor
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewDiagnosticSettingsClientWithBaseURI(baseURI string, subscriptionID strin
 // resourceURI is the identifier of the resource. parameters is parameters supplied to the operation. name is the name
 // of the diagnostic setting.
 func (client DiagnosticSettingsClient) CreateOrUpdate(resourceURI string, parameters DiagnosticSettingsResource, name string) (result DiagnosticSettingsResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.DiagnosticSettingsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceURI, parameters, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.DiagnosticSettingsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -114,10 +109,6 @@ func (client DiagnosticSettingsClient) CreateOrUpdateResponder(resp *http.Respon
 //
 // resourceURI is the identifier of the resource. name is the name of the diagnostic setting.
 func (client DiagnosticSettingsClient) Delete(resourceURI string, name string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.DiagnosticSettingsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceURI, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.DiagnosticSettingsClient", "Delete", nil, "Failure preparing request")
@@ -181,10 +172,6 @@ func (client DiagnosticSettingsClient) DeleteResponder(resp *http.Response) (res
 //
 // resourceURI is the identifier of the resource. name is the name of the diagnostic setting.
 func (client DiagnosticSettingsClient) Get(resourceURI string, name string) (result DiagnosticSettingsResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.DiagnosticSettingsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceURI, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.DiagnosticSettingsClient", "Get", nil, "Failure preparing request")
@@ -249,10 +236,6 @@ func (client DiagnosticSettingsClient) GetResponder(resp *http.Response) (result
 //
 // resourceURI is the identifier of the resource.
 func (client DiagnosticSettingsClient) List(resourceURI string) (result DiagnosticSettingsResourceCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.DiagnosticSettingsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceURI)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.DiagnosticSettingsClient", "List", nil, "Failure preparing request")

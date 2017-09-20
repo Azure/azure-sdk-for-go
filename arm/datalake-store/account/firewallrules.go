@@ -125,10 +125,6 @@ func (client FirewallRulesClient) CreateOrUpdateResponder(resp *http.Response) (
 // the name of the Data Lake Store account from which to delete the firewall rule. firewallRuleName is the name of the
 // firewall rule to delete.
 func (client FirewallRulesClient) Delete(resourceGroupName string, accountName string, firewallRuleName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.FirewallRulesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, accountName, firewallRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Delete", nil, "Failure preparing request")
@@ -196,10 +192,6 @@ func (client FirewallRulesClient) DeleteResponder(resp *http.Response) (result a
 // the name of the Data Lake Store account from which to get the firewall rule. firewallRuleName is the name of the
 // firewall rule to retrieve.
 func (client FirewallRulesClient) Get(resourceGroupName string, accountName string, firewallRuleName string) (result FirewallRule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.FirewallRulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, accountName, firewallRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Get", nil, "Failure preparing request")
@@ -267,10 +259,6 @@ func (client FirewallRulesClient) GetResponder(resp *http.Response) (result Fire
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Store account. accountName is
 // the name of the Data Lake Store account from which to get the firewall rules.
 func (client FirewallRulesClient) ListByAccount(resourceGroupName string, accountName string) (result DataLakeStoreFirewallRuleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.FirewallRulesClient", "ListByAccount")
-	}
-
 	req, err := client.ListByAccountPreparer(resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "ListByAccount", nil, "Failure preparing request")
@@ -407,10 +395,6 @@ func (client FirewallRulesClient) ListByAccountComplete(resourceGroupName string
 // the name of the Data Lake Store account to which to update the firewall rule. firewallRuleName is the name of the
 // firewall rule to update. parameters is parameters supplied to update the firewall rule.
 func (client FirewallRulesClient) Update(resourceGroupName string, accountName string, firewallRuleName string, parameters *UpdateFirewallRuleParameters) (result FirewallRule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.FirewallRulesClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, firewallRuleName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.FirewallRulesClient", "Update", nil, "Failure preparing request")

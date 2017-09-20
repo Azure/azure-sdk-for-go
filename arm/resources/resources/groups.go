@@ -431,10 +431,6 @@ func (client GroupsClient) GetResponder(resp *http.Response) (result Group, err 
 // filter is the filter to apply on the operation. top is the number of results to return. If null is passed, returns
 // all resource groups.
 func (client GroupsClient) List(filter string, top *int32) (result GroupListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resources.GroupsClient", "List")
-	}
-
 	req, err := client.ListPreparer(filter, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.GroupsClient", "List", nil, "Failure preparing request")

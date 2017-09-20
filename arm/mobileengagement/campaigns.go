@@ -45,10 +45,6 @@ func NewCampaignsClientWithBaseURI(baseURI string, subscriptionID string) Campai
 // resource name. kind is campaign kind. Possible values include: 'Announcements', 'Polls', 'DataPushes',
 // 'NativePushes' ID is campaign identifier.
 func (client CampaignsClient) Activate(resourceGroupName string, appCollection string, appName string, kind CampaignKinds, ID int32) (result CampaignStateResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "Activate")
-	}
-
 	req, err := client.ActivatePreparer(resourceGroupName, appCollection, appName, kind, ID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Activate", nil, "Failure preparing request")
@@ -199,10 +195,6 @@ func (client CampaignsClient) CreateResponder(resp *http.Response) (result Campa
 // campaign identifier. resourceGroupName is the name of the resource group. appCollection is application collection.
 // appName is application resource name.
 func (client CampaignsClient) Delete(kind CampaignKinds, ID int32, resourceGroupName string, appCollection string, appName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(kind, ID, resourceGroupName, appCollection, appName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Delete", nil, "Failure preparing request")
@@ -272,10 +264,6 @@ func (client CampaignsClient) DeleteResponder(resp *http.Response) (result autor
 // resource name. kind is campaign kind. Possible values include: 'Announcements', 'Polls', 'DataPushes',
 // 'NativePushes' ID is campaign identifier.
 func (client CampaignsClient) Finish(resourceGroupName string, appCollection string, appName string, kind CampaignKinds, ID int32) (result CampaignStateResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "Finish")
-	}
-
 	req, err := client.FinishPreparer(resourceGroupName, appCollection, appName, kind, ID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Finish", nil, "Failure preparing request")
@@ -346,10 +334,6 @@ func (client CampaignsClient) FinishResponder(resp *http.Response) (result Campa
 // campaign identifier. resourceGroupName is the name of the resource group. appCollection is application collection.
 // appName is application resource name.
 func (client CampaignsClient) Get(kind CampaignKinds, ID int32, resourceGroupName string, appCollection string, appName string) (result CampaignResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(kind, ID, resourceGroupName, appCollection, appName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Get", nil, "Failure preparing request")
@@ -420,10 +404,6 @@ func (client CampaignsClient) GetResponder(resp *http.Response) (result Campaign
 // resource name. kind is campaign kind. Possible values include: 'Announcements', 'Polls', 'DataPushes',
 // 'NativePushes' name is campaign name.
 func (client CampaignsClient) GetByName(resourceGroupName string, appCollection string, appName string, kind CampaignKinds, name string) (result CampaignResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "GetByName")
-	}
-
 	req, err := client.GetByNamePreparer(resourceGroupName, appCollection, appName, kind, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "GetByName", nil, "Failure preparing request")
@@ -494,10 +474,6 @@ func (client CampaignsClient) GetByNameResponder(resp *http.Response) (result Ca
 // campaign identifier. resourceGroupName is the name of the resource group. appCollection is application collection.
 // appName is application resource name.
 func (client CampaignsClient) GetStatistics(kind CampaignKinds, ID int32, resourceGroupName string, appCollection string, appName string) (result CampaignStatisticsResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "GetStatistics")
-	}
-
 	req, err := client.GetStatisticsPreparer(kind, ID, resourceGroupName, appCollection, appName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "GetStatistics", nil, "Failure preparing request")
@@ -580,10 +556,6 @@ func (client CampaignsClient) GetStatisticsResponder(resp *http.Response) (resul
 // campaign only, case insensitive. If the campaign contains the value of the `search` parameter anywhere in the name,
 // it matches.
 func (client CampaignsClient) List(resourceGroupName string, appCollection string, appName string, kind CampaignKinds, skip *int32, top *int32, filter string, orderby string, search string) (result CampaignsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, appCollection, appName, kind, skip, top, filter, orderby, search)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "List", nil, "Failure preparing request")
@@ -821,10 +793,6 @@ func (client CampaignsClient) PushResponder(resp *http.Response) (result Campaig
 // resource name. kind is campaign kind. Possible values include: 'Announcements', 'Polls', 'DataPushes',
 // 'NativePushes' ID is campaign identifier.
 func (client CampaignsClient) Suspend(resourceGroupName string, appCollection string, appName string, kind CampaignKinds, ID int32) (result CampaignStateResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.CampaignsClient", "Suspend")
-	}
-
 	req, err := client.SuspendPreparer(resourceGroupName, appCollection, appName, kind, ID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.CampaignsClient", "Suspend", nil, "Failure preparing request")

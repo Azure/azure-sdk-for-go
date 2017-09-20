@@ -20,7 +20,6 @@ package recoveryservicesbackup
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewProtectedItemsClientWithBaseURI(baseURI string, subscriptionID string) P
 // container name associated with the backup item. protectedItemName is item name to be backed up. parameters is
 // resource backed up item
 func (client ProtectedItemsClient) CreateOrUpdate(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ProtectedItemResource) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.ProtectedItemsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.ProtectedItemsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -123,10 +118,6 @@ func (client ProtectedItemsClient) CreateOrUpdateResponder(resp *http.Response) 
 // recovery services vault is present. fabricName is fabric name associated with the backed up item. containerName is
 // container name associated with the backed up item. protectedItemName is backed up item to be deleted.
 func (client ProtectedItemsClient) Delete(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.ProtectedItemsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(vaultName, resourceGroupName, fabricName, containerName, protectedItemName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.ProtectedItemsClient", "Delete", nil, "Failure preparing request")
@@ -198,10 +189,6 @@ func (client ProtectedItemsClient) DeleteResponder(resp *http.Response) (result 
 // container name associated with the backed up item. protectedItemName is backed up item name whose details are to be
 // fetched. filter is oData filter options.
 func (client ProtectedItemsClient) Get(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result ProtectedItemResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.ProtectedItemsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.ProtectedItemsClient", "Get", nil, "Failure preparing request")

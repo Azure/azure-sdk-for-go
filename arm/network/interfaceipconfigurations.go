@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewInterfaceIPConfigurationsClientWithBaseURI(baseURI string, subscriptionI
 // resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.
 // IPConfigurationName is the name of the ip configuration name.
 func (client InterfaceIPConfigurationsClient) Get(resourceGroupName string, networkInterfaceName string, IPConfigurationName string) (result InterfaceIPConfiguration, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.InterfaceIPConfigurationsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, networkInterfaceName, IPConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfaceIPConfigurationsClient", "Get", nil, "Failure preparing request")
@@ -114,10 +109,6 @@ func (client InterfaceIPConfigurationsClient) GetResponder(resp *http.Response) 
 //
 // resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.
 func (client InterfaceIPConfigurationsClient) List(resourceGroupName string, networkInterfaceName string) (result InterfaceIPConfigurationListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.InterfaceIPConfigurationsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, networkInterfaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfaceIPConfigurationsClient", "List", nil, "Failure preparing request")

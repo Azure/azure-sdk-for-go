@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewReplicationNetworksClientWithBaseURI(baseURI string, subscriptionID stri
 //
 // fabricName is server Id. networkName is primary network name.
 func (client ReplicationNetworksClient) Get(fabricName string, networkName string) (result Network, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationNetworksClient", "Get")
-	}
-
 	req, err := client.GetPreparer(fabricName, networkName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationNetworksClient", "Get", nil, "Failure preparing request")
@@ -113,10 +108,6 @@ func (client ReplicationNetworksClient) GetResponder(resp *http.Response) (resul
 
 // List lists the networks available in a vault
 func (client ReplicationNetworksClient) List() (result NetworkCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationNetworksClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationNetworksClient", "List", nil, "Failure preparing request")
@@ -251,10 +242,6 @@ func (client ReplicationNetworksClient) ListComplete(cancel <-chan struct{}) (<-
 //
 // fabricName is fabric name
 func (client ReplicationNetworksClient) ListByReplicationFabrics(fabricName string) (result NetworkCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationNetworksClient", "ListByReplicationFabrics")
-	}
-
 	req, err := client.ListByReplicationFabricsPreparer(fabricName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationNetworksClient", "ListByReplicationFabrics", nil, "Failure preparing request")

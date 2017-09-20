@@ -20,7 +20,6 @@ package devtestlabs
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewServiceRunnersClientWithBaseURI(baseURI string, subscriptionID string) S
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the service
 // runner. serviceRunner is a container for a managed identity to execute DevTest lab services.
 func (client ServiceRunnersClient) CreateOrUpdate(resourceGroupName string, labName string, name string, serviceRunner ServiceRunner) (result ServiceRunner, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ServiceRunnersClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, labName, name, serviceRunner)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ServiceRunnersClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -117,10 +112,6 @@ func (client ServiceRunnersClient) CreateOrUpdateResponder(resp *http.Response) 
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the service
 // runner.
 func (client ServiceRunnersClient) Delete(resourceGroupName string, labName string, name string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ServiceRunnersClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, labName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ServiceRunnersClient", "Delete", nil, "Failure preparing request")
@@ -187,10 +178,6 @@ func (client ServiceRunnersClient) DeleteResponder(resp *http.Response) (result 
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the service
 // runner.
 func (client ServiceRunnersClient) Get(resourceGroupName string, labName string, name string) (result ServiceRunner, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ServiceRunnersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ServiceRunnersClient", "Get", nil, "Failure preparing request")
@@ -259,10 +246,6 @@ func (client ServiceRunnersClient) GetResponder(resp *http.Response) (result Ser
 // to the operation. top is the maximum number of resources to return from the operation. orderby is the ordering
 // expression for the results, using OData notation.
 func (client ServiceRunnersClient) List(resourceGroupName string, labName string, filter string, top *int32, orderby string) (result ResponseWithContinuationServiceRunner, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ServiceRunnersClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ServiceRunnersClient", "List", nil, "Failure preparing request")

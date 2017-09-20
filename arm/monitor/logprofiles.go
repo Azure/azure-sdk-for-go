@@ -123,10 +123,6 @@ func (client LogProfilesClient) CreateOrUpdateResponder(resp *http.Response) (re
 //
 // logProfileName is the name of the log profile.
 func (client LogProfilesClient) Delete(logProfileName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.LogProfilesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(logProfileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.LogProfilesClient", "Delete", nil, "Failure preparing request")
@@ -190,10 +186,6 @@ func (client LogProfilesClient) DeleteResponder(resp *http.Response) (result aut
 //
 // logProfileName is the name of the log profile.
 func (client LogProfilesClient) Get(logProfileName string) (result LogProfileResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.LogProfilesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(logProfileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.LogProfilesClient", "Get", nil, "Failure preparing request")
@@ -256,10 +248,6 @@ func (client LogProfilesClient) GetResponder(resp *http.Response) (result LogPro
 
 // List list the log profiles.
 func (client LogProfilesClient) List() (result LogProfileCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.LogProfilesClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.LogProfilesClient", "List", nil, "Failure preparing request")
@@ -323,10 +311,6 @@ func (client LogProfilesClient) ListResponder(resp *http.Response) (result LogPr
 //
 // logProfileName is the name of the log profile. logProfilesResource is parameters supplied to the operation.
 func (client LogProfilesClient) Update(logProfileName string, logProfilesResource LogProfileResourcePatch) (result LogProfileResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.LogProfilesClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(logProfileName, logProfilesResource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.LogProfilesClient", "Update", nil, "Failure preparing request")

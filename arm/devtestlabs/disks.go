@@ -48,13 +48,6 @@ func NewDisksClientWithBaseURI(baseURI string, subscriptionID string) DisksClien
 func (client DisksClient) Attach(resourceGroupName string, labName string, userName string, name string, attachDiskProperties AttachDiskProperties, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.DisksClient", "Attach")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -237,13 +230,6 @@ func (client DisksClient) CreateOrUpdateResponder(resp *http.Response) (result D
 func (client DisksClient) Delete(resourceGroupName string, labName string, userName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.DisksClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -328,13 +314,6 @@ func (client DisksClient) DeleteResponder(resp *http.Response) (result autorest.
 func (client DisksClient) Detach(resourceGroupName string, labName string, userName string, name string, detachDiskProperties DetachDiskProperties, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.DisksClient", "Detach")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -418,10 +397,6 @@ func (client DisksClient) DetachResponder(resp *http.Response) (result autorest.
 // user profile. name is the name of the disk. expand is specify the $expand query. Example:
 // 'properties($select=diskType)'
 func (client DisksClient) Get(resourceGroupName string, labName string, userName string, name string, expand string) (result Disk, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.DisksClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, userName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.DisksClient", "Get", nil, "Failure preparing request")
@@ -495,10 +470,6 @@ func (client DisksClient) GetResponder(resp *http.Response) (result Disk, err er
 // apply to the operation. top is the maximum number of resources to return from the operation. orderby is the ordering
 // expression for the results, using OData notation.
 func (client DisksClient) List(resourceGroupName string, labName string, userName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationDisk, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.DisksClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, userName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.DisksClient", "List", nil, "Failure preparing request")

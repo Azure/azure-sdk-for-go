@@ -41,10 +41,6 @@ func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient 
 
 // GetCurrentUser gets the details for the currently logged-in user.
 func (client ObjectsClient) GetCurrentUser() (result AADObject, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ObjectsClient", "GetCurrentUser")
-	}
-
 	req, err := client.GetCurrentUserPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetCurrentUser", nil, "Failure preparing request")
@@ -224,10 +220,6 @@ func (client ObjectsClient) GetObjectsByObjectIdsComplete(parameters GetObjectsP
 //
 // nextLink is next link for the list operation.
 func (client ObjectsClient) GetObjectsByObjectIdsNext(nextLink string) (result GetObjectsResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIdsNext")
-	}
-
 	req, err := client.GetObjectsByObjectIdsNextPreparer(nextLink)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIdsNext", nil, "Failure preparing request")

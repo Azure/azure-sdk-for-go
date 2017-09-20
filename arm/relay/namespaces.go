@@ -624,10 +624,6 @@ func (client NamespacesClient) GetAuthorizationRuleResponder(resp *http.Response
 
 // List lists all the available namespaces within the subscription regardless of the resourceGroups.
 func (client NamespacesClient) List() (result NamespaceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "relay.NamespacesClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.NamespacesClient", "List", nil, "Failure preparing request")

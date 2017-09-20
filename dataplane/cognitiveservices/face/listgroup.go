@@ -483,10 +483,6 @@ func (client ListGroupClient) GetResponder(resp *http.Response) (result GetFaceL
 
 // List retrieve information about all existing face lists. Only faceListId, name and userData will be returned.
 func (client ListGroupClient) List() (result ListGetFaceListResultWrapper, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.ListGroupClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.ListGroupClient", "List", nil, "Failure preparing request")

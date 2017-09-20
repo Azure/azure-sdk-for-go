@@ -20,7 +20,6 @@ package mobileengagement
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -41,10 +40,6 @@ func NewSupportedPlatformsClientWithBaseURI(baseURI string, subscriptionID strin
 
 // List lists supported platforms for Engagement applications.
 func (client SupportedPlatformsClient) List() (result SupportedPlatformsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.SupportedPlatformsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.SupportedPlatformsClient", "List", nil, "Failure preparing request")

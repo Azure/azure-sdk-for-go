@@ -20,7 +20,6 @@ package streamanalytics
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,10 +48,6 @@ func NewFunctionsClientWithBaseURI(baseURI string, subscriptionID string) Functi
 // ifNoneMatch is set to '*' to allow a new function to be created, but to prevent updating an existing function. Other
 // values will result in a 412 Pre-condition Failed response.
 func (client FunctionsClient) CreateOrReplace(function Function, resourceGroupName string, jobName string, functionName string, ifMatch string, ifNoneMatch string) (result Function, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.FunctionsClient", "CreateOrReplace")
-	}
-
 	req, err := client.CreateOrReplacePreparer(function, resourceGroupName, jobName, functionName, ifMatch, ifNoneMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsClient", "CreateOrReplace", nil, "Failure preparing request")
@@ -131,10 +126,6 @@ func (client FunctionsClient) CreateOrReplaceResponder(resp *http.Response) (res
 // Azure Resource Manager API or the portal. jobName is the name of the streaming job. functionName is the name of the
 // function.
 func (client FunctionsClient) Delete(resourceGroupName string, jobName string, functionName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.FunctionsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, jobName, functionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsClient", "Delete", nil, "Failure preparing request")
@@ -202,10 +193,6 @@ func (client FunctionsClient) DeleteResponder(resp *http.Response) (result autor
 // Azure Resource Manager API or the portal. jobName is the name of the streaming job. functionName is the name of the
 // function.
 func (client FunctionsClient) Get(resourceGroupName string, jobName string, functionName string) (result Function, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.FunctionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, jobName, functionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsClient", "Get", nil, "Failure preparing request")
@@ -276,10 +263,6 @@ func (client FunctionsClient) GetResponder(resp *http.Response) (result Function
 // include all properties. By default, all properties are returned except diagnostics. Currently only accepts '*' as a
 // valid value.
 func (client FunctionsClient) ListByStreamingJob(resourceGroupName string, jobName string, selectParameter string) (result FunctionListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.FunctionsClient", "ListByStreamingJob")
-	}
-
 	req, err := client.ListByStreamingJobPreparer(resourceGroupName, jobName, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsClient", "ListByStreamingJob", nil, "Failure preparing request")
@@ -420,10 +403,6 @@ func (client FunctionsClient) ListByStreamingJobComplete(resourceGroupName strin
 // function. functionRetrieveDefaultDefinitionParameters is parameters used to specify the type of function to retrieve
 // the default definition for.
 func (client FunctionsClient) RetrieveDefaultDefinition(resourceGroupName string, jobName string, functionName string, functionRetrieveDefaultDefinitionParameters *FunctionRetrieveDefaultDefinitionParameters) (result Function, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.FunctionsClient", "RetrieveDefaultDefinition")
-	}
-
 	req, err := client.RetrieveDefaultDefinitionPreparer(resourceGroupName, jobName, functionName, functionRetrieveDefaultDefinitionParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsClient", "RetrieveDefaultDefinition", nil, "Failure preparing request")
@@ -505,13 +484,6 @@ func (client FunctionsClient) RetrieveDefaultDefinitionResponder(resp *http.Resp
 func (client FunctionsClient) Test(resourceGroupName string, jobName string, functionName string, function *Function, cancel <-chan struct{}) (<-chan ResourceTestStatus, <-chan error) {
 	resultChan := make(chan ResourceTestStatus, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "streamanalytics.FunctionsClient", "Test")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ResourceTestStatus
@@ -603,10 +575,6 @@ func (client FunctionsClient) TestResponder(resp *http.Response) (result Resourc
 // name of the function. ifMatch is the ETag of the function. Omit this value to always overwrite the current function.
 // Specify the last-seen ETag value to prevent accidentally overwritting concurrent changes.
 func (client FunctionsClient) Update(function Function, resourceGroupName string, jobName string, functionName string, ifMatch string) (result Function, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.FunctionsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(function, resourceGroupName, jobName, functionName, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsClient", "Update", nil, "Failure preparing request")

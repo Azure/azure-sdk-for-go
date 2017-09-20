@@ -114,10 +114,6 @@ func (client PersonGroupClient) CreateResponder(resp *http.Response) (result aut
 //
 // personGroupID is the personGroupId of the person group to be deleted.
 func (client PersonGroupClient) Delete(personGroupID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(personGroupID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Delete", nil, "Failure preparing request")
@@ -179,10 +175,6 @@ func (client PersonGroupClient) DeleteResponder(resp *http.Response) (result aut
 //
 // personGroupID is personGroupId of the target person group.
 func (client PersonGroupClient) Get(personGroupID string) (result PersonGroupResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Get")
-	}
-
 	req, err := client.GetPreparer(personGroupID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Get", nil, "Failure preparing request")
@@ -245,10 +237,6 @@ func (client PersonGroupClient) GetResponder(resp *http.Response) (result Person
 //
 // personGroupID is personGroupId of target person group.
 func (client PersonGroupClient) GetTrainingStatus(personGroupID string) (result TrainingStatus, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "GetTrainingStatus")
-	}
-
 	req, err := client.GetTrainingStatusPreparer(personGroupID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "GetTrainingStatus", nil, "Failure preparing request")
@@ -390,10 +378,6 @@ func (client PersonGroupClient) ListResponder(resp *http.Response) (result ListP
 //
 // personGroupID is target person group to be trained.
 func (client PersonGroupClient) Train(personGroupID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Train")
-	}
-
 	req, err := client.TrainPreparer(personGroupID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Train", nil, "Failure preparing request")
@@ -456,10 +440,6 @@ func (client PersonGroupClient) TrainResponder(resp *http.Response) (result auto
 //
 // personGroupID is personGroupId of the person group to be updated.
 func (client PersonGroupClient) Update(personGroupID string, body CreatePersonGroupRequest) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(personGroupID, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Update", nil, "Failure preparing request")

@@ -155,13 +155,6 @@ func (client SnapshotsClient) CreateOrUpdateResponder(resp *http.Response) (resu
 func (client SnapshotsClient) Delete(resourceGroupName string, snapshotName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.SnapshotsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -241,10 +234,6 @@ func (client SnapshotsClient) DeleteResponder(resp *http.Response) (result Opera
 // resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
 // subscription and resource group.
 func (client SnapshotsClient) Get(resourceGroupName string, snapshotName string) (result Snapshot, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.SnapshotsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, snapshotName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "Get", nil, "Failure preparing request")
@@ -402,10 +391,6 @@ func (client SnapshotsClient) GrantAccessResponder(resp *http.Response) (result 
 
 // List lists snapshots under a subscription.
 func (client SnapshotsClient) List() (result SnapshotList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.SnapshotsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "List", nil, "Failure preparing request")
@@ -538,10 +523,6 @@ func (client SnapshotsClient) ListComplete(cancel <-chan struct{}) (<-chan Snaps
 //
 // resourceGroupName is the name of the resource group.
 func (client SnapshotsClient) ListByResourceGroup(resourceGroupName string) (result SnapshotList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.SnapshotsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -679,13 +660,6 @@ func (client SnapshotsClient) ListByResourceGroupComplete(resourceGroupName stri
 func (client SnapshotsClient) RevokeAccess(resourceGroupName string, snapshotName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.SnapshotsClient", "RevokeAccess")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -768,13 +742,6 @@ func (client SnapshotsClient) RevokeAccessResponder(resp *http.Response) (result
 func (client SnapshotsClient) Update(resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, cancel <-chan struct{}) (<-chan Snapshot, <-chan error) {
 	resultChan := make(chan Snapshot, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.SnapshotsClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Snapshot

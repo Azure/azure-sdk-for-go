@@ -20,7 +20,6 @@ package recoveryservicesbackup
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewBackupUsageSummariesClientWithBaseURI(baseURI string, subscriptionID str
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the
 // recovery services vault is present. filter is oData filter options. skipToken is skipToken Filter.
 func (client BackupUsageSummariesClient) List(vaultName string, resourceGroupName string, filter string, skipToken string) (result BackupManagementUsageList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.BackupUsageSummariesClient", "List")
-	}
-
 	req, err := client.ListPreparer(vaultName, resourceGroupName, filter, skipToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.BackupUsageSummariesClient", "List", nil, "Failure preparing request")

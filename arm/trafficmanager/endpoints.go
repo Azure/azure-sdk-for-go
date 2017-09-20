@@ -20,7 +20,6 @@ package trafficmanager
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,10 +45,6 @@ func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) Endpoi
 // endpoint to be created or updated. endpointName is the name of the Traffic Manager endpoint to be created or
 // updated. parameters is the Traffic Manager endpoint parameters supplied to the CreateOrUpdate operation.
 func (client EndpointsClient) CreateOrUpdate(resourceGroupName string, profileName string, endpointType string, endpointName string, parameters Endpoint) (result Endpoint, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "trafficmanager.EndpointsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, profileName, endpointType, endpointName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.EndpointsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -121,10 +116,6 @@ func (client EndpointsClient) CreateOrUpdateResponder(resp *http.Response) (resu
 // profileName is the name of the Traffic Manager profile. endpointType is the type of the Traffic Manager endpoint to
 // be deleted. endpointName is the name of the Traffic Manager endpoint to be deleted.
 func (client EndpointsClient) Delete(resourceGroupName string, profileName string, endpointType string, endpointName string) (result DeleteOperationResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "trafficmanager.EndpointsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, profileName, endpointType, endpointName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.EndpointsClient", "Delete", nil, "Failure preparing request")
@@ -194,10 +185,6 @@ func (client EndpointsClient) DeleteResponder(resp *http.Response) (result Delet
 // of the Traffic Manager profile. endpointType is the type of the Traffic Manager endpoint. endpointName is the name
 // of the Traffic Manager endpoint.
 func (client EndpointsClient) Get(resourceGroupName string, profileName string, endpointType string, endpointName string) (result Endpoint, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "trafficmanager.EndpointsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, profileName, endpointType, endpointName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.EndpointsClient", "Get", nil, "Failure preparing request")
@@ -268,10 +255,6 @@ func (client EndpointsClient) GetResponder(resp *http.Response) (result Endpoint
 // be updated. endpointName is the name of the Traffic Manager endpoint to be updated. parameters is the Traffic
 // Manager endpoint parameters supplied to the Update operation.
 func (client EndpointsClient) Update(resourceGroupName string, profileName string, endpointType string, endpointName string, parameters Endpoint) (result Endpoint, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "trafficmanager.EndpointsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, profileName, endpointType, endpointName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.EndpointsClient", "Update", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package customerinsights
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewRolesClientWithBaseURI(baseURI string, subscriptionID string) RolesClien
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub.
 func (client RolesClient) ListByHub(resourceGroupName string, hubName string) (result RoleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.RolesClient", "ListByHub")
-	}
-
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RolesClient", "ListByHub", nil, "Failure preparing request")

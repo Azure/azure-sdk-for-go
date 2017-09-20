@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,13 +48,6 @@ func NewReplicationProtectionContainersClientWithBaseURI(baseURI string, subscri
 func (client ReplicationProtectionContainersClient) Create(fabricName string, protectionContainerName string, creationInput CreateProtectionContainerInput, cancel <-chan struct{}) (<-chan ProtectionContainer, <-chan error) {
 	resultChan := make(chan ProtectionContainer, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainersClient", "Create")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ProtectionContainer
@@ -141,13 +133,6 @@ func (client ReplicationProtectionContainersClient) CreateResponder(resp *http.R
 func (client ReplicationProtectionContainersClient) Delete(fabricName string, protectionContainerName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainersClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -232,13 +217,6 @@ func (client ReplicationProtectionContainersClient) DeleteResponder(resp *http.R
 func (client ReplicationProtectionContainersClient) DiscoverProtectableItem(fabricName string, protectionContainerName string, discoverProtectableItemRequest DiscoverProtectableItemRequest, cancel <-chan struct{}) (<-chan ProtectionContainer, <-chan error) {
 	resultChan := make(chan ProtectionContainer, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainersClient", "DiscoverProtectableItem")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ProtectionContainer
@@ -321,10 +299,6 @@ func (client ReplicationProtectionContainersClient) DiscoverProtectableItemRespo
 //
 // fabricName is fabric name. protectionContainerName is protection container name.
 func (client ReplicationProtectionContainersClient) Get(fabricName string, protectionContainerName string) (result ProtectionContainer, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(fabricName, protectionContainerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationProtectionContainersClient", "Get", nil, "Failure preparing request")
@@ -390,10 +364,6 @@ func (client ReplicationProtectionContainersClient) GetResponder(resp *http.Resp
 
 // List lists the protection containers in a vault.
 func (client ReplicationProtectionContainersClient) List() (result ProtectionContainerCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainersClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationProtectionContainersClient", "List", nil, "Failure preparing request")
@@ -528,10 +498,6 @@ func (client ReplicationProtectionContainersClient) ListComplete(cancel <-chan s
 //
 // fabricName is fabric name.
 func (client ReplicationProtectionContainersClient) ListByReplicationFabrics(fabricName string) (result ProtectionContainerCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainersClient", "ListByReplicationFabrics")
-	}
-
 	req, err := client.ListByReplicationFabricsPreparer(fabricName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationProtectionContainersClient", "ListByReplicationFabrics", nil, "Failure preparing request")
@@ -672,13 +638,6 @@ func (client ReplicationProtectionContainersClient) ListByReplicationFabricsComp
 func (client ReplicationProtectionContainersClient) SwitchProtection(fabricName string, protectionContainerName string, switchInput SwitchProtectionInput, cancel <-chan struct{}) (<-chan ProtectionContainer, <-chan error) {
 	resultChan := make(chan ProtectionContainer, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainersClient", "SwitchProtection")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ProtectionContainer

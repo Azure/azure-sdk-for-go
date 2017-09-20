@@ -256,10 +256,6 @@ func (client AccountClient) GetResponder(resp *http.Response) (result Account, e
 
 // List retrieve a list of accounts within a given subscription.
 func (client AccountClient) List() (result AccountListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.AccountClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.AccountClient", "List", nil, "Failure preparing request")

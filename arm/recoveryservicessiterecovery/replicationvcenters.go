@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,13 +46,6 @@ func NewReplicationvCentersClientWithBaseURI(baseURI string, subscriptionID stri
 func (client ReplicationvCentersClient) Create(fabricName string, vCenterName string, addVCenterRequest AddVCenterRequest, cancel <-chan struct{}) (<-chan VCenter, <-chan error) {
 	resultChan := make(chan VCenter, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationvCentersClient", "Create")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result VCenter
@@ -140,13 +132,6 @@ func (client ReplicationvCentersClient) CreateResponder(resp *http.Response) (re
 func (client ReplicationvCentersClient) Delete(fabricName string, vCenterName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationvCentersClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -226,10 +211,6 @@ func (client ReplicationvCentersClient) DeleteResponder(resp *http.Response) (re
 //
 // fabricName is fabric name. vCenterName is vCenter name.
 func (client ReplicationvCentersClient) Get(fabricName string, vCenterName string) (result VCenter, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationvCentersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(fabricName, vCenterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationvCentersClient", "Get", nil, "Failure preparing request")
@@ -295,10 +276,6 @@ func (client ReplicationvCentersClient) GetResponder(resp *http.Response) (resul
 
 // List lists the vCenter servers registered in the vault.
 func (client ReplicationvCentersClient) List() (result VCenterCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationvCentersClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationvCentersClient", "List", nil, "Failure preparing request")
@@ -433,10 +410,6 @@ func (client ReplicationvCentersClient) ListComplete(cancel <-chan struct{}) (<-
 //
 // fabricName is fabric name.
 func (client ReplicationvCentersClient) ListByReplicationFabrics(fabricName string) (result VCenterCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationvCentersClient", "ListByReplicationFabrics")
-	}
-
 	req, err := client.ListByReplicationFabricsPreparer(fabricName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationvCentersClient", "ListByReplicationFabrics", nil, "Failure preparing request")
@@ -576,13 +549,6 @@ func (client ReplicationvCentersClient) ListByReplicationFabricsComplete(fabricN
 func (client ReplicationvCentersClient) Update(fabricName string, vCenterName string, updateVCenterRequest UpdateVCenterRequest, cancel <-chan struct{}) (<-chan VCenter, <-chan error) {
 	resultChan := make(chan VCenter, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationvCentersClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result VCenter

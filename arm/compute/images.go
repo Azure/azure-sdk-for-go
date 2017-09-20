@@ -142,13 +142,6 @@ func (client ImagesClient) CreateOrUpdateResponder(resp *http.Response) (result 
 func (client ImagesClient) Delete(resourceGroupName string, imageName string, cancel <-chan struct{}) (<-chan OperationStatusResponse, <-chan error) {
 	resultChan := make(chan OperationStatusResponse, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "compute.ImagesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result OperationStatusResponse
@@ -228,10 +221,6 @@ func (client ImagesClient) DeleteResponder(resp *http.Response) (result Operatio
 // resourceGroupName is the name of the resource group. imageName is the name of the image. expand is the expand
 // expression to apply on the operation.
 func (client ImagesClient) Get(resourceGroupName string, imageName string, expand string) (result Image, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.ImagesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, imageName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "Get", nil, "Failure preparing request")
@@ -299,10 +288,6 @@ func (client ImagesClient) GetResponder(resp *http.Response) (result Image, err 
 // List gets the list of Images in the subscription. Use nextLink property in the response to get the next page of
 // Images. Do this till nextLink is not null to fetch all the Images.
 func (client ImagesClient) List() (result ImageListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.ImagesClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "List", nil, "Failure preparing request")
@@ -435,10 +420,6 @@ func (client ImagesClient) ListComplete(cancel <-chan struct{}) (<-chan Image, <
 //
 // resourceGroupName is the name of the resource group.
 func (client ImagesClient) ListByResourceGroup(resourceGroupName string) (result ImageListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.ImagesClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "ListByResourceGroup", nil, "Failure preparing request")

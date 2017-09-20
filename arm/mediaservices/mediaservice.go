@@ -342,10 +342,6 @@ func (client Client) GetResponder(resp *http.Response) (result MediaService, err
 //
 // resourceGroupName is name of the resource group within the Azure subscription.
 func (client Client) ListByResourceGroup(resourceGroupName string) (result Collection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mediaservices.Client", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mediaservices.Client", "ListByResourceGroup", nil, "Failure preparing request")

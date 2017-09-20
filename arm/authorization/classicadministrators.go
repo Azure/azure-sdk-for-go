@@ -20,7 +20,6 @@ package authorization
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewClassicAdministratorsClientWithBaseURI(baseURI string, subscriptionID st
 
 // List gets service administrator, account administrator, and co-administrators for the subscription.
 func (client ClassicAdministratorsClient) List() (result ClassicAdministratorListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.ClassicAdministratorsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.ClassicAdministratorsClient", "List", nil, "Failure preparing request")

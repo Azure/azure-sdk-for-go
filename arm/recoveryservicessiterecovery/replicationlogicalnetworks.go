@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewReplicationLogicalNetworksClientWithBaseURI(baseURI string, subscription
 //
 // fabricName is server Id. logicalNetworkName is logical network name.
 func (client ReplicationLogicalNetworksClient) Get(fabricName string, logicalNetworkName string) (result LogicalNetwork, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationLogicalNetworksClient", "Get")
-	}
-
 	req, err := client.GetPreparer(fabricName, logicalNetworkName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationLogicalNetworksClient", "Get", nil, "Failure preparing request")
@@ -115,10 +110,6 @@ func (client ReplicationLogicalNetworksClient) GetResponder(resp *http.Response)
 //
 // fabricName is server Id.
 func (client ReplicationLogicalNetworksClient) ListByReplicationFabrics(fabricName string) (result LogicalNetworkCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationLogicalNetworksClient", "ListByReplicationFabrics")
-	}
-
 	req, err := client.ListByReplicationFabricsPreparer(fabricName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationLogicalNetworksClient", "ListByReplicationFabrics", nil, "Failure preparing request")

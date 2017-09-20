@@ -147,10 +147,6 @@ func (client BackupLongTermRetentionPoliciesClient) CreateOrUpdateResponder(resp
 // Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
 // database. backupLongTermRetentionPolicyName is the name of the backup long term retention policy
 func (client BackupLongTermRetentionPoliciesClient) Get(resourceGroupName string, serverName string, databaseName string, backupLongTermRetentionPolicyName string) (result BackupLongTermRetentionPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.BackupLongTermRetentionPoliciesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, databaseName, backupLongTermRetentionPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesClient", "Get", nil, "Failure preparing request")

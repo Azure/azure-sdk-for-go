@@ -395,10 +395,6 @@ func (client GatewayClient) GetProfileResponder(resp *http.Response) (result Gat
 
 // List returns gateways in a subscription.
 func (client GatewayClient) List() (result GatewayResources, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servermanagement.GatewayClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servermanagement.GatewayClient", "List", nil, "Failure preparing request")

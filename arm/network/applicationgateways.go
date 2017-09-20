@@ -48,13 +48,6 @@ func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID stri
 func (client ApplicationGatewaysClient) BackendHealth(resourceGroupName string, applicationGatewayName string, expand string, cancel <-chan struct{}) (<-chan ApplicationGatewayBackendHealth, <-chan error) {
 	resultChan := make(chan ApplicationGatewayBackendHealth, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ApplicationGatewaysClient", "BackendHealth")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ApplicationGatewayBackendHealth
@@ -239,13 +232,6 @@ func (client ApplicationGatewaysClient) CreateOrUpdateResponder(resp *http.Respo
 func (client ApplicationGatewaysClient) Delete(resourceGroupName string, applicationGatewayName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ApplicationGatewaysClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -323,10 +309,6 @@ func (client ApplicationGatewaysClient) DeleteResponder(resp *http.Response) (re
 //
 // resourceGroupName is the name of the resource group. applicationGatewayName is the name of the application gateway.
 func (client ApplicationGatewaysClient) Get(resourceGroupName string, applicationGatewayName string) (result ApplicationGateway, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ApplicationGatewaysClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, applicationGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Get", nil, "Failure preparing request")
@@ -392,10 +374,6 @@ func (client ApplicationGatewaysClient) GetResponder(resp *http.Response) (resul
 //
 // predefinedPolicyName is name of Ssl predefined policy.
 func (client ApplicationGatewaysClient) GetSslPredefinedPolicy(predefinedPolicyName string) (result ApplicationGatewaySslPredefinedPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ApplicationGatewaysClient", "GetSslPredefinedPolicy")
-	}
-
 	req, err := client.GetSslPredefinedPolicyPreparer(predefinedPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "GetSslPredefinedPolicy", nil, "Failure preparing request")
@@ -460,10 +438,6 @@ func (client ApplicationGatewaysClient) GetSslPredefinedPolicyResponder(resp *ht
 //
 // resourceGroupName is the name of the resource group.
 func (client ApplicationGatewaysClient) List(resourceGroupName string) (result ApplicationGatewayListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ApplicationGatewaysClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "List", nil, "Failure preparing request")
@@ -595,10 +569,6 @@ func (client ApplicationGatewaysClient) ListComplete(resourceGroupName string, c
 
 // ListAll gets all the application gateways in a subscription.
 func (client ApplicationGatewaysClient) ListAll() (result ApplicationGatewayListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ApplicationGatewaysClient", "ListAll")
-	}
-
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAll", nil, "Failure preparing request")
@@ -729,10 +699,6 @@ func (client ApplicationGatewaysClient) ListAllComplete(cancel <-chan struct{}) 
 
 // ListAvailableSslOptions lists available Ssl options for configuring Ssl policy.
 func (client ApplicationGatewaysClient) ListAvailableSslOptions() (result ApplicationGatewayAvailableSslOptions, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ApplicationGatewaysClient", "ListAvailableSslOptions")
-	}
-
 	req, err := client.ListAvailableSslOptionsPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAvailableSslOptions", nil, "Failure preparing request")
@@ -794,10 +760,6 @@ func (client ApplicationGatewaysClient) ListAvailableSslOptionsResponder(resp *h
 
 // ListAvailableSslPredefinedPolicies lists all SSL predefined policies for configuring Ssl policy.
 func (client ApplicationGatewaysClient) ListAvailableSslPredefinedPolicies() (result ApplicationGatewayAvailableSslPredefinedPolicies, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ApplicationGatewaysClient", "ListAvailableSslPredefinedPolicies")
-	}
-
 	req, err := client.ListAvailableSslPredefinedPoliciesPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAvailableSslPredefinedPolicies", nil, "Failure preparing request")
@@ -928,10 +890,6 @@ func (client ApplicationGatewaysClient) ListAvailableSslPredefinedPoliciesComple
 
 // ListAvailableWafRuleSets lists all available web application firewall rule sets.
 func (client ApplicationGatewaysClient) ListAvailableWafRuleSets() (result ApplicationGatewayAvailableWafRuleSetsResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ApplicationGatewaysClient", "ListAvailableWafRuleSets")
-	}
-
 	req, err := client.ListAvailableWafRuleSetsPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAvailableWafRuleSets", nil, "Failure preparing request")
@@ -998,13 +956,6 @@ func (client ApplicationGatewaysClient) ListAvailableWafRuleSetsResponder(resp *
 func (client ApplicationGatewaysClient) Start(resourceGroupName string, applicationGatewayName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ApplicationGatewaysClient", "Start")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -1086,13 +1037,6 @@ func (client ApplicationGatewaysClient) StartResponder(resp *http.Response) (res
 func (client ApplicationGatewaysClient) Stop(resourceGroupName string, applicationGatewayName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ApplicationGatewaysClient", "Stop")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response

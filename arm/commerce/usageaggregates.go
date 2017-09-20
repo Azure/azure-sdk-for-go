@@ -21,7 +21,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -52,10 +51,6 @@ func NewUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) 
 // string is provided in the response body of the previous call, enabling paging through a large result set. If not
 // present, the data is retrieved from the beginning of the day/hour (based on the granularity) passed in.
 func (client UsageAggregatesClient) List(reportedStartTime date.Time, reportedEndTime date.Time, showDetails *bool, aggregationGranularity AggregationGranularity, continuationToken string) (result UsageAggregationListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "commerce.UsageAggregatesClient", "List")
-	}
-
 	req, err := client.ListPreparer(reportedStartTime, reportedEndTime, showDetails, aggregationGranularity, continuationToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", nil, "Failure preparing request")

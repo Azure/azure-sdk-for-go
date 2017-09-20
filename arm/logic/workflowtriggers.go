@@ -20,7 +20,6 @@ package logic
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewWorkflowTriggersClientWithBaseURI(baseURI string, subscriptionID string)
 // resourceGroupName is the resource group name. workflowName is the workflow name. triggerName is the workflow trigger
 // name.
 func (client WorkflowTriggersClient) Get(resourceGroupName string, workflowName string, triggerName string) (result WorkflowTrigger, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowTriggersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, workflowName, triggerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Get", nil, "Failure preparing request")
@@ -115,10 +110,6 @@ func (client WorkflowTriggersClient) GetResponder(resp *http.Response) (result W
 // resourceGroupName is the resource group name. workflowName is the workflow name. top is the number of items to be
 // included in the result. filter is the filter to apply on the operation.
 func (client WorkflowTriggersClient) List(resourceGroupName string, workflowName string, top *int32, filter string) (result WorkflowTriggerListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowTriggersClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, workflowName, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "List", nil, "Failure preparing request")
@@ -260,10 +251,6 @@ func (client WorkflowTriggersClient) ListComplete(resourceGroupName string, work
 // resourceGroupName is the resource group name. workflowName is the workflow name. triggerName is the workflow trigger
 // name.
 func (client WorkflowTriggersClient) ListCallbackURL(resourceGroupName string, workflowName string, triggerName string) (result WorkflowTriggerCallbackURL, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowTriggersClient", "ListCallbackURL")
-	}
-
 	req, err := client.ListCallbackURLPreparer(resourceGroupName, workflowName, triggerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "ListCallbackURL", nil, "Failure preparing request")
@@ -331,10 +318,6 @@ func (client WorkflowTriggersClient) ListCallbackURLResponder(resp *http.Respons
 // resourceGroupName is the resource group name. workflowName is the workflow name. triggerName is the workflow trigger
 // name.
 func (client WorkflowTriggersClient) Run(resourceGroupName string, workflowName string, triggerName string) (result SetObject, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowTriggersClient", "Run")
-	}
-
 	req, err := client.RunPreparer(resourceGroupName, workflowName, triggerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggersClient", "Run", nil, "Failure preparing request")

@@ -23,7 +23,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -58,10 +57,6 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 // location is the location of the domain name. domainNameLabel is the domain name to be verified. It must conform to
 // the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
 func (client ManagementClient) CheckDNSNameAvailability(location string, domainNameLabel string) (result DNSNameAvailabilityResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ManagementClient", "CheckDNSNameAvailability")
-	}
-
 	req, err := client.CheckDNSNameAvailabilityPreparer(location, domainNameLabel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ManagementClient", "CheckDNSNameAvailability", nil, "Failure preparing request")

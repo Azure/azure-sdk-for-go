@@ -20,7 +20,6 @@ package features
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 // resourceProviderNamespace is the resource provider namespace for the feature. featureName is the name of the feature
 // to get.
 func (client GroupClient) Get(resourceProviderNamespace string, featureName string) (result Result, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "features.GroupClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceProviderNamespace, featureName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.GroupClient", "Get", nil, "Failure preparing request")
@@ -116,10 +111,6 @@ func (client GroupClient) GetResponder(resp *http.Response) (result Result, err 
 //
 // resourceProviderNamespace is the namespace of the resource provider for getting features.
 func (client GroupClient) List(resourceProviderNamespace string) (result OperationsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "features.GroupClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceProviderNamespace)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.GroupClient", "List", nil, "Failure preparing request")
@@ -251,10 +242,6 @@ func (client GroupClient) ListComplete(resourceProviderNamespace string, cancel 
 
 // ListAll gets all the preview features that are available through AFEC for the subscription.
 func (client GroupClient) ListAll() (result OperationsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "features.GroupClient", "ListAll")
-	}
-
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.GroupClient", "ListAll", nil, "Failure preparing request")
@@ -388,10 +375,6 @@ func (client GroupClient) ListAllComplete(cancel <-chan struct{}) (<-chan Result
 // resourceProviderNamespace is the namespace of the resource provider. featureName is the name of the feature to
 // register.
 func (client GroupClient) Register(resourceProviderNamespace string, featureName string) (result Result, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "features.GroupClient", "Register")
-	}
-
 	req, err := client.RegisterPreparer(resourceProviderNamespace, featureName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.GroupClient", "Register", nil, "Failure preparing request")

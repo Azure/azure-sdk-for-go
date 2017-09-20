@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -50,10 +49,6 @@ func NewTransparentDataEncryptionActivitiesClientWithBaseURI(baseURI string, sub
 // database for which the transparent data encryption applies. transparentDataEncryptionName is the name of the
 // transparent data encryption configuration.
 func (client TransparentDataEncryptionActivitiesClient) ListByConfiguration(resourceGroupName string, serverName string, databaseName string, transparentDataEncryptionName string) (result TransparentDataEncryptionActivityListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.TransparentDataEncryptionActivitiesClient", "ListByConfiguration")
-	}
-
 	req, err := client.ListByConfigurationPreparer(resourceGroupName, serverName, databaseName, transparentDataEncryptionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.TransparentDataEncryptionActivitiesClient", "ListByConfiguration", nil, "Failure preparing request")

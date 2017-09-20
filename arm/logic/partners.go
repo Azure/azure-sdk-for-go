@@ -120,10 +120,6 @@ func (client PartnersClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. partnerName is
 // the integration account partner name.
 func (client PartnersClient) Delete(resourceGroupName string, integrationAccountName string, partnerName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.PartnersClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, integrationAccountName, partnerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.PartnersClient", "Delete", nil, "Failure preparing request")
@@ -190,10 +186,6 @@ func (client PartnersClient) DeleteResponder(resp *http.Response) (result autore
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. partnerName is
 // the integration account partner name.
 func (client PartnersClient) Get(resourceGroupName string, integrationAccountName string, partnerName string) (result IntegrationAccountPartner, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.PartnersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, integrationAccountName, partnerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.PartnersClient", "Get", nil, "Failure preparing request")
@@ -261,10 +253,6 @@ func (client PartnersClient) GetResponder(resp *http.Response) (result Integrati
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. top is the
 // number of items to be included in the result. filter is the filter to apply on the operation.
 func (client PartnersClient) ListByIntegrationAccounts(resourceGroupName string, integrationAccountName string, top *int32, filter string) (result IntegrationAccountPartnerListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.PartnersClient", "ListByIntegrationAccounts")
-	}
-
 	req, err := client.ListByIntegrationAccountsPreparer(resourceGroupName, integrationAccountName, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.PartnersClient", "ListByIntegrationAccounts", nil, "Failure preparing request")

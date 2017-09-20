@@ -20,7 +20,6 @@ package customerinsights
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,10 +45,6 @@ func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesCli
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. parameters is parameters
 // supplied to the GetUploadUrlForData operation.
 func (client ImagesClient) GetUploadURLForData(resourceGroupName string, hubName string, parameters GetImageUploadURLInput) (result ImageDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.ImagesClient", "GetUploadURLForData")
-	}
-
 	req, err := client.GetUploadURLForDataPreparer(resourceGroupName, hubName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForData", nil, "Failure preparing request")
@@ -118,10 +113,6 @@ func (client ImagesClient) GetUploadURLForDataResponder(resp *http.Response) (re
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. parameters is parameters
 // supplied to the GetUploadUrlForEntityType operation.
 func (client ImagesClient) GetUploadURLForEntityType(resourceGroupName string, hubName string, parameters GetImageUploadURLInput) (result ImageDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType")
-	}
-
 	req, err := client.GetUploadURLForEntityTypePreparer(resourceGroupName, hubName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ImagesClient", "GetUploadURLForEntityType", nil, "Failure preparing request")

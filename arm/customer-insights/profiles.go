@@ -146,13 +146,6 @@ func (client ProfilesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 func (client ProfilesClient) Delete(resourceGroupName string, hubName string, profileName string, localeCode string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "customerinsights.ProfilesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -235,10 +228,6 @@ func (client ProfilesClient) DeleteResponder(resp *http.Response) (result autore
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. profileName is the name of the
 // profile. localeCode is locale of profile to retrieve, default is en-us.
 func (client ProfilesClient) Get(resourceGroupName string, hubName string, profileName string, localeCode string) (result ProfileResourceFormat, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.ProfilesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, hubName, profileName, localeCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesClient", "Get", nil, "Failure preparing request")
@@ -310,10 +299,6 @@ func (client ProfilesClient) GetResponder(resp *http.Response) (result ProfileRe
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. profileName is the name of the
 // profile.
 func (client ProfilesClient) GetEnrichingKpis(resourceGroupName string, hubName string, profileName string) (result ListKpiDefinitionWrapper, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.ProfilesClient", "GetEnrichingKpis")
-	}
-
 	req, err := client.GetEnrichingKpisPreparer(resourceGroupName, hubName, profileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesClient", "GetEnrichingKpis", nil, "Failure preparing request")
@@ -381,10 +366,6 @@ func (client ProfilesClient) GetEnrichingKpisResponder(resp *http.Response) (res
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. localeCode is locale of profile
 // to retrieve, default is en-us.
 func (client ProfilesClient) ListByHub(resourceGroupName string, hubName string, localeCode string) (result ProfileListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.ProfilesClient", "ListByHub")
-	}
-
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName, localeCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ProfilesClient", "ListByHub", nil, "Failure preparing request")

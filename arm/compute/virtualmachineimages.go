@@ -20,7 +20,6 @@ package compute
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID str
 // location is the name of a supported Azure region. publisherName is a valid image publisher. offer is a valid image
 // publisher offer. skus is a valid image SKU. version is a valid image SKU version.
 func (client VirtualMachineImagesClient) Get(location string, publisherName string, offer string, skus string, version string) (result VirtualMachineImage, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineImagesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(location, publisherName, offer, skus, version)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "Get", nil, "Failure preparing request")
@@ -117,10 +112,6 @@ func (client VirtualMachineImagesClient) GetResponder(resp *http.Response) (resu
 // location is the name of a supported Azure region. publisherName is a valid image publisher. offer is a valid image
 // publisher offer. skus is a valid image SKU. filter is the filter to apply on the operation.
 func (client VirtualMachineImagesClient) List(location string, publisherName string, offer string, skus string, filter string, top *int32, orderby string) (result ListVirtualMachineImageResourceWrapper, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineImagesClient", "List")
-	}
-
 	req, err := client.ListPreparer(location, publisherName, offer, skus, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "List", nil, "Failure preparing request")
@@ -197,10 +188,6 @@ func (client VirtualMachineImagesClient) ListResponder(resp *http.Response) (res
 //
 // location is the name of a supported Azure region. publisherName is a valid image publisher.
 func (client VirtualMachineImagesClient) ListOffers(location string, publisherName string) (result ListVirtualMachineImageResourceWrapper, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineImagesClient", "ListOffers")
-	}
-
 	req, err := client.ListOffersPreparer(location, publisherName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListOffers", nil, "Failure preparing request")
@@ -266,10 +253,6 @@ func (client VirtualMachineImagesClient) ListOffersResponder(resp *http.Response
 //
 // location is the name of a supported Azure region.
 func (client VirtualMachineImagesClient) ListPublishers(location string) (result ListVirtualMachineImageResourceWrapper, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineImagesClient", "ListPublishers")
-	}
-
 	req, err := client.ListPublishersPreparer(location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListPublishers", nil, "Failure preparing request")
@@ -335,10 +318,6 @@ func (client VirtualMachineImagesClient) ListPublishersResponder(resp *http.Resp
 // location is the name of a supported Azure region. publisherName is a valid image publisher. offer is a valid image
 // publisher offer.
 func (client VirtualMachineImagesClient) ListSkus(location string, publisherName string, offer string) (result ListVirtualMachineImageResourceWrapper, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.VirtualMachineImagesClient", "ListSkus")
-	}
-
 	req, err := client.ListSkusPreparer(location, publisherName, offer)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineImagesClient", "ListSkus", nil, "Failure preparing request")

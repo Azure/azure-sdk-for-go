@@ -149,10 +149,6 @@ func (client LinksClient) CreateOrUpdateResponder(resp *http.Response) (result L
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. linkName is the name of the
 // link.
 func (client LinksClient) Delete(resourceGroupName string, hubName string, linkName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.LinksClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, hubName, linkName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "Delete", nil, "Failure preparing request")
@@ -219,10 +215,6 @@ func (client LinksClient) DeleteResponder(resp *http.Response) (result autorest.
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. linkName is the name of the
 // link.
 func (client LinksClient) Get(resourceGroupName string, hubName string, linkName string) (result LinkResourceFormat, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.LinksClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, hubName, linkName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "Get", nil, "Failure preparing request")
@@ -289,10 +281,6 @@ func (client LinksClient) GetResponder(resp *http.Response) (result LinkResource
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub.
 func (client LinksClient) ListByHub(resourceGroupName string, hubName string) (result LinkListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.LinksClient", "ListByHub")
-	}
-
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.LinksClient", "ListByHub", nil, "Failure preparing request")

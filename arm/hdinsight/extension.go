@@ -20,7 +20,6 @@ package hdinsight
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewExtensionClientWithBaseURI(baseURI string, subscriptionID string) Extens
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. parameters is the
 // cluster extensions create request. extensionName is the name of the cluster extension.
 func (client ExtensionClient) Create(resourceGroupName string, clusterName string, parameters Extension, extensionName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.ExtensionClient", "Create")
-	}
-
 	req, err := client.CreatePreparer(resourceGroupName, clusterName, parameters, extensionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Create", nil, "Failure preparing request")
@@ -116,10 +111,6 @@ func (client ExtensionClient) CreateResponder(resp *http.Response) (result autor
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. extensionName is the
 // name of the cluster extension.
 func (client ExtensionClient) Delete(resourceGroupName string, clusterName string, extensionName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.ExtensionClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, clusterName, extensionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Delete", nil, "Failure preparing request")
@@ -186,10 +177,6 @@ func (client ExtensionClient) DeleteResponder(resp *http.Response) (result autor
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. extensionName is the
 // name of the cluster extension.
 func (client ExtensionClient) Get(resourceGroupName string, clusterName string, extensionName string) (result Extension, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.ExtensionClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, clusterName, extensionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Get", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package hdinsight
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewScriptActionsClientWithBaseURI(baseURI string, subscriptionID string) Sc
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. scriptName is the name
 // of the script.
 func (client ScriptActionsClient) Delete(resourceGroupName string, clusterName string, scriptName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.ScriptActionsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, clusterName, scriptName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "Delete", nil, "Failure preparing request")
@@ -113,10 +108,6 @@ func (client ScriptActionsClient) DeleteResponder(resp *http.Response) (result a
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster.
 func (client ScriptActionsClient) List(resourceGroupName string, clusterName string) (result ScriptActionsList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.ScriptActionsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, clusterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "List", nil, "Failure preparing request")

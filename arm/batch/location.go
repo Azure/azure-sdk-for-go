@@ -117,10 +117,6 @@ func (client LocationClient) CheckNameAvailabilityResponder(resp *http.Response)
 //
 // locationName is the region for which to retrieve Batch service quotas.
 func (client LocationClient) GetQuotas(locationName string) (result LocationQuota, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batch.LocationClient", "GetQuotas")
-	}
-
 	req, err := client.GetQuotasPreparer(locationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.LocationClient", "GetQuotas", nil, "Failure preparing request")

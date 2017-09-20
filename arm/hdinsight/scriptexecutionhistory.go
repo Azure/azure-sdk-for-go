@@ -20,7 +20,6 @@ package hdinsight
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID s
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. scriptExecutionID is
 // the script execution Id
 func (client ScriptExecutionHistoryClient) Get(resourceGroupName string, clusterName string, scriptExecutionID string) (result RuntimeScriptActionDetail, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.ScriptExecutionHistoryClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, clusterName, scriptExecutionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "Get", nil, "Failure preparing request")
@@ -114,10 +109,6 @@ func (client ScriptExecutionHistoryClient) GetResponder(resp *http.Response) (re
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster.
 func (client ScriptExecutionHistoryClient) List(resourceGroupName string, clusterName string) (result ScriptActionExecutionHistoryList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.ScriptExecutionHistoryClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, clusterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "List", nil, "Failure preparing request")
@@ -253,10 +244,6 @@ func (client ScriptExecutionHistoryClient) ListComplete(resourceGroupName string
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. scriptExecutionID is
 // the script execution Id
 func (client ScriptExecutionHistoryClient) Promote(resourceGroupName string, clusterName string, scriptExecutionID int64) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.ScriptExecutionHistoryClient", "Promote")
-	}
-
 	req, err := client.PromotePreparer(resourceGroupName, clusterName, scriptExecutionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "Promote", nil, "Failure preparing request")

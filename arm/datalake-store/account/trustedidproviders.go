@@ -124,10 +124,6 @@ func (client TrustedIDProvidersClient) CreateOrUpdateResponder(resp *http.Respon
 // the name of the Data Lake Store account from which to delete the trusted identity provider. trustedIDProviderName is
 // the name of the trusted identity provider to delete.
 func (client TrustedIDProvidersClient) Delete(resourceGroupName string, accountName string, trustedIDProviderName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.TrustedIDProvidersClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, accountName, trustedIDProviderName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Delete", nil, "Failure preparing request")
@@ -195,10 +191,6 @@ func (client TrustedIDProvidersClient) DeleteResponder(resp *http.Response) (res
 // the name of the Data Lake Store account from which to get the trusted identity provider. trustedIDProviderName is
 // the name of the trusted identity provider to retrieve.
 func (client TrustedIDProvidersClient) Get(resourceGroupName string, accountName string, trustedIDProviderName string) (result TrustedIDProvider, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.TrustedIDProvidersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, accountName, trustedIDProviderName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Get", nil, "Failure preparing request")
@@ -266,10 +258,6 @@ func (client TrustedIDProvidersClient) GetResponder(resp *http.Response) (result
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Store account. accountName is
 // the name of the Data Lake Store account from which to get the trusted identity providers.
 func (client TrustedIDProvidersClient) ListByAccount(resourceGroupName string, accountName string) (result DataLakeStoreTrustedIDProviderListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.TrustedIDProvidersClient", "ListByAccount")
-	}
-
 	req, err := client.ListByAccountPreparer(resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "ListByAccount", nil, "Failure preparing request")
@@ -407,10 +395,6 @@ func (client TrustedIDProvidersClient) ListByAccountComplete(resourceGroupName s
 // the name of the trusted identity provider. This is used for differentiation of providers in the account. parameters
 // is parameters supplied to update the trusted identity provider.
 func (client TrustedIDProvidersClient) Update(resourceGroupName string, accountName string, trustedIDProviderName string, parameters *UpdateTrustedIDProviderParameters) (result TrustedIDProvider, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.TrustedIDProvidersClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, trustedIDProviderName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.TrustedIDProvidersClient", "Update", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package eventgrid
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -41,10 +40,6 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 
 // List list the available operations supported by the Microsoft.EventGrid resource provider
 func (client OperationsClient) List() (result OperationsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.OperationsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.OperationsClient", "List", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package hdinsight
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,10 +42,6 @@ func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) Locatio
 //
 // location is the location to get capabilities for.
 func (client LocationClient) GetCapabilities(location string) (result CapabilitiesResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "hdinsight.LocationClient", "GetCapabilities")
-	}
-
 	req, err := client.GetCapabilitiesPreparer(location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.LocationClient", "GetCapabilities", nil, "Failure preparing request")

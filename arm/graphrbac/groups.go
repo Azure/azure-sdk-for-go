@@ -190,10 +190,6 @@ func (client GroupsClient) CreateResponder(resp *http.Response) (result ADGroup,
 //
 // groupObjectID is the object ID of the group to delete.
 func (client GroupsClient) Delete(groupObjectID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.GroupsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(groupObjectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Delete", nil, "Failure preparing request")
@@ -257,10 +253,6 @@ func (client GroupsClient) DeleteResponder(resp *http.Response) (result autorest
 //
 // objectID is the object ID of the user for which to get group information.
 func (client GroupsClient) Get(objectID string) (result ADGroup, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.GroupsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(objectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Get", nil, "Failure preparing request")
@@ -325,10 +317,6 @@ func (client GroupsClient) GetResponder(resp *http.Response) (result ADGroup, er
 //
 // objectID is the object ID of the group whose members should be retrieved.
 func (client GroupsClient) GetGroupMembers(objectID string) (result GetObjectsResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.GroupsClient", "GetGroupMembers")
-	}
-
 	req, err := client.GetGroupMembersPreparer(objectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembers", nil, "Failure preparing request")
@@ -438,10 +426,6 @@ func (client GroupsClient) GetGroupMembersComplete(objectID string, cancel <-cha
 //
 // nextLink is next link for the list operation.
 func (client GroupsClient) GetGroupMembersNext(nextLink string) (result GetObjectsResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.GroupsClient", "GetGroupMembersNext")
-	}
-
 	req, err := client.GetGroupMembersNextPreparer(nextLink)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembersNext", nil, "Failure preparing request")
@@ -651,10 +635,6 @@ func (client GroupsClient) IsMemberOfResponder(resp *http.Response) (result Chec
 //
 // filter is the filter to apply to the operation.
 func (client GroupsClient) List(filter string) (result GroupListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.GroupsClient", "List")
-	}
-
 	req, err := client.ListPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "List", nil, "Failure preparing request")
@@ -766,10 +746,6 @@ func (client GroupsClient) ListComplete(filter string, cancel <-chan struct{}) (
 //
 // nextLink is next link for the list operation.
 func (client GroupsClient) ListNext(nextLink string) (result GroupListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.GroupsClient", "ListNext")
-	}
-
 	req, err := client.ListNextPreparer(nextLink)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListNext", nil, "Failure preparing request")
@@ -834,10 +810,6 @@ func (client GroupsClient) ListNextResponder(resp *http.Response) (result GroupL
 //
 // groupObjectID is the object ID of the group from which to remove the member. memberObjectID is member object id
 func (client GroupsClient) RemoveMember(groupObjectID string, memberObjectID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.GroupsClient", "RemoveMember")
-	}
-
 	req, err := client.RemoveMemberPreparer(groupObjectID, memberObjectID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "RemoveMember", nil, "Failure preparing request")

@@ -128,10 +128,6 @@ func (client AuthorizationPoliciesClient) CreateOrUpdateResponder(resp *http.Res
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. authorizationPolicyName is the
 // name of the policy.
 func (client AuthorizationPoliciesClient) Get(resourceGroupName string, hubName string, authorizationPolicyName string) (result AuthorizationPolicyResourceFormat, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.AuthorizationPoliciesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, hubName, authorizationPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "Get", nil, "Failure preparing request")
@@ -198,10 +194,6 @@ func (client AuthorizationPoliciesClient) GetResponder(resp *http.Response) (res
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub.
 func (client AuthorizationPoliciesClient) ListByHub(resourceGroupName string, hubName string) (result AuthorizationPolicyListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.AuthorizationPoliciesClient", "ListByHub")
-	}
-
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "ListByHub", nil, "Failure preparing request")
@@ -337,10 +329,6 @@ func (client AuthorizationPoliciesClient) ListByHubComplete(resourceGroupName st
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. authorizationPolicyName is the
 // name of the policy.
 func (client AuthorizationPoliciesClient) RegeneratePrimaryKey(resourceGroupName string, hubName string, authorizationPolicyName string) (result AuthorizationPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.AuthorizationPoliciesClient", "RegeneratePrimaryKey")
-	}
-
 	req, err := client.RegeneratePrimaryKeyPreparer(resourceGroupName, hubName, authorizationPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "RegeneratePrimaryKey", nil, "Failure preparing request")
@@ -408,10 +396,6 @@ func (client AuthorizationPoliciesClient) RegeneratePrimaryKeyResponder(resp *ht
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. authorizationPolicyName is the
 // name of the policy.
 func (client AuthorizationPoliciesClient) RegenerateSecondaryKey(resourceGroupName string, hubName string, authorizationPolicyName string) (result AuthorizationPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.AuthorizationPoliciesClient", "RegenerateSecondaryKey")
-	}
-
 	req, err := client.RegenerateSecondaryKeyPreparer(resourceGroupName, hubName, authorizationPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "RegenerateSecondaryKey", nil, "Failure preparing request")

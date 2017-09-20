@@ -20,7 +20,6 @@ package devtestlabs
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewArmTemplatesClientWithBaseURI(baseURI string, subscriptionID string) Arm
 // of the artifact source. name is the name of the azure Resource Manager template. expand is specify the $expand
 // query. Example: 'properties($select=displayName)'
 func (client ArmTemplatesClient) Get(resourceGroupName string, labName string, artifactSourceName string, name string, expand string) (result ArmTemplate, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ArmTemplatesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, artifactSourceName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ArmTemplatesClient", "Get", nil, "Failure preparing request")
@@ -122,10 +117,6 @@ func (client ArmTemplatesClient) GetResponder(resp *http.Response) (result ArmTe
 // the filter to apply to the operation. top is the maximum number of resources to return from the operation. orderby
 // is the ordering expression for the results, using OData notation.
 func (client ArmTemplatesClient) List(resourceGroupName string, labName string, artifactSourceName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationArmTemplate, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.ArmTemplatesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.ArmTemplatesClient", "List", nil, "Failure preparing request")

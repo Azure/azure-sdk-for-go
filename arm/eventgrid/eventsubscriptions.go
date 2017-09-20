@@ -20,7 +20,6 @@ package eventgrid
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -57,13 +56,6 @@ func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID strin
 func (client EventSubscriptionsClient) Create(scope string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, cancel <-chan struct{}) (<-chan EventSubscription, <-chan error) {
 	resultChan := make(chan EventSubscription, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "Create")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result EventSubscription
@@ -153,13 +145,6 @@ func (client EventSubscriptionsClient) CreateResponder(resp *http.Response) (res
 func (client EventSubscriptionsClient) Delete(scope string, eventSubscriptionName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -243,10 +228,6 @@ func (client EventSubscriptionsClient) DeleteResponder(resp *http.Response) (res
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
 // for an EventGrid topic. eventSubscriptionName is name of the event subscription
 func (client EventSubscriptionsClient) Get(scope string, eventSubscriptionName string) (result EventSubscription, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(scope, eventSubscriptionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Get", nil, "Failure preparing request")
@@ -318,10 +299,6 @@ func (client EventSubscriptionsClient) GetResponder(resp *http.Response) (result
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
 // for an EventGrid topic. eventSubscriptionName is name of the event subscription
 func (client EventSubscriptionsClient) GetFullURL(scope string, eventSubscriptionName string) (result EventSubscriptionFullURL, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "GetFullURL")
-	}
-
 	req, err := client.GetFullURLPreparer(scope, eventSubscriptionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "GetFullURL", nil, "Failure preparing request")
@@ -387,10 +364,6 @@ func (client EventSubscriptionsClient) GetFullURLResponder(resp *http.Response) 
 // resourceGroupName is the name of the resource group within the user's subscription. providerNamespace is namespace
 // of the provider of the topic resourceTypeName is name of the resource type resourceName is name of the resource
 func (client EventSubscriptionsClient) ListByResource(resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string) (result EventSubscriptionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "ListByResource")
-	}
-
 	req, err := client.ListByResourcePreparer(resourceGroupName, providerNamespace, resourceTypeName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListByResource", nil, "Failure preparing request")
@@ -458,10 +431,6 @@ func (client EventSubscriptionsClient) ListByResourceResponder(resp *http.Respon
 //
 // resourceGroupName is the name of the resource group within the user's subscription.
 func (client EventSubscriptionsClient) ListGlobalByResourceGroup(resourceGroupName string) (result EventSubscriptionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalByResourceGroup")
-	}
-
 	req, err := client.ListGlobalByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalByResourceGroup", nil, "Failure preparing request")
@@ -528,10 +497,6 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupResponder(resp *
 // resourceGroupName is the name of the resource group within the user's subscription. topicTypeName is name of the
 // topic type
 func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicType(resourceGroupName string, topicTypeName string) (result EventSubscriptionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalByResourceGroupForTopicType")
-	}
-
 	req, err := client.ListGlobalByResourceGroupForTopicTypePreparer(resourceGroupName, topicTypeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalByResourceGroupForTopicType", nil, "Failure preparing request")
@@ -595,10 +560,6 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicTypeResp
 
 // ListGlobalBySubscription list all aggregated global event subscriptions under a specific Azure subscription
 func (client EventSubscriptionsClient) ListGlobalBySubscription() (result EventSubscriptionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalBySubscription")
-	}
-
 	req, err := client.ListGlobalBySubscriptionPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalBySubscription", nil, "Failure preparing request")
@@ -663,10 +624,6 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionResponder(resp *h
 //
 // topicTypeName is name of the topic type
 func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicType(topicTypeName string) (result EventSubscriptionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalBySubscriptionForTopicType")
-	}
-
 	req, err := client.ListGlobalBySubscriptionForTopicTypePreparer(topicTypeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListGlobalBySubscriptionForTopicType", nil, "Failure preparing request")
@@ -732,10 +689,6 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicTypeRespo
 //
 // resourceGroupName is the name of the resource group within the user's subscription. location is name of the location
 func (client EventSubscriptionsClient) ListRegionalByResourceGroup(resourceGroupName string, location string) (result EventSubscriptionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalByResourceGroup")
-	}
-
 	req, err := client.ListRegionalByResourceGroupPreparer(resourceGroupName, location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalByResourceGroup", nil, "Failure preparing request")
@@ -803,10 +756,6 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupResponder(resp
 // resourceGroupName is the name of the resource group within the user's subscription. location is name of the location
 // topicTypeName is name of the topic type
 func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicType(resourceGroupName string, location string, topicTypeName string) (result EventSubscriptionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalByResourceGroupForTopicType")
-	}
-
 	req, err := client.ListRegionalByResourceGroupForTopicTypePreparer(resourceGroupName, location, topicTypeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalByResourceGroupForTopicType", nil, "Failure preparing request")
@@ -873,10 +822,6 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicTypeRe
 //
 // location is name of the location
 func (client EventSubscriptionsClient) ListRegionalBySubscription(location string) (result EventSubscriptionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalBySubscription")
-	}
-
 	req, err := client.ListRegionalBySubscriptionPreparer(location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalBySubscription", nil, "Failure preparing request")
@@ -942,10 +887,6 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionResponder(resp 
 //
 // location is name of the location topicTypeName is name of the topic type
 func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicType(location string, topicTypeName string) (result EventSubscriptionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalBySubscriptionForTopicType")
-	}
-
 	req, err := client.ListRegionalBySubscriptionForTopicTypePreparer(location, topicTypeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "ListRegionalBySubscriptionForTopicType", nil, "Failure preparing request")
@@ -1023,13 +964,6 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicTypeRes
 func (client EventSubscriptionsClient) Update(scope string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, cancel <-chan struct{}) (<-chan EventSubscription, <-chan error) {
 	resultChan := make(chan EventSubscription, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "eventgrid.EventSubscriptionsClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result EventSubscription

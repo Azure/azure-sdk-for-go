@@ -20,7 +20,6 @@ package customerinsights
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,10 +45,6 @@ func NewWidgetTypesClientWithBaseURI(baseURI string, subscriptionID string) Widg
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. widgetTypeName is the name of
 // the widget type.
 func (client WidgetTypesClient) Get(resourceGroupName string, hubName string, widgetTypeName string) (result WidgetTypeResourceFormat, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.WidgetTypesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, hubName, widgetTypeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.WidgetTypesClient", "Get", nil, "Failure preparing request")
@@ -116,10 +111,6 @@ func (client WidgetTypesClient) GetResponder(resp *http.Response) (result Widget
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub.
 func (client WidgetTypesClient) ListByHub(resourceGroupName string, hubName string) (result WidgetTypeListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.WidgetTypesClient", "ListByHub")
-	}
-
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.WidgetTypesClient", "ListByHub", nil, "Failure preparing request")

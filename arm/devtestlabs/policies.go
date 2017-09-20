@@ -120,10 +120,6 @@ func (client PoliciesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // resourceGroupName is the name of the resource group. labName is the name of the lab. policySetName is the name of
 // the policy set. name is the name of the policy.
 func (client PoliciesClient) Delete(resourceGroupName string, labName string, policySetName string, name string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.PoliciesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, labName, policySetName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.PoliciesClient", "Delete", nil, "Failure preparing request")
@@ -192,10 +188,6 @@ func (client PoliciesClient) DeleteResponder(resp *http.Response) (result autore
 // the policy set. name is the name of the policy. expand is specify the $expand query. Example:
 // 'properties($select=description)'
 func (client PoliciesClient) Get(resourceGroupName string, labName string, policySetName string, name string, expand string) (result Policy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.PoliciesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, policySetName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.PoliciesClient", "Get", nil, "Failure preparing request")
@@ -269,10 +261,6 @@ func (client PoliciesClient) GetResponder(resp *http.Response) (result Policy, e
 // to apply to the operation. top is the maximum number of resources to return from the operation. orderby is the
 // ordering expression for the results, using OData notation.
 func (client PoliciesClient) List(resourceGroupName string, labName string, policySetName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.PoliciesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, policySetName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.PoliciesClient", "List", nil, "Failure preparing request")
@@ -421,10 +409,6 @@ func (client PoliciesClient) ListComplete(resourceGroupName string, labName stri
 // resourceGroupName is the name of the resource group. labName is the name of the lab. policySetName is the name of
 // the policy set. name is the name of the policy. policy is a Policy.
 func (client PoliciesClient) Update(resourceGroupName string, labName string, policySetName string, name string, policy PolicyFragment) (result Policy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.PoliciesClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, labName, policySetName, name, policy)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.PoliciesClient", "Update", nil, "Failure preparing request")

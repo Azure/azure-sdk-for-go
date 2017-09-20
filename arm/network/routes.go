@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,13 +47,6 @@ func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesCli
 func (client RoutesClient) CreateOrUpdate(resourceGroupName string, routeTableName string, routeName string, routeParameters Route, cancel <-chan struct{}) (<-chan Route, <-chan error) {
 	resultChan := make(chan Route, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.RoutesClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Route
@@ -141,13 +133,6 @@ func (client RoutesClient) CreateOrUpdateResponder(resp *http.Response) (result 
 func (client RoutesClient) Delete(resourceGroupName string, routeTableName string, routeName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.RoutesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -227,10 +212,6 @@ func (client RoutesClient) DeleteResponder(resp *http.Response) (result autorest
 // resourceGroupName is the name of the resource group. routeTableName is the name of the route table. routeName is the
 // name of the route.
 func (client RoutesClient) Get(resourceGroupName string, routeTableName string, routeName string) (result Route, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.RoutesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, routeTableName, routeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RoutesClient", "Get", nil, "Failure preparing request")
@@ -297,10 +278,6 @@ func (client RoutesClient) GetResponder(resp *http.Response) (result Route, err 
 //
 // resourceGroupName is the name of the resource group. routeTableName is the name of the route table.
 func (client RoutesClient) List(resourceGroupName string, routeTableName string) (result RouteListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.RoutesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, routeTableName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RoutesClient", "List", nil, "Failure preparing request")

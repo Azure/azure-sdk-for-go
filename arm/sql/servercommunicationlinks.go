@@ -143,10 +143,6 @@ func (client ServerCommunicationLinksClient) CreateOrUpdateResponder(resp *http.
 // Azure Resource Manager API or the portal. serverName is the name of the server. communicationLinkName is the name of
 // the server communication link.
 func (client ServerCommunicationLinksClient) Delete(resourceGroupName string, serverName string, communicationLinkName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ServerCommunicationLinksClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, serverName, communicationLinkName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksClient", "Delete", nil, "Failure preparing request")
@@ -214,10 +210,6 @@ func (client ServerCommunicationLinksClient) DeleteResponder(resp *http.Response
 // Azure Resource Manager API or the portal. serverName is the name of the server. communicationLinkName is the name of
 // the server communication link.
 func (client ServerCommunicationLinksClient) Get(resourceGroupName string, serverName string, communicationLinkName string) (result ServerCommunicationLink, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ServerCommunicationLinksClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, communicationLinkName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksClient", "Get", nil, "Failure preparing request")
@@ -285,10 +277,6 @@ func (client ServerCommunicationLinksClient) GetResponder(resp *http.Response) (
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
 func (client ServerCommunicationLinksClient) ListByServer(resourceGroupName string, serverName string) (result ServerCommunicationLinkListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.ServerCommunicationLinksClient", "ListByServer")
-	}
-
 	req, err := client.ListByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksClient", "ListByServer", nil, "Failure preparing request")

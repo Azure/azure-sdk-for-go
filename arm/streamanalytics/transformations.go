@@ -20,7 +20,6 @@ package streamanalytics
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -50,10 +49,6 @@ func NewTransformationsClientWithBaseURI(baseURI string, subscriptionID string) 
 // overwritting concurrent changes. ifNoneMatch is set to '*' to allow a new transformation to be created, but to
 // prevent updating an existing transformation. Other values will result in a 412 Pre-condition Failed response.
 func (client TransformationsClient) CreateOrReplace(transformation Transformation, resourceGroupName string, jobName string, transformationName string, ifMatch string, ifNoneMatch string) (result Transformation, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.TransformationsClient", "CreateOrReplace")
-	}
-
 	req, err := client.CreateOrReplacePreparer(transformation, resourceGroupName, jobName, transformationName, ifMatch, ifNoneMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.TransformationsClient", "CreateOrReplace", nil, "Failure preparing request")
@@ -132,10 +127,6 @@ func (client TransformationsClient) CreateOrReplaceResponder(resp *http.Response
 // Azure Resource Manager API or the portal. jobName is the name of the streaming job. transformationName is the name
 // of the transformation.
 func (client TransformationsClient) Get(resourceGroupName string, jobName string, transformationName string) (result Transformation, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.TransformationsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, jobName, transformationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.TransformationsClient", "Get", nil, "Failure preparing request")
@@ -210,10 +201,6 @@ func (client TransformationsClient) GetResponder(resp *http.Response) (result Tr
 // always overwrite the current transformation. Specify the last-seen ETag value to prevent accidentally overwritting
 // concurrent changes.
 func (client TransformationsClient) Update(transformation Transformation, resourceGroupName string, jobName string, transformationName string, ifMatch string) (result Transformation, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "streamanalytics.TransformationsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(transformation, resourceGroupName, jobName, transformationName, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "streamanalytics.TransformationsClient", "Update", nil, "Failure preparing request")

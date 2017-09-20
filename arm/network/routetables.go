@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,13 +47,6 @@ func NewRouteTablesClientWithBaseURI(baseURI string, subscriptionID string) Rout
 func (client RouteTablesClient) CreateOrUpdate(resourceGroupName string, routeTableName string, parameters RouteTable, cancel <-chan struct{}) (<-chan RouteTable, <-chan error) {
 	resultChan := make(chan RouteTable, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.RouteTablesClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result RouteTable
@@ -138,13 +130,6 @@ func (client RouteTablesClient) CreateOrUpdateResponder(resp *http.Response) (re
 func (client RouteTablesClient) Delete(resourceGroupName string, routeTableName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.RouteTablesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -223,10 +208,6 @@ func (client RouteTablesClient) DeleteResponder(resp *http.Response) (result aut
 // resourceGroupName is the name of the resource group. routeTableName is the name of the route table. expand is
 // expands referenced resources.
 func (client RouteTablesClient) Get(resourceGroupName string, routeTableName string, expand string) (result RouteTable, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.RouteTablesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, routeTableName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteTablesClient", "Get", nil, "Failure preparing request")
@@ -295,10 +276,6 @@ func (client RouteTablesClient) GetResponder(resp *http.Response) (result RouteT
 //
 // resourceGroupName is the name of the resource group.
 func (client RouteTablesClient) List(resourceGroupName string) (result RouteTableListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.RouteTablesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteTablesClient", "List", nil, "Failure preparing request")
@@ -430,10 +407,6 @@ func (client RouteTablesClient) ListComplete(resourceGroupName string, cancel <-
 
 // ListAll gets all route tables in a subscription.
 func (client RouteTablesClient) ListAll() (result RouteTableListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.RouteTablesClient", "ListAll")
-	}
-
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteTablesClient", "ListAll", nil, "Failure preparing request")

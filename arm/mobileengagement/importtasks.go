@@ -44,10 +44,6 @@ func NewImportTasksClientWithBaseURI(baseURI string, subscriptionID string) Impo
 // resourceGroupName is the name of the resource group. appCollection is application collection. appName is application
 // resource name.
 func (client ImportTasksClient) Create(resourceGroupName string, appCollection string, appName string, parameters ImportTask) (result ImportTaskResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ImportTasksClient", "Create")
-	}
-
 	req, err := client.CreatePreparer(resourceGroupName, appCollection, appName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Create", nil, "Failure preparing request")
@@ -117,10 +113,6 @@ func (client ImportTasksClient) CreateResponder(resp *http.Response) (result Imp
 // ID is import job identifier. resourceGroupName is the name of the resource group. appCollection is application
 // collection. appName is application resource name.
 func (client ImportTasksClient) Get(ID string, resourceGroupName string, appCollection string, appName string) (result ImportTaskResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.ImportTasksClient", "Get")
-	}
-
 	req, err := client.GetPreparer(ID, resourceGroupName, appCollection, appName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.ImportTasksClient", "Get", nil, "Failure preparing request")

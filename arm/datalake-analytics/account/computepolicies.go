@@ -129,10 +129,6 @@ func (client ComputePoliciesClient) CreateOrUpdateResponder(resp *http.Response)
 // is the name of the Data Lake Analytics account from which to delete the compute policy. computePolicyName is the
 // name of the compute policy to delete.
 func (client ComputePoliciesClient) Delete(resourceGroupName string, accountName string, computePolicyName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.ComputePoliciesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, accountName, computePolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.ComputePoliciesClient", "Delete", nil, "Failure preparing request")
@@ -200,10 +196,6 @@ func (client ComputePoliciesClient) DeleteResponder(resp *http.Response) (result
 // is the name of the Data Lake Analytics account from which to get the compute policy. computePolicyName is the name
 // of the compute policy to retrieve.
 func (client ComputePoliciesClient) Get(resourceGroupName string, accountName string, computePolicyName string) (result ComputePolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.ComputePoliciesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, accountName, computePolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.ComputePoliciesClient", "Get", nil, "Failure preparing request")
@@ -272,10 +264,6 @@ func (client ComputePoliciesClient) GetResponder(resp *http.Response) (result Co
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName
 // is the name of the Data Lake Analytics account from which to get the compute policies.
 func (client ComputePoliciesClient) ListByAccount(resourceGroupName string, accountName string) (result ComputePolicyListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.ComputePoliciesClient", "ListByAccount")
-	}
-
 	req, err := client.ListByAccountPreparer(resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.ComputePoliciesClient", "ListByAccount", nil, "Failure preparing request")
@@ -412,10 +400,6 @@ func (client ComputePoliciesClient) ListByAccountComplete(resourceGroupName stri
 // is the name of the Data Lake Analytics account to which to update the compute policy. computePolicyName is the name
 // of the compute policy to update. parameters is parameters supplied to update the compute policy.
 func (client ComputePoliciesClient) Update(resourceGroupName string, accountName string, computePolicyName string, parameters *ComputePolicy) (result ComputePolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.ComputePoliciesClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, accountName, computePolicyName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.ComputePoliciesClient", "Update", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package servicefabric
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewClusterVersionsClientWithBaseURI(baseURI string, subscriptionID string) 
 // cluster operating system, the default means all. Possible values include: 'Windows', 'Linux' clusterVersion is the
 // cluster code version
 func (client ClusterVersionsClient) Get(location string, environment string, clusterVersion string) (result ClusterCodeVersionsResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servicefabric.ClusterVersionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(location, environment, clusterVersion)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "Get", nil, "Failure preparing request")
@@ -115,10 +110,6 @@ func (client ClusterVersionsClient) GetResponder(resp *http.Response) (result Cl
 //
 // location is the location for the cluster code versions, this is different from cluster location
 func (client ClusterVersionsClient) List(location string) (result ClusterCodeVersionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servicefabric.ClusterVersionsClient", "List")
-	}
-
 	req, err := client.ListPreparer(location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "List", nil, "Failure preparing request")
@@ -253,10 +244,6 @@ func (client ClusterVersionsClient) ListComplete(location string, cancel <-chan 
 // location is the location for the cluster code versions, this is different from cluster location environment is
 // cluster operating system, the default means all. Possible values include: 'Windows', 'Linux'
 func (client ClusterVersionsClient) ListByEnvironment(location string, environment string) (result ClusterCodeVersionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servicefabric.ClusterVersionsClient", "ListByEnvironment")
-	}
-
 	req, err := client.ListByEnvironmentPreparer(location, environment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "ListByEnvironment", nil, "Failure preparing request")
@@ -392,10 +379,6 @@ func (client ClusterVersionsClient) ListByEnvironmentComplete(location string, e
 // location is the location for the cluster code versions, this is different from cluster location clusterVersion is
 // the cluster code version
 func (client ClusterVersionsClient) ListByVersion(location string, clusterVersion string) (result ClusterCodeVersionsListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servicefabric.ClusterVersionsClient", "ListByVersion")
-	}
-
 	req, err := client.ListByVersionPreparer(location, clusterVersion)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "ListByVersion", nil, "Failure preparing request")

@@ -146,13 +146,6 @@ func (client SecurityRulesClient) CreateOrUpdateResponder(resp *http.Response) (
 func (client SecurityRulesClient) Delete(resourceGroupName string, networkSecurityGroupName string, securityRuleName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.SecurityRulesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -232,10 +225,6 @@ func (client SecurityRulesClient) DeleteResponder(resp *http.Response) (result a
 // resourceGroupName is the name of the resource group. networkSecurityGroupName is the name of the network security
 // group. securityRuleName is the name of the security rule.
 func (client SecurityRulesClient) Get(resourceGroupName string, networkSecurityGroupName string, securityRuleName string) (result SecurityRule, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.SecurityRulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, networkSecurityGroupName, securityRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SecurityRulesClient", "Get", nil, "Failure preparing request")
@@ -303,10 +292,6 @@ func (client SecurityRulesClient) GetResponder(resp *http.Response) (result Secu
 // resourceGroupName is the name of the resource group. networkSecurityGroupName is the name of the network security
 // group.
 func (client SecurityRulesClient) List(resourceGroupName string, networkSecurityGroupName string) (result SecurityRuleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.SecurityRulesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, networkSecurityGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SecurityRulesClient", "List", nil, "Failure preparing request")

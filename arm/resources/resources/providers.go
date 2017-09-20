@@ -20,7 +20,6 @@ package resources
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewProvidersClientWithBaseURI(baseURI string, subscriptionID string) Provid
 // resourceProviderNamespace is the namespace of the resource provider. expand is the $expand query parameter. For
 // example, to include property aliases in response, use $expand=resourceTypes/aliases.
 func (client ProvidersClient) Get(resourceProviderNamespace string, expand string) (result Provider, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resources.ProvidersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceProviderNamespace, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.ProvidersClient", "Get", nil, "Failure preparing request")
@@ -117,10 +112,6 @@ func (client ProvidersClient) GetResponder(resp *http.Response) (result Provider
 // include in the results. For example, use &$expand=metadata in the query string to retrieve resource provider
 // metadata. To include property aliases in response, use $expand=resourceTypes/aliases.
 func (client ProvidersClient) List(top *int32, expand string) (result ProviderListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resources.ProvidersClient", "List")
-	}
-
 	req, err := client.ListPreparer(top, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.ProvidersClient", "List", nil, "Failure preparing request")
@@ -259,10 +250,6 @@ func (client ProvidersClient) ListComplete(top *int32, expand string, cancel <-c
 //
 // resourceProviderNamespace is the namespace of the resource provider to register.
 func (client ProvidersClient) Register(resourceProviderNamespace string) (result Provider, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resources.ProvidersClient", "Register")
-	}
-
 	req, err := client.RegisterPreparer(resourceProviderNamespace)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.ProvidersClient", "Register", nil, "Failure preparing request")
@@ -327,10 +314,6 @@ func (client ProvidersClient) RegisterResponder(resp *http.Response) (result Pro
 //
 // resourceProviderNamespace is the namespace of the resource provider to unregister.
 func (client ProvidersClient) Unregister(resourceProviderNamespace string) (result Provider, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "resources.ProvidersClient", "Unregister")
-	}
-
 	req, err := client.UnregisterPreparer(resourceProviderNamespace)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.ProvidersClient", "Unregister", nil, "Failure preparing request")

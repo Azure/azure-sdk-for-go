@@ -20,7 +20,6 @@ package monitor
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,10 +42,6 @@ func NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI string, subscription
 //
 // resourceURI is the identifier of the resource. name is the name of the diagnostic setting.
 func (client DiagnosticSettingsCategoryClient) Get(resourceURI string, name string) (result DiagnosticSettingsCategoryResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.DiagnosticSettingsCategoryClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceURI, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.DiagnosticSettingsCategoryClient", "Get", nil, "Failure preparing request")
@@ -111,10 +106,6 @@ func (client DiagnosticSettingsCategoryClient) GetResponder(resp *http.Response)
 //
 // resourceURI is the identifier of the resource.
 func (client DiagnosticSettingsCategoryClient) List(resourceURI string) (result DiagnosticSettingsCategoryResourceCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.DiagnosticSettingsCategoryClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceURI)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.DiagnosticSettingsCategoryClient", "List", nil, "Failure preparing request")

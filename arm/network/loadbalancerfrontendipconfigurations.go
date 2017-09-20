@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,10 +45,6 @@ func NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI(baseURI string, su
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
 // frontendIPConfigurationName is the name of the frontend IP configuration.
 func (client LoadBalancerFrontendIPConfigurationsClient) Get(resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string) (result FrontendIPConfiguration, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.LoadBalancerFrontendIPConfigurationsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, loadBalancerName, frontendIPConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancerFrontendIPConfigurationsClient", "Get", nil, "Failure preparing request")
@@ -116,10 +111,6 @@ func (client LoadBalancerFrontendIPConfigurationsClient) GetResponder(resp *http
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
 func (client LoadBalancerFrontendIPConfigurationsClient) List(resourceGroupName string, loadBalancerName string) (result LoadBalancerFrontendIPConfigurationListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.LoadBalancerFrontendIPConfigurationsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, loadBalancerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancerFrontendIPConfigurationsClient", "List", nil, "Failure preparing request")

@@ -45,10 +45,6 @@ func NewDataLakeStoreAccountsClientWithBaseURI(baseURI string, subscriptionID st
 // is the name of the Data Lake Analytics account to which to add the Data Lake Store account. dataLakeStoreAccountName
 // is the name of the Data Lake Store account to add. parameters is the details of the Data Lake Store account.
 func (client DataLakeStoreAccountsClient) Add(resourceGroupName string, accountName string, dataLakeStoreAccountName string, parameters *AddDataLakeStoreParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.DataLakeStoreAccountsClient", "Add")
-	}
-
 	req, err := client.AddPreparer(resourceGroupName, accountName, dataLakeStoreAccountName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Add", nil, "Failure preparing request")
@@ -121,10 +117,6 @@ func (client DataLakeStoreAccountsClient) AddResponder(resp *http.Response) (res
 // is the name of the Data Lake Analytics account from which to remove the Data Lake Store account.
 // dataLakeStoreAccountName is the name of the Data Lake Store account to remove
 func (client DataLakeStoreAccountsClient) Delete(resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.DataLakeStoreAccountsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, accountName, dataLakeStoreAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Delete", nil, "Failure preparing request")
@@ -192,10 +184,6 @@ func (client DataLakeStoreAccountsClient) DeleteResponder(resp *http.Response) (
 // is the name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
 // dataLakeStoreAccountName is the name of the Data Lake Store account to retrieve
 func (client DataLakeStoreAccountsClient) Get(resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result DataLakeStoreAccountInfo, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.DataLakeStoreAccountsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, accountName, dataLakeStoreAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.DataLakeStoreAccountsClient", "Get", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package commitmentplans
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID s
 // resourceGroupName is the resource group name. commitmentPlanName is the Azure ML commitment plan name.
 // commitmentAssociationName is the commitment association name.
 func (client CommitmentAssociationsClient) Get(resourceGroupName string, commitmentPlanName string, commitmentAssociationName string) (result CommitmentAssociation, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "commitmentplans.CommitmentAssociationsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, commitmentPlanName, commitmentAssociationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "Get", nil, "Failure preparing request")
@@ -118,10 +113,6 @@ func (client CommitmentAssociationsClient) GetResponder(resp *http.Response) (re
 // resourceGroupName is the resource group name. commitmentPlanName is the Azure ML commitment plan name. skipToken is
 // continuation token for pagination.
 func (client CommitmentAssociationsClient) List(resourceGroupName string, commitmentPlanName string, skipToken string) (result CommitmentAssociationListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "commitmentplans.CommitmentAssociationsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, commitmentPlanName, skipToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "List", nil, "Failure preparing request")
@@ -260,10 +251,6 @@ func (client CommitmentAssociationsClient) ListComplete(resourceGroupName string
 // resourceGroupName is the resource group name. commitmentPlanName is the Azure ML commitment plan name.
 // commitmentAssociationName is the commitment association name. movePayload is the move request payload.
 func (client CommitmentAssociationsClient) Move(resourceGroupName string, commitmentPlanName string, commitmentAssociationName string, movePayload MoveCommitmentAssociationRequest) (result CommitmentAssociation, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "commitmentplans.CommitmentAssociationsClient", "Move")
-	}
-
 	req, err := client.MovePreparer(resourceGroupName, commitmentPlanName, commitmentAssociationName, movePayload)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.CommitmentAssociationsClient", "Move", nil, "Failure preparing request")

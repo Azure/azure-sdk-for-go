@@ -775,10 +775,6 @@ func (client ManagersClient) GetPublicEncryptionKeyResponder(resp *http.Response
 
 // List retrieves all the managers in a subscription.
 func (client ManagersClient) List() (result ManagerList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storsimple8000series.ManagersClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple8000series.ManagersClient", "List", nil, "Failure preparing request")
@@ -842,10 +838,6 @@ func (client ManagersClient) ListResponder(resp *http.Response) (result ManagerL
 //
 // resourceGroupName is the resource group name
 func (client ManagersClient) ListByResourceGroup(resourceGroupName string) (result ManagerList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storsimple8000series.ManagersClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple8000series.ManagersClient", "ListByResourceGroup", nil, "Failure preparing request")

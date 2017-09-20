@@ -183,10 +183,6 @@ func (client ClustersClient) CreateResponder(resp *http.Response) (result Cluste
 // resourceGroupName is the name of the resource group to which the resource belongs or get created clusterName is the
 // name of the cluster resource
 func (client ClustersClient) Delete(resourceGroupName string, clusterName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servicefabric.ClustersClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, clusterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "Delete", nil, "Failure preparing request")
@@ -252,10 +248,6 @@ func (client ClustersClient) DeleteResponder(resp *http.Response) (result autore
 // resourceGroupName is the name of the resource group to which the resource belongs or get created clusterName is the
 // name of the cluster resource
 func (client ClustersClient) Get(resourceGroupName string, clusterName string) (result Cluster, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servicefabric.ClustersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, clusterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "Get", nil, "Failure preparing request")
@@ -319,10 +311,6 @@ func (client ClustersClient) GetResponder(resp *http.Response) (result Cluster, 
 
 // List list cluster resource
 func (client ClustersClient) List() (result ClusterListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servicefabric.ClustersClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "List", nil, "Failure preparing request")
@@ -455,10 +443,6 @@ func (client ClustersClient) ListComplete(cancel <-chan struct{}) (<-chan Cluste
 //
 // resourceGroupName is the name of the resource group to which the resource belongs or get created
 func (client ClustersClient) ListByResourceGroup(resourceGroupName string) (result ClusterListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servicefabric.ClustersClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -597,13 +581,6 @@ func (client ClustersClient) ListByResourceGroupComplete(resourceGroupName strin
 func (client ClustersClient) Update(resourceGroupName string, clusterName string, parameters ClusterUpdateParameters, cancel <-chan struct{}) (<-chan Cluster, <-chan error) {
 	resultChan := make(chan Cluster, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "servicefabric.ClustersClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Cluster

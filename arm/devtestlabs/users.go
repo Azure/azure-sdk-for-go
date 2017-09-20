@@ -20,7 +20,6 @@ package devtestlabs
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewUsersClientWithBaseURI(baseURI string, subscriptionID string) UsersClien
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the user
 // profile. userParameter is profile of a lab user.
 func (client UsersClient) CreateOrUpdate(resourceGroupName string, labName string, name string, userParameter User) (result User, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.UsersClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, labName, name, userParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.UsersClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -121,13 +116,6 @@ func (client UsersClient) CreateOrUpdateResponder(resp *http.Response) (result U
 func (client UsersClient) Delete(resourceGroupName string, labName string, name string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "devtestlabs.UsersClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -207,10 +195,6 @@ func (client UsersClient) DeleteResponder(resp *http.Response) (result autorest.
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the user
 // profile. expand is specify the $expand query. Example: 'properties($select=identity)'
 func (client UsersClient) Get(resourceGroupName string, labName string, name string, expand string) (result User, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.UsersClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, labName, name, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.UsersClient", "Get", nil, "Failure preparing request")
@@ -283,10 +267,6 @@ func (client UsersClient) GetResponder(resp *http.Response) (result User, err er
 // number of resources to return from the operation. orderby is the ordering expression for the results, using OData
 // notation.
 func (client UsersClient) List(resourceGroupName string, labName string, expand string, filter string, top *int32, orderby string) (result ResponseWithContinuationUser, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.UsersClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, labName, expand, filter, top, orderby)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.UsersClient", "List", nil, "Failure preparing request")
@@ -434,10 +414,6 @@ func (client UsersClient) ListComplete(resourceGroupName string, labName string,
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the user
 // profile. userParameter is profile of a lab user.
 func (client UsersClient) Update(resourceGroupName string, labName string, name string, userParameter UserFragment) (result User, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "devtestlabs.UsersClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, labName, name, userParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devtestlabs.UsersClient", "Update", nil, "Failure preparing request")

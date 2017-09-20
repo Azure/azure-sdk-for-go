@@ -383,10 +383,6 @@ func (client AccountsClient) GetPropertiesResponder(resp *http.Response) (result
 // List lists all the storage accounts available under the subscription. Note that storage keys are not returned; use
 // the ListKeys operation for this.
 func (client AccountsClient) List() (result AccountListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storage.AccountsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.AccountsClient", "List", nil, "Failure preparing request")

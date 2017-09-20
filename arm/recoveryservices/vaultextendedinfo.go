@@ -20,7 +20,6 @@ package recoveryservices
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewVaultExtendedInfoClientWithBaseURI(baseURI string, subscriptionID string
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the
 // name of the recovery services vault. resourceResourceExtendedInfoDetails is resourceResourceExtendedInfoDetails
 func (client VaultExtendedInfoClient) CreateOrUpdate(resourceGroupName string, vaultName string, resourceResourceExtendedInfoDetails VaultExtendedInfoResource) (result VaultExtendedInfoResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.VaultExtendedInfoClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vaultName, resourceResourceExtendedInfoDetails)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.VaultExtendedInfoClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -116,10 +111,6 @@ func (client VaultExtendedInfoClient) CreateOrUpdateResponder(resp *http.Respons
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the
 // name of the recovery services vault.
 func (client VaultExtendedInfoClient) Get(resourceGroupName string, vaultName string) (result VaultExtendedInfoResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.VaultExtendedInfoClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, vaultName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.VaultExtendedInfoClient", "Get", nil, "Failure preparing request")
@@ -186,10 +177,6 @@ func (client VaultExtendedInfoClient) GetResponder(resp *http.Response) (result 
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the
 // name of the recovery services vault. resourceResourceExtendedInfoDetails is resourceResourceExtendedInfoDetails
 func (client VaultExtendedInfoClient) Update(resourceGroupName string, vaultName string, resourceResourceExtendedInfoDetails VaultExtendedInfoResource) (result VaultExtendedInfoResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.VaultExtendedInfoClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, vaultName, resourceResourceExtendedInfoDetails)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.VaultExtendedInfoClient", "Update", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package commitmentplans
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewUsageHistoryClientWithBaseURI(baseURI string, subscriptionID string) Usa
 // resourceGroupName is the resource group name. commitmentPlanName is the Azure ML commitment plan name. skipToken is
 // continuation token for pagination.
 func (client UsageHistoryClient) List(resourceGroupName string, commitmentPlanName string, skipToken string) (result PlanUsageHistoryListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "commitmentplans.UsageHistoryClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, commitmentPlanName, skipToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.UsageHistoryClient", "List", nil, "Failure preparing request")

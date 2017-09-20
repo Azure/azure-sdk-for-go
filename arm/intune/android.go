@@ -192,10 +192,6 @@ func (client AndroidClient) AddGroupForMAMPolicyResponder(resp *http.Response) (
 // hostName is location hostName for the tenant policyName is unique name for the policy parameters is parameters
 // supplied to the Create or update an android policy operation.
 func (client AndroidClient) CreateOrUpdateMAMPolicy(hostName string, policyName string, parameters AndroidMAMPolicy) (result AndroidMAMPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.AndroidClient", "CreateOrUpdateMAMPolicy")
-	}
-
 	req, err := client.CreateOrUpdateMAMPolicyPreparer(hostName, policyName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "CreateOrUpdateMAMPolicy", nil, "Failure preparing request")
@@ -263,10 +259,6 @@ func (client AndroidClient) CreateOrUpdateMAMPolicyResponder(resp *http.Response
 // hostName is location hostName for the tenant policyName is unique name for the policy appName is application unique
 // Name
 func (client AndroidClient) DeleteAppForMAMPolicy(hostName string, policyName string, appName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.AndroidClient", "DeleteAppForMAMPolicy")
-	}
-
 	req, err := client.DeleteAppForMAMPolicyPreparer(hostName, policyName, appName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteAppForMAMPolicy", nil, "Failure preparing request")
@@ -332,10 +324,6 @@ func (client AndroidClient) DeleteAppForMAMPolicyResponder(resp *http.Response) 
 // hostName is location hostName for the tenant policyName is unique name for the policy groupID is application unique
 // Name
 func (client AndroidClient) DeleteGroupForMAMPolicy(hostName string, policyName string, groupID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.AndroidClient", "DeleteGroupForMAMPolicy")
-	}
-
 	req, err := client.DeleteGroupForMAMPolicyPreparer(hostName, policyName, groupID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteGroupForMAMPolicy", nil, "Failure preparing request")
@@ -400,10 +388,6 @@ func (client AndroidClient) DeleteGroupForMAMPolicyResponder(resp *http.Response
 //
 // hostName is location hostName for the tenant policyName is unique name for the policy
 func (client AndroidClient) DeleteMAMPolicy(hostName string, policyName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.AndroidClient", "DeleteMAMPolicy")
-	}
-
 	req, err := client.DeleteMAMPolicyPreparer(hostName, policyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "DeleteMAMPolicy", nil, "Failure preparing request")
@@ -468,10 +452,6 @@ func (client AndroidClient) DeleteMAMPolicyResponder(resp *http.Response) (resul
 // hostName is location hostName for the tenant policyName is unique name for the policy filter is the filter to apply
 // on the operation. selectParameter is select specific fields in entity.
 func (client AndroidClient) GetAppForMAMPolicy(hostName string, policyName string, filter string, top *int32, selectParameter string) (result ApplicationCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.AndroidClient", "GetAppForMAMPolicy")
-	}
-
 	req, err := client.GetAppForMAMPolicyPreparer(hostName, policyName, filter, top, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetAppForMAMPolicy", nil, "Failure preparing request")
@@ -614,10 +594,6 @@ func (client AndroidClient) GetAppForMAMPolicyComplete(hostName string, policyNa
 //
 // hostName is location hostName for the tenant policyName is policy name for the tenant
 func (client AndroidClient) GetGroupsForMAMPolicy(hostName string, policyName string) (result GroupsCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.AndroidClient", "GetGroupsForMAMPolicy")
-	}
-
 	req, err := client.GetGroupsForMAMPolicyPreparer(hostName, policyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetGroupsForMAMPolicy", nil, "Failure preparing request")
@@ -752,10 +728,6 @@ func (client AndroidClient) GetGroupsForMAMPolicyComplete(hostName string, polic
 // hostName is location hostName for the tenant filter is the filter to apply on the operation. selectParameter is
 // select specific fields in entity.
 func (client AndroidClient) GetMAMPolicies(hostName string, filter string, top *int32, selectParameter string) (result AndroidMAMPolicyCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.AndroidClient", "GetMAMPolicies")
-	}
-
 	req, err := client.GetMAMPoliciesPreparer(hostName, filter, top, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicies", nil, "Failure preparing request")
@@ -898,10 +870,6 @@ func (client AndroidClient) GetMAMPoliciesComplete(hostName string, filter strin
 // hostName is location hostName for the tenant policyName is unique name for the policy selectParameter is select
 // specific fields in entity.
 func (client AndroidClient) GetMAMPolicyByName(hostName string, policyName string, selectParameter string) (result AndroidMAMPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.AndroidClient", "GetMAMPolicyByName")
-	}
-
 	req, err := client.GetMAMPolicyByNamePreparer(hostName, policyName, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "GetMAMPolicyByName", nil, "Failure preparing request")
@@ -970,10 +938,6 @@ func (client AndroidClient) GetMAMPolicyByNameResponder(resp *http.Response) (re
 // hostName is location hostName for the tenant policyName is unique name for the policy parameters is parameters
 // supplied to the Create or update an android policy operation.
 func (client AndroidClient) PatchMAMPolicy(hostName string, policyName string, parameters AndroidMAMPolicy) (result AndroidMAMPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "intune.AndroidClient", "PatchMAMPolicy")
-	}
-
 	req, err := client.PatchMAMPolicyPreparer(hostName, policyName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "intune.AndroidClient", "PatchMAMPolicy", nil, "Failure preparing request")

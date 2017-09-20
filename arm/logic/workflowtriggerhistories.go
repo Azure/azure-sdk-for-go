@@ -20,7 +20,6 @@ package logic
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewWorkflowTriggerHistoriesClientWithBaseURI(baseURI string, subscriptionID
 // name. historyName is the workflow trigger history name. Corresponds to the run name for triggers that resulted in a
 // run.
 func (client WorkflowTriggerHistoriesClient) Get(resourceGroupName string, workflowName string, triggerName string, historyName string) (result WorkflowTriggerHistory, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowTriggerHistoriesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, workflowName, triggerName, historyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Get", nil, "Failure preparing request")
@@ -117,10 +112,6 @@ func (client WorkflowTriggerHistoriesClient) GetResponder(resp *http.Response) (
 // resourceGroupName is the resource group name. workflowName is the workflow name. triggerName is the workflow trigger
 // name. top is the number of items to be included in the result. filter is the filter to apply on the operation.
 func (client WorkflowTriggerHistoriesClient) List(resourceGroupName string, workflowName string, triggerName string, top *int32, filter string) (result WorkflowTriggerHistoryListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowTriggerHistoriesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, workflowName, triggerName, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "List", nil, "Failure preparing request")
@@ -264,10 +255,6 @@ func (client WorkflowTriggerHistoriesClient) ListComplete(resourceGroupName stri
 // name. historyName is the workflow trigger history name. Corresponds to the run name for triggers that resulted in a
 // run.
 func (client WorkflowTriggerHistoriesClient) Resubmit(resourceGroupName string, workflowName string, triggerName string, historyName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "logic.WorkflowTriggerHistoriesClient", "Resubmit")
-	}
-
 	req, err := client.ResubmitPreparer(resourceGroupName, workflowName, triggerName, historyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Resubmit", nil, "Failure preparing request")

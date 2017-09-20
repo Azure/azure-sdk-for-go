@@ -20,7 +20,6 @@ package subscriptions
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewGroupClientWithBaseURI(baseURI string) GroupClient {
 //
 // subscriptionID is the ID of the target subscription.
 func (client GroupClient) Get(subscriptionID string) (result Subscription, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "subscriptions.GroupClient", "Get")
-	}
-
 	req, err := client.GetPreparer(subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscriptions.GroupClient", "Get", nil, "Failure preparing request")
@@ -110,10 +105,6 @@ func (client GroupClient) GetResponder(resp *http.Response) (result Subscription
 
 // List gets all subscriptions for a tenant.
 func (client GroupClient) List() (result ListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "subscriptions.GroupClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscriptions.GroupClient", "List", nil, "Failure preparing request")
@@ -243,10 +234,6 @@ func (client GroupClient) ListComplete(cancel <-chan struct{}) (<-chan Subscript
 //
 // subscriptionID is the ID of the target subscription.
 func (client GroupClient) ListLocations(subscriptionID string) (result LocationListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "subscriptions.GroupClient", "ListLocations")
-	}
-
 	req, err := client.ListLocationsPreparer(subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscriptions.GroupClient", "ListLocations", nil, "Failure preparing request")

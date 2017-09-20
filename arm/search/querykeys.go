@@ -20,7 +20,6 @@ package search
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	uuid "github.com/satori/go.uuid"
 	"net/http"
 )
@@ -48,10 +47,6 @@ func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryK
 // GUID value that identifies this request. If specified, this will be included in response information as a way to
 // track the request.
 func (client QueryKeysClient) Create(resourceGroupName string, searchServiceName string, name string, clientRequestID *uuid.UUID) (result QueryKey, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "search.QueryKeysClient", "Create")
-	}
-
 	req, err := client.CreatePreparer(resourceGroupName, searchServiceName, name, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "Create", nil, "Failure preparing request")
@@ -127,10 +122,6 @@ func (client QueryKeysClient) CreateResponder(resp *http.Response) (result Query
 // name. clientRequestID is a client-generated GUID value that identifies this request. If specified, this will be
 // included in response information as a way to track the request.
 func (client QueryKeysClient) Delete(resourceGroupName string, searchServiceName string, key string, clientRequestID *uuid.UUID) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "search.QueryKeysClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, searchServiceName, key, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "Delete", nil, "Failure preparing request")
@@ -203,10 +194,6 @@ func (client QueryKeysClient) DeleteResponder(resp *http.Response) (result autor
 // with the specified resource group. clientRequestID is a client-generated GUID value that identifies this request. If
 // specified, this will be included in response information as a way to track the request.
 func (client QueryKeysClient) ListBySearchService(resourceGroupName string, searchServiceName string, clientRequestID *uuid.UUID) (result ListQueryKeysResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "search.QueryKeysClient", "ListBySearchService")
-	}
-
 	req, err := client.ListBySearchServicePreparer(resourceGroupName, searchServiceName, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "search.QueryKeysClient", "ListBySearchService", nil, "Failure preparing request")

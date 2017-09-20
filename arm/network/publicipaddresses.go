@@ -145,13 +145,6 @@ func (client PublicIPAddressesClient) CreateOrUpdateResponder(resp *http.Respons
 func (client PublicIPAddressesClient) Delete(resourceGroupName string, publicIPAddressName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.PublicIPAddressesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -230,10 +223,6 @@ func (client PublicIPAddressesClient) DeleteResponder(resp *http.Response) (resu
 // resourceGroupName is the name of the resource group. publicIPAddressName is the name of the subnet. expand is
 // expands referenced resources.
 func (client PublicIPAddressesClient) Get(resourceGroupName string, publicIPAddressName string, expand string) (result PublicIPAddress, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.PublicIPAddressesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, publicIPAddressName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "Get", nil, "Failure preparing request")
@@ -305,10 +294,6 @@ func (client PublicIPAddressesClient) GetResponder(resp *http.Response) (result 
 // interface. IPConfigurationName is the name of the IP configuration. publicIPAddressName is the name of the public IP
 // Address. expand is expands referenced resources.
 func (client PublicIPAddressesClient) GetVirtualMachineScaleSetPublicIPAddress(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, IPConfigurationName string, publicIPAddressName string, expand string) (result PublicIPAddress, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.PublicIPAddressesClient", "GetVirtualMachineScaleSetPublicIPAddress")
-	}
-
 	req, err := client.GetVirtualMachineScaleSetPublicIPAddressPreparer(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, IPConfigurationName, publicIPAddressName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "GetVirtualMachineScaleSetPublicIPAddress", nil, "Failure preparing request")
@@ -381,10 +366,6 @@ func (client PublicIPAddressesClient) GetVirtualMachineScaleSetPublicIPAddressRe
 //
 // resourceGroupName is the name of the resource group.
 func (client PublicIPAddressesClient) List(resourceGroupName string) (result PublicIPAddressListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.PublicIPAddressesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "List", nil, "Failure preparing request")
@@ -516,10 +497,6 @@ func (client PublicIPAddressesClient) ListComplete(resourceGroupName string, can
 
 // ListAll gets all the public IP addresses in a subscription.
 func (client PublicIPAddressesClient) ListAll() (result PublicIPAddressListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.PublicIPAddressesClient", "ListAll")
-	}
-
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "ListAll", nil, "Failure preparing request")
@@ -654,10 +631,6 @@ func (client PublicIPAddressesClient) ListAllComplete(cancel <-chan struct{}) (<
 // resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual machine
 // scale set.
 func (client PublicIPAddressesClient) ListVirtualMachineScaleSetPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string) (result PublicIPAddressListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.PublicIPAddressesClient", "ListVirtualMachineScaleSetPublicIPAddresses")
-	}
-
 	req, err := client.ListVirtualMachineScaleSetPublicIPAddressesPreparer(resourceGroupName, virtualMachineScaleSetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "ListVirtualMachineScaleSetPublicIPAddresses", nil, "Failure preparing request")
@@ -795,10 +768,6 @@ func (client PublicIPAddressesClient) ListVirtualMachineScaleSetPublicIPAddresse
 // scale set. virtualmachineIndex is the virtual machine index. networkInterfaceName is the network interface name.
 // IPConfigurationName is the IP configuration name.
 func (client PublicIPAddressesClient) ListVirtualMachineScaleSetVMPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, IPConfigurationName string) (result PublicIPAddressListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.PublicIPAddressesClient", "ListVirtualMachineScaleSetVMPublicIPAddresses")
-	}
-
 	req, err := client.ListVirtualMachineScaleSetVMPublicIPAddressesPreparer(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, IPConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "ListVirtualMachineScaleSetVMPublicIPAddresses", nil, "Failure preparing request")

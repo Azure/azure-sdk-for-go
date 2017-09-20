@@ -171,13 +171,6 @@ func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result W
 func (client GroupClient) CreateRegionalProperties(resourceGroupName string, webServiceName string, region string, cancel <-chan struct{}) (<-chan AsyncOperationStatus, <-chan error) {
 	resultChan := make(chan AsyncOperationStatus, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "webservices.GroupClient", "CreateRegionalProperties")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result AsyncOperationStatus
@@ -259,10 +252,6 @@ func (client GroupClient) CreateRegionalPropertiesResponder(resp *http.Response)
 // resourceGroupName is name of the resource group in which the web service is located. webServiceName is the name of
 // the web service. region is the region for which encrypted credential parameters are valid.
 func (client GroupClient) Get(resourceGroupName string, webServiceName string, region string) (result WebService, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "webservices.GroupClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, webServiceName, region)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "Get", nil, "Failure preparing request")
@@ -332,10 +321,6 @@ func (client GroupClient) GetResponder(resp *http.Response) (result WebService, 
 // resourceGroupName is name of the resource group in which the web service is located. skiptoken is continuation token
 // for pagination.
 func (client GroupClient) ListByResourceGroup(resourceGroupName string, skiptoken string) (result PaginatedWebServicesList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "webservices.GroupClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, skiptoken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -472,10 +457,6 @@ func (client GroupClient) ListByResourceGroupComplete(resourceGroupName string, 
 //
 // skiptoken is continuation token for pagination.
 func (client GroupClient) ListBySubscriptionID(skiptoken string) (result PaginatedWebServicesList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "webservices.GroupClient", "ListBySubscriptionID")
-	}
-
 	req, err := client.ListBySubscriptionIDPreparer(skiptoken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListBySubscriptionID", nil, "Failure preparing request")
@@ -612,10 +593,6 @@ func (client GroupClient) ListBySubscriptionIDComplete(skiptoken string, cancel 
 // resourceGroupName is name of the resource group in which the web service is located. webServiceName is the name of
 // the web service.
 func (client GroupClient) ListKeys(resourceGroupName string, webServiceName string) (result Keys, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "webservices.GroupClient", "ListKeys")
-	}
-
 	req, err := client.ListKeysPreparer(resourceGroupName, webServiceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.GroupClient", "ListKeys", nil, "Failure preparing request")
@@ -687,13 +664,6 @@ func (client GroupClient) ListKeysResponder(resp *http.Response) (result Keys, e
 func (client GroupClient) Patch(resourceGroupName string, webServiceName string, patchPayload WebService, cancel <-chan struct{}) (<-chan WebService, <-chan error) {
 	resultChan := make(chan WebService, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "webservices.GroupClient", "Patch")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result WebService
@@ -778,13 +748,6 @@ func (client GroupClient) PatchResponder(resp *http.Response) (result WebService
 func (client GroupClient) Remove(resourceGroupName string, webServiceName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "webservices.GroupClient", "Remove")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response

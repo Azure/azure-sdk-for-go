@@ -20,7 +20,6 @@ package recoveryservices
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewRegisteredIdentitiesClientWithBaseURI(baseURI string, subscriptionID str
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the
 // name of the recovery services vault. identityName is name of the protection container to unregister.
 func (client RegisteredIdentitiesClient) Delete(resourceGroupName string, vaultName string, identityName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.RegisteredIdentitiesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, vaultName, identityName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.RegisteredIdentitiesClient", "Delete", nil, "Failure preparing request")

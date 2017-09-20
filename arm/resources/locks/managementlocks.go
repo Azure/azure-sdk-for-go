@@ -522,10 +522,6 @@ func (client ManagementLocksClient) DeleteAtResourceLevelResponder(resp *http.Re
 //
 // lockName is the name of lock to delete.
 func (client ManagementLocksClient) DeleteAtSubscriptionLevel(lockName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "locks.ManagementLocksClient", "DeleteAtSubscriptionLevel")
-	}
-
 	req, err := client.DeleteAtSubscriptionLevelPreparer(lockName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteAtSubscriptionLevel", nil, "Failure preparing request")
@@ -589,10 +585,6 @@ func (client ManagementLocksClient) DeleteAtSubscriptionLevelResponder(resp *htt
 //
 // scope is the scope for the lock. lockName is the name of lock.
 func (client ManagementLocksClient) DeleteByScope(scope string, lockName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "locks.ManagementLocksClient", "DeleteByScope")
-	}
-
 	req, err := client.DeleteByScopePreparer(scope, lockName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "DeleteByScope", nil, "Failure preparing request")
@@ -808,10 +800,6 @@ func (client ManagementLocksClient) GetAtResourceLevelResponder(resp *http.Respo
 //
 // lockName is the name of the lock to get.
 func (client ManagementLocksClient) GetAtSubscriptionLevel(lockName string) (result ManagementLockObject, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "locks.ManagementLocksClient", "GetAtSubscriptionLevel")
-	}
-
 	req, err := client.GetAtSubscriptionLevelPreparer(lockName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetAtSubscriptionLevel", nil, "Failure preparing request")
@@ -876,10 +864,6 @@ func (client ManagementLocksClient) GetAtSubscriptionLevelResponder(resp *http.R
 //
 // scope is the scope for the lock. lockName is the name of lock.
 func (client ManagementLocksClient) GetByScope(scope string, lockName string) (result ManagementLockObject, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "locks.ManagementLocksClient", "GetByScope")
-	}
-
 	req, err := client.GetByScopePreparer(scope, lockName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "GetByScope", nil, "Failure preparing request")
@@ -1240,10 +1224,6 @@ func (client ManagementLocksClient) ListAtResourceLevelComplete(resourceGroupNam
 //
 // filter is the filter to apply on the operation.
 func (client ManagementLocksClient) ListAtSubscriptionLevel(filter string) (result ManagementLockListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "locks.ManagementLocksClient", "ListAtSubscriptionLevel")
-	}
-
 	req, err := client.ListAtSubscriptionLevelPreparer(filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "locks.ManagementLocksClient", "ListAtSubscriptionLevel", nil, "Failure preparing request")

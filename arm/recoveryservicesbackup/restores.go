@@ -20,7 +20,6 @@ package recoveryservicesbackup
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,10 +47,6 @@ func NewRestoresClientWithBaseURI(baseURI string, subscriptionID string) Restore
 // recoveryPointID is recovery point ID which represents the backed up data to be restored. parameters is resource
 // restore request
 func (client RestoresClient) Trigger(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.RestoresClient", "Trigger")
-	}
-
 	req, err := client.TriggerPreparer(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointID, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.RestoresClient", "Trigger", nil, "Failure preparing request")

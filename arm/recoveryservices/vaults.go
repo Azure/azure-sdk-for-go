@@ -20,7 +20,6 @@ package recoveryservices
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -44,10 +43,6 @@ func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsCli
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the
 // name of the recovery services vault. vault is recovery Services Vault to be created.
 func (client VaultsClient) CreateOrUpdate(resourceGroupName string, vaultName string, vault Vault) (result Vault, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.VaultsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, vaultName, vault)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -116,10 +111,6 @@ func (client VaultsClient) CreateOrUpdateResponder(resp *http.Response) (result 
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the
 // name of the recovery services vault.
 func (client VaultsClient) Delete(resourceGroupName string, vaultName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.VaultsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, vaultName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Delete", nil, "Failure preparing request")
@@ -185,10 +176,6 @@ func (client VaultsClient) DeleteResponder(resp *http.Response) (result autorest
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the
 // name of the recovery services vault.
 func (client VaultsClient) Get(resourceGroupName string, vaultName string) (result Vault, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.VaultsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, vaultName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Get", nil, "Failure preparing request")
@@ -254,10 +241,6 @@ func (client VaultsClient) GetResponder(resp *http.Response) (result Vault, err 
 //
 // resourceGroupName is the name of the resource group where the recovery services vault is present.
 func (client VaultsClient) ListByResourceGroup(resourceGroupName string) (result VaultList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.VaultsClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -320,10 +303,6 @@ func (client VaultsClient) ListByResourceGroupResponder(resp *http.Response) (re
 
 // ListBySubscriptionID fetches all the resources of the specified type in the subscription.
 func (client VaultsClient) ListBySubscriptionID() (result VaultList, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.VaultsClient", "ListBySubscriptionID")
-	}
-
 	req, err := client.ListBySubscriptionIDPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "ListBySubscriptionID", nil, "Failure preparing request")
@@ -388,10 +367,6 @@ func (client VaultsClient) ListBySubscriptionIDResponder(resp *http.Response) (r
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the
 // name of the recovery services vault. vault is recovery Services Vault to be created.
 func (client VaultsClient) Update(resourceGroupName string, vaultName string, vault Vault) (result Vault, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.VaultsClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, vaultName, vault)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.VaultsClient", "Update", nil, "Failure preparing request")

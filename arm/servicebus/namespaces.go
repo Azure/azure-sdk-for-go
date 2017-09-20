@@ -614,10 +614,6 @@ func (client NamespacesClient) GetAuthorizationRuleResponder(resp *http.Response
 
 // List gets all the available namespaces within the subscription, irrespective of the resource groups.
 func (client NamespacesClient) List() (result SBNamespaceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servicebus.NamespacesClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "List", nil, "Failure preparing request")

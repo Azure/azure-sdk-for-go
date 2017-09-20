@@ -121,10 +121,6 @@ func (client AlertRulesClient) CreateOrUpdateResponder(resp *http.Response) (res
 //
 // resourceGroupName is the name of the resource group. ruleName is the name of the rule.
 func (client AlertRulesClient) Delete(resourceGroupName string, ruleName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.AlertRulesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, ruleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.AlertRulesClient", "Delete", nil, "Failure preparing request")
@@ -189,10 +185,6 @@ func (client AlertRulesClient) DeleteResponder(resp *http.Response) (result auto
 //
 // resourceGroupName is the name of the resource group. ruleName is the name of the rule.
 func (client AlertRulesClient) Get(resourceGroupName string, ruleName string) (result AlertRuleResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.AlertRulesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, ruleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.AlertRulesClient", "Get", nil, "Failure preparing request")
@@ -258,10 +250,6 @@ func (client AlertRulesClient) GetResponder(resp *http.Response) (result AlertRu
 //
 // resourceGroupName is the name of the resource group.
 func (client AlertRulesClient) ListByResourceGroup(resourceGroupName string) (result AlertRuleResourceCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.AlertRulesClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.AlertRulesClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -327,10 +315,6 @@ func (client AlertRulesClient) ListByResourceGroupResponder(resp *http.Response)
 // resourceGroupName is the name of the resource group. ruleName is the name of the rule. alertRulesResource is
 // parameters supplied to the operation.
 func (client AlertRulesClient) Update(resourceGroupName string, ruleName string, alertRulesResource AlertRuleResourcePatch) (result AlertRuleResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "monitor.AlertRulesClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, ruleName, alertRulesResource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "monitor.AlertRulesClient", "Update", nil, "Failure preparing request")

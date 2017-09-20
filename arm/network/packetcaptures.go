@@ -146,13 +146,6 @@ func (client PacketCapturesClient) CreateResponder(resp *http.Response) (result 
 func (client PacketCapturesClient) Delete(resourceGroupName string, networkWatcherName string, packetCaptureName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.PacketCapturesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -232,10 +225,6 @@ func (client PacketCapturesClient) DeleteResponder(resp *http.Response) (result 
 // resourceGroupName is the name of the resource group. networkWatcherName is the name of the network watcher.
 // packetCaptureName is the name of the packet capture session.
 func (client PacketCapturesClient) Get(resourceGroupName string, networkWatcherName string, packetCaptureName string) (result PacketCaptureResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.PacketCapturesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, networkWatcherName, packetCaptureName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PacketCapturesClient", "Get", nil, "Failure preparing request")
@@ -307,13 +296,6 @@ func (client PacketCapturesClient) GetResponder(resp *http.Response) (result Pac
 func (client PacketCapturesClient) GetStatus(resourceGroupName string, networkWatcherName string, packetCaptureName string, cancel <-chan struct{}) (<-chan PacketCaptureQueryStatusResult, <-chan error) {
 	resultChan := make(chan PacketCaptureQueryStatusResult, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.PacketCapturesClient", "GetStatus")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result PacketCaptureQueryStatusResult
@@ -393,10 +375,6 @@ func (client PacketCapturesClient) GetStatusResponder(resp *http.Response) (resu
 //
 // resourceGroupName is the name of the resource group. networkWatcherName is the name of the Network Watcher resource.
 func (client PacketCapturesClient) List(resourceGroupName string, networkWatcherName string) (result PacketCaptureListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.PacketCapturesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, networkWatcherName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PacketCapturesClient", "List", nil, "Failure preparing request")
@@ -466,13 +444,6 @@ func (client PacketCapturesClient) ListResponder(resp *http.Response) (result Pa
 func (client PacketCapturesClient) Stop(resourceGroupName string, networkWatcherName string, packetCaptureName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.PacketCapturesClient", "Stop")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response

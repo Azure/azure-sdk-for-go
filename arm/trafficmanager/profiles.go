@@ -20,7 +20,6 @@ package trafficmanager
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,10 +42,6 @@ func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) Profile
 //
 // parameters is the Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability operation.
 func (client ProfilesClient) CheckTrafficManagerRelativeDNSNameAvailability(parameters CheckTrafficManagerRelativeDNSNameAvailabilityParameters) (result NameAvailability, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "trafficmanager.ProfilesClient", "CheckTrafficManagerRelativeDNSNameAvailability")
-	}
-
 	req, err := client.CheckTrafficManagerRelativeDNSNameAvailabilityPreparer(parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "CheckTrafficManagerRelativeDNSNameAvailability", nil, "Failure preparing request")
@@ -110,10 +105,6 @@ func (client ProfilesClient) CheckTrafficManagerRelativeDNSNameAvailabilityRespo
 // of the Traffic Manager profile. parameters is the Traffic Manager profile parameters supplied to the CreateOrUpdate
 // operation.
 func (client ProfilesClient) CreateOrUpdate(resourceGroupName string, profileName string, parameters Profile) (result Profile, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "trafficmanager.ProfilesClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, profileName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -182,10 +173,6 @@ func (client ProfilesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // resourceGroupName is the name of the resource group containing the Traffic Manager profile to be deleted.
 // profileName is the name of the Traffic Manager profile to be deleted.
 func (client ProfilesClient) Delete(resourceGroupName string, profileName string) (result DeleteOperationResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "trafficmanager.ProfilesClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, profileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "Delete", nil, "Failure preparing request")
@@ -252,10 +239,6 @@ func (client ProfilesClient) DeleteResponder(resp *http.Response) (result Delete
 // resourceGroupName is the name of the resource group containing the Traffic Manager profile. profileName is the name
 // of the Traffic Manager profile.
 func (client ProfilesClient) Get(resourceGroupName string, profileName string) (result Profile, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "trafficmanager.ProfilesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, profileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "Get", nil, "Failure preparing request")
@@ -321,10 +304,6 @@ func (client ProfilesClient) GetResponder(resp *http.Response) (result Profile, 
 //
 // resourceGroupName is the name of the resource group containing the Traffic Manager profiles to be listed.
 func (client ProfilesClient) ListByResourceGroup(resourceGroupName string) (result ProfileListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "trafficmanager.ProfilesClient", "ListByResourceGroup")
-	}
-
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -387,10 +366,6 @@ func (client ProfilesClient) ListByResourceGroupResponder(resp *http.Response) (
 
 // ListBySubscription lists all Traffic Manager profiles within a subscription.
 func (client ProfilesClient) ListBySubscription() (result ProfileListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "trafficmanager.ProfilesClient", "ListBySubscription")
-	}
-
 	req, err := client.ListBySubscriptionPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "ListBySubscription", nil, "Failure preparing request")
@@ -456,10 +431,6 @@ func (client ProfilesClient) ListBySubscriptionResponder(resp *http.Response) (r
 // of the Traffic Manager profile. parameters is the Traffic Manager profile parameters supplied to the Update
 // operation.
 func (client ProfilesClient) Update(resourceGroupName string, profileName string, parameters Profile) (result Profile, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "trafficmanager.ProfilesClient", "Update")
-	}
-
 	req, err := client.UpdatePreparer(resourceGroupName, profileName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "trafficmanager.ProfilesClient", "Update", nil, "Failure preparing request")

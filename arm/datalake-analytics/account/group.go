@@ -158,13 +158,6 @@ func (client GroupClient) CreateResponder(resp *http.Response) (result DataLakeA
 func (client GroupClient) Delete(resourceGroupName string, accountName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "account.GroupClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -243,10 +236,6 @@ func (client GroupClient) DeleteResponder(resp *http.Response) (result autorest.
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName
 // is the name of the Data Lake Analytics account to retrieve.
 func (client GroupClient) Get(resourceGroupName string, accountName string) (result DataLakeAnalyticsAccount, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.GroupClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "account.GroupClient", "Get", nil, "Failure preparing request")
@@ -654,13 +643,6 @@ func (client GroupClient) ListByResourceGroupComplete(resourceGroupName string, 
 func (client GroupClient) Update(resourceGroupName string, accountName string, parameters *DataLakeAnalyticsAccountUpdateParameters, cancel <-chan struct{}) (<-chan DataLakeAnalyticsAccount, <-chan error) {
 	resultChan := make(chan DataLakeAnalyticsAccount, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "account.GroupClient", "Update")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result DataLakeAnalyticsAccount

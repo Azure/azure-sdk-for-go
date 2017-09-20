@@ -118,10 +118,6 @@ func (client NamespacesClient) CheckAvailabilityResponder(resp *http.Response) (
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name. parameters is parameters
 // supplied to create a Namespace Resource.
 func (client NamespacesClient) CreateOrUpdate(resourceGroupName string, namespaceName string, parameters NamespaceCreateOrUpdateParameters) (result NamespaceResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, namespaceName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -268,13 +264,6 @@ func (client NamespacesClient) CreateOrUpdateAuthorizationRuleResponder(resp *ht
 func (client NamespacesClient) Delete(resourceGroupName string, namespaceName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -353,10 +342,6 @@ func (client NamespacesClient) DeleteResponder(resp *http.Response) (result auto
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name. authorizationRuleName is
 // authorization Rule Name.
 func (client NamespacesClient) DeleteAuthorizationRule(resourceGroupName string, namespaceName string, authorizationRuleName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "DeleteAuthorizationRule")
-	}
-
 	req, err := client.DeleteAuthorizationRulePreparer(resourceGroupName, namespaceName, authorizationRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "DeleteAuthorizationRule", nil, "Failure preparing request")
@@ -422,10 +407,6 @@ func (client NamespacesClient) DeleteAuthorizationRuleResponder(resp *http.Respo
 //
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name.
 func (client NamespacesClient) Get(resourceGroupName string, namespaceName string) (result NamespaceResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, namespaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Get", nil, "Failure preparing request")
@@ -492,10 +473,6 @@ func (client NamespacesClient) GetResponder(resp *http.Response) (result Namespa
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name authorizationRuleName is
 // authorization rule name.
 func (client NamespacesClient) GetAuthorizationRule(resourceGroupName string, namespaceName string, authorizationRuleName string) (result SharedAccessAuthorizationRuleResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "GetAuthorizationRule")
-	}
-
 	req, err := client.GetAuthorizationRulePreparer(resourceGroupName, namespaceName, authorizationRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "GetAuthorizationRule", nil, "Failure preparing request")
@@ -563,10 +540,6 @@ func (client NamespacesClient) GetAuthorizationRuleResponder(resp *http.Response
 // resourceGroupName is the name of the resource group. If resourceGroupName value is null the method lists all the
 // namespaces within subscription
 func (client NamespacesClient) List(resourceGroupName string) (result NamespaceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "List", nil, "Failure preparing request")
@@ -698,10 +671,6 @@ func (client NamespacesClient) ListComplete(resourceGroupName string, cancel <-c
 
 // ListAll lists all the available namespaces within the subscription irrespective of the resourceGroups.
 func (client NamespacesClient) ListAll() (result NamespaceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "ListAll")
-	}
-
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAll", nil, "Failure preparing request")
@@ -834,10 +803,6 @@ func (client NamespacesClient) ListAllComplete(cancel <-chan struct{}) (<-chan N
 //
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name
 func (client NamespacesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string) (result SharedAccessAuthorizationRuleListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "ListAuthorizationRules")
-	}
-
 	req, err := client.ListAuthorizationRulesPreparer(resourceGroupName, namespaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListAuthorizationRules", nil, "Failure preparing request")
@@ -973,10 +938,6 @@ func (client NamespacesClient) ListAuthorizationRulesComplete(resourceGroupName 
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name. authorizationRuleName is
 // the connection string of the namespace for the specified authorizationRule.
 func (client NamespacesClient) ListKeys(resourceGroupName string, namespaceName string, authorizationRuleName string) (result ResourceListKeys, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "ListKeys")
-	}
-
 	req, err := client.ListKeysPreparer(resourceGroupName, namespaceName, authorizationRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListKeys", nil, "Failure preparing request")
@@ -1044,10 +1005,6 @@ func (client NamespacesClient) ListKeysResponder(resp *http.Response) (result Re
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name. parameters is parameters
 // supplied to patch a Namespace Resource.
 func (client NamespacesClient) Patch(resourceGroupName string, namespaceName string, parameters NamespacePatchParameters) (result NamespaceResource, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "Patch")
-	}
-
 	req, err := client.PatchPreparer(resourceGroupName, namespaceName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "Patch", nil, "Failure preparing request")
@@ -1117,10 +1074,6 @@ func (client NamespacesClient) PatchResponder(resp *http.Response) (result Names
 // the connection string of the namespace for the specified authorizationRule. parameters is parameters supplied to
 // regenerate the Namespace Authorization Rule Key.
 func (client NamespacesClient) RegenerateKeys(resourceGroupName string, namespaceName string, authorizationRuleName string, parameters PolicykeyResource) (result ResourceListKeys, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "notificationhubs.NamespacesClient", "RegenerateKeys")
-	}
-
 	req, err := client.RegenerateKeysPreparer(resourceGroupName, namespaceName, authorizationRuleName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "RegenerateKeys", nil, "Failure preparing request")

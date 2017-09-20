@@ -630,10 +630,6 @@ func (client NamespacesClient) GetAuthorizationRuleResponder(resp *http.Response
 
 // List lists all the available Namespaces within a subscription, irrespective of the resource groups.
 func (client NamespacesClient) List() (result EHNamespaceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "eventhub.NamespacesClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventhub.NamespacesClient", "List", nil, "Failure preparing request")

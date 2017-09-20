@@ -293,10 +293,6 @@ func (client NodeClient) GetResponder(resp *http.Response) (result NodeResource,
 
 // List lists nodes in a subscription.
 func (client NodeClient) List() (result NodeResources, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "servermanagement.NodeClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servermanagement.NodeClient", "List", nil, "Failure preparing request")

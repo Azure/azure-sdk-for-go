@@ -20,7 +20,6 @@ package advisor
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,10 +45,6 @@ func NewSuppressionsClientWithBaseURI(baseURI string, subscriptionID string) Sup
 // applies. recommendationID is the recommendation ID. name is the name of the suppression. suppressionContract is the
 // snoozed or dismissed attribute; for example, the snooze duration.
 func (client SuppressionsClient) Create(resourceURI string, recommendationID string, name string, suppressionContract SuppressionContract) (result SuppressionContract, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "advisor.SuppressionsClient", "Create")
-	}
-
 	req, err := client.CreatePreparer(resourceURI, recommendationID, name, suppressionContract)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "advisor.SuppressionsClient", "Create", nil, "Failure preparing request")
@@ -119,10 +114,6 @@ func (client SuppressionsClient) CreateResponder(resp *http.Response) (result Su
 // resourceURI is the fully qualified Azure Resource Manager identifier of the resource to which the recommendation
 // applies. recommendationID is the recommendation ID. name is the name of the suppression.
 func (client SuppressionsClient) Delete(resourceURI string, recommendationID string, name string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "advisor.SuppressionsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceURI, recommendationID, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "advisor.SuppressionsClient", "Delete", nil, "Failure preparing request")
@@ -188,10 +179,6 @@ func (client SuppressionsClient) DeleteResponder(resp *http.Response) (result au
 // resourceURI is the fully qualified Azure Resource Manager identifier of the resource to which the recommendation
 // applies. recommendationID is the recommendation ID. name is the name of the suppression.
 func (client SuppressionsClient) Get(resourceURI string, recommendationID string, name string) (result SuppressionContract, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "advisor.SuppressionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceURI, recommendationID, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "advisor.SuppressionsClient", "Get", nil, "Failure preparing request")
@@ -259,10 +246,6 @@ func (client SuppressionsClient) GetResponder(resp *http.Response) (result Suppr
 // top is the number of suppressions per page if a paged version of this API is being used. skipToken is the
 // page-continuation token to use with a paged version of this API.
 func (client SuppressionsClient) List(top *int32, skipToken string) (result SuppressionContractListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "advisor.SuppressionsClient", "List")
-	}
-
 	req, err := client.ListPreparer(top, skipToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "advisor.SuppressionsClient", "List", nil, "Failure preparing request")

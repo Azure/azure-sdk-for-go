@@ -20,7 +20,6 @@ package recoveryservices
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -45,10 +44,6 @@ func NewVaultCertificatesClientWithBaseURI(baseURI string, subscriptionID string
 // name of the recovery services vault. certificateName is certificate friendly name. certificateRequest is input
 // parameters for uploading the vault certificate.
 func (client VaultCertificatesClient) Create(resourceGroupName string, vaultName string, certificateName string, certificateRequest CertificateRequest) (result VaultCertificateResponse, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservices.VaultCertificatesClient", "Create")
-	}
-
 	req, err := client.CreatePreparer(resourceGroupName, vaultName, certificateName, certificateRequest)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservices.VaultCertificatesClient", "Create", nil, "Failure preparing request")

@@ -20,7 +20,6 @@ package sql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,10 +48,6 @@ func NewDatabaseThreatDetectionPoliciesClientWithBaseURI(baseURI string, subscri
 // database for which database Threat Detection policy is defined. securityAlertPolicyName is the name of the security
 // alert policy. parameters is the database Threat Detection policy.
 func (client DatabaseThreatDetectionPoliciesClient) CreateOrUpdate(resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName string, parameters DatabaseSecurityAlertPolicy) (result DatabaseSecurityAlertPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.DatabaseThreatDetectionPoliciesClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, serverName, databaseName, securityAlertPolicyName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseThreatDetectionPoliciesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -125,10 +120,6 @@ func (client DatabaseThreatDetectionPoliciesClient) CreateOrUpdateResponder(resp
 // database for which database Threat Detection policy is defined. securityAlertPolicyName is the name of the security
 // alert policy.
 func (client DatabaseThreatDetectionPoliciesClient) Get(resourceGroupName string, serverName string, databaseName string, securityAlertPolicyName string) (result DatabaseSecurityAlertPolicy, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "sql.DatabaseThreatDetectionPoliciesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, serverName, databaseName, securityAlertPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseThreatDetectionPoliciesClient", "Get", nil, "Failure preparing request")

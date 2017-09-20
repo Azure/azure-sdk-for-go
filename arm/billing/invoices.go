@@ -46,10 +46,6 @@ func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) Invoice
 //
 // invoiceName is the name of an invoice resource.
 func (client InvoicesClient) Get(invoiceName string) (result Invoice, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "billing.InvoicesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(invoiceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "Get", nil, "Failure preparing request")
@@ -113,10 +109,6 @@ func (client InvoicesClient) GetResponder(resp *http.Response) (result Invoice, 
 // GetLatest gets the most recent invoice. When getting a single invoice, the downloadUrl property is expanded
 // automatically.
 func (client InvoicesClient) GetLatest() (result Invoice, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "billing.InvoicesClient", "GetLatest")
-	}
-
 	req, err := client.GetLatestPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "GetLatest", nil, "Failure preparing request")

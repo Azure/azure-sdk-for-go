@@ -20,7 +20,6 @@ package recoveryservicesbackup
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -46,10 +45,6 @@ func NewJobOperationResultsClientWithBaseURI(baseURI string, subscriptionID stri
 // recovery services vault is present. jobName is job name whose operation result has to be fetched. operationID is
 // operationID which represents the operation whose result has to be fetched.
 func (client JobOperationResultsClient) Get(vaultName string, resourceGroupName string, jobName string, operationID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicesbackup.JobOperationResultsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(vaultName, resourceGroupName, jobName, operationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicesbackup.JobOperationResultsClient", "Get", nil, "Failure preparing request")

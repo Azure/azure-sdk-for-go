@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,13 +47,6 @@ func NewApplicationSecurityGroupsClientWithBaseURI(baseURI string, subscriptionI
 func (client ApplicationSecurityGroupsClient) CreateOrUpdate(resourceGroupName string, applicationSecurityGroupName string, parameters ApplicationSecurityGroup, cancel <-chan struct{}) (<-chan ApplicationSecurityGroup, <-chan error) {
 	resultChan := make(chan ApplicationSecurityGroup, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ApplicationSecurityGroupsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ApplicationSecurityGroup
@@ -140,13 +132,6 @@ func (client ApplicationSecurityGroupsClient) CreateOrUpdateResponder(resp *http
 func (client ApplicationSecurityGroupsClient) Delete(resourceGroupName string, applicationSecurityGroupName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ApplicationSecurityGroupsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -225,10 +210,6 @@ func (client ApplicationSecurityGroupsClient) DeleteResponder(resp *http.Respons
 // resourceGroupName is the name of the resource group. applicationSecurityGroupName is the name of the application
 // security group.
 func (client ApplicationSecurityGroupsClient) Get(resourceGroupName string, applicationSecurityGroupName string) (result ApplicationSecurityGroup, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ApplicationSecurityGroupsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, applicationSecurityGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationSecurityGroupsClient", "Get", nil, "Failure preparing request")
@@ -294,10 +275,6 @@ func (client ApplicationSecurityGroupsClient) GetResponder(resp *http.Response) 
 //
 // resourceGroupName is the name of the resource group.
 func (client ApplicationSecurityGroupsClient) List(resourceGroupName string) (result ApplicationSecurityGroupListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ApplicationSecurityGroupsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationSecurityGroupsClient", "List", nil, "Failure preparing request")
@@ -429,10 +406,6 @@ func (client ApplicationSecurityGroupsClient) ListComplete(resourceGroupName str
 
 // ListAll gets all application security groups in a subscription.
 func (client ApplicationSecurityGroupsClient) ListAll() (result ApplicationSecurityGroupListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ApplicationSecurityGroupsClient", "ListAll")
-	}
-
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationSecurityGroupsClient", "ListAll", nil, "Failure preparing request")

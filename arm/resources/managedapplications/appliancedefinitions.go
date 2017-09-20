@@ -343,13 +343,6 @@ func (client ApplianceDefinitionsClient) DeleteResponder(resp *http.Response) (r
 func (client ApplianceDefinitionsClient) DeleteByID(applianceDefinitionID string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "managedapplications.ApplianceDefinitionsClient", "DeleteByID")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -504,10 +497,6 @@ func (client ApplianceDefinitionsClient) GetResponder(resp *http.Response) (resu
 // appliance definition resource type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applianceDefinitions/{applianceDefinition-name}
 func (client ApplianceDefinitionsClient) GetByID(applianceDefinitionID string) (result ApplianceDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "managedapplications.ApplianceDefinitionsClient", "GetByID")
-	}
-
 	req, err := client.GetByIDPreparer(applianceDefinitionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsClient", "GetByID", nil, "Failure preparing request")

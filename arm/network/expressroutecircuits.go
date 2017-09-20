@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,13 +47,6 @@ func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID str
 func (client ExpressRouteCircuitsClient) CreateOrUpdate(resourceGroupName string, circuitName string, parameters ExpressRouteCircuit, cancel <-chan struct{}) (<-chan ExpressRouteCircuit, <-chan error) {
 	resultChan := make(chan ExpressRouteCircuit, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitsClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ExpressRouteCircuit
@@ -138,13 +130,6 @@ func (client ExpressRouteCircuitsClient) CreateOrUpdateResponder(resp *http.Resp
 func (client ExpressRouteCircuitsClient) Delete(resourceGroupName string, circuitName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -222,10 +207,6 @@ func (client ExpressRouteCircuitsClient) DeleteResponder(resp *http.Response) (r
 //
 // resourceGroupName is the name of the resource group. circuitName is the name of express route circuit.
 func (client ExpressRouteCircuitsClient) Get(resourceGroupName string, circuitName string) (result ExpressRouteCircuit, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, circuitName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "Get", nil, "Failure preparing request")
@@ -292,10 +273,6 @@ func (client ExpressRouteCircuitsClient) GetResponder(resp *http.Response) (resu
 // resourceGroupName is the name of the resource group. circuitName is the name of the express route circuit.
 // peeringName is the name of the peering.
 func (client ExpressRouteCircuitsClient) GetPeeringStats(resourceGroupName string, circuitName string, peeringName string) (result ExpressRouteCircuitStats, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitsClient", "GetPeeringStats")
-	}
-
 	req, err := client.GetPeeringStatsPreparer(resourceGroupName, circuitName, peeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "GetPeeringStats", nil, "Failure preparing request")
@@ -362,10 +339,6 @@ func (client ExpressRouteCircuitsClient) GetPeeringStatsResponder(resp *http.Res
 //
 // resourceGroupName is the name of the resource group. circuitName is the name of the express route circuit.
 func (client ExpressRouteCircuitsClient) GetStats(resourceGroupName string, circuitName string) (result ExpressRouteCircuitStats, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitsClient", "GetStats")
-	}
-
 	req, err := client.GetStatsPreparer(resourceGroupName, circuitName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "GetStats", nil, "Failure preparing request")
@@ -431,10 +404,6 @@ func (client ExpressRouteCircuitsClient) GetStatsResponder(resp *http.Response) 
 //
 // resourceGroupName is the name of the resource group.
 func (client ExpressRouteCircuitsClient) List(resourceGroupName string) (result ExpressRouteCircuitListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "List", nil, "Failure preparing request")
@@ -566,10 +535,6 @@ func (client ExpressRouteCircuitsClient) ListComplete(resourceGroupName string, 
 
 // ListAll gets all the express route circuits in a subscription.
 func (client ExpressRouteCircuitsClient) ListAll() (result ExpressRouteCircuitListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitsClient", "ListAll")
-	}
-
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "ListAll", nil, "Failure preparing request")
@@ -707,13 +672,6 @@ func (client ExpressRouteCircuitsClient) ListAllComplete(cancel <-chan struct{})
 func (client ExpressRouteCircuitsClient) ListArpTable(resourceGroupName string, circuitName string, peeringName string, devicePath string, cancel <-chan struct{}) (<-chan ExpressRouteCircuitsArpTableListResult, <-chan error) {
 	resultChan := make(chan ExpressRouteCircuitsArpTableListResult, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitsClient", "ListArpTable")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ExpressRouteCircuitsArpTableListResult
@@ -799,13 +757,6 @@ func (client ExpressRouteCircuitsClient) ListArpTableResponder(resp *http.Respon
 func (client ExpressRouteCircuitsClient) ListRoutesTable(resourceGroupName string, circuitName string, peeringName string, devicePath string, cancel <-chan struct{}) (<-chan ExpressRouteCircuitsRoutesTableListResult, <-chan error) {
 	resultChan := make(chan ExpressRouteCircuitsRoutesTableListResult, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitsClient", "ListRoutesTable")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ExpressRouteCircuitsRoutesTableListResult
@@ -891,13 +842,6 @@ func (client ExpressRouteCircuitsClient) ListRoutesTableResponder(resp *http.Res
 func (client ExpressRouteCircuitsClient) ListRoutesTableSummary(resourceGroupName string, circuitName string, peeringName string, devicePath string, cancel <-chan struct{}) (<-chan ExpressRouteCircuitsRoutesTableSummaryListResult, <-chan error) {
 	resultChan := make(chan ExpressRouteCircuitsRoutesTableSummaryListResult, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.ExpressRouteCircuitsClient", "ListRoutesTableSummary")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ExpressRouteCircuitsRoutesTableSummaryListResult

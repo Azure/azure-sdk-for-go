@@ -44,10 +44,6 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 // resourceGroupName is the resource group name. jobCollectionName is the job collection name. jobName is the job name.
 // job is the job definition.
 func (client JobsClient) CreateOrUpdate(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "scheduler.JobsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(resourceGroupName, jobCollectionName, jobName, job)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -116,10 +112,6 @@ func (client JobsClient) CreateOrUpdateResponder(resp *http.Response) (result Jo
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job collection name. jobName is the job name.
 func (client JobsClient) Delete(resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "scheduler.JobsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(resourceGroupName, jobCollectionName, jobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Delete", nil, "Failure preparing request")
@@ -185,10 +177,6 @@ func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.R
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job collection name. jobName is the job name.
 func (client JobsClient) Get(resourceGroupName string, jobCollectionName string, jobName string) (result JobDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "scheduler.JobsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, jobCollectionName, jobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Get", nil, "Failure preparing request")
@@ -565,10 +553,6 @@ func (client JobsClient) ListJobHistoryComplete(resourceGroupName string, jobCol
 // resourceGroupName is the resource group name. jobCollectionName is the job collection name. jobName is the job name.
 // job is the job definition.
 func (client JobsClient) Patch(resourceGroupName string, jobCollectionName string, jobName string, job JobDefinition) (result JobDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "scheduler.JobsClient", "Patch")
-	}
-
 	req, err := client.PatchPreparer(resourceGroupName, jobCollectionName, jobName, job)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Patch", nil, "Failure preparing request")
@@ -637,10 +621,6 @@ func (client JobsClient) PatchResponder(resp *http.Response) (result JobDefiniti
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job collection name. jobName is the job name.
 func (client JobsClient) Run(resourceGroupName string, jobCollectionName string, jobName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "scheduler.JobsClient", "Run")
-	}
-
 	req, err := client.RunPreparer(resourceGroupName, jobCollectionName, jobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "scheduler.JobsClient", "Run", nil, "Failure preparing request")

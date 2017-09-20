@@ -20,7 +20,6 @@ package authorization
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -47,10 +46,6 @@ func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) 
 // scope is the scope of the role definition. roleDefinitionID is the ID of the role definition. roleDefinition is the
 // values for the role definition.
 func (client RoleDefinitionsClient) CreateOrUpdate(scope string, roleDefinitionID string, roleDefinition RoleDefinition) (result RoleDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleDefinitionsClient", "CreateOrUpdate")
-	}
-
 	req, err := client.CreateOrUpdatePreparer(scope, roleDefinitionID, roleDefinition)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -117,10 +112,6 @@ func (client RoleDefinitionsClient) CreateOrUpdateResponder(resp *http.Response)
 //
 // scope is the scope of the role definition. roleDefinitionID is the ID of the role definition to delete.
 func (client RoleDefinitionsClient) Delete(scope string, roleDefinitionID string) (result RoleDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleDefinitionsClient", "Delete")
-	}
-
 	req, err := client.DeletePreparer(scope, roleDefinitionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "Delete", nil, "Failure preparing request")
@@ -185,10 +176,6 @@ func (client RoleDefinitionsClient) DeleteResponder(resp *http.Response) (result
 //
 // scope is the scope of the role definition. roleDefinitionID is the ID of the role definition.
 func (client RoleDefinitionsClient) Get(scope string, roleDefinitionID string) (result RoleDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleDefinitionsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(scope, roleDefinitionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "Get", nil, "Failure preparing request")
@@ -253,10 +240,6 @@ func (client RoleDefinitionsClient) GetResponder(resp *http.Response) (result Ro
 //
 // roleDefinitionID is the fully qualified role definition ID to get.
 func (client RoleDefinitionsClient) GetByID(roleDefinitionID string) (result RoleDefinition, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleDefinitionsClient", "GetByID")
-	}
-
 	req, err := client.GetByIDPreparer(roleDefinitionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "GetByID", nil, "Failure preparing request")
@@ -321,10 +304,6 @@ func (client RoleDefinitionsClient) GetByIDResponder(resp *http.Response) (resul
 // scope is the scope of the role definition. filter is the filter to apply on the operation. Use atScopeAndBelow
 // filter to search below the given scope as well.
 func (client RoleDefinitionsClient) List(scope string, filter string) (result RoleDefinitionListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "authorization.RoleDefinitionsClient", "List")
-	}
-
 	req, err := client.ListPreparer(scope, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "authorization.RoleDefinitionsClient", "List", nil, "Failure preparing request")

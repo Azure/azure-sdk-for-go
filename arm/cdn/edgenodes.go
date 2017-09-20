@@ -20,7 +20,6 @@ package cdn
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -42,10 +41,6 @@ func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string) EdgeNo
 
 // List edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
 func (client EdgeNodesClient) List() (result EdgenodeResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "cdn.EdgeNodesClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EdgeNodesClient", "List", nil, "Failure preparing request")

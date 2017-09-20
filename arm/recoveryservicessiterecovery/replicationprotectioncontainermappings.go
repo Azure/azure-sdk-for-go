@@ -20,7 +20,6 @@ package recoveryservicessiterecovery
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -51,13 +50,6 @@ func NewReplicationProtectionContainerMappingsClientWithBaseURI(baseURI string, 
 func (client ReplicationProtectionContainerMappingsClient) Create(fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, cancel <-chan struct{}) (<-chan ProtectionContainerMapping, <-chan error) {
 	resultChan := make(chan ProtectionContainerMapping, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainerMappingsClient", "Create")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result ProtectionContainerMapping
@@ -146,13 +138,6 @@ func (client ReplicationProtectionContainerMappingsClient) CreateResponder(resp 
 func (client ReplicationProtectionContainerMappingsClient) Delete(fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainerMappingsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -236,10 +221,6 @@ func (client ReplicationProtectionContainerMappingsClient) DeleteResponder(resp 
 // fabricName is fabric name. protectionContainerName is protection container name. mappingName is protection Container
 // mapping name.
 func (client ReplicationProtectionContainerMappingsClient) Get(fabricName string, protectionContainerName string, mappingName string) (result ProtectionContainerMapping, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainerMappingsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(fabricName, protectionContainerName, mappingName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationProtectionContainerMappingsClient", "Get", nil, "Failure preparing request")
@@ -306,10 +287,6 @@ func (client ReplicationProtectionContainerMappingsClient) GetResponder(resp *ht
 
 // List lists the protection container mappings in the vault.
 func (client ReplicationProtectionContainerMappingsClient) List() (result ProtectionContainerMappingCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainerMappingsClient", "List")
-	}
-
 	req, err := client.ListPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationProtectionContainerMappingsClient", "List", nil, "Failure preparing request")
@@ -444,10 +421,6 @@ func (client ReplicationProtectionContainerMappingsClient) ListComplete(cancel <
 //
 // fabricName is fabric name. protectionContainerName is protection container name.
 func (client ReplicationProtectionContainerMappingsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string) (result ProtectionContainerMappingCollection, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainerMappingsClient", "ListByReplicationProtectionContainers")
-	}
-
 	req, err := client.ListByReplicationProtectionContainersPreparer(fabricName, protectionContainerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "recoveryservicessiterecovery.ReplicationProtectionContainerMappingsClient", "ListByReplicationProtectionContainers", nil, "Failure preparing request")
@@ -589,13 +562,6 @@ func (client ReplicationProtectionContainerMappingsClient) ListByReplicationProt
 func (client ReplicationProtectionContainerMappingsClient) Purge(fabricName string, protectionContainerName string, mappingName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "recoveryservicessiterecovery.ReplicationProtectionContainerMappingsClient", "Purge")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response

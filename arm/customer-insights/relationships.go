@@ -151,13 +151,6 @@ func (client RelationshipsClient) CreateOrUpdateResponder(resp *http.Response) (
 func (client RelationshipsClient) Delete(resourceGroupName string, hubName string, relationshipName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "customerinsights.RelationshipsClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -237,10 +230,6 @@ func (client RelationshipsClient) DeleteResponder(resp *http.Response) (result a
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. relationshipName is the name of
 // the relationship.
 func (client RelationshipsClient) Get(resourceGroupName string, hubName string, relationshipName string) (result RelationshipResourceFormat, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.RelationshipsClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, hubName, relationshipName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipsClient", "Get", nil, "Failure preparing request")
@@ -307,10 +296,6 @@ func (client RelationshipsClient) GetResponder(resp *http.Response) (result Rela
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub.
 func (client RelationshipsClient) ListByHub(resourceGroupName string, hubName string) (result RelationshipListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "customerinsights.RelationshipsClient", "ListByHub")
-	}
-
 	req, err := client.ListByHubPreparer(resourceGroupName, hubName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipsClient", "ListByHub", nil, "Failure preparing request")

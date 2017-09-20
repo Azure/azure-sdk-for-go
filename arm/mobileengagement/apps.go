@@ -20,7 +20,6 @@ package mobileengagement
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -43,10 +42,6 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 //
 // resourceGroupName is the name of the resource group. appCollection is application collection.
 func (client AppsClient) List(resourceGroupName string, appCollection string) (result AppListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "mobileengagement.AppsClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName, appCollection)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mobileengagement.AppsClient", "List", nil, "Failure preparing request")

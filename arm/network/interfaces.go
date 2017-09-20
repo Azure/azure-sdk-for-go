@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -48,13 +47,6 @@ func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) Inter
 func (client InterfacesClient) CreateOrUpdate(resourceGroupName string, networkInterfaceName string, parameters Interface, cancel <-chan struct{}) (<-chan Interface, <-chan error) {
 	resultChan := make(chan Interface, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.InterfacesClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result Interface
@@ -138,13 +130,6 @@ func (client InterfacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 func (client InterfacesClient) Delete(resourceGroupName string, networkInterfaceName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.InterfacesClient", "Delete")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result autorest.Response
@@ -223,10 +208,6 @@ func (client InterfacesClient) DeleteResponder(resp *http.Response) (result auto
 // resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.
 // expand is expands referenced resources.
 func (client InterfacesClient) Get(resourceGroupName string, networkInterfaceName string, expand string) (result Interface, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.InterfacesClient", "Get")
-	}
-
 	req, err := client.GetPreparer(resourceGroupName, networkInterfaceName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "Get", nil, "Failure preparing request")
@@ -299,13 +280,6 @@ func (client InterfacesClient) GetResponder(resp *http.Response) (result Interfa
 func (client InterfacesClient) GetEffectiveRouteTable(resourceGroupName string, networkInterfaceName string, cancel <-chan struct{}) (<-chan EffectiveRouteListResult, <-chan error) {
 	resultChan := make(chan EffectiveRouteListResult, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.InterfacesClient", "GetEffectiveRouteTable")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result EffectiveRouteListResult
@@ -386,10 +360,6 @@ func (client InterfacesClient) GetEffectiveRouteTableResponder(resp *http.Respon
 // scale set. virtualmachineIndex is the virtual machine index. networkInterfaceName is the name of the network
 // interface. expand is expands referenced resources.
 func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterface(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand string) (result Interface, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetNetworkInterface")
-	}
-
 	req, err := client.GetVirtualMachineScaleSetNetworkInterfacePreparer(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetNetworkInterface", nil, "Failure preparing request")
@@ -460,10 +430,6 @@ func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterfaceResponde
 //
 // resourceGroupName is the name of the resource group.
 func (client InterfacesClient) List(resourceGroupName string) (result InterfaceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.InterfacesClient", "List")
-	}
-
 	req, err := client.ListPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "List", nil, "Failure preparing request")
@@ -595,10 +561,6 @@ func (client InterfacesClient) ListComplete(resourceGroupName string, cancel <-c
 
 // ListAll gets all network interfaces in a subscription.
 func (client InterfacesClient) ListAll() (result InterfaceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.InterfacesClient", "ListAll")
-	}
-
 	req, err := client.ListAllPreparer()
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListAll", nil, "Failure preparing request")
@@ -735,13 +697,6 @@ func (client InterfacesClient) ListAllComplete(cancel <-chan struct{}) (<-chan I
 func (client InterfacesClient) ListEffectiveNetworkSecurityGroups(resourceGroupName string, networkInterfaceName string, cancel <-chan struct{}) (<-chan EffectiveNetworkSecurityGroupListResult, <-chan error) {
 	resultChan := make(chan EffectiveNetworkSecurityGroupListResult, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.InterfacesClient", "ListEffectiveNetworkSecurityGroups")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result EffectiveNetworkSecurityGroupListResult
@@ -821,10 +776,6 @@ func (client InterfacesClient) ListEffectiveNetworkSecurityGroupsResponder(resp 
 // resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual machine
 // scale set.
 func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfaces(resourceGroupName string, virtualMachineScaleSetName string) (result InterfaceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetNetworkInterfaces")
-	}
-
 	req, err := client.ListVirtualMachineScaleSetNetworkInterfacesPreparer(resourceGroupName, virtualMachineScaleSetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetNetworkInterfaces", nil, "Failure preparing request")
@@ -961,10 +912,6 @@ func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfacesComple
 // resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual machine
 // scale set. virtualmachineIndex is the virtual machine index.
 func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfaces(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string) (result InterfaceListResult, err error) {
-	if err := validation.Validate([]validation.Validation{}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetVMNetworkInterfaces")
-	}
-
 	req, err := client.ListVirtualMachineScaleSetVMNetworkInterfacesPreparer(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetVMNetworkInterfaces", nil, "Failure preparing request")

@@ -179,6 +179,44 @@ func (e UnexpectedStatusCodeError) Got() int {
 	return e.got
 }
 
+// NewClientFromConnectionString creates a Client from the connection string.
+func NewClientFromConnectionString(input string) (Client, error) {
+	var (
+		accountName, accountKey, endpointSuffix string
+		useHTTPS                                = defaultUseHTTPS
+	)
+
+	for _, pair := range strings.Split(input, ";") {
+		if pair == "" {
+			continue
+		}
+
+		equalDex := strings.IndexByte(pair, '=')
+		if equalDex <= 0 {
+			return Client{}, fmt.Errorf("Invalid connection segment %q", pair)
+		}
+
+		value := pair[equalDex+1:]
+		switch strings.ToLower(pair[:equalDex]) {
+		case "accountname":
+			accountName = value
+		case "accountkey":
+			accountKey = value
+		case "endpointsuffix":
+			endpointSuffix = value
+		case "defaultendpointsprotocol":
+			useHTTPS = value == "https"
+		default:
+			// ignore
+		}
+	}
+
+	if accountName == StorageEmulatorAccountName {
+		return NewEmulatorClient()
+	}
+	return NewClient(accountName, accountKey, endpointSuffix, DefaultAPIVersion, useHTTPS)
+}
+
 // NewBasicClient constructs a Client with given storage service name and
 // key.
 func NewBasicClient(accountName, accountKey string) (Client, error) {

@@ -213,7 +213,7 @@ func NewClientFromConnectionString(input string) (Client, error) {
 		case connectionStringEndpointProtocol:
 			useHTTPS = value == "https"
 		default:
-			return Client{}, fmt.Errorf("Unrecognized key in Azure storage connection string: %q", key)
+			// ignored
 		}
 	}
 

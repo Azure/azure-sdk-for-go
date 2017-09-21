@@ -437,8 +437,8 @@ func (b *Blob) SetProperties(options *SetBlobPropertiesOptions) error {
 	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
 	if b.Properties.BlobType == BlobTypePage {
-		headers = addToHeaders(headers, "x-ms-blob-content-length", fmt.Sprintf("byte %v", b.Properties.ContentLength))
-		if options != nil || options.SequenceNumberAction != nil {
+		headers = addToHeaders(headers, "x-ms-blob-content-length", fmt.Sprintf("%v", b.Properties.ContentLength))
+		if options != nil && options.SequenceNumberAction != nil {
 			headers = addToHeaders(headers, "x-ms-sequence-number-action", string(*options.SequenceNumberAction))
 			if *options.SequenceNumberAction != SequenceNumberActionIncrement {
 				headers = addToHeaders(headers, "x-ms-blob-sequence-number", fmt.Sprintf("%v", b.Properties.SequenceNumber))

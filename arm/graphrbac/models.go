@@ -67,6 +67,7 @@ type Application struct {
 	IdentifierUris          *[]string `json:"identifierUris,omitempty"`
 	ReplyUrls               *[]string `json:"replyUrls,omitempty"`
 	Homepage                *string   `json:"homepage,omitempty"`
+	Oauth2AllowImplicitFlow *bool     `json:"oauth2AllowImplicitFlow,omitempty"`
 }
 
 // ApplicationCreateParameters is request parameters for creating a new application.
@@ -78,6 +79,7 @@ type ApplicationCreateParameters struct {
 	ReplyUrls               *[]string             `json:"replyUrls,omitempty"`
 	KeyCredentials          *[]KeyCredential      `json:"keyCredentials,omitempty"`
 	PasswordCredentials     *[]PasswordCredential `json:"passwordCredentials,omitempty"`
+	Oauth2AllowImplicitFlow *bool                 `json:"oauth2AllowImplicitFlow,omitempty"`
 }
 
 // ApplicationListResult is application list operation result.
@@ -96,6 +98,7 @@ type ApplicationUpdateParameters struct {
 	ReplyUrls               *[]string             `json:"replyUrls,omitempty"`
 	KeyCredentials          *[]KeyCredential      `json:"keyCredentials,omitempty"`
 	PasswordCredentials     *[]PasswordCredential `json:"passwordCredentials,omitempty"`
+	Oauth2AllowImplicitFlow *bool                 `json:"oauth2AllowImplicitFlow,omitempty"`
 }
 
 // CheckGroupMembershipParameters is request parameters for IsMemberOf API call.

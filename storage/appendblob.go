@@ -33,13 +33,7 @@ func (b *Blob) PutAppendBlob(options *PutBlobOptions) error {
 	if err != nil {
 		return err
 	}
-	readAndCloseBody(resp.body)
-	err = checkRespCode(resp.statusCode, []int{http.StatusCreated})
-	if err != nil {
-		return err
-	}
-	b.Properties.BlobType = BlobTypeAppend
-	return nil
+	return b.respondCreation(resp, BlobTypeAppend)
 }
 
 // AppendBlockOptions includes the options for an append block operation
@@ -79,11 +73,5 @@ func (b *Blob) AppendBlock(chunk []byte, options *AppendBlockOptions) error {
 	if err != nil {
 		return err
 	}
-	readAndCloseBody(resp.body)
-	err = checkRespCode(resp.statusCode, []int{http.StatusCreated})
-	if err != nil {
-		return err
-	}
-	b.Properties.BlobType = BlobTypeAppend
-	return nil
+	return b.respondCreation(resp, BlobTypeAppend)
 }

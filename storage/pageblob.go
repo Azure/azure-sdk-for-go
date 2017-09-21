@@ -186,11 +186,5 @@ func (b *Blob) PutPageBlob(options *PutBlobOptions) error {
 	if err != nil {
 		return err
 	}
-	readAndCloseBody(resp.body)
-	err = checkRespCode(resp.statusCode, []int{http.StatusCreated})
-	if err != nil {
-		return err
-	}
-	b.Properties.BlobType = BlobTypePage
-	return nil
+	return b.respondCreation(resp, BlobTypePage)
 }

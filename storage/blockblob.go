@@ -132,13 +132,7 @@ func (b *Blob) CreateBlockBlobFromReader(blob io.Reader, options *PutBlobOptions
 	if err != nil {
 		return err
 	}
-	readAndCloseBody(resp.body)
-	err = checkRespCode(resp.statusCode, []int{http.StatusCreated})
-	if err != nil {
-		return err
-	}
-	b.Properties.BlobType = BlobTypeBlock
-	return nil
+	return b.respondCreation(resp, BlobTypeBlock)
 }
 
 // PutBlockOptions includes the options for a put block operation
@@ -186,13 +180,7 @@ func (b *Blob) PutBlockWithLength(blockID string, size uint64, blob io.Reader, o
 	if err != nil {
 		return err
 	}
-	readAndCloseBody(resp.body)
-	err = checkRespCode(resp.statusCode, []int{http.StatusCreated})
-	if err != nil {
-		return err
-	}
-	b.Properties.BlobType = BlobTypeBlock
-	return nil
+	return b.respondCreation(resp, BlobTypeBlock)
 }
 
 // PutBlockListOptions includes the options for a put block list operation

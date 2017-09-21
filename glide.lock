@@ -1,21 +1,27 @@
 hash: 7a8f8652a17526f090124ace3974ce9bff3d6d09a83ab94841d377c1125111f7
-updated: 2017-06-12T16:27:58.5460985-07:00
+updated: 2017-09-21T12:04:49.8675817-07:00
 imports:
 - name: github.com/Azure/go-autorest
   version: ""
   subpackages:
   - autorest
-  - autorest/adal
   - autorest/azure
   - autorest/date
   - autorest/to
   - autorest/validation
+  - autorest/adal
 - name: github.com/dgrijalva/jwt-go
   version: a539ee1a749a2b895533f979515ac7e6e0f5b650
 - name: github.com/howeyc/gopass
   version: bf9dde6d0d2c004a008c27aaee91170c786f6db8
 - name: github.com/marstr/collection
   version: 165abaa88296e36dc3961e1a284e00414190ac43
+- name: github.com/marstr/goalias
+  version: 3026ca7e18e829805b990b41e4ce28c92cb80caa
+  subpackages:
+  - model
+- name: github.com/marstr/randname
+  version: 6dd4fdb5aa401961bd04bb5d84c692ab874bd68c
 - name: github.com/marstr/swagger
   version: 4385a1c8a6362cddd28de068cb833dbc3089c5ae
 - name: github.com/Masterminds/semver

@@ -240,6 +240,84 @@ func (client ServersClient) DeleteResponder(resp *http.Response) (result autores
 	return
 }
 
+// DissociateGateway dissociates a Unified Gateway associated with the server.
+//
+// resourceGroupName is the name of the Azure Resource group of which a given Analysis Services server is part. This
+// name must be at least 1 character in length, and no more than 90. serverName is the name of the Analysis Services
+// server. It must be at least 3 characters in length, and no more than 63.
+func (client ServersClient) DissociateGateway(resourceGroupName string, serverName string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: serverName,
+			Constraints: []validation.Constraint{{Target: "serverName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "serverName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "serverName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "analysisservices.ServersClient", "DissociateGateway")
+	}
+
+	req, err := client.DissociateGatewayPreparer(resourceGroupName, serverName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "DissociateGateway", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DissociateGatewaySender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "DissociateGateway", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DissociateGatewayResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "DissociateGateway", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DissociateGatewayPreparer prepares the DissociateGateway request.
+func (client ServersClient) DissociateGatewayPreparer(resourceGroupName string, serverName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-08-01-beta"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AnalysisServices/servers/{serverName}/dissociateGateway", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// DissociateGatewaySender sends the DissociateGateway request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServersClient) DissociateGatewaySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// DissociateGatewayResponder handles the response to the DissociateGateway request. The method always
+// closes the http.Response Body.
+func (client ServersClient) DissociateGatewayResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // GetDetails gets details about the specified Analysis Services server.
 //
 // resourceGroupName is the name of the Azure Resource group of which a given Analysis Services server is part. This

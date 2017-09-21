@@ -22,6 +22,16 @@ import (
 	"github.com/Azure/go-autorest/autorest/date"
 )
 
+// UserType enumerates the values for user type.
+type UserType string
+
+const (
+	// Guest specifies the guest state for user type.
+	Guest UserType = "Guest"
+	// Member specifies the member state for user type.
+	Member UserType = "Member"
+)
+
 // AADObject is the properties of an Active Directory object.
 type AADObject struct {
 	autorest.Response       `json:"-"`
@@ -260,28 +270,53 @@ type ServicePrincipalListResult struct {
 	OdataNextLink     *string             `json:"odata.nextLink,omitempty"`
 }
 
+// SignInName is contains information about a sign-in name of a local account user in an Azure Active Directory B2C
+// tenant.
+type SignInName struct {
+	Type  *string `json:"type,omitempty"`
+	Value *string `json:"value,omitempty"`
+}
+
 // User is active Directory user information.
 type User struct {
 	autorest.Response `json:"-"`
-	ObjectID          *string `json:"objectId,omitempty"`
-	ObjectType        *string `json:"objectType,omitempty"`
-	UserPrincipalName *string `json:"userPrincipalName,omitempty"`
-	DisplayName       *string `json:"displayName,omitempty"`
-	SignInName        *string `json:"signInName,omitempty"`
-	Mail              *string `json:"mail,omitempty"`
-	MailNickname      *string `json:"mailNickname,omitempty"`
-	UsageLocation     *string `json:"usageLocation,omitempty"`
+	ImmutableID       *string       `json:"immutableId,omitempty"`
+	UsageLocation     *string       `json:"usageLocation,omitempty"`
+	GivenName         *string       `json:"givenName,omitempty"`
+	Surname           *string       `json:"surname,omitempty"`
+	UserType          UserType      `json:"userType,omitempty"`
+	AccountEnabled    *bool         `json:"accountEnabled,omitempty"`
+	DisplayName       *string       `json:"displayName,omitempty"`
+	UserPrincipalName *string       `json:"userPrincipalName,omitempty"`
+	MailNickname      *string       `json:"mailNickname,omitempty"`
+	Mail              *string       `json:"mail,omitempty"`
+	ObjectID          *string       `json:"objectId,omitempty"`
+	ObjectType        *string       `json:"objectType,omitempty"`
+	SignInNames       *[]SignInName `json:"signInNames,omitempty"`
+}
+
+// UserBase is
+type UserBase struct {
+	ImmutableID   *string  `json:"immutableId,omitempty"`
+	UsageLocation *string  `json:"usageLocation,omitempty"`
+	GivenName     *string  `json:"givenName,omitempty"`
+	Surname       *string  `json:"surname,omitempty"`
+	UserType      UserType `json:"userType,omitempty"`
 }
 
 // UserCreateParameters is request parameters for creating a new work or school account user.
 type UserCreateParameters struct {
+	ImmutableID       *string          `json:"immutableId,omitempty"`
+	UsageLocation     *string          `json:"usageLocation,omitempty"`
+	GivenName         *string          `json:"givenName,omitempty"`
+	Surname           *string          `json:"surname,omitempty"`
+	UserType          UserType         `json:"userType,omitempty"`
 	AccountEnabled    *bool            `json:"accountEnabled,omitempty"`
 	DisplayName       *string          `json:"displayName,omitempty"`
 	PasswordProfile   *PasswordProfile `json:"passwordProfile,omitempty"`
 	UserPrincipalName *string          `json:"userPrincipalName,omitempty"`
 	MailNickname      *string          `json:"mailNickname,omitempty"`
-	ImmutableID       *string          `json:"immutableId,omitempty"`
-	UsageLocation     *string          `json:"usageLocation,omitempty"`
+	Mail              *string          `json:"mail,omitempty"`
 }
 
 // UserGetMemberGroupsParameters is request parameters for GetMemberGroups API call.
@@ -304,9 +339,14 @@ type UserListResult struct {
 
 // UserUpdateParameters is request parameters for updating an existing work or school account user.
 type UserUpdateParameters struct {
-	AccountEnabled  *bool            `json:"accountEnabled,omitempty"`
-	DisplayName     *string          `json:"displayName,omitempty"`
-	PasswordProfile *PasswordProfile `json:"passwordProfile,omitempty"`
-	MailNickname    *string          `json:"mailNickname,omitempty"`
-	UsageLocation   *string          `json:"usageLocation,omitempty"`
+	ImmutableID       *string          `json:"immutableId,omitempty"`
+	UsageLocation     *string          `json:"usageLocation,omitempty"`
+	GivenName         *string          `json:"givenName,omitempty"`
+	Surname           *string          `json:"surname,omitempty"`
+	UserType          UserType         `json:"userType,omitempty"`
+	AccountEnabled    *bool            `json:"accountEnabled,omitempty"`
+	DisplayName       *string          `json:"displayName,omitempty"`
+	PasswordProfile   *PasswordProfile `json:"passwordProfile,omitempty"`
+	UserPrincipalName *string          `json:"userPrincipalName,omitempty"`
+	MailNickname      *string          `json:"mailNickname,omitempty"`
 }

@@ -776,6 +776,8 @@ const (
 	SkuNameIsolated SkuName = "Isolated"
 	// SkuNamePremium specifies the sku name premium state for sku name.
 	SkuNamePremium SkuName = "Premium"
+	// SkuNamePremiumV2 specifies the sku name premium v2 state for sku name.
+	SkuNamePremiumV2 SkuName = "PremiumV2"
 	// SkuNameShared specifies the sku name shared state for sku name.
 	SkuNameShared SkuName = "Shared"
 	// SkuNameStandard specifies the sku name standard state for sku name.

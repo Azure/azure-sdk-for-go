@@ -184,8 +184,8 @@ func (client ManagementClient) GetPublishingUserResponder(resp *http.Response) (
 // ListGeoRegions get a list of available geographical regions.
 //
 // sku is name of SKU used to filter the regions. Possible values include: 'Free', 'Shared', 'Basic', 'Standard',
-// 'Premium', 'Dynamic', 'Isolated' linuxWorkersEnabled is specify <code>true</code> if you want to filter to only
-// regions that support Linux workers.
+// 'Premium', 'PremiumV2', 'Dynamic', 'Isolated' linuxWorkersEnabled is specify <code>true</code> if you want to filter
+// to only regions that support Linux workers.
 func (client ManagementClient) ListGeoRegions(sku SkuName, linuxWorkersEnabled *bool) (result GeoRegionCollection, err error) {
 	req, err := client.ListGeoRegionsPreparer(sku, linuxWorkersEnabled)
 	if err != nil {

@@ -627,3 +627,13 @@ func pathForResource(container, name string) string {
 	}
 	return fmt.Sprintf("/%s", container)
 }
+
+func (b *Blob) respondCreation(resp *storageResponse, bt BlobType) error {
+	readAndCloseBody(resp.body)
+	err := checkRespCode(resp.statusCode, []int{http.StatusCreated})
+	if err != nil {
+		return err
+	}
+	b.Properties.BlobType = bt
+	return nil
+}

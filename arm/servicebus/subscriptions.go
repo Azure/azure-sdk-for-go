@@ -55,8 +55,7 @@ func (client SubscriptionsClient) CreateOrUpdate(resourceGroupName string, names
 		{TargetValue: topicName,
 			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: subscriptionName,
-			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.SubscriptionsClient", "CreateOrUpdate")
 	}
 
@@ -140,8 +139,7 @@ func (client SubscriptionsClient) Delete(resourceGroupName string, namespaceName
 		{TargetValue: topicName,
 			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: subscriptionName,
-			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.SubscriptionsClient", "Delete")
 	}
 
@@ -222,8 +220,7 @@ func (client SubscriptionsClient) Get(resourceGroupName string, namespaceName st
 		{TargetValue: topicName,
 			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: subscriptionName,
-			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.SubscriptionsClient", "Get")
 	}
 

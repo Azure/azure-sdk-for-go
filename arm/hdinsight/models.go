@@ -313,9 +313,9 @@ type HTTPConnectivitySettings struct {
 
 // HTTPSettingsParameters is the payload for a Configure HTTP settings request.
 type HTTPSettingsParameters struct {
-	RestAuthCredentialisEnabled *string `json:"restAuthCredential.isEnabled,omitempty"`
-	RestAuthCredentialusername  *string `json:"restAuthCredential.username,omitempty"`
-	RestAuthCredentialpassword  *string `json:"restAuthCredential.password,omitempty"`
+	RestAuthCredentialIsEnabled *string `json:"restAuthCredential.isEnabled,omitempty"`
+	RestAuthCredentialUsername  *string `json:"restAuthCredential.username,omitempty"`
+	RestAuthCredentialPassword  *string `json:"restAuthCredential.password,omitempty"`
 }
 
 // LinuxOperatingSystemProfile is the ssh username, password, and ssh public key.

@@ -218,8 +218,7 @@ func (client NamespacesClient) CreateOrUpdateAuthorizationRule(resourceGroupName
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
-			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.NamespacesClient", "CreateOrUpdateAuthorizationRule")
 	}
 
@@ -394,8 +393,7 @@ func (client NamespacesClient) DeleteAuthorizationRule(resourceGroupName string,
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
-			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.NamespacesClient", "DeleteAuthorizationRule")
 	}
 
@@ -548,8 +546,7 @@ func (client NamespacesClient) GetAuthorizationRule(resourceGroupName string, na
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
-			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.NamespacesClient", "GetAuthorizationRule")
 	}
 
@@ -1042,8 +1039,7 @@ func (client NamespacesClient) ListKeys(resourceGroupName string, namespaceName 
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
-			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.NamespacesClient", "ListKeys")
 	}
 
@@ -1123,8 +1119,7 @@ func (client NamespacesClient) RegenerateKeys(resourceGroupName string, namespac
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
-			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.NamespacesClient", "RegenerateKeys")
 	}
 

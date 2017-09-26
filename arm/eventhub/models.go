@@ -80,30 +80,6 @@ const (
 	SecondaryKey KeyType = "SecondaryKey"
 )
 
-// ProvisioningStateDR enumerates the values for provisioning state dr.
-type ProvisioningStateDR string
-
-const (
-	// Accepted specifies the accepted state for provisioning state dr.
-	Accepted ProvisioningStateDR = "Accepted"
-	// Failed specifies the failed state for provisioning state dr.
-	Failed ProvisioningStateDR = "Failed"
-	// Succeeded specifies the succeeded state for provisioning state dr.
-	Succeeded ProvisioningStateDR = "Succeeded"
-)
-
-// RoleDisasterRecovery enumerates the values for role disaster recovery.
-type RoleDisasterRecovery string
-
-const (
-	// Primary specifies the primary state for role disaster recovery.
-	Primary RoleDisasterRecovery = "Primary"
-	// PrimaryNotReplicating specifies the primary not replicating state for role disaster recovery.
-	PrimaryNotReplicating RoleDisasterRecovery = "PrimaryNotReplicating"
-	// Secondary specifies the secondary state for role disaster recovery.
-	Secondary RoleDisasterRecovery = "Secondary"
-)
-
 // SkuName enumerates the values for sku name.
 type SkuName string
 
@@ -145,49 +121,12 @@ const (
 
 // AccessKeys is namespace/EventHub Connection String
 type AccessKeys struct {
-	autorest.Response              `json:"-"`
-	PrimaryConnectionString        *string `json:"primaryConnectionString,omitempty"`
-	SecondaryConnectionString      *string `json:"secondaryConnectionString,omitempty"`
-	AliasPrimaryConnectionString   *string `json:"aliasPrimaryConnectionString,omitempty"`
-	AliasSecondaryConnectionString *string `json:"aliasSecondaryConnectionString,omitempty"`
-	PrimaryKey                     *string `json:"primaryKey,omitempty"`
-	SecondaryKey                   *string `json:"secondaryKey,omitempty"`
-	KeyName                        *string `json:"keyName,omitempty"`
-}
-
-// ArmDisasterRecovery is single item in List or Get Alias(Disaster Recovery configuration) operation
-type ArmDisasterRecovery struct {
-	autorest.Response              `json:"-"`
-	ID                             *string `json:"id,omitempty"`
-	Name                           *string `json:"name,omitempty"`
-	Type                           *string `json:"type,omitempty"`
-	*ArmDisasterRecoveryProperties `json:"properties,omitempty"`
-}
-
-// ArmDisasterRecoveryProperties is properties required to the Create Or Update Alias(Disaster Recovery configurations)
-type ArmDisasterRecoveryProperties struct {
-	ProvisioningState ProvisioningStateDR  `json:"provisioningState,omitempty"`
-	PartnerNamespace  *string              `json:"partnerNamespace,omitempty"`
-	Role              RoleDisasterRecovery `json:"role,omitempty"`
-}
-
-// ArmDisasterRecoveryListResult is the result of the List Alias(Disaster Recovery configuration) operation.
-type ArmDisasterRecoveryListResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]ArmDisasterRecovery `json:"value,omitempty"`
-	NextLink          *string                `json:"nextLink,omitempty"`
-}
-
-// ArmDisasterRecoveryListResultPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client ArmDisasterRecoveryListResult) ArmDisasterRecoveryListResultPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
+	autorest.Response         `json:"-"`
+	PrimaryConnectionString   *string `json:"primaryConnectionString,omitempty"`
+	SecondaryConnectionString *string `json:"secondaryConnectionString,omitempty"`
+	PrimaryKey                *string `json:"primaryKey,omitempty"`
+	SecondaryKey              *string `json:"secondaryKey,omitempty"`
+	KeyName                   *string `json:"keyName,omitempty"`
 }
 
 // AuthorizationRule is single item in a List or Get AuthorizationRule operation

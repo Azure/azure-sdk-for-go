@@ -45,8 +45,7 @@ func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsC
 func (client RegionsClient) ListBySku(sku string) (result PremiumMessagingRegionsListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: sku,
-			Constraints: []validation.Constraint{{Target: "sku", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "sku", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "sku", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.RegionsClient", "ListBySku")
 	}
 

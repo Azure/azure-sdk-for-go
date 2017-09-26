@@ -136,8 +136,7 @@ func (client QueuesClient) CreateOrUpdateAuthorizationRule(resourceGroupName str
 		{TargetValue: queueName,
 			Constraints: []validation.Constraint{{Target: "queueName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
-			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.QueuesClient", "CreateOrUpdateAuthorizationRule")
 	}
 
@@ -299,8 +298,7 @@ func (client QueuesClient) DeleteAuthorizationRule(resourceGroupName string, nam
 		{TargetValue: queueName,
 			Constraints: []validation.Constraint{{Target: "queueName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
-			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.QueuesClient", "DeleteAuthorizationRule")
 	}
 
@@ -460,8 +458,7 @@ func (client QueuesClient) GetAuthorizationRule(resourceGroupName string, namesp
 		{TargetValue: queueName,
 			Constraints: []validation.Constraint{{Target: "queueName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
-			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.QueuesClient", "GetAuthorizationRule")
 	}
 
@@ -835,8 +832,7 @@ func (client QueuesClient) ListKeys(resourceGroupName string, namespaceName stri
 		{TargetValue: queueName,
 			Constraints: []validation.Constraint{{Target: "queueName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
-			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.QueuesClient", "ListKeys")
 	}
 
@@ -919,8 +915,7 @@ func (client QueuesClient) RegenerateKeys(resourceGroupName string, namespaceNam
 		{TargetValue: queueName,
 			Constraints: []validation.Constraint{{Target: "queueName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: authorizationRuleName,
-			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "authorizationRuleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.QueuesClient", "RegenerateKeys")
 	}
 

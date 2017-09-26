@@ -179,20 +179,6 @@ type LogFileProperties struct {
 	URL              *string    `json:"url,omitempty"`
 }
 
-// NameAvailability is represents a resource name availability.
-type NameAvailability struct {
-	autorest.Response `json:"-"`
-	Message           *string `json:"message,omitempty"`
-	NameAvailable     *bool   `json:"nameAvailable,omitempty"`
-	Reason            *string `json:"reason,omitempty"`
-}
-
-// NameAvailabilityRequest is request from client to check resource name availability.
-type NameAvailabilityRequest struct {
-	Name *string `json:"name,omitempty"`
-	Type *string `json:"type,omitempty"`
-}
-
 // Operation is REST API operation definition.
 type Operation struct {
 	Name       *string                             `json:"name,omitempty"`
@@ -213,27 +199,6 @@ type OperationDisplay struct {
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]Operation `json:"value,omitempty"`
-}
-
-// PerformanceTierListResult is a list of performance tiers.
-type PerformanceTierListResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]PerformanceTierProperties `json:"value,omitempty"`
-}
-
-// PerformanceTierProperties is performance tier properties
-type PerformanceTierProperties struct {
-	ID                     *string                                  `json:"id,omitempty"`
-	BackupRetentionDays    *int32                                   `json:"backupRetentionDays,omitempty"`
-	ServiceLevelObjectives *[]PerformanceTierServiceLevelObjectives `json:"serviceLevelObjectives,omitempty"`
-}
-
-// PerformanceTierServiceLevelObjectives is service level objectives for performance tier.
-type PerformanceTierServiceLevelObjectives struct {
-	ID        *string `json:"id,omitempty"`
-	Edition   *string `json:"edition,omitempty"`
-	Dtu       *int32  `json:"dtu,omitempty"`
-	StorageMB *int32  `json:"storageMB,omitempty"`
 }
 
 // ProxyResource is resource properties.

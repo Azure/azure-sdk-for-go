@@ -41,6 +41,9 @@
 - Refactored GetSASURI blob operation to be more complete.
 - Added a SAS client for some operations (`container.Exists()`, and `container.ListBlobs()`)
 
+- [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) commit: 0c2a12b50d8598f68d6715b507f7dd53e163407e
+- [AutoRest Go Generator](https://github.com/Azure/autorest.go) commit: 678110f012c7cde6528a1e61d125bdc7ea636b7f
+
 -----
 ## `v10.0.0-beta`
 ### ARM

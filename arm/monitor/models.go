@@ -83,43 +83,43 @@ const (
 	Sum MetricStatisticType = "Sum"
 )
 
-// Odatatype enumerates the values for odatatype.
-type Odatatype string
+// OdataType enumerates the values for odata type.
+type OdataType string
 
 const (
-	// OdatatypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource specifies the odatatype microsoft azure
-	// management insights models rule management event data source state for odatatype.
-	OdatatypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource Odatatype = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource"
-	// OdatatypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource specifies the odatatype microsoft azure
-	// management insights models rule metric data source state for odatatype.
-	OdatatypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource Odatatype = "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource"
+	// OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource specifies the odata type microsoft
+	// azure management insights models rule management event data source state for odata type.
+	OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource OdataType = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource"
+	// OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource specifies the odata type microsoft azure
+	// management insights models rule metric data source state for odata type.
+	OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource OdataType = "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource"
 )
 
-// Odatatype1 enumerates the values for odatatype 1.
-type Odatatype1 string
+// OdataType1 enumerates the values for odata type 1.
+type OdataType1 string
 
 const (
-	// OdatatypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition specifies the odatatype microsoft
-	// azure management insights models location threshold rule condition state for odatatype 1.
-	OdatatypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition Odatatype1 = "Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition"
-	// OdatatypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition specifies the odatatype microsoft azure
-	// management insights models management event rule condition state for odatatype 1.
-	OdatatypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition Odatatype1 = "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition"
-	// OdatatypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition specifies the odatatype microsoft azure
-	// management insights models threshold rule condition state for odatatype 1.
-	OdatatypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition Odatatype1 = "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition"
+	// OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition specifies the odata type microsoft
+	// azure management insights models location threshold rule condition state for odata type 1.
+	OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition OdataType1 = "Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition"
+	// OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition specifies the odata type microsoft azure
+	// management insights models management event rule condition state for odata type 1.
+	OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition OdataType1 = "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition"
+	// OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition specifies the odata type microsoft azure
+	// management insights models threshold rule condition state for odata type 1.
+	OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition OdataType1 = "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition"
 )
 
-// Odatatype2 enumerates the values for odatatype 2.
-type Odatatype2 string
+// OdataType2 enumerates the values for odata type 2.
+type OdataType2 string
 
 const (
-	// OdatatypeMicrosoftAzureManagementInsightsModelsRuleEmailAction specifies the odatatype microsoft azure management
-	// insights models rule email action state for odatatype 2.
-	OdatatypeMicrosoftAzureManagementInsightsModelsRuleEmailAction Odatatype2 = "Microsoft.Azure.Management.Insights.Models.RuleEmailAction"
-	// OdatatypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction specifies the odatatype microsoft azure management
-	// insights models rule webhook action state for odatatype 2.
-	OdatatypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction Odatatype2 = "Microsoft.Azure.Management.Insights.Models.RuleWebhookAction"
+	// OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction specifies the odata type microsoft azure management
+	// insights models rule email action state for odata type 2.
+	OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction OdataType2 = "Microsoft.Azure.Management.Insights.Models.RuleEmailAction"
+	// OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction specifies the odata type microsoft azure management
+	// insights models rule webhook action state for odata type 2.
+	OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction OdataType2 = "Microsoft.Azure.Management.Insights.Models.RuleWebhookAction"
 )
 
 // ReceiverStatus enumerates the values for receiver status.
@@ -554,14 +554,14 @@ type IncidentListResult struct {
 // LocationThresholdRuleCondition is a rule condition based on a certain number of locations failing.
 type LocationThresholdRuleCondition struct {
 	DataSource          RuleDataSource `json:"dataSource,omitempty"`
-	Odatatype           Odatatype1     `json:"odata.type,omitempty"`
+	OdataType           OdataType1     `json:"odata.type,omitempty"`
 	WindowSize          *string        `json:"windowSize,omitempty"`
 	FailedLocationCount *int32         `json:"failedLocationCount,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for LocationThresholdRuleCondition.
 func (ltrc LocationThresholdRuleCondition) MarshalJSON() ([]byte, error) {
-	ltrc.Odatatype = OdatatypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition
+	ltrc.OdataType = OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition
 	type Alias LocationThresholdRuleCondition
 	return json.Marshal(&struct {
 		Alias
@@ -625,12 +625,12 @@ func (ltrc *LocationThresholdRuleCondition) UnmarshalJSON(body []byte) error {
 
 	v = m["odata.type"]
 	if v != nil {
-		var odatatype Odatatype1
+		var odatatype OdataType1
 		err = json.Unmarshal(*m["odata.type"], &odatatype)
 		if err != nil {
 			return err
 		}
-		ltrc.Odatatype = odatatype
+		ltrc.OdataType = odatatype
 	}
 
 	return nil
@@ -685,13 +685,13 @@ type ManagementEventAggregationCondition struct {
 // ManagementEventRuleCondition is a management event rule condition.
 type ManagementEventRuleCondition struct {
 	DataSource  RuleDataSource                       `json:"dataSource,omitempty"`
-	Odatatype   Odatatype1                           `json:"odata.type,omitempty"`
+	OdataType   OdataType1                           `json:"odata.type,omitempty"`
 	Aggregation *ManagementEventAggregationCondition `json:"aggregation,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagementEventRuleCondition.
 func (merc ManagementEventRuleCondition) MarshalJSON() ([]byte, error) {
-	merc.Odatatype = OdatatypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition
+	merc.OdataType = OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition
 	type Alias ManagementEventRuleCondition
 	return json.Marshal(&struct {
 		Alias
@@ -745,12 +745,12 @@ func (merc *ManagementEventRuleCondition) UnmarshalJSON(body []byte) error {
 
 	v = m["odata.type"]
 	if v != nil {
-		var odatatype Odatatype1
+		var odatatype OdataType1
 		err = json.Unmarshal(*m["odata.type"], &odatatype)
 		if err != nil {
 			return err
 		}
-		merc.Odatatype = odatatype
+		merc.OdataType = odatatype
 	}
 
 	return nil
@@ -849,11 +849,11 @@ func unmarshalRuleAction(body []byte) (RuleAction, error) {
 	}
 
 	switch m["odata.type"] {
-	case string(OdatatypeMicrosoftAzureManagementInsightsModelsRuleEmailAction):
+	case string(OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction):
 		var rea RuleEmailAction
 		err := json.Unmarshal(body, &rea)
 		return rea, err
-	case string(OdatatypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction):
+	case string(OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction):
 		var rwa RuleWebhookAction
 		err := json.Unmarshal(body, &rwa)
 		return rwa, err
@@ -895,15 +895,15 @@ func unmarshalRuleCondition(body []byte) (RuleCondition, error) {
 	}
 
 	switch m["odata.type"] {
-	case string(OdatatypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition):
+	case string(OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition):
 		var trc ThresholdRuleCondition
 		err := json.Unmarshal(body, &trc)
 		return trc, err
-	case string(OdatatypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition):
+	case string(OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition):
 		var ltrc LocationThresholdRuleCondition
 		err := json.Unmarshal(body, &ltrc)
 		return ltrc, err
-	case string(OdatatypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition):
+	case string(OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition):
 		var merc ManagementEventRuleCondition
 		err := json.Unmarshal(body, &merc)
 		return merc, err
@@ -944,11 +944,11 @@ func unmarshalRuleDataSource(body []byte) (RuleDataSource, error) {
 	}
 
 	switch m["odata.type"] {
-	case string(OdatatypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource):
+	case string(OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource):
 		var rmds RuleMetricDataSource
 		err := json.Unmarshal(body, &rmds)
 		return rmds, err
-	case string(OdatatypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource):
+	case string(OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource):
 		var rmeds RuleManagementEventDataSource
 		err := json.Unmarshal(body, &rmeds)
 		return rmeds, err
@@ -978,14 +978,14 @@ func unmarshalRuleDataSourceArray(body []byte) ([]RuleDataSource, error) {
 // RuleEmailAction is specifies the action to send email when the rule condition is evaluated. The discriminator is
 // always RuleEmailAction in this case.
 type RuleEmailAction struct {
-	Odatatype           Odatatype2 `json:"odata.type,omitempty"`
+	OdataType           OdataType2 `json:"odata.type,omitempty"`
 	SendToServiceOwners *bool      `json:"sendToServiceOwners,omitempty"`
 	CustomEmails        *[]string  `json:"customEmails,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RuleEmailAction.
 func (rea RuleEmailAction) MarshalJSON() ([]byte, error) {
-	rea.Odatatype = OdatatypeMicrosoftAzureManagementInsightsModelsRuleEmailAction
+	rea.OdataType = OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction
 	type Alias RuleEmailAction
 	return json.Marshal(&struct {
 		Alias
@@ -1013,7 +1013,7 @@ type RuleManagementEventClaimsDataSource struct {
 // RuleManagementEventDataSource in this case.
 type RuleManagementEventDataSource struct {
 	ResourceURI          *string                              `json:"resourceUri,omitempty"`
-	Odatatype            Odatatype                            `json:"odata.type,omitempty"`
+	OdataType            OdataType                            `json:"odata.type,omitempty"`
 	EventName            *string                              `json:"eventName,omitempty"`
 	EventSource          *string                              `json:"eventSource,omitempty"`
 	Level                *string                              `json:"level,omitempty"`
@@ -1027,7 +1027,7 @@ type RuleManagementEventDataSource struct {
 
 // MarshalJSON is the custom marshaler for RuleManagementEventDataSource.
 func (rmeds RuleManagementEventDataSource) MarshalJSON() ([]byte, error) {
-	rmeds.Odatatype = OdatatypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource
+	rmeds.OdataType = OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource
 	type Alias RuleManagementEventDataSource
 	return json.Marshal(&struct {
 		Alias
@@ -1050,13 +1050,13 @@ func (rmeds RuleManagementEventDataSource) AsRuleManagementEventDataSource() (*R
 // case.
 type RuleMetricDataSource struct {
 	ResourceURI *string   `json:"resourceUri,omitempty"`
-	Odatatype   Odatatype `json:"odata.type,omitempty"`
+	OdataType   OdataType `json:"odata.type,omitempty"`
 	MetricName  *string   `json:"metricName,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RuleMetricDataSource.
 func (rmds RuleMetricDataSource) MarshalJSON() ([]byte, error) {
-	rmds.Odatatype = OdatatypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource
+	rmds.OdataType = OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource
 	type Alias RuleMetricDataSource
 	return json.Marshal(&struct {
 		Alias
@@ -1078,14 +1078,14 @@ func (rmds RuleMetricDataSource) AsRuleManagementEventDataSource() (*RuleManagem
 // RuleWebhookAction is specifies the action to post to service when the rule condition is evaluated. The discriminator
 // is always RuleWebhookAction in this case.
 type RuleWebhookAction struct {
-	Odatatype  Odatatype2          `json:"odata.type,omitempty"`
+	OdataType  OdataType2          `json:"odata.type,omitempty"`
 	ServiceURI *string             `json:"serviceUri,omitempty"`
 	Properties *map[string]*string `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RuleWebhookAction.
 func (rwa RuleWebhookAction) MarshalJSON() ([]byte, error) {
-	rwa.Odatatype = OdatatypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction
+	rwa.OdataType = OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction
 	type Alias RuleWebhookAction
 	return json.Marshal(&struct {
 		Alias
@@ -1136,7 +1136,7 @@ type SmsReceiver struct {
 // ThresholdRuleCondition is a rule condition based on a metric crossing a threshold.
 type ThresholdRuleCondition struct {
 	DataSource      RuleDataSource          `json:"dataSource,omitempty"`
-	Odatatype       Odatatype1              `json:"odata.type,omitempty"`
+	OdataType       OdataType1              `json:"odata.type,omitempty"`
 	Operator        ConditionOperator       `json:"operator,omitempty"`
 	Threshold       *float64                `json:"threshold,omitempty"`
 	WindowSize      *string                 `json:"windowSize,omitempty"`
@@ -1145,7 +1145,7 @@ type ThresholdRuleCondition struct {
 
 // MarshalJSON is the custom marshaler for ThresholdRuleCondition.
 func (trc ThresholdRuleCondition) MarshalJSON() ([]byte, error) {
-	trc.Odatatype = OdatatypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition
+	trc.OdataType = OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition
 	type Alias ThresholdRuleCondition
 	return json.Marshal(&struct {
 		Alias
@@ -1229,12 +1229,12 @@ func (trc *ThresholdRuleCondition) UnmarshalJSON(body []byte) error {
 
 	v = m["odata.type"]
 	if v != nil {
-		var odatatype Odatatype1
+		var odatatype OdataType1
 		err = json.Unmarshal(*m["odata.type"], &odatatype)
 		if err != nil {
 			return err
 		}
-		trc.Odatatype = odatatype
+		trc.OdataType = odatatype
 	}
 
 	return nil

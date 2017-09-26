@@ -55,11 +55,9 @@ func (client RulesClient) CreateOrUpdate(resourceGroupName string, namespaceName
 		{TargetValue: topicName,
 			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: subscriptionName,
-			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: ruleName,
-			Constraints: []validation.Constraint{{Target: "ruleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "ruleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "ruleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.RulesClient", "CreateOrUpdate")
 	}
 
@@ -144,11 +142,9 @@ func (client RulesClient) Delete(resourceGroupName string, namespaceName string,
 		{TargetValue: topicName,
 			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: subscriptionName,
-			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: ruleName,
-			Constraints: []validation.Constraint{{Target: "ruleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "ruleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "ruleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.RulesClient", "Delete")
 	}
 
@@ -230,11 +226,9 @@ func (client RulesClient) Get(resourceGroupName string, namespaceName string, to
 		{TargetValue: topicName,
 			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: subscriptionName,
-			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: ruleName,
-			Constraints: []validation.Constraint{{Target: "ruleName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "ruleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "ruleName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.RulesClient", "Get")
 	}
 
@@ -317,8 +311,7 @@ func (client RulesClient) ListBySubscriptions(resourceGroupName string, namespac
 		{TargetValue: topicName,
 			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: subscriptionName,
-			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "servicebus.RulesClient", "ListBySubscriptions")
 	}
 

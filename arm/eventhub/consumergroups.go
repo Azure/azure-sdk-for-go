@@ -55,8 +55,7 @@ func (client ConsumerGroupsClient) CreateOrUpdate(resourceGroupName string, name
 		{TargetValue: eventHubName,
 			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: consumerGroupName,
-			Constraints: []validation.Constraint{{Target: "consumerGroupName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "consumerGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "consumerGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "eventhub.ConsumerGroupsClient", "CreateOrUpdate")
 	}
 
@@ -140,8 +139,7 @@ func (client ConsumerGroupsClient) Delete(resourceGroupName string, namespaceNam
 		{TargetValue: eventHubName,
 			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: consumerGroupName,
-			Constraints: []validation.Constraint{{Target: "consumerGroupName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "consumerGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "consumerGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "eventhub.ConsumerGroupsClient", "Delete")
 	}
 
@@ -222,8 +220,7 @@ func (client ConsumerGroupsClient) Get(resourceGroupName string, namespaceName s
 		{TargetValue: eventHubName,
 			Constraints: []validation.Constraint{{Target: "eventHubName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: consumerGroupName,
-			Constraints: []validation.Constraint{{Target: "consumerGroupName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "consumerGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "consumerGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "eventhub.ConsumerGroupsClient", "Get")
 	}
 

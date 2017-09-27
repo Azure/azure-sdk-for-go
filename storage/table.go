@@ -188,11 +188,8 @@ func (t *Table) Delete(timeout uint, options *TableOptions) error {
 	}
 	defer readAndCloseBody(resp.body)
 
-	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
-		return err
+	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 
-	}
-	return nil
 }
 
 // QueryOptions includes options for a query entities operation.
@@ -275,10 +272,7 @@ func (t *Table) SetPermissions(tap []TableAccessPolicy, timeout uint, options *T
 	}
 	defer readAndCloseBody(resp.body)
 
-	if err := checkRespCode(resp.statusCode, []int{http.StatusNoContent}); err != nil {
-		return err
-	}
-	return nil
+	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
 }
 
 func generateTableACLPayload(policies []TableAccessPolicy) (io.Reader, int, error) {

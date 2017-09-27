@@ -1,3 +1,5 @@
+// +build go1.7
+
 package management
 
 // Copyright 2017 Microsoft Corporation
@@ -15,5 +17,5 @@ package management
 //    limitations under the License.
 
 var (
-	sdkVersion = "10.0.2-beta"
+	sdkVersion = "v10.3.1-beta"
 )

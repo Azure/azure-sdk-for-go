@@ -326,6 +326,26 @@ func (s *StorageBlobSuite) TestSetBlobProperties(c *chk.C) {
 	c.Check(b.Properties.ContentLanguage, chk.Equals, input.ContentLanguage)
 }
 
+func (s *StorageBlobSuite) TestSetPageBlobProperties(c *chk.C) {
+	cli := getBlobClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
+
+	size := int64(1024)
+	b.Properties.ContentLength = size
+	c.Assert(b.PutPageBlob(nil), chk.IsNil)
+
+	b.Properties.ContentLength = int64(512)
+	options := SetBlobPropertiesOptions{Timeout: 30}
+	err := b.SetProperties(&options)
+	c.Assert(err, chk.IsNil)
+}
+
 func (s *StorageBlobSuite) TestSnapshotBlob(c *chk.C) {
 	cli := getBlobClient(c)
 	rec := cli.client.appendRecorder(c)
@@ -442,6 +462,15 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 		{
 			options: GetBlobRangeOptions{
 				Range: &BlobRange{
+					Start: 0,
+					End:   0,
+				},
+			},
+			expected: body,
+		},
+		{
+			options: GetBlobRangeOptions{
+				Range: &BlobRange{
 					Start: 1,
 					End:   3,
 				},
@@ -457,7 +486,19 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 			},
 			expected: body[3:],
 		},
+		{
+			options: GetBlobRangeOptions{
+				Range: &BlobRange{
+					Start: 3,
+					End:   0,
+				},
+			},
+			expected: body[3:],
+		},
 	}
+
+	err := b.GetProperties(nil)
+	c.Assert(err, chk.IsNil)
 
 	// Read 1-3
 	for _, r := range cases {
@@ -469,8 +510,8 @@ func (s *StorageBlobSuite) TestGetBlobRange(c *chk.C) {
 		str := string(blobBody)
 		c.Assert(str, chk.Equals, r.expected)
 
-		// Was content lenght properly updated...?
-		c.Assert(b.Properties.ContentLength, chk.Equals, int64(len(r.expected)))
+		// Was content length left untouched?
+		c.Assert(b.Properties.ContentLength, chk.Equals, int64(len(body)))
 	}
 }
 

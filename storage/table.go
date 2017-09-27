@@ -189,7 +189,6 @@ func (t *Table) Delete(timeout uint, options *TableOptions) error {
 	defer readAndCloseBody(resp.body)
 
 	return checkRespCode(resp.statusCode, []int{http.StatusNoContent})
-
 }
 
 // QueryOptions includes options for a query entities operation.

@@ -103,8 +103,16 @@ func (c *Client) blobAndFileSASURI(options SASOptions, uri, permissions, canonic
 		return "", err
 	}
 
-	protocols := "https,http"
-	if options.UseHTTPS {
+	signedExpiry := expiry.UTC().Format(time.RFC3339)
+
+	//If blob name is missing, resource is a container
+	signedResource := "c"
+	if len(b.Name) > 0 {
+		signedResource = "b"
+	}
+
+	protocols := ""
+	if HTTPSOnly {
 		protocols = "https"
 	}
 	stringToSign, err := blobSASStringToSign(permissions, start, expiry, canonicalizedResource, options.Identifier, options.IP, protocols, c.apiVersion, headers)
@@ -121,12 +129,13 @@ func (c *Client) blobAndFileSASURI(options SASOptions, uri, permissions, canonic
 		"sig": {sig},
 	}
 
-	addQueryParameter(sasParams, "st", start)
-	addQueryParameter(sasParams, "si", options.Identifier)
-
-	if c.apiVersion >= "2015-04-05" {
-		sasParams.Add("spr", protocols)
-		addQueryParameter(sasParams, "sip", options.IP)
+	if b.Container.bsc.client.apiVersion >= "2015-04-05" {
+		if protocols != "" {
+			sasParams.Add("spr", protocols)
+		}
+		if signedIPRange != "" {
+			sasParams.Add("sip", signedIPRange)
+		}
 	}
 
 	// Add override response hedaers

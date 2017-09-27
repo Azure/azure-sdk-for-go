@@ -79,7 +79,7 @@ func (p BlobServiceSASPermissions) buildString() string {
 func (b *Blob) GetSASURI(options BlobSASOptions) (string, error) {
 	uri := b.GetURL()
 	signedResource := "b"
-	canonicalizedResource, err := b.Container.bsc.client.buildCanonicalizedResource(uri, b.Container.bsc.auth, b.Container.bsc.client.sasClient)
+	canonicalizedResource, err := b.Container.bsc.client.buildCanonicalizedResource(uri, b.Container.bsc.auth, true)
 	if err != nil {
 		return "", err
 	}

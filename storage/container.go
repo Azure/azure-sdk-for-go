@@ -78,7 +78,7 @@ type ContainerSASPermissions struct {
 func (c *Container) GetSASURI(options ContainerSASOptions) (string, error) {
 	uri := c.GetURL()
 	signedResource := "c"
-	canonicalizedResource, err := c.bsc.client.buildCanonicalizedResource(uri, c.bsc.auth, c.bsc.client.sasClient)
+	canonicalizedResource, err := c.bsc.client.buildCanonicalizedResource(uri, c.bsc.auth, true)
 	if err != nil {
 		return "", err
 	}

@@ -62,7 +62,7 @@ func (q QueueSASPermissions) buildString() string {
 //
 // See https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 func (q *Queue) GetSASURI(options QueueSASOptions) (string, error) {
-	canonicalizedResource, err := q.qsc.client.buildCanonicalizedResource(q.buildPath(), q.qsc.auth, q.qsc.client.sasClient)
+	canonicalizedResource, err := q.qsc.client.buildCanonicalizedResource(q.buildPath(), q.qsc.auth, true)
 	if err != nil {
 		return "", err
 	}

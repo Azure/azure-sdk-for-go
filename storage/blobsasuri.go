@@ -79,7 +79,7 @@ func (p BlobServiceSASPermissions) buildString() string {
 func (b *Blob) GetSASURI(options BlobSASOptions) (string, error) {
 	uri := b.GetURL()
 	signedResource := "b"
-	canonicalizedResource, err := b.Container.bsc.client.buildCanonicalizedResource(uri, b.Container.bsc.auth)
+	canonicalizedResource, err := b.Container.bsc.client.buildCanonicalizedResource(uri, b.Container.bsc.auth, b.Container.bsc.client.sasClient)
 	if err != nil {
 		return "", err
 	}
@@ -103,16 +103,8 @@ func (c *Client) blobAndFileSASURI(options SASOptions, uri, permissions, canonic
 		return "", err
 	}
 
-	signedExpiry := expiry.UTC().Format(time.RFC3339)
-
-	//If blob name is missing, resource is a container
-	signedResource := "c"
-	if len(b.Name) > 0 {
-		signedResource = "b"
-	}
-
 	protocols := ""
-	if HTTPSOnly {
+	if options.UseHTTPS {
 		protocols = "https"
 	}
 	stringToSign, err := blobSASStringToSign(permissions, start, expiry, canonicalizedResource, options.Identifier, options.IP, protocols, c.apiVersion, headers)
@@ -129,12 +121,12 @@ func (c *Client) blobAndFileSASURI(options SASOptions, uri, permissions, canonic
 		"sig": {sig},
 	}
 
-	if b.Container.bsc.client.apiVersion >= "2015-04-05" {
+	if c.apiVersion >= "2015-04-05" {
 		if protocols != "" {
 			sasParams.Add("spr", protocols)
 		}
-		if signedIPRange != "" {
-			sasParams.Add("sip", signedIPRange)
+		if options.IP != "" {
+			sasParams.Add("sip", options.IP)
 		}
 	}
 

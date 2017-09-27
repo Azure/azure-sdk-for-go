@@ -215,7 +215,15 @@ func (s *BlobSASURISuite) TestGetBlobSASURIStorageEmulator(c *chk.C) {
 	blobService := client.GetBlobService()
 	container := blobService.GetContainerReference("testfolder")
 	blob := container.GetBlobReference("testfile")
-	url, err := blob.GetSASURI(time.Date(2017, 9, 30, 16, 0, 0, 0, time.UTC), "w")
+	options := BlobSASOptions{
+		SASOptions: SASOptions{
+			Expiry: time.Date(2017, 9, 30, 16, 0, 0, 0, time.UTC),
+		},
+		BlobServiceSASPermissions: BlobServiceSASPermissions{
+			Write: true,
+		},
+	}
+	url, err := blob.GetSASURI(options)
 	c.Assert(err, chk.IsNil)
 	c.Assert(url, chk.Equals, "http://127.0.0.1:10000/devstoreaccount1/testfolder/testfile?se=2017-09-30T16%3A00%3A00Z&sig=Tyrg2ccc0RXyRz5xfkcSVDvjjoRivygrGb%2ByTLf0jJY%3D&sp=w&sr=b&sv=2016-05-31")
 }

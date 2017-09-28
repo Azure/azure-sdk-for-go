@@ -121,7 +121,7 @@ func main() {
 
 	var top int32
 	top = 10
-	rrsets, err := rc.ListByDNSZone(resourceGroup, newZoneName, &top)
+	rrsets, err := rc.ListByDNSZone(resourceGroup, newZoneName, &top, "")
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 		return

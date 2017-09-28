@@ -157,7 +157,10 @@ var (
 				{Name: "recoveryservices"},
 				{Name: "recoveryservicesbackup"},
 				{Name: "recoveryservicessiterecovery"},
-				{Name: "redis"},
+				{
+					Name: "redis",
+					Tag:  "package-2016-04",
+				},
 				{Name: "relay"},
 				{Name: "resourcehealth"},
 				{
@@ -348,7 +351,7 @@ func generate(service *service) {
 	commandArgs := []string{
 		fullInput,
 		codegen,
-		"--license-header=MICROSOFT_APACHE",
+		"--license-header=MICROSOFT_APACHE_NO_VERSION",
 		fmt.Sprintf("--namespace=%s", service.Name),
 		fmt.Sprintf("--output-folder=%s", service.Output),
 		fmt.Sprintf("--package-version=%s", sdkVersion),

@@ -81,28 +81,25 @@ var (
 				{Name: "appinsights"},
 				{Name: "authorization"},
 				{Name: "automation"},
-				{
-					Name:   "commerce",
-					Input:  "azsadmin/resource-manager/commerce",
-					Output: "azsadmin/commerce",
-				},
-				{
-					Name:   "fabric",
-					Input:  "azsadmin/resource-manager/fabric",
-					Output: "azsadmin/fabric",
-				},
-				{
-					Name:   "infrastructureinsights",
-					Input:  "azsadmin/resource-manager/InfrastructureInsights",
-					Output: "azsadmin/infrastructureinsights",
-				},
+				// {
+				// 	Name:   "commerce",
+				// 	Input:  "azsadmin/resource-manager/commerce",
+				// 	Output: "azsadmin/commerce",
+				// },
+				// {
+				// 	Name:   "fabric",
+				// 	Input:  "azsadmin/resource-manager/fabric",
+				// 	Output: "azsadmin/fabric",
+				// },
+				// {
+				// 	Name:   "infrastructureinsights",
+				// 	Input:  "azsadmin/resource-manager/InfrastructureInsights",
+				// 	Output: "azsadmin/infrastructureinsights",
+				// },
 				{Name: "batch"},
 				{Name: "billing"},
 				{Name: "cdn"},
-				// {
-				// bug in AutoRest (duplicated files)
-				// 	Name: "cognitiveservices",
-				// },
+				{Name: "cognitiveservices"},
 				{Name: "commerce"},
 				{Name: "compute"},
 				{
@@ -137,7 +134,7 @@ var (
 				{
 					Name:   "commitmentplans",
 					Input:  "machinelearning/resource-manager",
-					Output: "machinelearning/commitmentPlans",
+					Output: "machinelearning/commitmentplans",
 					Tag:    "package-commitmentPlans-2016-05-preview",
 				},
 				{
@@ -146,16 +143,14 @@ var (
 					Output: "machinelearning/webservices",
 					Tag:    "package-webservices-2017-01",
 				},
+				{Name: "marketplaceordering"},
 				{Name: "mediaservices"},
 				{Name: "mobileengagement"},
 				{Name: "monitor"},
 				{Name: "mysql"},
 				{Name: "network"},
 				{Name: "notificationhubs"},
-				// {
-				// bug in the Go generator https://github.com/Azure/autorest/issues/2219
-				// 	Name: "operationalinsights",
-				// },
+				{Name: "operationalinsights"},
 				{Name: "operationsmanagement"},
 				{Name: "postgresql"},
 				{Name: "powerbiembedded"},
@@ -225,18 +220,23 @@ var (
 				// },
 				{Name: "trafficmanager"},
 				{Name: "visualstudio"},
-				// {
-				// bug on methods
-				// Name: "web",
-				// },
+				{Name: "web"},
 			},
 		},
 		{
 			PlaneOutput: "dataplane",
 			PlaneInput:  "data-plane",
 			Services: []service{
+				{Name: "keyvault"},
 				{
-					Name: "keyvault",
+					Name:   "face",
+					Input:  "cognitiveservices/data-plane/Face",
+					Output: "cognitiveservices/face",
+				},
+				{
+					Name:   "textanalytics",
+					Input:  "cognitiveservices/data-plane/TextAnalytics",
+					Output: "cognitiveservices/textanalytics",
 				},
 			},
 		},
@@ -254,9 +254,7 @@ var (
 			PlaneOutput: "arm",
 			PlaneInput:  "data-plane",
 			Services: []service{
-				{
-					Name: "graphrbac",
-				},
+				{Name: "graphrbac"},
 			},
 		},
 	}
@@ -462,9 +460,23 @@ func managementVersion(c *do.Context) {
 func version(packageName string) {
 	versionFile := filepath.Join(packageName, "version.go")
 	os.Remove(versionFile)
-	template := `// +build go1.7	
-	
+	template := `// +build go1.7
+
 package %s
+
+// Copyright 2017 Microsoft Corporation
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
 
 var (
 	sdkVersion = "%s"

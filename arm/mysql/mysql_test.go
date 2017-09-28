@@ -37,9 +37,9 @@ var (
         "capacity": 100
     },
     "properties": {
-        "createMode": "Default",
         "storageMB": 1024,
         "sslEnforcement": "Enabled",
+        "createMode": "Default",
         "administratorLogin": "cloudsa",
         "administratorLoginPassword": "password"
     },

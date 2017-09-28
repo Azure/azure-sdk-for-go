@@ -1,8 +1,8 @@
-hash: f52476dff67b66fe9fffe35b63ac0c06962fcaacd326b66820a33edf53b01a16
-updated: 2017-09-01T13:52:16.3705168-07:00
+hash: 7a8f8652a17526f090124ace3974ce9bff3d6d09a83ab94841d377c1125111f7
+updated: 2017-09-26T11:50:39.3610361-07:00
 imports:
 - name: github.com/Azure/go-autorest
-  version: 48a8154950f853ae1f2a9c409e0eb1fb71119bc8
+  version: f6e08fe5e4d45c9a66e40196d3fed5f37331d224
   subpackages:
   - autorest
   - autorest/adal
@@ -15,9 +15,9 @@ imports:
 - name: github.com/howeyc/gopass
   version: bf9dde6d0d2c004a008c27aaee91170c786f6db8
 - name: github.com/mattn/go-colorable
-  version: 040dd0b833b34b4182673409ada4df2853b26537
+  version: ad5389df28cdac544c99bd7b9161a0b5b6ca9d1b
 - name: github.com/mattn/go-isatty
-  version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
+  version: a5cdd64afdee435007ee3e9f6ed4684af949d568
 - name: github.com/mgutz/ansi
   version: 9520e82c474b0a04dd04f8a40959027271bab992
 - name: github.com/mgutz/minimist
@@ -36,16 +36,22 @@ imports:
   version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
 - name: github.com/shopspring/decimal
   version: 3c692774ac4c47c7a296ec96e553719dba1a68fc
+- name: github.com/xtophs/azure-sdk-for-go
+  version: 76fc90689773168d2b6b8ad02e42ab60fb1359b7
+  subpackages:
+  - arm/dns
+  - arm/examples/helpers
 - name: golang.org/x/crypto
-  version: 558b6879de74bc843225cde5686419267ff707ca
+  version: 847319b7fc94cab682988f93da778204da164588
   subpackages:
   - pkcs12
   - pkcs12/internal/rc2
   - ssh/terminal
 - name: golang.org/x/sys
-  version: 0f826bdd13b500be0f1d4004938ad978fcc6031e
+  version: 429f518978ab01db8bb6f44b66785088e7fba58b
   subpackages:
   - unix
+  - windows
 - name: gopkg.in/check.v1
   version: 20d25e2804050c1cd24a7eea1e7a6447dd0e74ec
 - name: gopkg.in/godo.v2
@@ -62,4 +68,4 @@ testImports:
   - cassette
   - recorder
 - name: gopkg.in/yaml.v2
-  version: 25c4ec802a7d637f88d584ab26798e94ad14c13b
+  version: eb3733d160e74a9c7e442f435eb3bea458e1d19f

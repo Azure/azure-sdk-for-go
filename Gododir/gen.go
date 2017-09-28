@@ -159,7 +159,7 @@ var (
 				{Name: "recoveryservicessiterecovery"},
 				{
 					Name: "redis",
-					Tag:  " package-2016-04",
+					Tag:  "package-2016-04",
 				},
 				{Name: "relay"},
 				{Name: "resourcehealth"},

@@ -1,8 +1,8 @@
-hash: 7a8f8652a17526f090124ace3974ce9bff3d6d09a83ab94841d377c1125111f7
-updated: 2017-09-26T11:50:39.3610361-07:00
+hash: ee3a7971ba1cf6d287128746a2dd954ea023d952aec65453c94323f26955e0ae
+updated: 2017-09-28T11:44:06.2382306-07:00
 imports:
 - name: github.com/Azure/go-autorest
-  version: f6e08fe5e4d45c9a66e40196d3fed5f37331d224
+  version: f6be1abbb5abd0517522f850dd785990d373da7e
   subpackages:
   - autorest
   - autorest/adal
@@ -31,24 +31,19 @@ imports:
 - name: github.com/nozzle/throttler
   version: d9b45f19996c645d38c9266d1f5cf1990e930119
 - name: github.com/satori/go.uuid
-  version: 879c5887cd475cd7864858769793b2ceb0d44feb
+  version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
 - name: github.com/satori/uuid
   version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
 - name: github.com/shopspring/decimal
-  version: 3c692774ac4c47c7a296ec96e553719dba1a68fc
-- name: github.com/xtophs/azure-sdk-for-go
-  version: 76fc90689773168d2b6b8ad02e42ab60fb1359b7
-  subpackages:
-  - arm/dns
-  - arm/examples/helpers
+  version: aed1bfe463fa3c9cc268d60dcc1491db613bff7e
 - name: golang.org/x/crypto
-  version: 847319b7fc94cab682988f93da778204da164588
+  version: 76eec36fa14229c4b25bb894c2d0e591527af429
   subpackages:
   - pkcs12
   - pkcs12/internal/rc2
   - ssh/terminal
 - name: golang.org/x/sys
-  version: 429f518978ab01db8bb6f44b66785088e7fba58b
+  version: 314a259e304ff91bd6985da2a7149bbf91237993
   subpackages:
   - unix
   - windows

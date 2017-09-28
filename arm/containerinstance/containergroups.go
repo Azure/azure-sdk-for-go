@@ -18,11 +18,10 @@ package containerinstance
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"net/http"
-
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"net/http"
 )
 
 // ContainerGroupsClient is the client for the ContainerGroups methods of the Containerinstance service.

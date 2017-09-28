@@ -18,10 +18,9 @@ package recoveryservicessiterecovery
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"net/http"
-
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // ReplicationvCentersClient is the client for the ReplicationvCenters methods of the Recoveryservicessiterecovery

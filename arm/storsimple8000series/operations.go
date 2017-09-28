@@ -18,10 +18,9 @@ package storsimple8000series
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"net/http"
-
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 // OperationsClient is the client for the Operations methods of the Storsimple8000series service.
@@ -35,6 +34,11 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
+
+// List lists all of the available REST API operations of the Microsoft.Storsimple provider
 func (client OperationsClient) List() (result AvailableProviderOperationList, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {

@@ -20,7 +20,6 @@ package mysql
 import (
 	"encoding/json"
 	"errors"
-
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 )

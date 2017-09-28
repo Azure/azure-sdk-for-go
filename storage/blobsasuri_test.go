@@ -208,3 +208,22 @@ func (s *BlobSASURISuite) Test_blobSASStringToSign(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(out, chk.Equals, "SP\n\nSE\n/blobCS\n\n127.0.0.1\nhttps,http\n2015-04-05\n\n\n\n\n")
 }
+
+func (s *BlobSASURISuite) TestGetBlobSASURIStorageEmulator(c *chk.C) {
+	client, err := NewEmulatorClient()
+	c.Assert(err, chk.IsNil)
+	blobService := client.GetBlobService()
+	container := blobService.GetContainerReference("testfolder")
+	blob := container.GetBlobReference("testfile")
+	options := BlobSASOptions{
+		SASOptions: SASOptions{
+			Expiry: time.Date(2017, 9, 30, 16, 0, 0, 0, time.UTC),
+		},
+		BlobServiceSASPermissions: BlobServiceSASPermissions{
+			Write: true,
+		},
+	}
+	url, err := blob.GetSASURI(options)
+	c.Assert(err, chk.IsNil)
+	c.Assert(url, chk.Equals, "http://127.0.0.1:10000/devstoreaccount1/testfolder/testfile?se=2017-09-30T16%3A00%3A00Z&sig=Tyrg2ccc0RXyRz5xfkcSVDvjjoRivygrGb%2ByTLf0jJY%3D&sp=w&sr=b&sv=2016-05-31")
+}

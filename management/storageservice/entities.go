@@ -1,3 +1,5 @@
+// +build go1.7
+
 package storageservice
 
 // Copyright 2017 Microsoft Corporation

@@ -18,10 +18,11 @@ package storsimple8000series
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
-	"net/http"
 )
 
 // AlertEmailNotificationStatus enumerates the values for alert email notification status.

@@ -17,6 +17,7 @@ package storage
 import (
 	"bytes"
 	"encoding/base64"
+	"io"
 	"io/ioutil"
 
 	chk "gopkg.in/check.v1"
@@ -145,4 +146,21 @@ func (s *BlockBlobSuite) TestPutEmptyBlockBlob(c *chk.C) {
 	err := b.GetProperties(nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(b.Properties.ContentLength, chk.Not(chk.Equals), 0)
+}
+
+func (s *BlockBlobSuite) TestPutBlockWithLengthUsingLimitReader(c *chk.C) {
+	cli := getBlobClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
+	cnt := cli.GetContainerReference(containerName(c))
+	b := cnt.GetBlobReference(blobName(c))
+	c.Assert(cnt.Create(nil), chk.IsNil)
+	defer cnt.Delete(nil)
+
+	length := 512
+	data := content(length)
+
+	lr := io.LimitReader(bytes.NewReader(data), 256)
+	c.Assert(b.PutBlockWithLength("0000", 256, lr, nil), chk.IsNil)
 }

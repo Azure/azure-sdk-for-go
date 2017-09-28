@@ -2396,11 +2396,6 @@ type SubscriptionQuotasListResult struct {
 
 // Transformation is a transformation object, containing all information associated with the named transformation. All
 // transformations are contained under a streaming job.
-type Transformation struct {
-	autorest.Response         `json:"-"`
-	ID                        *string `json:"id,omitempty"`
-	Name                      *string `json:"name,omitempty"`
-	Type                      *string `json:"type,omitempty"`
 	*TransformationProperties `json:"properties,omitempty"`
 }
 

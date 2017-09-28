@@ -20,11 +20,11 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/Azure/azure-sdk-for-go/arm/dns"
+	"github.com/Azure/azure-sdk-for-go/arm/examples/helpers"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/to"
-	"github.com/xtophs/azure-sdk-for-go/arm/dns"
-	"github.com/xtophs/azure-sdk-for-go/arm/examples/helpers"
 )
 
 func main() {

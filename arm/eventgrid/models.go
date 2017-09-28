@@ -20,6 +20,7 @@ package eventgrid
 import (
 	"encoding/json"
 	"errors"
+
 	"github.com/Azure/go-autorest/autorest"
 )
 

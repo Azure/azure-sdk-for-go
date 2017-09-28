@@ -16,6 +16,8 @@ package storage
 
 import (
 	"bytes"
+	"crypto/md5"
+	"encoding/base64"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -24,6 +26,8 @@ import (
 
 // PutAppendBlob initializes an empty append blob with specified name. An
 // append blob must be created using this method before appending blocks.
+//
+// See CreateBlockBlobFromReader for more info on creating blobs.
 //
 // See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Blob
 func (b *Blob) PutAppendBlob(options *PutBlobOptions) error {
@@ -43,8 +47,7 @@ func (b *Blob) PutAppendBlob(options *PutBlobOptions) error {
 	if err != nil {
 		return err
 	}
-	readAndCloseBody(resp.body)
-	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
+	return b.respondCreation(resp, BlobTypeAppend)
 }
 
 // AppendBlockOptions includes the options for an append block operation
@@ -58,6 +61,7 @@ type AppendBlockOptions struct {
 	IfMatch           string     `header:"If-Match"`
 	IfNoneMatch       string     `header:"If-None-Match"`
 	RequestID         string     `header:"x-ms-client-request-id"`
+	ContentMD5        bool
 }
 
 // AppendBlock appends a block to an append blob.
@@ -72,6 +76,10 @@ func (b *Blob) AppendBlock(chunk []byte, options *AppendBlockOptions) error {
 	if options != nil {
 		params = addTimeout(params, options.Timeout)
 		headers = mergeHeaders(headers, headersFromStruct(*options))
+		if options.ContentMD5 {
+			md5sum := md5.Sum(chunk)
+			headers[headerContentMD5] = base64.StdEncoding.EncodeToString(md5sum[:])
+		}
 	}
 	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
 
@@ -79,6 +87,5 @@ func (b *Blob) AppendBlock(chunk []byte, options *AppendBlockOptions) error {
 	if err != nil {
 		return err
 	}
-	readAndCloseBody(resp.body)
-	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
+	return b.respondCreation(resp, BlobTypeAppend)
 }

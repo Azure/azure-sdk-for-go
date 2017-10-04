@@ -98,6 +98,7 @@ func main() {
 			fmt.Printf("%q in %q to %q\n", tuple.packageName, tuple.fileName, tuple.outputFolder)
 		}
 	} else {
+		var generatedCount, formattedCount uint
 		randGener := randname.NewAdjNoun() // TODO: print log files to a location indicative of the package they refer to instead of a random location.
 		logDirLocation, err := ioutil.TempDir("", "az-go-sdk-logs")
 		logDirLocation = strings.Replace(logDirLocation, `\`, "/", -1)
@@ -150,14 +151,33 @@ func main() {
 
 			err = genProc.Run()
 			if err != nil {
-				fmt.Println(logFile, "Autorest Exectution Error: ", err)
+				fmt.Fprintln(logFile, "Autorest Exectution Error: ", err)
+				return nil
 			}
-			return err == nil
+			generatedCount++
+			return path.Join(outputBase, tuple.outputFolder)
+		})
+		generated = generated.Where(func(subject interface{}) bool {
+			return subject != nil
 		})
 
-		for range generated {
-			// Intentionally Left Blank
+		formatted := generated.Select(func(subject interface{}) interface{} {
+			err := exec.Command("gofmt", "-w", subject.(string)).Run()
+			if err == nil {
+				formattedCount++
+			} else {
+				errLog.Printf("Failed to format: %q", subject.(string))
+			}
+			return err
+		})
+
+		for range formatted {
+			// Intenionally Left Blank
 		}
+
+		fmt.Println("Generated: ", generatedCount)
+		fmt.Println("Formatted: ", formattedCount)
+
 		close(done)
 	}
 }

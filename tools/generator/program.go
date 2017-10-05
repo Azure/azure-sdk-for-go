@@ -26,6 +26,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/marstr/collection"
 	"github.com/marstr/randname"
@@ -40,7 +41,23 @@ var (
 	dryRun         bool
 )
 
+// version should be set by the linker when compiling this program by providing the following arguments:
+// -X main.version=<version>
+//
+// If installing the generator in your machine, that means running the following the command:
+//   go install -ldflags "-X main.version=<version>"
+//
+// The reason this is not controlled in source, is to allow for the git commit SHA1 to be used as the
+// version of the string. To retrieve the currently checked-out git commit SHA1, you can use the command:
+//   git rev-parse HEAD
+var version string
+
+func isntNil(subject interface{}) bool {
+	return subject != nil
+}
+
 func main() {
+	start := time.Now()
 
 	type generationTuple struct {
 		fileName     string
@@ -56,7 +73,7 @@ func main() {
 		// The following function compiles the regexp which finds Go related package tags in a literate file, and creates a collection.Unfolder.
 		// This function has been declared this way so that the relatively expensive act of compiling a regexp is only done once.
 		func() collection.Unfolder {
-			const patternText = "```" + `\s+yaml\s+\$\(\s*tag\s*\)\s*==\s*'([\d\w\-_]+)'\s*&&\s*\$\(go\)\s+output-folder:\s+\$\(go-sdk-folder\)([\w\d\-_\\/]+)\s+` + "```"
+			const patternText = "```" + `\s+yaml\s+\$\(\s*tag\s*\)\s*==\s*'([\d\w\-_]+)'\s*&&\s*\$\(go\)[\w\d\-\s:]*\s+output-folder:\s+\$\(go-sdk-folder\)([\w\d\-_\\/]+)\s+[\w\d\-\s:]*` + "```"
 
 			goConfigPattern := regexp.MustCompile(patternText)
 
@@ -81,8 +98,8 @@ func main() {
 						for _, submatch := range matches {
 							results <- generationTuple{
 								fileName:     subject.(string),
-								packageName:  strings.Replace(submatch[1], `\`, "/", -1),
-								outputFolder: strings.Replace(submatch[2], `\`, "/", -1),
+								packageName:  normalizePath(submatch[1]),
+								outputFolder: normalizePath(submatch[2]),
 							}
 						}
 					}
@@ -98,10 +115,10 @@ func main() {
 			fmt.Printf("%q in %q to %q\n", tuple.packageName, tuple.fileName, tuple.outputFolder)
 		}
 	} else {
-		var generatedCount, formattedCount uint
+		var generatedCount, formattedCount, builtCount uint
 		randGener := randname.NewAdjNoun() // TODO: print log files to a location indicative of the package they refer to instead of a random location.
 		logDirLocation, err := ioutil.TempDir("", "az-go-sdk-logs")
-		logDirLocation = strings.Replace(logDirLocation, `\`, "/", -1)
+		logDirLocation = normalizePath(logDirLocation)
 		if err == nil {
 			statusLog.Print("Generation logs can be found at:", logDirLocation)
 		} else {
@@ -156,28 +173,39 @@ func main() {
 			}
 			generatedCount++
 			return path.Join(outputBase, tuple.outputFolder)
-		})
-		generated = generated.Where(func(subject interface{}) bool {
-			return subject != nil
-		})
+		}).Where(isntNil)
 
-		formatted := generated.Select(func(subject interface{}) interface{} {
+		formatted := generated.Select(func(subject interface{}) (result interface{}) {
 			err := exec.Command("gofmt", "-w", subject.(string)).Run()
 			if err == nil {
 				formattedCount++
+				result = subject
 			} else {
 				errLog.Printf("Failed to format: %q", subject.(string))
 			}
-			return err
-		})
+			return
+		}).Where(isntNil)
 
-		for range formatted {
+		built := formatted.Select(func(subject interface{}) (result interface{}) {
+			pkgName := strings.TrimPrefix(trimGoPath(subject.(string)), "/src/")
+			err := exec.Command("go", "build", pkgName).Run()
+			if err == nil {
+				builtCount++
+				result = subject
+			} else {
+				errLog.Printf("Failed to build: %q", pkgName)
+			}
+			return
+		}).Where(isntNil)
+
+		for range built {
 			// Intenionally Left Blank
 		}
 
+		fmt.Println("Execution Time: ", time.Now().Sub(start))
 		fmt.Println("Generated: ", generatedCount)
 		fmt.Println("Formatted: ", formattedCount)
-
+		fmt.Println("Built: ", builtCount)
 		close(done)
 	}
 }
@@ -227,10 +255,26 @@ func init() {
 	})
 
 	targetFiles = collection.Select(targetFiles, func(subject interface{}) interface{} {
-		return strings.Replace(subject.(string), `\`, "/", -1)
+		return normalizePath(subject.(string))
 	})
 }
 
+var goPath = func() func() string {
+	val := normalizePath(os.Getenv("GOPATH"))
+	return func() string {
+		return val
+	}
+}()
+
 func getDefaultOutputBase() string {
-	return strings.Replace(path.Join(os.Getenv("GOPATH"), "src", "github.com", "Azure", "azure-sdk-for-go"), `\`, "/", -1)
+	return strings.Replace(path.Join(goPath(), "src", "github.com", "Azure", "azure-sdk-for-go"), `\`, "/", -1)
+}
+
+func trimGoPath(location string) string {
+	return strings.TrimPrefix(normalizePath(location), goPath())
+}
+
+func normalizePath(location string) (result string) {
+	result = strings.Replace(location, `\`, "/", -1)
+	return
 }

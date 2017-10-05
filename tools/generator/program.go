@@ -127,6 +127,8 @@ func main() {
 		}
 
 		done := make(chan struct{})
+
+		// Call AutoRest for each of the tags in each of the literate files, generating a Go package for calling that service.
 		generated := tuples.Enumerate(done).ParallelSelect(func(subject interface{}) interface{} {
 			tuple := subject.(generationTuple)
 			args := []string{
@@ -175,6 +177,7 @@ func main() {
 			return path.Join(outputBase, tuple.outputFolder)
 		}).Where(isntNil)
 
+		// Take all of the generated packages and reformat them to adhere to Go's guidelines.
 		formatted := generated.Select(func(subject interface{}) (result interface{}) {
 			err := exec.Command("gofmt", "-w", subject.(string)).Run()
 			if err == nil {
@@ -186,6 +189,7 @@ func main() {
 			return
 		}).Where(isntNil)
 
+		// Build all of the packages as a sanity check.
 		built := formatted.Select(func(subject interface{}) (result interface{}) {
 			pkgName := strings.TrimPrefix(trimGoPath(subject.(string)), "/src/")
 			err := exec.Command("go", "build", pkgName).Run()
@@ -259,6 +263,9 @@ func init() {
 	})
 }
 
+// goPath returns the value of the environement variable GOPATH at the beginning of this
+// program's execution. The actual enviroment variable is only queried once, before any calls
+// are made to this function.
 var goPath = func() func() string {
 	val := normalizePath(os.Getenv("GOPATH"))
 	return func() string {
@@ -266,14 +273,19 @@ var goPath = func() func() string {
 	}
 }()
 
+// getDefaultOutputBase returns the default location of the Azure-SDK-for-Go on your filesystem.
 func getDefaultOutputBase() string {
 	return strings.Replace(path.Join(goPath(), "src", "github.com", "Azure", "azure-sdk-for-go"), `\`, "/", -1)
 }
 
+// trimGoPath operates like strings.TrimPrefix, where the prefix is always the value of GOPATH in the
+// environment in which this program is being executed.
 func trimGoPath(location string) string {
 	return strings.TrimPrefix(normalizePath(location), goPath())
 }
 
+// normalizePath ensures that a path is expressed using forward slashes for sanity when working
+// with Go Standard Library functions that seem to expect this.
 func normalizePath(location string) (result string) {
 	result = strings.Replace(location, `\`, "/", -1)
 	return

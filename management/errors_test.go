@@ -1,3 +1,5 @@
+// +build go1.7
+
 package management_test
 
 // Copyright 2017 Microsoft Corporation

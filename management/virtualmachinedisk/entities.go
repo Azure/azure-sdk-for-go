@@ -1,3 +1,5 @@
+// +build go1.7
+
 package virtualmachinedisk
 
 // Copyright 2017 Microsoft Corporation

@@ -174,6 +174,8 @@ func (b *Blob) GetPageRanges(options *GetPageRangesOptions) (GetPageRangesRespon
 // size in bytes (size must be aligned to a 512-byte boundary). A page blob must
 // be created using this method before writing pages.
 //
+// See CreateBlockBlobFromReader for more info on creating blobs.
+//
 // See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Blob
 func (b *Blob) PutPageBlob(options *PutBlobOptions) error {
 	if b.Properties.ContentLength%512 != 0 {
@@ -198,6 +200,5 @@ func (b *Blob) PutPageBlob(options *PutBlobOptions) error {
 	if err != nil {
 		return err
 	}
-	readAndCloseBody(resp.body)
-	return checkRespCode(resp.statusCode, []int{http.StatusCreated})
+	return b.respondCreation(resp, BlobTypePage)
 }

@@ -79,7 +79,7 @@ func (p BlobServiceSASPermissions) buildString() string {
 func (b *Blob) GetSASURI(options BlobSASOptions) (string, error) {
 	uri := b.GetURL()
 	signedResource := "b"
-	canonicalizedResource, err := b.Container.bsc.client.buildCanonicalizedResource(uri, b.Container.bsc.auth)
+	canonicalizedResource, err := b.Container.bsc.client.buildCanonicalizedResource(uri, b.Container.bsc.auth, true)
 	if err != nil {
 		return "", err
 	}
@@ -103,7 +103,7 @@ func (c *Client) blobAndFileSASURI(options SASOptions, uri, permissions, canonic
 		return "", err
 	}
 
-	protocols := "https,http"
+	protocols := ""
 	if options.UseHTTPS {
 		protocols = "https"
 	}
@@ -121,12 +121,13 @@ func (c *Client) blobAndFileSASURI(options SASOptions, uri, permissions, canonic
 		"sig": {sig},
 	}
 
-	addQueryParameter(sasParams, "st", start)
-	addQueryParameter(sasParams, "si", options.Identifier)
-
 	if c.apiVersion >= "2015-04-05" {
-		sasParams.Add("spr", protocols)
-		addQueryParameter(sasParams, "sip", options.IP)
+		if protocols != "" {
+			sasParams.Add("spr", protocols)
+		}
+		if options.IP != "" {
+			sasParams.Add("sip", options.IP)
+		}
 	}
 
 	// Add override response hedaers

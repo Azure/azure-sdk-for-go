@@ -39,13 +39,13 @@ import (
 	"time"
 
 	"github.com/marstr/collection"
-	"github.com/marstr/randname"
 )
 
 var (
 	targetFiles    collection.Enumerable
 	packageVersion string
 	outputBase     string
+	logDirBase     string
 	errLog         *log.Logger
 	statusLog      *log.Logger
 	dryRun         bool
@@ -122,15 +122,6 @@ func main() {
 		}
 	} else {
 		var generatedCount, formattedCount, builtCount uint
-		randGener := randname.NewAdjNoun() // TODO: print log files to a location indicative of the package they refer to instead of a random location.
-		logDirLocation, err := ioutil.TempDir("", "az-go-sdk-logs")
-		logDirLocation = normalizePath(logDirLocation)
-		if err == nil {
-			statusLog.Print("Generation logs can be found at:", logDirLocation)
-		} else {
-			errLog.Print("Fatal: Could not create temporary directory for AutoRest logs.")
-			return
-		}
 
 		done := make(chan struct{})
 
@@ -149,11 +140,15 @@ func main() {
 				args = append(args, fmt.Sprintf("--package-version='%s'", packageVersion))
 			}
 
-			logFileLoc := filepath.Join(logDirLocation, randGener.Generate()+".txt")
-			logFile, err := os.Create(logFileLoc)
-			if err == nil {
-				statusLog.Printf("Logs for %q in %q can be found at: %s", tuple.packageName, tuple.fileName, logFileLoc)
-			} else {
+			logFileLoc := filepath.Join(logDirBase, tuple.outputFolder)
+			err := os.MkdirAll(logFileLoc, os.ModePerm)
+			if err != nil {
+				errLog.Printf("Could not create log directory %q", logFileLoc)
+				return nil
+			}
+
+			logFile, err := os.Create(filepath.Join(logFileLoc, "autorestLog.txt"))
+			if err != nil {
 				errLog.Printf("Could not create log file %q for AutoRest generating from: %q in %q", logFileLoc, tuple.packageName, tuple.fileName)
 				return nil
 			}
@@ -223,10 +218,14 @@ func main() {
 func init() {
 	var useRecursive, useStatus bool
 
+	const automaticLogDirValue = "temp"
+	const logDirUsage = "The root directory where all logs can be found. If the value `" + automaticLogDirValue + "` is supplied, a randomly named directory will be generated in the $TEMP directory."
+
 	flag.BoolVar(&useRecursive, "r", false, "Recursively traverses the directories specified looking for literate files.")
 	flag.StringVar(&outputBase, "o", getDefaultOutputBase(), "The root directory to use for the output of generated files. i.e. The value to be treated as the go-sdk-folder when AutoRest is called.")
 	flag.BoolVar(&useStatus, "v", false, "Print status messages as generation takes place.")
 	flag.BoolVar(&dryRun, "p", false, "Preview which packages would be generated instead of actaully calling autorest.")
+	flag.StringVar(&logDirBase, "l", getDefaultOutputBase(), logDirUsage)
 	flag.Parse()
 
 	statusWriter := ioutil.Discard
@@ -235,6 +234,17 @@ func init() {
 	}
 	statusLog = log.New(statusWriter, "[STATUS] ", 0)
 	errLog = log.New(os.Stderr, "[ERROR] ", 0)
+
+	if logDirBase == automaticLogDirValue {
+		var err error
+		logDirBase, err = ioutil.TempDir("", "az-go-sdk-logs")
+		logDirBase = normalizePath(logDirBase)
+		if err == nil {
+			statusLog.Print("Generation logs can be found at:", logDirBase)
+		} else {
+			errLog.Print("Logging disabled. Could not create directory: ", logDirBase)
+		}
+	}
 
 	targetFiles = collection.AsEnumerable(flag.Args())
 	targetFiles = collection.SelectMany(targetFiles, func(subject interface{}) collection.Enumerator {

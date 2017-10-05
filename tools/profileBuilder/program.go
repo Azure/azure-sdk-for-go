@@ -18,6 +18,11 @@
 // and functions supporting those alias types by directing traffic to the
 // functions supporting the original types. This is useful associating a series
 // of packages in separate API Versions for easier/safer use.
+//
+// The Azure-SDK-for-Go teams intends to use this tool to generated profiles
+// that we will publish in this repository for general use. However, this tool
+// in the case that one has their own list of Services at given API Versions,
+// this may prove to be a useful tool for you.
 package main
 
 import (

@@ -19,7 +19,7 @@ package trafficmanager
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v11.0.0-beta arm-trafficmanager/2017-09-01-preview"
+	return "Azure-SDK-For-Go/v11.0.0-beta arm-trafficmanager/"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

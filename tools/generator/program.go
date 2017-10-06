@@ -16,8 +16,9 @@
 // REST functionality that has Go configuration, then generates packages accordingly.
 // This tool was developed with the intention that it be an internal tool for the
 // Azure-SDK-for-Go team, but the usage of this package for public scenarios is in no
-// way prohibited. For example, have a fork of our generator? Generate out and SDK with
-// the same shape as our SDK, but using your patterns using this tool.
+// way prohibited. For example, have a fork of https://github.com/Azure/autorest.go?
+// Generate out and SDK with the same shape as our SDK, but using your patterns using
+// this tool.
 //
 // Given that this code was developed as an internal tool, troubles with it that do not
 // pertain to our usage of it may be slow to be fixed. Pull Requests are welcome though,
@@ -203,6 +204,8 @@ func main() {
 			return
 		}).Where(isntNil)
 
+		// Turn the crank. This loop forces evaluation of the chain of enumerators that were built up
+		// in the code above.
 		for range built {
 			// Intenionally Left Blank
 		}

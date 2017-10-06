@@ -4,7 +4,8 @@
 
 ### ARM
 
-- trafficmanager SDK now reflects the service faithfully
+- trafficmanager and containerregistry SDKs now reflect the services faithfully
+- trafficmanager also has a new operation group: user metrics.
 
 ### Generated code notes
 - [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) commit: c97a18ed775029207715b09c80761334724740b9

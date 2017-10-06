@@ -45,7 +45,7 @@ func IgnorePreview(name string) (result bool) {
 	return
 }
 
-var packageName = regexp.MustCompile(`service[/\\](?P<provider>[\w\-\.\d_]+)[/\\](?:management[/\\])?(?P<version>[\d\-\w\._]+)[/\\](?P<group>[\w\d\-\._]+)`)
+var packageName = regexp.MustCompile(`service[/\\](?P<provider>[\w\-\.\d_]+)[/\\](?:mgmt[/\\])?(?P<version>[\d\-\w\._]+)[/\\](?P<group>[\w\d\-\._]+)`)
 
 // Enumerate scans through the known Azure SDK for Go packages and finds each
 func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumerator {

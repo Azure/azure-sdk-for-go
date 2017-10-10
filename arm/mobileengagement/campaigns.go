@@ -39,6 +39,12 @@ func NewCampaignsClientWithBaseURI(baseURI string, subscriptionID string) Campai
 	return CampaignsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewCampaignsClientWithAuthFile creates an instance of the CampaignsClient client.
+func NewCampaignsClientWithAuthFile() (CampaignsClient, error) {
+	c, err := NewWithAuthFile()
+	return CampaignsClient{c}, err
+}
+
 // Activate activate a campaign previously created by a call to Create campaign.
 //
 // resourceGroupName is the name of the resource group. appCollection is application collection. appName is application

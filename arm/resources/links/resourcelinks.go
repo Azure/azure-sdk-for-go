@@ -42,6 +42,12 @@ func NewResourceLinksClientWithBaseURI(baseURI string, subscriptionID string) Re
 	return ResourceLinksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewResourceLinksClientWithAuthFile creates an instance of the ResourceLinksClient client.
+func NewResourceLinksClientWithAuthFile() (ResourceLinksClient, error) {
+	c, err := NewWithAuthFile()
+	return ResourceLinksClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a resource link between the specified resources.
 //
 // linkID is the fully qualified ID of the resource link. Use the format,

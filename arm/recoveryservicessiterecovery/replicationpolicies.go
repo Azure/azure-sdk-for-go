@@ -39,6 +39,12 @@ func NewReplicationPoliciesClientWithBaseURI(baseURI string, subscriptionID stri
 	return ReplicationPoliciesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationPoliciesClientWithAuthFile creates an instance of the ReplicationPoliciesClient client.
+func NewReplicationPoliciesClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationPoliciesClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationPoliciesClient{c}, err
+}
+
 // Create the operation to create a replication policy This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

@@ -39,6 +39,12 @@ func NewDataSourcesClientWithBaseURI(baseURI string, subscriptionID string) Data
 	return DataSourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDataSourcesClientWithAuthFile creates an instance of the DataSourcesClient client.
+func NewDataSourcesClientWithAuthFile() (DataSourcesClient, error) {
+	c, err := NewWithAuthFile()
+	return DataSourcesClient{c}, err
+}
+
 // CreateOrUpdate create or update a data source.
 //
 // resourceGroupName is the name of the resource group to get. The name is case insensitive. workspaceName is name of

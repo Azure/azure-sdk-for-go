@@ -38,6 +38,12 @@ func NewStreamingJobsClientWithBaseURI(baseURI string, subscriptionID string) St
 	return StreamingJobsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewStreamingJobsClientWithAuthFile creates an instance of the StreamingJobsClient client.
+func NewStreamingJobsClientWithAuthFile() (StreamingJobsClient, error) {
+	c, err := NewWithAuthFile()
+	return StreamingJobsClient{c}, err
+}
+
 // CreateOrReplace creates a streaming job or replaces an already existing streaming job. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

@@ -39,6 +39,12 @@ func NewAccessControlRecordsClientWithBaseURI(baseURI string, subscriptionID str
 	return AccessControlRecordsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAccessControlRecordsClientWithAuthFile creates an instance of the AccessControlRecordsClient client.
+func NewAccessControlRecordsClientWithAuthFile() (AccessControlRecordsClient, error) {
+	c, err := NewWithAuthFile()
+	return AccessControlRecordsClient{c}, err
+}
+
 // CreateOrUpdate creates or Updates an access control record. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

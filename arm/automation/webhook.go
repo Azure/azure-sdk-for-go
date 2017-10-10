@@ -39,6 +39,12 @@ func NewWebhookClientWithBaseURI(baseURI string, subscriptionID string) WebhookC
 	return WebhookClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWebhookClientWithAuthFile creates an instance of the WebhookClient client.
+func NewWebhookClientWithAuthFile() (WebhookClient, error) {
+	c, err := NewWithAuthFile()
+	return WebhookClient{c}, err
+}
+
 // CreateOrUpdate create the webhook identified by webhook name.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. webhookName is

@@ -40,6 +40,12 @@ func NewSyncGroupsClientWithBaseURI(baseURI string, subscriptionID string) SyncG
 	return SyncGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSyncGroupsClientWithAuthFile creates an instance of the SyncGroupsClient client.
+func NewSyncGroupsClientWithAuthFile() (SyncGroupsClient, error) {
+	c, err := NewWithAuthFile()
+	return SyncGroupsClient{c}, err
+}
+
 // CancelSync cancels a sync group synchronization.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

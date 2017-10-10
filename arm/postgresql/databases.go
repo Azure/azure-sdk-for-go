@@ -39,6 +39,12 @@ func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) Databa
 	return DatabasesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDatabasesClientWithAuthFile creates an instance of the DatabasesClient client.
+func NewDatabasesClientWithAuthFile() (DatabasesClient, error) {
+	c, err := NewWithAuthFile()
+	return DatabasesClient{c}, err
+}
+
 // CreateOrUpdate creates a new database or updates an existing database. This method may poll for completion. Polling
 // can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.

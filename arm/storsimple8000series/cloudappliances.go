@@ -39,6 +39,12 @@ func NewCloudAppliancesClientWithBaseURI(baseURI string, subscriptionID string) 
 	return CloudAppliancesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewCloudAppliancesClientWithAuthFile creates an instance of the CloudAppliancesClient client.
+func NewCloudAppliancesClientWithAuthFile() (CloudAppliancesClient, error) {
+	c, err := NewWithAuthFile()
+	return CloudAppliancesClient{c}, err
+}
+
 // ListSupportedConfigurations lists supported cloud appliance models and supported configurations.
 //
 // resourceGroupName is the resource group name managerName is the manager name

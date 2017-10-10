@@ -39,6 +39,12 @@ func NewSavedSearchesClientWithBaseURI(baseURI string, subscriptionID string) Sa
 	return SavedSearchesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSavedSearchesClientWithAuthFile creates an instance of the SavedSearchesClient client.
+func NewSavedSearchesClientWithAuthFile() (SavedSearchesClient, error) {
+	c, err := NewWithAuthFile()
+	return SavedSearchesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a saved search for a given workspace.
 //
 // resourceGroupName is the name of the resource group to get. The name is case insensitive. workspaceName is log

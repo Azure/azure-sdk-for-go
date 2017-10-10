@@ -40,6 +40,12 @@ func NewJobClientWithBaseURI(baseURI string, subscriptionID string) JobClient {
 	return JobClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewJobClientWithAuthFile creates an instance of the JobClient client.
+func NewJobClientWithAuthFile() (JobClient, error) {
+	c, err := NewWithAuthFile()
+	return JobClient{c}, err
+}
+
 // Create create a job of the runbook.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. jobID is the job

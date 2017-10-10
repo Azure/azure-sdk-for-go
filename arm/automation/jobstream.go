@@ -39,6 +39,12 @@ func NewJobStreamClientWithBaseURI(baseURI string, subscriptionID string) JobStr
 	return JobStreamClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewJobStreamClientWithAuthFile creates an instance of the JobStreamClient client.
+func NewJobStreamClientWithAuthFile() (JobStreamClient, error) {
+	c, err := NewWithAuthFile()
+	return JobStreamClient{c}, err
+}
+
 // Get retrieve the job stream identified by job stream id.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. jobID is the job

@@ -40,6 +40,12 @@ func NewWorkspaceCollectionsClientWithBaseURI(baseURI string, subscriptionID str
 	return WorkspaceCollectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWorkspaceCollectionsClientWithAuthFile creates an instance of the WorkspaceCollectionsClient client.
+func NewWorkspaceCollectionsClientWithAuthFile() (WorkspaceCollectionsClient, error) {
+	c, err := NewWithAuthFile()
+	return WorkspaceCollectionsClient{c}, err
+}
+
 // CheckNameAvailability verify the specified Power BI Workspace Collection name is valid and not already in use.
 //
 // location is azure location body is check name availability request

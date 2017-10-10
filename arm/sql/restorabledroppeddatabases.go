@@ -40,6 +40,13 @@ func NewRestorableDroppedDatabasesClientWithBaseURI(baseURI string, subscription
 	return RestorableDroppedDatabasesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRestorableDroppedDatabasesClientWithAuthFile creates an instance of the RestorableDroppedDatabasesClient
+// client.
+func NewRestorableDroppedDatabasesClientWithAuthFile() (RestorableDroppedDatabasesClient, error) {
+	c, err := NewWithAuthFile()
+	return RestorableDroppedDatabasesClient{c}, err
+}
+
 // Get gets a deleted database that can be restored
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

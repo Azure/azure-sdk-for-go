@@ -39,6 +39,12 @@ func NewWatchersClientWithBaseURI(baseURI string, subscriptionID string) Watcher
 	return WatchersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWatchersClientWithAuthFile creates an instance of the WatchersClient client.
+func NewWatchersClientWithAuthFile() (WatchersClient, error) {
+	c, err := NewWithAuthFile()
+	return WatchersClient{c}, err
+}
+
 // CheckConnectivity verifies the possibility of establishing a direct TCP connection from a virtual machine to a given
 // endpoint including another VM or an arbitrary remote server. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP

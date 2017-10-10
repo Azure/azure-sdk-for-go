@@ -41,6 +41,13 @@ func NewDatabaseThreatDetectionPoliciesClientWithBaseURI(baseURI string, subscri
 	return DatabaseThreatDetectionPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDatabaseThreatDetectionPoliciesClientWithAuthFile creates an instance of the
+// DatabaseThreatDetectionPoliciesClient client.
+func NewDatabaseThreatDetectionPoliciesClientWithAuthFile() (DatabaseThreatDetectionPoliciesClient, error) {
+	c, err := NewWithAuthFile()
+	return DatabaseThreatDetectionPoliciesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a database's threat detection policy.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

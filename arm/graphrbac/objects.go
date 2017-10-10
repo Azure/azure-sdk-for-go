@@ -39,6 +39,12 @@ func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient 
 	return ObjectsClient{NewWithBaseURI(baseURI, tenantID)}
 }
 
+// NewObjectsClientWithAuthFile creates an instance of the ObjectsClient client.
+func NewObjectsClientWithAuthFile() (ObjectsClient, error) {
+	c, err := NewWithAuthFile()
+	return ObjectsClient{c}, err
+}
+
 // GetCurrentUser gets the details for the currently logged-in user.
 func (client ObjectsClient) GetCurrentUser() (result AADObject, err error) {
 	req, err := client.GetCurrentUserPreparer()

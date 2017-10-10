@@ -39,6 +39,12 @@ func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) Se
 	return SecurityRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSecurityRulesClientWithAuthFile creates an instance of the SecurityRulesClient client.
+func NewSecurityRulesClientWithAuthFile() (SecurityRulesClient, error) {
+	c, err := NewWithAuthFile()
+	return SecurityRulesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a security rule in the specified network security group. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

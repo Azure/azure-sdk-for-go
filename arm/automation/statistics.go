@@ -39,6 +39,12 @@ func NewStatisticsClientWithBaseURI(baseURI string, subscriptionID string) Stati
 	return StatisticsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewStatisticsClientWithAuthFile creates an instance of the StatisticsClient client.
+func NewStatisticsClientWithAuthFile() (StatisticsClient, error) {
+	c, err := NewWithAuthFile()
+	return StatisticsClient{c}, err
+}
+
 // ListByAutomationAccount retrieve the statistics for the account.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. filter is the

@@ -41,6 +41,12 @@ func NewRelationshipsClientWithBaseURI(baseURI string, subscriptionID string) Re
 	return RelationshipsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRelationshipsClientWithAuthFile creates an instance of the RelationshipsClient client.
+func NewRelationshipsClientWithAuthFile() (RelationshipsClient, error) {
+	c, err := NewWithAuthFile()
+	return RelationshipsClient{c}, err
+}
+
 // CreateOrUpdate creates a relationship or updates an existing relationship within a hub. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

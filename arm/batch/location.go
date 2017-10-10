@@ -39,6 +39,12 @@ func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) Locatio
 	return LocationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLocationClientWithAuthFile creates an instance of the LocationClient client.
+func NewLocationClientWithAuthFile() (LocationClient, error) {
+	c, err := NewWithAuthFile()
+	return LocationClient{c}, err
+}
+
 // CheckNameAvailability checks whether the Batch account name is available in the specified region.
 //
 // locationName is the desired region for the name check. parameters is properties needed to check the availability of

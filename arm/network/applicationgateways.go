@@ -39,6 +39,12 @@ func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID stri
 	return ApplicationGatewaysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewApplicationGatewaysClientWithAuthFile creates an instance of the ApplicationGatewaysClient client.
+func NewApplicationGatewaysClientWithAuthFile() (ApplicationGatewaysClient, error) {
+	c, err := NewWithAuthFile()
+	return ApplicationGatewaysClient{c}, err
+}
+
 // BackendHealth gets the backend health of the specified application gateway in a resource group. This method may poll
 // for completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

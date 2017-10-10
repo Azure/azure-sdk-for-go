@@ -38,6 +38,12 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 	return WorkspacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWorkspacesClientWithAuthFile creates an instance of the WorkspacesClient client.
+func NewWorkspacesClientWithAuthFile() (WorkspacesClient, error) {
+	c, err := NewWithAuthFile()
+	return WorkspacesClient{c}, err
+}
+
 // List retrieves all existing Power BI workspaces in the specified workspace collection.
 //
 // resourceGroupName is azure resource group workspaceCollectionName is power BI Embedded Workspace Collection name

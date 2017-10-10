@@ -39,6 +39,12 @@ func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) Depl
 	return DeploymentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDeploymentsClientWithAuthFile creates an instance of the DeploymentsClient client.
+func NewDeploymentsClientWithAuthFile() (DeploymentsClient, error) {
+	c, err := NewWithAuthFile()
+	return DeploymentsClient{c}, err
+}
+
 // Cancel you can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
 // canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
 // template deployment and leaves the resource group partially deployed.

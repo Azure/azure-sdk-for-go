@@ -40,6 +40,12 @@ func NewReplicationLinksClientWithBaseURI(baseURI string, subscriptionID string)
 	return ReplicationLinksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewReplicationLinksClientWithAuthFile creates an instance of the ReplicationLinksClient client.
+func NewReplicationLinksClientWithAuthFile() (ReplicationLinksClient, error) {
+	c, err := NewWithAuthFile()
+	return ReplicationLinksClient{c}, err
+}
+
 // Delete deletes a database replication link. Cannot be done during failover.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

@@ -38,6 +38,12 @@ func NewGeographicHierarchiesClientWithBaseURI(baseURI string, subscriptionID st
 	return GeographicHierarchiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewGeographicHierarchiesClientWithAuthFile creates an instance of the GeographicHierarchiesClient client.
+func NewGeographicHierarchiesClientWithAuthFile() (GeographicHierarchiesClient, error) {
+	c, err := NewWithAuthFile()
+	return GeographicHierarchiesClient{c}, err
+}
+
 // GetDefault gets the default Geographic Hierarchy used by the Geographic traffic routing method.
 func (client GeographicHierarchiesClient) GetDefault() (result GeographicHierarchy, err error) {
 	req, err := client.GetDefaultPreparer()
@@ -63,7 +69,7 @@ func (client GeographicHierarchiesClient) GetDefault() (result GeographicHierarc
 
 // GetDefaultPreparer prepares the GetDefault request.
 func (client GeographicHierarchiesClient) GetDefaultPreparer() (*http.Request, error) {
-	const APIVersion = "2017-05-01"
+	const APIVersion = "2017-09-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

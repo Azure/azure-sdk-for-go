@@ -38,6 +38,12 @@ func NewJobDetailsClientWithBaseURI(baseURI string, subscriptionID string) JobDe
 	return JobDetailsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewJobDetailsClientWithAuthFile creates an instance of the JobDetailsClient client.
+func NewJobDetailsClientWithAuthFile() (JobDetailsClient, error) {
+	c, err := NewWithAuthFile()
+	return JobDetailsClient{c}, err
+}
+
 // Get gets exteded information associated with the job.
 //
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the

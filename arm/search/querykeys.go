@@ -39,6 +39,12 @@ func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryK
 	return QueryKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewQueryKeysClientWithAuthFile creates an instance of the QueryKeysClient client.
+func NewQueryKeysClientWithAuthFile() (QueryKeysClient, error) {
+	c, err := NewWithAuthFile()
+	return QueryKeysClient{c}, err
+}
+
 // Create generates a new query key for the specified Search service. You can create up to 50 query keys per service.
 //
 // resourceGroupName is the name of the resource group within the current subscription. You can obtain this value from

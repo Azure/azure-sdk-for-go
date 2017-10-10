@@ -39,6 +39,12 @@ func NewSessionsClientWithBaseURI(baseURI string, subscriptionID string) Session
 	return SessionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSessionsClientWithAuthFile creates an instance of the SessionsClient client.
+func NewSessionsClientWithAuthFile() (SessionsClient, error) {
+	c, err := NewWithAuthFile()
+	return SessionsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an integration account session.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. sessionName is

@@ -39,6 +39,12 @@ func NewExportTasksClientWithBaseURI(baseURI string, subscriptionID string) Expo
 	return ExportTasksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewExportTasksClientWithAuthFile creates an instance of the ExportTasksClient client.
+func NewExportTasksClientWithAuthFile() (ExportTasksClient, error) {
+	c, err := NewWithAuthFile()
+	return ExportTasksClient{c}, err
+}
+
 // CreateActivitiesTask creates a task to export activities.
 //
 // resourceGroupName is the name of the resource group. appCollection is application collection. appName is application

@@ -39,6 +39,13 @@ func NewItemLevelRecoveryConnectionsClientWithBaseURI(baseURI string, subscripti
 	return ItemLevelRecoveryConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewItemLevelRecoveryConnectionsClientWithAuthFile creates an instance of the ItemLevelRecoveryConnectionsClient
+// client.
+func NewItemLevelRecoveryConnectionsClientWithAuthFile() (ItemLevelRecoveryConnectionsClient, error) {
+	c, err := NewWithAuthFile()
+	return ItemLevelRecoveryConnectionsClient{c}, err
+}
+
 // Provision provisions a script which invokes an iSCSI connection to the backup data. Executing this script opens a
 // file explorer displaying all the recoverable files and folders. This is an asynchronous operation. To know the
 // status of provisioning, call GetProtectedItemOperationResult API.

@@ -41,6 +41,12 @@ func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string) Conne
 	return ConnectorsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewConnectorsClientWithAuthFile creates an instance of the ConnectorsClient client.
+func NewConnectorsClientWithAuthFile() (ConnectorsClient, error) {
+	c, err := NewWithAuthFile()
+	return ConnectorsClient{c}, err
+}
+
 // CreateOrUpdate creates a connector or updates an existing connector in the hub. This method may poll for completion.
 // Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.

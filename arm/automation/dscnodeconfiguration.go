@@ -39,6 +39,12 @@ func NewDscNodeConfigurationClientWithBaseURI(baseURI string, subscriptionID str
 	return DscNodeConfigurationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDscNodeConfigurationClientWithAuthFile creates an instance of the DscNodeConfigurationClient client.
+func NewDscNodeConfigurationClientWithAuthFile() (DscNodeConfigurationClient, error) {
+	c, err := NewWithAuthFile()
+	return DscNodeConfigurationClient{c}, err
+}
+
 // CreateOrUpdate create the node configuration identified by node configuration name.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name.

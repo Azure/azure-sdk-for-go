@@ -39,6 +39,12 @@ func NewAppServiceEnvironmentsClientWithBaseURI(baseURI string, subscriptionID s
 	return AppServiceEnvironmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAppServiceEnvironmentsClientWithAuthFile creates an instance of the AppServiceEnvironmentsClient client.
+func NewAppServiceEnvironmentsClientWithAuthFile() (AppServiceEnvironmentsClient, error) {
+	c, err := NewWithAuthFile()
+	return AppServiceEnvironmentsClient{c}, err
+}
+
 // CreateOrUpdate create or update an App Service Environment. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

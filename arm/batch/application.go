@@ -39,6 +39,12 @@ func NewApplicationClientWithBaseURI(baseURI string, subscriptionID string) Appl
 	return ApplicationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewApplicationClientWithAuthFile creates an instance of the ApplicationClient client.
+func NewApplicationClientWithAuthFile() (ApplicationClient, error) {
+	c, err := NewWithAuthFile()
+	return ApplicationClient{c}, err
+}
+
 // Create adds an application to the specified Batch account.
 //
 // resourceGroupName is the name of the resource group that contains the Batch account. accountName is the name of the

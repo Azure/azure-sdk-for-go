@@ -42,6 +42,13 @@ func NewBackupLongTermRetentionVaultsClientWithBaseURI(baseURI string, subscript
 	return BackupLongTermRetentionVaultsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupLongTermRetentionVaultsClientWithAuthFile creates an instance of the
+// BackupLongTermRetentionVaultsClient client.
+func NewBackupLongTermRetentionVaultsClientWithAuthFile() (BackupLongTermRetentionVaultsClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupLongTermRetentionVaultsClient{c}, err
+}
+
 // CreateOrUpdate updates a server backup long term retention vault This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

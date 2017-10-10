@@ -39,6 +39,12 @@ func NewTrustedIDProvidersClientWithBaseURI(baseURI string, subscriptionID strin
 	return TrustedIDProvidersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewTrustedIDProvidersClientWithAuthFile creates an instance of the TrustedIDProvidersClient client.
+func NewTrustedIDProvidersClientWithAuthFile() (TrustedIDProvidersClient, error) {
+	c, err := NewWithAuthFile()
+	return TrustedIDProvidersClient{c}, err
+}
+
 // CreateOrUpdate creates or updates the specified trusted identity provider. During update, the trusted identity
 // provider with the specified name will be replaced with this new provider
 //

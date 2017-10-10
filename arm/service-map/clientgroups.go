@@ -40,6 +40,12 @@ func NewClientGroupsClientWithBaseURI(baseURI string, subscriptionID string) Cli
 	return ClientGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewClientGroupsClientWithAuthFile creates an instance of the ClientGroupsClient client.
+func NewClientGroupsClientWithAuthFile() (ClientGroupsClient, error) {
+	c, err := NewWithAuthFile()
+	return ClientGroupsClient{c}, err
+}
+
 // Get retrieves the specified client group
 //
 // resourceGroupName is resource group name within the specified subscriptionId. workspaceName is OMS workspace

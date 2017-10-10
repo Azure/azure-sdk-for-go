@@ -39,6 +39,13 @@ func NewReplicationNetworkMappingsClientWithBaseURI(baseURI string, subscription
 	return ReplicationNetworkMappingsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationNetworkMappingsClientWithAuthFile creates an instance of the ReplicationNetworkMappingsClient
+// client.
+func NewReplicationNetworkMappingsClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationNetworkMappingsClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationNetworkMappingsClient{c}, err
+}
+
 // Create the operation to create an ASR network mapping. This method may poll for completion. Polling can be canceled
 // by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

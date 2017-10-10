@@ -41,6 +41,12 @@ func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) Fi
 	return FirewallRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewFirewallRulesClientWithAuthFile creates an instance of the FirewallRulesClient client.
+func NewFirewallRulesClientWithAuthFile() (FirewallRulesClient, error) {
+	c, err := NewWithAuthFile()
+	return FirewallRulesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a firewall rule.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

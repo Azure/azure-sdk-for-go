@@ -38,6 +38,12 @@ func NewVirtualNetworkPeeringsClientWithBaseURI(baseURI string, subscriptionID s
 	return VirtualNetworkPeeringsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVirtualNetworkPeeringsClientWithAuthFile creates an instance of the VirtualNetworkPeeringsClient client.
+func NewVirtualNetworkPeeringsClientWithAuthFile() (VirtualNetworkPeeringsClient, error) {
+	c, err := NewWithAuthFile()
+	return VirtualNetworkPeeringsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a peering in the specified virtual network. This method may poll for completion.
 // Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.

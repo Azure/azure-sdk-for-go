@@ -39,6 +39,12 @@ func NewLogFilesClientWithBaseURI(baseURI string, subscriptionID string) LogFile
 	return LogFilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLogFilesClientWithAuthFile creates an instance of the LogFilesClient client.
+func NewLogFilesClientWithAuthFile() (LogFilesClient, error) {
+	c, err := NewWithAuthFile()
+	return LogFilesClient{c}, err
+}
+
 // ListByServer list all the log files in a given server.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

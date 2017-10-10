@@ -39,6 +39,12 @@ func NewGlobalSchedulesClientWithBaseURI(baseURI string, subscriptionID string) 
 	return GlobalSchedulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewGlobalSchedulesClientWithAuthFile creates an instance of the GlobalSchedulesClient client.
+func NewGlobalSchedulesClientWithAuthFile() (GlobalSchedulesClient, error) {
+	c, err := NewWithAuthFile()
+	return GlobalSchedulesClient{c}, err
+}
+
 // CreateOrUpdate create or replace an existing schedule.
 //
 // resourceGroupName is the name of the resource group. name is the name of the schedule. schedule is a schedule.

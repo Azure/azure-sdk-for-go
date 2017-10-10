@@ -38,6 +38,12 @@ func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesCli
 	return RoutesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRoutesClientWithAuthFile creates an instance of the RoutesClient client.
+func NewRoutesClientWithAuthFile() (RoutesClient, error) {
+	c, err := NewWithAuthFile()
+	return RoutesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a route in the specified route table. This method may poll for completion. Polling
 // can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.

@@ -39,6 +39,12 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 	return ClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewClustersClientWithAuthFile creates an instance of the ClustersClient client.
+func NewClustersClientWithAuthFile() (ClustersClient, error) {
+	c, err := NewWithAuthFile()
+	return ClustersClient{c}, err
+}
+
 // ChangeRdpSettings begins changing the RDP settings on the specified cluster. This method may poll for completion.
 // Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.

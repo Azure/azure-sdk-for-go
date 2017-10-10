@@ -42,6 +42,13 @@ func NewBackupLongTermRetentionPoliciesClientWithBaseURI(baseURI string, subscri
 	return BackupLongTermRetentionPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupLongTermRetentionPoliciesClientWithAuthFile creates an instance of the
+// BackupLongTermRetentionPoliciesClient client.
+func NewBackupLongTermRetentionPoliciesClientWithAuthFile() (BackupLongTermRetentionPoliciesClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupLongTermRetentionPoliciesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a database backup long term retention policy This method may poll for completion.
 // Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.

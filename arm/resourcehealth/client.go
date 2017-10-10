@@ -22,6 +22,7 @@ package resourcehealth
 
 import (
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure/auth"
 )
 
 const (
@@ -50,4 +51,15 @@ func NewWithBaseURI(baseURI string, subscriptionID string, resourceType string) 
 		SubscriptionID: subscriptionID,
 		ResourceType:   resourceType,
 	}
+}
+
+// NewWithAuthFile creates an instance of the ManagementClient client.
+func NewWithAuthFile(resourceType string) (c ManagementClient, err error) {
+	authentication, err := auth.GetClientSetup(DefaultBaseURI)
+	if err != nil {
+		return
+	}
+	c = NewWithBaseURI(authentication.BaseURI, authentication.SubscriptionID, resourceType)
+	c.Authorizer = authentication
+	return
 }

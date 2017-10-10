@@ -39,6 +39,13 @@ func NewProtectedItemOperationResultsClientWithBaseURI(baseURI string, subscript
 	return ProtectedItemOperationResultsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewProtectedItemOperationResultsClientWithAuthFile creates an instance of the
+// ProtectedItemOperationResultsClient client.
+func NewProtectedItemOperationResultsClientWithAuthFile() (ProtectedItemOperationResultsClient, error) {
+	c, err := NewWithAuthFile()
+	return ProtectedItemOperationResultsClient{c}, err
+}
+
 // Get fetches the result of any operation on the backup item.
 //
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the

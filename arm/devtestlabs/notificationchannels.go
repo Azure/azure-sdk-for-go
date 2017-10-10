@@ -39,6 +39,12 @@ func NewNotificationChannelsClientWithBaseURI(baseURI string, subscriptionID str
 	return NotificationChannelsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewNotificationChannelsClientWithAuthFile creates an instance of the NotificationChannelsClient client.
+func NewNotificationChannelsClientWithAuthFile() (NotificationChannelsClient, error) {
+	c, err := NewWithAuthFile()
+	return NotificationChannelsClient{c}, err
+}
+
 // CreateOrUpdate create or replace an existing notificationChannel.
 //
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the

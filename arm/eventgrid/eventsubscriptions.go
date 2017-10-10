@@ -38,6 +38,12 @@ func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID strin
 	return EventSubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewEventSubscriptionsClientWithAuthFile creates an instance of the EventSubscriptionsClient client.
+func NewEventSubscriptionsClientWithAuthFile() (EventSubscriptionsClient, error) {
+	c, err := NewWithAuthFile()
+	return EventSubscriptionsClient{c}, err
+}
+
 // Create asynchronously creates a new event subscription to the specified scope. Existing event subscriptions cannot
 // be updated with this API and should instead use the Update event subscription API. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel

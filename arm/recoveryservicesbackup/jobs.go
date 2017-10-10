@@ -38,6 +38,12 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 	return JobsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewJobsClientWithAuthFile creates an instance of the JobsClient client.
+func NewJobsClientWithAuthFile() (JobsClient, error) {
+	c, err := NewWithAuthFile()
+	return JobsClient{c}, err
+}
+
 // Export triggers export of jobs specified by filters and returns an OperationID to track.
 //
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the

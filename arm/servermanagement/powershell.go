@@ -39,6 +39,12 @@ func NewPowerShellClientWithBaseURI(baseURI string, subscriptionID string) Power
 	return PowerShellClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewPowerShellClientWithAuthFile creates an instance of the PowerShellClient client.
+func NewPowerShellClientWithAuthFile() (PowerShellClient, error) {
+	c, err := NewWithAuthFile()
+	return PowerShellClient{c}, err
+}
+
 // CancelCommand cancels a PowerShell command. This method may poll for completion. Polling can be canceled by passing
 // the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

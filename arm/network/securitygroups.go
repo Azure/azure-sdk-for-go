@@ -38,6 +38,12 @@ func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) S
 	return SecurityGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSecurityGroupsClientWithAuthFile creates an instance of the SecurityGroupsClient client.
+func NewSecurityGroupsClientWithAuthFile() (SecurityGroupsClient, error) {
+	c, err := NewWithAuthFile()
+	return SecurityGroupsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a network security group in the specified resource group. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

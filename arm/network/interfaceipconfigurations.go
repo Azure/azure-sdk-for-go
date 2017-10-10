@@ -38,6 +38,13 @@ func NewInterfaceIPConfigurationsClientWithBaseURI(baseURI string, subscriptionI
 	return InterfaceIPConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewInterfaceIPConfigurationsClientWithAuthFile creates an instance of the InterfaceIPConfigurationsClient
+// client.
+func NewInterfaceIPConfigurationsClientWithAuthFile() (InterfaceIPConfigurationsClient, error) {
+	c, err := NewWithAuthFile()
+	return InterfaceIPConfigurationsClient{c}, err
+}
+
 // Get gets the specified network interface ip configuration.
 //
 // resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.

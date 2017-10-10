@@ -39,6 +39,12 @@ func NewTestJobsClientWithBaseURI(baseURI string, subscriptionID string) TestJob
 	return TestJobsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewTestJobsClientWithAuthFile creates an instance of the TestJobsClient client.
+func NewTestJobsClientWithAuthFile() (TestJobsClient, error) {
+	c, err := NewWithAuthFile()
+	return TestJobsClient{c}, err
+}
+
 // Create create a test job of the runbook.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName is

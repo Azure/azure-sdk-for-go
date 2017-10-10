@@ -38,6 +38,12 @@ func NewAvailabilityStatusesClientWithBaseURI(baseURI string, subscriptionID str
 	return AvailabilityStatusesClient{NewWithBaseURI(baseURI, subscriptionID, resourceType)}
 }
 
+// NewAvailabilityStatusesClientWithAuthFile creates an instance of the AvailabilityStatusesClient client.
+func NewAvailabilityStatusesClientWithAuthFile(resourceType string) (AvailabilityStatusesClient, error) {
+	c, err := NewWithAuthFile(resourceType)
+	return AvailabilityStatusesClient{c}, err
+}
+
 // GetByResource gets current availability status for a single resource
 //
 // resourceURI is the fully qualified ID of the resource, including the resource name and resource type. Currently the

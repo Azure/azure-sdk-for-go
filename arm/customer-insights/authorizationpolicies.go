@@ -41,6 +41,12 @@ func NewAuthorizationPoliciesClientWithBaseURI(baseURI string, subscriptionID st
 	return AuthorizationPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAuthorizationPoliciesClientWithAuthFile creates an instance of the AuthorizationPoliciesClient client.
+func NewAuthorizationPoliciesClientWithAuthFile() (AuthorizationPoliciesClient, error) {
+	c, err := NewWithAuthFile()
+	return AuthorizationPoliciesClient{c}, err
+}
+
 // CreateOrUpdate creates an authorization policy or updates an existing authorization policy.
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. authorizationPolicyName is the

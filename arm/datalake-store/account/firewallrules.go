@@ -39,6 +39,12 @@ func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) Fi
 	return FirewallRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewFirewallRulesClientWithAuthFile creates an instance of the FirewallRulesClient client.
+func NewFirewallRulesClientWithAuthFile() (FirewallRulesClient, error) {
+	c, err := NewWithAuthFile()
+	return FirewallRulesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates the specified firewall rule. During update, the firewall rule with the specified
 // name will be replaced with this new firewall rule.
 //

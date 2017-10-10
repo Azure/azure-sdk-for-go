@@ -39,6 +39,12 @@ func NewBandwidthSettingsClientWithBaseURI(baseURI string, subscriptionID string
 	return BandwidthSettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBandwidthSettingsClientWithAuthFile creates an instance of the BandwidthSettingsClient client.
+func NewBandwidthSettingsClientWithAuthFile() (BandwidthSettingsClient, error) {
+	c, err := NewWithAuthFile()
+	return BandwidthSettingsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates the bandwidth setting This method may poll for completion. Polling can be canceled
 // by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

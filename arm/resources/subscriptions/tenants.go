@@ -40,6 +40,12 @@ func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
 	return TenantsClient{NewWithBaseURI(baseURI)}
 }
 
+// NewTenantsClientWithAuthFile creates an instance of the TenantsClient client.
+func NewTenantsClientWithAuthFile() (TenantsClient, error) {
+	c, err := NewWithAuthFile()
+	return TenantsClient{c}, err
+}
+
 // List gets the tenants for your account.
 func (client TenantsClient) List() (result TenantListResult, err error) {
 	req, err := client.ListPreparer()

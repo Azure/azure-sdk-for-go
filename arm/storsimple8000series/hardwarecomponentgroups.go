@@ -40,6 +40,12 @@ func NewHardwareComponentGroupsClientWithBaseURI(baseURI string, subscriptionID 
 	return HardwareComponentGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewHardwareComponentGroupsClientWithAuthFile creates an instance of the HardwareComponentGroupsClient client.
+func NewHardwareComponentGroupsClientWithAuthFile() (HardwareComponentGroupsClient, error) {
+	c, err := NewWithAuthFile()
+	return HardwareComponentGroupsClient{c}, err
+}
+
 // ChangeControllerPowerState changes the power state of the controller. This method may poll for completion. Polling
 // can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.

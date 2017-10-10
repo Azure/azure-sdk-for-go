@@ -39,6 +39,12 @@ func NewRunbookClientWithBaseURI(baseURI string, subscriptionID string) RunbookC
 	return RunbookClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRunbookClientWithAuthFile creates an instance of the RunbookClient client.
+func NewRunbookClientWithAuthFile() (RunbookClient, error) {
+	c, err := NewWithAuthFile()
+	return RunbookClient{c}, err
+}
+
 // CreateOrUpdate create the runbook identified by runbook name.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName is

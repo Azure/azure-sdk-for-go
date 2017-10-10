@@ -40,6 +40,12 @@ func NewCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string) Cap
 	return CapabilitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewCapabilitiesClientWithAuthFile creates an instance of the CapabilitiesClient client.
+func NewCapabilitiesClientWithAuthFile() (CapabilitiesClient, error) {
+	c, err := NewWithAuthFile()
+	return CapabilitiesClient{c}, err
+}
+
 // ListByLocation gets the capabilities available for the specified location.
 //
 // locationID is the location id whose capabilities are retrieved.

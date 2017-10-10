@@ -39,6 +39,12 @@ func NewHeatMapClientWithBaseURI(baseURI string, subscriptionID string) HeatMapC
 	return HeatMapClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewHeatMapClientWithAuthFile creates an instance of the HeatMapClient client.
+func NewHeatMapClientWithAuthFile() (HeatMapClient, error) {
+	c, err := NewWithAuthFile()
+	return HeatMapClient{c}, err
+}
+
 // Get gets latest heatmap for Traffic Manager profile.
 //
 // resourceGroupName is the name of the resource group containing the Traffic Manager endpoint. profileName is the name

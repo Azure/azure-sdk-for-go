@@ -39,6 +39,12 @@ func NewInboundNatRulesClientWithBaseURI(baseURI string, subscriptionID string) 
 	return InboundNatRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewInboundNatRulesClientWithAuthFile creates an instance of the InboundNatRulesClient client.
+func NewInboundNatRulesClientWithAuthFile() (InboundNatRulesClient, error) {
+	c, err := NewWithAuthFile()
+	return InboundNatRulesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a load balancer inbound nat rule. This method may poll for completion. Polling can
 // be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding
 // HTTP requests.

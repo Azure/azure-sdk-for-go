@@ -38,6 +38,12 @@ func NewDeletedWebAppsClientWithBaseURI(baseURI string, subscriptionID string) D
 	return DeletedWebAppsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDeletedWebAppsClientWithAuthFile creates an instance of the DeletedWebAppsClient client.
+func NewDeletedWebAppsClientWithAuthFile() (DeletedWebAppsClient, error) {
+	c, err := NewWithAuthFile()
+	return DeletedWebAppsClient{c}, err
+}
+
 // List get all deleted apps for a subscription.
 func (client DeletedWebAppsClient) List() (result DeletedWebAppCollection, err error) {
 	req, err := client.ListPreparer()

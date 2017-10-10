@@ -39,6 +39,12 @@ func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string) Agree
 	return AgreementsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAgreementsClientWithAuthFile creates an instance of the AgreementsClient client.
+func NewAgreementsClientWithAuthFile() (AgreementsClient, error) {
+	c, err := NewWithAuthFile()
+	return AgreementsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an integration account agreement.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. agreementName

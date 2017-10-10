@@ -41,6 +41,12 @@ func NewFailoverGroupsClientWithBaseURI(baseURI string, subscriptionID string) F
 	return FailoverGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewFailoverGroupsClientWithAuthFile creates an instance of the FailoverGroupsClient client.
+func NewFailoverGroupsClientWithAuthFile() (FailoverGroupsClient, error) {
+	c, err := NewWithAuthFile()
+	return FailoverGroupsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a failover group. This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

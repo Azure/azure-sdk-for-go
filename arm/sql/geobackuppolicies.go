@@ -41,6 +41,12 @@ func NewGeoBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string
 	return GeoBackupPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewGeoBackupPoliciesClientWithAuthFile creates an instance of the GeoBackupPoliciesClient client.
+func NewGeoBackupPoliciesClientWithAuthFile() (GeoBackupPoliciesClient, error) {
+	c, err := NewWithAuthFile()
+	return GeoBackupPoliciesClient{c}, err
+}
+
 // CreateOrUpdate updates a database geo backup policy.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

@@ -38,6 +38,13 @@ func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptio
 	return ExpressRouteCircuitPeeringsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewExpressRouteCircuitPeeringsClientWithAuthFile creates an instance of the ExpressRouteCircuitPeeringsClient
+// client.
+func NewExpressRouteCircuitPeeringsClientWithAuthFile() (ExpressRouteCircuitPeeringsClient, error) {
+	c, err := NewWithAuthFile()
+	return ExpressRouteCircuitPeeringsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a peering in the specified express route circuits. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

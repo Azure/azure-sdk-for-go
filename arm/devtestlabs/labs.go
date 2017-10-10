@@ -39,6 +39,12 @@ func NewLabsClientWithBaseURI(baseURI string, subscriptionID string) LabsClient 
 	return LabsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLabsClientWithAuthFile creates an instance of the LabsClient client.
+func NewLabsClientWithAuthFile() (LabsClient, error) {
+	c, err := NewWithAuthFile()
+	return LabsClient{c}, err
+}
+
 // ClaimAnyVM claim a random claimable virtual machine in the lab. This operation can take a while to complete. This
 // method may poll for completion. Polling can be canceled by passing the cancel channel argument. The channel will be
 // used to cancel polling and any outstanding HTTP requests.

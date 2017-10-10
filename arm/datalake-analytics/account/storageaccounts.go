@@ -39,6 +39,12 @@ func NewStorageAccountsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return StorageAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewStorageAccountsClientWithAuthFile creates an instance of the StorageAccountsClient client.
+func NewStorageAccountsClientWithAuthFile() (StorageAccountsClient, error) {
+	c, err := NewWithAuthFile()
+	return StorageAccountsClient{c}, err
+}
+
 // Add updates the specified Data Lake Analytics account to add an Azure Storage account.
 //
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName

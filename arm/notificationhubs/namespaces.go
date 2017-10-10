@@ -39,6 +39,12 @@ func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) Names
 	return NamespacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewNamespacesClientWithAuthFile creates an instance of the NamespacesClient client.
+func NewNamespacesClientWithAuthFile() (NamespacesClient, error) {
+	c, err := NewWithAuthFile()
+	return NamespacesClient{c}, err
+}
+
 // CheckAvailability checks the availability of the given service namespace across all Azure subscriptions. This is
 // useful because the domain name is created based on the service namespace name.
 //

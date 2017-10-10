@@ -39,6 +39,12 @@ func NewReplicationAlertSettingsClientWithBaseURI(baseURI string, subscriptionID
 	return ReplicationAlertSettingsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationAlertSettingsClientWithAuthFile creates an instance of the ReplicationAlertSettingsClient client.
+func NewReplicationAlertSettingsClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationAlertSettingsClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationAlertSettingsClient{c}, err
+}
+
 // Create create or update an email notification(alert) configuration.
 //
 // alertSettingName is the name of the email notification(alert) configuration. request is the input to configure the

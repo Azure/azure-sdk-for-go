@@ -39,6 +39,12 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return Client{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewClientWithAuthFile creates an instance of the Client client.
+func NewClientWithAuthFile() (Client, error) {
+	c, err := NewWithAuthFile()
+	return Client{c}, err
+}
+
 // CheckNameAvailability checks whether the Media Service resource name is available. The name must be globally unique.
 //
 // parameters is properties needed to check the availability of a name.

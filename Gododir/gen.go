@@ -357,6 +357,7 @@ func generate(service *service) {
 		fmt.Sprintf("--package-version=%s", sdkVersion),
 		"--clear-output-folder",
 		"--can-clear-output-folder",
+		"--add-credentials",
 	}
 	if service.Tag != "" {
 		commandArgs = append(commandArgs, fmt.Sprintf("--tag=%s", service.Tag))

@@ -39,6 +39,12 @@ func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string) WebTest
 	return WebTestsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWebTestsClientWithAuthFile creates an instance of the WebTestsClient client.
+func NewWebTestsClientWithAuthFile() (WebTestsClient, error) {
+	c, err := NewWithAuthFile()
+	return WebTestsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an Application Insights web test definition.
 //
 // resourceGroupName is the name of the resource group. webTestName is the name of the Application Insights webtest

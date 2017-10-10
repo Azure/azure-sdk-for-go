@@ -39,6 +39,12 @@ func NewReplicationVaultHealthClientWithBaseURI(baseURI string, subscriptionID s
 	return ReplicationVaultHealthClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationVaultHealthClientWithAuthFile creates an instance of the ReplicationVaultHealthClient client.
+func NewReplicationVaultHealthClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationVaultHealthClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationVaultHealthClient{c}, err
+}
+
 // Get gets the health details of the vault.
 func (client ReplicationVaultHealthClient) Get() (result VaultHealthDetails, err error) {
 	req, err := client.GetPreparer()

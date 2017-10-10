@@ -39,6 +39,12 @@ func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) Alert
 	return AlertRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAlertRulesClientWithAuthFile creates an instance of the AlertRulesClient client.
+func NewAlertRulesClientWithAuthFile() (AlertRulesClient, error) {
+	c, err := NewWithAuthFile()
+	return AlertRulesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an alert rule.
 //
 // resourceGroupName is the name of the resource group. ruleName is the name of the rule. parameters is the parameters

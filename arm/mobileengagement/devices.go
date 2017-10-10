@@ -39,6 +39,12 @@ func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesC
 	return DevicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDevicesClientWithAuthFile creates an instance of the DevicesClient client.
+func NewDevicesClientWithAuthFile() (DevicesClient, error) {
+	c, err := NewWithAuthFile()
+	return DevicesClient{c}, err
+}
+
 // GetByDeviceID get the information associated to a device running an application.
 //
 // resourceGroupName is the name of the resource group. appCollection is application collection. appName is application

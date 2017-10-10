@@ -39,6 +39,12 @@ func NewCostsClientWithBaseURI(baseURI string, subscriptionID string) CostsClien
 	return CostsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewCostsClientWithAuthFile creates an instance of the CostsClient client.
+func NewCostsClientWithAuthFile() (CostsClient, error) {
+	c, err := NewWithAuthFile()
+	return CostsClient{c}, err
+}
+
 // CreateOrUpdate create or replace an existing cost.
 //
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the cost.

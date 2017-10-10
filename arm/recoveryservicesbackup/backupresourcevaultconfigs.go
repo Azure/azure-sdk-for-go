@@ -38,6 +38,13 @@ func NewBackupResourceVaultConfigsClientWithBaseURI(baseURI string, subscription
 	return BackupResourceVaultConfigsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupResourceVaultConfigsClientWithAuthFile creates an instance of the BackupResourceVaultConfigsClient
+// client.
+func NewBackupResourceVaultConfigsClientWithAuthFile() (BackupResourceVaultConfigsClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupResourceVaultConfigsClient{c}, err
+}
+
 // Get fetches resource vault config.
 //
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the

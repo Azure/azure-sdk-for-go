@@ -38,6 +38,12 @@ func NewJobCancellationsClientWithBaseURI(baseURI string, subscriptionID string)
 	return JobCancellationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewJobCancellationsClientWithAuthFile creates an instance of the JobCancellationsClient client.
+func NewJobCancellationsClientWithAuthFile() (JobCancellationsClient, error) {
+	c, err := NewWithAuthFile()
+	return JobCancellationsClient{c}, err
+}
+
 // Trigger cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
 // GetCancelOperationResult API.
 //

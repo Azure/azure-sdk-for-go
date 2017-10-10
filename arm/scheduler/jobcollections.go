@@ -38,6 +38,12 @@ func NewJobCollectionsClientWithBaseURI(baseURI string, subscriptionID string) J
 	return JobCollectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewJobCollectionsClientWithAuthFile creates an instance of the JobCollectionsClient client.
+func NewJobCollectionsClientWithAuthFile() (JobCollectionsClient, error) {
+	c, err := NewWithAuthFile()
+	return JobCollectionsClient{c}, err
+}
+
 // CreateOrUpdate provisions a new job collection or updates an existing job collection.
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job collection name. jobCollection is the job

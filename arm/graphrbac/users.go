@@ -39,6 +39,12 @@ func NewUsersClientWithBaseURI(baseURI string, tenantID string) UsersClient {
 	return UsersClient{NewWithBaseURI(baseURI, tenantID)}
 }
 
+// NewUsersClientWithAuthFile creates an instance of the UsersClient client.
+func NewUsersClientWithAuthFile() (UsersClient, error) {
+	c, err := NewWithAuthFile()
+	return UsersClient{c}, err
+}
+
 // Create create a new user.
 //
 // parameters is parameters to create a user.

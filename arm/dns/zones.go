@@ -38,6 +38,12 @@ func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClien
 	return ZonesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewZonesClientWithAuthFile creates an instance of the ZonesClient client.
+func NewZonesClientWithAuthFile() (ZonesClient, error) {
+	c, err := NewWithAuthFile()
+	return ZonesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a DNS zone. Does not modify DNS records within the zone.
 //
 // resourceGroupName is the name of the resource group. zoneName is the name of the DNS zone (without a terminating

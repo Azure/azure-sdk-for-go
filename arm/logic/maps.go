@@ -39,6 +39,12 @@ func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient 
 	return MapsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewMapsClientWithAuthFile creates an instance of the MapsClient client.
+func NewMapsClientWithAuthFile() (MapsClient, error) {
+	c, err := NewWithAuthFile()
+	return MapsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an integration account map.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is the

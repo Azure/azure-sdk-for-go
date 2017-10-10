@@ -39,6 +39,13 @@ func NewLoadBalancerBackendAddressPoolsClientWithBaseURI(baseURI string, subscri
 	return LoadBalancerBackendAddressPoolsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLoadBalancerBackendAddressPoolsClientWithAuthFile creates an instance of the
+// LoadBalancerBackendAddressPoolsClient client.
+func NewLoadBalancerBackendAddressPoolsClientWithAuthFile() (LoadBalancerBackendAddressPoolsClient, error) {
+	c, err := NewWithAuthFile()
+	return LoadBalancerBackendAddressPoolsClient{c}, err
+}
+
 // Get gets load balancer backend address pool.
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.

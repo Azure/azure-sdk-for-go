@@ -38,6 +38,12 @@ func NewPremiumMessagingRegionsClientWithBaseURI(baseURI string, subscriptionID 
 	return PremiumMessagingRegionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewPremiumMessagingRegionsClientWithAuthFile creates an instance of the PremiumMessagingRegionsClient client.
+func NewPremiumMessagingRegionsClientWithAuthFile() (PremiumMessagingRegionsClient, error) {
+	c, err := NewWithAuthFile()
+	return PremiumMessagingRegionsClient{c}, err
+}
+
 // List gets the available premium messaging regions for servicebus
 func (client PremiumMessagingRegionsClient) List() (result PremiumMessagingRegionsListResult, err error) {
 	req, err := client.ListPreparer()

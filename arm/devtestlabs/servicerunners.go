@@ -38,6 +38,12 @@ func NewServiceRunnersClientWithBaseURI(baseURI string, subscriptionID string) S
 	return ServiceRunnersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewServiceRunnersClientWithAuthFile creates an instance of the ServiceRunnersClient client.
+func NewServiceRunnersClientWithAuthFile() (ServiceRunnersClient, error) {
+	c, err := NewWithAuthFile()
+	return ServiceRunnersClient{c}, err
+}
+
 // CreateOrUpdate create or replace an existing Service runner.
 //
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the service

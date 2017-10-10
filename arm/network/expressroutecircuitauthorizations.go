@@ -40,6 +40,13 @@ func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subsc
 	return ExpressRouteCircuitAuthorizationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewExpressRouteCircuitAuthorizationsClientWithAuthFile creates an instance of the
+// ExpressRouteCircuitAuthorizationsClient client.
+func NewExpressRouteCircuitAuthorizationsClientWithAuthFile() (ExpressRouteCircuitAuthorizationsClient, error) {
+	c, err := NewWithAuthFile()
+	return ExpressRouteCircuitAuthorizationsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an authorization in the specified express route circuit. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

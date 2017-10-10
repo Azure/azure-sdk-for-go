@@ -40,6 +40,12 @@ func NewRecommendedElasticPoolsClientWithBaseURI(baseURI string, subscriptionID 
 	return RecommendedElasticPoolsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRecommendedElasticPoolsClientWithAuthFile creates an instance of the RecommendedElasticPoolsClient client.
+func NewRecommendedElasticPoolsClientWithAuthFile() (RecommendedElasticPoolsClient, error) {
+	c, err := NewWithAuthFile()
+	return RecommendedElasticPoolsClient{c}, err
+}
+
 // Get gets a recommented elastic pool.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

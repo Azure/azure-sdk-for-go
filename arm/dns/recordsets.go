@@ -38,6 +38,12 @@ func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) Recor
 	return RecordSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRecordSetsClientWithAuthFile creates an instance of the RecordSetsClient client.
+func NewRecordSetsClientWithAuthFile() (RecordSetsClient, error) {
+	c, err := NewWithAuthFile()
+	return RecordSetsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a record set within a DNS zone.
 //
 // resourceGroupName is the name of the resource group. zoneName is the name of the DNS zone (without a terminating

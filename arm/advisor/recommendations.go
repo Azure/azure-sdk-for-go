@@ -39,6 +39,12 @@ func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return RecommendationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRecommendationsClientWithAuthFile creates an instance of the RecommendationsClient client.
+func NewRecommendationsClientWithAuthFile() (RecommendationsClient, error) {
+	c, err := NewWithAuthFile()
+	return RecommendationsClient{c}, err
+}
+
 // Generate initiates the recommendation generation or computation process for a subscription. This operation is
 // asynchronous. The generated recommendations are stored in a cache in the Advisor service.
 func (client RecommendationsClient) Generate() (result autorest.Response, err error) {

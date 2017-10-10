@@ -39,6 +39,12 @@ func NewFieldsClientWithBaseURI(baseURI string, subscriptionID string) FieldsCli
 	return FieldsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewFieldsClientWithAuthFile creates an instance of the FieldsClient client.
+func NewFieldsClientWithAuthFile() (FieldsClient, error) {
+	c, err := NewWithAuthFile()
+	return FieldsClient{c}, err
+}
+
 // ListByType retrieve a list of fields of a given type identified by module name.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. moduleName is

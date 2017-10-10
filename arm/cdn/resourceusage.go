@@ -39,6 +39,12 @@ func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string) Re
 	return ResourceUsageClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewResourceUsageClientWithAuthFile creates an instance of the ResourceUsageClient client.
+func NewResourceUsageClientWithAuthFile() (ResourceUsageClient, error) {
+	c, err := NewWithAuthFile()
+	return ResourceUsageClient{c}, err
+}
+
 // List check the quota and actual usage of the CDN profiles under the given subscription.
 func (client ResourceUsageClient) List() (result ResourceUsageListResult, err error) {
 	req, err := client.ListPreparer()

@@ -39,6 +39,12 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 	return AppsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAppsClientWithAuthFile creates an instance of the AppsClient client.
+func NewAppsClientWithAuthFile() (AppsClient, error) {
+	c, err := NewWithAuthFile()
+	return AppsClient{c}, err
+}
+
 // AddPremierAddOn updates a named add-on of an app.
 //
 // resourceGroupName is name of the resource group to which the resource belongs. name is name of the app.

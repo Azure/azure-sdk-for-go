@@ -39,6 +39,12 @@ func NewArtifactSourcesClientWithBaseURI(baseURI string, subscriptionID string) 
 	return ArtifactSourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewArtifactSourcesClientWithAuthFile creates an instance of the ArtifactSourcesClient client.
+func NewArtifactSourcesClientWithAuthFile() (ArtifactSourcesClient, error) {
+	c, err := NewWithAuthFile()
+	return ArtifactSourcesClient{c}, err
+}
+
 // CreateOrUpdate create or replace an existing artifact source.
 //
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the

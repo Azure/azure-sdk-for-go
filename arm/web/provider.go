@@ -38,6 +38,12 @@ func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) Provide
 	return ProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewProviderClientWithAuthFile creates an instance of the ProviderClient client.
+func NewProviderClientWithAuthFile() (ProviderClient, error) {
+	c, err := NewWithAuthFile()
+	return ProviderClient{c}, err
+}
+
 // GetAvailableStacks get available application frameworks and their versions
 func (client ProviderClient) GetAvailableStacks() (result SetObject, err error) {
 	req, err := client.GetAvailableStacksPreparer()

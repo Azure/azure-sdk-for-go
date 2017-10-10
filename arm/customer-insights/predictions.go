@@ -41,6 +41,12 @@ func NewPredictionsClientWithBaseURI(baseURI string, subscriptionID string) Pred
 	return PredictionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewPredictionsClientWithAuthFile creates an instance of the PredictionsClient client.
+func NewPredictionsClientWithAuthFile() (PredictionsClient, error) {
+	c, err := NewWithAuthFile()
+	return PredictionsClient{c}, err
+}
+
 // CreateOrUpdate creates a Prediction or updates an existing Prediction in the hub. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

@@ -39,6 +39,12 @@ func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID s
 	return VirtualNetworkGatewaysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVirtualNetworkGatewaysClientWithAuthFile creates an instance of the VirtualNetworkGatewaysClient client.
+func NewVirtualNetworkGatewaysClientWithAuthFile() (VirtualNetworkGatewaysClient, error) {
+	c, err := NewWithAuthFile()
+	return VirtualNetworkGatewaysClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a virtual network gateway in the specified resource group. This method may poll
 // for completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

@@ -39,6 +39,12 @@ func NewBackupSchedulesClientWithBaseURI(baseURI string, subscriptionID string) 
 	return BackupSchedulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupSchedulesClientWithAuthFile creates an instance of the BackupSchedulesClient client.
+func NewBackupSchedulesClientWithAuthFile() (BackupSchedulesClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupSchedulesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates the backup schedule. This method may poll for completion. Polling can be canceled
 // by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

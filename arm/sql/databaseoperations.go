@@ -41,6 +41,12 @@ func NewDatabaseOperationsClientWithBaseURI(baseURI string, subscriptionID strin
 	return DatabaseOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDatabaseOperationsClientWithAuthFile creates an instance of the DatabaseOperationsClient client.
+func NewDatabaseOperationsClientWithAuthFile() (DatabaseOperationsClient, error) {
+	c, err := NewWithAuthFile()
+	return DatabaseOperationsClient{c}, err
+}
+
 // Cancel cancels the asynchronous operation on the database.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

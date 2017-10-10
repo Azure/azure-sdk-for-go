@@ -38,6 +38,12 @@ func NewContainerLogsClientWithBaseURI(baseURI string, subscriptionID string) Co
 	return ContainerLogsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewContainerLogsClientWithAuthFile creates an instance of the ContainerLogsClient client.
+func NewContainerLogsClientWithAuthFile() (ContainerLogsClient, error) {
+	c, err := NewWithAuthFile()
+	return ContainerLogsClient{c}, err
+}
+
 // List get the logs for a specified container instance in a specified resource group and container group.
 //
 // resourceGroupName is the name of the resource group that contains the container instance. containerName is the name

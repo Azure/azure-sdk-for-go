@@ -38,6 +38,12 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, resou
 	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewOperationsClientWithAuthFile creates an instance of the OperationsClient client.
+func NewOperationsClientWithAuthFile(resourceGroupName string, resourceName string) (OperationsClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return OperationsClient{c}, err
+}
+
 // List operation to return the list of available operations.
 func (client OperationsClient) List() (result OperationsDiscoveryCollection, err error) {
 	req, err := client.ListPreparer()

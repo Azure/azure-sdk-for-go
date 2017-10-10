@@ -39,6 +39,12 @@ func NewWCFRelaysClientWithBaseURI(baseURI string, subscriptionID string) WCFRel
 	return WCFRelaysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWCFRelaysClientWithAuthFile creates an instance of the WCFRelaysClient client.
+func NewWCFRelaysClientWithAuthFile() (WCFRelaysClient, error) {
+	c, err := NewWithAuthFile()
+	return WCFRelaysClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a WCF relay. This operation is idempotent.
 //
 // resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace name

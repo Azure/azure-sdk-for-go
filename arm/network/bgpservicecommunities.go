@@ -38,6 +38,12 @@ func NewBgpServiceCommunitiesClientWithBaseURI(baseURI string, subscriptionID st
 	return BgpServiceCommunitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBgpServiceCommunitiesClientWithAuthFile creates an instance of the BgpServiceCommunitiesClient client.
+func NewBgpServiceCommunitiesClientWithAuthFile() (BgpServiceCommunitiesClient, error) {
+	c, err := NewWithAuthFile()
+	return BgpServiceCommunitiesClient{c}, err
+}
+
 // List gets all the available bgp service communities.
 func (client BgpServiceCommunitiesClient) List() (result BgpServiceCommunityListResult, err error) {
 	req, err := client.ListPreparer()

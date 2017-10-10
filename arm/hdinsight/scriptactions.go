@@ -38,6 +38,12 @@ func NewScriptActionsClientWithBaseURI(baseURI string, subscriptionID string) Sc
 	return ScriptActionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewScriptActionsClientWithAuthFile creates an instance of the ScriptActionsClient client.
+func NewScriptActionsClientWithAuthFile() (ScriptActionsClient, error) {
+	c, err := NewWithAuthFile()
+	return ScriptActionsClient{c}, err
+}
+
 // Delete deletes a given persisted script action of the cluster.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. scriptName is the name

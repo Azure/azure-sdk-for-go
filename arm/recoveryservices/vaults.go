@@ -38,6 +38,12 @@ func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsCli
 	return VaultsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVaultsClientWithAuthFile creates an instance of the VaultsClient client.
+func NewVaultsClientWithAuthFile() (VaultsClient, error) {
+	c, err := NewWithAuthFile()
+	return VaultsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a Recovery Services vault.
 //
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the

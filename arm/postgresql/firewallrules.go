@@ -41,6 +41,12 @@ func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) Fi
 	return FirewallRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewFirewallRulesClientWithAuthFile creates an instance of the FirewallRulesClient client.
+func NewFirewallRulesClientWithAuthFile() (FirewallRulesClient, error) {
+	c, err := NewWithAuthFile()
+	return FirewallRulesClient{c}, err
+}
+
 // CreateOrUpdate creates a new firewall rule or updates an existing firewall rule. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

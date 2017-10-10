@@ -38,6 +38,12 @@ func NewProtectionPoliciesClientWithBaseURI(baseURI string, subscriptionID strin
 	return ProtectionPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewProtectionPoliciesClientWithAuthFile creates an instance of the ProtectionPoliciesClient client.
+func NewProtectionPoliciesClientWithAuthFile() (ProtectionPoliciesClient, error) {
+	c, err := NewWithAuthFile()
+	return ProtectionPoliciesClient{c}, err
+}
+
 // CreateOrUpdate creates or modifies a backup policy. This is an asynchronous operation. Status of the operation can
 // be fetched using GetPolicyOperationResult API.
 //

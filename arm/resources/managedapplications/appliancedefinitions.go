@@ -39,6 +39,12 @@ func NewApplianceDefinitionsClientWithBaseURI(baseURI string, subscriptionID str
 	return ApplianceDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewApplianceDefinitionsClientWithAuthFile creates an instance of the ApplianceDefinitionsClient client.
+func NewApplianceDefinitionsClientWithAuthFile() (ApplianceDefinitionsClient, error) {
+	c, err := NewWithAuthFile()
+	return ApplianceDefinitionsClient{c}, err
+}
+
 // CreateOrUpdate creates a new appliance definition. This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

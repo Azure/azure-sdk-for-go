@@ -39,6 +39,12 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 	return JobsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewJobsClientWithAuthFile creates an instance of the JobsClient client.
+func NewJobsClientWithAuthFile() (JobsClient, error) {
+	c, err := NewWithAuthFile()
+	return JobsClient{c}, err
+}
+
 // CreateOrUpdate creates a new import/export job or updates an existing import/export job in the specified
 // subscription.
 //

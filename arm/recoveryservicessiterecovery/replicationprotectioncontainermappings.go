@@ -41,6 +41,13 @@ func NewReplicationProtectionContainerMappingsClientWithBaseURI(baseURI string, 
 	return ReplicationProtectionContainerMappingsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationProtectionContainerMappingsClientWithAuthFile creates an instance of the
+// ReplicationProtectionContainerMappingsClient client.
+func NewReplicationProtectionContainerMappingsClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationProtectionContainerMappingsClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationProtectionContainerMappingsClient{c}, err
+}
+
 // Create the operation to create a protection container mapping. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

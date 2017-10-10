@@ -38,6 +38,12 @@ func NewBackupsClientWithBaseURI(baseURI string, subscriptionID string) BackupsC
 	return BackupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupsClientWithAuthFile creates an instance of the BackupsClient client.
+func NewBackupsClientWithAuthFile() (BackupsClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupsClient{c}, err
+}
+
 // Trigger triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the
 // operation, call GetProtectedItemOperationResult API.
 //

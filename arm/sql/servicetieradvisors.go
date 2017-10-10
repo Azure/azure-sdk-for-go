@@ -40,6 +40,12 @@ func NewServiceTierAdvisorsClientWithBaseURI(baseURI string, subscriptionID stri
 	return ServiceTierAdvisorsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewServiceTierAdvisorsClientWithAuthFile creates an instance of the ServiceTierAdvisorsClient client.
+func NewServiceTierAdvisorsClientWithAuthFile() (ServiceTierAdvisorsClient, error) {
+	c, err := NewWithAuthFile()
+	return ServiceTierAdvisorsClient{c}, err
+}
+
 // Get gets a service tier advisor.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

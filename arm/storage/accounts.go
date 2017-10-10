@@ -39,6 +39,12 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 	return AccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAccountsClientWithAuthFile creates an instance of the AccountsClient client.
+func NewAccountsClientWithAuthFile() (AccountsClient, error) {
+	c, err := NewWithAuthFile()
+	return AccountsClient{c}, err
+}
+
 // CheckNameAvailability checks that the storage account name is valid and is not already in use.
 //
 // accountName is the name of the storage account within the specified resource group. Storage account names must be

@@ -39,6 +39,12 @@ func NewConsumerGroupsClientWithBaseURI(baseURI string, subscriptionID string) C
 	return ConsumerGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewConsumerGroupsClientWithAuthFile creates an instance of the ConsumerGroupsClient client.
+func NewConsumerGroupsClientWithAuthFile() (ConsumerGroupsClient, error) {
+	c, err := NewWithAuthFile()
+	return ConsumerGroupsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
 //
 // resourceGroupName is name of the resource group within the azure subscription. namespaceName is the Namespace name

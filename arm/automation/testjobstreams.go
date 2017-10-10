@@ -39,6 +39,12 @@ func NewTestJobStreamsClientWithBaseURI(baseURI string, subscriptionID string) T
 	return TestJobStreamsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewTestJobStreamsClientWithAuthFile creates an instance of the TestJobStreamsClient client.
+func NewTestJobStreamsClientWithAuthFile() (TestJobStreamsClient, error) {
+	c, err := NewWithAuthFile()
+	return TestJobStreamsClient{c}, err
+}
+
 // Get retrieve a test job streams identified by runbook name and stream id.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName is

@@ -38,6 +38,12 @@ func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) Endpoi
 	return EndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewEndpointsClientWithAuthFile creates an instance of the EndpointsClient client.
+func NewEndpointsClientWithAuthFile() (EndpointsClient, error) {
+	c, err := NewWithAuthFile()
+	return EndpointsClient{c}, err
+}
+
 // CreateOrUpdate create or update a Traffic Manager endpoint.
 //
 // resourceGroupName is the name of the resource group containing the Traffic Manager endpoint to be created or
@@ -76,7 +82,7 @@ func (client EndpointsClient) CreateOrUpdatePreparer(resourceGroupName string, p
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-05-01"
+	const APIVersion = "2017-09-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -147,7 +153,7 @@ func (client EndpointsClient) DeletePreparer(resourceGroupName string, profileNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-05-01"
+	const APIVersion = "2017-09-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -216,7 +222,7 @@ func (client EndpointsClient) GetPreparer(resourceGroupName string, profileName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-05-01"
+	const APIVersion = "2017-09-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -286,7 +292,7 @@ func (client EndpointsClient) UpdatePreparer(resourceGroupName string, profileNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-05-01"
+	const APIVersion = "2017-09-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

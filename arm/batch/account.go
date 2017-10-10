@@ -39,6 +39,12 @@ func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountC
 	return AccountClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAccountClientWithAuthFile creates an instance of the AccountClient client.
+func NewAccountClientWithAuthFile() (AccountClient, error) {
+	c, err := NewWithAuthFile()
+	return AccountClient{c}, err
+}
+
 // Create creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API
 // and should instead be updated with the Update Batch Account API. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP

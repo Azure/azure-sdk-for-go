@@ -40,6 +40,13 @@ func NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI(baseURI string, su
 	return LoadBalancerFrontendIPConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLoadBalancerFrontendIPConfigurationsClientWithAuthFile creates an instance of the
+// LoadBalancerFrontendIPConfigurationsClient client.
+func NewLoadBalancerFrontendIPConfigurationsClientWithAuthFile() (LoadBalancerFrontendIPConfigurationsClient, error) {
+	c, err := NewWithAuthFile()
+	return LoadBalancerFrontendIPConfigurationsClient{c}, err
+}
+
 // Get gets load balancer frontend IP configuration.
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.

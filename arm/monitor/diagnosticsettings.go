@@ -38,6 +38,12 @@ func NewDiagnosticSettingsClientWithBaseURI(baseURI string, subscriptionID strin
 	return DiagnosticSettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDiagnosticSettingsClientWithAuthFile creates an instance of the DiagnosticSettingsClient client.
+func NewDiagnosticSettingsClientWithAuthFile() (DiagnosticSettingsClient, error) {
+	c, err := NewWithAuthFile()
+	return DiagnosticSettingsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates diagnostic settings for the specified resource.
 //
 // resourceURI is the identifier of the resource. parameters is parameters supplied to the operation. name is the name

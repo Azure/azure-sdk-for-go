@@ -39,6 +39,12 @@ func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) Applicati
 	return ApplicationsClient{NewWithBaseURI(baseURI, tenantID)}
 }
 
+// NewApplicationsClientWithAuthFile creates an instance of the ApplicationsClient client.
+func NewApplicationsClientWithAuthFile() (ApplicationsClient, error) {
+	c, err := NewWithAuthFile()
+	return ApplicationsClient{c}, err
+}
+
 // Create create a new application.
 //
 // parameters is the parameters for creating an application.

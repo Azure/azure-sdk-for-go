@@ -39,6 +39,12 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 	return JobsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewJobsClientWithAuthFile creates an instance of the JobsClient client.
+func NewJobsClientWithAuthFile() (JobsClient, error) {
+	c, err := NewWithAuthFile()
+	return JobsClient{c}, err
+}
+
 // CreateOrUpdate provisions a new job or updates an existing job.
 //
 // resourceGroupName is the resource group name. jobCollectionName is the job collection name. jobName is the job name.

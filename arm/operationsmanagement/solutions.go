@@ -39,6 +39,12 @@ func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string, soluti
 	return SolutionsClient{NewWithBaseURI(baseURI, subscriptionID, solutionName)}
 }
 
+// NewSolutionsClientWithAuthFile creates an instance of the SolutionsClient client.
+func NewSolutionsClientWithAuthFile(solutionName string) (SolutionsClient, error) {
+	c, err := NewWithAuthFile(solutionName)
+	return SolutionsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates the Solution.
 //
 // resourceGroupName is the name of the resource group to get. The name is case insensitive. parameters is the

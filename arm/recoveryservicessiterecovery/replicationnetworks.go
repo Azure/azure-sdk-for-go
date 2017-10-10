@@ -39,6 +39,12 @@ func NewReplicationNetworksClientWithBaseURI(baseURI string, subscriptionID stri
 	return ReplicationNetworksClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationNetworksClientWithAuthFile creates an instance of the ReplicationNetworksClient client.
+func NewReplicationNetworksClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationNetworksClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationNetworksClient{c}, err
+}
+
 // Get gets the details of a network.
 //
 // fabricName is server Id. networkName is primary network name.

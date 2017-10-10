@@ -39,6 +39,12 @@ func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID stri
 	return VirtualMachineSizesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVirtualMachineSizesClientWithAuthFile creates an instance of the VirtualMachineSizesClient client.
+func NewVirtualMachineSizesClientWithAuthFile() (VirtualMachineSizesClient, error) {
+	c, err := NewWithAuthFile()
+	return VirtualMachineSizesClient{c}, err
+}
+
 // List lists all available virtual machine sizes for a subscription in a location.
 //
 // location is the location upon which virtual-machine-sizes is queried.

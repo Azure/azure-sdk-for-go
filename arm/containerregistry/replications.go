@@ -39,6 +39,12 @@ func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) Rep
 	return ReplicationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewReplicationsClientWithAuthFile creates an instance of the ReplicationsClient client.
+func NewReplicationsClientWithAuthFile() (ReplicationsClient, error) {
+	c, err := NewWithAuthFile()
+	return ReplicationsClient{c}, err
+}
+
 // Create creates a replication for a container registry with the specified parameters. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

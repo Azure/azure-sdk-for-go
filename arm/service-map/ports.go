@@ -40,6 +40,12 @@ func NewPortsClientWithBaseURI(baseURI string, subscriptionID string) PortsClien
 	return PortsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewPortsClientWithAuthFile creates an instance of the PortsClient client.
+func NewPortsClientWithAuthFile() (PortsClient, error) {
+	c, err := NewWithAuthFile()
+	return PortsClient{c}, err
+}
+
 // Get returns the specified port. The port must be live during the specified time interval. If the port is not live
 // during the interval, status 404 (Not Found) is returned.
 //

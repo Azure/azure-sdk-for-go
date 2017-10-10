@@ -39,6 +39,12 @@ func NewQueuesClientWithBaseURI(baseURI string, subscriptionID string) QueuesCli
 	return QueuesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewQueuesClientWithAuthFile creates an instance of the QueuesClient client.
+func NewQueuesClientWithAuthFile() (QueuesClient, error) {
+	c, err := NewWithAuthFile()
+	return QueuesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a Service Bus queue. This operation is idempotent.
 //
 // resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace name

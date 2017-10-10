@@ -39,6 +39,12 @@ func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) Serv
 	return ServicePrincipalsClient{NewWithBaseURI(baseURI, tenantID)}
 }
 
+// NewServicePrincipalsClientWithAuthFile creates an instance of the ServicePrincipalsClient client.
+func NewServicePrincipalsClientWithAuthFile() (ServicePrincipalsClient, error) {
+	c, err := NewWithAuthFile()
+	return ServicePrincipalsClient{c}, err
+}
+
 // Create creates a service principal in the directory.
 //
 // parameters is parameters to create a service principal.

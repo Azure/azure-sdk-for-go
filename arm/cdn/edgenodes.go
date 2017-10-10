@@ -39,6 +39,12 @@ func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string) EdgeNo
 	return EdgeNodesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewEdgeNodesClientWithAuthFile creates an instance of the EdgeNodesClient client.
+func NewEdgeNodesClientWithAuthFile() (EdgeNodesClient, error) {
+	c, err := NewWithAuthFile()
+	return EdgeNodesClient{c}, err
+}
+
 // List edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
 func (client EdgeNodesClient) List() (result EdgenodeResult, err error) {
 	req, err := client.ListPreparer()

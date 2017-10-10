@@ -40,6 +40,12 @@ func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) Cu
 	return CustomDomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewCustomDomainsClientWithAuthFile creates an instance of the CustomDomainsClient client.
+func NewCustomDomainsClientWithAuthFile() (CustomDomainsClient, error) {
+	c, err := NewWithAuthFile()
+	return CustomDomainsClient{c}, err
+}
+
 // Create creates a new custom domain within an endpoint. This method may poll for completion. Polling can be canceled
 // by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

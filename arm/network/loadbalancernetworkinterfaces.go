@@ -39,6 +39,13 @@ func NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI string, subscript
 	return LoadBalancerNetworkInterfacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLoadBalancerNetworkInterfacesClientWithAuthFile creates an instance of the
+// LoadBalancerNetworkInterfacesClient client.
+func NewLoadBalancerNetworkInterfacesClientWithAuthFile() (LoadBalancerNetworkInterfacesClient, error) {
+	c, err := NewWithAuthFile()
+	return LoadBalancerNetworkInterfacesClient{c}, err
+}
+
 // List gets associated load balancer network interfaces.
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.

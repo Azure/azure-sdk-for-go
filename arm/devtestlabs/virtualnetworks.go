@@ -38,6 +38,12 @@ func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) 
 	return VirtualNetworksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVirtualNetworksClientWithAuthFile creates an instance of the VirtualNetworksClient client.
+func NewVirtualNetworksClientWithAuthFile() (VirtualNetworksClient, error) {
+	c, err := NewWithAuthFile()
+	return VirtualNetworksClient{c}, err
+}
+
 // CreateOrUpdate create or replace an existing virtual network. This operation can take a while to complete. This
 // method may poll for completion. Polling can be canceled by passing the cancel channel argument. The channel will be
 // used to cancel polling and any outstanding HTTP requests.

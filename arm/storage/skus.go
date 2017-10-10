@@ -38,6 +38,12 @@ func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient 
 	return SkusClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSkusClientWithAuthFile creates an instance of the SkusClient client.
+func NewSkusClientWithAuthFile() (SkusClient, error) {
+	c, err := NewWithAuthFile()
+	return SkusClient{c}, err
+}
+
 // List lists the available SKUs supported by Microsoft.Storage for given subscription.
 func (client SkusClient) List() (result SkuListResult, err error) {
 	req, err := client.ListPreparer()

@@ -38,6 +38,12 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewOperationsClientWithAuthFile creates an instance of the OperationsClient client.
+func NewOperationsClientWithAuthFile() (OperationsClient, error) {
+	c, err := NewWithAuthFile()
+	return OperationsClient{c}, err
+}
+
 // List list the available operations supported by the Microsoft.EventGrid resource provider
 func (client OperationsClient) List() (result OperationsListResult, err error) {
 	req, err := client.ListPreparer()

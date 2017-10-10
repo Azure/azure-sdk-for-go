@@ -23,6 +23,7 @@ package recoveryservicessiterecovery
 
 import (
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure/auth"
 )
 
 const (
@@ -53,4 +54,15 @@ func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName str
 		ResourceGroupName: resourceGroupName,
 		ResourceName:      resourceName,
 	}
+}
+
+// NewWithAuthFile creates an instance of the ManagementClient client.
+func NewWithAuthFile(resourceGroupName string, resourceName string) (c ManagementClient, err error) {
+	authentication, err := auth.GetClientSetup(DefaultBaseURI)
+	if err != nil {
+		return
+	}
+	c = NewWithBaseURI(authentication.BaseURI, authentication.SubscriptionID, resourceGroupName, resourceName)
+	c.Authorizer = authentication
+	return
 }

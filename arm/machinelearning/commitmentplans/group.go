@@ -41,6 +41,12 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 	return GroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewGroupClientWithAuthFile creates an instance of the GroupClient client.
+func NewGroupClientWithAuthFile() (GroupClient, error) {
+	c, err := NewWithAuthFile()
+	return GroupClient{c}, err
+}
+
 // CreateOrUpdate create a new Azure ML commitment plan resource or updates an existing one.
 //
 // createOrUpdatePayload is the payload to create or update the Azure ML commitment plan. resourceGroupName is the

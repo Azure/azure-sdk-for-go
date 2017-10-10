@@ -41,6 +41,13 @@ func NewReplicationStorageClassificationsClientWithBaseURI(baseURI string, subsc
 	return ReplicationStorageClassificationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationStorageClassificationsClientWithAuthFile creates an instance of the
+// ReplicationStorageClassificationsClient client.
+func NewReplicationStorageClassificationsClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationStorageClassificationsClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationStorageClassificationsClient{c}, err
+}
+
 // Get gets the details of the specified storage classification.
 //
 // fabricName is fabric name. storageClassificationName is storage classification name.

@@ -39,6 +39,12 @@ func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
 	return GroupsClient{NewWithBaseURI(baseURI, tenantID)}
 }
 
+// NewGroupsClientWithAuthFile creates an instance of the GroupsClient client.
+func NewGroupsClientWithAuthFile() (GroupsClient, error) {
+	c, err := NewWithAuthFile()
+	return GroupsClient{c}, err
+}
+
 // AddMember add a member to a group.
 //
 // groupObjectID is the object ID of the group to which to add the member. parameters is the URL of the member object,

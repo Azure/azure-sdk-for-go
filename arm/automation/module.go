@@ -39,6 +39,12 @@ func NewModuleClientWithBaseURI(baseURI string, subscriptionID string) ModuleCli
 	return ModuleClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewModuleClientWithAuthFile creates an instance of the ModuleClient client.
+func NewModuleClientWithAuthFile() (ModuleClient, error) {
+	c, err := NewWithAuthFile()
+	return ModuleClient{c}, err
+}
+
 // CreateOrUpdate create or Update the module identified by module name.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. moduleName is

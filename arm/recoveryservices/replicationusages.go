@@ -38,6 +38,12 @@ func NewReplicationUsagesClientWithBaseURI(baseURI string, subscriptionID string
 	return ReplicationUsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewReplicationUsagesClientWithAuthFile creates an instance of the ReplicationUsagesClient client.
+func NewReplicationUsagesClientWithAuthFile() (ReplicationUsagesClient, error) {
+	c, err := NewWithAuthFile()
+	return ReplicationUsagesClient{c}, err
+}
+
 // List fetches the replication usages of the vault.
 //
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the

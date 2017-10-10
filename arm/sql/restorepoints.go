@@ -40,6 +40,12 @@ func NewRestorePointsClientWithBaseURI(baseURI string, subscriptionID string) Re
 	return RestorePointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRestorePointsClientWithAuthFile creates an instance of the RestorePointsClient client.
+func NewRestorePointsClientWithAuthFile() (RestorePointsClient, error) {
+	c, err := NewWithAuthFile()
+	return RestorePointsClient{c}, err
+}
+
 // ListByDatabase gets a list of database restore points.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

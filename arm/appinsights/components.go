@@ -39,6 +39,12 @@ func NewComponentsClientWithBaseURI(baseURI string, subscriptionID string) Compo
 	return ComponentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewComponentsClientWithAuthFile creates an instance of the ComponentsClient client.
+func NewComponentsClientWithAuthFile() (ComponentsClient, error) {
+	c, err := NewWithAuthFile()
+	return ComponentsClient{c}, err
+}
+
 // CreateOrUpdate creates (or updates) an Application Insights component. Note: You cannot specify a different value
 // for InstrumentationKey nor AppId in the Put operation.
 //

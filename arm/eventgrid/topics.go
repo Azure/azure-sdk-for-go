@@ -39,6 +39,12 @@ func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsCli
 	return TopicsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewTopicsClientWithAuthFile creates an instance of the TopicsClient client.
+func NewTopicsClientWithAuthFile() (TopicsClient, error) {
+	c, err := NewWithAuthFile()
+	return TopicsClient{c}, err
+}
+
 // CreateOrUpdate asynchronously creates a new topic with the specified parameters. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

@@ -40,6 +40,12 @@ func NewWidgetTypesClientWithBaseURI(baseURI string, subscriptionID string) Widg
 	return WidgetTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWidgetTypesClientWithAuthFile creates an instance of the WidgetTypesClient client.
+func NewWidgetTypesClientWithAuthFile() (WidgetTypesClient, error) {
+	c, err := NewWithAuthFile()
+	return WidgetTypesClient{c}, err
+}
+
 // Get gets a widget type in the specified hub.
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. widgetTypeName is the name of

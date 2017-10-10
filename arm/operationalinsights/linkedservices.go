@@ -39,6 +39,12 @@ func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) L
 	return LinkedServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLinkedServicesClientWithAuthFile creates an instance of the LinkedServicesClient client.
+func NewLinkedServicesClientWithAuthFile() (LinkedServicesClient, error) {
+	c, err := NewWithAuthFile()
+	return LinkedServicesClient{c}, err
+}
+
 // CreateOrUpdate create or update a linked service.
 //
 // resourceGroupName is the name of the resource group to get. The name is case insensitive. workspaceName is name of

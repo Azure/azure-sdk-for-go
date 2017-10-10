@@ -39,6 +39,12 @@ func NewComputePoliciesClientWithBaseURI(baseURI string, subscriptionID string) 
 	return ComputePoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewComputePoliciesClientWithAuthFile creates an instance of the ComputePoliciesClient client.
+func NewComputePoliciesClientWithAuthFile() (ComputePoliciesClient, error) {
+	c, err := NewWithAuthFile()
+	return ComputePoliciesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates the specified compute policy. During update, the compute policy with the specified
 // name will be replaced with this new compute policy. An account supports, at most, 50 policies
 //

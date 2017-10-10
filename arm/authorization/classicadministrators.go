@@ -41,6 +41,12 @@ func NewClassicAdministratorsClientWithBaseURI(baseURI string, subscriptionID st
 	return ClassicAdministratorsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewClassicAdministratorsClientWithAuthFile creates an instance of the ClassicAdministratorsClient client.
+func NewClassicAdministratorsClientWithAuthFile() (ClassicAdministratorsClient, error) {
+	c, err := NewWithAuthFile()
+	return ClassicAdministratorsClient{c}, err
+}
+
 // List gets service administrator, account administrator, and co-administrators for the subscription.
 func (client ClassicAdministratorsClient) List() (result ClassicAdministratorListResult, err error) {
 	req, err := client.ListPreparer()

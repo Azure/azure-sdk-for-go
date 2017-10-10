@@ -38,6 +38,12 @@ func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) 
 	return VirtualNetworksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVirtualNetworksClientWithAuthFile creates an instance of the VirtualNetworksClient client.
+func NewVirtualNetworksClientWithAuthFile() (VirtualNetworksClient, error) {
+	c, err := NewWithAuthFile()
+	return VirtualNetworksClient{c}, err
+}
+
 // CheckIPAddressAvailability checks whether a private IP address is available for use.
 //
 // resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.

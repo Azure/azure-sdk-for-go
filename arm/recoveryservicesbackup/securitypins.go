@@ -38,6 +38,12 @@ func NewSecurityPINsClientWithBaseURI(baseURI string, subscriptionID string) Sec
 	return SecurityPINsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSecurityPINsClientWithAuthFile creates an instance of the SecurityPINsClient client.
+func NewSecurityPINsClientWithAuthFile() (SecurityPINsClient, error) {
+	c, err := NewWithAuthFile()
+	return SecurityPINsClient{c}, err
+}
+
 // Get get the security PIN.
 //
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the

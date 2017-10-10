@@ -40,6 +40,12 @@ func NewRecoverableDatabasesClientWithBaseURI(baseURI string, subscriptionID str
 	return RecoverableDatabasesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRecoverableDatabasesClientWithAuthFile creates an instance of the RecoverableDatabasesClient client.
+func NewRecoverableDatabasesClientWithAuthFile() (RecoverableDatabasesClient, error) {
+	c, err := NewWithAuthFile()
+	return RecoverableDatabasesClient{c}, err
+}
+
 // Get gets a recoverable database, which is a resource representing a database's geo backup
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

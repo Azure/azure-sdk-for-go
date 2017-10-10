@@ -38,6 +38,12 @@ func NewBackupProtectedItemsClientWithBaseURI(baseURI string, subscriptionID str
 	return BackupProtectedItemsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupProtectedItemsClientWithAuthFile creates an instance of the BackupProtectedItemsClient client.
+func NewBackupProtectedItemsClientWithAuthFile() (BackupProtectedItemsClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupProtectedItemsClient{c}, err
+}
+
 // List provides a pageable list of all items that are backed up within a vault.
 //
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the

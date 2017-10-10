@@ -40,6 +40,12 @@ func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) Endpoi
 	return EndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewEndpointsClientWithAuthFile creates an instance of the EndpointsClient client.
+func NewEndpointsClientWithAuthFile() (EndpointsClient, error) {
+	c, err := NewWithAuthFile()
+	return EndpointsClient{c}, err
+}
+
 // Create creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group
 // and profile. This method may poll for completion. Polling can be canceled by passing the cancel channel argument.
 // The channel will be used to cancel polling and any outstanding HTTP requests.

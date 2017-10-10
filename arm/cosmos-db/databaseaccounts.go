@@ -39,6 +39,12 @@ func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string)
 	return DatabaseAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDatabaseAccountsClientWithAuthFile creates an instance of the DatabaseAccountsClient client.
+func NewDatabaseAccountsClientWithAuthFile() (DatabaseAccountsClient, error) {
+	c, err := NewWithAuthFile()
+	return DatabaseAccountsClient{c}, err
+}
+
 // CheckNameExists checks that the Azure Cosmos DB account name already exists. A valid account name may contain only
 // lowercase letters, numbers, and the '-' character, and must be between 3 and 50 characters.
 //

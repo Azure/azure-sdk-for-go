@@ -39,6 +39,13 @@ func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionI
 	return VirtualMachineRunCommandsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVirtualMachineRunCommandsClientWithAuthFile creates an instance of the VirtualMachineRunCommandsClient
+// client.
+func NewVirtualMachineRunCommandsClientWithAuthFile() (VirtualMachineRunCommandsClient, error) {
+	c, err := NewWithAuthFile()
+	return VirtualMachineRunCommandsClient{c}, err
+}
+
 // Get gets specific run command for a subscription in a location.
 //
 // location is the location upon which run commands is queried. commandID is the command id.

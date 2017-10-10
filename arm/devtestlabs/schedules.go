@@ -39,6 +39,12 @@ func NewSchedulesClientWithBaseURI(baseURI string, subscriptionID string) Schedu
 	return SchedulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSchedulesClientWithAuthFile creates an instance of the SchedulesClient client.
+func NewSchedulesClientWithAuthFile() (SchedulesClient, error) {
+	c, err := NewWithAuthFile()
+	return SchedulesClient{c}, err
+}
+
 // CreateOrUpdate create or replace an existing schedule.
 //
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the

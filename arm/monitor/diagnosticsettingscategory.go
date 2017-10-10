@@ -38,6 +38,13 @@ func NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI string, subscription
 	return DiagnosticSettingsCategoryClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDiagnosticSettingsCategoryClientWithAuthFile creates an instance of the DiagnosticSettingsCategoryClient
+// client.
+func NewDiagnosticSettingsCategoryClientWithAuthFile() (DiagnosticSettingsCategoryClient, error) {
+	c, err := NewWithAuthFile()
+	return DiagnosticSettingsCategoryClient{c}, err
+}
+
 // Get gets the diagnostic settings category for the specified resource.
 //
 // resourceURI is the identifier of the resource. name is the name of the diagnostic setting.

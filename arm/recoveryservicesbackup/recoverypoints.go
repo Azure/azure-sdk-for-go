@@ -38,6 +38,12 @@ func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string) R
 	return RecoveryPointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRecoveryPointsClientWithAuthFile creates an instance of the RecoveryPointsClient client.
+func NewRecoveryPointsClientWithAuthFile() (RecoveryPointsClient, error) {
+	c, err := NewWithAuthFile()
+	return RecoveryPointsClient{c}, err
+}
+
 // Get provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous
 // operation. To know the status of the operation, call the GetProtectedItemOperationResult API.
 //

@@ -39,6 +39,12 @@ func NewStorageInsightsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return StorageInsightsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewStorageInsightsClientWithAuthFile creates an instance of the StorageInsightsClient client.
+func NewStorageInsightsClientWithAuthFile() (StorageInsightsClient, error) {
+	c, err := NewWithAuthFile()
+	return StorageInsightsClient{c}, err
+}
+
 // CreateOrUpdate create or update a storage insight.
 //
 // resourceGroupName is the name of the resource group to get. The name is case insensitive. workspaceName is log

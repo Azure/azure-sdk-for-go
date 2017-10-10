@@ -39,6 +39,12 @@ func NewScheduleClientWithBaseURI(baseURI string, subscriptionID string) Schedul
 	return ScheduleClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewScheduleClientWithAuthFile creates an instance of the ScheduleClient client.
+func NewScheduleClientWithAuthFile() (ScheduleClient, error) {
+	c, err := NewWithAuthFile()
+	return ScheduleClient{c}, err
+}
+
 // CreateOrUpdate create a schedule.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. scheduleName is

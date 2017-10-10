@@ -39,6 +39,12 @@ func NewAppServicePlansClientWithBaseURI(baseURI string, subscriptionID string) 
 	return AppServicePlansClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAppServicePlansClientWithAuthFile creates an instance of the AppServicePlansClient client.
+func NewAppServicePlansClientWithAuthFile() (AppServicePlansClient, error) {
+	c, err := NewWithAuthFile()
+	return AppServicePlansClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an App Service Plan. This method may poll for completion. Polling can be canceled
 // by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

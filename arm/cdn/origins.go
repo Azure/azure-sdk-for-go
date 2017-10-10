@@ -40,6 +40,12 @@ func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsC
 	return OriginsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewOriginsClientWithAuthFile creates an instance of the OriginsClient client.
+func NewOriginsClientWithAuthFile() (OriginsClient, error) {
+	c, err := NewWithAuthFile()
+	return OriginsClient{c}, err
+}
+
 // Get gets an existing origin within an endpoint.
 //
 // resourceGroupName is name of the Resource group within the Azure subscription. profileName is name of the CDN

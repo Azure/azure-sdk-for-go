@@ -39,6 +39,12 @@ func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminK
 	return AdminKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAdminKeysClientWithAuthFile creates an instance of the AdminKeysClient client.
+func NewAdminKeysClientWithAuthFile() (AdminKeysClient, error) {
+	c, err := NewWithAuthFile()
+	return AdminKeysClient{c}, err
+}
+
 // Get gets the primary and secondary admin API keys for the specified Azure Search service.
 //
 // resourceGroupName is the name of the resource group within the current subscription. You can obtain this value from

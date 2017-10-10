@@ -39,6 +39,13 @@ func NewProtectionPolicyOperationResultsClientWithBaseURI(baseURI string, subscr
 	return ProtectionPolicyOperationResultsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewProtectionPolicyOperationResultsClientWithAuthFile creates an instance of the
+// ProtectionPolicyOperationResultsClient client.
+func NewProtectionPolicyOperationResultsClientWithAuthFile() (ProtectionPolicyOperationResultsClient, error) {
+	c, err := NewWithAuthFile()
+	return ProtectionPolicyOperationResultsClient{c}, err
+}
+
 // Get provides the result of an operation.
 //
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the

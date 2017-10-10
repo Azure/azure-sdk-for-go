@@ -69,7 +69,7 @@ func (client GeographicHierarchiesClient) GetDefault() (result GeographicHierarc
 
 // GetDefaultPreparer prepares the GetDefault request.
 func (client GeographicHierarchiesClient) GetDefaultPreparer() (*http.Request, error) {
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2017-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

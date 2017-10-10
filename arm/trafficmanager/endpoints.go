@@ -82,7 +82,7 @@ func (client EndpointsClient) CreateOrUpdatePreparer(resourceGroupName string, p
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2017-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -153,7 +153,7 @@ func (client EndpointsClient) DeletePreparer(resourceGroupName string, profileNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2017-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -222,7 +222,7 @@ func (client EndpointsClient) GetPreparer(resourceGroupName string, profileName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2017-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -292,7 +292,7 @@ func (client EndpointsClient) UpdatePreparer(resourceGroupName string, profileNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2017-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

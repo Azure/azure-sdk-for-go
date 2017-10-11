@@ -39,14 +39,18 @@ func Test_versionle(t *testing.T) {
 		{dateWithBeta, dateWithAlpha, false},
 		{"2016-04-03-preview", "2016-04-03", true},
 		{"2016-04-03", "2016-04-03-preview", false},
+		{"1.0.0", "5.6", true},
+		{"5.6", "1.0.0", false},
+		{"5.6", "6.0", true},
+		{"6.0", "5.6", false},
 	}
 
 	for _, tc := range testCases {
 		t.Run("", func(t *testing.T) {
-			t.Logf("\n Left: %s\nRight: %s", tc.left, tc.right)
 			if got, err := versionle(tc.left, tc.right); err != nil {
 				t.Error(err)
 			} else if got != tc.want {
+				t.Logf("\n Left: %s\nRight: %s", tc.left, tc.right)
 				t.Logf("\n got: %v\nwant: %v", got, tc.want)
 				t.Fail()
 			}

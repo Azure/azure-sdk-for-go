@@ -42,13 +42,12 @@ func AcceptAll(name string) bool {
 // IgnorePreview searches a packages "API Version" to see if it contains the word "preview". It only returns true when a package is not a preview.
 func IgnorePreview(name string) (result bool) {
 	matches := packageName.FindStringSubmatch(name)
-	if len(matches) >= 4 { // Each group was captured.
-		result = !strings.Contains(matches[2], "preview") // matches[2] is the `version` group
-	}
+	version := matches[3]
+	result = !strings.Contains(version, "-preview") && !strings.Contains(version, "-beta") // matches[2] is the `version` group
 	return
 }
 
-var packageName = regexp.MustCompile(`services[/\\](?P<provider>[\w\-\.\d_]+)[/\\](?:(?P<arm>` + armPathModifier + `)[/\\])?(?P<version>[\d\-\w\._]+)[/\\](?P<group>[\w\d\-\._]+)`)
+var packageName = regexp.MustCompile(`services[/\\](?P<provider>[\w\-\.\d_]+)[/\\](?:(?P<arm>` + armPathModifier + `)[/\\])?(?P<version>v?\d{4}-\d{2}-\d{2}[\w\d\.\-]*|v?\d+\.\d+[\.\d\w\-]*)[/\\](?P<group>[\w\d\-\._]+)`)
 
 // Enumerate scans through the known Azure SDK for Go packages and finds each
 func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumerator {
@@ -58,9 +57,9 @@ func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumer
 		defer close(results)
 
 		type operationGroup struct {
-			provider     string
-			resourceType string
-			group        string
+			provider string
+			arm      string
+			group    string
 		}
 
 		type operInfo struct {
@@ -81,14 +80,18 @@ func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumer
 				latest.Predicate = AcceptAll
 			}
 
-			if len(pathMatches) == 0 || !info.IsDir() || !latest.Predicate(currentPath) {
+			if len(pathMatches) == 0 || !info.IsDir() {
+				return
+			} else if !latest.Predicate(currentPath) {
+				latest.VerboseOutput.Printf("%q rejected by Predicate", currentPath)
 				return
 			}
 
 			version := pathMatches[3]
 			currentGroup := operationGroup{
-				provider:     pathMatches[1],
-				resourceType: pathMatches[4],
+				provider: pathMatches[1],
+				arm:      pathMatches[2],
+				group:    pathMatches[4],
 			}
 
 			prev, ok := maxFound[currentGroup]
@@ -101,6 +104,8 @@ func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumer
 			if le, _ := versionle(prev.version, version); le {
 				maxFound[currentGroup] = operInfo{version, currentPath}
 				latest.VerboseOutput.Printf("Updating group %q from version %q to %q", currentGroup, prev.version, version)
+			} else {
+				latest.VerboseOutput.Printf("Evaluated group %q version %q decided to stay with %q", currentGroup, version, prev.version)
 			}
 
 			return
@@ -132,54 +137,73 @@ func (err ErrNotVersionString) Error() string {
 }
 
 var versionle = func() func(string, string) (bool, error) {
-	versionPattern := regexp.MustCompile(`^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})(?:[\.\-](?P<tag>.+))?$`)
+	strategies := map[*regexp.Regexp]func([]string, []string) (bool, error){
+		// The strategy below handles Azure API Versions which have a date optionally followed by some tag.
+		regexp.MustCompile(`^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})(?:[\.\-](?P<tag>.+))?$`): func(leftMatch, rightMatch []string) (bool, error) {
+			var err error
+			for i := 1; i <= 3; i++ { // Start with index 1 because the first element is then entire match, not just a group. End at 3 because there are three numeric groups.
+				if leftMatch[i] == rightMatch[i] {
+					continue
+				}
 
-	return func(left, right string) (result bool, err error) {
-		leftMatch := versionPattern.FindStringSubmatch(left)
-		rightMatch := versionPattern.FindStringSubmatch(right)
+				var leftNum, rightNum int
+				leftNum, err = strconv.Atoi(leftMatch[i])
+				if err != nil {
+					return false, err
+				}
 
-		if len(leftMatch) < 3 { // No match found
-			err = ErrNotVersionString(left)
-			return
-		}
+				rightNum, err = strconv.Atoi(rightMatch[i])
+				if err != nil {
+					return false, err
+				}
 
-		if len(rightMatch) < 3 { // No match found
-			err = ErrNotVersionString(right)
-			return
-		}
-
-		for i := 1; i <= 3; i++ { // Start with index 1 because the first element is then entire match, not just a group. End at 3 because there are three numeric groups.
-			if leftMatch[i] == rightMatch[i] {
-				continue
+				if leftNum < rightNum {
+					return true, nil
+				}
+				return false, nil
 			}
 
-			var leftNum, rightNum int
-			leftNum, err = strconv.Atoi(leftMatch[i])
-			if err != nil {
-				return
+			if leftTag, rightTag := leftMatch[4], rightMatch[4]; leftTag == "" && rightTag != "" { // match[4] is the tag portion of a date based API Version label
+				return false, nil
+			} else if leftTag != "" && rightTag != "" {
+				return leftTag <= rightTag, nil
+			}
+			return true, nil
+		},
+		// The strategy below compares two semvers.
+		regexp.MustCompile(`(?P<major>\d+)\.(?P<minor>\d+)(?:\.(?P<patch>\d+))?-?(?P<tag>.*)`): func(leftMatch, rightMatch []string) (bool, error) {
+			for i := 1; i <= 3; i++ {
+				if len(leftMatch[i]) == 0 || len(rightMatch[i]) == 0 {
+					return leftMatch[i] <= rightMatch[i], nil
+				}
+				numLeft, err := strconv.Atoi(leftMatch[i])
+				if err != nil {
+					return false, err
+				}
+				numRight, err := strconv.Atoi(rightMatch[i])
+				if err != nil {
+					return false, err
+				}
+
+				if numLeft < numRight {
+					return true, nil
+				}
+
+				if numLeft > numRight {
+					return false, nil
+				}
 			}
 
-			rightNum, err = strconv.Atoi(rightMatch[i])
-			if err != nil {
-				return
-			}
+			return leftMatch[4] <= rightMatch[4], nil
+		},
+	}
 
-			if leftNum < rightNum {
-				result = true
-				return
+	return func(left, right string) (bool, error) {
+		for versionStrategy, handler := range strategies {
+			if leftMatch, rightMatch := versionStrategy.FindAllStringSubmatch(left, 1), versionStrategy.FindAllStringSubmatch(right, 1); len(leftMatch) > 0 && len(rightMatch) > 0 {
+				return handler(leftMatch[0], rightMatch[0])
 			}
-
-			result = false // This line only here for readability
-			return
 		}
-
-		if leftTag, rightTag := leftMatch[4], rightMatch[4]; leftTag == "" && rightTag != "" { // match[4] is the tag portion of a date based API Version label
-			result = false
-		} else if leftTag != "" && rightTag != "" {
-			result = leftTag <= rightTag
-		} else {
-			result = true
-		}
-		return
+		return false, fmt.Errorf("Unable to find versioning strategy that could compare %q and %q", left, right)
 	}
 }()

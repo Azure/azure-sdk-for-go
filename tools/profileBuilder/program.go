@@ -75,14 +75,14 @@ const armPathModifier = "mgmt"
 var version string
 
 func main() {
-	var packages collection.Enumerable
+	var packages collection.Enumerator
 
 	type alias struct {
 		*goalias.AliasPackage
 		TargetPath string
 	}
 
-	packages = collection.Select(packageStrategy, func(x interface{}) interface{} {
+	packages = packageStrategy.Enumerate(nil).Select(func(x interface{}) interface{} {
 		if cast, ok := x.(string); ok {
 			abs, err := filepath.Abs(cast)
 			if err != nil {
@@ -92,7 +92,7 @@ func main() {
 		}
 		return nil
 	})
-	packages = collection.SelectMany(packages, func(x interface{}) collection.Enumerator {
+	packages = packages.SelectMany(func(x interface{}) collection.Enumerator {
 		results := make(chan interface{})
 
 		go func() {
@@ -115,7 +115,7 @@ func main() {
 
 		return results
 	})
-	packages = collection.ParallelSelect(packages, func(x interface{}) interface{} {
+	packages = packages.ParallelSelect(func(x interface{}) interface{} {
 		var err error
 		var subject *goalias.AliasPackage
 		cast, ok := x.(*ast.Package)
@@ -143,13 +143,11 @@ func main() {
 		bundle.AliasPackage = subject
 		return &bundle
 	})
-	packages = collection.Where(packages, func(x interface{}) bool {
+	packages = packages.Where(func(x interface{}) bool {
 		return x != nil
 	})
-	outputLog.Printf("%d packages found to create aliases for.", collection.CountAll(packages))
 
-	done := make(chan struct{})
-	products := packages.Enumerate(done).ParallelSelect(func(x interface{}) interface{} {
+	products := packages.ParallelSelect(func(x interface{}) interface{} {
 		cast, ok := x.(*alias)
 		if !ok {
 			return false
@@ -218,7 +216,6 @@ func main() {
 			generated++
 		}
 	}
-	close(done)
 
 	outputLog.Print(generated, " packages generated.")
 

@@ -80,7 +80,7 @@ func main() {
 		// The following function compiles the regexp which finds Go related package tags in a literate file, and creates a collection.Unfolder.
 		// This function has been declared this way so that the relatively expensive act of compiling a regexp is only done once.
 		func() collection.Unfolder {
-			const patternText = "```" + `\s+yaml\s+\$\(\s*tag\s*\)\s*==\s*'([\d\w\-_]+)'\s*&&\s*\$\(go\)[\w\d\-\s:]*\s+output-folder:\s+\$\(go-sdk-folder\)([\w\d\-_\\/]+)\s+[\w\d\-\s:]*` + "```"
+			const patternText = "```" + `\s+yaml\s+\$\(\s*tag\s*\)\s*==\s*'([\d\w\-\.]+)'\s*&&\s*\$\(go\)[\w\d\-\s:]*\s+output-folder:\s+\$\(go-sdk-folder\)([\w\d\-_\\/\.]+)\s+[\w\d\-\s:]*` + "```"
 
 			goConfigPattern := regexp.MustCompile(patternText)
 
@@ -243,7 +243,7 @@ func init() {
 		logDirBase, err = ioutil.TempDir("", "az-go-sdk-logs")
 		logDirBase = normalizePath(logDirBase)
 		if err == nil {
-			statusLog.Print("Generation logs can be found at:", logDirBase)
+			statusLog.Print("Generation logs can be found at: ", logDirBase)
 		} else {
 			errLog.Print("Logging disabled. Could not create directory: ", logDirBase)
 		}

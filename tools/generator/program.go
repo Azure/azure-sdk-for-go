@@ -61,6 +61,9 @@ var (
 // The reason this is not controlled in source, is to allow for the git commit SHA1 to be used as the
 // version of the string. To retrieve the currently checked-out git commit SHA1, you can use the command:
 //   git rev-parse HEAD
+//
+// If this value is set, it is recommended that it be the value of the SHA1 git commit identifier for the
+// source that was used at build time.
 var version string
 
 func main() {
@@ -122,7 +125,7 @@ func main() {
 			fmt.Printf("%q in %q to %q\n", tuple.packageName, tuple.fileName, tuple.outputFolder)
 		}
 	} else {
-		var generatedCount, formattedCount, builtCount uint
+		var generatedCount, formattedCount, builtCount, vettedCount uint
 
 		done := make(chan struct{})
 
@@ -197,16 +200,25 @@ func main() {
 			err := exec.Command("go", "build", pkgName).Run()
 			if err == nil {
 				builtCount++
-				result = subject
-			} else {
-				errLog.Printf("Failed to build: %q", pkgName)
+				return pkgName
 			}
-			return
+			errLog.Printf("Failed to build: %q", pkgName)
+			return nil
+		}).Where(isntNil)
+
+		vetted := built.Select(func(subject interface{}) interface{} {
+			err := exec.Command("go", "vet", subject.(string)).Run()
+			if err == nil {
+				vettedCount++
+				return subject
+			}
+			errLog.Printf("Failed to vet: %q", subject.(string))
+			return nil
 		}).Where(isntNil)
 
 		// Turn the crank. This loop forces evaluation of the chain of enumerators that were built up
 		// in the code above.
-		for range built {
+		for range vetted {
 			// Intenionally Left Blank
 		}
 
@@ -214,6 +226,7 @@ func main() {
 		fmt.Println("Generated: ", generatedCount)
 		fmt.Println("Formatted: ", formattedCount)
 		fmt.Println("Built: ", builtCount)
+		fmt.Println("Vetted: ", vettedCount)
 		close(done)
 	}
 }
@@ -228,6 +241,7 @@ func init() {
 	flag.StringVar(&outputBase, "o", getDefaultOutputBase(), "The root directory to use for the output of generated files. i.e. The value to be treated as the go-sdk-folder when AutoRest is called.")
 	flag.BoolVar(&useStatus, "v", false, "Print status messages as generation takes place.")
 	flag.BoolVar(&dryRun, "p", false, "Preview which packages would be generated instead of actaully calling autorest.")
+	flag.StringVar(&packageVersion, "version", "", "The version that should be stamped on this SDK. This should be a semver.")
 	flag.StringVar(&logDirBase, "l", getDefaultOutputBase(), logDirUsage)
 	flag.Parse()
 
@@ -294,7 +308,7 @@ var goPath = func() func() string {
 
 // getDefaultOutputBase returns the default location of the Azure-SDK-for-Go on your filesystem.
 func getDefaultOutputBase() string {
-	return strings.Replace(path.Join(goPath(), "src", "github.com", "Azure", "azure-sdk-for-go"), `\`, "/", -1)
+	return normalizePath(path.Join(goPath(), "src", "github.com", "Azure", "azure-sdk-for-go"))
 }
 
 // trimGoPath operates like strings.TrimPrefix, where the prefix is always the value of GOPATH in the

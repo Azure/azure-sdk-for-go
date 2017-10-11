@@ -16,6 +16,8 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -27,8 +29,9 @@ import (
 
 // LatestStrategy evaluates the Azure-SDK-for-Go repository for the latest available API versions of each service.
 type LatestStrategy struct {
-	Root      string
-	Predicate func(packageName string) bool
+	Root          string
+	Predicate     func(packageName string) bool
+	VerboseOutput *log.Logger
 }
 
 // AcceptAll is a predefined value for `LatestStrategy.Predicate` which always returns true.
@@ -65,6 +68,10 @@ func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumer
 			rawpath string
 		}
 
+		if latest.VerboseOutput == nil {
+			latest.VerboseOutput = log.New(ioutil.Discard, "", 0)
+		}
+
 		maxFound := make(map[operationGroup]operInfo)
 
 		filepath.Walk(latest.Root, func(currentPath string, info os.FileInfo, openErr error) (err error) {
@@ -87,11 +94,13 @@ func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumer
 			prev, ok := maxFound[currentGroup]
 			if !ok {
 				maxFound[currentGroup] = operInfo{version, currentPath}
+				latest.VerboseOutput.Printf("New group found %q using version %q", currentGroup, version)
 				return
 			}
 
 			if le, _ := versionle(prev.version, version); le {
 				maxFound[currentGroup] = operInfo{version, currentPath}
+				latest.VerboseOutput.Printf("Updating group %q from version %q to %q", currentGroup, prev.version, version)
 			}
 
 			return

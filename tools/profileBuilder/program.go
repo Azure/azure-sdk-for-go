@@ -276,7 +276,7 @@ func init() {
 
 	wellKnownStrategies := map[WellKnownStrategy]collection.Enumerable{
 		WellKnownStrategyList:    ListStrategy{Reader: inputList},
-		WellKnownStrategyLatest:  LatestStrategy{Root: inputRoot, Predicate: IgnorePreview},
+		WellKnownStrategyLatest:  LatestStrategy{Root: inputRoot, Predicate: IgnorePreview, VerboseOutput: outputLog},
 		WellKnownStrategyPreview: LatestStrategy{Root: inputRoot, Predicate: AcceptAll},
 	}
 

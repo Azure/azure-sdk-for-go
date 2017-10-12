@@ -47,7 +47,7 @@ func IgnorePreview(name string) (result bool) {
 	return
 }
 
-var packageName = regexp.MustCompile(`services[/\\](?P<provider>[\w\-\.\d_]+)[/\\](?:(?P<arm>` + armPathModifier + `)[/\\])?(?P<version>v?\d{4}-\d{2}-\d{2}[\w\d\.\-]*|v?\d+\.\d+[\.\d\w\-]*)[/\\](?P<group>[\w\d\-\._]+)`)
+var packageName = regexp.MustCompile(`services[/\\](?P<provider>[\w\-\.\d_\\/]+)[/\\](?:(?P<arm>` + armPathModifier + `)[/\\])?(?P<version>v?\d{4}-\d{2}-\d{2}[\w\d\.\-]*|v?\d+\.\d+[\.\d\w\-]*)[/\\](?P<group>[\w\d\-\._]+)`)
 
 // Enumerate scans through the known Azure SDK for Go packages and finds each
 func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumerator {
@@ -136,12 +136,15 @@ func (err ErrNotVersionString) Error() string {
 	return fmt.Sprintf("`%s` is not a recognized Azure version string", string(err))
 }
 
+// versionle takes two version strings that share a format and returns true if the one on the
+// left is less than or equal to the one on the right. If the two do not match in format, or
+// are not in a well known format, this will return false and an error.
 var versionle = func() func(string, string) (bool, error) {
-	strategies := map[*regexp.Regexp]func([]string, []string) (bool, error){
+	wellKnownStrategies := map[*regexp.Regexp]func([]string, []string) (bool, error){
 		// The strategy below handles Azure API Versions which have a date optionally followed by some tag.
 		regexp.MustCompile(`^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})(?:[\.\-](?P<tag>.+))?$`): func(leftMatch, rightMatch []string) (bool, error) {
 			var err error
-			for i := 1; i <= 3; i++ { // Start with index 1 because the first element is then entire match, not just a group. End at 3 because there are three numeric groups.
+			for i := 1; i <= 3; i++ { // Start with index 1 because the element 0 is the entire match, not a group. End at 3 because there are three numeric groups.
 				if leftMatch[i] == rightMatch[i] {
 					continue
 				}
@@ -198,8 +201,13 @@ var versionle = func() func(string, string) (bool, error) {
 		},
 	}
 
+	// This function finds a strategy which recognizes the versions passed to it, then applies that strategy.
 	return func(left, right string) (bool, error) {
-		for versionStrategy, handler := range strategies {
+		if left == right {
+			return true, nil
+		}
+
+		for versionStrategy, handler := range wellKnownStrategies {
 			if leftMatch, rightMatch := versionStrategy.FindAllStringSubmatch(left, 1), versionStrategy.FindAllStringSubmatch(right, 1); len(leftMatch) > 0 && len(rightMatch) > 0 {
 				return handler(leftMatch[0], rightMatch[0])
 			}

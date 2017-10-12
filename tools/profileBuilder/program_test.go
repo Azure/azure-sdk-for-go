@@ -32,7 +32,7 @@ import (
 )
 
 func Test_getAliasPath(t *testing.T) {
-	const profileName = "p1"
+	const profileName = "profile1"
 	testCases := []struct {
 		original string
 		expected string
@@ -48,6 +48,10 @@ func Test_getAliasPath(t *testing.T) {
 		{
 			filepath.Join("services", "keyvault", "mgmt", "2016-10-01", "keyvault"),
 			filepath.Join(profileName, "keyvault", "mgmt", "keyvault"),
+		},
+		{
+			filepath.Join("services", "datalake", "analytics", "2016-11-01-preview", "catalog"),
+			filepath.Join(profileName, "datalake", "analytics", "catalog"),
 		},
 	}
 

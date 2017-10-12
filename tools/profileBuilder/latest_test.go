@@ -24,12 +24,15 @@ import (
 func Test_versionle(t *testing.T) {
 	const dateWithAlpha, dateWithBeta = "2016-02-01-alpha", "2016-02-01-beta"
 	const semVer1dot2, semVer1dot3 = "2018-03-03-1.2", "2018-03-03-1.3"
+	const dateAlone = "2016-12-07"
 
 	testCases := []struct {
 		left  string
 		right string
 		want  bool
 	}{
+		{dateWithAlpha, dateWithAlpha, true},
+		{dateAlone, dateAlone, true},
 		{"2017-12-01", "2018-03-04", true},
 		{"2018-03-04", "2017-12-01", false},
 		{semVer1dot2, semVer1dot3, true},

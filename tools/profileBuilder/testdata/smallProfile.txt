@@ -1,0 +1,2 @@
+github.com/Azure/azure-sdk-for-go/compute/mgmt/2015-06-15/compute
+github.com/Azure/azure-sdk-for-go/network/mgmt/2015-06-15/network

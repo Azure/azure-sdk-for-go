@@ -34,9 +34,11 @@ func (list ListStrategy) Enumerate(cancel <-chan struct{}) collection.Enumerator
 		defer close(results)
 
 		var currentLine string
-		for _, err := fmt.Fscanln(list, &currentLine); err == nil; {
+
+		for {
+			_, err := fmt.Fscanln(list, &currentLine)
 			if err != nil {
-				continue
+				return
 			}
 
 			select {

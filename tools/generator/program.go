@@ -243,6 +243,13 @@ func init() {
 	flag.BoolVar(&dryRun, "p", false, "Preview which packages would be generated instead of actaully calling autorest.")
 	flag.StringVar(&packageVersion, "version", "", "The version that should be stamped on this SDK. This should be a semver.")
 	flag.StringVar(&logDirBase, "l", getDefaultOutputBase(), logDirUsage)
+
+	// Override the default usage message, printing to stderr as the default one would.
+	flag.Usage = func() {
+		fmt.Fprintln(os.Stderr, "generator [options] [target Literate files]...")
+		flag.PrintDefaults()
+	}
+
 	flag.Parse()
 
 	statusWriter := ioutil.Discard

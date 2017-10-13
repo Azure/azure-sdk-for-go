@@ -1,4 +1,4 @@
-// +build go1.7
+// +build go1.9
 
 // Copyright 2017 Microsoft Corporation and contributors.  All rights reserved.
 //

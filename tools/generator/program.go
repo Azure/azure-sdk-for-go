@@ -1,23 +1,34 @@
-package main
-
-// Copyright 2017 Microsoft Corporation
+// Copyright 2017 Microsoft Corporation and contributors.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// generator scours the github.com/Azure/azure-rest-api-specs repository in search for
+// REST functionality that has Go configuration, then generates packages accordingly.
+// This tool was developed with the intention that it be an internal tool for the
+// Azure-SDK-for-Go team, but the usage of this package for public scenarios is in no
+// way prohibited. For example, have a fork of https://github.com/Azure/autorest.go?
+// Generate out and SDK with the same shape as our SDK, but using your patterns using
+// this tool.
+//
+// Given that this code was developed as an internal tool, troubles with it that do not
+// pertain to our usage of it may be slow to be fixed. Pull Requests are welcome though,
+// feel free to contribute.
+package main
+
 import (
+	"bytes"
 	"flag"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -26,399 +37,301 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
-	"github.com/Masterminds/semver"
-)
-
-const (
-	defaultRemoteAzureRestAPISpecsPath = "https://github.com/Azure/azure-rest-api-specs.git"
-	defaultAzureRESTAPIBranch          = "current"
-)
-
-// ExitCode gives a hint to the end user about why the program exited without relying on seeing stderr.
-const (
-	ExitCodeOkay int = iota
-	ExitCodeMissingRequirements
-	ExitCodeFailedToClone
-	ExitCodeFinderFailure
+	"github.com/marstr/collection"
 )
 
 var (
-	remoteAzureRESTAPISpecsPath string
-	localAzureRESTAPISpecsPath  string
-	azureRESTAPIBranch          string
-	outputLocation              string
-	dryRun                      bool
-	help                        bool
-	anyMissing                  bool
-	noClone                     bool
-	verbose                     bool
-	wait                        bool
-	targetFile                  string
-	debugLog                    *log.Logger
-	version                     *semver.Version
+	targetFiles    collection.Enumerable
+	packageVersion string
+	outputBase     string
+	logDirBase     string
+	errLog         *log.Logger
+	statusLog      *log.Logger
+	dryRun         bool
 )
 
+// version should be set by the linker when compiling this program by providing the following arguments:
+// -X main.version=<version>
+//
+// If installing the generator in your machine, that means running the following the command:
+//   go install -ldflags "-X main.version=<version>"
+//
+// The reason this is not controlled in source, is to allow for the git commit SHA1 to be used as the
+// version of the string. To retrieve the currently checked-out git commit SHA1, you can use the command:
+//   git rev-parse HEAD
+//
+// If this value is set, it is recommended that it be the value of the SHA1 git commit identifier for the
+// source that was used at build time.
+var version string
+
+func main() {
+	start := time.Now()
+
+	type generationTuple struct {
+		fileName     string
+		packageName  string
+		outputFolder string
+	}
+
+	literateFiles := collection.Where(targetFiles, func(subject interface{}) bool {
+		return strings.EqualFold(path.Base(subject.(string)), "README.md")
+	})
+
+	tuples := collection.SelectMany(literateFiles,
+		// The following function compiles the regexp which finds Go related package tags in a literate file, and creates a collection.Unfolder.
+		// This function has been declared this way so that the relatively expensive act of compiling a regexp is only done once.
+		func() collection.Unfolder {
+			const patternText = "```" + `\s+yaml\s+\$\(\s*tag\s*\)\s*==\s*'([\d\w\-\.]+)'\s*&&\s*\$\(go\)[\w\d\-\s:]*\s+output-folder:\s+\$\(go-sdk-folder\)([\w\d\-_\\/\.]+)\s+[\w\d\-\s:]*` + "```"
+
+			goConfigPattern := regexp.MustCompile(patternText)
+
+			// This function is a collection.Unfolder which takes a literate file as a path, and retrieves all configuration which applies to a package tag and Go.
+			return func(subject interface{}) collection.Enumerator {
+				results := make(chan interface{})
+
+				go func() {
+					defer close(results)
+
+					targetContents, err := ioutil.ReadFile(subject.(string))
+					if err != nil {
+						errLog.Printf("Skipping %q because: %v", subject.(string), err)
+						return
+					}
+
+					matches := goConfigPattern.FindAllStringSubmatch(string(targetContents), -1)
+
+					if len(matches) == 0 {
+						statusLog.Printf("Skipping %q because there were no package tags with go configuration found.", subject.(string))
+					} else {
+						for _, submatch := range matches {
+							results <- generationTuple{
+								fileName:     subject.(string),
+								packageName:  normalizePath(submatch[1]),
+								outputFolder: normalizePath(submatch[2]),
+							}
+						}
+					}
+				}()
+
+				return results
+			}
+		}())
+
+	if dryRun {
+		for entry := range tuples.Enumerate(nil) {
+			tuple := entry.(generationTuple)
+			fmt.Printf("%q in %q to %q\n", tuple.packageName, tuple.fileName, tuple.outputFolder)
+		}
+	} else {
+		var generatedCount, formattedCount, builtCount, vettedCount uint
+
+		done := make(chan struct{})
+
+		// Call AutoRest for each of the tags in each of the literate files, generating a Go package for calling that service.
+		generated := tuples.Enumerate(done).ParallelSelect(func(subject interface{}) interface{} {
+			tuple := subject.(generationTuple)
+			args := []string{
+				tuple.fileName,
+				"--go",
+				fmt.Sprintf("--go-sdk-folder='%s'", outputBase),
+				"--verbose",
+				"--tag=" + tuple.packageName,
+			}
+
+			if packageVersion != "" {
+				args = append(args, fmt.Sprintf("--package-version='%s'", packageVersion))
+			}
+
+			logFileLoc := filepath.Join(logDirBase, tuple.outputFolder)
+			err := os.MkdirAll(logFileLoc, os.ModePerm)
+			if err != nil {
+				errLog.Printf("Could not create log directory %q", logFileLoc)
+				return nil
+			}
+
+			logFile, err := os.Create(filepath.Join(logFileLoc, "autorestLog.txt"))
+			if err != nil {
+				errLog.Printf("Could not create log file %q for AutoRest generating from: %q in %q", logFileLoc, tuple.packageName, tuple.fileName)
+				return nil
+			}
+
+			commandText := new(bytes.Buffer)
+			fmt.Fprint(commandText, "Executing Command: \"")
+			fmt.Fprint(commandText, "autorest ")
+			for _, a := range args {
+				fmt.Fprint(commandText, a)
+				fmt.Fprint(commandText, " ")
+			}
+			commandText.Truncate(commandText.Len() - 1)
+			fmt.Fprint(commandText, `"`)
+
+			fmt.Fprintln(logFile, commandText.String())
+
+			genProc := exec.Command("autorest", args...)
+			genProc.Stdout = logFile
+			genProc.Stderr = logFile
+
+			err = genProc.Run()
+			if err != nil {
+				fmt.Fprintln(logFile, "Autorest Exectution Error: ", err)
+				return nil
+			}
+			generatedCount++
+			return path.Join(outputBase, tuple.outputFolder)
+		}).Where(isntNil)
+
+		// Take all of the generated packages and reformat them to adhere to Go's guidelines.
+		formatted := generated.Select(func(subject interface{}) (result interface{}) {
+			err := exec.Command("gofmt", "-w", subject.(string)).Run()
+			if err == nil {
+				formattedCount++
+				result = subject
+			} else {
+				errLog.Printf("Failed to format: %q", subject.(string))
+			}
+			return
+		}).Where(isntNil)
+
+		// Build all of the packages as a sanity check.
+		built := formatted.Select(func(subject interface{}) (result interface{}) {
+			pkgName := strings.TrimPrefix(trimGoPath(subject.(string)), "/src/")
+			err := exec.Command("go", "build", pkgName).Run()
+			if err == nil {
+				builtCount++
+				return pkgName
+			}
+			errLog.Printf("Failed to build: %q", pkgName)
+			return nil
+		}).Where(isntNil)
+
+		vetted := built.Select(func(subject interface{}) interface{} {
+			err := exec.Command("go", "vet", subject.(string)).Run()
+			if err == nil {
+				vettedCount++
+				return subject
+			}
+			errLog.Printf("Failed to vet: %q", subject.(string))
+			return nil
+		}).Where(isntNil)
+
+		// Turn the crank. This loop forces evaluation of the chain of enumerators that were built up
+		// in the code above.
+		for range vetted {
+			// Intenionally Left Blank
+		}
+
+		fmt.Println("Execution Time: ", time.Now().Sub(start))
+		fmt.Println("Generated: ", generatedCount)
+		fmt.Println("Formatted: ", formattedCount)
+		fmt.Println("Built: ", builtCount)
+		fmt.Println("Vetted: ", vettedCount)
+		close(done)
+	}
+}
+
 func init() {
-	var err error
-	flag.StringVar(&azureRESTAPIBranch, "branch", defaultAzureRESTAPIBranch, "The branch, tag, or SHA1 identifier in the Azure Rest API Specs repository to use during API generation.")
-	flag.StringVar(&remoteAzureRESTAPISpecsPath, "repo", defaultRemoteAzureRestAPISpecsPath, "The path to the location of the Azure REST API Specs repository that should be used for generation.")
-	flag.StringVar(&outputLocation, "output", getDefaultOutputLocation(), "a directory in which all generated code should be placed.")
-	flag.StringVar(&targetFile, "target", "", "If a target file is provided, generator will only run on this file instead of all swaggers it encounters in the repository.")
-	flag.BoolVar(&dryRun, "preview", false, "Use this flag to print a list of packages that would be generated instead of actually generating the new sdk.")
-	flag.BoolVar(&help, "help", false, "Provide this flag to print usage information instead of running the program.")
-	flag.BoolVar(&noClone, "noClone", false, "Use this flag to prevent cloning a new copy of Azure REST API Specs. The existing enlistment should be used instead.")
-	flag.BoolVar(&verbose, "verbose", false, "Print status messages as processing is done.")
-	flag.BoolVar(&wait, "wait", false, "Use this program to halt execution before the cleanup phase is entered.")
-	useDebug := flag.Bool("debug", false, "Include this flag to print debug messages as the program executes.")
-	rawVersion := flag.String("version", "0.0.0", "The version that should be stamped on the generated code. Common usage will be to report user agent.")
+	var useRecursive, useStatus bool
+
+	const automaticLogDirValue = "temp"
+	const logDirUsage = "The root directory where all logs can be found. If the value `" + automaticLogDirValue + "` is supplied, a randomly named directory will be generated in the $TEMP directory."
+
+	flag.BoolVar(&useRecursive, "r", false, "Recursively traverses the directories specified looking for literate files.")
+	flag.StringVar(&outputBase, "o", getDefaultOutputBase(), "The root directory to use for the output of generated files. i.e. The value to be treated as the go-sdk-folder when AutoRest is called.")
+	flag.BoolVar(&useStatus, "v", false, "Print status messages as generation takes place.")
+	flag.BoolVar(&dryRun, "p", false, "Preview which packages would be generated instead of actaully calling autorest.")
+	flag.StringVar(&packageVersion, "version", "", "The version that should be stamped on this SDK. This should be a semver.")
+	flag.StringVar(&logDirBase, "l", getDefaultOutputBase(), logDirUsage)
+
+	// Override the default usage message, printing to stderr as the default one would.
+	flag.Usage = func() {
+		fmt.Fprintln(os.Stderr, "generator [options] [target Literate files]...")
+		flag.PrintDefaults()
+	}
 
 	flag.Parse()
 
-	if help {
-		return
+	statusWriter := ioutil.Discard
+	if useStatus {
+		statusWriter = os.Stdout
 	}
+	statusLog = log.New(statusWriter, "[STATUS] ", 0)
+	errLog = log.New(os.Stderr, "[ERROR] ", 0)
 
-	version, err = semver.NewVersion(*rawVersion)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not read version \"%s\" because: %v", *rawVersion, err)
-		os.Exit(1)
-	}
-
-	debugWriter := ioutil.Discard
-	if *useDebug {
-		fmt.Fprintln(os.Stdout, "Turning on debug logger.")
-		debugWriter = os.Stderr
-	}
-	debugLog = log.New(debugWriter, "[DEBUG]", log.Ltime)
-
-	optionalTools := []string{"gofmt", "golint"}
-	requiredTools := []string{"autorest", "git"}
-
-	for _, tool := range optionalTools {
-		if _, err := exec.LookPath(tool); err != nil {
-			log.Printf("WARNING: Could not find \"%s\" usage of this tool will be skipped.", tool)
-		}
-	}
-
-	anyMissing = false
-	for _, tool := range requiredTools {
-		if _, err := exec.LookPath(tool); err != nil {
-			log.Printf("ERROR: Could not find \"%s\" this tool will exit without executing.", tool)
-			anyMissing = true
-		}
-	}
-
-	if noClone {
-		localAzureRESTAPISpecsPath = remoteAzureRESTAPISpecsPath
-	} else {
+	if logDirBase == automaticLogDirValue {
 		var err error
-		localAzureRESTAPISpecsPath, err = ioutil.TempDir("", "")
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(ExitCodeFailedToClone)
-		}
-	}
-}
-
-func main() {
-	var repoLoc string
-	exitStatus := ExitCodeOkay
-	var err error
-	defer func() { os.Exit(exitStatus) }()
-
-	errLog := log.New(os.Stderr, "[ERROR] ", 0)
-
-	if help {
-		flag.Usage()
-		return
-	}
-
-	if anyMissing {
-		exitStatus = ExitCodeMissingRequirements
-		return
-	}
-
-	if noClone {
-		repoLoc = localAzureRESTAPISpecsPath
-	} else if temp, err := cloneAPISpecs(remoteAzureRESTAPISpecsPath, localAzureRESTAPISpecsPath); err == nil {
-		repoLoc = temp
-		defer func() {
-			if wait {
-				fmt.Print("Press ENTER to continue...")
-				fmt.Scanln()
-			}
-
-			if err := os.RemoveAll(repoLoc); err != nil {
-				errLog.Print(err)
-			}
-		}()
-	} else {
-		errLog.Print(err)
-		exitStatus = ExitCodeFailedToClone
-		return
-	}
-
-	if err = checkoutAPISpecsVer(azureRESTAPIBranch, repoLoc); err != nil {
-		errLog.Print(err)
-		exitStatus = ExitCodeFailedToClone
-		return
-	}
-
-	finderOutput := ioutil.Discard
-	if verbose {
-		finderOutput = os.Stdout
-	}
-
-	finder, err := NewSwaggerFinder(repoLoc, finderOutput)
-	if err != nil {
-		errLog.Print(err)
-		exitStatus = ExitCodeFinderFailure
-		return
-	}
-
-	if dryRun {
-		fmt.Println("Executing Preview")
-		namespaces := finder.Enumerate(nil).Select(func(x interface{}) interface{} {
-			namespace, err := getNamespace(x.(SwaggerFile))
-			if err != nil {
-				return err
-			}
-			return namespace
-		})
-
-		for namespace := range namespaces {
-			var output io.Writer
-			switch namespace.(type) {
-			case error:
-				output = os.Stderr
-			case string:
-				output = os.Stdout
-			}
-			fmt.Fprintln(output, namespace)
-		}
-		return
-	}
-
-	var logFolder string
-	useLogs := true
-
-	logFolder, err = ioutil.TempDir("", "autorestLogs")
-	if err != nil {
-		useLogs = false
-	}
-	fmt.Println("Logs will be stored in: ", logFolder)
-
-	found, generated, formatted, vetted := 0, 0, 0, 0
-
-	processor := finder.Enumerate(nil).Select(func(x interface{}) interface{} {
-		found++
-		return x
-	}).ParallelSelect(func(x interface{}) interface{} {
-		cast := x.(SwaggerFile)
-		var err error
-		var logWriter io.Writer
-		var outputFile *os.File
-		if useLogs {
-			outputFile, err = os.OpenFile(path.Join(logFolder, cast.Info.Title+"_"+cast.Info.Version+".txt"), os.O_WRONLY|os.O_CREATE, 0777)
-			logWriter = outputFile
-			if err == nil {
-				defer outputFile.Close()
-			} else {
-				fmt.Fprintln(os.Stderr, "Cannot log results of: ", cast.Info.Title, cast.Info.Version, "because: ", err)
-			}
+		logDirBase, err = ioutil.TempDir("", "az-go-sdk-logs")
+		logDirBase = normalizePath(logDirBase)
+		if err == nil {
+			statusLog.Print("Generation logs can be found at: ", logDirBase)
 		} else {
-			logWriter = ioutil.Discard
+			errLog.Print("Logging disabled. Could not create directory: ", logDirBase)
 		}
-		var name string
-		name, err = generate(cast, outputLocation, repoLoc, logWriter)
+	}
+
+	targetFiles = collection.AsEnumerable(flag.Args())
+	targetFiles = collection.SelectMany(targetFiles, func(subject interface{}) collection.Enumerator {
+		cast, ok := subject.(string)
+
+		if !ok {
+			return collection.Empty.Enumerate(nil)
+		}
+		pathInfo, err := os.Stat(cast)
 		if err != nil {
-			return err
+			return collection.Empty.Enumerate(nil)
 		}
-		generated++
-		return name
-	}).Where(func(x interface{}) bool {
-		switch x.(type) {
-		case string:
-			if verbose {
-				fmt.Fprintln(os.Stdout, "Generated: ", x)
+
+		if pathInfo.IsDir() {
+			traverser := collection.Directory{
+				Location: cast,
+				Options:  collection.DirectoryOptionsExcludeDirectories,
 			}
-			return true
-		case error:
-			fmt.Fprintln(os.Stderr, "Error: ", x)
+
+			if useRecursive {
+				traverser.Options |= collection.DirectoryOptionsRecursive
+			}
+
+			return traverser.Enumerate(nil)
 		}
-		return false
-	}).Select(func(x interface{}) interface{} {
-		subject := x.(string)
-		subject = strings.TrimPrefix(subject, outputLocation)
-		subject = path.Join("github.com", "Azure", "azure-sdk-for-go", subject)
-		subject = path.Clean(subject)
-		return subject
-	}).Where(func(x interface{}) bool {
-		return format(x.(string)) == nil
-	}).Where(func(x interface{}) bool {
-		formatted++
-		return vet(x.(string)) == nil
+
+		return collection.AsEnumerable(cast).Enumerate(nil)
 	})
 
-	for range processor {
-		vetted++
-	}
-
-	fmt.Println("Summary:")
-	fmt.Println("\tFound:    \t", found)
-	fmt.Println("\tGenerated:\t", generated)
-	fmt.Println("\tFormatted:\t", formatted)
-	fmt.Println("\tVetted:   \t", vetted)
+	targetFiles = collection.Select(targetFiles, func(subject interface{}) interface{} {
+		return normalizePath(subject.(string))
+	})
 }
 
-func cloneAPISpecs(origin, local string) (string, error) {
-	_, cloneLoc := filepath.Split(local)
-	if verbose {
-		fmt.Println("Cloning Azure REST API Specs to: ", cloneLoc)
-	}
-	clone := exec.Command("git", "clone", origin, cloneLoc)
-	clone.Stdout = os.Stdout
-	clone.Stderr = os.Stderr
-	return cloneLoc, clone.Run()
-}
-
-func checkoutAPISpecsVer(target, repoLocation string) error {
-	checkout := exec.Command("git", "checkout", target)
-	checkout.Stdout = os.Stdout
-	checkout.Stderr = os.Stderr
-	checkout.Dir = repoLocation
-	return checkout.Run()
-}
-
-// getDefaultOutputLocation returns the path to the local enlistment of the Azure SDK for Go.
-// If there is no local enlistment, it creates a temporary directory for the output.
-func getDefaultOutputLocation() string {
-	goPath := os.Getenv("GOPATH")
-
-	if goPath != "" {
-		sdkLocation := path.Join(goPath, "src", "github.com", "Azure", "azure-sdk-for-go")
-		if isGitDir(sdkLocation) {
-			return filepath.Clean(sdkLocation)
-		}
-	}
-
-	if tempDir, err := ioutil.TempDir("", "azure-sdk-for-go"); err == nil {
-		return filepath.Clean(tempDir)
-	}
-	return "./"
-}
-
-func isGitDir(dir string) bool {
-	retval := false
-	if children, err := ioutil.ReadDir(dir); err == nil {
-		for _, child := range children {
-			if child.IsDir() && child.Name() == ".git" {
-				retval = true
-				break
-			}
-		}
-	}
-	return retval
-}
-
-func generate(swag SwaggerFile, outputRootPath, specsRootPath string, output io.Writer) (outputDir string, err error) {
-	if output == nil {
-		output = ioutil.Discard
-	}
-
-	var namespace string
-	namespace, err = getNamespace(swag)
-	if err != nil {
-		return
-	}
-	outputDir = path.Clean(filepath.Join(outputRootPath, namespace))
-
-	autorest := exec.Command(
-		"autorest",
-		"-Input", swag.Path,
-		"-CodeGenerator", "Go",
-		"-Header", "MICROSOFT_APACHE",
-		"-Namespace", namespace[strings.LastIndex(namespace, "/")+1:],
-		"-OutputDirectory", outputDir,
-		"-Modeler", "Swagger",
-		"-pv", version.String(),
-		"-SkipValidation")
-	autorest.Stdout = output
-	autorest.Stderr = output
-	autorest.Dir = specsRootPath
-
-	err = autorest.Run()
-	return
-}
-
-func format(path string) (err error) {
-	formatter := exec.Command(
-		"go",
-		"fmt",
-		path,
-	)
-	return formatter.Run()
-}
-
-func vet(path string) (err error) {
-	vetter := exec.Command(
-		"go",
-		"vet",
-		path,
-	)
-	return vetter.Run()
-}
-
-// getNamespace takes a swagger and finds the appropriate namespace to be fed into Autorest.
-var getNamespace = func() func(SwaggerFile) (string, error) {
-	//Defining the Regexp strategies statically like this helps improve perf by ensuring they only get compiled once.
-	armPattern := getAzureSpecsPattern("resource-manager")
-	dataPattern := getAzureSpecsPattern("data-plane")
-
-	return func(swag SwaggerFile) (result string, err error) {
-		strategies := []struct {
-			pattern *regexp.Regexp
-			plane   string
-		}{
-			{armPattern, "management"},
-			{dataPattern, ""},
-		}
-
-		debugLog.Println("Inspecting path:", swag.Path)
-
-		for _, currentStrategy := range strategies {
-			results := currentStrategy.pattern.FindAllStringSubmatch(swag.Path, -1)
-			if len(results) == 0 {
-				continue
-			}
-
-			pkg := results[0][1]
-			version := results[0][3]
-			filename := results[0][4]
-			filename = strings.ToLower(filename[:1]) + filename[1:]
-
-			namespace := []string{"service", pkg}
-			if currentStrategy.plane != "" {
-				namespace = append(namespace, currentStrategy.plane)
-			}
-			namespace = append(namespace, version, filename)
-			result = strings.Replace(strings.Join(namespace, "/"), `\`, "/", -1)
-			return
-		}
-		err = fmt.Errorf("%s is not in a recognized namespace format", swag.Path)
-		return
+// goPath returns the value of the environement variable GOPATH at the beginning of this
+// program's execution. The actual enviroment variable is only queried once, before any calls
+// are made to this function.
+var goPath = func() func() string {
+	val := normalizePath(os.Getenv("GOPATH"))
+	return func() string {
+		return val
 	}
 }()
 
-func getAzureSpecsPattern(plane string) *regexp.Regexp {
-	elements := []string{
-		`specification`,
-		`(?P<package>[\w\-\d\.]+)`,
-		plane,
-		`[Mm]icrosoft\.(?P<category>[\w\-]+)`,
-		`(?P<apiVersion>v?\d{4}-\d{2}-\d{2}(?:[\-\.][\w\d\-\.]+)?)`,
-		`(?P<group>[\w\-\d\.]+)\.json`,
-	}
-	return regexp.MustCompile(strings.Join(elements, `[/\\]`))
+// getDefaultOutputBase returns the default location of the Azure-SDK-for-Go on your filesystem.
+func getDefaultOutputBase() string {
+	return normalizePath(path.Join(goPath(), "src", "github.com", "Azure", "azure-sdk-for-go"))
+}
+
+// trimGoPath operates like strings.TrimPrefix, where the prefix is always the value of GOPATH in the
+// environment in which this program is being executed.
+func trimGoPath(location string) string {
+	return strings.TrimPrefix(normalizePath(location), goPath())
+}
+
+// normalizePath ensures that a path is expressed using forward slashes for sanity when working
+// with Go Standard Library functions that seem to expect this.
+func normalizePath(location string) (result string) {
+	result = strings.Replace(location, `\`, "/", -1)
+	return
+}
+
+// isntNil is a simple `collection.Predicate` which filters out `nil` objects from an Enumerator.
+func isntNil(subject interface{}) bool {
+	return subject != nil
 }

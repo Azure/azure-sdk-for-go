@@ -1,4 +1,4 @@
-package webservices
+package commitmentplans
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,10 +19,10 @@ package webservices
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v11.2.0-beta arm-webservices/2017-01-01"
+	return "Azure-SDK-For-Go/0.0.0 arm-commitmentplans/2016-05-01-preview"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.
 func Version() string {
-	return "v11.2.0-beta"
+	return "0.0.0"
 }

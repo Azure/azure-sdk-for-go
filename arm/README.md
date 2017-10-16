@@ -99,7 +99,13 @@ This SDK also supports authentication with a JSON file containing credentials fo
 az ad sp create-for-rbac --sdk-auth > mycredentials.json
 ```
 
-THe file lloks like this, in case you want to create it yourself:
+Save this file in a secure location on your system where your code can read it. Set an environment variable with the full path to the file:
+
+``` bash
+export AZURE_AUTH_LOCATION=/secure/location/mycredentials.json
+```
+
+The file looks like this, in case you want to create it yourself:
 
 ``` json
 {
@@ -114,12 +120,6 @@ THe file lloks like this, in case you want to create it yourself:
     "galleryEndpointUrl": "https://gallery.azure.com/",
     "managementEndpointUrl": "https://management.core.windows.net/"
 }
-```
-
-Save this file in a secure location on your system where your code can read it. Set an environment variable with the full path to the file:
-
-``` bash
-export AZURE_AUTH_LOCATION=/secure/location/mycredentials.json
 ```
 
 Clients can be created later like this:

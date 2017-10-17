@@ -26,39 +26,39 @@ type JobsClient = original.JobsClient
 type DriveState = original.DriveState
 
 const (
-	Completed		DriveState	= original.Completed
-	CompletedMoreInfo	DriveState	= original.CompletedMoreInfo
-	NeverReceived		DriveState	= original.NeverReceived
-	Received		DriveState	= original.Received
-	ShippedBack		DriveState	= original.ShippedBack
-	Specified		DriveState	= original.Specified
-	Transferring		DriveState	= original.Transferring
+	Completed         DriveState = original.Completed
+	CompletedMoreInfo DriveState = original.CompletedMoreInfo
+	NeverReceived     DriveState = original.NeverReceived
+	Received          DriveState = original.Received
+	ShippedBack       DriveState = original.ShippedBack
+	Specified         DriveState = original.Specified
+	Transferring      DriveState = original.Transferring
 )
 
 type JobState = original.JobState
 
 const (
-	JobStateClosed		JobState	= original.JobStateClosed
-	JobStateCompleted	JobState	= original.JobStateCompleted
-	JobStateCreating	JobState	= original.JobStateCreating
-	JobStatePackaging	JobState	= original.JobStatePackaging
-	JobStateReceived	JobState	= original.JobStateReceived
-	JobStateShipping	JobState	= original.JobStateShipping
-	JobStateTransferring	JobState	= original.JobStateTransferring
+	JobStateClosed       JobState = original.JobStateClosed
+	JobStateCompleted    JobState = original.JobStateCompleted
+	JobStateCreating     JobState = original.JobStateCreating
+	JobStatePackaging    JobState = original.JobStatePackaging
+	JobStateReceived     JobState = original.JobStateReceived
+	JobStateShipping     JobState = original.JobStateShipping
+	JobStateTransferring JobState = original.JobStateTransferring
 )
 
 type JobType = original.JobType
 
 const (
-	JobTypeExport	JobType	= original.JobTypeExport
-	JobTypeImport	JobType	= original.JobTypeImport
+	JobTypeExport JobType = original.JobTypeExport
+	JobTypeImport JobType = original.JobTypeImport
 )
 
 type LogLevel = original.LogLevel
 
 const (
-	Error	LogLevel	= original.Error
-	Verbose	LogLevel	= original.Verbose
+	Error   LogLevel = original.Error
+	Verbose LogLevel = original.Verbose
 )
 
 type MutableJobState = original.MutableJobState
@@ -94,8 +94,8 @@ type ShippingInformation = original.ShippingInformation
 type SupportedOperationsListResult = original.SupportedOperationsListResult
 
 const (
-	DefaultBaseURI		= original.DefaultBaseURI
-	DefaultAcceptLanguage	= original.DefaultAcceptLanguage
+	DefaultBaseURI        = original.DefaultBaseURI
+	DefaultAcceptLanguage = original.DefaultAcceptLanguage
 )
 
 type ManagementClient = original.ManagementClient

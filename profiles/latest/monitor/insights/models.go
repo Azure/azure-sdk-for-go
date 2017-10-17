@@ -35,43 +35,43 @@ type MetricsClient = original.MetricsClient
 type AggregationType = original.AggregationType
 
 const (
-	Average	AggregationType	= original.Average
-	Count	AggregationType	= original.Count
-	Maximum	AggregationType	= original.Maximum
-	Minimum	AggregationType	= original.Minimum
-	None	AggregationType	= original.None
-	Total	AggregationType	= original.Total
+	Average AggregationType = original.Average
+	Count   AggregationType = original.Count
+	Maximum AggregationType = original.Maximum
+	Minimum AggregationType = original.Minimum
+	None    AggregationType = original.None
+	Total   AggregationType = original.Total
 )
 
 type EventLevel = original.EventLevel
 
 const (
-	Critical	EventLevel	= original.Critical
-	Error		EventLevel	= original.Error
-	Informational	EventLevel	= original.Informational
-	Verbose		EventLevel	= original.Verbose
-	Warning		EventLevel	= original.Warning
+	Critical      EventLevel = original.Critical
+	Error         EventLevel = original.Error
+	Informational EventLevel = original.Informational
+	Verbose       EventLevel = original.Verbose
+	Warning       EventLevel = original.Warning
 )
 
 type ResultType = original.ResultType
 
 const (
-	Data		ResultType	= original.Data
-	Metadata	ResultType	= original.Metadata
+	Data     ResultType = original.Data
+	Metadata ResultType = original.Metadata
 )
 
 type Unit = original.Unit
 
 const (
-	UnitBytes		Unit	= original.UnitBytes
-	UnitByteSeconds		Unit	= original.UnitByteSeconds
-	UnitBytesPerSecond	Unit	= original.UnitBytesPerSecond
-	UnitCount		Unit	= original.UnitCount
-	UnitCountPerSecond	Unit	= original.UnitCountPerSecond
-	UnitMilliSeconds	Unit	= original.UnitMilliSeconds
-	UnitPercent		Unit	= original.UnitPercent
-	UnitSeconds		Unit	= original.UnitSeconds
-	UnitUnspecified		Unit	= original.UnitUnspecified
+	UnitBytes          Unit = original.UnitBytes
+	UnitByteSeconds    Unit = original.UnitByteSeconds
+	UnitBytesPerSecond Unit = original.UnitBytesPerSecond
+	UnitCount          Unit = original.UnitCount
+	UnitCountPerSecond Unit = original.UnitCountPerSecond
+	UnitMilliSeconds   Unit = original.UnitMilliSeconds
+	UnitPercent        Unit = original.UnitPercent
+	UnitSeconds        Unit = original.UnitSeconds
+	UnitUnspecified    Unit = original.UnitUnspecified
 )
 
 type ErrorResponse = original.ErrorResponse

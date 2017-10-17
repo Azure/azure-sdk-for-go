@@ -31,9 +31,9 @@ type DatabaseAccountsClient = original.DatabaseAccountsClient
 type DatabaseAccountKind = original.DatabaseAccountKind
 
 const (
-	GlobalDocumentDB	DatabaseAccountKind	= original.GlobalDocumentDB
-	MongoDB			DatabaseAccountKind	= original.MongoDB
-	Parse			DatabaseAccountKind	= original.Parse
+	GlobalDocumentDB DatabaseAccountKind = original.GlobalDocumentDB
+	MongoDB          DatabaseAccountKind = original.MongoDB
+	Parse            DatabaseAccountKind = original.Parse
 )
 
 type DatabaseAccountOfferType = original.DatabaseAccountOfferType
@@ -45,20 +45,20 @@ const (
 type DefaultConsistencyLevel = original.DefaultConsistencyLevel
 
 const (
-	BoundedStaleness	DefaultConsistencyLevel	= original.BoundedStaleness
-	ConsistentPrefix	DefaultConsistencyLevel	= original.ConsistentPrefix
-	Eventual		DefaultConsistencyLevel	= original.Eventual
-	Session			DefaultConsistencyLevel	= original.Session
-	Strong			DefaultConsistencyLevel	= original.Strong
+	BoundedStaleness DefaultConsistencyLevel = original.BoundedStaleness
+	ConsistentPrefix DefaultConsistencyLevel = original.ConsistentPrefix
+	Eventual         DefaultConsistencyLevel = original.Eventual
+	Session          DefaultConsistencyLevel = original.Session
+	Strong           DefaultConsistencyLevel = original.Strong
 )
 
 type KeyKind = original.KeyKind
 
 const (
-	Primary			KeyKind	= original.Primary
-	PrimaryReadonly		KeyKind	= original.PrimaryReadonly
-	Secondary		KeyKind	= original.Secondary
-	SecondaryReadonly	KeyKind	= original.SecondaryReadonly
+	Primary           KeyKind = original.Primary
+	PrimaryReadonly   KeyKind = original.PrimaryReadonly
+	Secondary         KeyKind = original.Secondary
+	SecondaryReadonly KeyKind = original.SecondaryReadonly
 )
 
 type ConsistencyPolicy = original.ConsistencyPolicy

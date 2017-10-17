@@ -33,119 +33,119 @@ type MapsClient = original.MapsClient
 type Accuracy = original.Accuracy
 
 const (
-	Actual		Accuracy	= original.Actual
-	Estimated	Accuracy	= original.Estimated
+	Actual    Accuracy = original.Actual
+	Estimated Accuracy = original.Estimated
 )
 
 type Bitness = original.Bitness
 
 const (
-	SixFourbit	Bitness	= original.SixFourbit
-	ThreeTwobit	Bitness	= original.ThreeTwobit
+	SixFourbit  Bitness = original.SixFourbit
+	ThreeTwobit Bitness = original.ThreeTwobit
 )
 
 type ConnectionFailureState = original.ConnectionFailureState
 
 const (
-	Failed	ConnectionFailureState	= original.Failed
-	Mixed	ConnectionFailureState	= original.Mixed
-	Ok	ConnectionFailureState	= original.Ok
+	Failed ConnectionFailureState = original.Failed
+	Mixed  ConnectionFailureState = original.Mixed
+	Ok     ConnectionFailureState = original.Ok
 )
 
 type HypervisorType = original.HypervisorType
 
 const (
-	Hyperv	HypervisorType	= original.Hyperv
-	Unknown	HypervisorType	= original.Unknown
+	Hyperv  HypervisorType = original.Hyperv
+	Unknown HypervisorType = original.Unknown
 )
 
 type Kind = original.Kind
 
 const (
-	KindRefmachine		Kind	= original.KindRefmachine
-	KindRefmachinewithhints	Kind	= original.KindRefmachinewithhints
-	KindRefport		Kind	= original.KindRefport
-	KindRefprocess		Kind	= original.KindRefprocess
+	KindRefmachine          Kind = original.KindRefmachine
+	KindRefmachinewithhints Kind = original.KindRefmachinewithhints
+	KindRefport             Kind = original.KindRefport
+	KindRefprocess          Kind = original.KindRefprocess
 )
 
 type KindCoreResource = original.KindCoreResource
 
 const (
-	KindClientGroup		KindCoreResource	= original.KindClientGroup
-	KindMachine		KindCoreResource	= original.KindMachine
-	KindMachineGroup	KindCoreResource	= original.KindMachineGroup
-	KindPort		KindCoreResource	= original.KindPort
-	KindProcess		KindCoreResource	= original.KindProcess
+	KindClientGroup  KindCoreResource = original.KindClientGroup
+	KindMachine      KindCoreResource = original.KindMachine
+	KindMachineGroup KindCoreResource = original.KindMachineGroup
+	KindPort         KindCoreResource = original.KindPort
+	KindProcess      KindCoreResource = original.KindProcess
 )
 
 type KindMapRequest = original.KindMapRequest
 
 const (
-	KindMapmachineGroupDependency	KindMapRequest	= original.KindMapmachineGroupDependency
-	KindMapsingleMachineDependency	KindMapRequest	= original.KindMapsingleMachineDependency
+	KindMapmachineGroupDependency  KindMapRequest = original.KindMapmachineGroupDependency
+	KindMapsingleMachineDependency KindMapRequest = original.KindMapsingleMachineDependency
 )
 
 type KindRelationship = original.KindRelationship
 
 const (
-	KindRelacceptor		KindRelationship	= original.KindRelacceptor
-	KindRelconnection	KindRelationship	= original.KindRelconnection
+	KindRelacceptor   KindRelationship = original.KindRelacceptor
+	KindRelconnection KindRelationship = original.KindRelconnection
 )
 
 type MachineRebootStatus = original.MachineRebootStatus
 
 const (
-	MachineRebootStatusNotRebooted	MachineRebootStatus	= original.MachineRebootStatusNotRebooted
-	MachineRebootStatusRebooted	MachineRebootStatus	= original.MachineRebootStatusRebooted
-	MachineRebootStatusUnknown	MachineRebootStatus	= original.MachineRebootStatusUnknown
+	MachineRebootStatusNotRebooted MachineRebootStatus = original.MachineRebootStatusNotRebooted
+	MachineRebootStatusRebooted    MachineRebootStatus = original.MachineRebootStatusRebooted
+	MachineRebootStatusUnknown     MachineRebootStatus = original.MachineRebootStatusUnknown
 )
 
 type MonitoringState = original.MonitoringState
 
 const (
-	Discovered	MonitoringState	= original.Discovered
-	Monitored	MonitoringState	= original.Monitored
+	Discovered MonitoringState = original.Discovered
+	Monitored  MonitoringState = original.Monitored
 )
 
 type OperatingSystemFamily = original.OperatingSystemFamily
 
 const (
-	OperatingSystemFamilyAix	OperatingSystemFamily	= original.OperatingSystemFamilyAix
-	OperatingSystemFamilyLinux	OperatingSystemFamily	= original.OperatingSystemFamilyLinux
-	OperatingSystemFamilySolaris	OperatingSystemFamily	= original.OperatingSystemFamilySolaris
-	OperatingSystemFamilyUnknown	OperatingSystemFamily	= original.OperatingSystemFamilyUnknown
-	OperatingSystemFamilyWindows	OperatingSystemFamily	= original.OperatingSystemFamilyWindows
+	OperatingSystemFamilyAix     OperatingSystemFamily = original.OperatingSystemFamilyAix
+	OperatingSystemFamilyLinux   OperatingSystemFamily = original.OperatingSystemFamilyLinux
+	OperatingSystemFamilySolaris OperatingSystemFamily = original.OperatingSystemFamilySolaris
+	OperatingSystemFamilyUnknown OperatingSystemFamily = original.OperatingSystemFamilyUnknown
+	OperatingSystemFamilyWindows OperatingSystemFamily = original.OperatingSystemFamilyWindows
 )
 
 type ProcessRole = original.ProcessRole
 
 const (
-	AppServer	ProcessRole	= original.AppServer
-	DatabaseServer	ProcessRole	= original.DatabaseServer
-	LdapServer	ProcessRole	= original.LdapServer
-	SmbServer	ProcessRole	= original.SmbServer
-	WebServer	ProcessRole	= original.WebServer
+	AppServer      ProcessRole = original.AppServer
+	DatabaseServer ProcessRole = original.DatabaseServer
+	LdapServer     ProcessRole = original.LdapServer
+	SmbServer      ProcessRole = original.SmbServer
+	WebServer      ProcessRole = original.WebServer
 )
 
 type VirtualizationState = original.VirtualizationState
 
 const (
-	VirtualizationStateHypervisor	VirtualizationState	= original.VirtualizationStateHypervisor
-	VirtualizationStatePhysical	VirtualizationState	= original.VirtualizationStatePhysical
-	VirtualizationStateUnknown	VirtualizationState	= original.VirtualizationStateUnknown
-	VirtualizationStateVirtual	VirtualizationState	= original.VirtualizationStateVirtual
+	VirtualizationStateHypervisor VirtualizationState = original.VirtualizationStateHypervisor
+	VirtualizationStatePhysical   VirtualizationState = original.VirtualizationStatePhysical
+	VirtualizationStateUnknown    VirtualizationState = original.VirtualizationStateUnknown
+	VirtualizationStateVirtual    VirtualizationState = original.VirtualizationStateVirtual
 )
 
 type VirtualMachineType = original.VirtualMachineType
 
 const (
-	VirtualMachineTypeHyperv	VirtualMachineType	= original.VirtualMachineTypeHyperv
-	VirtualMachineTypeLdom		VirtualMachineType	= original.VirtualMachineTypeLdom
-	VirtualMachineTypeLpar		VirtualMachineType	= original.VirtualMachineTypeLpar
-	VirtualMachineTypeUnknown	VirtualMachineType	= original.VirtualMachineTypeUnknown
-	VirtualMachineTypeVirtualPc	VirtualMachineType	= original.VirtualMachineTypeVirtualPc
-	VirtualMachineTypeVmware	VirtualMachineType	= original.VirtualMachineTypeVmware
-	VirtualMachineTypeXen		VirtualMachineType	= original.VirtualMachineTypeXen
+	VirtualMachineTypeHyperv    VirtualMachineType = original.VirtualMachineTypeHyperv
+	VirtualMachineTypeLdom      VirtualMachineType = original.VirtualMachineTypeLdom
+	VirtualMachineTypeLpar      VirtualMachineType = original.VirtualMachineTypeLpar
+	VirtualMachineTypeUnknown   VirtualMachineType = original.VirtualMachineTypeUnknown
+	VirtualMachineTypeVirtualPc VirtualMachineType = original.VirtualMachineTypeVirtualPc
+	VirtualMachineTypeVmware    VirtualMachineType = original.VirtualMachineTypeVmware
+	VirtualMachineTypeXen       VirtualMachineType = original.VirtualMachineTypeXen
 )
 
 type Acceptor = original.Acceptor

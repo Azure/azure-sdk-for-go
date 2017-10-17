@@ -31,19 +31,19 @@ type GroupClient = original.GroupClient
 type SpendingLimit = original.SpendingLimit
 
 const (
-	CurrentPeriodOff	SpendingLimit	= original.CurrentPeriodOff
-	Off			SpendingLimit	= original.Off
-	On			SpendingLimit	= original.On
+	CurrentPeriodOff SpendingLimit = original.CurrentPeriodOff
+	Off              SpendingLimit = original.Off
+	On               SpendingLimit = original.On
 )
 
 type State = original.State
 
 const (
-	Deleted		State	= original.Deleted
-	Disabled	State	= original.Disabled
-	Enabled		State	= original.Enabled
-	PastDue		State	= original.PastDue
-	Warned		State	= original.Warned
+	Deleted  State = original.Deleted
+	Disabled State = original.Disabled
+	Enabled  State = original.Enabled
+	PastDue  State = original.PastDue
+	Warned   State = original.Warned
 )
 
 type ListResult = original.ListResult

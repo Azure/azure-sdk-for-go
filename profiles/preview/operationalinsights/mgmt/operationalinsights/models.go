@@ -27,57 +27,57 @@ type LinkedServicesClient = original.LinkedServicesClient
 type DataSourceKind = original.DataSourceKind
 
 const (
-	AzureActivityLog		DataSourceKind	= original.AzureActivityLog
-	ChangeTrackingCustomRegistry	DataSourceKind	= original.ChangeTrackingCustomRegistry
-	ChangeTrackingDefaultPath	DataSourceKind	= original.ChangeTrackingDefaultPath
-	ChangeTrackingDefaultRegistry	DataSourceKind	= original.ChangeTrackingDefaultRegistry
-	ChangeTrackingPath		DataSourceKind	= original.ChangeTrackingPath
-	CustomLog			DataSourceKind	= original.CustomLog
-	CustomLogCollection		DataSourceKind	= original.CustomLogCollection
-	GenericDataSource		DataSourceKind	= original.GenericDataSource
-	IISLogs				DataSourceKind	= original.IISLogs
-	LinuxPerformanceCollection	DataSourceKind	= original.LinuxPerformanceCollection
-	LinuxPerformanceObject		DataSourceKind	= original.LinuxPerformanceObject
-	LinuxSyslog			DataSourceKind	= original.LinuxSyslog
-	LinuxSyslogCollection		DataSourceKind	= original.LinuxSyslogCollection
-	WindowsEvent			DataSourceKind	= original.WindowsEvent
-	WindowsPerformanceCounter	DataSourceKind	= original.WindowsPerformanceCounter
+	AzureActivityLog              DataSourceKind = original.AzureActivityLog
+	ChangeTrackingCustomRegistry  DataSourceKind = original.ChangeTrackingCustomRegistry
+	ChangeTrackingDefaultPath     DataSourceKind = original.ChangeTrackingDefaultPath
+	ChangeTrackingDefaultRegistry DataSourceKind = original.ChangeTrackingDefaultRegistry
+	ChangeTrackingPath            DataSourceKind = original.ChangeTrackingPath
+	CustomLog                     DataSourceKind = original.CustomLog
+	CustomLogCollection           DataSourceKind = original.CustomLogCollection
+	GenericDataSource             DataSourceKind = original.GenericDataSource
+	IISLogs                       DataSourceKind = original.IISLogs
+	LinuxPerformanceCollection    DataSourceKind = original.LinuxPerformanceCollection
+	LinuxPerformanceObject        DataSourceKind = original.LinuxPerformanceObject
+	LinuxSyslog                   DataSourceKind = original.LinuxSyslog
+	LinuxSyslogCollection         DataSourceKind = original.LinuxSyslogCollection
+	WindowsEvent                  DataSourceKind = original.WindowsEvent
+	WindowsPerformanceCounter     DataSourceKind = original.WindowsPerformanceCounter
 )
 
 type EntityStatus = original.EntityStatus
 
 const (
-	Canceled		EntityStatus	= original.Canceled
-	Creating		EntityStatus	= original.Creating
-	Deleting		EntityStatus	= original.Deleting
-	Failed			EntityStatus	= original.Failed
-	ProvisioningAccount	EntityStatus	= original.ProvisioningAccount
-	Succeeded		EntityStatus	= original.Succeeded
+	Canceled            EntityStatus = original.Canceled
+	Creating            EntityStatus = original.Creating
+	Deleting            EntityStatus = original.Deleting
+	Failed              EntityStatus = original.Failed
+	ProvisioningAccount EntityStatus = original.ProvisioningAccount
+	Succeeded           EntityStatus = original.Succeeded
 )
 
 type SearchSortEnum = original.SearchSortEnum
 
 const (
-	Asc	SearchSortEnum	= original.Asc
-	Desc	SearchSortEnum	= original.Desc
+	Asc  SearchSortEnum = original.Asc
+	Desc SearchSortEnum = original.Desc
 )
 
 type SkuNameEnum = original.SkuNameEnum
 
 const (
-	Free		SkuNameEnum	= original.Free
-	PerNode		SkuNameEnum	= original.PerNode
-	Premium		SkuNameEnum	= original.Premium
-	Standalone	SkuNameEnum	= original.Standalone
-	Standard	SkuNameEnum	= original.Standard
-	Unlimited	SkuNameEnum	= original.Unlimited
+	Free       SkuNameEnum = original.Free
+	PerNode    SkuNameEnum = original.PerNode
+	Premium    SkuNameEnum = original.Premium
+	Standalone SkuNameEnum = original.Standalone
+	Standard   SkuNameEnum = original.Standard
+	Unlimited  SkuNameEnum = original.Unlimited
 )
 
 type StorageInsightState = original.StorageInsightState
 
 const (
-	ERROR	StorageInsightState	= original.ERROR
-	OK	StorageInsightState	= original.OK
+	ERROR StorageInsightState = original.ERROR
+	OK    StorageInsightState = original.OK
 )
 
 type CoreSummary = original.CoreSummary

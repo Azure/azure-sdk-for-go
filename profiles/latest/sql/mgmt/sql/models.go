@@ -26,118 +26,118 @@ type FirewallRulesClient = original.FirewallRulesClient
 type AuthenticationType = original.AuthenticationType
 
 const (
-	ADPassword	AuthenticationType	= original.ADPassword
-	SQL		AuthenticationType	= original.SQL
+	ADPassword AuthenticationType = original.ADPassword
+	SQL        AuthenticationType = original.SQL
 )
 
 type CheckNameAvailabilityReason = original.CheckNameAvailabilityReason
 
 const (
-	AlreadyExists	CheckNameAvailabilityReason	= original.AlreadyExists
-	Invalid		CheckNameAvailabilityReason	= original.Invalid
+	AlreadyExists CheckNameAvailabilityReason = original.AlreadyExists
+	Invalid       CheckNameAvailabilityReason = original.Invalid
 )
 
 type CreateMode = original.CreateMode
 
 const (
-	Copy				CreateMode	= original.Copy
-	Default				CreateMode	= original.Default
-	NonReadableSecondary		CreateMode	= original.NonReadableSecondary
-	OnlineSecondary			CreateMode	= original.OnlineSecondary
-	PointInTimeRestore		CreateMode	= original.PointInTimeRestore
-	Recovery			CreateMode	= original.Recovery
-	Restore				CreateMode	= original.Restore
-	RestoreLongTermRetentionBackup	CreateMode	= original.RestoreLongTermRetentionBackup
+	Copy                           CreateMode = original.Copy
+	Default                        CreateMode = original.Default
+	NonReadableSecondary           CreateMode = original.NonReadableSecondary
+	OnlineSecondary                CreateMode = original.OnlineSecondary
+	PointInTimeRestore             CreateMode = original.PointInTimeRestore
+	Recovery                       CreateMode = original.Recovery
+	Restore                        CreateMode = original.Restore
+	RestoreLongTermRetentionBackup CreateMode = original.RestoreLongTermRetentionBackup
 )
 
 type DatabaseEdition = original.DatabaseEdition
 
 const (
-	Basic		DatabaseEdition	= original.Basic
-	Business	DatabaseEdition	= original.Business
-	DataWarehouse	DatabaseEdition	= original.DataWarehouse
-	Free		DatabaseEdition	= original.Free
-	Premium		DatabaseEdition	= original.Premium
-	Standard	DatabaseEdition	= original.Standard
-	Stretch		DatabaseEdition	= original.Stretch
-	System		DatabaseEdition	= original.System
-	System2		DatabaseEdition	= original.System2
-	Web		DatabaseEdition	= original.Web
+	Basic         DatabaseEdition = original.Basic
+	Business      DatabaseEdition = original.Business
+	DataWarehouse DatabaseEdition = original.DataWarehouse
+	Free          DatabaseEdition = original.Free
+	Premium       DatabaseEdition = original.Premium
+	Standard      DatabaseEdition = original.Standard
+	Stretch       DatabaseEdition = original.Stretch
+	System        DatabaseEdition = original.System
+	System2       DatabaseEdition = original.System2
+	Web           DatabaseEdition = original.Web
 )
 
 type ElasticPoolEdition = original.ElasticPoolEdition
 
 const (
-	ElasticPoolEditionBasic		ElasticPoolEdition	= original.ElasticPoolEditionBasic
-	ElasticPoolEditionPremium	ElasticPoolEdition	= original.ElasticPoolEditionPremium
-	ElasticPoolEditionStandard	ElasticPoolEdition	= original.ElasticPoolEditionStandard
+	ElasticPoolEditionBasic    ElasticPoolEdition = original.ElasticPoolEditionBasic
+	ElasticPoolEditionPremium  ElasticPoolEdition = original.ElasticPoolEditionPremium
+	ElasticPoolEditionStandard ElasticPoolEdition = original.ElasticPoolEditionStandard
 )
 
 type ElasticPoolState = original.ElasticPoolState
 
 const (
-	Creating	ElasticPoolState	= original.Creating
-	Disabled	ElasticPoolState	= original.Disabled
-	Ready		ElasticPoolState	= original.Ready
+	Creating ElasticPoolState = original.Creating
+	Disabled ElasticPoolState = original.Disabled
+	Ready    ElasticPoolState = original.Ready
 )
 
 type ReadScale = original.ReadScale
 
 const (
-	ReadScaleDisabled	ReadScale	= original.ReadScaleDisabled
-	ReadScaleEnabled	ReadScale	= original.ReadScaleEnabled
+	ReadScaleDisabled ReadScale = original.ReadScaleDisabled
+	ReadScaleEnabled  ReadScale = original.ReadScaleEnabled
 )
 
 type RecommendedIndexAction = original.RecommendedIndexAction
 
 const (
-	Create	RecommendedIndexAction	= original.Create
-	Drop	RecommendedIndexAction	= original.Drop
-	Rebuild	RecommendedIndexAction	= original.Rebuild
+	Create  RecommendedIndexAction = original.Create
+	Drop    RecommendedIndexAction = original.Drop
+	Rebuild RecommendedIndexAction = original.Rebuild
 )
 
 type RecommendedIndexState = original.RecommendedIndexState
 
 const (
-	Active		RecommendedIndexState	= original.Active
-	Blocked		RecommendedIndexState	= original.Blocked
-	Executing	RecommendedIndexState	= original.Executing
-	Expired		RecommendedIndexState	= original.Expired
-	Ignored		RecommendedIndexState	= original.Ignored
-	Pending		RecommendedIndexState	= original.Pending
-	PendingRevert	RecommendedIndexState	= original.PendingRevert
-	Reverted	RecommendedIndexState	= original.Reverted
-	Reverting	RecommendedIndexState	= original.Reverting
-	Success		RecommendedIndexState	= original.Success
-	Verifying	RecommendedIndexState	= original.Verifying
+	Active        RecommendedIndexState = original.Active
+	Blocked       RecommendedIndexState = original.Blocked
+	Executing     RecommendedIndexState = original.Executing
+	Expired       RecommendedIndexState = original.Expired
+	Ignored       RecommendedIndexState = original.Ignored
+	Pending       RecommendedIndexState = original.Pending
+	PendingRevert RecommendedIndexState = original.PendingRevert
+	Reverted      RecommendedIndexState = original.Reverted
+	Reverting     RecommendedIndexState = original.Reverting
+	Success       RecommendedIndexState = original.Success
+	Verifying     RecommendedIndexState = original.Verifying
 )
 
 type RecommendedIndexType = original.RecommendedIndexType
 
 const (
-	CLUSTERED		RecommendedIndexType	= original.CLUSTERED
-	CLUSTEREDCOLUMNSTORE	RecommendedIndexType	= original.CLUSTEREDCOLUMNSTORE
-	COLUMNSTORE		RecommendedIndexType	= original.COLUMNSTORE
-	NONCLUSTERED		RecommendedIndexType	= original.NONCLUSTERED
+	CLUSTERED            RecommendedIndexType = original.CLUSTERED
+	CLUSTEREDCOLUMNSTORE RecommendedIndexType = original.CLUSTEREDCOLUMNSTORE
+	COLUMNSTORE          RecommendedIndexType = original.COLUMNSTORE
+	NONCLUSTERED         RecommendedIndexType = original.NONCLUSTERED
 )
 
 type ReplicationRole = original.ReplicationRole
 
 const (
-	ReplicationRoleCopy			ReplicationRole	= original.ReplicationRoleCopy
-	ReplicationRoleNonReadableSecondary	ReplicationRole	= original.ReplicationRoleNonReadableSecondary
-	ReplicationRolePrimary			ReplicationRole	= original.ReplicationRolePrimary
-	ReplicationRoleSecondary		ReplicationRole	= original.ReplicationRoleSecondary
-	ReplicationRoleSource			ReplicationRole	= original.ReplicationRoleSource
+	ReplicationRoleCopy                 ReplicationRole = original.ReplicationRoleCopy
+	ReplicationRoleNonReadableSecondary ReplicationRole = original.ReplicationRoleNonReadableSecondary
+	ReplicationRolePrimary              ReplicationRole = original.ReplicationRolePrimary
+	ReplicationRoleSecondary            ReplicationRole = original.ReplicationRoleSecondary
+	ReplicationRoleSource               ReplicationRole = original.ReplicationRoleSource
 )
 
 type ReplicationState = original.ReplicationState
 
 const (
-	CATCHUP		ReplicationState	= original.CATCHUP
-	PENDING		ReplicationState	= original.PENDING
-	SEEDING		ReplicationState	= original.SEEDING
-	SUSPENDED	ReplicationState	= original.SUSPENDED
+	CATCHUP   ReplicationState = original.CATCHUP
+	PENDING   ReplicationState = original.PENDING
+	SEEDING   ReplicationState = original.SEEDING
+	SUSPENDED ReplicationState = original.SUSPENDED
 )
 
 type SampleName = original.SampleName
@@ -149,64 +149,64 @@ const (
 type SecurityAlertPolicyEmailAccountAdmins = original.SecurityAlertPolicyEmailAccountAdmins
 
 const (
-	SecurityAlertPolicyEmailAccountAdminsDisabled	SecurityAlertPolicyEmailAccountAdmins	= original.SecurityAlertPolicyEmailAccountAdminsDisabled
-	SecurityAlertPolicyEmailAccountAdminsEnabled	SecurityAlertPolicyEmailAccountAdmins	= original.SecurityAlertPolicyEmailAccountAdminsEnabled
+	SecurityAlertPolicyEmailAccountAdminsDisabled SecurityAlertPolicyEmailAccountAdmins = original.SecurityAlertPolicyEmailAccountAdminsDisabled
+	SecurityAlertPolicyEmailAccountAdminsEnabled  SecurityAlertPolicyEmailAccountAdmins = original.SecurityAlertPolicyEmailAccountAdminsEnabled
 )
 
 type SecurityAlertPolicyState = original.SecurityAlertPolicyState
 
 const (
-	SecurityAlertPolicyStateDisabled	SecurityAlertPolicyState	= original.SecurityAlertPolicyStateDisabled
-	SecurityAlertPolicyStateEnabled		SecurityAlertPolicyState	= original.SecurityAlertPolicyStateEnabled
-	SecurityAlertPolicyStateNew		SecurityAlertPolicyState	= original.SecurityAlertPolicyStateNew
+	SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = original.SecurityAlertPolicyStateDisabled
+	SecurityAlertPolicyStateEnabled  SecurityAlertPolicyState = original.SecurityAlertPolicyStateEnabled
+	SecurityAlertPolicyStateNew      SecurityAlertPolicyState = original.SecurityAlertPolicyStateNew
 )
 
 type SecurityAlertPolicyUseServerDefault = original.SecurityAlertPolicyUseServerDefault
 
 const (
-	SecurityAlertPolicyUseServerDefaultDisabled	SecurityAlertPolicyUseServerDefault	= original.SecurityAlertPolicyUseServerDefaultDisabled
-	SecurityAlertPolicyUseServerDefaultEnabled	SecurityAlertPolicyUseServerDefault	= original.SecurityAlertPolicyUseServerDefaultEnabled
+	SecurityAlertPolicyUseServerDefaultDisabled SecurityAlertPolicyUseServerDefault = original.SecurityAlertPolicyUseServerDefaultDisabled
+	SecurityAlertPolicyUseServerDefaultEnabled  SecurityAlertPolicyUseServerDefault = original.SecurityAlertPolicyUseServerDefaultEnabled
 )
 
 type ServiceObjectiveName = original.ServiceObjectiveName
 
 const (
-	ServiceObjectiveNameBasic	ServiceObjectiveName	= original.ServiceObjectiveNameBasic
-	ServiceObjectiveNameElasticPool	ServiceObjectiveName	= original.ServiceObjectiveNameElasticPool
-	ServiceObjectiveNameP1		ServiceObjectiveName	= original.ServiceObjectiveNameP1
-	ServiceObjectiveNameP11		ServiceObjectiveName	= original.ServiceObjectiveNameP11
-	ServiceObjectiveNameP15		ServiceObjectiveName	= original.ServiceObjectiveNameP15
-	ServiceObjectiveNameP2		ServiceObjectiveName	= original.ServiceObjectiveNameP2
-	ServiceObjectiveNameP3		ServiceObjectiveName	= original.ServiceObjectiveNameP3
-	ServiceObjectiveNameP4		ServiceObjectiveName	= original.ServiceObjectiveNameP4
-	ServiceObjectiveNameP6		ServiceObjectiveName	= original.ServiceObjectiveNameP6
-	ServiceObjectiveNameS0		ServiceObjectiveName	= original.ServiceObjectiveNameS0
-	ServiceObjectiveNameS1		ServiceObjectiveName	= original.ServiceObjectiveNameS1
-	ServiceObjectiveNameS2		ServiceObjectiveName	= original.ServiceObjectiveNameS2
-	ServiceObjectiveNameS3		ServiceObjectiveName	= original.ServiceObjectiveNameS3
-	ServiceObjectiveNameSystem	ServiceObjectiveName	= original.ServiceObjectiveNameSystem
-	ServiceObjectiveNameSystem2	ServiceObjectiveName	= original.ServiceObjectiveNameSystem2
+	ServiceObjectiveNameBasic       ServiceObjectiveName = original.ServiceObjectiveNameBasic
+	ServiceObjectiveNameElasticPool ServiceObjectiveName = original.ServiceObjectiveNameElasticPool
+	ServiceObjectiveNameP1          ServiceObjectiveName = original.ServiceObjectiveNameP1
+	ServiceObjectiveNameP11         ServiceObjectiveName = original.ServiceObjectiveNameP11
+	ServiceObjectiveNameP15         ServiceObjectiveName = original.ServiceObjectiveNameP15
+	ServiceObjectiveNameP2          ServiceObjectiveName = original.ServiceObjectiveNameP2
+	ServiceObjectiveNameP3          ServiceObjectiveName = original.ServiceObjectiveNameP3
+	ServiceObjectiveNameP4          ServiceObjectiveName = original.ServiceObjectiveNameP4
+	ServiceObjectiveNameP6          ServiceObjectiveName = original.ServiceObjectiveNameP6
+	ServiceObjectiveNameS0          ServiceObjectiveName = original.ServiceObjectiveNameS0
+	ServiceObjectiveNameS1          ServiceObjectiveName = original.ServiceObjectiveNameS1
+	ServiceObjectiveNameS2          ServiceObjectiveName = original.ServiceObjectiveNameS2
+	ServiceObjectiveNameS3          ServiceObjectiveName = original.ServiceObjectiveNameS3
+	ServiceObjectiveNameSystem      ServiceObjectiveName = original.ServiceObjectiveNameSystem
+	ServiceObjectiveNameSystem2     ServiceObjectiveName = original.ServiceObjectiveNameSystem2
 )
 
 type StorageKeyType = original.StorageKeyType
 
 const (
-	SharedAccessKey		StorageKeyType	= original.SharedAccessKey
-	StorageAccessKey	StorageKeyType	= original.StorageAccessKey
+	SharedAccessKey  StorageKeyType = original.SharedAccessKey
+	StorageAccessKey StorageKeyType = original.StorageAccessKey
 )
 
 type TransparentDataEncryptionActivityStatus = original.TransparentDataEncryptionActivityStatus
 
 const (
-	Decrypting	TransparentDataEncryptionActivityStatus	= original.Decrypting
-	Encrypting	TransparentDataEncryptionActivityStatus	= original.Encrypting
+	Decrypting TransparentDataEncryptionActivityStatus = original.Decrypting
+	Encrypting TransparentDataEncryptionActivityStatus = original.Encrypting
 )
 
 type TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatus
 
 const (
-	TransparentDataEncryptionStatusDisabled	TransparentDataEncryptionStatus	= original.TransparentDataEncryptionStatusDisabled
-	TransparentDataEncryptionStatusEnabled	TransparentDataEncryptionStatus	= original.TransparentDataEncryptionStatusEnabled
+	TransparentDataEncryptionStatusDisabled TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatusDisabled
+	TransparentDataEncryptionStatusEnabled  TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatusEnabled
 )
 
 type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest

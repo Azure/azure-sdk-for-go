@@ -31,8 +31,8 @@ type ComponentsClient = original.ComponentsClient
 type ApplicationType = original.ApplicationType
 
 const (
-	Other	ApplicationType	= original.Other
-	Web	ApplicationType	= original.Web
+	Other ApplicationType = original.Other
+	Web   ApplicationType = original.Web
 )
 
 type FlowType = original.FlowType
@@ -50,8 +50,8 @@ const (
 type WebTestKind = original.WebTestKind
 
 const (
-	Multistep	WebTestKind	= original.Multistep
-	Ping		WebTestKind	= original.Ping
+	Multistep WebTestKind = original.Multistep
+	Ping      WebTestKind = original.Ping
 )
 
 type ApplicationInsightsComponent = original.ApplicationInsightsComponent

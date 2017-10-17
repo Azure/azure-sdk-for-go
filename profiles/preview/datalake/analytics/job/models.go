@@ -31,63 +31,63 @@ type GroupClient = original.GroupClient
 type CompileMode = original.CompileMode
 
 const (
-	Full		CompileMode	= original.Full
-	Semantic	CompileMode	= original.Semantic
-	SingleBox	CompileMode	= original.SingleBox
+	Full      CompileMode = original.Full
+	Semantic  CompileMode = original.Semantic
+	SingleBox CompileMode = original.SingleBox
 )
 
 type ResourceType = original.ResourceType
 
 const (
-	JobManagerResource		ResourceType	= original.JobManagerResource
-	JobManagerResourceInUserFolder	ResourceType	= original.JobManagerResourceInUserFolder
-	StatisticsResource		ResourceType	= original.StatisticsResource
-	StatisticsResourceInUserFolder	ResourceType	= original.StatisticsResourceInUserFolder
-	VertexResource			ResourceType	= original.VertexResource
-	VertexResourceInUserFolder	ResourceType	= original.VertexResourceInUserFolder
+	JobManagerResource             ResourceType = original.JobManagerResource
+	JobManagerResourceInUserFolder ResourceType = original.JobManagerResourceInUserFolder
+	StatisticsResource             ResourceType = original.StatisticsResource
+	StatisticsResourceInUserFolder ResourceType = original.StatisticsResourceInUserFolder
+	VertexResource                 ResourceType = original.VertexResource
+	VertexResourceInUserFolder     ResourceType = original.VertexResourceInUserFolder
 )
 
 type Result = original.Result
 
 const (
-	Cancelled	Result	= original.Cancelled
-	Failed		Result	= original.Failed
-	None		Result	= original.None
-	Succeeded	Result	= original.Succeeded
+	Cancelled Result = original.Cancelled
+	Failed    Result = original.Failed
+	None      Result = original.None
+	Succeeded Result = original.Succeeded
 )
 
 type SeverityTypes = original.SeverityTypes
 
 const (
-	Deprecated	SeverityTypes	= original.Deprecated
-	Error		SeverityTypes	= original.Error
-	Info		SeverityTypes	= original.Info
-	SevereWarning	SeverityTypes	= original.SevereWarning
-	UserWarning	SeverityTypes	= original.UserWarning
-	Warning		SeverityTypes	= original.Warning
+	Deprecated    SeverityTypes = original.Deprecated
+	Error         SeverityTypes = original.Error
+	Info          SeverityTypes = original.Info
+	SevereWarning SeverityTypes = original.SevereWarning
+	UserWarning   SeverityTypes = original.UserWarning
+	Warning       SeverityTypes = original.Warning
 )
 
 type State = original.State
 
 const (
-	StateAccepted		State	= original.StateAccepted
-	StateCompiling		State	= original.StateCompiling
-	StateEnded		State	= original.StateEnded
-	StateNew		State	= original.StateNew
-	StatePaused		State	= original.StatePaused
-	StateQueued		State	= original.StateQueued
-	StateRunning		State	= original.StateRunning
-	StateScheduling		State	= original.StateScheduling
-	StateStarting		State	= original.StateStarting
-	StateWaitingForCapacity	State	= original.StateWaitingForCapacity
+	StateAccepted           State = original.StateAccepted
+	StateCompiling          State = original.StateCompiling
+	StateEnded              State = original.StateEnded
+	StateNew                State = original.StateNew
+	StatePaused             State = original.StatePaused
+	StateQueued             State = original.StateQueued
+	StateRunning            State = original.StateRunning
+	StateScheduling         State = original.StateScheduling
+	StateStarting           State = original.StateStarting
+	StateWaitingForCapacity State = original.StateWaitingForCapacity
 )
 
 type Type = original.Type
 
 const (
-	Hive	Type	= original.Hive
-	Scope	Type	= original.Scope
-	USQL	Type	= original.USQL
+	Hive  Type = original.Hive
+	Scope Type = original.Scope
+	USQL  Type = original.USQL
 )
 
 type BaseJobParameters = original.BaseJobParameters

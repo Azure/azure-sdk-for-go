@@ -33,164 +33,164 @@ type ImportTasksClient = original.ImportTasksClient
 type AudienceOperators = original.AudienceOperators
 
 const (
-	EQ	AudienceOperators	= original.EQ
-	GE	AudienceOperators	= original.GE
-	GT	AudienceOperators	= original.GT
-	LE	AudienceOperators	= original.LE
-	LT	AudienceOperators	= original.LT
+	EQ AudienceOperators = original.EQ
+	GE AudienceOperators = original.GE
+	GT AudienceOperators = original.GT
+	LE AudienceOperators = original.LE
+	LT AudienceOperators = original.LT
 )
 
 type CampaignFeedbacks = original.CampaignFeedbacks
 
 const (
-	Actioned	CampaignFeedbacks	= original.Actioned
-	Exited		CampaignFeedbacks	= original.Exited
-	Pushed		CampaignFeedbacks	= original.Pushed
-	Replied		CampaignFeedbacks	= original.Replied
+	Actioned CampaignFeedbacks = original.Actioned
+	Exited   CampaignFeedbacks = original.Exited
+	Pushed   CampaignFeedbacks = original.Pushed
+	Replied  CampaignFeedbacks = original.Replied
 )
 
 type CampaignKinds = original.CampaignKinds
 
 const (
-	Announcements	CampaignKinds	= original.Announcements
-	DataPushes	CampaignKinds	= original.DataPushes
-	NativePushes	CampaignKinds	= original.NativePushes
-	Polls		CampaignKinds	= original.Polls
+	Announcements CampaignKinds = original.Announcements
+	DataPushes    CampaignKinds = original.DataPushes
+	NativePushes  CampaignKinds = original.NativePushes
+	Polls         CampaignKinds = original.Polls
 )
 
 type CampaignStates = original.CampaignStates
 
 const (
-	Draft		CampaignStates	= original.Draft
-	Finished	CampaignStates	= original.Finished
-	InProgress	CampaignStates	= original.InProgress
-	Queued		CampaignStates	= original.Queued
-	Scheduled	CampaignStates	= original.Scheduled
+	Draft      CampaignStates = original.Draft
+	Finished   CampaignStates = original.Finished
+	InProgress CampaignStates = original.InProgress
+	Queued     CampaignStates = original.Queued
+	Scheduled  CampaignStates = original.Scheduled
 )
 
 type CampaignType = original.CampaignType
 
 const (
-	Announcement	CampaignType	= original.Announcement
-	DataPush	CampaignType	= original.DataPush
-	NativePush	CampaignType	= original.NativePush
-	Poll		CampaignType	= original.Poll
+	Announcement CampaignType = original.Announcement
+	DataPush     CampaignType = original.DataPush
+	NativePush   CampaignType = original.NativePush
+	Poll         CampaignType = original.Poll
 )
 
 type CampaignTypes = original.CampaignTypes
 
 const (
-	OnlyNotif	CampaignTypes	= original.OnlyNotif
-	Textbase64	CampaignTypes	= original.Textbase64
-	Texthtml	CampaignTypes	= original.Texthtml
-	Textplain	CampaignTypes	= original.Textplain
+	OnlyNotif  CampaignTypes = original.OnlyNotif
+	Textbase64 CampaignTypes = original.Textbase64
+	Texthtml   CampaignTypes = original.Texthtml
+	Textplain  CampaignTypes = original.Textplain
 )
 
 type DeliveryTimes = original.DeliveryTimes
 
 const (
-	Any		DeliveryTimes	= original.Any
-	Background	DeliveryTimes	= original.Background
-	Session		DeliveryTimes	= original.Session
+	Any        DeliveryTimes = original.Any
+	Background DeliveryTimes = original.Background
+	Session    DeliveryTimes = original.Session
 )
 
 type ExportFormat = original.ExportFormat
 
 const (
-	CsvBlob		ExportFormat	= original.CsvBlob
-	JSONBlob	ExportFormat	= original.JSONBlob
+	CsvBlob  ExportFormat = original.CsvBlob
+	JSONBlob ExportFormat = original.JSONBlob
 )
 
 type ExportState = original.ExportState
 
 const (
-	ExportStateFailed	ExportState	= original.ExportStateFailed
-	ExportStateQueued	ExportState	= original.ExportStateQueued
-	ExportStateStarted	ExportState	= original.ExportStateStarted
-	ExportStateSucceeded	ExportState	= original.ExportStateSucceeded
+	ExportStateFailed    ExportState = original.ExportStateFailed
+	ExportStateQueued    ExportState = original.ExportStateQueued
+	ExportStateStarted   ExportState = original.ExportStateStarted
+	ExportStateSucceeded ExportState = original.ExportStateSucceeded
 )
 
 type ExportType = original.ExportType
 
 const (
-	ExportTypeActivity	ExportType	= original.ExportTypeActivity
-	ExportTypeCrash		ExportType	= original.ExportTypeCrash
-	ExportTypeError		ExportType	= original.ExportTypeError
-	ExportTypeEvent		ExportType	= original.ExportTypeEvent
-	ExportTypeJob		ExportType	= original.ExportTypeJob
-	ExportTypePush		ExportType	= original.ExportTypePush
-	ExportTypeSession	ExportType	= original.ExportTypeSession
-	ExportTypeTag		ExportType	= original.ExportTypeTag
-	ExportTypeToken		ExportType	= original.ExportTypeToken
+	ExportTypeActivity ExportType = original.ExportTypeActivity
+	ExportTypeCrash    ExportType = original.ExportTypeCrash
+	ExportTypeError    ExportType = original.ExportTypeError
+	ExportTypeEvent    ExportType = original.ExportTypeEvent
+	ExportTypeJob      ExportType = original.ExportTypeJob
+	ExportTypePush     ExportType = original.ExportTypePush
+	ExportTypeSession  ExportType = original.ExportTypeSession
+	ExportTypeTag      ExportType = original.ExportTypeTag
+	ExportTypeToken    ExportType = original.ExportTypeToken
 )
 
 type JobStates = original.JobStates
 
 const (
-	JobStatesFailed		JobStates	= original.JobStatesFailed
-	JobStatesQueued		JobStates	= original.JobStatesQueued
-	JobStatesStarted	JobStates	= original.JobStatesStarted
-	JobStatesSucceeded	JobStates	= original.JobStatesSucceeded
+	JobStatesFailed    JobStates = original.JobStatesFailed
+	JobStatesQueued    JobStates = original.JobStatesQueued
+	JobStatesStarted   JobStates = original.JobStatesStarted
+	JobStatesSucceeded JobStates = original.JobStatesSucceeded
 )
 
 type NotificationTypes = original.NotificationTypes
 
 const (
-	Popup	NotificationTypes	= original.Popup
-	System	NotificationTypes	= original.System
+	Popup  NotificationTypes = original.Popup
+	System NotificationTypes = original.System
 )
 
 type ProvisioningStates = original.ProvisioningStates
 
 const (
-	Creating	ProvisioningStates	= original.Creating
-	Succeeded	ProvisioningStates	= original.Succeeded
+	Creating  ProvisioningStates = original.Creating
+	Succeeded ProvisioningStates = original.Succeeded
 )
 
 type PushModes = original.PushModes
 
 const (
-	Manual		PushModes	= original.Manual
-	OneShot		PushModes	= original.OneShot
-	RealTime	PushModes	= original.RealTime
+	Manual   PushModes = original.Manual
+	OneShot  PushModes = original.OneShot
+	RealTime PushModes = original.RealTime
 )
 
 type Type = original.Type
 
 const (
-	TypeAnnouncementFeedback	Type	= original.TypeAnnouncementFeedback
-	TypeApplicationVersion		Type	= original.TypeApplicationVersion
-	TypeBooleanTag			Type	= original.TypeBooleanTag
-	TypeCarrierCountry		Type	= original.TypeCarrierCountry
-	TypeCarrierName			Type	= original.TypeCarrierName
-	TypeDatapushFeedback		Type	= original.TypeDatapushFeedback
-	TypeDateTag			Type	= original.TypeDateTag
-	TypeDeviceManufacturer		Type	= original.TypeDeviceManufacturer
-	TypeDeviceModel			Type	= original.TypeDeviceModel
-	TypeFirmwareVersion		Type	= original.TypeFirmwareVersion
-	TypeGeoFencing			Type	= original.TypeGeoFencing
-	TypeIntegerTag			Type	= original.TypeIntegerTag
-	TypeLanguage			Type	= original.TypeLanguage
-	TypeLocation			Type	= original.TypeLocation
-	TypeNetworkType			Type	= original.TypeNetworkType
-	TypePollAnswerFeedback		Type	= original.TypePollAnswerFeedback
-	TypePollFeedback		Type	= original.TypePollFeedback
-	TypeScreenSize			Type	= original.TypeScreenSize
-	TypeSegment			Type	= original.TypeSegment
-	TypeStringTag			Type	= original.TypeStringTag
+	TypeAnnouncementFeedback Type = original.TypeAnnouncementFeedback
+	TypeApplicationVersion   Type = original.TypeApplicationVersion
+	TypeBooleanTag           Type = original.TypeBooleanTag
+	TypeCarrierCountry       Type = original.TypeCarrierCountry
+	TypeCarrierName          Type = original.TypeCarrierName
+	TypeDatapushFeedback     Type = original.TypeDatapushFeedback
+	TypeDateTag              Type = original.TypeDateTag
+	TypeDeviceManufacturer   Type = original.TypeDeviceManufacturer
+	TypeDeviceModel          Type = original.TypeDeviceModel
+	TypeFirmwareVersion      Type = original.TypeFirmwareVersion
+	TypeGeoFencing           Type = original.TypeGeoFencing
+	TypeIntegerTag           Type = original.TypeIntegerTag
+	TypeLanguage             Type = original.TypeLanguage
+	TypeLocation             Type = original.TypeLocation
+	TypeNetworkType          Type = original.TypeNetworkType
+	TypePollAnswerFeedback   Type = original.TypePollAnswerFeedback
+	TypePollFeedback         Type = original.TypePollFeedback
+	TypeScreenSize           Type = original.TypeScreenSize
+	TypeSegment              Type = original.TypeSegment
+	TypeStringTag            Type = original.TypeStringTag
 )
 
 type TypeFilter = original.TypeFilter
 
 const (
-	TypeAppInfo		TypeFilter	= original.TypeAppInfo
-	TypeEngageActiveUsers	TypeFilter	= original.TypeEngageActiveUsers
-	TypeEngageIdleUsers	TypeFilter	= original.TypeEngageIdleUsers
-	TypeEngageNewUsers	TypeFilter	= original.TypeEngageNewUsers
-	TypeEngageOldUsers	TypeFilter	= original.TypeEngageOldUsers
-	TypeEngageSubset	TypeFilter	= original.TypeEngageSubset
-	TypeNativePushEnabled	TypeFilter	= original.TypeNativePushEnabled
-	TypePushQuota		TypeFilter	= original.TypePushQuota
+	TypeAppInfo           TypeFilter = original.TypeAppInfo
+	TypeEngageActiveUsers TypeFilter = original.TypeEngageActiveUsers
+	TypeEngageIdleUsers   TypeFilter = original.TypeEngageIdleUsers
+	TypeEngageNewUsers    TypeFilter = original.TypeEngageNewUsers
+	TypeEngageOldUsers    TypeFilter = original.TypeEngageOldUsers
+	TypeEngageSubset      TypeFilter = original.TypeEngageSubset
+	TypeNativePushEnabled TypeFilter = original.TypeNativePushEnabled
+	TypePushQuota         TypeFilter = original.TypePushQuota
 )
 
 type AnnouncementFeedbackCriterion = original.AnnouncementFeedbackCriterion

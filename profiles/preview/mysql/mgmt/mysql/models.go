@@ -40,45 +40,45 @@ type LogFilesClient = original.LogFilesClient
 type CreateMode = original.CreateMode
 
 const (
-	CreateModeDefault		CreateMode	= original.CreateModeDefault
-	CreateModePointInTimeRestore	CreateMode	= original.CreateModePointInTimeRestore
+	CreateModeDefault            CreateMode = original.CreateModeDefault
+	CreateModePointInTimeRestore CreateMode = original.CreateModePointInTimeRestore
 )
 
 type OperationOrigin = original.OperationOrigin
 
 const (
-	NotSpecified	OperationOrigin	= original.NotSpecified
-	System		OperationOrigin	= original.System
-	User		OperationOrigin	= original.User
+	NotSpecified OperationOrigin = original.NotSpecified
+	System       OperationOrigin = original.System
+	User         OperationOrigin = original.User
 )
 
 type ServerState = original.ServerState
 
 const (
-	Disabled	ServerState	= original.Disabled
-	Dropping	ServerState	= original.Dropping
-	Ready		ServerState	= original.Ready
+	Disabled ServerState = original.Disabled
+	Dropping ServerState = original.Dropping
+	Ready    ServerState = original.Ready
 )
 
 type ServerVersion = original.ServerVersion
 
 const (
-	FiveFullStopSeven	ServerVersion	= original.FiveFullStopSeven
-	FiveFullStopSix		ServerVersion	= original.FiveFullStopSix
+	FiveFullStopSeven ServerVersion = original.FiveFullStopSeven
+	FiveFullStopSix   ServerVersion = original.FiveFullStopSix
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	Basic		SkuTier	= original.Basic
-	Standard	SkuTier	= original.Standard
+	Basic    SkuTier = original.Basic
+	Standard SkuTier = original.Standard
 )
 
 type SslEnforcementEnum = original.SslEnforcementEnum
 
 const (
-	SslEnforcementEnumDisabled	SslEnforcementEnum	= original.SslEnforcementEnumDisabled
-	SslEnforcementEnumEnabled	SslEnforcementEnum	= original.SslEnforcementEnumEnabled
+	SslEnforcementEnumDisabled SslEnforcementEnum = original.SslEnforcementEnumDisabled
+	SslEnforcementEnumEnabled  SslEnforcementEnum = original.SslEnforcementEnumEnabled
 )
 
 type Configuration = original.Configuration

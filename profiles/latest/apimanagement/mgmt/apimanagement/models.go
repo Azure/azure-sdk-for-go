@@ -32,192 +32,192 @@ type ManagementClient = original.ManagementClient
 type APIProtocolContract = original.APIProtocolContract
 
 const (
-	HTTP	APIProtocolContract	= original.HTTP
-	HTTPS	APIProtocolContract	= original.HTTPS
+	HTTP  APIProtocolContract = original.HTTP
+	HTTPS APIProtocolContract = original.HTTPS
 )
 
 type APITypeContract = original.APITypeContract
 
 const (
-	APITypeContractHTTP	APITypeContract	= original.APITypeContractHTTP
-	APITypeContractSoap	APITypeContract	= original.APITypeContractSoap
+	APITypeContractHTTP APITypeContract = original.APITypeContractHTTP
+	APITypeContractSoap APITypeContract = original.APITypeContractSoap
 )
 
 type AsyncOperationState = original.AsyncOperationState
 
 const (
-	Failed		AsyncOperationState	= original.Failed
-	InProgress	AsyncOperationState	= original.InProgress
-	Started		AsyncOperationState	= original.Started
-	Succeeded	AsyncOperationState	= original.Succeeded
+	Failed     AsyncOperationState = original.Failed
+	InProgress AsyncOperationState = original.InProgress
+	Started    AsyncOperationState = original.Started
+	Succeeded  AsyncOperationState = original.Succeeded
 )
 
 type BackendProtocol = original.BackendProtocol
 
 const (
-	BackendProtocolHTTP	BackendProtocol	= original.BackendProtocolHTTP
-	BackendProtocolSoap	BackendProtocol	= original.BackendProtocolSoap
+	BackendProtocolHTTP BackendProtocol = original.BackendProtocolHTTP
+	BackendProtocolSoap BackendProtocol = original.BackendProtocolSoap
 )
 
 type BearerTokenSendingMethodsContract = original.BearerTokenSendingMethodsContract
 
 const (
-	AuthorizationHeader	BearerTokenSendingMethodsContract	= original.AuthorizationHeader
-	Query			BearerTokenSendingMethodsContract	= original.Query
+	AuthorizationHeader BearerTokenSendingMethodsContract = original.AuthorizationHeader
+	Query               BearerTokenSendingMethodsContract = original.Query
 )
 
 type ClientAuthenticationMethodContract = original.ClientAuthenticationMethodContract
 
 const (
-	Basic	ClientAuthenticationMethodContract	= original.Basic
-	Body	ClientAuthenticationMethodContract	= original.Body
+	Basic ClientAuthenticationMethodContract = original.Basic
+	Body  ClientAuthenticationMethodContract = original.Body
 )
 
 type ConnectivityStatusType = original.ConnectivityStatusType
 
 const (
-	Failure		ConnectivityStatusType	= original.Failure
-	Initializing	ConnectivityStatusType	= original.Initializing
-	Success		ConnectivityStatusType	= original.Success
+	Failure      ConnectivityStatusType = original.Failure
+	Initializing ConnectivityStatusType = original.Initializing
+	Success      ConnectivityStatusType = original.Success
 )
 
 type GrantTypesContract = original.GrantTypesContract
 
 const (
-	AuthorizationCode	GrantTypesContract	= original.AuthorizationCode
-	ClientCredentials	GrantTypesContract	= original.ClientCredentials
-	Implicit		GrantTypesContract	= original.Implicit
-	ResourceOwnerPassword	GrantTypesContract	= original.ResourceOwnerPassword
+	AuthorizationCode     GrantTypesContract = original.AuthorizationCode
+	ClientCredentials     GrantTypesContract = original.ClientCredentials
+	Implicit              GrantTypesContract = original.Implicit
+	ResourceOwnerPassword GrantTypesContract = original.ResourceOwnerPassword
 )
 
 type GroupTypeContract = original.GroupTypeContract
 
 const (
-	Custom		GroupTypeContract	= original.Custom
-	External	GroupTypeContract	= original.External
-	System		GroupTypeContract	= original.System
+	Custom   GroupTypeContract = original.Custom
+	External GroupTypeContract = original.External
+	System   GroupTypeContract = original.System
 )
 
 type HostnameType = original.HostnameType
 
 const (
-	Management	HostnameType	= original.Management
-	Portal		HostnameType	= original.Portal
-	Proxy		HostnameType	= original.Proxy
-	Scm		HostnameType	= original.Scm
+	Management HostnameType = original.Management
+	Portal     HostnameType = original.Portal
+	Proxy      HostnameType = original.Proxy
+	Scm        HostnameType = original.Scm
 )
 
 type HTTPStatusCode = original.HTTPStatusCode
 
 const (
-	Accepted	HTTPStatusCode	= original.Accepted
-	Conflict	HTTPStatusCode	= original.Conflict
-	Continue	HTTPStatusCode	= original.Continue
-	Created		HTTPStatusCode	= original.Created
-	NotFound	HTTPStatusCode	= original.NotFound
-	OK		HTTPStatusCode	= original.OK
+	Accepted HTTPStatusCode = original.Accepted
+	Conflict HTTPStatusCode = original.Conflict
+	Continue HTTPStatusCode = original.Continue
+	Created  HTTPStatusCode = original.Created
+	NotFound HTTPStatusCode = original.NotFound
+	OK       HTTPStatusCode = original.OK
 )
 
 type IdentityProviderNameType = original.IdentityProviderNameType
 
 const (
-	Aad		IdentityProviderNameType	= original.Aad
-	AadB2C		IdentityProviderNameType	= original.AadB2C
-	Facebook	IdentityProviderNameType	= original.Facebook
-	Google		IdentityProviderNameType	= original.Google
-	Microsoft	IdentityProviderNameType	= original.Microsoft
-	Twitter		IdentityProviderNameType	= original.Twitter
+	Aad       IdentityProviderNameType = original.Aad
+	AadB2C    IdentityProviderNameType = original.AadB2C
+	Facebook  IdentityProviderNameType = original.Facebook
+	Google    IdentityProviderNameType = original.Google
+	Microsoft IdentityProviderNameType = original.Microsoft
+	Twitter   IdentityProviderNameType = original.Twitter
 )
 
 type KeyTypeContract = original.KeyTypeContract
 
 const (
-	Primary		KeyTypeContract	= original.Primary
-	Secondary	KeyTypeContract	= original.Secondary
+	Primary   KeyTypeContract = original.Primary
+	Secondary KeyTypeContract = original.Secondary
 )
 
 type MethodContract = original.MethodContract
 
 const (
-	DELETE	MethodContract	= original.DELETE
-	GET	MethodContract	= original.GET
-	HEAD	MethodContract	= original.HEAD
-	OPTIONS	MethodContract	= original.OPTIONS
-	PATCH	MethodContract	= original.PATCH
-	POST	MethodContract	= original.POST
-	PUT	MethodContract	= original.PUT
-	TRACE	MethodContract	= original.TRACE
+	DELETE  MethodContract = original.DELETE
+	GET     MethodContract = original.GET
+	HEAD    MethodContract = original.HEAD
+	OPTIONS MethodContract = original.OPTIONS
+	PATCH   MethodContract = original.PATCH
+	POST    MethodContract = original.POST
+	PUT     MethodContract = original.PUT
+	TRACE   MethodContract = original.TRACE
 )
 
 type NameAvailabilityReason = original.NameAvailabilityReason
 
 const (
-	AlreadyExists	NameAvailabilityReason	= original.AlreadyExists
-	Invalid		NameAvailabilityReason	= original.Invalid
-	Valid		NameAvailabilityReason	= original.Valid
+	AlreadyExists NameAvailabilityReason = original.AlreadyExists
+	Invalid       NameAvailabilityReason = original.Invalid
+	Valid         NameAvailabilityReason = original.Valid
 )
 
 type PolicyScopeContract = original.PolicyScopeContract
 
 const (
-	PolicyScopeContractAll		PolicyScopeContract	= original.PolicyScopeContractAll
-	PolicyScopeContractAPI		PolicyScopeContract	= original.PolicyScopeContractAPI
-	PolicyScopeContractOperation	PolicyScopeContract	= original.PolicyScopeContractOperation
-	PolicyScopeContractProduct	PolicyScopeContract	= original.PolicyScopeContractProduct
-	PolicyScopeContractTenant	PolicyScopeContract	= original.PolicyScopeContractTenant
+	PolicyScopeContractAll       PolicyScopeContract = original.PolicyScopeContractAll
+	PolicyScopeContractAPI       PolicyScopeContract = original.PolicyScopeContractAPI
+	PolicyScopeContractOperation PolicyScopeContract = original.PolicyScopeContractOperation
+	PolicyScopeContractProduct   PolicyScopeContract = original.PolicyScopeContractProduct
+	PolicyScopeContractTenant    PolicyScopeContract = original.PolicyScopeContractTenant
 )
 
 type ProductStateContract = original.ProductStateContract
 
 const (
-	NotPublished	ProductStateContract	= original.NotPublished
-	Published	ProductStateContract	= original.Published
+	NotPublished ProductStateContract = original.NotPublished
+	Published    ProductStateContract = original.Published
 )
 
 type ReportsAggregation = original.ReportsAggregation
 
 const (
-	ByAPI		ReportsAggregation	= original.ByAPI
-	ByGeo		ReportsAggregation	= original.ByGeo
-	ByOperation	ReportsAggregation	= original.ByOperation
-	ByProduct	ReportsAggregation	= original.ByProduct
-	BySubscription	ReportsAggregation	= original.BySubscription
-	ByTime		ReportsAggregation	= original.ByTime
-	ByUser		ReportsAggregation	= original.ByUser
+	ByAPI          ReportsAggregation = original.ByAPI
+	ByGeo          ReportsAggregation = original.ByGeo
+	ByOperation    ReportsAggregation = original.ByOperation
+	ByProduct      ReportsAggregation = original.ByProduct
+	BySubscription ReportsAggregation = original.BySubscription
+	ByTime         ReportsAggregation = original.ByTime
+	ByUser         ReportsAggregation = original.ByUser
 )
 
 type SkuType = original.SkuType
 
 const (
-	Developer	SkuType	= original.Developer
-	Premium		SkuType	= original.Premium
-	Standard	SkuType	= original.Standard
+	Developer SkuType = original.Developer
+	Premium   SkuType = original.Premium
+	Standard  SkuType = original.Standard
 )
 
 type SubscriptionStateContract = original.SubscriptionStateContract
 
 const (
-	Active		SubscriptionStateContract	= original.Active
-	Cancelled	SubscriptionStateContract	= original.Cancelled
-	Expired		SubscriptionStateContract	= original.Expired
-	Rejected	SubscriptionStateContract	= original.Rejected
-	Submitted	SubscriptionStateContract	= original.Submitted
-	Suspended	SubscriptionStateContract	= original.Suspended
+	Active    SubscriptionStateContract = original.Active
+	Cancelled SubscriptionStateContract = original.Cancelled
+	Expired   SubscriptionStateContract = original.Expired
+	Rejected  SubscriptionStateContract = original.Rejected
+	Submitted SubscriptionStateContract = original.Submitted
+	Suspended SubscriptionStateContract = original.Suspended
 )
 
 type UserStateContract = original.UserStateContract
 
 const (
-	UserStateContractActive		UserStateContract	= original.UserStateContractActive
-	UserStateContractBlocked	UserStateContract	= original.UserStateContractBlocked
+	UserStateContractActive  UserStateContract = original.UserStateContractActive
+	UserStateContractBlocked UserStateContract = original.UserStateContractBlocked
 )
 
 type VirtualNetworkType = original.VirtualNetworkType
 
 const (
-	VirtualNetworkTypeExternal	VirtualNetworkType	= original.VirtualNetworkTypeExternal
-	VirtualNetworkTypeInternal	VirtualNetworkType	= original.VirtualNetworkTypeInternal
-	VirtualNetworkTypeNone		VirtualNetworkType	= original.VirtualNetworkTypeNone
+	VirtualNetworkTypeExternal VirtualNetworkType = original.VirtualNetworkTypeExternal
+	VirtualNetworkTypeInternal VirtualNetworkType = original.VirtualNetworkTypeInternal
+	VirtualNetworkTypeNone     VirtualNetworkType = original.VirtualNetworkTypeNone
 )
 
 type AccessInformationContract = original.AccessInformationContract

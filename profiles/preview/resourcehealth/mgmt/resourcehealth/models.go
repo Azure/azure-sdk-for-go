@@ -32,16 +32,16 @@ type ManagementClient = original.ManagementClient
 type AvailabilityStateValues = original.AvailabilityStateValues
 
 const (
-	Available	AvailabilityStateValues	= original.Available
-	Unavailable	AvailabilityStateValues	= original.Unavailable
-	Unknown		AvailabilityStateValues	= original.Unknown
+	Available   AvailabilityStateValues = original.Available
+	Unavailable AvailabilityStateValues = original.Unavailable
+	Unknown     AvailabilityStateValues = original.Unknown
 )
 
 type ReasonChronicityTypes = original.ReasonChronicityTypes
 
 const (
-	Persistent	ReasonChronicityTypes	= original.Persistent
-	Transient	ReasonChronicityTypes	= original.Transient
+	Persistent ReasonChronicityTypes = original.Persistent
+	Transient  ReasonChronicityTypes = original.Transient
 )
 
 type AvailabilityStatus = original.AvailabilityStatus

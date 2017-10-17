@@ -25,52 +25,52 @@ import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-02-0
 type DayOfWeek = original.DayOfWeek
 
 const (
-	Everyday	DayOfWeek	= original.Everyday
-	Friday		DayOfWeek	= original.Friday
-	Monday		DayOfWeek	= original.Monday
-	Saturday	DayOfWeek	= original.Saturday
-	Sunday		DayOfWeek	= original.Sunday
-	Thursday	DayOfWeek	= original.Thursday
-	Tuesday		DayOfWeek	= original.Tuesday
-	Wednesday	DayOfWeek	= original.Wednesday
-	Weekend		DayOfWeek	= original.Weekend
+	Everyday  DayOfWeek = original.Everyday
+	Friday    DayOfWeek = original.Friday
+	Monday    DayOfWeek = original.Monday
+	Saturday  DayOfWeek = original.Saturday
+	Sunday    DayOfWeek = original.Sunday
+	Thursday  DayOfWeek = original.Thursday
+	Tuesday   DayOfWeek = original.Tuesday
+	Wednesday DayOfWeek = original.Wednesday
+	Weekend   DayOfWeek = original.Weekend
 )
 
 type RebootType = original.RebootType
 
 const (
-	AllNodes	RebootType	= original.AllNodes
-	PrimaryNode	RebootType	= original.PrimaryNode
-	SecondaryNode	RebootType	= original.SecondaryNode
+	AllNodes      RebootType = original.AllNodes
+	PrimaryNode   RebootType = original.PrimaryNode
+	SecondaryNode RebootType = original.SecondaryNode
 )
 
 type RedisKeyType = original.RedisKeyType
 
 const (
-	Primary		RedisKeyType	= original.Primary
-	Secondary	RedisKeyType	= original.Secondary
+	Primary   RedisKeyType = original.Primary
+	Secondary RedisKeyType = original.Secondary
 )
 
 type ReplicationRole = original.ReplicationRole
 
 const (
-	ReplicationRolePrimary		ReplicationRole	= original.ReplicationRolePrimary
-	ReplicationRoleSecondary	ReplicationRole	= original.ReplicationRoleSecondary
+	ReplicationRolePrimary   ReplicationRole = original.ReplicationRolePrimary
+	ReplicationRoleSecondary ReplicationRole = original.ReplicationRoleSecondary
 )
 
 type SkuFamily = original.SkuFamily
 
 const (
-	C	SkuFamily	= original.C
-	P	SkuFamily	= original.P
+	C SkuFamily = original.C
+	P SkuFamily = original.P
 )
 
 type SkuName = original.SkuName
 
 const (
-	Basic		SkuName	= original.Basic
-	Premium		SkuName	= original.Premium
-	Standard	SkuName	= original.Standard
+	Basic    SkuName = original.Basic
+	Premium  SkuName = original.Premium
+	Standard SkuName = original.Standard
 )
 
 type ExportRDBParameters = original.ExportRDBParameters

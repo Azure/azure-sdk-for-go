@@ -51,592 +51,592 @@ type DeployedApplicationsClient = original.DeployedApplicationsClient
 type AggregatedHealthState = original.AggregatedHealthState
 
 const (
-	Error	AggregatedHealthState	= original.Error
-	Invalid	AggregatedHealthState	= original.Invalid
-	Ok	AggregatedHealthState	= original.Ok
-	Unknown	AggregatedHealthState	= original.Unknown
-	Warning	AggregatedHealthState	= original.Warning
+	Error   AggregatedHealthState = original.Error
+	Invalid AggregatedHealthState = original.Invalid
+	Ok      AggregatedHealthState = original.Ok
+	Unknown AggregatedHealthState = original.Unknown
+	Warning AggregatedHealthState = original.Warning
 )
 
 type AggregatedHealthState1 = original.AggregatedHealthState1
 
 const (
-	AggregatedHealthState1Error	AggregatedHealthState1	= original.AggregatedHealthState1Error
-	AggregatedHealthState1Invalid	AggregatedHealthState1	= original.AggregatedHealthState1Invalid
-	AggregatedHealthState1Ok	AggregatedHealthState1	= original.AggregatedHealthState1Ok
-	AggregatedHealthState1Unknown	AggregatedHealthState1	= original.AggregatedHealthState1Unknown
-	AggregatedHealthState1Warning	AggregatedHealthState1	= original.AggregatedHealthState1Warning
+	AggregatedHealthState1Error   AggregatedHealthState1 = original.AggregatedHealthState1Error
+	AggregatedHealthState1Invalid AggregatedHealthState1 = original.AggregatedHealthState1Invalid
+	AggregatedHealthState1Ok      AggregatedHealthState1 = original.AggregatedHealthState1Ok
+	AggregatedHealthState1Unknown AggregatedHealthState1 = original.AggregatedHealthState1Unknown
+	AggregatedHealthState1Warning AggregatedHealthState1 = original.AggregatedHealthState1Warning
 )
 
 type AggregatedHealthState10 = original.AggregatedHealthState10
 
 const (
-	AggregatedHealthState10Error	AggregatedHealthState10	= original.AggregatedHealthState10Error
-	AggregatedHealthState10Invalid	AggregatedHealthState10	= original.AggregatedHealthState10Invalid
-	AggregatedHealthState10Ok	AggregatedHealthState10	= original.AggregatedHealthState10Ok
-	AggregatedHealthState10Unknown	AggregatedHealthState10	= original.AggregatedHealthState10Unknown
-	AggregatedHealthState10Warning	AggregatedHealthState10	= original.AggregatedHealthState10Warning
+	AggregatedHealthState10Error   AggregatedHealthState10 = original.AggregatedHealthState10Error
+	AggregatedHealthState10Invalid AggregatedHealthState10 = original.AggregatedHealthState10Invalid
+	AggregatedHealthState10Ok      AggregatedHealthState10 = original.AggregatedHealthState10Ok
+	AggregatedHealthState10Unknown AggregatedHealthState10 = original.AggregatedHealthState10Unknown
+	AggregatedHealthState10Warning AggregatedHealthState10 = original.AggregatedHealthState10Warning
 )
 
 type AggregatedHealthState11 = original.AggregatedHealthState11
 
 const (
-	AggregatedHealthState11Error	AggregatedHealthState11	= original.AggregatedHealthState11Error
-	AggregatedHealthState11Invalid	AggregatedHealthState11	= original.AggregatedHealthState11Invalid
-	AggregatedHealthState11Ok	AggregatedHealthState11	= original.AggregatedHealthState11Ok
-	AggregatedHealthState11Unknown	AggregatedHealthState11	= original.AggregatedHealthState11Unknown
-	AggregatedHealthState11Warning	AggregatedHealthState11	= original.AggregatedHealthState11Warning
+	AggregatedHealthState11Error   AggregatedHealthState11 = original.AggregatedHealthState11Error
+	AggregatedHealthState11Invalid AggregatedHealthState11 = original.AggregatedHealthState11Invalid
+	AggregatedHealthState11Ok      AggregatedHealthState11 = original.AggregatedHealthState11Ok
+	AggregatedHealthState11Unknown AggregatedHealthState11 = original.AggregatedHealthState11Unknown
+	AggregatedHealthState11Warning AggregatedHealthState11 = original.AggregatedHealthState11Warning
 )
 
 type AggregatedHealthState12 = original.AggregatedHealthState12
 
 const (
-	AggregatedHealthState12Error	AggregatedHealthState12	= original.AggregatedHealthState12Error
-	AggregatedHealthState12Invalid	AggregatedHealthState12	= original.AggregatedHealthState12Invalid
-	AggregatedHealthState12Ok	AggregatedHealthState12	= original.AggregatedHealthState12Ok
-	AggregatedHealthState12Unknown	AggregatedHealthState12	= original.AggregatedHealthState12Unknown
-	AggregatedHealthState12Warning	AggregatedHealthState12	= original.AggregatedHealthState12Warning
+	AggregatedHealthState12Error   AggregatedHealthState12 = original.AggregatedHealthState12Error
+	AggregatedHealthState12Invalid AggregatedHealthState12 = original.AggregatedHealthState12Invalid
+	AggregatedHealthState12Ok      AggregatedHealthState12 = original.AggregatedHealthState12Ok
+	AggregatedHealthState12Unknown AggregatedHealthState12 = original.AggregatedHealthState12Unknown
+	AggregatedHealthState12Warning AggregatedHealthState12 = original.AggregatedHealthState12Warning
 )
 
 type AggregatedHealthState13 = original.AggregatedHealthState13
 
 const (
-	AggregatedHealthState13Error	AggregatedHealthState13	= original.AggregatedHealthState13Error
-	AggregatedHealthState13Invalid	AggregatedHealthState13	= original.AggregatedHealthState13Invalid
-	AggregatedHealthState13Ok	AggregatedHealthState13	= original.AggregatedHealthState13Ok
-	AggregatedHealthState13Unknown	AggregatedHealthState13	= original.AggregatedHealthState13Unknown
-	AggregatedHealthState13Warning	AggregatedHealthState13	= original.AggregatedHealthState13Warning
+	AggregatedHealthState13Error   AggregatedHealthState13 = original.AggregatedHealthState13Error
+	AggregatedHealthState13Invalid AggregatedHealthState13 = original.AggregatedHealthState13Invalid
+	AggregatedHealthState13Ok      AggregatedHealthState13 = original.AggregatedHealthState13Ok
+	AggregatedHealthState13Unknown AggregatedHealthState13 = original.AggregatedHealthState13Unknown
+	AggregatedHealthState13Warning AggregatedHealthState13 = original.AggregatedHealthState13Warning
 )
 
 type AggregatedHealthState14 = original.AggregatedHealthState14
 
 const (
-	AggregatedHealthState14Error	AggregatedHealthState14	= original.AggregatedHealthState14Error
-	AggregatedHealthState14Invalid	AggregatedHealthState14	= original.AggregatedHealthState14Invalid
-	AggregatedHealthState14Ok	AggregatedHealthState14	= original.AggregatedHealthState14Ok
-	AggregatedHealthState14Unknown	AggregatedHealthState14	= original.AggregatedHealthState14Unknown
-	AggregatedHealthState14Warning	AggregatedHealthState14	= original.AggregatedHealthState14Warning
+	AggregatedHealthState14Error   AggregatedHealthState14 = original.AggregatedHealthState14Error
+	AggregatedHealthState14Invalid AggregatedHealthState14 = original.AggregatedHealthState14Invalid
+	AggregatedHealthState14Ok      AggregatedHealthState14 = original.AggregatedHealthState14Ok
+	AggregatedHealthState14Unknown AggregatedHealthState14 = original.AggregatedHealthState14Unknown
+	AggregatedHealthState14Warning AggregatedHealthState14 = original.AggregatedHealthState14Warning
 )
 
 type AggregatedHealthState15 = original.AggregatedHealthState15
 
 const (
-	AggregatedHealthState15Error	AggregatedHealthState15	= original.AggregatedHealthState15Error
-	AggregatedHealthState15Invalid	AggregatedHealthState15	= original.AggregatedHealthState15Invalid
-	AggregatedHealthState15Ok	AggregatedHealthState15	= original.AggregatedHealthState15Ok
-	AggregatedHealthState15Unknown	AggregatedHealthState15	= original.AggregatedHealthState15Unknown
-	AggregatedHealthState15Warning	AggregatedHealthState15	= original.AggregatedHealthState15Warning
+	AggregatedHealthState15Error   AggregatedHealthState15 = original.AggregatedHealthState15Error
+	AggregatedHealthState15Invalid AggregatedHealthState15 = original.AggregatedHealthState15Invalid
+	AggregatedHealthState15Ok      AggregatedHealthState15 = original.AggregatedHealthState15Ok
+	AggregatedHealthState15Unknown AggregatedHealthState15 = original.AggregatedHealthState15Unknown
+	AggregatedHealthState15Warning AggregatedHealthState15 = original.AggregatedHealthState15Warning
 )
 
 type AggregatedHealthState2 = original.AggregatedHealthState2
 
 const (
-	AggregatedHealthState2Error	AggregatedHealthState2	= original.AggregatedHealthState2Error
-	AggregatedHealthState2Invalid	AggregatedHealthState2	= original.AggregatedHealthState2Invalid
-	AggregatedHealthState2Ok	AggregatedHealthState2	= original.AggregatedHealthState2Ok
-	AggregatedHealthState2Unknown	AggregatedHealthState2	= original.AggregatedHealthState2Unknown
-	AggregatedHealthState2Warning	AggregatedHealthState2	= original.AggregatedHealthState2Warning
+	AggregatedHealthState2Error   AggregatedHealthState2 = original.AggregatedHealthState2Error
+	AggregatedHealthState2Invalid AggregatedHealthState2 = original.AggregatedHealthState2Invalid
+	AggregatedHealthState2Ok      AggregatedHealthState2 = original.AggregatedHealthState2Ok
+	AggregatedHealthState2Unknown AggregatedHealthState2 = original.AggregatedHealthState2Unknown
+	AggregatedHealthState2Warning AggregatedHealthState2 = original.AggregatedHealthState2Warning
 )
 
 type AggregatedHealthState3 = original.AggregatedHealthState3
 
 const (
-	AggregatedHealthState3Error	AggregatedHealthState3	= original.AggregatedHealthState3Error
-	AggregatedHealthState3Invalid	AggregatedHealthState3	= original.AggregatedHealthState3Invalid
-	AggregatedHealthState3Ok	AggregatedHealthState3	= original.AggregatedHealthState3Ok
-	AggregatedHealthState3Unknown	AggregatedHealthState3	= original.AggregatedHealthState3Unknown
-	AggregatedHealthState3Warning	AggregatedHealthState3	= original.AggregatedHealthState3Warning
+	AggregatedHealthState3Error   AggregatedHealthState3 = original.AggregatedHealthState3Error
+	AggregatedHealthState3Invalid AggregatedHealthState3 = original.AggregatedHealthState3Invalid
+	AggregatedHealthState3Ok      AggregatedHealthState3 = original.AggregatedHealthState3Ok
+	AggregatedHealthState3Unknown AggregatedHealthState3 = original.AggregatedHealthState3Unknown
+	AggregatedHealthState3Warning AggregatedHealthState3 = original.AggregatedHealthState3Warning
 )
 
 type AggregatedHealthState4 = original.AggregatedHealthState4
 
 const (
-	AggregatedHealthState4Error	AggregatedHealthState4	= original.AggregatedHealthState4Error
-	AggregatedHealthState4Invalid	AggregatedHealthState4	= original.AggregatedHealthState4Invalid
-	AggregatedHealthState4Ok	AggregatedHealthState4	= original.AggregatedHealthState4Ok
-	AggregatedHealthState4Unknown	AggregatedHealthState4	= original.AggregatedHealthState4Unknown
-	AggregatedHealthState4Warning	AggregatedHealthState4	= original.AggregatedHealthState4Warning
+	AggregatedHealthState4Error   AggregatedHealthState4 = original.AggregatedHealthState4Error
+	AggregatedHealthState4Invalid AggregatedHealthState4 = original.AggregatedHealthState4Invalid
+	AggregatedHealthState4Ok      AggregatedHealthState4 = original.AggregatedHealthState4Ok
+	AggregatedHealthState4Unknown AggregatedHealthState4 = original.AggregatedHealthState4Unknown
+	AggregatedHealthState4Warning AggregatedHealthState4 = original.AggregatedHealthState4Warning
 )
 
 type AggregatedHealthState5 = original.AggregatedHealthState5
 
 const (
-	AggregatedHealthState5Error	AggregatedHealthState5	= original.AggregatedHealthState5Error
-	AggregatedHealthState5Invalid	AggregatedHealthState5	= original.AggregatedHealthState5Invalid
-	AggregatedHealthState5Ok	AggregatedHealthState5	= original.AggregatedHealthState5Ok
-	AggregatedHealthState5Unknown	AggregatedHealthState5	= original.AggregatedHealthState5Unknown
-	AggregatedHealthState5Warning	AggregatedHealthState5	= original.AggregatedHealthState5Warning
+	AggregatedHealthState5Error   AggregatedHealthState5 = original.AggregatedHealthState5Error
+	AggregatedHealthState5Invalid AggregatedHealthState5 = original.AggregatedHealthState5Invalid
+	AggregatedHealthState5Ok      AggregatedHealthState5 = original.AggregatedHealthState5Ok
+	AggregatedHealthState5Unknown AggregatedHealthState5 = original.AggregatedHealthState5Unknown
+	AggregatedHealthState5Warning AggregatedHealthState5 = original.AggregatedHealthState5Warning
 )
 
 type AggregatedHealthState6 = original.AggregatedHealthState6
 
 const (
-	AggregatedHealthState6Error	AggregatedHealthState6	= original.AggregatedHealthState6Error
-	AggregatedHealthState6Invalid	AggregatedHealthState6	= original.AggregatedHealthState6Invalid
-	AggregatedHealthState6Ok	AggregatedHealthState6	= original.AggregatedHealthState6Ok
-	AggregatedHealthState6Unknown	AggregatedHealthState6	= original.AggregatedHealthState6Unknown
-	AggregatedHealthState6Warning	AggregatedHealthState6	= original.AggregatedHealthState6Warning
+	AggregatedHealthState6Error   AggregatedHealthState6 = original.AggregatedHealthState6Error
+	AggregatedHealthState6Invalid AggregatedHealthState6 = original.AggregatedHealthState6Invalid
+	AggregatedHealthState6Ok      AggregatedHealthState6 = original.AggregatedHealthState6Ok
+	AggregatedHealthState6Unknown AggregatedHealthState6 = original.AggregatedHealthState6Unknown
+	AggregatedHealthState6Warning AggregatedHealthState6 = original.AggregatedHealthState6Warning
 )
 
 type AggregatedHealthState7 = original.AggregatedHealthState7
 
 const (
-	AggregatedHealthState7Error	AggregatedHealthState7	= original.AggregatedHealthState7Error
-	AggregatedHealthState7Invalid	AggregatedHealthState7	= original.AggregatedHealthState7Invalid
-	AggregatedHealthState7Ok	AggregatedHealthState7	= original.AggregatedHealthState7Ok
-	AggregatedHealthState7Unknown	AggregatedHealthState7	= original.AggregatedHealthState7Unknown
-	AggregatedHealthState7Warning	AggregatedHealthState7	= original.AggregatedHealthState7Warning
+	AggregatedHealthState7Error   AggregatedHealthState7 = original.AggregatedHealthState7Error
+	AggregatedHealthState7Invalid AggregatedHealthState7 = original.AggregatedHealthState7Invalid
+	AggregatedHealthState7Ok      AggregatedHealthState7 = original.AggregatedHealthState7Ok
+	AggregatedHealthState7Unknown AggregatedHealthState7 = original.AggregatedHealthState7Unknown
+	AggregatedHealthState7Warning AggregatedHealthState7 = original.AggregatedHealthState7Warning
 )
 
 type AggregatedHealthState8 = original.AggregatedHealthState8
 
 const (
-	AggregatedHealthState8Error	AggregatedHealthState8	= original.AggregatedHealthState8Error
-	AggregatedHealthState8Invalid	AggregatedHealthState8	= original.AggregatedHealthState8Invalid
-	AggregatedHealthState8Ok	AggregatedHealthState8	= original.AggregatedHealthState8Ok
-	AggregatedHealthState8Unknown	AggregatedHealthState8	= original.AggregatedHealthState8Unknown
-	AggregatedHealthState8Warning	AggregatedHealthState8	= original.AggregatedHealthState8Warning
+	AggregatedHealthState8Error   AggregatedHealthState8 = original.AggregatedHealthState8Error
+	AggregatedHealthState8Invalid AggregatedHealthState8 = original.AggregatedHealthState8Invalid
+	AggregatedHealthState8Ok      AggregatedHealthState8 = original.AggregatedHealthState8Ok
+	AggregatedHealthState8Unknown AggregatedHealthState8 = original.AggregatedHealthState8Unknown
+	AggregatedHealthState8Warning AggregatedHealthState8 = original.AggregatedHealthState8Warning
 )
 
 type AggregatedHealthState9 = original.AggregatedHealthState9
 
 const (
-	AggregatedHealthState9Error	AggregatedHealthState9	= original.AggregatedHealthState9Error
-	AggregatedHealthState9Invalid	AggregatedHealthState9	= original.AggregatedHealthState9Invalid
-	AggregatedHealthState9Ok	AggregatedHealthState9	= original.AggregatedHealthState9Ok
-	AggregatedHealthState9Unknown	AggregatedHealthState9	= original.AggregatedHealthState9Unknown
-	AggregatedHealthState9Warning	AggregatedHealthState9	= original.AggregatedHealthState9Warning
+	AggregatedHealthState9Error   AggregatedHealthState9 = original.AggregatedHealthState9Error
+	AggregatedHealthState9Invalid AggregatedHealthState9 = original.AggregatedHealthState9Invalid
+	AggregatedHealthState9Ok      AggregatedHealthState9 = original.AggregatedHealthState9Ok
+	AggregatedHealthState9Unknown AggregatedHealthState9 = original.AggregatedHealthState9Unknown
+	AggregatedHealthState9Warning AggregatedHealthState9 = original.AggregatedHealthState9Warning
 )
 
 type DeactivationIntent = original.DeactivationIntent
 
 const (
-	Pause		DeactivationIntent	= original.Pause
-	RemoveData	DeactivationIntent	= original.RemoveData
-	RemoveNode	DeactivationIntent	= original.RemoveNode
-	Restart		DeactivationIntent	= original.Restart
+	Pause      DeactivationIntent = original.Pause
+	RemoveData DeactivationIntent = original.RemoveData
+	RemoveNode DeactivationIntent = original.RemoveNode
+	Restart    DeactivationIntent = original.Restart
 )
 
 type DefaultMoveCost = original.DefaultMoveCost
 
 const (
-	High	DefaultMoveCost	= original.High
-	Low	DefaultMoveCost	= original.Low
-	Medium	DefaultMoveCost	= original.Medium
-	Zero	DefaultMoveCost	= original.Zero
+	High   DefaultMoveCost = original.High
+	Low    DefaultMoveCost = original.Low
+	Medium DefaultMoveCost = original.Medium
+	Zero   DefaultMoveCost = original.Zero
 )
 
 type DefaultMoveCost1 = original.DefaultMoveCost1
 
 const (
-	DefaultMoveCost1High	DefaultMoveCost1	= original.DefaultMoveCost1High
-	DefaultMoveCost1Low	DefaultMoveCost1	= original.DefaultMoveCost1Low
-	DefaultMoveCost1Medium	DefaultMoveCost1	= original.DefaultMoveCost1Medium
-	DefaultMoveCost1Zero	DefaultMoveCost1	= original.DefaultMoveCost1Zero
+	DefaultMoveCost1High   DefaultMoveCost1 = original.DefaultMoveCost1High
+	DefaultMoveCost1Low    DefaultMoveCost1 = original.DefaultMoveCost1Low
+	DefaultMoveCost1Medium DefaultMoveCost1 = original.DefaultMoveCost1Medium
+	DefaultMoveCost1Zero   DefaultMoveCost1 = original.DefaultMoveCost1Zero
 )
 
 type DefaultMoveCost2 = original.DefaultMoveCost2
 
 const (
-	DefaultMoveCost2High	DefaultMoveCost2	= original.DefaultMoveCost2High
-	DefaultMoveCost2Low	DefaultMoveCost2	= original.DefaultMoveCost2Low
-	DefaultMoveCost2Medium	DefaultMoveCost2	= original.DefaultMoveCost2Medium
-	DefaultMoveCost2Zero	DefaultMoveCost2	= original.DefaultMoveCost2Zero
+	DefaultMoveCost2High   DefaultMoveCost2 = original.DefaultMoveCost2High
+	DefaultMoveCost2Low    DefaultMoveCost2 = original.DefaultMoveCost2Low
+	DefaultMoveCost2Medium DefaultMoveCost2 = original.DefaultMoveCost2Medium
+	DefaultMoveCost2Zero   DefaultMoveCost2 = original.DefaultMoveCost2Zero
 )
 
 type DefaultMoveCost3 = original.DefaultMoveCost3
 
 const (
-	DefaultMoveCost3High	DefaultMoveCost3	= original.DefaultMoveCost3High
-	DefaultMoveCost3Low	DefaultMoveCost3	= original.DefaultMoveCost3Low
-	DefaultMoveCost3Medium	DefaultMoveCost3	= original.DefaultMoveCost3Medium
-	DefaultMoveCost3Zero	DefaultMoveCost3	= original.DefaultMoveCost3Zero
+	DefaultMoveCost3High   DefaultMoveCost3 = original.DefaultMoveCost3High
+	DefaultMoveCost3Low    DefaultMoveCost3 = original.DefaultMoveCost3Low
+	DefaultMoveCost3Medium DefaultMoveCost3 = original.DefaultMoveCost3Medium
+	DefaultMoveCost3Zero   DefaultMoveCost3 = original.DefaultMoveCost3Zero
 )
 
 type FailureReason = original.FailureReason
 
 const (
-	FailureReasonHealthCheck		FailureReason	= original.FailureReasonHealthCheck
-	FailureReasonInterrupted		FailureReason	= original.FailureReasonInterrupted
-	FailureReasonInvalid			FailureReason	= original.FailureReasonInvalid
-	FailureReasonOverallUpgradeTimeout	FailureReason	= original.FailureReasonOverallUpgradeTimeout
-	FailureReasonUpgradeDomainTimeout	FailureReason	= original.FailureReasonUpgradeDomainTimeout
+	FailureReasonHealthCheck           FailureReason = original.FailureReasonHealthCheck
+	FailureReasonInterrupted           FailureReason = original.FailureReasonInterrupted
+	FailureReasonInvalid               FailureReason = original.FailureReasonInvalid
+	FailureReasonOverallUpgradeTimeout FailureReason = original.FailureReasonOverallUpgradeTimeout
+	FailureReasonUpgradeDomainTimeout  FailureReason = original.FailureReasonUpgradeDomainTimeout
 )
 
 type FailureReason1 = original.FailureReason1
 
 const (
-	FailureReason1HealthCheck		FailureReason1	= original.FailureReason1HealthCheck
-	FailureReason1Interrupted		FailureReason1	= original.FailureReason1Interrupted
-	FailureReason1Invalid			FailureReason1	= original.FailureReason1Invalid
-	FailureReason1OverallUpgradeTimeout	FailureReason1	= original.FailureReason1OverallUpgradeTimeout
-	FailureReason1UpgradeDomainTimeout	FailureReason1	= original.FailureReason1UpgradeDomainTimeout
+	FailureReason1HealthCheck           FailureReason1 = original.FailureReason1HealthCheck
+	FailureReason1Interrupted           FailureReason1 = original.FailureReason1Interrupted
+	FailureReason1Invalid               FailureReason1 = original.FailureReason1Invalid
+	FailureReason1OverallUpgradeTimeout FailureReason1 = original.FailureReason1OverallUpgradeTimeout
+	FailureReason1UpgradeDomainTimeout  FailureReason1 = original.FailureReason1UpgradeDomainTimeout
 )
 
 type HealthState = original.HealthState
 
 const (
-	HealthStateError	HealthState	= original.HealthStateError
-	HealthStateInvalid	HealthState	= original.HealthStateInvalid
-	HealthStateOk		HealthState	= original.HealthStateOk
-	HealthStateUnknown	HealthState	= original.HealthStateUnknown
-	HealthStateWarning	HealthState	= original.HealthStateWarning
+	HealthStateError   HealthState = original.HealthStateError
+	HealthStateInvalid HealthState = original.HealthStateInvalid
+	HealthStateOk      HealthState = original.HealthStateOk
+	HealthStateUnknown HealthState = original.HealthStateUnknown
+	HealthStateWarning HealthState = original.HealthStateWarning
 )
 
 type HealthState1 = original.HealthState1
 
 const (
-	HealthState1Error	HealthState1	= original.HealthState1Error
-	HealthState1Invalid	HealthState1	= original.HealthState1Invalid
-	HealthState1Ok		HealthState1	= original.HealthState1Ok
-	HealthState1Unknown	HealthState1	= original.HealthState1Unknown
-	HealthState1Warning	HealthState1	= original.HealthState1Warning
+	HealthState1Error   HealthState1 = original.HealthState1Error
+	HealthState1Invalid HealthState1 = original.HealthState1Invalid
+	HealthState1Ok      HealthState1 = original.HealthState1Ok
+	HealthState1Unknown HealthState1 = original.HealthState1Unknown
+	HealthState1Warning HealthState1 = original.HealthState1Warning
 )
 
 type HealthState2 = original.HealthState2
 
 const (
-	HealthState2Error	HealthState2	= original.HealthState2Error
-	HealthState2Invalid	HealthState2	= original.HealthState2Invalid
-	HealthState2Ok		HealthState2	= original.HealthState2Ok
-	HealthState2Unknown	HealthState2	= original.HealthState2Unknown
-	HealthState2Warning	HealthState2	= original.HealthState2Warning
+	HealthState2Error   HealthState2 = original.HealthState2Error
+	HealthState2Invalid HealthState2 = original.HealthState2Invalid
+	HealthState2Ok      HealthState2 = original.HealthState2Ok
+	HealthState2Unknown HealthState2 = original.HealthState2Unknown
+	HealthState2Warning HealthState2 = original.HealthState2Warning
 )
 
 type HealthState3 = original.HealthState3
 
 const (
-	HealthState3Error	HealthState3	= original.HealthState3Error
-	HealthState3Invalid	HealthState3	= original.HealthState3Invalid
-	HealthState3Ok		HealthState3	= original.HealthState3Ok
-	HealthState3Unknown	HealthState3	= original.HealthState3Unknown
-	HealthState3Warning	HealthState3	= original.HealthState3Warning
+	HealthState3Error   HealthState3 = original.HealthState3Error
+	HealthState3Invalid HealthState3 = original.HealthState3Invalid
+	HealthState3Ok      HealthState3 = original.HealthState3Ok
+	HealthState3Unknown HealthState3 = original.HealthState3Unknown
+	HealthState3Warning HealthState3 = original.HealthState3Warning
 )
 
 type HealthState4 = original.HealthState4
 
 const (
-	HealthState4Error	HealthState4	= original.HealthState4Error
-	HealthState4Invalid	HealthState4	= original.HealthState4Invalid
-	HealthState4Ok		HealthState4	= original.HealthState4Ok
-	HealthState4Unknown	HealthState4	= original.HealthState4Unknown
-	HealthState4Warning	HealthState4	= original.HealthState4Warning
+	HealthState4Error   HealthState4 = original.HealthState4Error
+	HealthState4Invalid HealthState4 = original.HealthState4Invalid
+	HealthState4Ok      HealthState4 = original.HealthState4Ok
+	HealthState4Unknown HealthState4 = original.HealthState4Unknown
+	HealthState4Warning HealthState4 = original.HealthState4Warning
 )
 
 type HealthState5 = original.HealthState5
 
 const (
-	HealthState5Error	HealthState5	= original.HealthState5Error
-	HealthState5Invalid	HealthState5	= original.HealthState5Invalid
-	HealthState5Ok		HealthState5	= original.HealthState5Ok
-	HealthState5Unknown	HealthState5	= original.HealthState5Unknown
-	HealthState5Warning	HealthState5	= original.HealthState5Warning
+	HealthState5Error   HealthState5 = original.HealthState5Error
+	HealthState5Invalid HealthState5 = original.HealthState5Invalid
+	HealthState5Ok      HealthState5 = original.HealthState5Ok
+	HealthState5Unknown HealthState5 = original.HealthState5Unknown
+	HealthState5Warning HealthState5 = original.HealthState5Warning
 )
 
 type HealthState6 = original.HealthState6
 
 const (
-	HealthState6Error	HealthState6	= original.HealthState6Error
-	HealthState6Invalid	HealthState6	= original.HealthState6Invalid
-	HealthState6Ok		HealthState6	= original.HealthState6Ok
-	HealthState6Unknown	HealthState6	= original.HealthState6Unknown
-	HealthState6Warning	HealthState6	= original.HealthState6Warning
+	HealthState6Error   HealthState6 = original.HealthState6Error
+	HealthState6Invalid HealthState6 = original.HealthState6Invalid
+	HealthState6Ok      HealthState6 = original.HealthState6Ok
+	HealthState6Unknown HealthState6 = original.HealthState6Unknown
+	HealthState6Warning HealthState6 = original.HealthState6Warning
 )
 
 type Kind = original.Kind
 
 const (
-	KindApplication				Kind	= original.KindApplication
-	KindApplications			Kind	= original.KindApplications
-	KindApplicationType			Kind	= original.KindApplicationType
-	KindDeltaNodesCheck			Kind	= original.KindDeltaNodesCheck
-	KindDeployedApplication			Kind	= original.KindDeployedApplication
-	KindDeployedApplications		Kind	= original.KindDeployedApplications
-	KindDeployedServicePackage		Kind	= original.KindDeployedServicePackage
-	KindDeployedServicePackages		Kind	= original.KindDeployedServicePackages
-	KindEvent				Kind	= original.KindEvent
-	KindNode				Kind	= original.KindNode
-	KindNodes				Kind	= original.KindNodes
-	KindPartition				Kind	= original.KindPartition
-	KindPartitions				Kind	= original.KindPartitions
-	KindReplica				Kind	= original.KindReplica
-	KindReplicas				Kind	= original.KindReplicas
-	KindService				Kind	= original.KindService
-	KindServices				Kind	= original.KindServices
-	KindSystemApplication			Kind	= original.KindSystemApplication
-	KindUpgradeDomainDeltaNodesCheck	Kind	= original.KindUpgradeDomainDeltaNodesCheck
-	KindUpgradeDomainDeployedApplications	Kind	= original.KindUpgradeDomainDeployedApplications
-	KindUpgradeDomainNodes			Kind	= original.KindUpgradeDomainNodes
+	KindApplication                       Kind = original.KindApplication
+	KindApplications                      Kind = original.KindApplications
+	KindApplicationType                   Kind = original.KindApplicationType
+	KindDeltaNodesCheck                   Kind = original.KindDeltaNodesCheck
+	KindDeployedApplication               Kind = original.KindDeployedApplication
+	KindDeployedApplications              Kind = original.KindDeployedApplications
+	KindDeployedServicePackage            Kind = original.KindDeployedServicePackage
+	KindDeployedServicePackages           Kind = original.KindDeployedServicePackages
+	KindEvent                             Kind = original.KindEvent
+	KindNode                              Kind = original.KindNode
+	KindNodes                             Kind = original.KindNodes
+	KindPartition                         Kind = original.KindPartition
+	KindPartitions                        Kind = original.KindPartitions
+	KindReplica                           Kind = original.KindReplica
+	KindReplicas                          Kind = original.KindReplicas
+	KindService                           Kind = original.KindService
+	KindServices                          Kind = original.KindServices
+	KindSystemApplication                 Kind = original.KindSystemApplication
+	KindUpgradeDomainDeltaNodesCheck      Kind = original.KindUpgradeDomainDeltaNodesCheck
+	KindUpgradeDomainDeployedApplications Kind = original.KindUpgradeDomainDeployedApplications
+	KindUpgradeDomainNodes                Kind = original.KindUpgradeDomainNodes
 )
 
 type NodeDeactivationIntent = original.NodeDeactivationIntent
 
 const (
-	NodeDeactivationIntentInvalid		NodeDeactivationIntent	= original.NodeDeactivationIntentInvalid
-	NodeDeactivationIntentPause		NodeDeactivationIntent	= original.NodeDeactivationIntentPause
-	NodeDeactivationIntentRemoveData	NodeDeactivationIntent	= original.NodeDeactivationIntentRemoveData
-	NodeDeactivationIntentRestart		NodeDeactivationIntent	= original.NodeDeactivationIntentRestart
+	NodeDeactivationIntentInvalid    NodeDeactivationIntent = original.NodeDeactivationIntentInvalid
+	NodeDeactivationIntentPause      NodeDeactivationIntent = original.NodeDeactivationIntentPause
+	NodeDeactivationIntentRemoveData NodeDeactivationIntent = original.NodeDeactivationIntentRemoveData
+	NodeDeactivationIntentRestart    NodeDeactivationIntent = original.NodeDeactivationIntentRestart
 )
 
 type NodeDeactivationStatus = original.NodeDeactivationStatus
 
 const (
-	NodeDeactivationStatusCompleted			NodeDeactivationStatus	= original.NodeDeactivationStatusCompleted
-	NodeDeactivationStatusInvalid			NodeDeactivationStatus	= original.NodeDeactivationStatusInvalid
-	NodeDeactivationStatusSafetyCheckComplete	NodeDeactivationStatus	= original.NodeDeactivationStatusSafetyCheckComplete
-	NodeDeactivationStatusSafetyCheckInProgress	NodeDeactivationStatus	= original.NodeDeactivationStatusSafetyCheckInProgress
+	NodeDeactivationStatusCompleted             NodeDeactivationStatus = original.NodeDeactivationStatusCompleted
+	NodeDeactivationStatusInvalid               NodeDeactivationStatus = original.NodeDeactivationStatusInvalid
+	NodeDeactivationStatusSafetyCheckComplete   NodeDeactivationStatus = original.NodeDeactivationStatusSafetyCheckComplete
+	NodeDeactivationStatusSafetyCheckInProgress NodeDeactivationStatus = original.NodeDeactivationStatusSafetyCheckInProgress
 )
 
 type NodeStatus = original.NodeStatus
 
 const (
-	NodeStatusDisabled	NodeStatus	= original.NodeStatusDisabled
-	NodeStatusDisabling	NodeStatus	= original.NodeStatusDisabling
-	NodeStatusDown		NodeStatus	= original.NodeStatusDown
-	NodeStatusEnabling	NodeStatus	= original.NodeStatusEnabling
-	NodeStatusInvalid	NodeStatus	= original.NodeStatusInvalid
-	NodeStatusRemoved	NodeStatus	= original.NodeStatusRemoved
-	NodeStatusUnknown	NodeStatus	= original.NodeStatusUnknown
-	NodeStatusUp		NodeStatus	= original.NodeStatusUp
+	NodeStatusDisabled  NodeStatus = original.NodeStatusDisabled
+	NodeStatusDisabling NodeStatus = original.NodeStatusDisabling
+	NodeStatusDown      NodeStatus = original.NodeStatusDown
+	NodeStatusEnabling  NodeStatus = original.NodeStatusEnabling
+	NodeStatusInvalid   NodeStatus = original.NodeStatusInvalid
+	NodeStatusRemoved   NodeStatus = original.NodeStatusRemoved
+	NodeStatusUnknown   NodeStatus = original.NodeStatusUnknown
+	NodeStatusUp        NodeStatus = original.NodeStatusUp
 )
 
 type PartitionScheme = original.PartitionScheme
 
 const (
-	PartitionSchemeInvalid		PartitionScheme	= original.PartitionSchemeInvalid
-	PartitionSchemeNamed		PartitionScheme	= original.PartitionSchemeNamed
-	PartitionSchemeSingleton	PartitionScheme	= original.PartitionSchemeSingleton
-	PartitionSchemeUniformInt64	PartitionScheme	= original.PartitionSchemeUniformInt64
+	PartitionSchemeInvalid      PartitionScheme = original.PartitionSchemeInvalid
+	PartitionSchemeNamed        PartitionScheme = original.PartitionSchemeNamed
+	PartitionSchemeSingleton    PartitionScheme = original.PartitionSchemeSingleton
+	PartitionSchemeUniformInt64 PartitionScheme = original.PartitionSchemeUniformInt64
 )
 
 type PartitionStatus = original.PartitionStatus
 
 const (
-	PartitionStatusDeleting		PartitionStatus	= original.PartitionStatusDeleting
-	PartitionStatusInQuorumLoss	PartitionStatus	= original.PartitionStatusInQuorumLoss
-	PartitionStatusInvalid		PartitionStatus	= original.PartitionStatusInvalid
-	PartitionStatusNotReady		PartitionStatus	= original.PartitionStatusNotReady
-	PartitionStatusReady		PartitionStatus	= original.PartitionStatusReady
-	PartitionStatusReconfiguring	PartitionStatus	= original.PartitionStatusReconfiguring
+	PartitionStatusDeleting      PartitionStatus = original.PartitionStatusDeleting
+	PartitionStatusInQuorumLoss  PartitionStatus = original.PartitionStatusInQuorumLoss
+	PartitionStatusInvalid       PartitionStatus = original.PartitionStatusInvalid
+	PartitionStatusNotReady      PartitionStatus = original.PartitionStatusNotReady
+	PartitionStatusReady         PartitionStatus = original.PartitionStatusReady
+	PartitionStatusReconfiguring PartitionStatus = original.PartitionStatusReconfiguring
 )
 
 type ReplicaRole = original.ReplicaRole
 
 const (
-	ReplicaRoleActiveSecondary	ReplicaRole	= original.ReplicaRoleActiveSecondary
-	ReplicaRoleIdleSecondary	ReplicaRole	= original.ReplicaRoleIdleSecondary
-	ReplicaRoleInvalid		ReplicaRole	= original.ReplicaRoleInvalid
-	ReplicaRoleNone			ReplicaRole	= original.ReplicaRoleNone
-	ReplicaRolePrimary		ReplicaRole	= original.ReplicaRolePrimary
+	ReplicaRoleActiveSecondary ReplicaRole = original.ReplicaRoleActiveSecondary
+	ReplicaRoleIdleSecondary   ReplicaRole = original.ReplicaRoleIdleSecondary
+	ReplicaRoleInvalid         ReplicaRole = original.ReplicaRoleInvalid
+	ReplicaRoleNone            ReplicaRole = original.ReplicaRoleNone
+	ReplicaRolePrimary         ReplicaRole = original.ReplicaRolePrimary
 )
 
 type ReplicaRole1 = original.ReplicaRole1
 
 const (
-	ReplicaRole1ActiveSecondary	ReplicaRole1	= original.ReplicaRole1ActiveSecondary
-	ReplicaRole1IdleSecondary	ReplicaRole1	= original.ReplicaRole1IdleSecondary
-	ReplicaRole1Invalid		ReplicaRole1	= original.ReplicaRole1Invalid
-	ReplicaRole1None		ReplicaRole1	= original.ReplicaRole1None
-	ReplicaRole1Primary		ReplicaRole1	= original.ReplicaRole1Primary
+	ReplicaRole1ActiveSecondary ReplicaRole1 = original.ReplicaRole1ActiveSecondary
+	ReplicaRole1IdleSecondary   ReplicaRole1 = original.ReplicaRole1IdleSecondary
+	ReplicaRole1Invalid         ReplicaRole1 = original.ReplicaRole1Invalid
+	ReplicaRole1None            ReplicaRole1 = original.ReplicaRole1None
+	ReplicaRole1Primary         ReplicaRole1 = original.ReplicaRole1Primary
 )
 
 type ReplicaStatus = original.ReplicaStatus
 
 const (
-	ReplicaStatusDown	ReplicaStatus	= original.ReplicaStatusDown
-	ReplicaStatusDropped	ReplicaStatus	= original.ReplicaStatusDropped
-	ReplicaStatusInBuild	ReplicaStatus	= original.ReplicaStatusInBuild
-	ReplicaStatusInvalid	ReplicaStatus	= original.ReplicaStatusInvalid
-	ReplicaStatusReady	ReplicaStatus	= original.ReplicaStatusReady
-	ReplicaStatusStandby	ReplicaStatus	= original.ReplicaStatusStandby
+	ReplicaStatusDown    ReplicaStatus = original.ReplicaStatusDown
+	ReplicaStatusDropped ReplicaStatus = original.ReplicaStatusDropped
+	ReplicaStatusInBuild ReplicaStatus = original.ReplicaStatusInBuild
+	ReplicaStatusInvalid ReplicaStatus = original.ReplicaStatusInvalid
+	ReplicaStatusReady   ReplicaStatus = original.ReplicaStatusReady
+	ReplicaStatusStandby ReplicaStatus = original.ReplicaStatusStandby
 )
 
 type ReplicaStatus1 = original.ReplicaStatus1
 
 const (
-	ReplicaStatus1Down	ReplicaStatus1	= original.ReplicaStatus1Down
-	ReplicaStatus1Dropped	ReplicaStatus1	= original.ReplicaStatus1Dropped
-	ReplicaStatus1InBuild	ReplicaStatus1	= original.ReplicaStatus1InBuild
-	ReplicaStatus1Invalid	ReplicaStatus1	= original.ReplicaStatus1Invalid
-	ReplicaStatus1Ready	ReplicaStatus1	= original.ReplicaStatus1Ready
-	ReplicaStatus1Standby	ReplicaStatus1	= original.ReplicaStatus1Standby
+	ReplicaStatus1Down    ReplicaStatus1 = original.ReplicaStatus1Down
+	ReplicaStatus1Dropped ReplicaStatus1 = original.ReplicaStatus1Dropped
+	ReplicaStatus1InBuild ReplicaStatus1 = original.ReplicaStatus1InBuild
+	ReplicaStatus1Invalid ReplicaStatus1 = original.ReplicaStatus1Invalid
+	ReplicaStatus1Ready   ReplicaStatus1 = original.ReplicaStatus1Ready
+	ReplicaStatus1Standby ReplicaStatus1 = original.ReplicaStatus1Standby
 )
 
 type RollingUpgradeMode = original.RollingUpgradeMode
 
 const (
-	RollingUpgradeModeInvalid		RollingUpgradeMode	= original.RollingUpgradeModeInvalid
-	RollingUpgradeModeMonitored		RollingUpgradeMode	= original.RollingUpgradeModeMonitored
-	RollingUpgradeModeUnmonitoredAuto	RollingUpgradeMode	= original.RollingUpgradeModeUnmonitoredAuto
-	RollingUpgradeModeUnmonitoredManual	RollingUpgradeMode	= original.RollingUpgradeModeUnmonitoredManual
+	RollingUpgradeModeInvalid           RollingUpgradeMode = original.RollingUpgradeModeInvalid
+	RollingUpgradeModeMonitored         RollingUpgradeMode = original.RollingUpgradeModeMonitored
+	RollingUpgradeModeUnmonitoredAuto   RollingUpgradeMode = original.RollingUpgradeModeUnmonitoredAuto
+	RollingUpgradeModeUnmonitoredManual RollingUpgradeMode = original.RollingUpgradeModeUnmonitoredManual
 )
 
 type RollingUpgradeMode1 = original.RollingUpgradeMode1
 
 const (
-	RollingUpgradeMode1Invalid		RollingUpgradeMode1	= original.RollingUpgradeMode1Invalid
-	RollingUpgradeMode1Monitored		RollingUpgradeMode1	= original.RollingUpgradeMode1Monitored
-	RollingUpgradeMode1UnmonitoredAuto	RollingUpgradeMode1	= original.RollingUpgradeMode1UnmonitoredAuto
-	RollingUpgradeMode1UnmonitoredManual	RollingUpgradeMode1	= original.RollingUpgradeMode1UnmonitoredManual
+	RollingUpgradeMode1Invalid           RollingUpgradeMode1 = original.RollingUpgradeMode1Invalid
+	RollingUpgradeMode1Monitored         RollingUpgradeMode1 = original.RollingUpgradeMode1Monitored
+	RollingUpgradeMode1UnmonitoredAuto   RollingUpgradeMode1 = original.RollingUpgradeMode1UnmonitoredAuto
+	RollingUpgradeMode1UnmonitoredManual RollingUpgradeMode1 = original.RollingUpgradeMode1UnmonitoredManual
 )
 
 type RollingUpgradeMode2 = original.RollingUpgradeMode2
 
 const (
-	RollingUpgradeMode2Invalid		RollingUpgradeMode2	= original.RollingUpgradeMode2Invalid
-	RollingUpgradeMode2Monitored		RollingUpgradeMode2	= original.RollingUpgradeMode2Monitored
-	RollingUpgradeMode2UnmonitoredAuto	RollingUpgradeMode2	= original.RollingUpgradeMode2UnmonitoredAuto
-	RollingUpgradeMode2UnmonitoredManual	RollingUpgradeMode2	= original.RollingUpgradeMode2UnmonitoredManual
+	RollingUpgradeMode2Invalid           RollingUpgradeMode2 = original.RollingUpgradeMode2Invalid
+	RollingUpgradeMode2Monitored         RollingUpgradeMode2 = original.RollingUpgradeMode2Monitored
+	RollingUpgradeMode2UnmonitoredAuto   RollingUpgradeMode2 = original.RollingUpgradeMode2UnmonitoredAuto
+	RollingUpgradeMode2UnmonitoredManual RollingUpgradeMode2 = original.RollingUpgradeMode2UnmonitoredManual
 )
 
 type RollingUpgradeMode3 = original.RollingUpgradeMode3
 
 const (
-	RollingUpgradeMode3Invalid		RollingUpgradeMode3	= original.RollingUpgradeMode3Invalid
-	RollingUpgradeMode3Monitored		RollingUpgradeMode3	= original.RollingUpgradeMode3Monitored
-	RollingUpgradeMode3UnmonitoredAuto	RollingUpgradeMode3	= original.RollingUpgradeMode3UnmonitoredAuto
-	RollingUpgradeMode3UnmonitoredManual	RollingUpgradeMode3	= original.RollingUpgradeMode3UnmonitoredManual
+	RollingUpgradeMode3Invalid           RollingUpgradeMode3 = original.RollingUpgradeMode3Invalid
+	RollingUpgradeMode3Monitored         RollingUpgradeMode3 = original.RollingUpgradeMode3Monitored
+	RollingUpgradeMode3UnmonitoredAuto   RollingUpgradeMode3 = original.RollingUpgradeMode3UnmonitoredAuto
+	RollingUpgradeMode3UnmonitoredManual RollingUpgradeMode3 = original.RollingUpgradeMode3UnmonitoredManual
 )
 
 type RollingUpgradeMode4 = original.RollingUpgradeMode4
 
 const (
-	RollingUpgradeMode4Invalid		RollingUpgradeMode4	= original.RollingUpgradeMode4Invalid
-	RollingUpgradeMode4Monitored		RollingUpgradeMode4	= original.RollingUpgradeMode4Monitored
-	RollingUpgradeMode4UnmonitoredAuto	RollingUpgradeMode4	= original.RollingUpgradeMode4UnmonitoredAuto
-	RollingUpgradeMode4UnmonitoredManual	RollingUpgradeMode4	= original.RollingUpgradeMode4UnmonitoredManual
+	RollingUpgradeMode4Invalid           RollingUpgradeMode4 = original.RollingUpgradeMode4Invalid
+	RollingUpgradeMode4Monitored         RollingUpgradeMode4 = original.RollingUpgradeMode4Monitored
+	RollingUpgradeMode4UnmonitoredAuto   RollingUpgradeMode4 = original.RollingUpgradeMode4UnmonitoredAuto
+	RollingUpgradeMode4UnmonitoredManual RollingUpgradeMode4 = original.RollingUpgradeMode4UnmonitoredManual
 )
 
 type RollingUpgradeMode5 = original.RollingUpgradeMode5
 
 const (
-	RollingUpgradeMode5Invalid		RollingUpgradeMode5	= original.RollingUpgradeMode5Invalid
-	RollingUpgradeMode5Monitored		RollingUpgradeMode5	= original.RollingUpgradeMode5Monitored
-	RollingUpgradeMode5UnmonitoredAuto	RollingUpgradeMode5	= original.RollingUpgradeMode5UnmonitoredAuto
-	RollingUpgradeMode5UnmonitoredManual	RollingUpgradeMode5	= original.RollingUpgradeMode5UnmonitoredManual
+	RollingUpgradeMode5Invalid           RollingUpgradeMode5 = original.RollingUpgradeMode5Invalid
+	RollingUpgradeMode5Monitored         RollingUpgradeMode5 = original.RollingUpgradeMode5Monitored
+	RollingUpgradeMode5UnmonitoredAuto   RollingUpgradeMode5 = original.RollingUpgradeMode5UnmonitoredAuto
+	RollingUpgradeMode5UnmonitoredManual RollingUpgradeMode5 = original.RollingUpgradeMode5UnmonitoredManual
 )
 
 type ServiceCorrelationScheme = original.ServiceCorrelationScheme
 
 const (
-	ServiceCorrelationSchemeAffinity		ServiceCorrelationScheme	= original.ServiceCorrelationSchemeAffinity
-	ServiceCorrelationSchemeAlignedAffinity		ServiceCorrelationScheme	= original.ServiceCorrelationSchemeAlignedAffinity
-	ServiceCorrelationSchemeInvalid			ServiceCorrelationScheme	= original.ServiceCorrelationSchemeInvalid
-	ServiceCorrelationSchemeNonAlignedAffinity	ServiceCorrelationScheme	= original.ServiceCorrelationSchemeNonAlignedAffinity
+	ServiceCorrelationSchemeAffinity           ServiceCorrelationScheme = original.ServiceCorrelationSchemeAffinity
+	ServiceCorrelationSchemeAlignedAffinity    ServiceCorrelationScheme = original.ServiceCorrelationSchemeAlignedAffinity
+	ServiceCorrelationSchemeInvalid            ServiceCorrelationScheme = original.ServiceCorrelationSchemeInvalid
+	ServiceCorrelationSchemeNonAlignedAffinity ServiceCorrelationScheme = original.ServiceCorrelationSchemeNonAlignedAffinity
 )
 
 type ServiceKind = original.ServiceKind
 
 const (
-	ServiceKindInvalid	ServiceKind	= original.ServiceKindInvalid
-	ServiceKindStateful	ServiceKind	= original.ServiceKindStateful
-	ServiceKindStateless	ServiceKind	= original.ServiceKindStateless
+	ServiceKindInvalid   ServiceKind = original.ServiceKindInvalid
+	ServiceKindStateful  ServiceKind = original.ServiceKindStateful
+	ServiceKindStateless ServiceKind = original.ServiceKindStateless
 )
 
 type ServiceKind1 = original.ServiceKind1
 
 const (
-	ServiceKind1Invalid	ServiceKind1	= original.ServiceKind1Invalid
-	ServiceKind1Stateful	ServiceKind1	= original.ServiceKind1Stateful
-	ServiceKind1Stateless	ServiceKind1	= original.ServiceKind1Stateless
+	ServiceKind1Invalid   ServiceKind1 = original.ServiceKind1Invalid
+	ServiceKind1Stateful  ServiceKind1 = original.ServiceKind1Stateful
+	ServiceKind1Stateless ServiceKind1 = original.ServiceKind1Stateless
 )
 
 type ServiceKind2 = original.ServiceKind2
 
 const (
-	ServiceKind2Invalid	ServiceKind2	= original.ServiceKind2Invalid
-	ServiceKind2Stateful	ServiceKind2	= original.ServiceKind2Stateful
-	ServiceKind2Stateless	ServiceKind2	= original.ServiceKind2Stateless
+	ServiceKind2Invalid   ServiceKind2 = original.ServiceKind2Invalid
+	ServiceKind2Stateful  ServiceKind2 = original.ServiceKind2Stateful
+	ServiceKind2Stateless ServiceKind2 = original.ServiceKind2Stateless
 )
 
 type ServiceKind3 = original.ServiceKind3
 
 const (
-	ServiceKind3Invalid	ServiceKind3	= original.ServiceKind3Invalid
-	ServiceKind3Stateful	ServiceKind3	= original.ServiceKind3Stateful
-	ServiceKind3Stateless	ServiceKind3	= original.ServiceKind3Stateless
+	ServiceKind3Invalid   ServiceKind3 = original.ServiceKind3Invalid
+	ServiceKind3Stateful  ServiceKind3 = original.ServiceKind3Stateful
+	ServiceKind3Stateless ServiceKind3 = original.ServiceKind3Stateless
 )
 
 type ServiceKind4 = original.ServiceKind4
 
 const (
-	ServiceKind4Invalid	ServiceKind4	= original.ServiceKind4Invalid
-	ServiceKind4Stateful	ServiceKind4	= original.ServiceKind4Stateful
-	ServiceKind4Stateless	ServiceKind4	= original.ServiceKind4Stateless
+	ServiceKind4Invalid   ServiceKind4 = original.ServiceKind4Invalid
+	ServiceKind4Stateful  ServiceKind4 = original.ServiceKind4Stateful
+	ServiceKind4Stateless ServiceKind4 = original.ServiceKind4Stateless
 )
 
 type ServiceKind5 = original.ServiceKind5
 
 const (
-	ServiceKind5Invalid	ServiceKind5	= original.ServiceKind5Invalid
-	ServiceKind5Stateful	ServiceKind5	= original.ServiceKind5Stateful
-	ServiceKind5Stateless	ServiceKind5	= original.ServiceKind5Stateless
+	ServiceKind5Invalid   ServiceKind5 = original.ServiceKind5Invalid
+	ServiceKind5Stateful  ServiceKind5 = original.ServiceKind5Stateful
+	ServiceKind5Stateless ServiceKind5 = original.ServiceKind5Stateless
 )
 
 type ServiceKind6 = original.ServiceKind6
 
 const (
-	ServiceKind6Invalid	ServiceKind6	= original.ServiceKind6Invalid
-	ServiceKind6Stateful	ServiceKind6	= original.ServiceKind6Stateful
-	ServiceKind6Stateless	ServiceKind6	= original.ServiceKind6Stateless
+	ServiceKind6Invalid   ServiceKind6 = original.ServiceKind6Invalid
+	ServiceKind6Stateful  ServiceKind6 = original.ServiceKind6Stateful
+	ServiceKind6Stateless ServiceKind6 = original.ServiceKind6Stateless
 )
 
 type ServiceLoadMetricWeight = original.ServiceLoadMetricWeight
 
 const (
-	ServiceLoadMetricWeightHigh	ServiceLoadMetricWeight	= original.ServiceLoadMetricWeightHigh
-	ServiceLoadMetricWeightLow	ServiceLoadMetricWeight	= original.ServiceLoadMetricWeightLow
-	ServiceLoadMetricWeightMedium	ServiceLoadMetricWeight	= original.ServiceLoadMetricWeightMedium
-	ServiceLoadMetricWeightZero	ServiceLoadMetricWeight	= original.ServiceLoadMetricWeightZero
+	ServiceLoadMetricWeightHigh   ServiceLoadMetricWeight = original.ServiceLoadMetricWeightHigh
+	ServiceLoadMetricWeightLow    ServiceLoadMetricWeight = original.ServiceLoadMetricWeightLow
+	ServiceLoadMetricWeightMedium ServiceLoadMetricWeight = original.ServiceLoadMetricWeightMedium
+	ServiceLoadMetricWeightZero   ServiceLoadMetricWeight = original.ServiceLoadMetricWeightZero
 )
 
 type ServicePartitionKind = original.ServicePartitionKind
 
 const (
-	ServicePartitionKindInt64Range	ServicePartitionKind	= original.ServicePartitionKindInt64Range
-	ServicePartitionKindInvalid	ServicePartitionKind	= original.ServicePartitionKindInvalid
-	ServicePartitionKindNamed	ServicePartitionKind	= original.ServicePartitionKindNamed
-	ServicePartitionKindSingleton	ServicePartitionKind	= original.ServicePartitionKindSingleton
+	ServicePartitionKindInt64Range ServicePartitionKind = original.ServicePartitionKindInt64Range
+	ServicePartitionKindInvalid    ServicePartitionKind = original.ServicePartitionKindInvalid
+	ServicePartitionKindNamed      ServicePartitionKind = original.ServicePartitionKindNamed
+	ServicePartitionKindSingleton  ServicePartitionKind = original.ServicePartitionKindSingleton
 )
 
 type ServiceStatus = original.ServiceStatus
 
 const (
-	ServiceStatusActive	ServiceStatus	= original.ServiceStatusActive
-	ServiceStatusCreating	ServiceStatus	= original.ServiceStatusCreating
-	ServiceStatusDeleting	ServiceStatus	= original.ServiceStatusDeleting
-	ServiceStatusFaile	ServiceStatus	= original.ServiceStatusFaile
-	ServiceStatusInvalid	ServiceStatus	= original.ServiceStatusInvalid
-	ServiceStatusUpgrading	ServiceStatus	= original.ServiceStatusUpgrading
+	ServiceStatusActive    ServiceStatus = original.ServiceStatusActive
+	ServiceStatusCreating  ServiceStatus = original.ServiceStatusCreating
+	ServiceStatusDeleting  ServiceStatus = original.ServiceStatusDeleting
+	ServiceStatusFaile     ServiceStatus = original.ServiceStatusFaile
+	ServiceStatusInvalid   ServiceStatus = original.ServiceStatusInvalid
+	ServiceStatusUpgrading ServiceStatus = original.ServiceStatusUpgrading
 )
 
 type UpgradeKind = original.UpgradeKind
 
 const (
-	UpgradeKindInvalid	UpgradeKind	= original.UpgradeKindInvalid
-	UpgradeKindRolling	UpgradeKind	= original.UpgradeKindRolling
+	UpgradeKindInvalid UpgradeKind = original.UpgradeKindInvalid
+	UpgradeKindRolling UpgradeKind = original.UpgradeKindRolling
 )
 
 type UpgradeState = original.UpgradeState
 
 const (
-	UpgradeStateInvalid			UpgradeState	= original.UpgradeStateInvalid
-	UpgradeStateRollingBackCompleted	UpgradeState	= original.UpgradeStateRollingBackCompleted
-	UpgradeStateRollingBackInProgress	UpgradeState	= original.UpgradeStateRollingBackInProgress
-	UpgradeStateRollingForwardCompleted	UpgradeState	= original.UpgradeStateRollingForwardCompleted
-	UpgradeStateRollingForwardInProgress	UpgradeState	= original.UpgradeStateRollingForwardInProgress
-	UpgradeStateRollingForwardPending	UpgradeState	= original.UpgradeStateRollingForwardPending
+	UpgradeStateInvalid                  UpgradeState = original.UpgradeStateInvalid
+	UpgradeStateRollingBackCompleted     UpgradeState = original.UpgradeStateRollingBackCompleted
+	UpgradeStateRollingBackInProgress    UpgradeState = original.UpgradeStateRollingBackInProgress
+	UpgradeStateRollingForwardCompleted  UpgradeState = original.UpgradeStateRollingForwardCompleted
+	UpgradeStateRollingForwardInProgress UpgradeState = original.UpgradeStateRollingForwardInProgress
+	UpgradeStateRollingForwardPending    UpgradeState = original.UpgradeStateRollingForwardPending
 )
 
 type UpgradeState1 = original.UpgradeState1
 
 const (
-	UpgradeState1Invalid			UpgradeState1	= original.UpgradeState1Invalid
-	UpgradeState1RollingBackCompleted	UpgradeState1	= original.UpgradeState1RollingBackCompleted
-	UpgradeState1RollingBackInProgress	UpgradeState1	= original.UpgradeState1RollingBackInProgress
-	UpgradeState1RollingForwardCompleted	UpgradeState1	= original.UpgradeState1RollingForwardCompleted
-	UpgradeState1RollingForwardInProgress	UpgradeState1	= original.UpgradeState1RollingForwardInProgress
-	UpgradeState1RollingForwardPending	UpgradeState1	= original.UpgradeState1RollingForwardPending
+	UpgradeState1Invalid                  UpgradeState1 = original.UpgradeState1Invalid
+	UpgradeState1RollingBackCompleted     UpgradeState1 = original.UpgradeState1RollingBackCompleted
+	UpgradeState1RollingBackInProgress    UpgradeState1 = original.UpgradeState1RollingBackInProgress
+	UpgradeState1RollingForwardCompleted  UpgradeState1 = original.UpgradeState1RollingForwardCompleted
+	UpgradeState1RollingForwardInProgress UpgradeState1 = original.UpgradeState1RollingForwardInProgress
+	UpgradeState1RollingForwardPending    UpgradeState1 = original.UpgradeState1RollingForwardPending
 )
 
 type Application = original.Application

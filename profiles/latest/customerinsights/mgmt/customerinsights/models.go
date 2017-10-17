@@ -46,202 +46,202 @@ type LinksClient = original.LinksClient
 type CalculationWindowTypes = original.CalculationWindowTypes
 
 const (
-	Day		CalculationWindowTypes	= original.Day
-	Hour		CalculationWindowTypes	= original.Hour
-	Lifetime	CalculationWindowTypes	= original.Lifetime
-	Month		CalculationWindowTypes	= original.Month
-	Week		CalculationWindowTypes	= original.Week
+	Day      CalculationWindowTypes = original.Day
+	Hour     CalculationWindowTypes = original.Hour
+	Lifetime CalculationWindowTypes = original.Lifetime
+	Month    CalculationWindowTypes = original.Month
+	Week     CalculationWindowTypes = original.Week
 )
 
 type CanonicalPropertyValueType = original.CanonicalPropertyValueType
 
 const (
-	Categorical		CanonicalPropertyValueType	= original.Categorical
-	DerivedCategorical	CanonicalPropertyValueType	= original.DerivedCategorical
-	DerivedNumeric		CanonicalPropertyValueType	= original.DerivedNumeric
-	Numeric			CanonicalPropertyValueType	= original.Numeric
+	Categorical        CanonicalPropertyValueType = original.Categorical
+	DerivedCategorical CanonicalPropertyValueType = original.DerivedCategorical
+	DerivedNumeric     CanonicalPropertyValueType = original.DerivedNumeric
+	Numeric            CanonicalPropertyValueType = original.Numeric
 )
 
 type CardinalityTypes = original.CardinalityTypes
 
 const (
-	ManyToMany	CardinalityTypes	= original.ManyToMany
-	OneToMany	CardinalityTypes	= original.OneToMany
-	OneToOne	CardinalityTypes	= original.OneToOne
+	ManyToMany CardinalityTypes = original.ManyToMany
+	OneToMany  CardinalityTypes = original.OneToMany
+	OneToOne   CardinalityTypes = original.OneToOne
 )
 
 type CompletionOperationTypes = original.CompletionOperationTypes
 
 const (
-	DeleteFile	CompletionOperationTypes	= original.DeleteFile
-	DoNothing	CompletionOperationTypes	= original.DoNothing
-	MoveFile	CompletionOperationTypes	= original.MoveFile
+	DeleteFile CompletionOperationTypes = original.DeleteFile
+	DoNothing  CompletionOperationTypes = original.DoNothing
+	MoveFile   CompletionOperationTypes = original.MoveFile
 )
 
 type ConnectorMappingStates = original.ConnectorMappingStates
 
 const (
-	Created		ConnectorMappingStates	= original.Created
-	Creating	ConnectorMappingStates	= original.Creating
-	Expiring	ConnectorMappingStates	= original.Expiring
-	Failed		ConnectorMappingStates	= original.Failed
-	Ready		ConnectorMappingStates	= original.Ready
-	Running		ConnectorMappingStates	= original.Running
-	Stopped		ConnectorMappingStates	= original.Stopped
+	Created  ConnectorMappingStates = original.Created
+	Creating ConnectorMappingStates = original.Creating
+	Expiring ConnectorMappingStates = original.Expiring
+	Failed   ConnectorMappingStates = original.Failed
+	Ready    ConnectorMappingStates = original.Ready
+	Running  ConnectorMappingStates = original.Running
+	Stopped  ConnectorMappingStates = original.Stopped
 )
 
 type ConnectorStates = original.ConnectorStates
 
 const (
-	ConnectorStatesCreated	ConnectorStates	= original.ConnectorStatesCreated
-	ConnectorStatesCreating	ConnectorStates	= original.ConnectorStatesCreating
-	ConnectorStatesDeleting	ConnectorStates	= original.ConnectorStatesDeleting
-	ConnectorStatesExpiring	ConnectorStates	= original.ConnectorStatesExpiring
-	ConnectorStatesFailed	ConnectorStates	= original.ConnectorStatesFailed
-	ConnectorStatesReady	ConnectorStates	= original.ConnectorStatesReady
+	ConnectorStatesCreated  ConnectorStates = original.ConnectorStatesCreated
+	ConnectorStatesCreating ConnectorStates = original.ConnectorStatesCreating
+	ConnectorStatesDeleting ConnectorStates = original.ConnectorStatesDeleting
+	ConnectorStatesExpiring ConnectorStates = original.ConnectorStatesExpiring
+	ConnectorStatesFailed   ConnectorStates = original.ConnectorStatesFailed
+	ConnectorStatesReady    ConnectorStates = original.ConnectorStatesReady
 )
 
 type ConnectorTypes = original.ConnectorTypes
 
 const (
-	AzureBlob	ConnectorTypes	= original.AzureBlob
-	CRM		ConnectorTypes	= original.CRM
-	ExchangeOnline	ConnectorTypes	= original.ExchangeOnline
-	None		ConnectorTypes	= original.None
-	Outbound	ConnectorTypes	= original.Outbound
-	Salesforce	ConnectorTypes	= original.Salesforce
+	AzureBlob      ConnectorTypes = original.AzureBlob
+	CRM            ConnectorTypes = original.CRM
+	ExchangeOnline ConnectorTypes = original.ExchangeOnline
+	None           ConnectorTypes = original.None
+	Outbound       ConnectorTypes = original.Outbound
+	Salesforce     ConnectorTypes = original.Salesforce
 )
 
 type DataSourceType = original.DataSourceType
 
 const (
-	DataSourceTypeConnector		DataSourceType	= original.DataSourceTypeConnector
-	DataSourceTypeLinkInteraction	DataSourceType	= original.DataSourceTypeLinkInteraction
-	DataSourceTypeSystemDefault	DataSourceType	= original.DataSourceTypeSystemDefault
+	DataSourceTypeConnector       DataSourceType = original.DataSourceTypeConnector
+	DataSourceTypeLinkInteraction DataSourceType = original.DataSourceTypeLinkInteraction
+	DataSourceTypeSystemDefault   DataSourceType = original.DataSourceTypeSystemDefault
 )
 
 type EntityType = original.EntityType
 
 const (
-	EntityTypeInteraction	EntityType	= original.EntityTypeInteraction
-	EntityTypeNone		EntityType	= original.EntityTypeNone
-	EntityTypeProfile	EntityType	= original.EntityTypeProfile
-	EntityTypeRelationship	EntityType	= original.EntityTypeRelationship
+	EntityTypeInteraction  EntityType = original.EntityTypeInteraction
+	EntityTypeNone         EntityType = original.EntityTypeNone
+	EntityTypeProfile      EntityType = original.EntityTypeProfile
+	EntityTypeRelationship EntityType = original.EntityTypeRelationship
 )
 
 type EntityTypes = original.EntityTypes
 
 const (
-	EntityTypesInteraction	EntityTypes	= original.EntityTypesInteraction
-	EntityTypesNone		EntityTypes	= original.EntityTypesNone
-	EntityTypesProfile	EntityTypes	= original.EntityTypesProfile
-	EntityTypesRelationship	EntityTypes	= original.EntityTypesRelationship
+	EntityTypesInteraction  EntityTypes = original.EntityTypesInteraction
+	EntityTypesNone         EntityTypes = original.EntityTypesNone
+	EntityTypesProfile      EntityTypes = original.EntityTypesProfile
+	EntityTypesRelationship EntityTypes = original.EntityTypesRelationship
 )
 
 type ErrorManagementTypes = original.ErrorManagementTypes
 
 const (
-	RejectAndContinue	ErrorManagementTypes	= original.RejectAndContinue
-	RejectUntilLimit	ErrorManagementTypes	= original.RejectUntilLimit
-	StopImport		ErrorManagementTypes	= original.StopImport
+	RejectAndContinue ErrorManagementTypes = original.RejectAndContinue
+	RejectUntilLimit  ErrorManagementTypes = original.RejectUntilLimit
+	StopImport        ErrorManagementTypes = original.StopImport
 )
 
 type FrequencyTypes = original.FrequencyTypes
 
 const (
-	FrequencyTypesDay	FrequencyTypes	= original.FrequencyTypesDay
-	FrequencyTypesHour	FrequencyTypes	= original.FrequencyTypesHour
-	FrequencyTypesMinute	FrequencyTypes	= original.FrequencyTypesMinute
-	FrequencyTypesMonth	FrequencyTypes	= original.FrequencyTypesMonth
-	FrequencyTypesWeek	FrequencyTypes	= original.FrequencyTypesWeek
+	FrequencyTypesDay    FrequencyTypes = original.FrequencyTypesDay
+	FrequencyTypesHour   FrequencyTypes = original.FrequencyTypesHour
+	FrequencyTypesMinute FrequencyTypes = original.FrequencyTypesMinute
+	FrequencyTypesMonth  FrequencyTypes = original.FrequencyTypesMonth
+	FrequencyTypesWeek   FrequencyTypes = original.FrequencyTypesWeek
 )
 
 type InstanceOperationType = original.InstanceOperationType
 
 const (
-	Delete	InstanceOperationType	= original.Delete
-	Upsert	InstanceOperationType	= original.Upsert
+	Delete InstanceOperationType = original.Delete
+	Upsert InstanceOperationType = original.Upsert
 )
 
 type KpiFunctions = original.KpiFunctions
 
 const (
-	KpiFunctionsAvg			KpiFunctions	= original.KpiFunctionsAvg
-	KpiFunctionsCount		KpiFunctions	= original.KpiFunctionsCount
-	KpiFunctionsCountDistinct	KpiFunctions	= original.KpiFunctionsCountDistinct
-	KpiFunctionsLast		KpiFunctions	= original.KpiFunctionsLast
-	KpiFunctionsMax			KpiFunctions	= original.KpiFunctionsMax
-	KpiFunctionsMin			KpiFunctions	= original.KpiFunctionsMin
-	KpiFunctionsNone		KpiFunctions	= original.KpiFunctionsNone
-	KpiFunctionsSum			KpiFunctions	= original.KpiFunctionsSum
+	KpiFunctionsAvg           KpiFunctions = original.KpiFunctionsAvg
+	KpiFunctionsCount         KpiFunctions = original.KpiFunctionsCount
+	KpiFunctionsCountDistinct KpiFunctions = original.KpiFunctionsCountDistinct
+	KpiFunctionsLast          KpiFunctions = original.KpiFunctionsLast
+	KpiFunctionsMax           KpiFunctions = original.KpiFunctionsMax
+	KpiFunctionsMin           KpiFunctions = original.KpiFunctionsMin
+	KpiFunctionsNone          KpiFunctions = original.KpiFunctionsNone
+	KpiFunctionsSum           KpiFunctions = original.KpiFunctionsSum
 )
 
 type LinkTypes = original.LinkTypes
 
 const (
-	CopyIfNull	LinkTypes	= original.CopyIfNull
-	UpdateAlways	LinkTypes	= original.UpdateAlways
+	CopyIfNull   LinkTypes = original.CopyIfNull
+	UpdateAlways LinkTypes = original.UpdateAlways
 )
 
 type PermissionTypes = original.PermissionTypes
 
 const (
-	Manage	PermissionTypes	= original.Manage
-	Read	PermissionTypes	= original.Read
-	Write	PermissionTypes	= original.Write
+	Manage PermissionTypes = original.Manage
+	Read   PermissionTypes = original.Read
+	Write  PermissionTypes = original.Write
 )
 
 type PredictionModelLifeCycle = original.PredictionModelLifeCycle
 
 const (
-	PredictionModelLifeCycleActive				PredictionModelLifeCycle	= original.PredictionModelLifeCycleActive
-	PredictionModelLifeCycleDeleted				PredictionModelLifeCycle	= original.PredictionModelLifeCycleDeleted
-	PredictionModelLifeCycleDiscovering			PredictionModelLifeCycle	= original.PredictionModelLifeCycleDiscovering
-	PredictionModelLifeCycleEvaluating			PredictionModelLifeCycle	= original.PredictionModelLifeCycleEvaluating
-	PredictionModelLifeCycleEvaluatingFailed		PredictionModelLifeCycle	= original.PredictionModelLifeCycleEvaluatingFailed
-	PredictionModelLifeCycleFailed				PredictionModelLifeCycle	= original.PredictionModelLifeCycleFailed
-	PredictionModelLifeCycleFeaturing			PredictionModelLifeCycle	= original.PredictionModelLifeCycleFeaturing
-	PredictionModelLifeCycleFeaturingFailed			PredictionModelLifeCycle	= original.PredictionModelLifeCycleFeaturingFailed
-	PredictionModelLifeCycleHumanIntervention		PredictionModelLifeCycle	= original.PredictionModelLifeCycleHumanIntervention
-	PredictionModelLifeCycleNew				PredictionModelLifeCycle	= original.PredictionModelLifeCycleNew
-	PredictionModelLifeCyclePendingDiscovering		PredictionModelLifeCycle	= original.PredictionModelLifeCyclePendingDiscovering
-	PredictionModelLifeCyclePendingFeaturing		PredictionModelLifeCycle	= original.PredictionModelLifeCyclePendingFeaturing
-	PredictionModelLifeCyclePendingModelConfirmation	PredictionModelLifeCycle	= original.PredictionModelLifeCyclePendingModelConfirmation
-	PredictionModelLifeCyclePendingTraining			PredictionModelLifeCycle	= original.PredictionModelLifeCyclePendingTraining
-	PredictionModelLifeCycleProvisioning			PredictionModelLifeCycle	= original.PredictionModelLifeCycleProvisioning
-	PredictionModelLifeCycleProvisioningFailed		PredictionModelLifeCycle	= original.PredictionModelLifeCycleProvisioningFailed
-	PredictionModelLifeCycleTraining			PredictionModelLifeCycle	= original.PredictionModelLifeCycleTraining
-	PredictionModelLifeCycleTrainingFailed			PredictionModelLifeCycle	= original.PredictionModelLifeCycleTrainingFailed
+	PredictionModelLifeCycleActive                   PredictionModelLifeCycle = original.PredictionModelLifeCycleActive
+	PredictionModelLifeCycleDeleted                  PredictionModelLifeCycle = original.PredictionModelLifeCycleDeleted
+	PredictionModelLifeCycleDiscovering              PredictionModelLifeCycle = original.PredictionModelLifeCycleDiscovering
+	PredictionModelLifeCycleEvaluating               PredictionModelLifeCycle = original.PredictionModelLifeCycleEvaluating
+	PredictionModelLifeCycleEvaluatingFailed         PredictionModelLifeCycle = original.PredictionModelLifeCycleEvaluatingFailed
+	PredictionModelLifeCycleFailed                   PredictionModelLifeCycle = original.PredictionModelLifeCycleFailed
+	PredictionModelLifeCycleFeaturing                PredictionModelLifeCycle = original.PredictionModelLifeCycleFeaturing
+	PredictionModelLifeCycleFeaturingFailed          PredictionModelLifeCycle = original.PredictionModelLifeCycleFeaturingFailed
+	PredictionModelLifeCycleHumanIntervention        PredictionModelLifeCycle = original.PredictionModelLifeCycleHumanIntervention
+	PredictionModelLifeCycleNew                      PredictionModelLifeCycle = original.PredictionModelLifeCycleNew
+	PredictionModelLifeCyclePendingDiscovering       PredictionModelLifeCycle = original.PredictionModelLifeCyclePendingDiscovering
+	PredictionModelLifeCyclePendingFeaturing         PredictionModelLifeCycle = original.PredictionModelLifeCyclePendingFeaturing
+	PredictionModelLifeCyclePendingModelConfirmation PredictionModelLifeCycle = original.PredictionModelLifeCyclePendingModelConfirmation
+	PredictionModelLifeCyclePendingTraining          PredictionModelLifeCycle = original.PredictionModelLifeCyclePendingTraining
+	PredictionModelLifeCycleProvisioning             PredictionModelLifeCycle = original.PredictionModelLifeCycleProvisioning
+	PredictionModelLifeCycleProvisioningFailed       PredictionModelLifeCycle = original.PredictionModelLifeCycleProvisioningFailed
+	PredictionModelLifeCycleTraining                 PredictionModelLifeCycle = original.PredictionModelLifeCycleTraining
+	PredictionModelLifeCycleTrainingFailed           PredictionModelLifeCycle = original.PredictionModelLifeCycleTrainingFailed
 )
 
 type ProvisioningStates = original.ProvisioningStates
 
 const (
-	ProvisioningStatesDeleting		ProvisioningStates	= original.ProvisioningStatesDeleting
-	ProvisioningStatesExpiring		ProvisioningStates	= original.ProvisioningStatesExpiring
-	ProvisioningStatesFailed		ProvisioningStates	= original.ProvisioningStatesFailed
-	ProvisioningStatesHumanIntervention	ProvisioningStates	= original.ProvisioningStatesHumanIntervention
-	ProvisioningStatesProvisioning		ProvisioningStates	= original.ProvisioningStatesProvisioning
-	ProvisioningStatesSucceeded		ProvisioningStates	= original.ProvisioningStatesSucceeded
+	ProvisioningStatesDeleting          ProvisioningStates = original.ProvisioningStatesDeleting
+	ProvisioningStatesExpiring          ProvisioningStates = original.ProvisioningStatesExpiring
+	ProvisioningStatesFailed            ProvisioningStates = original.ProvisioningStatesFailed
+	ProvisioningStatesHumanIntervention ProvisioningStates = original.ProvisioningStatesHumanIntervention
+	ProvisioningStatesProvisioning      ProvisioningStates = original.ProvisioningStatesProvisioning
+	ProvisioningStatesSucceeded         ProvisioningStates = original.ProvisioningStatesSucceeded
 )
 
 type RoleTypes = original.RoleTypes
 
 const (
-	Admin		RoleTypes	= original.Admin
-	DataAdmin	RoleTypes	= original.DataAdmin
-	DataReader	RoleTypes	= original.DataReader
-	ManageAdmin	RoleTypes	= original.ManageAdmin
-	ManageReader	RoleTypes	= original.ManageReader
-	Reader		RoleTypes	= original.Reader
+	Admin        RoleTypes = original.Admin
+	DataAdmin    RoleTypes = original.DataAdmin
+	DataReader   RoleTypes = original.DataReader
+	ManageAdmin  RoleTypes = original.ManageAdmin
+	ManageReader RoleTypes = original.ManageReader
+	Reader       RoleTypes = original.Reader
 )
 
 type Status = original.Status
 
 const (
-	StatusActive	Status	= original.StatusActive
-	StatusDeleted	Status	= original.StatusDeleted
-	StatusNone	Status	= original.StatusNone
+	StatusActive  Status = original.StatusActive
+	StatusDeleted Status = original.StatusDeleted
+	StatusNone    Status = original.StatusNone
 )
 
 type AssignmentPrincipal = original.AssignmentPrincipal

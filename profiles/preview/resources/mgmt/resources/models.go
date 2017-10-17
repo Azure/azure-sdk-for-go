@@ -26,8 +26,8 @@ type GroupClient = original.GroupClient
 type DeploymentMode = original.DeploymentMode
 
 const (
-	Complete	DeploymentMode	= original.Complete
-	Incremental	DeploymentMode	= original.Incremental
+	Complete    DeploymentMode = original.Complete
+	Incremental DeploymentMode = original.Incremental
 )
 
 type ResourceIdentityType = original.ResourceIdentityType

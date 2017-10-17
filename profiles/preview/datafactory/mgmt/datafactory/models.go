@@ -33,70 +33,70 @@ type LinkedServicesClient = original.LinkedServicesClient
 type AuthenticationType = original.AuthenticationType
 
 const (
-	AuthenticationTypeAnonymous		AuthenticationType	= original.AuthenticationTypeAnonymous
-	AuthenticationTypeBasic			AuthenticationType	= original.AuthenticationTypeBasic
-	AuthenticationTypeClientCertificate	AuthenticationType	= original.AuthenticationTypeClientCertificate
+	AuthenticationTypeAnonymous         AuthenticationType = original.AuthenticationTypeAnonymous
+	AuthenticationTypeBasic             AuthenticationType = original.AuthenticationTypeBasic
+	AuthenticationTypeClientCertificate AuthenticationType = original.AuthenticationTypeClientCertificate
 )
 
 type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
 
 const (
-	Merge	AzureSearchIndexWriteBehaviorType	= original.Merge
-	Upload	AzureSearchIndexWriteBehaviorType	= original.Upload
+	Merge  AzureSearchIndexWriteBehaviorType = original.Merge
+	Upload AzureSearchIndexWriteBehaviorType = original.Upload
 )
 
 type CassandraSourceReadConsistencyLevels = original.CassandraSourceReadConsistencyLevels
 
 const (
-	ALL		CassandraSourceReadConsistencyLevels	= original.ALL
-	EACHQUORUM	CassandraSourceReadConsistencyLevels	= original.EACHQUORUM
-	LOCALONE	CassandraSourceReadConsistencyLevels	= original.LOCALONE
-	LOCALQUORUM	CassandraSourceReadConsistencyLevels	= original.LOCALQUORUM
-	LOCALSERIAL	CassandraSourceReadConsistencyLevels	= original.LOCALSERIAL
-	ONE		CassandraSourceReadConsistencyLevels	= original.ONE
-	QUORUM		CassandraSourceReadConsistencyLevels	= original.QUORUM
-	SERIAL		CassandraSourceReadConsistencyLevels	= original.SERIAL
-	THREE		CassandraSourceReadConsistencyLevels	= original.THREE
-	TWO		CassandraSourceReadConsistencyLevels	= original.TWO
+	ALL         CassandraSourceReadConsistencyLevels = original.ALL
+	EACHQUORUM  CassandraSourceReadConsistencyLevels = original.EACHQUORUM
+	LOCALONE    CassandraSourceReadConsistencyLevels = original.LOCALONE
+	LOCALQUORUM CassandraSourceReadConsistencyLevels = original.LOCALQUORUM
+	LOCALSERIAL CassandraSourceReadConsistencyLevels = original.LOCALSERIAL
+	ONE         CassandraSourceReadConsistencyLevels = original.ONE
+	QUORUM      CassandraSourceReadConsistencyLevels = original.QUORUM
+	SERIAL      CassandraSourceReadConsistencyLevels = original.SERIAL
+	THREE       CassandraSourceReadConsistencyLevels = original.THREE
+	TWO         CassandraSourceReadConsistencyLevels = original.TWO
 )
 
 type CopyBehaviorType = original.CopyBehaviorType
 
 const (
-	FlattenHierarchy	CopyBehaviorType	= original.FlattenHierarchy
-	MergeFiles		CopyBehaviorType	= original.MergeFiles
-	PreserveHierarchy	CopyBehaviorType	= original.PreserveHierarchy
+	FlattenHierarchy  CopyBehaviorType = original.FlattenHierarchy
+	MergeFiles        CopyBehaviorType = original.MergeFiles
+	PreserveHierarchy CopyBehaviorType = original.PreserveHierarchy
 )
 
 type DatasetCompressionLevel = original.DatasetCompressionLevel
 
 const (
-	Fastest	DatasetCompressionLevel	= original.Fastest
-	Optimal	DatasetCompressionLevel	= original.Optimal
+	Fastest DatasetCompressionLevel = original.Fastest
+	Optimal DatasetCompressionLevel = original.Optimal
 )
 
 type DayOfWeek = original.DayOfWeek
 
 const (
-	Friday		DayOfWeek	= original.Friday
-	Monday		DayOfWeek	= original.Monday
-	Saturday	DayOfWeek	= original.Saturday
-	Sunday		DayOfWeek	= original.Sunday
-	Thursday	DayOfWeek	= original.Thursday
-	Tuesday		DayOfWeek	= original.Tuesday
-	Wednesday	DayOfWeek	= original.Wednesday
+	Friday    DayOfWeek = original.Friday
+	Monday    DayOfWeek = original.Monday
+	Saturday  DayOfWeek = original.Saturday
+	Sunday    DayOfWeek = original.Sunday
+	Thursday  DayOfWeek = original.Thursday
+	Tuesday   DayOfWeek = original.Tuesday
+	Wednesday DayOfWeek = original.Wednesday
 )
 
 type DaysOfWeek = original.DaysOfWeek
 
 const (
-	DaysOfWeekFriday	DaysOfWeek	= original.DaysOfWeekFriday
-	DaysOfWeekMonday	DaysOfWeek	= original.DaysOfWeekMonday
-	DaysOfWeekSaturday	DaysOfWeek	= original.DaysOfWeekSaturday
-	DaysOfWeekSunday	DaysOfWeek	= original.DaysOfWeekSunday
-	DaysOfWeekThursday	DaysOfWeek	= original.DaysOfWeekThursday
-	DaysOfWeekTuesday	DaysOfWeek	= original.DaysOfWeekTuesday
-	DaysOfWeekWednesday	DaysOfWeek	= original.DaysOfWeekWednesday
+	DaysOfWeekFriday    DaysOfWeek = original.DaysOfWeekFriday
+	DaysOfWeekMonday    DaysOfWeek = original.DaysOfWeekMonday
+	DaysOfWeekSaturday  DaysOfWeek = original.DaysOfWeekSaturday
+	DaysOfWeekSunday    DaysOfWeek = original.DaysOfWeekSunday
+	DaysOfWeekThursday  DaysOfWeek = original.DaysOfWeekThursday
+	DaysOfWeekTuesday   DaysOfWeek = original.DaysOfWeekTuesday
+	DaysOfWeekWednesday DaysOfWeek = original.DaysOfWeekWednesday
 )
 
 type Db2AuthenticationType = original.Db2AuthenticationType
@@ -108,279 +108,279 @@ const (
 type DependencyCondition = original.DependencyCondition
 
 const (
-	Completed	DependencyCondition	= original.Completed
-	Failed		DependencyCondition	= original.Failed
-	Skipped		DependencyCondition	= original.Skipped
-	Succeeded	DependencyCondition	= original.Succeeded
+	Completed DependencyCondition = original.Completed
+	Failed    DependencyCondition = original.Failed
+	Skipped   DependencyCondition = original.Skipped
+	Succeeded DependencyCondition = original.Succeeded
 )
 
 type FtpAuthenticationType = original.FtpAuthenticationType
 
 const (
-	FtpAuthenticationTypeAnonymous	FtpAuthenticationType	= original.FtpAuthenticationTypeAnonymous
-	FtpAuthenticationTypeBasic	FtpAuthenticationType	= original.FtpAuthenticationTypeBasic
+	FtpAuthenticationTypeAnonymous FtpAuthenticationType = original.FtpAuthenticationTypeAnonymous
+	FtpAuthenticationTypeBasic     FtpAuthenticationType = original.FtpAuthenticationTypeBasic
 )
 
 type HDInsightActivityDebugInfoOption = original.HDInsightActivityDebugInfoOption
 
 const (
-	Always	HDInsightActivityDebugInfoOption	= original.Always
-	Failure	HDInsightActivityDebugInfoOption	= original.Failure
-	None	HDInsightActivityDebugInfoOption	= original.None
+	Always  HDInsightActivityDebugInfoOption = original.Always
+	Failure HDInsightActivityDebugInfoOption = original.Failure
+	None    HDInsightActivityDebugInfoOption = original.None
 )
 
 type HTTPAuthenticationType = original.HTTPAuthenticationType
 
 const (
-	HTTPAuthenticationTypeAnonymous		HTTPAuthenticationType	= original.HTTPAuthenticationTypeAnonymous
-	HTTPAuthenticationTypeBasic		HTTPAuthenticationType	= original.HTTPAuthenticationTypeBasic
-	HTTPAuthenticationTypeClientCertificate	HTTPAuthenticationType	= original.HTTPAuthenticationTypeClientCertificate
-	HTTPAuthenticationTypeDigest		HTTPAuthenticationType	= original.HTTPAuthenticationTypeDigest
-	HTTPAuthenticationTypeWindows		HTTPAuthenticationType	= original.HTTPAuthenticationTypeWindows
+	HTTPAuthenticationTypeAnonymous         HTTPAuthenticationType = original.HTTPAuthenticationTypeAnonymous
+	HTTPAuthenticationTypeBasic             HTTPAuthenticationType = original.HTTPAuthenticationTypeBasic
+	HTTPAuthenticationTypeClientCertificate HTTPAuthenticationType = original.HTTPAuthenticationTypeClientCertificate
+	HTTPAuthenticationTypeDigest            HTTPAuthenticationType = original.HTTPAuthenticationTypeDigest
+	HTTPAuthenticationTypeWindows           HTTPAuthenticationType = original.HTTPAuthenticationTypeWindows
 )
 
 type IntegrationRuntimeAuthKeyName = original.IntegrationRuntimeAuthKeyName
 
 const (
-	AuthKey1	IntegrationRuntimeAuthKeyName	= original.AuthKey1
-	AuthKey2	IntegrationRuntimeAuthKeyName	= original.AuthKey2
+	AuthKey1 IntegrationRuntimeAuthKeyName = original.AuthKey1
+	AuthKey2 IntegrationRuntimeAuthKeyName = original.AuthKey2
 )
 
 type IntegrationRuntimeAutoUpdate = original.IntegrationRuntimeAutoUpdate
 
 const (
-	Off	IntegrationRuntimeAutoUpdate	= original.Off
-	On	IntegrationRuntimeAutoUpdate	= original.On
+	Off IntegrationRuntimeAutoUpdate = original.Off
+	On  IntegrationRuntimeAutoUpdate = original.On
 )
 
 type IntegrationRuntimeInternalChannelEncryptionMode = original.IntegrationRuntimeInternalChannelEncryptionMode
 
 const (
-	NotEncrypted	IntegrationRuntimeInternalChannelEncryptionMode	= original.NotEncrypted
-	NotSet		IntegrationRuntimeInternalChannelEncryptionMode	= original.NotSet
-	SslEncrypted	IntegrationRuntimeInternalChannelEncryptionMode	= original.SslEncrypted
+	NotEncrypted IntegrationRuntimeInternalChannelEncryptionMode = original.NotEncrypted
+	NotSet       IntegrationRuntimeInternalChannelEncryptionMode = original.NotSet
+	SslEncrypted IntegrationRuntimeInternalChannelEncryptionMode = original.SslEncrypted
 )
 
 type IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTier
 
 const (
-	IntegrationRuntimeSsisCatalogPricingTierBasic		IntegrationRuntimeSsisCatalogPricingTier	= original.IntegrationRuntimeSsisCatalogPricingTierBasic
-	IntegrationRuntimeSsisCatalogPricingTierPremium		IntegrationRuntimeSsisCatalogPricingTier	= original.IntegrationRuntimeSsisCatalogPricingTierPremium
-	IntegrationRuntimeSsisCatalogPricingTierPremiumRS	IntegrationRuntimeSsisCatalogPricingTier	= original.IntegrationRuntimeSsisCatalogPricingTierPremiumRS
-	IntegrationRuntimeSsisCatalogPricingTierStandard	IntegrationRuntimeSsisCatalogPricingTier	= original.IntegrationRuntimeSsisCatalogPricingTierStandard
+	IntegrationRuntimeSsisCatalogPricingTierBasic     IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierBasic
+	IntegrationRuntimeSsisCatalogPricingTierPremium   IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierPremium
+	IntegrationRuntimeSsisCatalogPricingTierPremiumRS IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierPremiumRS
+	IntegrationRuntimeSsisCatalogPricingTierStandard  IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierStandard
 )
 
 type IntegrationRuntimeState = original.IntegrationRuntimeState
 
 const (
-	Initial			IntegrationRuntimeState	= original.Initial
-	Limited			IntegrationRuntimeState	= original.Limited
-	NeedRegistration	IntegrationRuntimeState	= original.NeedRegistration
-	Offline			IntegrationRuntimeState	= original.Offline
-	Online			IntegrationRuntimeState	= original.Online
-	Started			IntegrationRuntimeState	= original.Started
-	Starting		IntegrationRuntimeState	= original.Starting
-	Stopped			IntegrationRuntimeState	= original.Stopped
-	Stopping		IntegrationRuntimeState	= original.Stopping
+	Initial          IntegrationRuntimeState = original.Initial
+	Limited          IntegrationRuntimeState = original.Limited
+	NeedRegistration IntegrationRuntimeState = original.NeedRegistration
+	Offline          IntegrationRuntimeState = original.Offline
+	Online           IntegrationRuntimeState = original.Online
+	Started          IntegrationRuntimeState = original.Started
+	Starting         IntegrationRuntimeState = original.Starting
+	Stopped          IntegrationRuntimeState = original.Stopped
+	Stopping         IntegrationRuntimeState = original.Stopping
 )
 
 type IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResult
 
 const (
-	Fail	IntegrationRuntimeUpdateResult	= original.Fail
-	Succeed	IntegrationRuntimeUpdateResult	= original.Succeed
+	Fail    IntegrationRuntimeUpdateResult = original.Fail
+	Succeed IntegrationRuntimeUpdateResult = original.Succeed
 )
 
 type JSONFormatFilePattern = original.JSONFormatFilePattern
 
 const (
-	ArrayOfObjects	JSONFormatFilePattern	= original.ArrayOfObjects
-	SetOfObjects	JSONFormatFilePattern	= original.SetOfObjects
+	ArrayOfObjects JSONFormatFilePattern = original.ArrayOfObjects
+	SetOfObjects   JSONFormatFilePattern = original.SetOfObjects
 )
 
 type ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatus
 
 const (
-	ManagedIntegrationRuntimeNodeStatusAvailable	ManagedIntegrationRuntimeNodeStatus	= original.ManagedIntegrationRuntimeNodeStatusAvailable
-	ManagedIntegrationRuntimeNodeStatusRecycling	ManagedIntegrationRuntimeNodeStatus	= original.ManagedIntegrationRuntimeNodeStatusRecycling
-	ManagedIntegrationRuntimeNodeStatusStarting	ManagedIntegrationRuntimeNodeStatus	= original.ManagedIntegrationRuntimeNodeStatusStarting
-	ManagedIntegrationRuntimeNodeStatusUnavailable	ManagedIntegrationRuntimeNodeStatus	= original.ManagedIntegrationRuntimeNodeStatusUnavailable
+	ManagedIntegrationRuntimeNodeStatusAvailable   ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusAvailable
+	ManagedIntegrationRuntimeNodeStatusRecycling   ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusRecycling
+	ManagedIntegrationRuntimeNodeStatusStarting    ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusStarting
+	ManagedIntegrationRuntimeNodeStatusUnavailable ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusUnavailable
 )
 
 type MongoDbAuthenticationType = original.MongoDbAuthenticationType
 
 const (
-	MongoDbAuthenticationTypeAnonymous	MongoDbAuthenticationType	= original.MongoDbAuthenticationTypeAnonymous
-	MongoDbAuthenticationTypeBasic		MongoDbAuthenticationType	= original.MongoDbAuthenticationTypeBasic
+	MongoDbAuthenticationTypeAnonymous MongoDbAuthenticationType = original.MongoDbAuthenticationTypeAnonymous
+	MongoDbAuthenticationTypeBasic     MongoDbAuthenticationType = original.MongoDbAuthenticationTypeBasic
 )
 
 type ODataAuthenticationType = original.ODataAuthenticationType
 
 const (
-	ODataAuthenticationTypeAnonymous	ODataAuthenticationType	= original.ODataAuthenticationTypeAnonymous
-	ODataAuthenticationTypeBasic		ODataAuthenticationType	= original.ODataAuthenticationTypeBasic
+	ODataAuthenticationTypeAnonymous ODataAuthenticationType = original.ODataAuthenticationTypeAnonymous
+	ODataAuthenticationTypeBasic     ODataAuthenticationType = original.ODataAuthenticationTypeBasic
 )
 
 type ParameterType = original.ParameterType
 
 const (
-	Array	ParameterType	= original.Array
-	Bool	ParameterType	= original.Bool
-	Float	ParameterType	= original.Float
-	Int	ParameterType	= original.Int
-	Object	ParameterType	= original.Object
-	String	ParameterType	= original.String
+	Array  ParameterType = original.Array
+	Bool   ParameterType = original.Bool
+	Float  ParameterType = original.Float
+	Int    ParameterType = original.Int
+	Object ParameterType = original.Object
+	String ParameterType = original.String
 )
 
 type PipelineRunQueryFilterOperand = original.PipelineRunQueryFilterOperand
 
 const (
-	PipelineName	PipelineRunQueryFilterOperand	= original.PipelineName
-	RunEnd		PipelineRunQueryFilterOperand	= original.RunEnd
-	RunStart	PipelineRunQueryFilterOperand	= original.RunStart
-	Status		PipelineRunQueryFilterOperand	= original.Status
+	PipelineName PipelineRunQueryFilterOperand = original.PipelineName
+	RunEnd       PipelineRunQueryFilterOperand = original.RunEnd
+	RunStart     PipelineRunQueryFilterOperand = original.RunStart
+	Status       PipelineRunQueryFilterOperand = original.Status
 )
 
 type PipelineRunQueryFilterOperator = original.PipelineRunQueryFilterOperator
 
 const (
-	Equals		PipelineRunQueryFilterOperator	= original.Equals
-	In		PipelineRunQueryFilterOperator	= original.In
-	NotEquals	PipelineRunQueryFilterOperator	= original.NotEquals
-	NotIn		PipelineRunQueryFilterOperator	= original.NotIn
+	Equals    PipelineRunQueryFilterOperator = original.Equals
+	In        PipelineRunQueryFilterOperator = original.In
+	NotEquals PipelineRunQueryFilterOperator = original.NotEquals
+	NotIn     PipelineRunQueryFilterOperator = original.NotIn
 )
 
 type PipelineRunQueryOrder = original.PipelineRunQueryOrder
 
 const (
-	ASC	PipelineRunQueryOrder	= original.ASC
-	DESC	PipelineRunQueryOrder	= original.DESC
+	ASC  PipelineRunQueryOrder = original.ASC
+	DESC PipelineRunQueryOrder = original.DESC
 )
 
 type PipelineRunQueryOrderByField = original.PipelineRunQueryOrderByField
 
 const (
-	PipelineRunQueryOrderByFieldRunEnd	PipelineRunQueryOrderByField	= original.PipelineRunQueryOrderByFieldRunEnd
-	PipelineRunQueryOrderByFieldRunStart	PipelineRunQueryOrderByField	= original.PipelineRunQueryOrderByFieldRunStart
+	PipelineRunQueryOrderByFieldRunEnd   PipelineRunQueryOrderByField = original.PipelineRunQueryOrderByFieldRunEnd
+	PipelineRunQueryOrderByFieldRunStart PipelineRunQueryOrderByField = original.PipelineRunQueryOrderByFieldRunStart
 )
 
 type PolybaseSettingsRejectType = original.PolybaseSettingsRejectType
 
 const (
-	Percentage	PolybaseSettingsRejectType	= original.Percentage
-	Value		PolybaseSettingsRejectType	= original.Value
+	Percentage PolybaseSettingsRejectType = original.Percentage
+	Value      PolybaseSettingsRejectType = original.Value
 )
 
 type RecurrenceFrequency = original.RecurrenceFrequency
 
 const (
-	Day		RecurrenceFrequency	= original.Day
-	Hour		RecurrenceFrequency	= original.Hour
-	Minute		RecurrenceFrequency	= original.Minute
-	Month		RecurrenceFrequency	= original.Month
-	NotSpecified	RecurrenceFrequency	= original.NotSpecified
-	Week		RecurrenceFrequency	= original.Week
-	Year		RecurrenceFrequency	= original.Year
+	Day          RecurrenceFrequency = original.Day
+	Hour         RecurrenceFrequency = original.Hour
+	Minute       RecurrenceFrequency = original.Minute
+	Month        RecurrenceFrequency = original.Month
+	NotSpecified RecurrenceFrequency = original.NotSpecified
+	Week         RecurrenceFrequency = original.Week
+	Year         RecurrenceFrequency = original.Year
 )
 
 type SapHanaAuthenticationType = original.SapHanaAuthenticationType
 
 const (
-	SapHanaAuthenticationTypeBasic		SapHanaAuthenticationType	= original.SapHanaAuthenticationTypeBasic
-	SapHanaAuthenticationTypeWindows	SapHanaAuthenticationType	= original.SapHanaAuthenticationTypeWindows
+	SapHanaAuthenticationTypeBasic   SapHanaAuthenticationType = original.SapHanaAuthenticationTypeBasic
+	SapHanaAuthenticationTypeWindows SapHanaAuthenticationType = original.SapHanaAuthenticationTypeWindows
 )
 
 type SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatus
 
 const (
-	SelfHostedIntegrationRuntimeNodeStatusInitializeFailed	SelfHostedIntegrationRuntimeNodeStatus	= original.SelfHostedIntegrationRuntimeNodeStatusInitializeFailed
-	SelfHostedIntegrationRuntimeNodeStatusInitializing	SelfHostedIntegrationRuntimeNodeStatus	= original.SelfHostedIntegrationRuntimeNodeStatusInitializing
-	SelfHostedIntegrationRuntimeNodeStatusLimited		SelfHostedIntegrationRuntimeNodeStatus	= original.SelfHostedIntegrationRuntimeNodeStatusLimited
-	SelfHostedIntegrationRuntimeNodeStatusNeedRegistration	SelfHostedIntegrationRuntimeNodeStatus	= original.SelfHostedIntegrationRuntimeNodeStatusNeedRegistration
-	SelfHostedIntegrationRuntimeNodeStatusOffline		SelfHostedIntegrationRuntimeNodeStatus	= original.SelfHostedIntegrationRuntimeNodeStatusOffline
-	SelfHostedIntegrationRuntimeNodeStatusOnline		SelfHostedIntegrationRuntimeNodeStatus	= original.SelfHostedIntegrationRuntimeNodeStatusOnline
-	SelfHostedIntegrationRuntimeNodeStatusUpgrading		SelfHostedIntegrationRuntimeNodeStatus	= original.SelfHostedIntegrationRuntimeNodeStatusUpgrading
+	SelfHostedIntegrationRuntimeNodeStatusInitializeFailed SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusInitializeFailed
+	SelfHostedIntegrationRuntimeNodeStatusInitializing     SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusInitializing
+	SelfHostedIntegrationRuntimeNodeStatusLimited          SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusLimited
+	SelfHostedIntegrationRuntimeNodeStatusNeedRegistration SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusNeedRegistration
+	SelfHostedIntegrationRuntimeNodeStatusOffline          SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusOffline
+	SelfHostedIntegrationRuntimeNodeStatusOnline           SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusOnline
+	SelfHostedIntegrationRuntimeNodeStatusUpgrading        SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusUpgrading
 )
 
 type SftpAuthenticationType = original.SftpAuthenticationType
 
 const (
-	SftpAuthenticationTypeBasic		SftpAuthenticationType	= original.SftpAuthenticationTypeBasic
-	SftpAuthenticationTypeSSHPublicKey	SftpAuthenticationType	= original.SftpAuthenticationTypeSSHPublicKey
+	SftpAuthenticationTypeBasic        SftpAuthenticationType = original.SftpAuthenticationTypeBasic
+	SftpAuthenticationTypeSSHPublicKey SftpAuthenticationType = original.SftpAuthenticationTypeSSHPublicKey
 )
 
 type StoredProcedureParameterType = original.StoredProcedureParameterType
 
 const (
-	StoredProcedureParameterTypeBoolean	StoredProcedureParameterType	= original.StoredProcedureParameterTypeBoolean
-	StoredProcedureParameterTypeDate	StoredProcedureParameterType	= original.StoredProcedureParameterTypeDate
-	StoredProcedureParameterTypeDecimal	StoredProcedureParameterType	= original.StoredProcedureParameterTypeDecimal
-	StoredProcedureParameterTypeGUID	StoredProcedureParameterType	= original.StoredProcedureParameterTypeGUID
-	StoredProcedureParameterTypeInt		StoredProcedureParameterType	= original.StoredProcedureParameterTypeInt
-	StoredProcedureParameterTypeString	StoredProcedureParameterType	= original.StoredProcedureParameterTypeString
+	StoredProcedureParameterTypeBoolean StoredProcedureParameterType = original.StoredProcedureParameterTypeBoolean
+	StoredProcedureParameterTypeDate    StoredProcedureParameterType = original.StoredProcedureParameterTypeDate
+	StoredProcedureParameterTypeDecimal StoredProcedureParameterType = original.StoredProcedureParameterTypeDecimal
+	StoredProcedureParameterTypeGUID    StoredProcedureParameterType = original.StoredProcedureParameterTypeGUID
+	StoredProcedureParameterTypeInt     StoredProcedureParameterType = original.StoredProcedureParameterTypeInt
+	StoredProcedureParameterTypeString  StoredProcedureParameterType = original.StoredProcedureParameterTypeString
 )
 
 type SybaseAuthenticationType = original.SybaseAuthenticationType
 
 const (
-	SybaseAuthenticationTypeBasic	SybaseAuthenticationType	= original.SybaseAuthenticationTypeBasic
-	SybaseAuthenticationTypeWindows	SybaseAuthenticationType	= original.SybaseAuthenticationTypeWindows
+	SybaseAuthenticationTypeBasic   SybaseAuthenticationType = original.SybaseAuthenticationTypeBasic
+	SybaseAuthenticationTypeWindows SybaseAuthenticationType = original.SybaseAuthenticationTypeWindows
 )
 
 type TeradataAuthenticationType = original.TeradataAuthenticationType
 
 const (
-	TeradataAuthenticationTypeBasic		TeradataAuthenticationType	= original.TeradataAuthenticationTypeBasic
-	TeradataAuthenticationTypeWindows	TeradataAuthenticationType	= original.TeradataAuthenticationTypeWindows
+	TeradataAuthenticationTypeBasic   TeradataAuthenticationType = original.TeradataAuthenticationTypeBasic
+	TeradataAuthenticationTypeWindows TeradataAuthenticationType = original.TeradataAuthenticationTypeWindows
 )
 
 type TriggerRunStatus = original.TriggerRunStatus
 
 const (
-	TriggerRunStatusFailed		TriggerRunStatus	= original.TriggerRunStatusFailed
-	TriggerRunStatusInprogress	TriggerRunStatus	= original.TriggerRunStatusInprogress
-	TriggerRunStatusSucceeded	TriggerRunStatus	= original.TriggerRunStatusSucceeded
+	TriggerRunStatusFailed     TriggerRunStatus = original.TriggerRunStatusFailed
+	TriggerRunStatusInprogress TriggerRunStatus = original.TriggerRunStatusInprogress
+	TriggerRunStatusSucceeded  TriggerRunStatus = original.TriggerRunStatusSucceeded
 )
 
 type TriggerRuntimeState = original.TriggerRuntimeState
 
 const (
-	TriggerRuntimeStateDisabled	TriggerRuntimeState	= original.TriggerRuntimeStateDisabled
-	TriggerRuntimeStateStarted	TriggerRuntimeState	= original.TriggerRuntimeStateStarted
-	TriggerRuntimeStateStopped	TriggerRuntimeState	= original.TriggerRuntimeStateStopped
+	TriggerRuntimeStateDisabled TriggerRuntimeState = original.TriggerRuntimeStateDisabled
+	TriggerRuntimeStateStarted  TriggerRuntimeState = original.TriggerRuntimeStateStarted
+	TriggerRuntimeStateStopped  TriggerRuntimeState = original.TriggerRuntimeStateStopped
 )
 
 type Type = original.Type
 
 const (
-	TypeManaged	Type	= original.TypeManaged
-	TypeSelfHosted	Type	= original.TypeSelfHosted
+	TypeManaged    Type = original.TypeManaged
+	TypeSelfHosted Type = original.TypeSelfHosted
 )
 
 type TypeActivity = original.TypeActivity
 
 const (
-	TypeAzureMLBatchExecution	TypeActivity	= original.TypeAzureMLBatchExecution
-	TypeAzureMLUpdateResource	TypeActivity	= original.TypeAzureMLUpdateResource
-	TypeContainer			TypeActivity	= original.TypeContainer
-	TypeCopy			TypeActivity	= original.TypeCopy
-	TypeCustom			TypeActivity	= original.TypeCustom
-	TypeDataLakeAnalyticsUSQL	TypeActivity	= original.TypeDataLakeAnalyticsUSQL
-	TypeExecutePipeline		TypeActivity	= original.TypeExecutePipeline
-	TypeExecution			TypeActivity	= original.TypeExecution
-	TypeForEach			TypeActivity	= original.TypeForEach
-	TypeGetMetadata			TypeActivity	= original.TypeGetMetadata
-	TypeHDInsightHive		TypeActivity	= original.TypeHDInsightHive
-	TypeHDInsightMapReduce		TypeActivity	= original.TypeHDInsightMapReduce
-	TypeHDInsightPig		TypeActivity	= original.TypeHDInsightPig
-	TypeHDInsightSpark		TypeActivity	= original.TypeHDInsightSpark
-	TypeHDInsightStreaming		TypeActivity	= original.TypeHDInsightStreaming
-	TypeIfCondition			TypeActivity	= original.TypeIfCondition
-	TypeLookup			TypeActivity	= original.TypeLookup
-	TypeSQLServerStoredProcedure	TypeActivity	= original.TypeSQLServerStoredProcedure
-	TypeUntil			TypeActivity	= original.TypeUntil
-	TypeWait			TypeActivity	= original.TypeWait
-	TypeWebActivity			TypeActivity	= original.TypeWebActivity
+	TypeAzureMLBatchExecution    TypeActivity = original.TypeAzureMLBatchExecution
+	TypeAzureMLUpdateResource    TypeActivity = original.TypeAzureMLUpdateResource
+	TypeContainer                TypeActivity = original.TypeContainer
+	TypeCopy                     TypeActivity = original.TypeCopy
+	TypeCustom                   TypeActivity = original.TypeCustom
+	TypeDataLakeAnalyticsUSQL    TypeActivity = original.TypeDataLakeAnalyticsUSQL
+	TypeExecutePipeline          TypeActivity = original.TypeExecutePipeline
+	TypeExecution                TypeActivity = original.TypeExecution
+	TypeForEach                  TypeActivity = original.TypeForEach
+	TypeGetMetadata              TypeActivity = original.TypeGetMetadata
+	TypeHDInsightHive            TypeActivity = original.TypeHDInsightHive
+	TypeHDInsightMapReduce       TypeActivity = original.TypeHDInsightMapReduce
+	TypeHDInsightPig             TypeActivity = original.TypeHDInsightPig
+	TypeHDInsightSpark           TypeActivity = original.TypeHDInsightSpark
+	TypeHDInsightStreaming       TypeActivity = original.TypeHDInsightStreaming
+	TypeIfCondition              TypeActivity = original.TypeIfCondition
+	TypeLookup                   TypeActivity = original.TypeLookup
+	TypeSQLServerStoredProcedure TypeActivity = original.TypeSQLServerStoredProcedure
+	TypeUntil                    TypeActivity = original.TypeUntil
+	TypeWait                     TypeActivity = original.TypeWait
+	TypeWebActivity              TypeActivity = original.TypeWebActivity
 )
 
 type TypeAzureKeyVaultReference = original.TypeAzureKeyVaultReference
@@ -392,38 +392,38 @@ const (
 type TypeCopySink = original.TypeCopySink
 
 const (
-	TypeAzureDataLakeStoreSink	TypeCopySink	= original.TypeAzureDataLakeStoreSink
-	TypeAzureQueueSink		TypeCopySink	= original.TypeAzureQueueSink
-	TypeAzureSearchIndexSink	TypeCopySink	= original.TypeAzureSearchIndexSink
-	TypeAzureTableSink		TypeCopySink	= original.TypeAzureTableSink
-	TypeBlobSink			TypeCopySink	= original.TypeBlobSink
-	TypeDocumentDbCollectionSink	TypeCopySink	= original.TypeDocumentDbCollectionSink
-	TypeFileSystemSink		TypeCopySink	= original.TypeFileSystemSink
-	TypeOdbcSink			TypeCopySink	= original.TypeOdbcSink
-	TypeOracleSink			TypeCopySink	= original.TypeOracleSink
-	TypeSQLDWSink			TypeCopySink	= original.TypeSQLDWSink
-	TypeSQLSink			TypeCopySink	= original.TypeSQLSink
+	TypeAzureDataLakeStoreSink   TypeCopySink = original.TypeAzureDataLakeStoreSink
+	TypeAzureQueueSink           TypeCopySink = original.TypeAzureQueueSink
+	TypeAzureSearchIndexSink     TypeCopySink = original.TypeAzureSearchIndexSink
+	TypeAzureTableSink           TypeCopySink = original.TypeAzureTableSink
+	TypeBlobSink                 TypeCopySink = original.TypeBlobSink
+	TypeDocumentDbCollectionSink TypeCopySink = original.TypeDocumentDbCollectionSink
+	TypeFileSystemSink           TypeCopySink = original.TypeFileSystemSink
+	TypeOdbcSink                 TypeCopySink = original.TypeOdbcSink
+	TypeOracleSink               TypeCopySink = original.TypeOracleSink
+	TypeSQLDWSink                TypeCopySink = original.TypeSQLDWSink
+	TypeSQLSink                  TypeCopySink = original.TypeSQLSink
 )
 
 type TypeCopySource = original.TypeCopySource
 
 const (
-	TypeAmazonRedshiftSource	TypeCopySource	= original.TypeAmazonRedshiftSource
-	TypeAzureDataLakeStoreSource	TypeCopySource	= original.TypeAzureDataLakeStoreSource
-	TypeAzureTableSource		TypeCopySource	= original.TypeAzureTableSource
-	TypeBlobSource			TypeCopySource	= original.TypeBlobSource
-	TypeCassandraSource		TypeCopySource	= original.TypeCassandraSource
-	TypeDocumentDbCollectionSource	TypeCopySource	= original.TypeDocumentDbCollectionSource
-	TypeDynamicsSource		TypeCopySource	= original.TypeDynamicsSource
-	TypeFileSystemSource		TypeCopySource	= original.TypeFileSystemSource
-	TypeHdfsSource			TypeCopySource	= original.TypeHdfsSource
-	TypeHTTPSource			TypeCopySource	= original.TypeHTTPSource
-	TypeMongoDbSource		TypeCopySource	= original.TypeMongoDbSource
-	TypeOracleSource		TypeCopySource	= original.TypeOracleSource
-	TypeRelationalSource		TypeCopySource	= original.TypeRelationalSource
-	TypeSQLDWSource			TypeCopySource	= original.TypeSQLDWSource
-	TypeSQLSource			TypeCopySource	= original.TypeSQLSource
-	TypeWebSource			TypeCopySource	= original.TypeWebSource
+	TypeAmazonRedshiftSource       TypeCopySource = original.TypeAmazonRedshiftSource
+	TypeAzureDataLakeStoreSource   TypeCopySource = original.TypeAzureDataLakeStoreSource
+	TypeAzureTableSource           TypeCopySource = original.TypeAzureTableSource
+	TypeBlobSource                 TypeCopySource = original.TypeBlobSource
+	TypeCassandraSource            TypeCopySource = original.TypeCassandraSource
+	TypeDocumentDbCollectionSource TypeCopySource = original.TypeDocumentDbCollectionSource
+	TypeDynamicsSource             TypeCopySource = original.TypeDynamicsSource
+	TypeFileSystemSource           TypeCopySource = original.TypeFileSystemSource
+	TypeHdfsSource                 TypeCopySource = original.TypeHdfsSource
+	TypeHTTPSource                 TypeCopySource = original.TypeHTTPSource
+	TypeMongoDbSource              TypeCopySource = original.TypeMongoDbSource
+	TypeOracleSource               TypeCopySource = original.TypeOracleSource
+	TypeRelationalSource           TypeCopySource = original.TypeRelationalSource
+	TypeSQLDWSource                TypeCopySource = original.TypeSQLDWSource
+	TypeSQLSource                  TypeCopySource = original.TypeSQLSource
+	TypeWebSource                  TypeCopySource = original.TypeWebSource
 )
 
 type TypeCopyTranslator = original.TypeCopyTranslator
@@ -435,33 +435,33 @@ const (
 type TypeDataset = original.TypeDataset
 
 const (
-	TypeAmazonS3Object		TypeDataset	= original.TypeAmazonS3Object
-	TypeAzureBlob			TypeDataset	= original.TypeAzureBlob
-	TypeAzureDataLakeStoreFile	TypeDataset	= original.TypeAzureDataLakeStoreFile
-	TypeAzureSearchIndex		TypeDataset	= original.TypeAzureSearchIndex
-	TypeAzureSQLDWTable		TypeDataset	= original.TypeAzureSQLDWTable
-	TypeAzureSQLTable		TypeDataset	= original.TypeAzureSQLTable
-	TypeAzureTable			TypeDataset	= original.TypeAzureTable
-	TypeCassandraTable		TypeDataset	= original.TypeCassandraTable
-	TypeCustomDataset		TypeDataset	= original.TypeCustomDataset
-	TypeDocumentDbCollection	TypeDataset	= original.TypeDocumentDbCollection
-	TypeDynamicsEntity		TypeDataset	= original.TypeDynamicsEntity
-	TypeFileShare			TypeDataset	= original.TypeFileShare
-	TypeHTTPFile			TypeDataset	= original.TypeHTTPFile
-	TypeMongoDbCollection		TypeDataset	= original.TypeMongoDbCollection
-	TypeODataResource		TypeDataset	= original.TypeODataResource
-	TypeOracleTable			TypeDataset	= original.TypeOracleTable
-	TypeRelationalTable		TypeDataset	= original.TypeRelationalTable
-	TypeSQLServerTable		TypeDataset	= original.TypeSQLServerTable
-	TypeWebTable			TypeDataset	= original.TypeWebTable
+	TypeAmazonS3Object         TypeDataset = original.TypeAmazonS3Object
+	TypeAzureBlob              TypeDataset = original.TypeAzureBlob
+	TypeAzureDataLakeStoreFile TypeDataset = original.TypeAzureDataLakeStoreFile
+	TypeAzureSearchIndex       TypeDataset = original.TypeAzureSearchIndex
+	TypeAzureSQLDWTable        TypeDataset = original.TypeAzureSQLDWTable
+	TypeAzureSQLTable          TypeDataset = original.TypeAzureSQLTable
+	TypeAzureTable             TypeDataset = original.TypeAzureTable
+	TypeCassandraTable         TypeDataset = original.TypeCassandraTable
+	TypeCustomDataset          TypeDataset = original.TypeCustomDataset
+	TypeDocumentDbCollection   TypeDataset = original.TypeDocumentDbCollection
+	TypeDynamicsEntity         TypeDataset = original.TypeDynamicsEntity
+	TypeFileShare              TypeDataset = original.TypeFileShare
+	TypeHTTPFile               TypeDataset = original.TypeHTTPFile
+	TypeMongoDbCollection      TypeDataset = original.TypeMongoDbCollection
+	TypeODataResource          TypeDataset = original.TypeODataResource
+	TypeOracleTable            TypeDataset = original.TypeOracleTable
+	TypeRelationalTable        TypeDataset = original.TypeRelationalTable
+	TypeSQLServerTable         TypeDataset = original.TypeSQLServerTable
+	TypeWebTable               TypeDataset = original.TypeWebTable
 )
 
 type TypeDatasetCompression = original.TypeDatasetCompression
 
 const (
-	TypeBZip2	TypeDatasetCompression	= original.TypeBZip2
-	TypeDeflate	TypeDatasetCompression	= original.TypeDeflate
-	TypeGZip	TypeDatasetCompression	= original.TypeGZip
+	TypeBZip2   TypeDatasetCompression = original.TypeBZip2
+	TypeDeflate TypeDatasetCompression = original.TypeDeflate
+	TypeGZip    TypeDatasetCompression = original.TypeGZip
 )
 
 type TypeDatasetPartitionValue = original.TypeDatasetPartitionValue
@@ -473,67 +473,67 @@ const (
 type TypeDatasetStorageFormat = original.TypeDatasetStorageFormat
 
 const (
-	TypeAvroFormat		TypeDatasetStorageFormat	= original.TypeAvroFormat
-	TypeJSONFormat		TypeDatasetStorageFormat	= original.TypeJSONFormat
-	TypeOrcFormat		TypeDatasetStorageFormat	= original.TypeOrcFormat
-	TypeParquetFormat	TypeDatasetStorageFormat	= original.TypeParquetFormat
-	TypeTextFormat		TypeDatasetStorageFormat	= original.TypeTextFormat
+	TypeAvroFormat    TypeDatasetStorageFormat = original.TypeAvroFormat
+	TypeJSONFormat    TypeDatasetStorageFormat = original.TypeJSONFormat
+	TypeOrcFormat     TypeDatasetStorageFormat = original.TypeOrcFormat
+	TypeParquetFormat TypeDatasetStorageFormat = original.TypeParquetFormat
+	TypeTextFormat    TypeDatasetStorageFormat = original.TypeTextFormat
 )
 
 type TypeLinkedService = original.TypeLinkedService
 
 const (
-	TypeAmazonRedshift		TypeLinkedService	= original.TypeAmazonRedshift
-	TypeAmazonS3			TypeLinkedService	= original.TypeAmazonS3
-	TypeAzureBatch			TypeLinkedService	= original.TypeAzureBatch
-	TypeAzureDataLakeAnalytics	TypeLinkedService	= original.TypeAzureDataLakeAnalytics
-	TypeAzureDataLakeStore		TypeLinkedService	= original.TypeAzureDataLakeStore
-	TypeAzureKeyVault		TypeLinkedService	= original.TypeAzureKeyVault
-	TypeAzureML			TypeLinkedService	= original.TypeAzureML
-	TypeAzureSearch			TypeLinkedService	= original.TypeAzureSearch
-	TypeAzureSQLDatabase		TypeLinkedService	= original.TypeAzureSQLDatabase
-	TypeAzureSQLDW			TypeLinkedService	= original.TypeAzureSQLDW
-	TypeAzureStorage		TypeLinkedService	= original.TypeAzureStorage
-	TypeCassandra			TypeLinkedService	= original.TypeCassandra
-	TypeCosmosDb			TypeLinkedService	= original.TypeCosmosDb
-	TypeCustomDataSource		TypeLinkedService	= original.TypeCustomDataSource
-	TypeDb2				TypeLinkedService	= original.TypeDb2
-	TypeDynamics			TypeLinkedService	= original.TypeDynamics
-	TypeFileServer			TypeLinkedService	= original.TypeFileServer
-	TypeFtpServer			TypeLinkedService	= original.TypeFtpServer
-	TypeHdfs			TypeLinkedService	= original.TypeHdfs
-	TypeHDInsight			TypeLinkedService	= original.TypeHDInsight
-	TypeHDInsightOnDemand		TypeLinkedService	= original.TypeHDInsightOnDemand
-	TypeHTTPServer			TypeLinkedService	= original.TypeHTTPServer
-	TypeMongoDb			TypeLinkedService	= original.TypeMongoDb
-	TypeMySQL			TypeLinkedService	= original.TypeMySQL
-	TypeOData			TypeLinkedService	= original.TypeOData
-	TypeOdbc			TypeLinkedService	= original.TypeOdbc
-	TypeOracle			TypeLinkedService	= original.TypeOracle
-	TypePostgreSQL			TypeLinkedService	= original.TypePostgreSQL
-	TypeSalesforce			TypeLinkedService	= original.TypeSalesforce
-	TypeSapBW			TypeLinkedService	= original.TypeSapBW
-	TypeSapHana			TypeLinkedService	= original.TypeSapHana
-	TypeSftp			TypeLinkedService	= original.TypeSftp
-	TypeSQLServer			TypeLinkedService	= original.TypeSQLServer
-	TypeSybase			TypeLinkedService	= original.TypeSybase
-	TypeTeradata			TypeLinkedService	= original.TypeTeradata
-	TypeWeb				TypeLinkedService	= original.TypeWeb
+	TypeAmazonRedshift         TypeLinkedService = original.TypeAmazonRedshift
+	TypeAmazonS3               TypeLinkedService = original.TypeAmazonS3
+	TypeAzureBatch             TypeLinkedService = original.TypeAzureBatch
+	TypeAzureDataLakeAnalytics TypeLinkedService = original.TypeAzureDataLakeAnalytics
+	TypeAzureDataLakeStore     TypeLinkedService = original.TypeAzureDataLakeStore
+	TypeAzureKeyVault          TypeLinkedService = original.TypeAzureKeyVault
+	TypeAzureML                TypeLinkedService = original.TypeAzureML
+	TypeAzureSearch            TypeLinkedService = original.TypeAzureSearch
+	TypeAzureSQLDatabase       TypeLinkedService = original.TypeAzureSQLDatabase
+	TypeAzureSQLDW             TypeLinkedService = original.TypeAzureSQLDW
+	TypeAzureStorage           TypeLinkedService = original.TypeAzureStorage
+	TypeCassandra              TypeLinkedService = original.TypeCassandra
+	TypeCosmosDb               TypeLinkedService = original.TypeCosmosDb
+	TypeCustomDataSource       TypeLinkedService = original.TypeCustomDataSource
+	TypeDb2                    TypeLinkedService = original.TypeDb2
+	TypeDynamics               TypeLinkedService = original.TypeDynamics
+	TypeFileServer             TypeLinkedService = original.TypeFileServer
+	TypeFtpServer              TypeLinkedService = original.TypeFtpServer
+	TypeHdfs                   TypeLinkedService = original.TypeHdfs
+	TypeHDInsight              TypeLinkedService = original.TypeHDInsight
+	TypeHDInsightOnDemand      TypeLinkedService = original.TypeHDInsightOnDemand
+	TypeHTTPServer             TypeLinkedService = original.TypeHTTPServer
+	TypeMongoDb                TypeLinkedService = original.TypeMongoDb
+	TypeMySQL                  TypeLinkedService = original.TypeMySQL
+	TypeOData                  TypeLinkedService = original.TypeOData
+	TypeOdbc                   TypeLinkedService = original.TypeOdbc
+	TypeOracle                 TypeLinkedService = original.TypeOracle
+	TypePostgreSQL             TypeLinkedService = original.TypePostgreSQL
+	TypeSalesforce             TypeLinkedService = original.TypeSalesforce
+	TypeSapBW                  TypeLinkedService = original.TypeSapBW
+	TypeSapHana                TypeLinkedService = original.TypeSapHana
+	TypeSftp                   TypeLinkedService = original.TypeSftp
+	TypeSQLServer              TypeLinkedService = original.TypeSQLServer
+	TypeSybase                 TypeLinkedService = original.TypeSybase
+	TypeTeradata               TypeLinkedService = original.TypeTeradata
+	TypeWeb                    TypeLinkedService = original.TypeWeb
 )
 
 type TypeTrigger = original.TypeTrigger
 
 const (
-	TypeBlobTrigger		TypeTrigger	= original.TypeBlobTrigger
-	TypeScheduleTrigger	TypeTrigger	= original.TypeScheduleTrigger
+	TypeBlobTrigger     TypeTrigger = original.TypeBlobTrigger
+	TypeScheduleTrigger TypeTrigger = original.TypeScheduleTrigger
 )
 
 type WebActivityMethod = original.WebActivityMethod
 
 const (
-	GET	WebActivityMethod	= original.GET
-	POST	WebActivityMethod	= original.POST
-	PUT	WebActivityMethod	= original.PUT
+	GET  WebActivityMethod = original.GET
+	POST WebActivityMethod = original.POST
+	PUT  WebActivityMethod = original.PUT
 )
 
 type Activity = original.Activity

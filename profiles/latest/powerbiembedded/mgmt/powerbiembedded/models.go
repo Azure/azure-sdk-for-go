@@ -30,15 +30,15 @@ type ManagementClient = original.ManagementClient
 type AccessKeyName = original.AccessKeyName
 
 const (
-	Key1	AccessKeyName	= original.Key1
-	Key2	AccessKeyName	= original.Key2
+	Key1 AccessKeyName = original.Key1
+	Key2 AccessKeyName = original.Key2
 )
 
 type CheckNameReason = original.CheckNameReason
 
 const (
-	Invalid		CheckNameReason	= original.Invalid
-	Unavailable	CheckNameReason	= original.Unavailable
+	Invalid     CheckNameReason = original.Invalid
+	Unavailable CheckNameReason = original.Unavailable
 )
 
 type AzureSku = original.AzureSku

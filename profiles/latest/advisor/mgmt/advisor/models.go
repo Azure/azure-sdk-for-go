@@ -32,26 +32,26 @@ type ManagementClient = original.ManagementClient
 type Category = original.Category
 
 const (
-	Cost			Category	= original.Cost
-	HighAvailability	Category	= original.HighAvailability
-	Performance		Category	= original.Performance
-	Security		Category	= original.Security
+	Cost             Category = original.Cost
+	HighAvailability Category = original.HighAvailability
+	Performance      Category = original.Performance
+	Security         Category = original.Security
 )
 
 type Impact = original.Impact
 
 const (
-	High	Impact	= original.High
-	Low	Impact	= original.Low
-	Medium	Impact	= original.Medium
+	High   Impact = original.High
+	Low    Impact = original.Low
+	Medium Impact = original.Medium
 )
 
 type Risk = original.Risk
 
 const (
-	Error	Risk	= original.Error
-	None	Risk	= original.None
-	Warning	Risk	= original.Warning
+	Error   Risk = original.Error
+	None    Risk = original.None
+	Warning Risk = original.Warning
 )
 
 type OperationDisplayInfo = original.OperationDisplayInfo

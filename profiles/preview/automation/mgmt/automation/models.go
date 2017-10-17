@@ -49,23 +49,23 @@ type FieldsClient = original.FieldsClient
 type AccountState = original.AccountState
 
 const (
-	Ok		AccountState	= original.Ok
-	Suspended	AccountState	= original.Suspended
-	Unavailable	AccountState	= original.Unavailable
+	Ok          AccountState = original.Ok
+	Suspended   AccountState = original.Suspended
+	Unavailable AccountState = original.Unavailable
 )
 
 type AgentRegistrationKeyName = original.AgentRegistrationKeyName
 
 const (
-	Primary		AgentRegistrationKeyName	= original.Primary
-	Secondary	AgentRegistrationKeyName	= original.Secondary
+	Primary   AgentRegistrationKeyName = original.Primary
+	Secondary AgentRegistrationKeyName = original.Secondary
 )
 
 type ContentSourceType = original.ContentSourceType
 
 const (
-	EmbeddedContent	ContentSourceType	= original.EmbeddedContent
-	URI		ContentSourceType	= original.URI
+	EmbeddedContent ContentSourceType = original.EmbeddedContent
+	URI             ContentSourceType = original.URI
 )
 
 type DscConfigurationProvisioningState = original.DscConfigurationProvisioningState
@@ -77,112 +77,112 @@ const (
 type DscConfigurationState = original.DscConfigurationState
 
 const (
-	DscConfigurationStateEdit	DscConfigurationState	= original.DscConfigurationStateEdit
-	DscConfigurationStateNew	DscConfigurationState	= original.DscConfigurationStateNew
-	DscConfigurationStatePublished	DscConfigurationState	= original.DscConfigurationStatePublished
+	DscConfigurationStateEdit      DscConfigurationState = original.DscConfigurationStateEdit
+	DscConfigurationStateNew       DscConfigurationState = original.DscConfigurationStateNew
+	DscConfigurationStatePublished DscConfigurationState = original.DscConfigurationStatePublished
 )
 
 type HTTPStatusCode = original.HTTPStatusCode
 
 const (
-	Accepted			HTTPStatusCode	= original.Accepted
-	Ambiguous			HTTPStatusCode	= original.Ambiguous
-	BadGateway			HTTPStatusCode	= original.BadGateway
-	BadRequest			HTTPStatusCode	= original.BadRequest
-	Conflict			HTTPStatusCode	= original.Conflict
-	Continue			HTTPStatusCode	= original.Continue
-	Created				HTTPStatusCode	= original.Created
-	ExpectationFailed		HTTPStatusCode	= original.ExpectationFailed
-	Forbidden			HTTPStatusCode	= original.Forbidden
-	Found				HTTPStatusCode	= original.Found
-	GatewayTimeout			HTTPStatusCode	= original.GatewayTimeout
-	Gone				HTTPStatusCode	= original.Gone
-	HTTPVersionNotSupported		HTTPStatusCode	= original.HTTPVersionNotSupported
-	InternalServerError		HTTPStatusCode	= original.InternalServerError
-	LengthRequired			HTTPStatusCode	= original.LengthRequired
-	MethodNotAllowed		HTTPStatusCode	= original.MethodNotAllowed
-	Moved				HTTPStatusCode	= original.Moved
-	MovedPermanently		HTTPStatusCode	= original.MovedPermanently
-	MultipleChoices			HTTPStatusCode	= original.MultipleChoices
-	NoContent			HTTPStatusCode	= original.NoContent
-	NonAuthoritativeInformation	HTTPStatusCode	= original.NonAuthoritativeInformation
-	NotAcceptable			HTTPStatusCode	= original.NotAcceptable
-	NotFound			HTTPStatusCode	= original.NotFound
-	NotImplemented			HTTPStatusCode	= original.NotImplemented
-	NotModified			HTTPStatusCode	= original.NotModified
-	OK				HTTPStatusCode	= original.OK
-	PartialContent			HTTPStatusCode	= original.PartialContent
-	PaymentRequired			HTTPStatusCode	= original.PaymentRequired
-	PreconditionFailed		HTTPStatusCode	= original.PreconditionFailed
-	ProxyAuthenticationRequired	HTTPStatusCode	= original.ProxyAuthenticationRequired
-	Redirect			HTTPStatusCode	= original.Redirect
-	RedirectKeepVerb		HTTPStatusCode	= original.RedirectKeepVerb
-	RedirectMethod			HTTPStatusCode	= original.RedirectMethod
-	RequestedRangeNotSatisfiable	HTTPStatusCode	= original.RequestedRangeNotSatisfiable
-	RequestEntityTooLarge		HTTPStatusCode	= original.RequestEntityTooLarge
-	RequestTimeout			HTTPStatusCode	= original.RequestTimeout
-	RequestURITooLong		HTTPStatusCode	= original.RequestURITooLong
-	ResetContent			HTTPStatusCode	= original.ResetContent
-	SeeOther			HTTPStatusCode	= original.SeeOther
-	ServiceUnavailable		HTTPStatusCode	= original.ServiceUnavailable
-	SwitchingProtocols		HTTPStatusCode	= original.SwitchingProtocols
-	TemporaryRedirect		HTTPStatusCode	= original.TemporaryRedirect
-	Unauthorized			HTTPStatusCode	= original.Unauthorized
-	UnsupportedMediaType		HTTPStatusCode	= original.UnsupportedMediaType
-	Unused				HTTPStatusCode	= original.Unused
-	UpgradeRequired			HTTPStatusCode	= original.UpgradeRequired
-	UseProxy			HTTPStatusCode	= original.UseProxy
+	Accepted                     HTTPStatusCode = original.Accepted
+	Ambiguous                    HTTPStatusCode = original.Ambiguous
+	BadGateway                   HTTPStatusCode = original.BadGateway
+	BadRequest                   HTTPStatusCode = original.BadRequest
+	Conflict                     HTTPStatusCode = original.Conflict
+	Continue                     HTTPStatusCode = original.Continue
+	Created                      HTTPStatusCode = original.Created
+	ExpectationFailed            HTTPStatusCode = original.ExpectationFailed
+	Forbidden                    HTTPStatusCode = original.Forbidden
+	Found                        HTTPStatusCode = original.Found
+	GatewayTimeout               HTTPStatusCode = original.GatewayTimeout
+	Gone                         HTTPStatusCode = original.Gone
+	HTTPVersionNotSupported      HTTPStatusCode = original.HTTPVersionNotSupported
+	InternalServerError          HTTPStatusCode = original.InternalServerError
+	LengthRequired               HTTPStatusCode = original.LengthRequired
+	MethodNotAllowed             HTTPStatusCode = original.MethodNotAllowed
+	Moved                        HTTPStatusCode = original.Moved
+	MovedPermanently             HTTPStatusCode = original.MovedPermanently
+	MultipleChoices              HTTPStatusCode = original.MultipleChoices
+	NoContent                    HTTPStatusCode = original.NoContent
+	NonAuthoritativeInformation  HTTPStatusCode = original.NonAuthoritativeInformation
+	NotAcceptable                HTTPStatusCode = original.NotAcceptable
+	NotFound                     HTTPStatusCode = original.NotFound
+	NotImplemented               HTTPStatusCode = original.NotImplemented
+	NotModified                  HTTPStatusCode = original.NotModified
+	OK                           HTTPStatusCode = original.OK
+	PartialContent               HTTPStatusCode = original.PartialContent
+	PaymentRequired              HTTPStatusCode = original.PaymentRequired
+	PreconditionFailed           HTTPStatusCode = original.PreconditionFailed
+	ProxyAuthenticationRequired  HTTPStatusCode = original.ProxyAuthenticationRequired
+	Redirect                     HTTPStatusCode = original.Redirect
+	RedirectKeepVerb             HTTPStatusCode = original.RedirectKeepVerb
+	RedirectMethod               HTTPStatusCode = original.RedirectMethod
+	RequestedRangeNotSatisfiable HTTPStatusCode = original.RequestedRangeNotSatisfiable
+	RequestEntityTooLarge        HTTPStatusCode = original.RequestEntityTooLarge
+	RequestTimeout               HTTPStatusCode = original.RequestTimeout
+	RequestURITooLong            HTTPStatusCode = original.RequestURITooLong
+	ResetContent                 HTTPStatusCode = original.ResetContent
+	SeeOther                     HTTPStatusCode = original.SeeOther
+	ServiceUnavailable           HTTPStatusCode = original.ServiceUnavailable
+	SwitchingProtocols           HTTPStatusCode = original.SwitchingProtocols
+	TemporaryRedirect            HTTPStatusCode = original.TemporaryRedirect
+	Unauthorized                 HTTPStatusCode = original.Unauthorized
+	UnsupportedMediaType         HTTPStatusCode = original.UnsupportedMediaType
+	Unused                       HTTPStatusCode = original.Unused
+	UpgradeRequired              HTTPStatusCode = original.UpgradeRequired
+	UseProxy                     HTTPStatusCode = original.UseProxy
 )
 
 type JobStatus = original.JobStatus
 
 const (
-	JobStatusActivating	JobStatus	= original.JobStatusActivating
-	JobStatusBlocked	JobStatus	= original.JobStatusBlocked
-	JobStatusCompleted	JobStatus	= original.JobStatusCompleted
-	JobStatusDisconnected	JobStatus	= original.JobStatusDisconnected
-	JobStatusFailed		JobStatus	= original.JobStatusFailed
-	JobStatusNew		JobStatus	= original.JobStatusNew
-	JobStatusRemoving	JobStatus	= original.JobStatusRemoving
-	JobStatusResuming	JobStatus	= original.JobStatusResuming
-	JobStatusRunning	JobStatus	= original.JobStatusRunning
-	JobStatusStopped	JobStatus	= original.JobStatusStopped
-	JobStatusStopping	JobStatus	= original.JobStatusStopping
-	JobStatusSuspended	JobStatus	= original.JobStatusSuspended
-	JobStatusSuspending	JobStatus	= original.JobStatusSuspending
+	JobStatusActivating   JobStatus = original.JobStatusActivating
+	JobStatusBlocked      JobStatus = original.JobStatusBlocked
+	JobStatusCompleted    JobStatus = original.JobStatusCompleted
+	JobStatusDisconnected JobStatus = original.JobStatusDisconnected
+	JobStatusFailed       JobStatus = original.JobStatusFailed
+	JobStatusNew          JobStatus = original.JobStatusNew
+	JobStatusRemoving     JobStatus = original.JobStatusRemoving
+	JobStatusResuming     JobStatus = original.JobStatusResuming
+	JobStatusRunning      JobStatus = original.JobStatusRunning
+	JobStatusStopped      JobStatus = original.JobStatusStopped
+	JobStatusStopping     JobStatus = original.JobStatusStopping
+	JobStatusSuspended    JobStatus = original.JobStatusSuspended
+	JobStatusSuspending   JobStatus = original.JobStatusSuspending
 )
 
 type JobStreamType = original.JobStreamType
 
 const (
-	Any		JobStreamType	= original.Any
-	Debug		JobStreamType	= original.Debug
-	Error		JobStreamType	= original.Error
-	Output		JobStreamType	= original.Output
-	Progress	JobStreamType	= original.Progress
-	Verbose		JobStreamType	= original.Verbose
-	Warning		JobStreamType	= original.Warning
+	Any      JobStreamType = original.Any
+	Debug    JobStreamType = original.Debug
+	Error    JobStreamType = original.Error
+	Output   JobStreamType = original.Output
+	Progress JobStreamType = original.Progress
+	Verbose  JobStreamType = original.Verbose
+	Warning  JobStreamType = original.Warning
 )
 
 type ModuleProvisioningState = original.ModuleProvisioningState
 
 const (
-	ModuleProvisioningStateActivitiesStored			ModuleProvisioningState	= original.ModuleProvisioningStateActivitiesStored
-	ModuleProvisioningStateCancelled			ModuleProvisioningState	= original.ModuleProvisioningStateCancelled
-	ModuleProvisioningStateConnectionTypeImported		ModuleProvisioningState	= original.ModuleProvisioningStateConnectionTypeImported
-	ModuleProvisioningStateContentDownloaded		ModuleProvisioningState	= original.ModuleProvisioningStateContentDownloaded
-	ModuleProvisioningStateContentRetrieved			ModuleProvisioningState	= original.ModuleProvisioningStateContentRetrieved
-	ModuleProvisioningStateContentStored			ModuleProvisioningState	= original.ModuleProvisioningStateContentStored
-	ModuleProvisioningStateContentValidated			ModuleProvisioningState	= original.ModuleProvisioningStateContentValidated
-	ModuleProvisioningStateCreated				ModuleProvisioningState	= original.ModuleProvisioningStateCreated
-	ModuleProvisioningStateCreating				ModuleProvisioningState	= original.ModuleProvisioningStateCreating
-	ModuleProvisioningStateFailed				ModuleProvisioningState	= original.ModuleProvisioningStateFailed
-	ModuleProvisioningStateModuleDataStored			ModuleProvisioningState	= original.ModuleProvisioningStateModuleDataStored
-	ModuleProvisioningStateModuleImportRunbookComplete	ModuleProvisioningState	= original.ModuleProvisioningStateModuleImportRunbookComplete
-	ModuleProvisioningStateRunningImportModuleRunbook	ModuleProvisioningState	= original.ModuleProvisioningStateRunningImportModuleRunbook
-	ModuleProvisioningStateStartingImportModuleRunbook	ModuleProvisioningState	= original.ModuleProvisioningStateStartingImportModuleRunbook
-	ModuleProvisioningStateSucceeded			ModuleProvisioningState	= original.ModuleProvisioningStateSucceeded
-	ModuleProvisioningStateUpdating				ModuleProvisioningState	= original.ModuleProvisioningStateUpdating
+	ModuleProvisioningStateActivitiesStored            ModuleProvisioningState = original.ModuleProvisioningStateActivitiesStored
+	ModuleProvisioningStateCancelled                   ModuleProvisioningState = original.ModuleProvisioningStateCancelled
+	ModuleProvisioningStateConnectionTypeImported      ModuleProvisioningState = original.ModuleProvisioningStateConnectionTypeImported
+	ModuleProvisioningStateContentDownloaded           ModuleProvisioningState = original.ModuleProvisioningStateContentDownloaded
+	ModuleProvisioningStateContentRetrieved            ModuleProvisioningState = original.ModuleProvisioningStateContentRetrieved
+	ModuleProvisioningStateContentStored               ModuleProvisioningState = original.ModuleProvisioningStateContentStored
+	ModuleProvisioningStateContentValidated            ModuleProvisioningState = original.ModuleProvisioningStateContentValidated
+	ModuleProvisioningStateCreated                     ModuleProvisioningState = original.ModuleProvisioningStateCreated
+	ModuleProvisioningStateCreating                    ModuleProvisioningState = original.ModuleProvisioningStateCreating
+	ModuleProvisioningStateFailed                      ModuleProvisioningState = original.ModuleProvisioningStateFailed
+	ModuleProvisioningStateModuleDataStored            ModuleProvisioningState = original.ModuleProvisioningStateModuleDataStored
+	ModuleProvisioningStateModuleImportRunbookComplete ModuleProvisioningState = original.ModuleProvisioningStateModuleImportRunbookComplete
+	ModuleProvisioningStateRunningImportModuleRunbook  ModuleProvisioningState = original.ModuleProvisioningStateRunningImportModuleRunbook
+	ModuleProvisioningStateStartingImportModuleRunbook ModuleProvisioningState = original.ModuleProvisioningStateStartingImportModuleRunbook
+	ModuleProvisioningStateSucceeded                   ModuleProvisioningState = original.ModuleProvisioningStateSucceeded
+	ModuleProvisioningStateUpdating                    ModuleProvisioningState = original.ModuleProvisioningStateUpdating
 )
 
 type RunbookProvisioningState = original.RunbookProvisioningState
@@ -194,49 +194,49 @@ const (
 type RunbookState = original.RunbookState
 
 const (
-	RunbookStateEdit	RunbookState	= original.RunbookStateEdit
-	RunbookStateNew		RunbookState	= original.RunbookStateNew
-	RunbookStatePublished	RunbookState	= original.RunbookStatePublished
+	RunbookStateEdit      RunbookState = original.RunbookStateEdit
+	RunbookStateNew       RunbookState = original.RunbookStateNew
+	RunbookStatePublished RunbookState = original.RunbookStatePublished
 )
 
 type RunbookTypeEnum = original.RunbookTypeEnum
 
 const (
-	Graph			RunbookTypeEnum	= original.Graph
-	GraphPowerShell		RunbookTypeEnum	= original.GraphPowerShell
-	GraphPowerShellWorkflow	RunbookTypeEnum	= original.GraphPowerShellWorkflow
-	PowerShell		RunbookTypeEnum	= original.PowerShell
-	PowerShellWorkflow	RunbookTypeEnum	= original.PowerShellWorkflow
-	Script			RunbookTypeEnum	= original.Script
+	Graph                   RunbookTypeEnum = original.Graph
+	GraphPowerShell         RunbookTypeEnum = original.GraphPowerShell
+	GraphPowerShellWorkflow RunbookTypeEnum = original.GraphPowerShellWorkflow
+	PowerShell              RunbookTypeEnum = original.PowerShell
+	PowerShellWorkflow      RunbookTypeEnum = original.PowerShellWorkflow
+	Script                  RunbookTypeEnum = original.Script
 )
 
 type ScheduleDay = original.ScheduleDay
 
 const (
-	Friday		ScheduleDay	= original.Friday
-	Monday		ScheduleDay	= original.Monday
-	Saturday	ScheduleDay	= original.Saturday
-	Sunday		ScheduleDay	= original.Sunday
-	Thursday	ScheduleDay	= original.Thursday
-	Tuesday		ScheduleDay	= original.Tuesday
-	Wednesday	ScheduleDay	= original.Wednesday
+	Friday    ScheduleDay = original.Friday
+	Monday    ScheduleDay = original.Monday
+	Saturday  ScheduleDay = original.Saturday
+	Sunday    ScheduleDay = original.Sunday
+	Thursday  ScheduleDay = original.Thursday
+	Tuesday   ScheduleDay = original.Tuesday
+	Wednesday ScheduleDay = original.Wednesday
 )
 
 type ScheduleFrequency = original.ScheduleFrequency
 
 const (
-	Day	ScheduleFrequency	= original.Day
-	Hour	ScheduleFrequency	= original.Hour
-	Month	ScheduleFrequency	= original.Month
-	OneTime	ScheduleFrequency	= original.OneTime
-	Week	ScheduleFrequency	= original.Week
+	Day     ScheduleFrequency = original.Day
+	Hour    ScheduleFrequency = original.Hour
+	Month   ScheduleFrequency = original.Month
+	OneTime ScheduleFrequency = original.OneTime
+	Week    ScheduleFrequency = original.Week
 )
 
 type SkuNameEnum = original.SkuNameEnum
 
 const (
-	Basic	SkuNameEnum	= original.Basic
-	Free	SkuNameEnum	= original.Free
+	Basic SkuNameEnum = original.Basic
+	Free  SkuNameEnum = original.Free
 )
 
 type Account = original.Account

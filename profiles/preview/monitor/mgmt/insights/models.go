@@ -40,116 +40,116 @@ type LogProfilesClient = original.LogProfilesClient
 type CategoryType = original.CategoryType
 
 const (
-	Logs	CategoryType	= original.Logs
-	Metrics	CategoryType	= original.Metrics
+	Logs    CategoryType = original.Logs
+	Metrics CategoryType = original.Metrics
 )
 
 type ComparisonOperationType = original.ComparisonOperationType
 
 const (
-	Equals			ComparisonOperationType	= original.Equals
-	GreaterThan		ComparisonOperationType	= original.GreaterThan
-	GreaterThanOrEqual	ComparisonOperationType	= original.GreaterThanOrEqual
-	LessThan		ComparisonOperationType	= original.LessThan
-	LessThanOrEqual		ComparisonOperationType	= original.LessThanOrEqual
-	NotEquals		ComparisonOperationType	= original.NotEquals
+	Equals             ComparisonOperationType = original.Equals
+	GreaterThan        ComparisonOperationType = original.GreaterThan
+	GreaterThanOrEqual ComparisonOperationType = original.GreaterThanOrEqual
+	LessThan           ComparisonOperationType = original.LessThan
+	LessThanOrEqual    ComparisonOperationType = original.LessThanOrEqual
+	NotEquals          ComparisonOperationType = original.NotEquals
 )
 
 type ConditionOperator = original.ConditionOperator
 
 const (
-	ConditionOperatorGreaterThan		ConditionOperator	= original.ConditionOperatorGreaterThan
-	ConditionOperatorGreaterThanOrEqual	ConditionOperator	= original.ConditionOperatorGreaterThanOrEqual
-	ConditionOperatorLessThan		ConditionOperator	= original.ConditionOperatorLessThan
-	ConditionOperatorLessThanOrEqual	ConditionOperator	= original.ConditionOperatorLessThanOrEqual
+	ConditionOperatorGreaterThan        ConditionOperator = original.ConditionOperatorGreaterThan
+	ConditionOperatorGreaterThanOrEqual ConditionOperator = original.ConditionOperatorGreaterThanOrEqual
+	ConditionOperatorLessThan           ConditionOperator = original.ConditionOperatorLessThan
+	ConditionOperatorLessThanOrEqual    ConditionOperator = original.ConditionOperatorLessThanOrEqual
 )
 
 type MetricStatisticType = original.MetricStatisticType
 
 const (
-	Average	MetricStatisticType	= original.Average
-	Max	MetricStatisticType	= original.Max
-	Min	MetricStatisticType	= original.Min
-	Sum	MetricStatisticType	= original.Sum
+	Average MetricStatisticType = original.Average
+	Max     MetricStatisticType = original.Max
+	Min     MetricStatisticType = original.Min
+	Sum     MetricStatisticType = original.Sum
 )
 
 type OdataType = original.OdataType
 
 const (
-	OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource	OdataType	= original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource
-	OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource		OdataType	= original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource
+	OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource OdataType = original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource
+	OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource          OdataType = original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource
 )
 
 type OdataType1 = original.OdataType1
 
 const (
-	OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition	OdataType1	= original.OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition
-	OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition	OdataType1	= original.OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition
-	OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition		OdataType1	= original.OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition
+	OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition OdataType1 = original.OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition
+	OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition   OdataType1 = original.OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition
+	OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition         OdataType1 = original.OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition
 )
 
 type OdataType2 = original.OdataType2
 
 const (
-	OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction		OdataType2	= original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction
-	OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction	OdataType2	= original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction
+	OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction   OdataType2 = original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction
+	OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction OdataType2 = original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction
 )
 
 type ReceiverStatus = original.ReceiverStatus
 
 const (
-	Disabled	ReceiverStatus	= original.Disabled
-	Enabled		ReceiverStatus	= original.Enabled
-	NotSpecified	ReceiverStatus	= original.NotSpecified
+	Disabled     ReceiverStatus = original.Disabled
+	Enabled      ReceiverStatus = original.Enabled
+	NotSpecified ReceiverStatus = original.NotSpecified
 )
 
 type RecurrenceFrequency = original.RecurrenceFrequency
 
 const (
-	Day	RecurrenceFrequency	= original.Day
-	Hour	RecurrenceFrequency	= original.Hour
-	Minute	RecurrenceFrequency	= original.Minute
-	Month	RecurrenceFrequency	= original.Month
-	None	RecurrenceFrequency	= original.None
-	Second	RecurrenceFrequency	= original.Second
-	Week	RecurrenceFrequency	= original.Week
-	Year	RecurrenceFrequency	= original.Year
+	Day    RecurrenceFrequency = original.Day
+	Hour   RecurrenceFrequency = original.Hour
+	Minute RecurrenceFrequency = original.Minute
+	Month  RecurrenceFrequency = original.Month
+	None   RecurrenceFrequency = original.None
+	Second RecurrenceFrequency = original.Second
+	Week   RecurrenceFrequency = original.Week
+	Year   RecurrenceFrequency = original.Year
 )
 
 type ScaleDirection = original.ScaleDirection
 
 const (
-	ScaleDirectionDecrease	ScaleDirection	= original.ScaleDirectionDecrease
-	ScaleDirectionIncrease	ScaleDirection	= original.ScaleDirectionIncrease
-	ScaleDirectionNone	ScaleDirection	= original.ScaleDirectionNone
+	ScaleDirectionDecrease ScaleDirection = original.ScaleDirectionDecrease
+	ScaleDirectionIncrease ScaleDirection = original.ScaleDirectionIncrease
+	ScaleDirectionNone     ScaleDirection = original.ScaleDirectionNone
 )
 
 type ScaleType = original.ScaleType
 
 const (
-	ChangeCount		ScaleType	= original.ChangeCount
-	ExactCount		ScaleType	= original.ExactCount
-	PercentChangeCount	ScaleType	= original.PercentChangeCount
+	ChangeCount        ScaleType = original.ChangeCount
+	ExactCount         ScaleType = original.ExactCount
+	PercentChangeCount ScaleType = original.PercentChangeCount
 )
 
 type TimeAggregationOperator = original.TimeAggregationOperator
 
 const (
-	TimeAggregationOperatorAverage	TimeAggregationOperator	= original.TimeAggregationOperatorAverage
-	TimeAggregationOperatorLast	TimeAggregationOperator	= original.TimeAggregationOperatorLast
-	TimeAggregationOperatorMaximum	TimeAggregationOperator	= original.TimeAggregationOperatorMaximum
-	TimeAggregationOperatorMinimum	TimeAggregationOperator	= original.TimeAggregationOperatorMinimum
-	TimeAggregationOperatorTotal	TimeAggregationOperator	= original.TimeAggregationOperatorTotal
+	TimeAggregationOperatorAverage TimeAggregationOperator = original.TimeAggregationOperatorAverage
+	TimeAggregationOperatorLast    TimeAggregationOperator = original.TimeAggregationOperatorLast
+	TimeAggregationOperatorMaximum TimeAggregationOperator = original.TimeAggregationOperatorMaximum
+	TimeAggregationOperatorMinimum TimeAggregationOperator = original.TimeAggregationOperatorMinimum
+	TimeAggregationOperatorTotal   TimeAggregationOperator = original.TimeAggregationOperatorTotal
 )
 
 type TimeAggregationType = original.TimeAggregationType
 
 const (
-	TimeAggregationTypeAverage	TimeAggregationType	= original.TimeAggregationTypeAverage
-	TimeAggregationTypeCount	TimeAggregationType	= original.TimeAggregationTypeCount
-	TimeAggregationTypeMaximum	TimeAggregationType	= original.TimeAggregationTypeMaximum
-	TimeAggregationTypeMinimum	TimeAggregationType	= original.TimeAggregationTypeMinimum
-	TimeAggregationTypeTotal	TimeAggregationType	= original.TimeAggregationTypeTotal
+	TimeAggregationTypeAverage TimeAggregationType = original.TimeAggregationTypeAverage
+	TimeAggregationTypeCount   TimeAggregationType = original.TimeAggregationTypeCount
+	TimeAggregationTypeMaximum TimeAggregationType = original.TimeAggregationTypeMaximum
+	TimeAggregationTypeMinimum TimeAggregationType = original.TimeAggregationTypeMinimum
+	TimeAggregationTypeTotal   TimeAggregationType = original.TimeAggregationTypeTotal
 )
 
 type ActionGroup = original.ActionGroup

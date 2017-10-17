@@ -27,15 +27,15 @@ type DomainServicesClient = original.DomainServicesClient
 type ExternalAccess = original.ExternalAccess
 
 const (
-	Disabled	ExternalAccess	= original.Disabled
-	Enabled		ExternalAccess	= original.Enabled
+	Disabled ExternalAccess = original.Disabled
+	Enabled  ExternalAccess = original.Enabled
 )
 
 type Ldaps = original.Ldaps
 
 const (
-	LdapsDisabled	Ldaps	= original.LdapsDisabled
-	LdapsEnabled	Ldaps	= original.LdapsEnabled
+	LdapsDisabled Ldaps = original.LdapsDisabled
+	LdapsEnabled  Ldaps = original.LdapsEnabled
 )
 
 type DomainService = original.DomainService

@@ -37,8 +37,8 @@ type GroupsClient = original.GroupsClient
 type UserType = original.UserType
 
 const (
-	Guest	UserType	= original.Guest
-	Member	UserType	= original.Member
+	Guest  UserType = original.Guest
+	Member UserType = original.Member
 )
 
 type AADObject = original.AADObject

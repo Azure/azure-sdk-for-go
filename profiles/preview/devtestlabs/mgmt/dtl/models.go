@@ -52,160 +52,160 @@ type GalleryImagesClient = original.GalleryImagesClient
 type CostThresholdStatus = original.CostThresholdStatus
 
 const (
-	Disabled	CostThresholdStatus	= original.Disabled
-	Enabled		CostThresholdStatus	= original.Enabled
+	Disabled CostThresholdStatus = original.Disabled
+	Enabled  CostThresholdStatus = original.Enabled
 )
 
 type CostType = original.CostType
 
 const (
-	Projected	CostType	= original.Projected
-	Reported	CostType	= original.Reported
-	Unavailable	CostType	= original.Unavailable
+	Projected   CostType = original.Projected
+	Reported    CostType = original.Reported
+	Unavailable CostType = original.Unavailable
 )
 
 type CustomImageOsType = original.CustomImageOsType
 
 const (
-	Linux	CustomImageOsType	= original.Linux
-	None	CustomImageOsType	= original.None
-	Windows	CustomImageOsType	= original.Windows
+	Linux   CustomImageOsType = original.Linux
+	None    CustomImageOsType = original.None
+	Windows CustomImageOsType = original.Windows
 )
 
 type EnableStatus = original.EnableStatus
 
 const (
-	EnableStatusDisabled	EnableStatus	= original.EnableStatusDisabled
-	EnableStatusEnabled	EnableStatus	= original.EnableStatusEnabled
+	EnableStatusDisabled EnableStatus = original.EnableStatusDisabled
+	EnableStatusEnabled  EnableStatus = original.EnableStatusEnabled
 )
 
 type FileUploadOptions = original.FileUploadOptions
 
 const (
-	FileUploadOptionsNone					FileUploadOptions	= original.FileUploadOptionsNone
-	FileUploadOptionsUploadFilesAndGenerateSasTokens	FileUploadOptions	= original.FileUploadOptionsUploadFilesAndGenerateSasTokens
+	FileUploadOptionsNone                            FileUploadOptions = original.FileUploadOptionsNone
+	FileUploadOptionsUploadFilesAndGenerateSasTokens FileUploadOptions = original.FileUploadOptionsUploadFilesAndGenerateSasTokens
 )
 
 type HostCachingOptions = original.HostCachingOptions
 
 const (
-	HostCachingOptionsNone		HostCachingOptions	= original.HostCachingOptionsNone
-	HostCachingOptionsReadOnly	HostCachingOptions	= original.HostCachingOptionsReadOnly
-	HostCachingOptionsReadWrite	HostCachingOptions	= original.HostCachingOptionsReadWrite
+	HostCachingOptionsNone      HostCachingOptions = original.HostCachingOptionsNone
+	HostCachingOptionsReadOnly  HostCachingOptions = original.HostCachingOptionsReadOnly
+	HostCachingOptionsReadWrite HostCachingOptions = original.HostCachingOptionsReadWrite
 )
 
 type LinuxOsState = original.LinuxOsState
 
 const (
-	DeprovisionApplied	LinuxOsState	= original.DeprovisionApplied
-	DeprovisionRequested	LinuxOsState	= original.DeprovisionRequested
-	NonDeprovisioned	LinuxOsState	= original.NonDeprovisioned
+	DeprovisionApplied   LinuxOsState = original.DeprovisionApplied
+	DeprovisionRequested LinuxOsState = original.DeprovisionRequested
+	NonDeprovisioned     LinuxOsState = original.NonDeprovisioned
 )
 
 type NotificationChannelEventType = original.NotificationChannelEventType
 
 const (
-	AutoShutdown	NotificationChannelEventType	= original.AutoShutdown
-	Cost		NotificationChannelEventType	= original.Cost
+	AutoShutdown NotificationChannelEventType = original.AutoShutdown
+	Cost         NotificationChannelEventType = original.Cost
 )
 
 type NotificationStatus = original.NotificationStatus
 
 const (
-	NotificationStatusDisabled	NotificationStatus	= original.NotificationStatusDisabled
-	NotificationStatusEnabled	NotificationStatus	= original.NotificationStatusEnabled
+	NotificationStatusDisabled NotificationStatus = original.NotificationStatusDisabled
+	NotificationStatusEnabled  NotificationStatus = original.NotificationStatusEnabled
 )
 
 type PolicyEvaluatorType = original.PolicyEvaluatorType
 
 const (
-	AllowedValuesPolicy	PolicyEvaluatorType	= original.AllowedValuesPolicy
-	MaxValuePolicy		PolicyEvaluatorType	= original.MaxValuePolicy
+	AllowedValuesPolicy PolicyEvaluatorType = original.AllowedValuesPolicy
+	MaxValuePolicy      PolicyEvaluatorType = original.MaxValuePolicy
 )
 
 type PolicyFactName = original.PolicyFactName
 
 const (
-	PolicyFactNameGalleryImage			PolicyFactName	= original.PolicyFactNameGalleryImage
-	PolicyFactNameLabPremiumVMCount			PolicyFactName	= original.PolicyFactNameLabPremiumVMCount
-	PolicyFactNameLabTargetCost			PolicyFactName	= original.PolicyFactNameLabTargetCost
-	PolicyFactNameLabVMCount			PolicyFactName	= original.PolicyFactNameLabVMCount
-	PolicyFactNameLabVMSize				PolicyFactName	= original.PolicyFactNameLabVMSize
-	PolicyFactNameUserOwnedLabPremiumVMCount	PolicyFactName	= original.PolicyFactNameUserOwnedLabPremiumVMCount
-	PolicyFactNameUserOwnedLabVMCount		PolicyFactName	= original.PolicyFactNameUserOwnedLabVMCount
-	PolicyFactNameUserOwnedLabVMCountInSubnet	PolicyFactName	= original.PolicyFactNameUserOwnedLabVMCountInSubnet
+	PolicyFactNameGalleryImage                PolicyFactName = original.PolicyFactNameGalleryImage
+	PolicyFactNameLabPremiumVMCount           PolicyFactName = original.PolicyFactNameLabPremiumVMCount
+	PolicyFactNameLabTargetCost               PolicyFactName = original.PolicyFactNameLabTargetCost
+	PolicyFactNameLabVMCount                  PolicyFactName = original.PolicyFactNameLabVMCount
+	PolicyFactNameLabVMSize                   PolicyFactName = original.PolicyFactNameLabVMSize
+	PolicyFactNameUserOwnedLabPremiumVMCount  PolicyFactName = original.PolicyFactNameUserOwnedLabPremiumVMCount
+	PolicyFactNameUserOwnedLabVMCount         PolicyFactName = original.PolicyFactNameUserOwnedLabVMCount
+	PolicyFactNameUserOwnedLabVMCountInSubnet PolicyFactName = original.PolicyFactNameUserOwnedLabVMCountInSubnet
 )
 
 type PolicyStatus = original.PolicyStatus
 
 const (
-	PolicyStatusDisabled	PolicyStatus	= original.PolicyStatusDisabled
-	PolicyStatusEnabled	PolicyStatus	= original.PolicyStatusEnabled
+	PolicyStatusDisabled PolicyStatus = original.PolicyStatusDisabled
+	PolicyStatusEnabled  PolicyStatus = original.PolicyStatusEnabled
 )
 
 type PremiumDataDisk = original.PremiumDataDisk
 
 const (
-	PremiumDataDiskDisabled	PremiumDataDisk	= original.PremiumDataDiskDisabled
-	PremiumDataDiskEnabled	PremiumDataDisk	= original.PremiumDataDiskEnabled
+	PremiumDataDiskDisabled PremiumDataDisk = original.PremiumDataDiskDisabled
+	PremiumDataDiskEnabled  PremiumDataDisk = original.PremiumDataDiskEnabled
 )
 
 type ReportingCycleType = original.ReportingCycleType
 
 const (
-	CalendarMonth	ReportingCycleType	= original.CalendarMonth
-	Custom		ReportingCycleType	= original.Custom
+	CalendarMonth ReportingCycleType = original.CalendarMonth
+	Custom        ReportingCycleType = original.Custom
 )
 
 type SourceControlType = original.SourceControlType
 
 const (
-	GitHub	SourceControlType	= original.GitHub
-	VsoGit	SourceControlType	= original.VsoGit
+	GitHub SourceControlType = original.GitHub
+	VsoGit SourceControlType = original.VsoGit
 )
 
 type StorageType = original.StorageType
 
 const (
-	Premium		StorageType	= original.Premium
-	Standard	StorageType	= original.Standard
+	Premium  StorageType = original.Premium
+	Standard StorageType = original.Standard
 )
 
 type TargetCostStatus = original.TargetCostStatus
 
 const (
-	TargetCostStatusDisabled	TargetCostStatus	= original.TargetCostStatusDisabled
-	TargetCostStatusEnabled		TargetCostStatus	= original.TargetCostStatusEnabled
+	TargetCostStatusDisabled TargetCostStatus = original.TargetCostStatusDisabled
+	TargetCostStatusEnabled  TargetCostStatus = original.TargetCostStatusEnabled
 )
 
 type TransportProtocol = original.TransportProtocol
 
 const (
-	TCP	TransportProtocol	= original.TCP
-	UDP	TransportProtocol	= original.UDP
+	TCP TransportProtocol = original.TCP
+	UDP TransportProtocol = original.UDP
 )
 
 type UsagePermissionType = original.UsagePermissionType
 
 const (
-	Allow	UsagePermissionType	= original.Allow
-	Default	UsagePermissionType	= original.Default
-	Deny	UsagePermissionType	= original.Deny
+	Allow   UsagePermissionType = original.Allow
+	Default UsagePermissionType = original.Default
+	Deny    UsagePermissionType = original.Deny
 )
 
 type VirtualMachineCreationSource = original.VirtualMachineCreationSource
 
 const (
-	FromCustomImage		VirtualMachineCreationSource	= original.FromCustomImage
-	FromGalleryImage	VirtualMachineCreationSource	= original.FromGalleryImage
+	FromCustomImage  VirtualMachineCreationSource = original.FromCustomImage
+	FromGalleryImage VirtualMachineCreationSource = original.FromGalleryImage
 )
 
 type WindowsOsState = original.WindowsOsState
 
 const (
-	NonSysprepped		WindowsOsState	= original.NonSysprepped
-	SysprepApplied		WindowsOsState	= original.SysprepApplied
-	SysprepRequested	WindowsOsState	= original.SysprepRequested
+	NonSysprepped    WindowsOsState = original.NonSysprepped
+	SysprepApplied   WindowsOsState = original.SysprepApplied
+	SysprepRequested WindowsOsState = original.SysprepRequested
 )
 
 type ApplicableSchedule = original.ApplicableSchedule

@@ -30,32 +30,32 @@ type ManagementClient = original.ManagementClient
 type ApplianceArtifactType = original.ApplianceArtifactType
 
 const (
-	Custom		ApplianceArtifactType	= original.Custom
-	Template	ApplianceArtifactType	= original.Template
+	Custom   ApplianceArtifactType = original.Custom
+	Template ApplianceArtifactType = original.Template
 )
 
 type ApplianceLockLevel = original.ApplianceLockLevel
 
 const (
-	CanNotDelete	ApplianceLockLevel	= original.CanNotDelete
-	None		ApplianceLockLevel	= original.None
-	ReadOnly	ApplianceLockLevel	= original.ReadOnly
+	CanNotDelete ApplianceLockLevel = original.CanNotDelete
+	None         ApplianceLockLevel = original.None
+	ReadOnly     ApplianceLockLevel = original.ReadOnly
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Accepted	ProvisioningState	= original.Accepted
-	Canceled	ProvisioningState	= original.Canceled
-	Created		ProvisioningState	= original.Created
-	Creating	ProvisioningState	= original.Creating
-	Deleted		ProvisioningState	= original.Deleted
-	Deleting	ProvisioningState	= original.Deleting
-	Failed		ProvisioningState	= original.Failed
-	Ready		ProvisioningState	= original.Ready
-	Running		ProvisioningState	= original.Running
-	Succeeded	ProvisioningState	= original.Succeeded
-	Updating	ProvisioningState	= original.Updating
+	Accepted  ProvisioningState = original.Accepted
+	Canceled  ProvisioningState = original.Canceled
+	Created   ProvisioningState = original.Created
+	Creating  ProvisioningState = original.Creating
+	Deleted   ProvisioningState = original.Deleted
+	Deleting  ProvisioningState = original.Deleting
+	Failed    ProvisioningState = original.Failed
+	Ready     ProvisioningState = original.Ready
+	Running   ProvisioningState = original.Running
+	Succeeded ProvisioningState = original.Succeeded
+	Updating  ProvisioningState = original.Updating
 )
 
 type ResourceIdentityType = original.ResourceIdentityType

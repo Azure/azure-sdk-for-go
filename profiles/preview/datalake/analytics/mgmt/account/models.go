@@ -25,60 +25,60 @@ import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/m
 type AADObjectType = original.AADObjectType
 
 const (
-	Group			AADObjectType	= original.Group
-	ServicePrincipal	AADObjectType	= original.ServicePrincipal
-	User			AADObjectType	= original.User
+	Group            AADObjectType = original.Group
+	ServicePrincipal AADObjectType = original.ServicePrincipal
+	User             AADObjectType = original.User
 )
 
 type DataLakeAnalyticsAccountState = original.DataLakeAnalyticsAccountState
 
 const (
-	Active		DataLakeAnalyticsAccountState	= original.Active
-	Suspended	DataLakeAnalyticsAccountState	= original.Suspended
+	Active    DataLakeAnalyticsAccountState = original.Active
+	Suspended DataLakeAnalyticsAccountState = original.Suspended
 )
 
 type DataLakeAnalyticsAccountStatus = original.DataLakeAnalyticsAccountStatus
 
 const (
-	Canceled	DataLakeAnalyticsAccountStatus	= original.Canceled
-	Creating	DataLakeAnalyticsAccountStatus	= original.Creating
-	Deleted		DataLakeAnalyticsAccountStatus	= original.Deleted
-	Deleting	DataLakeAnalyticsAccountStatus	= original.Deleting
-	Failed		DataLakeAnalyticsAccountStatus	= original.Failed
-	Patching	DataLakeAnalyticsAccountStatus	= original.Patching
-	Resuming	DataLakeAnalyticsAccountStatus	= original.Resuming
-	Running		DataLakeAnalyticsAccountStatus	= original.Running
-	Succeeded	DataLakeAnalyticsAccountStatus	= original.Succeeded
-	Suspending	DataLakeAnalyticsAccountStatus	= original.Suspending
-	Undeleting	DataLakeAnalyticsAccountStatus	= original.Undeleting
+	Canceled   DataLakeAnalyticsAccountStatus = original.Canceled
+	Creating   DataLakeAnalyticsAccountStatus = original.Creating
+	Deleted    DataLakeAnalyticsAccountStatus = original.Deleted
+	Deleting   DataLakeAnalyticsAccountStatus = original.Deleting
+	Failed     DataLakeAnalyticsAccountStatus = original.Failed
+	Patching   DataLakeAnalyticsAccountStatus = original.Patching
+	Resuming   DataLakeAnalyticsAccountStatus = original.Resuming
+	Running    DataLakeAnalyticsAccountStatus = original.Running
+	Succeeded  DataLakeAnalyticsAccountStatus = original.Succeeded
+	Suspending DataLakeAnalyticsAccountStatus = original.Suspending
+	Undeleting DataLakeAnalyticsAccountStatus = original.Undeleting
 )
 
 type FirewallAllowAzureIpsState = original.FirewallAllowAzureIpsState
 
 const (
-	Disabled	FirewallAllowAzureIpsState	= original.Disabled
-	Enabled		FirewallAllowAzureIpsState	= original.Enabled
+	Disabled FirewallAllowAzureIpsState = original.Disabled
+	Enabled  FirewallAllowAzureIpsState = original.Enabled
 )
 
 type FirewallState = original.FirewallState
 
 const (
-	FirewallStateDisabled	FirewallState	= original.FirewallStateDisabled
-	FirewallStateEnabled	FirewallState	= original.FirewallStateEnabled
+	FirewallStateDisabled FirewallState = original.FirewallStateDisabled
+	FirewallStateEnabled  FirewallState = original.FirewallStateEnabled
 )
 
 type TierType = original.TierType
 
 const (
-	Commitment100000AUHours	TierType	= original.Commitment100000AUHours
-	Commitment10000AUHours	TierType	= original.Commitment10000AUHours
-	Commitment1000AUHours	TierType	= original.Commitment1000AUHours
-	Commitment100AUHours	TierType	= original.Commitment100AUHours
-	Commitment500000AUHours	TierType	= original.Commitment500000AUHours
-	Commitment50000AUHours	TierType	= original.Commitment50000AUHours
-	Commitment5000AUHours	TierType	= original.Commitment5000AUHours
-	Commitment500AUHours	TierType	= original.Commitment500AUHours
-	Consumption		TierType	= original.Consumption
+	Commitment100000AUHours TierType = original.Commitment100000AUHours
+	Commitment10000AUHours  TierType = original.Commitment10000AUHours
+	Commitment1000AUHours   TierType = original.Commitment1000AUHours
+	Commitment100AUHours    TierType = original.Commitment100AUHours
+	Commitment500000AUHours TierType = original.Commitment500000AUHours
+	Commitment50000AUHours  TierType = original.Commitment50000AUHours
+	Commitment5000AUHours   TierType = original.Commitment5000AUHours
+	Commitment500AUHours    TierType = original.Commitment500AUHours
+	Consumption             TierType = original.Consumption
 )
 
 type AddDataLakeStoreParameters = original.AddDataLakeStoreParameters

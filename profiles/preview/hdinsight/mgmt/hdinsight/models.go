@@ -26,26 +26,26 @@ type ApplicationName = original.ApplicationName
 type AsyncOperationState = original.AsyncOperationState
 
 const (
-	Failed		AsyncOperationState	= original.Failed
-	InProgress	AsyncOperationState	= original.InProgress
-	Succeeded	AsyncOperationState	= original.Succeeded
+	Failed     AsyncOperationState = original.Failed
+	InProgress AsyncOperationState = original.InProgress
+	Succeeded  AsyncOperationState = original.Succeeded
 )
 
 type ClusterProvisioningState = original.ClusterProvisioningState
 
 const (
-	ClusterProvisioningStateCanceled	ClusterProvisioningState	= original.ClusterProvisioningStateCanceled
-	ClusterProvisioningStateDeleting	ClusterProvisioningState	= original.ClusterProvisioningStateDeleting
-	ClusterProvisioningStateFailed		ClusterProvisioningState	= original.ClusterProvisioningStateFailed
-	ClusterProvisioningStateInProgress	ClusterProvisioningState	= original.ClusterProvisioningStateInProgress
-	ClusterProvisioningStateSucceeded	ClusterProvisioningState	= original.ClusterProvisioningStateSucceeded
+	ClusterProvisioningStateCanceled   ClusterProvisioningState = original.ClusterProvisioningStateCanceled
+	ClusterProvisioningStateDeleting   ClusterProvisioningState = original.ClusterProvisioningStateDeleting
+	ClusterProvisioningStateFailed     ClusterProvisioningState = original.ClusterProvisioningStateFailed
+	ClusterProvisioningStateInProgress ClusterProvisioningState = original.ClusterProvisioningStateInProgress
+	ClusterProvisioningStateSucceeded  ClusterProvisioningState = original.ClusterProvisioningStateSucceeded
 )
 
 type Configurationname = original.Configurationname
 
 const (
-	CoreSite	Configurationname	= original.CoreSite
-	Gateway		Configurationname	= original.Gateway
+	CoreSite Configurationname = original.CoreSite
+	Gateway  Configurationname = original.Gateway
 )
 
 type DirectoryType = original.DirectoryType
@@ -57,15 +57,15 @@ const (
 type OSType = original.OSType
 
 const (
-	Linux	OSType	= original.Linux
-	Windows	OSType	= original.Windows
+	Linux   OSType = original.Linux
+	Windows OSType = original.Windows
 )
 
 type Tier = original.Tier
 
 const (
-	Premium		Tier	= original.Premium
-	Standard	Tier	= original.Standard
+	Premium  Tier = original.Premium
+	Standard Tier = original.Standard
 )
 
 type Application = original.Application

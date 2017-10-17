@@ -30,16 +30,16 @@ type ManagementClient = original.ManagementClient
 type AggregationGranularity = original.AggregationGranularity
 
 const (
-	Daily	AggregationGranularity	= original.Daily
-	Hourly	AggregationGranularity	= original.Hourly
+	Daily  AggregationGranularity = original.Daily
+	Hourly AggregationGranularity = original.Hourly
 )
 
 type Name = original.Name
 
 const (
-	NameMonetaryCommitment	Name	= original.NameMonetaryCommitment
-	NameMonetaryCredit	Name	= original.NameMonetaryCredit
-	NameRecurringCharge	Name	= original.NameRecurringCharge
+	NameMonetaryCommitment Name = original.NameMonetaryCommitment
+	NameMonetaryCredit     Name = original.NameMonetaryCredit
+	NameRecurringCharge    Name = original.NameRecurringCharge
 )
 
 type ErrorResponse = original.ErrorResponse

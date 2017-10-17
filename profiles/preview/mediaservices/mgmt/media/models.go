@@ -30,16 +30,16 @@ type ManagementClient = original.ManagementClient
 type EntityNameUnavailabilityReason = original.EntityNameUnavailabilityReason
 
 const (
-	AlreadyExists	EntityNameUnavailabilityReason	= original.AlreadyExists
-	Invalid		EntityNameUnavailabilityReason	= original.Invalid
-	None		EntityNameUnavailabilityReason	= original.None
+	AlreadyExists EntityNameUnavailabilityReason = original.AlreadyExists
+	Invalid       EntityNameUnavailabilityReason = original.Invalid
+	None          EntityNameUnavailabilityReason = original.None
 )
 
 type KeyType = original.KeyType
 
 const (
-	Primary		KeyType	= original.Primary
-	Secondary	KeyType	= original.Secondary
+	Primary   KeyType = original.Primary
+	Secondary KeyType = original.Secondary
 )
 
 type ResourceType = original.ResourceType

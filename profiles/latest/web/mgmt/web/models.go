@@ -34,513 +34,513 @@ type ManagementClient = original.ManagementClient
 type AccessControlEntryAction = original.AccessControlEntryAction
 
 const (
-	Deny	AccessControlEntryAction	= original.Deny
-	Permit	AccessControlEntryAction	= original.Permit
+	Deny   AccessControlEntryAction = original.Deny
+	Permit AccessControlEntryAction = original.Permit
 )
 
 type AppServicePlanRestrictions = original.AppServicePlanRestrictions
 
 const (
-	Basic		AppServicePlanRestrictions	= original.Basic
-	Free		AppServicePlanRestrictions	= original.Free
-	None		AppServicePlanRestrictions	= original.None
-	Premium		AppServicePlanRestrictions	= original.Premium
-	Shared		AppServicePlanRestrictions	= original.Shared
-	Standard	AppServicePlanRestrictions	= original.Standard
+	Basic    AppServicePlanRestrictions = original.Basic
+	Free     AppServicePlanRestrictions = original.Free
+	None     AppServicePlanRestrictions = original.None
+	Premium  AppServicePlanRestrictions = original.Premium
+	Shared   AppServicePlanRestrictions = original.Shared
+	Standard AppServicePlanRestrictions = original.Standard
 )
 
 type AutoHealActionType = original.AutoHealActionType
 
 const (
-	CustomAction	AutoHealActionType	= original.CustomAction
-	LogEvent	AutoHealActionType	= original.LogEvent
-	Recycle		AutoHealActionType	= original.Recycle
+	CustomAction AutoHealActionType = original.CustomAction
+	LogEvent     AutoHealActionType = original.LogEvent
+	Recycle      AutoHealActionType = original.Recycle
 )
 
 type AzureResourceType = original.AzureResourceType
 
 const (
-	TrafficManager	AzureResourceType	= original.TrafficManager
-	Website		AzureResourceType	= original.Website
+	TrafficManager AzureResourceType = original.TrafficManager
+	Website        AzureResourceType = original.Website
 )
 
 type BackupItemStatus = original.BackupItemStatus
 
 const (
-	Created			BackupItemStatus	= original.Created
-	Deleted			BackupItemStatus	= original.Deleted
-	DeleteFailed		BackupItemStatus	= original.DeleteFailed
-	DeleteInProgress	BackupItemStatus	= original.DeleteInProgress
-	Failed			BackupItemStatus	= original.Failed
-	InProgress		BackupItemStatus	= original.InProgress
-	PartiallySucceeded	BackupItemStatus	= original.PartiallySucceeded
-	Skipped			BackupItemStatus	= original.Skipped
-	Succeeded		BackupItemStatus	= original.Succeeded
-	TimedOut		BackupItemStatus	= original.TimedOut
+	Created            BackupItemStatus = original.Created
+	Deleted            BackupItemStatus = original.Deleted
+	DeleteFailed       BackupItemStatus = original.DeleteFailed
+	DeleteInProgress   BackupItemStatus = original.DeleteInProgress
+	Failed             BackupItemStatus = original.Failed
+	InProgress         BackupItemStatus = original.InProgress
+	PartiallySucceeded BackupItemStatus = original.PartiallySucceeded
+	Skipped            BackupItemStatus = original.Skipped
+	Succeeded          BackupItemStatus = original.Succeeded
+	TimedOut           BackupItemStatus = original.TimedOut
 )
 
 type BackupRestoreOperationType = original.BackupRestoreOperationType
 
 const (
-	BackupRestoreOperationTypeClone		BackupRestoreOperationType	= original.BackupRestoreOperationTypeClone
-	BackupRestoreOperationTypeDefault	BackupRestoreOperationType	= original.BackupRestoreOperationTypeDefault
-	BackupRestoreOperationTypeRelocation	BackupRestoreOperationType	= original.BackupRestoreOperationTypeRelocation
-	BackupRestoreOperationTypeSnapshot	BackupRestoreOperationType	= original.BackupRestoreOperationTypeSnapshot
+	BackupRestoreOperationTypeClone      BackupRestoreOperationType = original.BackupRestoreOperationTypeClone
+	BackupRestoreOperationTypeDefault    BackupRestoreOperationType = original.BackupRestoreOperationTypeDefault
+	BackupRestoreOperationTypeRelocation BackupRestoreOperationType = original.BackupRestoreOperationTypeRelocation
+	BackupRestoreOperationTypeSnapshot   BackupRestoreOperationType = original.BackupRestoreOperationTypeSnapshot
 )
 
 type BuiltInAuthenticationProvider = original.BuiltInAuthenticationProvider
 
 const (
-	AzureActiveDirectory	BuiltInAuthenticationProvider	= original.AzureActiveDirectory
-	Facebook		BuiltInAuthenticationProvider	= original.Facebook
-	Google			BuiltInAuthenticationProvider	= original.Google
-	MicrosoftAccount	BuiltInAuthenticationProvider	= original.MicrosoftAccount
-	Twitter			BuiltInAuthenticationProvider	= original.Twitter
+	AzureActiveDirectory BuiltInAuthenticationProvider = original.AzureActiveDirectory
+	Facebook             BuiltInAuthenticationProvider = original.Facebook
+	Google               BuiltInAuthenticationProvider = original.Google
+	MicrosoftAccount     BuiltInAuthenticationProvider = original.MicrosoftAccount
+	Twitter              BuiltInAuthenticationProvider = original.Twitter
 )
 
 type CertificateOrderActionType = original.CertificateOrderActionType
 
 const (
-	CertificateExpirationWarning	CertificateOrderActionType	= original.CertificateExpirationWarning
-	CertificateExpired		CertificateOrderActionType	= original.CertificateExpired
-	CertificateIssued		CertificateOrderActionType	= original.CertificateIssued
-	CertificateOrderCanceled	CertificateOrderActionType	= original.CertificateOrderCanceled
-	CertificateOrderCreated		CertificateOrderActionType	= original.CertificateOrderCreated
-	CertificateRevoked		CertificateOrderActionType	= original.CertificateRevoked
-	DomainValidationComplete	CertificateOrderActionType	= original.DomainValidationComplete
-	FraudCleared			CertificateOrderActionType	= original.FraudCleared
-	FraudDetected			CertificateOrderActionType	= original.FraudDetected
-	FraudDocumentationRequired	CertificateOrderActionType	= original.FraudDocumentationRequired
-	OrgNameChange			CertificateOrderActionType	= original.OrgNameChange
-	OrgValidationComplete		CertificateOrderActionType	= original.OrgValidationComplete
-	SanDrop				CertificateOrderActionType	= original.SanDrop
-	Unknown				CertificateOrderActionType	= original.Unknown
+	CertificateExpirationWarning CertificateOrderActionType = original.CertificateExpirationWarning
+	CertificateExpired           CertificateOrderActionType = original.CertificateExpired
+	CertificateIssued            CertificateOrderActionType = original.CertificateIssued
+	CertificateOrderCanceled     CertificateOrderActionType = original.CertificateOrderCanceled
+	CertificateOrderCreated      CertificateOrderActionType = original.CertificateOrderCreated
+	CertificateRevoked           CertificateOrderActionType = original.CertificateRevoked
+	DomainValidationComplete     CertificateOrderActionType = original.DomainValidationComplete
+	FraudCleared                 CertificateOrderActionType = original.FraudCleared
+	FraudDetected                CertificateOrderActionType = original.FraudDetected
+	FraudDocumentationRequired   CertificateOrderActionType = original.FraudDocumentationRequired
+	OrgNameChange                CertificateOrderActionType = original.OrgNameChange
+	OrgValidationComplete        CertificateOrderActionType = original.OrgValidationComplete
+	SanDrop                      CertificateOrderActionType = original.SanDrop
+	Unknown                      CertificateOrderActionType = original.Unknown
 )
 
 type CertificateOrderStatus = original.CertificateOrderStatus
 
 const (
-	Canceled		CertificateOrderStatus	= original.Canceled
-	Denied			CertificateOrderStatus	= original.Denied
-	Expired			CertificateOrderStatus	= original.Expired
-	Issued			CertificateOrderStatus	= original.Issued
-	NotSubmitted		CertificateOrderStatus	= original.NotSubmitted
-	Pendingissuance		CertificateOrderStatus	= original.Pendingissuance
-	PendingRekey		CertificateOrderStatus	= original.PendingRekey
-	Pendingrevocation	CertificateOrderStatus	= original.Pendingrevocation
-	Revoked			CertificateOrderStatus	= original.Revoked
-	Unused			CertificateOrderStatus	= original.Unused
+	Canceled          CertificateOrderStatus = original.Canceled
+	Denied            CertificateOrderStatus = original.Denied
+	Expired           CertificateOrderStatus = original.Expired
+	Issued            CertificateOrderStatus = original.Issued
+	NotSubmitted      CertificateOrderStatus = original.NotSubmitted
+	Pendingissuance   CertificateOrderStatus = original.Pendingissuance
+	PendingRekey      CertificateOrderStatus = original.PendingRekey
+	Pendingrevocation CertificateOrderStatus = original.Pendingrevocation
+	Revoked           CertificateOrderStatus = original.Revoked
+	Unused            CertificateOrderStatus = original.Unused
 )
 
 type CertificateProductType = original.CertificateProductType
 
 const (
-	StandardDomainValidatedSsl		CertificateProductType	= original.StandardDomainValidatedSsl
-	StandardDomainValidatedWildCardSsl	CertificateProductType	= original.StandardDomainValidatedWildCardSsl
+	StandardDomainValidatedSsl         CertificateProductType = original.StandardDomainValidatedSsl
+	StandardDomainValidatedWildCardSsl CertificateProductType = original.StandardDomainValidatedWildCardSsl
 )
 
 type Channels = original.Channels
 
 const (
-	All		Channels	= original.All
-	API		Channels	= original.API
-	Email		Channels	= original.Email
-	Notification	Channels	= original.Notification
-	Webhook		Channels	= original.Webhook
+	All          Channels = original.All
+	API          Channels = original.API
+	Email        Channels = original.Email
+	Notification Channels = original.Notification
+	Webhook      Channels = original.Webhook
 )
 
 type CheckNameResourceTypes = original.CheckNameResourceTypes
 
 const (
-	CheckNameResourceTypesHostingEnvironment	CheckNameResourceTypes	= original.CheckNameResourceTypesHostingEnvironment
-	CheckNameResourceTypesSite			CheckNameResourceTypes	= original.CheckNameResourceTypesSite
-	CheckNameResourceTypesSlot			CheckNameResourceTypes	= original.CheckNameResourceTypesSlot
+	CheckNameResourceTypesHostingEnvironment CheckNameResourceTypes = original.CheckNameResourceTypesHostingEnvironment
+	CheckNameResourceTypesSite               CheckNameResourceTypes = original.CheckNameResourceTypesSite
+	CheckNameResourceTypesSlot               CheckNameResourceTypes = original.CheckNameResourceTypesSlot
 )
 
 type CloneAbilityResult = original.CloneAbilityResult
 
 const (
-	Cloneable		CloneAbilityResult	= original.Cloneable
-	NotCloneable		CloneAbilityResult	= original.NotCloneable
-	PartiallyCloneable	CloneAbilityResult	= original.PartiallyCloneable
+	Cloneable          CloneAbilityResult = original.Cloneable
+	NotCloneable       CloneAbilityResult = original.NotCloneable
+	PartiallyCloneable CloneAbilityResult = original.PartiallyCloneable
 )
 
 type ComputeModeOptions = original.ComputeModeOptions
 
 const (
-	ComputeModeOptionsDedicated	ComputeModeOptions	= original.ComputeModeOptionsDedicated
-	ComputeModeOptionsDynamic	ComputeModeOptions	= original.ComputeModeOptionsDynamic
-	ComputeModeOptionsShared	ComputeModeOptions	= original.ComputeModeOptionsShared
+	ComputeModeOptionsDedicated ComputeModeOptions = original.ComputeModeOptionsDedicated
+	ComputeModeOptionsDynamic   ComputeModeOptions = original.ComputeModeOptionsDynamic
+	ComputeModeOptionsShared    ComputeModeOptions = original.ComputeModeOptionsShared
 )
 
 type ConnectionStringType = original.ConnectionStringType
 
 const (
-	APIHub		ConnectionStringType	= original.APIHub
-	Custom		ConnectionStringType	= original.Custom
-	DocDb		ConnectionStringType	= original.DocDb
-	EventHub	ConnectionStringType	= original.EventHub
-	MySQL		ConnectionStringType	= original.MySQL
-	NotificationHub	ConnectionStringType	= original.NotificationHub
-	PostgreSQL	ConnectionStringType	= original.PostgreSQL
-	RedisCache	ConnectionStringType	= original.RedisCache
-	ServiceBus	ConnectionStringType	= original.ServiceBus
-	SQLAzure	ConnectionStringType	= original.SQLAzure
-	SQLServer	ConnectionStringType	= original.SQLServer
+	APIHub          ConnectionStringType = original.APIHub
+	Custom          ConnectionStringType = original.Custom
+	DocDb           ConnectionStringType = original.DocDb
+	EventHub        ConnectionStringType = original.EventHub
+	MySQL           ConnectionStringType = original.MySQL
+	NotificationHub ConnectionStringType = original.NotificationHub
+	PostgreSQL      ConnectionStringType = original.PostgreSQL
+	RedisCache      ConnectionStringType = original.RedisCache
+	ServiceBus      ConnectionStringType = original.ServiceBus
+	SQLAzure        ConnectionStringType = original.SQLAzure
+	SQLServer       ConnectionStringType = original.SQLServer
 )
 
 type ContinuousWebJobStatus = original.ContinuousWebJobStatus
 
 const (
-	Initializing	ContinuousWebJobStatus	= original.Initializing
-	PendingRestart	ContinuousWebJobStatus	= original.PendingRestart
-	Running		ContinuousWebJobStatus	= original.Running
-	Starting	ContinuousWebJobStatus	= original.Starting
-	Stopped		ContinuousWebJobStatus	= original.Stopped
+	Initializing   ContinuousWebJobStatus = original.Initializing
+	PendingRestart ContinuousWebJobStatus = original.PendingRestart
+	Running        ContinuousWebJobStatus = original.Running
+	Starting       ContinuousWebJobStatus = original.Starting
+	Stopped        ContinuousWebJobStatus = original.Stopped
 )
 
 type CustomHostNameDNSRecordType = original.CustomHostNameDNSRecordType
 
 const (
-	A	CustomHostNameDNSRecordType	= original.A
-	CName	CustomHostNameDNSRecordType	= original.CName
+	A     CustomHostNameDNSRecordType = original.A
+	CName CustomHostNameDNSRecordType = original.CName
 )
 
 type DatabaseType = original.DatabaseType
 
 const (
-	DatabaseTypeLocalMySQL	DatabaseType	= original.DatabaseTypeLocalMySQL
-	DatabaseTypeMySQL	DatabaseType	= original.DatabaseTypeMySQL
-	DatabaseTypePostgreSQL	DatabaseType	= original.DatabaseTypePostgreSQL
-	DatabaseTypeSQLAzure	DatabaseType	= original.DatabaseTypeSQLAzure
+	DatabaseTypeLocalMySQL DatabaseType = original.DatabaseTypeLocalMySQL
+	DatabaseTypeMySQL      DatabaseType = original.DatabaseTypeMySQL
+	DatabaseTypePostgreSQL DatabaseType = original.DatabaseTypePostgreSQL
+	DatabaseTypeSQLAzure   DatabaseType = original.DatabaseTypeSQLAzure
 )
 
 type DNSType = original.DNSType
 
 const (
-	AzureDNS			DNSType	= original.AzureDNS
-	DefaultDomainRegistrarDNS	DNSType	= original.DefaultDomainRegistrarDNS
+	AzureDNS                  DNSType = original.AzureDNS
+	DefaultDomainRegistrarDNS DNSType = original.DefaultDomainRegistrarDNS
 )
 
 type DNSVerificationTestResult = original.DNSVerificationTestResult
 
 const (
-	DNSVerificationTestResultFailed		DNSVerificationTestResult	= original.DNSVerificationTestResultFailed
-	DNSVerificationTestResultPassed		DNSVerificationTestResult	= original.DNSVerificationTestResultPassed
-	DNSVerificationTestResultSkipped	DNSVerificationTestResult	= original.DNSVerificationTestResultSkipped
+	DNSVerificationTestResultFailed  DNSVerificationTestResult = original.DNSVerificationTestResultFailed
+	DNSVerificationTestResultPassed  DNSVerificationTestResult = original.DNSVerificationTestResultPassed
+	DNSVerificationTestResultSkipped DNSVerificationTestResult = original.DNSVerificationTestResultSkipped
 )
 
 type DomainStatus = original.DomainStatus
 
 const (
-	DomainStatusActive		DomainStatus	= original.DomainStatusActive
-	DomainStatusAwaiting		DomainStatus	= original.DomainStatusAwaiting
-	DomainStatusCancelled		DomainStatus	= original.DomainStatusCancelled
-	DomainStatusConfiscated		DomainStatus	= original.DomainStatusConfiscated
-	DomainStatusDisabled		DomainStatus	= original.DomainStatusDisabled
-	DomainStatusExcluded		DomainStatus	= original.DomainStatusExcluded
-	DomainStatusExpired		DomainStatus	= original.DomainStatusExpired
-	DomainStatusFailed		DomainStatus	= original.DomainStatusFailed
-	DomainStatusHeld		DomainStatus	= original.DomainStatusHeld
-	DomainStatusJSONConverterFailed	DomainStatus	= original.DomainStatusJSONConverterFailed
-	DomainStatusLocked		DomainStatus	= original.DomainStatusLocked
-	DomainStatusParked		DomainStatus	= original.DomainStatusParked
-	DomainStatusPending		DomainStatus	= original.DomainStatusPending
-	DomainStatusReserved		DomainStatus	= original.DomainStatusReserved
-	DomainStatusReverted		DomainStatus	= original.DomainStatusReverted
-	DomainStatusSuspended		DomainStatus	= original.DomainStatusSuspended
-	DomainStatusTransferred		DomainStatus	= original.DomainStatusTransferred
-	DomainStatusUnknown		DomainStatus	= original.DomainStatusUnknown
-	DomainStatusUnlocked		DomainStatus	= original.DomainStatusUnlocked
-	DomainStatusUnparked		DomainStatus	= original.DomainStatusUnparked
-	DomainStatusUpdated		DomainStatus	= original.DomainStatusUpdated
+	DomainStatusActive              DomainStatus = original.DomainStatusActive
+	DomainStatusAwaiting            DomainStatus = original.DomainStatusAwaiting
+	DomainStatusCancelled           DomainStatus = original.DomainStatusCancelled
+	DomainStatusConfiscated         DomainStatus = original.DomainStatusConfiscated
+	DomainStatusDisabled            DomainStatus = original.DomainStatusDisabled
+	DomainStatusExcluded            DomainStatus = original.DomainStatusExcluded
+	DomainStatusExpired             DomainStatus = original.DomainStatusExpired
+	DomainStatusFailed              DomainStatus = original.DomainStatusFailed
+	DomainStatusHeld                DomainStatus = original.DomainStatusHeld
+	DomainStatusJSONConverterFailed DomainStatus = original.DomainStatusJSONConverterFailed
+	DomainStatusLocked              DomainStatus = original.DomainStatusLocked
+	DomainStatusParked              DomainStatus = original.DomainStatusParked
+	DomainStatusPending             DomainStatus = original.DomainStatusPending
+	DomainStatusReserved            DomainStatus = original.DomainStatusReserved
+	DomainStatusReverted            DomainStatus = original.DomainStatusReverted
+	DomainStatusSuspended           DomainStatus = original.DomainStatusSuspended
+	DomainStatusTransferred         DomainStatus = original.DomainStatusTransferred
+	DomainStatusUnknown             DomainStatus = original.DomainStatusUnknown
+	DomainStatusUnlocked            DomainStatus = original.DomainStatusUnlocked
+	DomainStatusUnparked            DomainStatus = original.DomainStatusUnparked
+	DomainStatusUpdated             DomainStatus = original.DomainStatusUpdated
 )
 
 type DomainType = original.DomainType
 
 const (
-	Regular		DomainType	= original.Regular
-	SoftDeleted	DomainType	= original.SoftDeleted
+	Regular     DomainType = original.Regular
+	SoftDeleted DomainType = original.SoftDeleted
 )
 
 type FrequencyUnit = original.FrequencyUnit
 
 const (
-	Day	FrequencyUnit	= original.Day
-	Hour	FrequencyUnit	= original.Hour
+	Day  FrequencyUnit = original.Day
+	Hour FrequencyUnit = original.Hour
 )
 
 type HostingEnvironmentStatus = original.HostingEnvironmentStatus
 
 const (
-	Deleting	HostingEnvironmentStatus	= original.Deleting
-	Preparing	HostingEnvironmentStatus	= original.Preparing
-	Ready		HostingEnvironmentStatus	= original.Ready
-	Scaling		HostingEnvironmentStatus	= original.Scaling
+	Deleting  HostingEnvironmentStatus = original.Deleting
+	Preparing HostingEnvironmentStatus = original.Preparing
+	Ready     HostingEnvironmentStatus = original.Ready
+	Scaling   HostingEnvironmentStatus = original.Scaling
 )
 
 type HostNameType = original.HostNameType
 
 const (
-	Managed		HostNameType	= original.Managed
-	Verified	HostNameType	= original.Verified
+	Managed  HostNameType = original.Managed
+	Verified HostNameType = original.Verified
 )
 
 type HostType = original.HostType
 
 const (
-	HostTypeRepository	HostType	= original.HostTypeRepository
-	HostTypeStandard	HostType	= original.HostTypeStandard
+	HostTypeRepository HostType = original.HostTypeRepository
+	HostTypeStandard   HostType = original.HostTypeStandard
 )
 
 type InAvailabilityReasonType = original.InAvailabilityReasonType
 
 const (
-	AlreadyExists	InAvailabilityReasonType	= original.AlreadyExists
-	Invalid		InAvailabilityReasonType	= original.Invalid
+	AlreadyExists InAvailabilityReasonType = original.AlreadyExists
+	Invalid       InAvailabilityReasonType = original.Invalid
 )
 
 type InternalLoadBalancingMode = original.InternalLoadBalancingMode
 
 const (
-	InternalLoadBalancingModeNone		InternalLoadBalancingMode	= original.InternalLoadBalancingModeNone
-	InternalLoadBalancingModePublishing	InternalLoadBalancingMode	= original.InternalLoadBalancingModePublishing
-	InternalLoadBalancingModeWeb		InternalLoadBalancingMode	= original.InternalLoadBalancingModeWeb
+	InternalLoadBalancingModeNone       InternalLoadBalancingMode = original.InternalLoadBalancingModeNone
+	InternalLoadBalancingModePublishing InternalLoadBalancingMode = original.InternalLoadBalancingModePublishing
+	InternalLoadBalancingModeWeb        InternalLoadBalancingMode = original.InternalLoadBalancingModeWeb
 )
 
 type JobType = original.JobType
 
 const (
-	Continuous	JobType	= original.Continuous
-	Triggered	JobType	= original.Triggered
+	Continuous JobType = original.Continuous
+	Triggered  JobType = original.Triggered
 )
 
 type KeyVaultSecretStatus = original.KeyVaultSecretStatus
 
 const (
-	KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault	KeyVaultSecretStatus	= original.KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault
-	KeyVaultSecretStatusCertificateOrderFailed			KeyVaultSecretStatus	= original.KeyVaultSecretStatusCertificateOrderFailed
-	KeyVaultSecretStatusExternalPrivateKey				KeyVaultSecretStatus	= original.KeyVaultSecretStatusExternalPrivateKey
-	KeyVaultSecretStatusInitialized					KeyVaultSecretStatus	= original.KeyVaultSecretStatusInitialized
-	KeyVaultSecretStatusKeyVaultDoesNotExist			KeyVaultSecretStatus	= original.KeyVaultSecretStatusKeyVaultDoesNotExist
-	KeyVaultSecretStatusKeyVaultSecretDoesNotExist			KeyVaultSecretStatus	= original.KeyVaultSecretStatusKeyVaultSecretDoesNotExist
-	KeyVaultSecretStatusOperationNotPermittedOnKeyVault		KeyVaultSecretStatus	= original.KeyVaultSecretStatusOperationNotPermittedOnKeyVault
-	KeyVaultSecretStatusSucceeded					KeyVaultSecretStatus	= original.KeyVaultSecretStatusSucceeded
-	KeyVaultSecretStatusUnknown					KeyVaultSecretStatus	= original.KeyVaultSecretStatusUnknown
-	KeyVaultSecretStatusUnknownError				KeyVaultSecretStatus	= original.KeyVaultSecretStatusUnknownError
-	KeyVaultSecretStatusWaitingOnCertificateOrder			KeyVaultSecretStatus	= original.KeyVaultSecretStatusWaitingOnCertificateOrder
+	KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault KeyVaultSecretStatus = original.KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault
+	KeyVaultSecretStatusCertificateOrderFailed                   KeyVaultSecretStatus = original.KeyVaultSecretStatusCertificateOrderFailed
+	KeyVaultSecretStatusExternalPrivateKey                       KeyVaultSecretStatus = original.KeyVaultSecretStatusExternalPrivateKey
+	KeyVaultSecretStatusInitialized                              KeyVaultSecretStatus = original.KeyVaultSecretStatusInitialized
+	KeyVaultSecretStatusKeyVaultDoesNotExist                     KeyVaultSecretStatus = original.KeyVaultSecretStatusKeyVaultDoesNotExist
+	KeyVaultSecretStatusKeyVaultSecretDoesNotExist               KeyVaultSecretStatus = original.KeyVaultSecretStatusKeyVaultSecretDoesNotExist
+	KeyVaultSecretStatusOperationNotPermittedOnKeyVault          KeyVaultSecretStatus = original.KeyVaultSecretStatusOperationNotPermittedOnKeyVault
+	KeyVaultSecretStatusSucceeded                                KeyVaultSecretStatus = original.KeyVaultSecretStatusSucceeded
+	KeyVaultSecretStatusUnknown                                  KeyVaultSecretStatus = original.KeyVaultSecretStatusUnknown
+	KeyVaultSecretStatusUnknownError                             KeyVaultSecretStatus = original.KeyVaultSecretStatusUnknownError
+	KeyVaultSecretStatusWaitingOnCertificateOrder                KeyVaultSecretStatus = original.KeyVaultSecretStatusWaitingOnCertificateOrder
 )
 
 type LogLevel = original.LogLevel
 
 const (
-	Error		LogLevel	= original.Error
-	Information	LogLevel	= original.Information
-	Off		LogLevel	= original.Off
-	Verbose		LogLevel	= original.Verbose
-	Warning		LogLevel	= original.Warning
+	Error       LogLevel = original.Error
+	Information LogLevel = original.Information
+	Off         LogLevel = original.Off
+	Verbose     LogLevel = original.Verbose
+	Warning     LogLevel = original.Warning
 )
 
 type ManagedPipelineMode = original.ManagedPipelineMode
 
 const (
-	Classic		ManagedPipelineMode	= original.Classic
-	Integrated	ManagedPipelineMode	= original.Integrated
+	Classic    ManagedPipelineMode = original.Classic
+	Integrated ManagedPipelineMode = original.Integrated
 )
 
 type MSDeployLogEntryType = original.MSDeployLogEntryType
 
 const (
-	MSDeployLogEntryTypeError	MSDeployLogEntryType	= original.MSDeployLogEntryTypeError
-	MSDeployLogEntryTypeMessage	MSDeployLogEntryType	= original.MSDeployLogEntryTypeMessage
-	MSDeployLogEntryTypeWarning	MSDeployLogEntryType	= original.MSDeployLogEntryTypeWarning
+	MSDeployLogEntryTypeError   MSDeployLogEntryType = original.MSDeployLogEntryTypeError
+	MSDeployLogEntryTypeMessage MSDeployLogEntryType = original.MSDeployLogEntryTypeMessage
+	MSDeployLogEntryTypeWarning MSDeployLogEntryType = original.MSDeployLogEntryTypeWarning
 )
 
 type MSDeployProvisioningState = original.MSDeployProvisioningState
 
 const (
-	MSDeployProvisioningStateAccepted	MSDeployProvisioningState	= original.MSDeployProvisioningStateAccepted
-	MSDeployProvisioningStateCanceled	MSDeployProvisioningState	= original.MSDeployProvisioningStateCanceled
-	MSDeployProvisioningStateFailed		MSDeployProvisioningState	= original.MSDeployProvisioningStateFailed
-	MSDeployProvisioningStateRunning	MSDeployProvisioningState	= original.MSDeployProvisioningStateRunning
-	MSDeployProvisioningStateSucceeded	MSDeployProvisioningState	= original.MSDeployProvisioningStateSucceeded
+	MSDeployProvisioningStateAccepted  MSDeployProvisioningState = original.MSDeployProvisioningStateAccepted
+	MSDeployProvisioningStateCanceled  MSDeployProvisioningState = original.MSDeployProvisioningStateCanceled
+	MSDeployProvisioningStateFailed    MSDeployProvisioningState = original.MSDeployProvisioningStateFailed
+	MSDeployProvisioningStateRunning   MSDeployProvisioningState = original.MSDeployProvisioningStateRunning
+	MSDeployProvisioningStateSucceeded MSDeployProvisioningState = original.MSDeployProvisioningStateSucceeded
 )
 
 type MySQLMigrationType = original.MySQLMigrationType
 
 const (
-	LocalToRemote	MySQLMigrationType	= original.LocalToRemote
-	RemoteToLocal	MySQLMigrationType	= original.RemoteToLocal
+	LocalToRemote MySQLMigrationType = original.LocalToRemote
+	RemoteToLocal MySQLMigrationType = original.RemoteToLocal
 )
 
 type NotificationLevel = original.NotificationLevel
 
 const (
-	NotificationLevelCritical		NotificationLevel	= original.NotificationLevelCritical
-	NotificationLevelInformation		NotificationLevel	= original.NotificationLevelInformation
-	NotificationLevelNonUrgentSuggestion	NotificationLevel	= original.NotificationLevelNonUrgentSuggestion
-	NotificationLevelWarning		NotificationLevel	= original.NotificationLevelWarning
+	NotificationLevelCritical            NotificationLevel = original.NotificationLevelCritical
+	NotificationLevelInformation         NotificationLevel = original.NotificationLevelInformation
+	NotificationLevelNonUrgentSuggestion NotificationLevel = original.NotificationLevelNonUrgentSuggestion
+	NotificationLevelWarning             NotificationLevel = original.NotificationLevelWarning
 )
 
 type OperationStatus = original.OperationStatus
 
 const (
-	OperationStatusCreated		OperationStatus	= original.OperationStatusCreated
-	OperationStatusFailed		OperationStatus	= original.OperationStatusFailed
-	OperationStatusInProgress	OperationStatus	= original.OperationStatusInProgress
-	OperationStatusSucceeded	OperationStatus	= original.OperationStatusSucceeded
-	OperationStatusTimedOut		OperationStatus	= original.OperationStatusTimedOut
+	OperationStatusCreated    OperationStatus = original.OperationStatusCreated
+	OperationStatusFailed     OperationStatus = original.OperationStatusFailed
+	OperationStatusInProgress OperationStatus = original.OperationStatusInProgress
+	OperationStatusSucceeded  OperationStatus = original.OperationStatusSucceeded
+	OperationStatusTimedOut   OperationStatus = original.OperationStatusTimedOut
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	ProvisioningStateCanceled	ProvisioningState	= original.ProvisioningStateCanceled
-	ProvisioningStateDeleting	ProvisioningState	= original.ProvisioningStateDeleting
-	ProvisioningStateFailed		ProvisioningState	= original.ProvisioningStateFailed
-	ProvisioningStateInProgress	ProvisioningState	= original.ProvisioningStateInProgress
-	ProvisioningStateSucceeded	ProvisioningState	= original.ProvisioningStateSucceeded
+	ProvisioningStateCanceled   ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateDeleting   ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed     ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateInProgress ProvisioningState = original.ProvisioningStateInProgress
+	ProvisioningStateSucceeded  ProvisioningState = original.ProvisioningStateSucceeded
 )
 
 type PublicCertificateLocation = original.PublicCertificateLocation
 
 const (
-	PublicCertificateLocationCurrentUserMy	PublicCertificateLocation	= original.PublicCertificateLocationCurrentUserMy
-	PublicCertificateLocationLocalMachineMy	PublicCertificateLocation	= original.PublicCertificateLocationLocalMachineMy
-	PublicCertificateLocationUnknown	PublicCertificateLocation	= original.PublicCertificateLocationUnknown
+	PublicCertificateLocationCurrentUserMy  PublicCertificateLocation = original.PublicCertificateLocationCurrentUserMy
+	PublicCertificateLocationLocalMachineMy PublicCertificateLocation = original.PublicCertificateLocationLocalMachineMy
+	PublicCertificateLocationUnknown        PublicCertificateLocation = original.PublicCertificateLocationUnknown
 )
 
 type PublishingProfileFormat = original.PublishingProfileFormat
 
 const (
-	FileZilla3	PublishingProfileFormat	= original.FileZilla3
-	Ftp		PublishingProfileFormat	= original.Ftp
-	WebDeploy	PublishingProfileFormat	= original.WebDeploy
+	FileZilla3 PublishingProfileFormat = original.FileZilla3
+	Ftp        PublishingProfileFormat = original.Ftp
+	WebDeploy  PublishingProfileFormat = original.WebDeploy
 )
 
 type ResourceScopeType = original.ResourceScopeType
 
 const (
-	ServerFarm	ResourceScopeType	= original.ServerFarm
-	Subscription	ResourceScopeType	= original.Subscription
-	WebSite		ResourceScopeType	= original.WebSite
+	ServerFarm   ResourceScopeType = original.ServerFarm
+	Subscription ResourceScopeType = original.Subscription
+	WebSite      ResourceScopeType = original.WebSite
 )
 
 type RouteType = original.RouteType
 
 const (
-	DEFAULT		RouteType	= original.DEFAULT
-	INHERITED	RouteType	= original.INHERITED
-	STATIC		RouteType	= original.STATIC
+	DEFAULT   RouteType = original.DEFAULT
+	INHERITED RouteType = original.INHERITED
+	STATIC    RouteType = original.STATIC
 )
 
 type ScmType = original.ScmType
 
 const (
-	ScmTypeBitbucketGit	ScmType	= original.ScmTypeBitbucketGit
-	ScmTypeBitbucketHg	ScmType	= original.ScmTypeBitbucketHg
-	ScmTypeCodePlexGit	ScmType	= original.ScmTypeCodePlexGit
-	ScmTypeCodePlexHg	ScmType	= original.ScmTypeCodePlexHg
-	ScmTypeDropbox		ScmType	= original.ScmTypeDropbox
-	ScmTypeExternalGit	ScmType	= original.ScmTypeExternalGit
-	ScmTypeExternalHg	ScmType	= original.ScmTypeExternalHg
-	ScmTypeGitHub		ScmType	= original.ScmTypeGitHub
-	ScmTypeLocalGit		ScmType	= original.ScmTypeLocalGit
-	ScmTypeNone		ScmType	= original.ScmTypeNone
-	ScmTypeOneDrive		ScmType	= original.ScmTypeOneDrive
-	ScmTypeTfs		ScmType	= original.ScmTypeTfs
-	ScmTypeVSO		ScmType	= original.ScmTypeVSO
+	ScmTypeBitbucketGit ScmType = original.ScmTypeBitbucketGit
+	ScmTypeBitbucketHg  ScmType = original.ScmTypeBitbucketHg
+	ScmTypeCodePlexGit  ScmType = original.ScmTypeCodePlexGit
+	ScmTypeCodePlexHg   ScmType = original.ScmTypeCodePlexHg
+	ScmTypeDropbox      ScmType = original.ScmTypeDropbox
+	ScmTypeExternalGit  ScmType = original.ScmTypeExternalGit
+	ScmTypeExternalHg   ScmType = original.ScmTypeExternalHg
+	ScmTypeGitHub       ScmType = original.ScmTypeGitHub
+	ScmTypeLocalGit     ScmType = original.ScmTypeLocalGit
+	ScmTypeNone         ScmType = original.ScmTypeNone
+	ScmTypeOneDrive     ScmType = original.ScmTypeOneDrive
+	ScmTypeTfs          ScmType = original.ScmTypeTfs
+	ScmTypeVSO          ScmType = original.ScmTypeVSO
 )
 
 type SiteAvailabilityState = original.SiteAvailabilityState
 
 const (
-	DisasterRecoveryMode	SiteAvailabilityState	= original.DisasterRecoveryMode
-	Limited			SiteAvailabilityState	= original.Limited
-	Normal			SiteAvailabilityState	= original.Normal
+	DisasterRecoveryMode SiteAvailabilityState = original.DisasterRecoveryMode
+	Limited              SiteAvailabilityState = original.Limited
+	Normal               SiteAvailabilityState = original.Normal
 )
 
 type SiteExtensionType = original.SiteExtensionType
 
 const (
-	Gallery	SiteExtensionType	= original.Gallery
-	WebRoot	SiteExtensionType	= original.WebRoot
+	Gallery SiteExtensionType = original.Gallery
+	WebRoot SiteExtensionType = original.WebRoot
 )
 
 type SiteLoadBalancing = original.SiteLoadBalancing
 
 const (
-	LeastRequests		SiteLoadBalancing	= original.LeastRequests
-	LeastResponseTime	SiteLoadBalancing	= original.LeastResponseTime
-	RequestHash		SiteLoadBalancing	= original.RequestHash
-	WeightedRoundRobin	SiteLoadBalancing	= original.WeightedRoundRobin
-	WeightedTotalTraffic	SiteLoadBalancing	= original.WeightedTotalTraffic
+	LeastRequests        SiteLoadBalancing = original.LeastRequests
+	LeastResponseTime    SiteLoadBalancing = original.LeastResponseTime
+	RequestHash          SiteLoadBalancing = original.RequestHash
+	WeightedRoundRobin   SiteLoadBalancing = original.WeightedRoundRobin
+	WeightedTotalTraffic SiteLoadBalancing = original.WeightedTotalTraffic
 )
 
 type SkuName = original.SkuName
 
 const (
-	SkuNameBasic		SkuName	= original.SkuNameBasic
-	SkuNameDynamic		SkuName	= original.SkuNameDynamic
-	SkuNameFree		SkuName	= original.SkuNameFree
-	SkuNameIsolated		SkuName	= original.SkuNameIsolated
-	SkuNamePremium		SkuName	= original.SkuNamePremium
-	SkuNamePremiumV2	SkuName	= original.SkuNamePremiumV2
-	SkuNameShared		SkuName	= original.SkuNameShared
-	SkuNameStandard		SkuName	= original.SkuNameStandard
+	SkuNameBasic     SkuName = original.SkuNameBasic
+	SkuNameDynamic   SkuName = original.SkuNameDynamic
+	SkuNameFree      SkuName = original.SkuNameFree
+	SkuNameIsolated  SkuName = original.SkuNameIsolated
+	SkuNamePremium   SkuName = original.SkuNamePremium
+	SkuNamePremiumV2 SkuName = original.SkuNamePremiumV2
+	SkuNameShared    SkuName = original.SkuNameShared
+	SkuNameStandard  SkuName = original.SkuNameStandard
 )
 
 type SslState = original.SslState
 
 const (
-	Disabled	SslState	= original.Disabled
-	IPBasedEnabled	SslState	= original.IPBasedEnabled
-	SniEnabled	SslState	= original.SniEnabled
+	Disabled       SslState = original.Disabled
+	IPBasedEnabled SslState = original.IPBasedEnabled
+	SniEnabled     SslState = original.SniEnabled
 )
 
 type StatusOptions = original.StatusOptions
 
 const (
-	StatusOptionsPending	StatusOptions	= original.StatusOptionsPending
-	StatusOptionsReady	StatusOptions	= original.StatusOptionsReady
+	StatusOptionsPending StatusOptions = original.StatusOptionsPending
+	StatusOptionsReady   StatusOptions = original.StatusOptionsReady
 )
 
 type TriggeredWebJobStatus = original.TriggeredWebJobStatus
 
 const (
-	TriggeredWebJobStatusError	TriggeredWebJobStatus	= original.TriggeredWebJobStatusError
-	TriggeredWebJobStatusFailed	TriggeredWebJobStatus	= original.TriggeredWebJobStatusFailed
-	TriggeredWebJobStatusSuccess	TriggeredWebJobStatus	= original.TriggeredWebJobStatusSuccess
+	TriggeredWebJobStatusError   TriggeredWebJobStatus = original.TriggeredWebJobStatusError
+	TriggeredWebJobStatusFailed  TriggeredWebJobStatus = original.TriggeredWebJobStatusFailed
+	TriggeredWebJobStatusSuccess TriggeredWebJobStatus = original.TriggeredWebJobStatusSuccess
 )
 
 type UnauthenticatedClientAction = original.UnauthenticatedClientAction
 
 const (
-	AllowAnonymous		UnauthenticatedClientAction	= original.AllowAnonymous
-	RedirectToLoginPage	UnauthenticatedClientAction	= original.RedirectToLoginPage
+	AllowAnonymous      UnauthenticatedClientAction = original.AllowAnonymous
+	RedirectToLoginPage UnauthenticatedClientAction = original.RedirectToLoginPage
 )
 
 type UsageState = original.UsageState
 
 const (
-	UsageStateExceeded	UsageState	= original.UsageStateExceeded
-	UsageStateNormal	UsageState	= original.UsageStateNormal
+	UsageStateExceeded UsageState = original.UsageStateExceeded
+	UsageStateNormal   UsageState = original.UsageStateNormal
 )
 
 type ValidateResourceTypes = original.ValidateResourceTypes
 
 const (
-	ValidateResourceTypesServerFarm	ValidateResourceTypes	= original.ValidateResourceTypesServerFarm
-	ValidateResourceTypesSite	ValidateResourceTypes	= original.ValidateResourceTypesSite
+	ValidateResourceTypesServerFarm ValidateResourceTypes = original.ValidateResourceTypesServerFarm
+	ValidateResourceTypesSite       ValidateResourceTypes = original.ValidateResourceTypesSite
 )
 
 type WorkerSizeOptions = original.WorkerSizeOptions
 
 const (
-	Default	WorkerSizeOptions	= original.Default
-	Large	WorkerSizeOptions	= original.Large
-	Medium	WorkerSizeOptions	= original.Medium
-	Small	WorkerSizeOptions	= original.Small
+	Default WorkerSizeOptions = original.Default
+	Large   WorkerSizeOptions = original.Large
+	Medium  WorkerSizeOptions = original.Medium
+	Small   WorkerSizeOptions = original.Small
 )
 
 type Address = original.Address

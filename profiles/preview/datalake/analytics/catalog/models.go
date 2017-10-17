@@ -31,9 +31,9 @@ type GroupClient = original.GroupClient
 type FileType = original.FileType
 
 const (
-	Assembly	FileType	= original.Assembly
-	Nodeploy	FileType	= original.Nodeploy
-	Resource	FileType	= original.Resource
+	Assembly FileType = original.Assembly
+	Nodeploy FileType = original.Nodeploy
+	Resource FileType = original.Resource
 )
 
 type DataLakeAnalyticsCatalogCredentialCreateParameters = original.DataLakeAnalyticsCatalogCredentialCreateParameters

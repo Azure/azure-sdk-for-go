@@ -43,8 +43,8 @@ func TestList_Enumerate(t *testing.T) {
 		{
 			smallProfile,
 			map[string]struct{}{
-				"github.com/Azure/azure-sdk-for-go/compute/mgmt/2015-06-15/compute": struct{}{},
-				"github.com/Azure/azure-sdk-for-go/network/mgmt/2015-06-15/network": struct{}{},
+				"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2015-06-15/compute": struct{}{},
+				"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2015-06-15/network": struct{}{},
 			},
 		},
 	}

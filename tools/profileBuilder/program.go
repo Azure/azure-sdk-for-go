@@ -84,11 +84,7 @@ func main() {
 
 	packages = packageStrategy.Enumerate(nil).Select(func(x interface{}) interface{} {
 		if cast, ok := x.(string); ok {
-			abs, err := filepath.Abs(cast)
-			if err != nil {
-				return nil
-			}
-			return abs
+			return filepath.Join(os.Getenv("GOPATH"), "src", cast)
 		}
 		return nil
 	})
@@ -105,6 +101,7 @@ func main() {
 			files := token.NewFileSet()
 			parsed, err := parser.ParseDir(files, cast, nil, 0)
 			if err != nil {
+				errLog.Printf("Couldn't open %q because: %v", cast, err)
 				return
 			}
 

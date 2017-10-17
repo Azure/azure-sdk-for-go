@@ -105,14 +105,18 @@ Save this file in a secure location on your system where your code can read it. 
 export AZURE_AUTH_LOCATION=/secure/location/mycredentials.json
 ```
 
+``` powershell
+$env:AZURE_AUTH_LOCATION= "/secure/location/mycredentials.json"
+```
+
 The file looks like this, in case you want to create it yourself:
 
 ``` json
 {
-    "clientId": "ad735158-65ca-11e7-ba4d-ecb1d756380e",
-    "clientSecret": "b70bb224-65ca-11e7-810c-ecb1d756380e",
-    "subscriptionId": "bfc42d3a-65ca-11e7-95cf-ecb1d756380e",
-    "tenantId": "c81da1d8-65ca-11e7-b1d1-ecb1d756380e",
+    "clientId": "<your service principal client ID>",
+    "clientSecret": "your service principal client secret",
+    "subscriptionId": "<your Azure Subsription ID>",
+    "tenantId": "<your tenant ID>",
     "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
     "resourceManagerEndpointUrl": "https://management.azure.com/",
     "activeDirectoryGraphResourceId": "https://graph.windows.net/",

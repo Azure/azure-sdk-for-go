@@ -25,41 +25,41 @@ type LocationClient = original.LocationClient
 type AccountKeyType = original.AccountKeyType
 
 const (
-	Primary		AccountKeyType	= original.Primary
-	Secondary	AccountKeyType	= original.Secondary
+	Primary   AccountKeyType = original.Primary
+	Secondary AccountKeyType = original.Secondary
 )
 
 type NameAvailabilityReason = original.NameAvailabilityReason
 
 const (
-	AlreadyExists	NameAvailabilityReason	= original.AlreadyExists
-	Invalid		NameAvailabilityReason	= original.Invalid
+	AlreadyExists NameAvailabilityReason = original.AlreadyExists
+	Invalid       NameAvailabilityReason = original.Invalid
 )
 
 type PackageState = original.PackageState
 
 const (
-	Active		PackageState	= original.Active
-	Pending		PackageState	= original.Pending
-	Unmapped	PackageState	= original.Unmapped
+	Active   PackageState = original.Active
+	Pending  PackageState = original.Pending
+	Unmapped PackageState = original.Unmapped
 )
 
 type PoolAllocationMode = original.PoolAllocationMode
 
 const (
-	BatchService		PoolAllocationMode	= original.BatchService
-	UserSubscription	PoolAllocationMode	= original.UserSubscription
+	BatchService     PoolAllocationMode = original.BatchService
+	UserSubscription PoolAllocationMode = original.UserSubscription
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	ProvisioningStateCancelled	ProvisioningState	= original.ProvisioningStateCancelled
-	ProvisioningStateCreating	ProvisioningState	= original.ProvisioningStateCreating
-	ProvisioningStateDeleting	ProvisioningState	= original.ProvisioningStateDeleting
-	ProvisioningStateFailed		ProvisioningState	= original.ProvisioningStateFailed
-	ProvisioningStateInvalid	ProvisioningState	= original.ProvisioningStateInvalid
-	ProvisioningStateSucceeded	ProvisioningState	= original.ProvisioningStateSucceeded
+	ProvisioningStateCancelled ProvisioningState = original.ProvisioningStateCancelled
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateInvalid   ProvisioningState = original.ProvisioningStateInvalid
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
 )
 
 type Account = original.Account

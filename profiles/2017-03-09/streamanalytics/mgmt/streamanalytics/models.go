@@ -30,8 +30,8 @@ type FunctionsClient = original.FunctionsClient
 type BindingType = original.BindingType
 
 const (
-	BindingTypeMicrosoftMachineLearningWebService		BindingType	= original.BindingTypeMicrosoftMachineLearningWebService
-	BindingTypeMicrosoftStreamAnalyticsJavascriptUdf	BindingType	= original.BindingTypeMicrosoftStreamAnalyticsJavascriptUdf
+	BindingTypeMicrosoftMachineLearningWebService    BindingType = original.BindingTypeMicrosoftMachineLearningWebService
+	BindingTypeMicrosoftStreamAnalyticsJavascriptUdf BindingType = original.BindingTypeMicrosoftStreamAnalyticsJavascriptUdf
 )
 
 type CompatibilityLevel = original.CompatibilityLevel
@@ -49,30 +49,30 @@ const (
 type EventsOutOfOrderPolicy = original.EventsOutOfOrderPolicy
 
 const (
-	Adjust	EventsOutOfOrderPolicy	= original.Adjust
-	Drop	EventsOutOfOrderPolicy	= original.Drop
+	Adjust EventsOutOfOrderPolicy = original.Adjust
+	Drop   EventsOutOfOrderPolicy = original.Drop
 )
 
 type JSONOutputSerializationFormat = original.JSONOutputSerializationFormat
 
 const (
-	Array		JSONOutputSerializationFormat	= original.Array
-	LineSeparated	JSONOutputSerializationFormat	= original.LineSeparated
+	Array         JSONOutputSerializationFormat = original.Array
+	LineSeparated JSONOutputSerializationFormat = original.LineSeparated
 )
 
 type OutputErrorPolicy = original.OutputErrorPolicy
 
 const (
-	OutputErrorPolicyDrop	OutputErrorPolicy	= original.OutputErrorPolicyDrop
-	OutputErrorPolicyStop	OutputErrorPolicy	= original.OutputErrorPolicyStop
+	OutputErrorPolicyDrop OutputErrorPolicy = original.OutputErrorPolicyDrop
+	OutputErrorPolicyStop OutputErrorPolicy = original.OutputErrorPolicyStop
 )
 
 type OutputStartMode = original.OutputStartMode
 
 const (
-	CustomTime		OutputStartMode	= original.CustomTime
-	JobStartTime		OutputStartMode	= original.JobStartTime
-	LastOutputEventTime	OutputStartMode	= original.LastOutputEventTime
+	CustomTime          OutputStartMode = original.CustomTime
+	JobStartTime        OutputStartMode = original.JobStartTime
+	LastOutputEventTime OutputStartMode = original.LastOutputEventTime
 )
 
 type SkuName = original.SkuName
@@ -84,16 +84,16 @@ const (
 type Type = original.Type
 
 const (
-	TypeAvro	Type	= original.TypeAvro
-	TypeCsv		Type	= original.TypeCsv
-	TypeJSON	Type	= original.TypeJSON
+	TypeAvro Type = original.TypeAvro
+	TypeCsv  Type = original.TypeCsv
+	TypeJSON Type = original.TypeJSON
 )
 
 type TypeFunctionBinding = original.TypeFunctionBinding
 
 const (
-	TypeMicrosoftMachineLearningWebService		TypeFunctionBinding	= original.TypeMicrosoftMachineLearningWebService
-	TypeMicrosoftStreamAnalyticsJavascriptUdf	TypeFunctionBinding	= original.TypeMicrosoftStreamAnalyticsJavascriptUdf
+	TypeMicrosoftMachineLearningWebService    TypeFunctionBinding = original.TypeMicrosoftMachineLearningWebService
+	TypeMicrosoftStreamAnalyticsJavascriptUdf TypeFunctionBinding = original.TypeMicrosoftStreamAnalyticsJavascriptUdf
 )
 
 type TypeFunctionProperties = original.TypeFunctionProperties
@@ -105,22 +105,22 @@ const (
 type TypeInputProperties = original.TypeInputProperties
 
 const (
-	TypeReference	TypeInputProperties	= original.TypeReference
-	TypeStream	TypeInputProperties	= original.TypeStream
+	TypeReference TypeInputProperties = original.TypeReference
+	TypeStream    TypeInputProperties = original.TypeStream
 )
 
 type TypeOutputDataSource = original.TypeOutputDataSource
 
 const (
-	TypeMicrosoftDataLakeAccounts	TypeOutputDataSource	= original.TypeMicrosoftDataLakeAccounts
-	TypeMicrosoftServiceBusEventHub	TypeOutputDataSource	= original.TypeMicrosoftServiceBusEventHub
-	TypeMicrosoftServiceBusQueue	TypeOutputDataSource	= original.TypeMicrosoftServiceBusQueue
-	TypeMicrosoftServiceBusTopic	TypeOutputDataSource	= original.TypeMicrosoftServiceBusTopic
-	TypeMicrosoftSQLServerDatabase	TypeOutputDataSource	= original.TypeMicrosoftSQLServerDatabase
-	TypeMicrosoftStorageBlob	TypeOutputDataSource	= original.TypeMicrosoftStorageBlob
-	TypeMicrosoftStorageDocumentDB	TypeOutputDataSource	= original.TypeMicrosoftStorageDocumentDB
-	TypeMicrosoftStorageTable	TypeOutputDataSource	= original.TypeMicrosoftStorageTable
-	TypePowerBI			TypeOutputDataSource	= original.TypePowerBI
+	TypeMicrosoftDataLakeAccounts   TypeOutputDataSource = original.TypeMicrosoftDataLakeAccounts
+	TypeMicrosoftServiceBusEventHub TypeOutputDataSource = original.TypeMicrosoftServiceBusEventHub
+	TypeMicrosoftServiceBusQueue    TypeOutputDataSource = original.TypeMicrosoftServiceBusQueue
+	TypeMicrosoftServiceBusTopic    TypeOutputDataSource = original.TypeMicrosoftServiceBusTopic
+	TypeMicrosoftSQLServerDatabase  TypeOutputDataSource = original.TypeMicrosoftSQLServerDatabase
+	TypeMicrosoftStorageBlob        TypeOutputDataSource = original.TypeMicrosoftStorageBlob
+	TypeMicrosoftStorageDocumentDB  TypeOutputDataSource = original.TypeMicrosoftStorageDocumentDB
+	TypeMicrosoftStorageTable       TypeOutputDataSource = original.TypeMicrosoftStorageTable
+	TypePowerBI                     TypeOutputDataSource = original.TypePowerBI
 )
 
 type TypeReferenceInputDataSource = original.TypeReferenceInputDataSource
@@ -132,9 +132,9 @@ const (
 type TypeStreamInputDataSource = original.TypeStreamInputDataSource
 
 const (
-	TypeStreamInputDataSourceTypeMicrosoftDevicesIotHubs		TypeStreamInputDataSource	= original.TypeStreamInputDataSourceTypeMicrosoftDevicesIotHubs
-	TypeStreamInputDataSourceTypeMicrosoftServiceBusEventHub	TypeStreamInputDataSource	= original.TypeStreamInputDataSourceTypeMicrosoftServiceBusEventHub
-	TypeStreamInputDataSourceTypeMicrosoftStorageBlob		TypeStreamInputDataSource	= original.TypeStreamInputDataSourceTypeMicrosoftStorageBlob
+	TypeStreamInputDataSourceTypeMicrosoftDevicesIotHubs     TypeStreamInputDataSource = original.TypeStreamInputDataSourceTypeMicrosoftDevicesIotHubs
+	TypeStreamInputDataSourceTypeMicrosoftServiceBusEventHub TypeStreamInputDataSource = original.TypeStreamInputDataSourceTypeMicrosoftServiceBusEventHub
+	TypeStreamInputDataSourceTypeMicrosoftStorageBlob        TypeStreamInputDataSource = original.TypeStreamInputDataSourceTypeMicrosoftStorageBlob
 )
 
 type UdfType = original.UdfType

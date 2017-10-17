@@ -32,17 +32,17 @@ type DefinitionsClient = original.DefinitionsClient
 type Mode = original.Mode
 
 const (
-	All		Mode	= original.All
-	Indexed		Mode	= original.Indexed
-	NotSpecified	Mode	= original.NotSpecified
+	All          Mode = original.All
+	Indexed      Mode = original.Indexed
+	NotSpecified Mode = original.NotSpecified
 )
 
 type Type = original.Type
 
 const (
-	TypeBuiltIn		Type	= original.TypeBuiltIn
-	TypeCustom		Type	= original.TypeCustom
-	TypeNotSpecified	Type	= original.TypeNotSpecified
+	TypeBuiltIn      Type = original.TypeBuiltIn
+	TypeCustom       Type = original.TypeCustom
+	TypeNotSpecified Type = original.TypeNotSpecified
 )
 
 type Assignment = original.Assignment

@@ -24,121 +24,121 @@ import original "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2017-03-01-
 type AuthenticationType = original.AuthenticationType
 
 const (
-	ADPassword	AuthenticationType	= original.ADPassword
-	SQL		AuthenticationType	= original.SQL
+	ADPassword AuthenticationType = original.ADPassword
+	SQL        AuthenticationType = original.SQL
 )
 
 type BackupLongTermRetentionPolicyState = original.BackupLongTermRetentionPolicyState
 
 const (
-	Disabled	BackupLongTermRetentionPolicyState	= original.Disabled
-	Enabled		BackupLongTermRetentionPolicyState	= original.Enabled
+	Disabled BackupLongTermRetentionPolicyState = original.Disabled
+	Enabled  BackupLongTermRetentionPolicyState = original.Enabled
 )
 
 type BlobAuditingPolicyState = original.BlobAuditingPolicyState
 
 const (
-	BlobAuditingPolicyStateDisabled	BlobAuditingPolicyState	= original.BlobAuditingPolicyStateDisabled
-	BlobAuditingPolicyStateEnabled	BlobAuditingPolicyState	= original.BlobAuditingPolicyStateEnabled
+	BlobAuditingPolicyStateDisabled BlobAuditingPolicyState = original.BlobAuditingPolicyStateDisabled
+	BlobAuditingPolicyStateEnabled  BlobAuditingPolicyState = original.BlobAuditingPolicyStateEnabled
 )
 
 type CapabilityStatus = original.CapabilityStatus
 
 const (
-	CapabilityStatusAvailable	CapabilityStatus	= original.CapabilityStatusAvailable
-	CapabilityStatusDefault		CapabilityStatus	= original.CapabilityStatusDefault
-	CapabilityStatusDisabled	CapabilityStatus	= original.CapabilityStatusDisabled
-	CapabilityStatusVisible		CapabilityStatus	= original.CapabilityStatusVisible
+	CapabilityStatusAvailable CapabilityStatus = original.CapabilityStatusAvailable
+	CapabilityStatusDefault   CapabilityStatus = original.CapabilityStatusDefault
+	CapabilityStatusDisabled  CapabilityStatus = original.CapabilityStatusDisabled
+	CapabilityStatusVisible   CapabilityStatus = original.CapabilityStatusVisible
 )
 
 type CheckNameAvailabilityReason = original.CheckNameAvailabilityReason
 
 const (
-	AlreadyExists	CheckNameAvailabilityReason	= original.AlreadyExists
-	Invalid		CheckNameAvailabilityReason	= original.Invalid
+	AlreadyExists CheckNameAvailabilityReason = original.AlreadyExists
+	Invalid       CheckNameAvailabilityReason = original.Invalid
 )
 
 type CreateMode = original.CreateMode
 
 const (
-	Copy				CreateMode	= original.Copy
-	Default				CreateMode	= original.Default
-	NonReadableSecondary		CreateMode	= original.NonReadableSecondary
-	OnlineSecondary			CreateMode	= original.OnlineSecondary
-	PointInTimeRestore		CreateMode	= original.PointInTimeRestore
-	Recovery			CreateMode	= original.Recovery
-	Restore				CreateMode	= original.Restore
-	RestoreLongTermRetentionBackup	CreateMode	= original.RestoreLongTermRetentionBackup
+	Copy                           CreateMode = original.Copy
+	Default                        CreateMode = original.Default
+	NonReadableSecondary           CreateMode = original.NonReadableSecondary
+	OnlineSecondary                CreateMode = original.OnlineSecondary
+	PointInTimeRestore             CreateMode = original.PointInTimeRestore
+	Recovery                       CreateMode = original.Recovery
+	Restore                        CreateMode = original.Restore
+	RestoreLongTermRetentionBackup CreateMode = original.RestoreLongTermRetentionBackup
 )
 
 type DatabaseEdition = original.DatabaseEdition
 
 const (
-	Basic		DatabaseEdition	= original.Basic
-	Business	DatabaseEdition	= original.Business
-	DataWarehouse	DatabaseEdition	= original.DataWarehouse
-	Free		DatabaseEdition	= original.Free
-	Premium		DatabaseEdition	= original.Premium
-	Standard	DatabaseEdition	= original.Standard
-	Stretch		DatabaseEdition	= original.Stretch
-	System		DatabaseEdition	= original.System
-	System2		DatabaseEdition	= original.System2
-	Web		DatabaseEdition	= original.Web
+	Basic         DatabaseEdition = original.Basic
+	Business      DatabaseEdition = original.Business
+	DataWarehouse DatabaseEdition = original.DataWarehouse
+	Free          DatabaseEdition = original.Free
+	Premium       DatabaseEdition = original.Premium
+	Standard      DatabaseEdition = original.Standard
+	Stretch       DatabaseEdition = original.Stretch
+	System        DatabaseEdition = original.System
+	System2       DatabaseEdition = original.System2
+	Web           DatabaseEdition = original.Web
 )
 
 type DataMaskingFunction = original.DataMaskingFunction
 
 const (
-	DataMaskingFunctionCCN		DataMaskingFunction	= original.DataMaskingFunctionCCN
-	DataMaskingFunctionDefault	DataMaskingFunction	= original.DataMaskingFunctionDefault
-	DataMaskingFunctionEmail	DataMaskingFunction	= original.DataMaskingFunctionEmail
-	DataMaskingFunctionNumber	DataMaskingFunction	= original.DataMaskingFunctionNumber
-	DataMaskingFunctionSSN		DataMaskingFunction	= original.DataMaskingFunctionSSN
-	DataMaskingFunctionText		DataMaskingFunction	= original.DataMaskingFunctionText
+	DataMaskingFunctionCCN     DataMaskingFunction = original.DataMaskingFunctionCCN
+	DataMaskingFunctionDefault DataMaskingFunction = original.DataMaskingFunctionDefault
+	DataMaskingFunctionEmail   DataMaskingFunction = original.DataMaskingFunctionEmail
+	DataMaskingFunctionNumber  DataMaskingFunction = original.DataMaskingFunctionNumber
+	DataMaskingFunctionSSN     DataMaskingFunction = original.DataMaskingFunctionSSN
+	DataMaskingFunctionText    DataMaskingFunction = original.DataMaskingFunctionText
 )
 
 type DataMaskingRuleState = original.DataMaskingRuleState
 
 const (
-	DataMaskingRuleStateDisabled	DataMaskingRuleState	= original.DataMaskingRuleStateDisabled
-	DataMaskingRuleStateEnabled	DataMaskingRuleState	= original.DataMaskingRuleStateEnabled
+	DataMaskingRuleStateDisabled DataMaskingRuleState = original.DataMaskingRuleStateDisabled
+	DataMaskingRuleStateEnabled  DataMaskingRuleState = original.DataMaskingRuleStateEnabled
 )
 
 type DataMaskingState = original.DataMaskingState
 
 const (
-	DataMaskingStateDisabled	DataMaskingState	= original.DataMaskingStateDisabled
-	DataMaskingStateEnabled		DataMaskingState	= original.DataMaskingStateEnabled
+	DataMaskingStateDisabled DataMaskingState = original.DataMaskingStateDisabled
+	DataMaskingStateEnabled  DataMaskingState = original.DataMaskingStateEnabled
 )
 
 type ElasticPoolEdition = original.ElasticPoolEdition
 
 const (
-	ElasticPoolEditionBasic		ElasticPoolEdition	= original.ElasticPoolEditionBasic
-	ElasticPoolEditionPremium	ElasticPoolEdition	= original.ElasticPoolEditionPremium
-	ElasticPoolEditionStandard	ElasticPoolEdition	= original.ElasticPoolEditionStandard
+	ElasticPoolEditionBasic    ElasticPoolEdition = original.ElasticPoolEditionBasic
+	ElasticPoolEditionPremium  ElasticPoolEdition = original.ElasticPoolEditionPremium
+	ElasticPoolEditionStandard ElasticPoolEdition = original.ElasticPoolEditionStandard
 )
 
 type ElasticPoolState = original.ElasticPoolState
 
 const (
-	ElasticPoolStateCreating	ElasticPoolState	= original.ElasticPoolStateCreating
-	ElasticPoolStateDisabled	ElasticPoolState	= original.ElasticPoolStateDisabled
-	ElasticPoolStateReady		ElasticPoolState	= original.ElasticPoolStateReady
+	ElasticPoolStateCreating ElasticPoolState = original.ElasticPoolStateCreating
+	ElasticPoolStateDisabled ElasticPoolState = original.ElasticPoolStateDisabled
+	ElasticPoolStateReady    ElasticPoolState = original.ElasticPoolStateReady
 )
 
 type FailoverGroupReplicationRole = original.FailoverGroupReplicationRole
 
 const (
-	Primary		FailoverGroupReplicationRole	= original.Primary
-	Secondary	FailoverGroupReplicationRole	= original.Secondary
+	Primary   FailoverGroupReplicationRole = original.Primary
+	Secondary FailoverGroupReplicationRole = original.Secondary
 )
 
 type GeoBackupPolicyState = original.GeoBackupPolicyState
 
 const (
-	GeoBackupPolicyStateDisabled	GeoBackupPolicyState	= original.GeoBackupPolicyStateDisabled
-	GeoBackupPolicyStateEnabled	GeoBackupPolicyState	= original.GeoBackupPolicyStateEnabled
+	GeoBackupPolicyStateDisabled GeoBackupPolicyState = original.GeoBackupPolicyStateDisabled
+	GeoBackupPolicyStateEnabled  GeoBackupPolicyState = original.GeoBackupPolicyStateEnabled
 )
 
 type IdentityType = original.IdentityType
@@ -150,28 +150,28 @@ const (
 type ManagementOperationState = original.ManagementOperationState
 
 const (
-	CancelInProgress	ManagementOperationState	= original.CancelInProgress
-	Cancelled		ManagementOperationState	= original.Cancelled
-	Failed			ManagementOperationState	= original.Failed
-	InProgress		ManagementOperationState	= original.InProgress
-	Pending			ManagementOperationState	= original.Pending
-	Succeeded		ManagementOperationState	= original.Succeeded
+	CancelInProgress ManagementOperationState = original.CancelInProgress
+	Cancelled        ManagementOperationState = original.Cancelled
+	Failed           ManagementOperationState = original.Failed
+	InProgress       ManagementOperationState = original.InProgress
+	Pending          ManagementOperationState = original.Pending
+	Succeeded        ManagementOperationState = original.Succeeded
 )
 
 type MaxSizeUnits = original.MaxSizeUnits
 
 const (
-	Gigabytes	MaxSizeUnits	= original.Gigabytes
-	Megabytes	MaxSizeUnits	= original.Megabytes
-	Petabytes	MaxSizeUnits	= original.Petabytes
-	Terabytes	MaxSizeUnits	= original.Terabytes
+	Gigabytes MaxSizeUnits = original.Gigabytes
+	Megabytes MaxSizeUnits = original.Megabytes
+	Petabytes MaxSizeUnits = original.Petabytes
+	Terabytes MaxSizeUnits = original.Terabytes
 )
 
 type OperationOrigin = original.OperationOrigin
 
 const (
-	OperationOriginSystem	OperationOrigin	= original.OperationOriginSystem
-	OperationOriginUser	OperationOrigin	= original.OperationOriginUser
+	OperationOriginSystem OperationOrigin = original.OperationOriginSystem
+	OperationOriginUser   OperationOrigin = original.OperationOriginUser
 )
 
 type PerformanceLevelUnit = original.PerformanceLevelUnit
@@ -183,92 +183,92 @@ const (
 type PrimaryAggregationType = original.PrimaryAggregationType
 
 const (
-	Average	PrimaryAggregationType	= original.Average
-	Count	PrimaryAggregationType	= original.Count
-	Maximum	PrimaryAggregationType	= original.Maximum
-	Minimum	PrimaryAggregationType	= original.Minimum
-	None	PrimaryAggregationType	= original.None
-	Total	PrimaryAggregationType	= original.Total
+	Average PrimaryAggregationType = original.Average
+	Count   PrimaryAggregationType = original.Count
+	Maximum PrimaryAggregationType = original.Maximum
+	Minimum PrimaryAggregationType = original.Minimum
+	None    PrimaryAggregationType = original.None
+	Total   PrimaryAggregationType = original.Total
 )
 
 type ReadOnlyEndpointFailoverPolicy = original.ReadOnlyEndpointFailoverPolicy
 
 const (
-	ReadOnlyEndpointFailoverPolicyDisabled	ReadOnlyEndpointFailoverPolicy	= original.ReadOnlyEndpointFailoverPolicyDisabled
-	ReadOnlyEndpointFailoverPolicyEnabled	ReadOnlyEndpointFailoverPolicy	= original.ReadOnlyEndpointFailoverPolicyEnabled
+	ReadOnlyEndpointFailoverPolicyDisabled ReadOnlyEndpointFailoverPolicy = original.ReadOnlyEndpointFailoverPolicyDisabled
+	ReadOnlyEndpointFailoverPolicyEnabled  ReadOnlyEndpointFailoverPolicy = original.ReadOnlyEndpointFailoverPolicyEnabled
 )
 
 type ReadScale = original.ReadScale
 
 const (
-	ReadScaleDisabled	ReadScale	= original.ReadScaleDisabled
-	ReadScaleEnabled	ReadScale	= original.ReadScaleEnabled
+	ReadScaleDisabled ReadScale = original.ReadScaleDisabled
+	ReadScaleEnabled  ReadScale = original.ReadScaleEnabled
 )
 
 type ReadWriteEndpointFailoverPolicy = original.ReadWriteEndpointFailoverPolicy
 
 const (
-	Automatic	ReadWriteEndpointFailoverPolicy	= original.Automatic
-	Manual		ReadWriteEndpointFailoverPolicy	= original.Manual
+	Automatic ReadWriteEndpointFailoverPolicy = original.Automatic
+	Manual    ReadWriteEndpointFailoverPolicy = original.Manual
 )
 
 type RecommendedIndexAction = original.RecommendedIndexAction
 
 const (
-	Create	RecommendedIndexAction	= original.Create
-	Drop	RecommendedIndexAction	= original.Drop
-	Rebuild	RecommendedIndexAction	= original.Rebuild
+	Create  RecommendedIndexAction = original.Create
+	Drop    RecommendedIndexAction = original.Drop
+	Rebuild RecommendedIndexAction = original.Rebuild
 )
 
 type RecommendedIndexState = original.RecommendedIndexState
 
 const (
-	RecommendedIndexStateActive		RecommendedIndexState	= original.RecommendedIndexStateActive
-	RecommendedIndexStateBlocked		RecommendedIndexState	= original.RecommendedIndexStateBlocked
-	RecommendedIndexStateExecuting		RecommendedIndexState	= original.RecommendedIndexStateExecuting
-	RecommendedIndexStateExpired		RecommendedIndexState	= original.RecommendedIndexStateExpired
-	RecommendedIndexStateIgnored		RecommendedIndexState	= original.RecommendedIndexStateIgnored
-	RecommendedIndexStatePending		RecommendedIndexState	= original.RecommendedIndexStatePending
-	RecommendedIndexStatePendingRevert	RecommendedIndexState	= original.RecommendedIndexStatePendingRevert
-	RecommendedIndexStateReverted		RecommendedIndexState	= original.RecommendedIndexStateReverted
-	RecommendedIndexStateReverting		RecommendedIndexState	= original.RecommendedIndexStateReverting
-	RecommendedIndexStateSuccess		RecommendedIndexState	= original.RecommendedIndexStateSuccess
-	RecommendedIndexStateVerifying		RecommendedIndexState	= original.RecommendedIndexStateVerifying
+	RecommendedIndexStateActive        RecommendedIndexState = original.RecommendedIndexStateActive
+	RecommendedIndexStateBlocked       RecommendedIndexState = original.RecommendedIndexStateBlocked
+	RecommendedIndexStateExecuting     RecommendedIndexState = original.RecommendedIndexStateExecuting
+	RecommendedIndexStateExpired       RecommendedIndexState = original.RecommendedIndexStateExpired
+	RecommendedIndexStateIgnored       RecommendedIndexState = original.RecommendedIndexStateIgnored
+	RecommendedIndexStatePending       RecommendedIndexState = original.RecommendedIndexStatePending
+	RecommendedIndexStatePendingRevert RecommendedIndexState = original.RecommendedIndexStatePendingRevert
+	RecommendedIndexStateReverted      RecommendedIndexState = original.RecommendedIndexStateReverted
+	RecommendedIndexStateReverting     RecommendedIndexState = original.RecommendedIndexStateReverting
+	RecommendedIndexStateSuccess       RecommendedIndexState = original.RecommendedIndexStateSuccess
+	RecommendedIndexStateVerifying     RecommendedIndexState = original.RecommendedIndexStateVerifying
 )
 
 type RecommendedIndexType = original.RecommendedIndexType
 
 const (
-	CLUSTERED		RecommendedIndexType	= original.CLUSTERED
-	CLUSTEREDCOLUMNSTORE	RecommendedIndexType	= original.CLUSTEREDCOLUMNSTORE
-	COLUMNSTORE		RecommendedIndexType	= original.COLUMNSTORE
-	NONCLUSTERED		RecommendedIndexType	= original.NONCLUSTERED
+	CLUSTERED            RecommendedIndexType = original.CLUSTERED
+	CLUSTEREDCOLUMNSTORE RecommendedIndexType = original.CLUSTEREDCOLUMNSTORE
+	COLUMNSTORE          RecommendedIndexType = original.COLUMNSTORE
+	NONCLUSTERED         RecommendedIndexType = original.NONCLUSTERED
 )
 
 type ReplicationRole = original.ReplicationRole
 
 const (
-	ReplicationRoleCopy			ReplicationRole	= original.ReplicationRoleCopy
-	ReplicationRoleNonReadableSecondary	ReplicationRole	= original.ReplicationRoleNonReadableSecondary
-	ReplicationRolePrimary			ReplicationRole	= original.ReplicationRolePrimary
-	ReplicationRoleSecondary		ReplicationRole	= original.ReplicationRoleSecondary
-	ReplicationRoleSource			ReplicationRole	= original.ReplicationRoleSource
+	ReplicationRoleCopy                 ReplicationRole = original.ReplicationRoleCopy
+	ReplicationRoleNonReadableSecondary ReplicationRole = original.ReplicationRoleNonReadableSecondary
+	ReplicationRolePrimary              ReplicationRole = original.ReplicationRolePrimary
+	ReplicationRoleSecondary            ReplicationRole = original.ReplicationRoleSecondary
+	ReplicationRoleSource               ReplicationRole = original.ReplicationRoleSource
 )
 
 type ReplicationState = original.ReplicationState
 
 const (
-	CATCHUP		ReplicationState	= original.CATCHUP
-	PENDING		ReplicationState	= original.PENDING
-	SEEDING		ReplicationState	= original.SEEDING
-	SUSPENDED	ReplicationState	= original.SUSPENDED
+	CATCHUP   ReplicationState = original.CATCHUP
+	PENDING   ReplicationState = original.PENDING
+	SEEDING   ReplicationState = original.SEEDING
+	SUSPENDED ReplicationState = original.SUSPENDED
 )
 
 type RestorePointType = original.RestorePointType
 
 const (
-	CONTINUOUS	RestorePointType	= original.CONTINUOUS
-	DISCRETE	RestorePointType	= original.DISCRETE
+	CONTINUOUS RestorePointType = original.CONTINUOUS
+	DISCRETE   RestorePointType = original.DISCRETE
 )
 
 type SampleName = original.SampleName
@@ -280,183 +280,183 @@ const (
 type SecurityAlertPolicyEmailAccountAdmins = original.SecurityAlertPolicyEmailAccountAdmins
 
 const (
-	SecurityAlertPolicyEmailAccountAdminsDisabled	SecurityAlertPolicyEmailAccountAdmins	= original.SecurityAlertPolicyEmailAccountAdminsDisabled
-	SecurityAlertPolicyEmailAccountAdminsEnabled	SecurityAlertPolicyEmailAccountAdmins	= original.SecurityAlertPolicyEmailAccountAdminsEnabled
+	SecurityAlertPolicyEmailAccountAdminsDisabled SecurityAlertPolicyEmailAccountAdmins = original.SecurityAlertPolicyEmailAccountAdminsDisabled
+	SecurityAlertPolicyEmailAccountAdminsEnabled  SecurityAlertPolicyEmailAccountAdmins = original.SecurityAlertPolicyEmailAccountAdminsEnabled
 )
 
 type SecurityAlertPolicyState = original.SecurityAlertPolicyState
 
 const (
-	SecurityAlertPolicyStateDisabled	SecurityAlertPolicyState	= original.SecurityAlertPolicyStateDisabled
-	SecurityAlertPolicyStateEnabled		SecurityAlertPolicyState	= original.SecurityAlertPolicyStateEnabled
-	SecurityAlertPolicyStateNew		SecurityAlertPolicyState	= original.SecurityAlertPolicyStateNew
+	SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = original.SecurityAlertPolicyStateDisabled
+	SecurityAlertPolicyStateEnabled  SecurityAlertPolicyState = original.SecurityAlertPolicyStateEnabled
+	SecurityAlertPolicyStateNew      SecurityAlertPolicyState = original.SecurityAlertPolicyStateNew
 )
 
 type SecurityAlertPolicyUseServerDefault = original.SecurityAlertPolicyUseServerDefault
 
 const (
-	SecurityAlertPolicyUseServerDefaultDisabled	SecurityAlertPolicyUseServerDefault	= original.SecurityAlertPolicyUseServerDefaultDisabled
-	SecurityAlertPolicyUseServerDefaultEnabled	SecurityAlertPolicyUseServerDefault	= original.SecurityAlertPolicyUseServerDefaultEnabled
+	SecurityAlertPolicyUseServerDefaultDisabled SecurityAlertPolicyUseServerDefault = original.SecurityAlertPolicyUseServerDefaultDisabled
+	SecurityAlertPolicyUseServerDefaultEnabled  SecurityAlertPolicyUseServerDefault = original.SecurityAlertPolicyUseServerDefaultEnabled
 )
 
 type ServerConnectionType = original.ServerConnectionType
 
 const (
-	ServerConnectionTypeDefault	ServerConnectionType	= original.ServerConnectionTypeDefault
-	ServerConnectionTypeProxy	ServerConnectionType	= original.ServerConnectionTypeProxy
-	ServerConnectionTypeRedirect	ServerConnectionType	= original.ServerConnectionTypeRedirect
+	ServerConnectionTypeDefault  ServerConnectionType = original.ServerConnectionTypeDefault
+	ServerConnectionTypeProxy    ServerConnectionType = original.ServerConnectionTypeProxy
+	ServerConnectionTypeRedirect ServerConnectionType = original.ServerConnectionTypeRedirect
 )
 
 type ServerKeyType = original.ServerKeyType
 
 const (
-	AzureKeyVault	ServerKeyType	= original.AzureKeyVault
-	ServiceManaged	ServerKeyType	= original.ServiceManaged
+	AzureKeyVault  ServerKeyType = original.AzureKeyVault
+	ServiceManaged ServerKeyType = original.ServiceManaged
 )
 
 type ServiceObjectiveName = original.ServiceObjectiveName
 
 const (
-	ServiceObjectiveNameBasic	ServiceObjectiveName	= original.ServiceObjectiveNameBasic
-	ServiceObjectiveNameElasticPool	ServiceObjectiveName	= original.ServiceObjectiveNameElasticPool
-	ServiceObjectiveNameP1		ServiceObjectiveName	= original.ServiceObjectiveNameP1
-	ServiceObjectiveNameP11		ServiceObjectiveName	= original.ServiceObjectiveNameP11
-	ServiceObjectiveNameP15		ServiceObjectiveName	= original.ServiceObjectiveNameP15
-	ServiceObjectiveNameP2		ServiceObjectiveName	= original.ServiceObjectiveNameP2
-	ServiceObjectiveNameP3		ServiceObjectiveName	= original.ServiceObjectiveNameP3
-	ServiceObjectiveNameP4		ServiceObjectiveName	= original.ServiceObjectiveNameP4
-	ServiceObjectiveNameP6		ServiceObjectiveName	= original.ServiceObjectiveNameP6
-	ServiceObjectiveNameS0		ServiceObjectiveName	= original.ServiceObjectiveNameS0
-	ServiceObjectiveNameS1		ServiceObjectiveName	= original.ServiceObjectiveNameS1
-	ServiceObjectiveNameS2		ServiceObjectiveName	= original.ServiceObjectiveNameS2
-	ServiceObjectiveNameS3		ServiceObjectiveName	= original.ServiceObjectiveNameS3
-	ServiceObjectiveNameSystem	ServiceObjectiveName	= original.ServiceObjectiveNameSystem
-	ServiceObjectiveNameSystem2	ServiceObjectiveName	= original.ServiceObjectiveNameSystem2
+	ServiceObjectiveNameBasic       ServiceObjectiveName = original.ServiceObjectiveNameBasic
+	ServiceObjectiveNameElasticPool ServiceObjectiveName = original.ServiceObjectiveNameElasticPool
+	ServiceObjectiveNameP1          ServiceObjectiveName = original.ServiceObjectiveNameP1
+	ServiceObjectiveNameP11         ServiceObjectiveName = original.ServiceObjectiveNameP11
+	ServiceObjectiveNameP15         ServiceObjectiveName = original.ServiceObjectiveNameP15
+	ServiceObjectiveNameP2          ServiceObjectiveName = original.ServiceObjectiveNameP2
+	ServiceObjectiveNameP3          ServiceObjectiveName = original.ServiceObjectiveNameP3
+	ServiceObjectiveNameP4          ServiceObjectiveName = original.ServiceObjectiveNameP4
+	ServiceObjectiveNameP6          ServiceObjectiveName = original.ServiceObjectiveNameP6
+	ServiceObjectiveNameS0          ServiceObjectiveName = original.ServiceObjectiveNameS0
+	ServiceObjectiveNameS1          ServiceObjectiveName = original.ServiceObjectiveNameS1
+	ServiceObjectiveNameS2          ServiceObjectiveName = original.ServiceObjectiveNameS2
+	ServiceObjectiveNameS3          ServiceObjectiveName = original.ServiceObjectiveNameS3
+	ServiceObjectiveNameSystem      ServiceObjectiveName = original.ServiceObjectiveNameSystem
+	ServiceObjectiveNameSystem2     ServiceObjectiveName = original.ServiceObjectiveNameSystem2
 )
 
 type StorageKeyType = original.StorageKeyType
 
 const (
-	SharedAccessKey		StorageKeyType	= original.SharedAccessKey
-	StorageAccessKey	StorageKeyType	= original.StorageAccessKey
+	SharedAccessKey  StorageKeyType = original.SharedAccessKey
+	StorageAccessKey StorageKeyType = original.StorageAccessKey
 )
 
 type SyncAgentState = original.SyncAgentState
 
 const (
-	NeverConnected	SyncAgentState	= original.NeverConnected
-	Offline		SyncAgentState	= original.Offline
-	Online		SyncAgentState	= original.Online
+	NeverConnected SyncAgentState = original.NeverConnected
+	Offline        SyncAgentState = original.Offline
+	Online         SyncAgentState = original.Online
 )
 
 type SyncConflictResolutionPolicy = original.SyncConflictResolutionPolicy
 
 const (
-	HubWin		SyncConflictResolutionPolicy	= original.HubWin
-	MemberWin	SyncConflictResolutionPolicy	= original.MemberWin
+	HubWin    SyncConflictResolutionPolicy = original.HubWin
+	MemberWin SyncConflictResolutionPolicy = original.MemberWin
 )
 
 type SyncDirection = original.SyncDirection
 
 const (
-	Bidirectional		SyncDirection	= original.Bidirectional
-	OneWayHubToMember	SyncDirection	= original.OneWayHubToMember
-	OneWayMemberToHub	SyncDirection	= original.OneWayMemberToHub
+	Bidirectional     SyncDirection = original.Bidirectional
+	OneWayHubToMember SyncDirection = original.OneWayHubToMember
+	OneWayMemberToHub SyncDirection = original.OneWayMemberToHub
 )
 
 type SyncGroupLogType = original.SyncGroupLogType
 
 const (
-	All	SyncGroupLogType	= original.All
-	Error	SyncGroupLogType	= original.Error
-	Success	SyncGroupLogType	= original.Success
-	Warning	SyncGroupLogType	= original.Warning
+	All     SyncGroupLogType = original.All
+	Error   SyncGroupLogType = original.Error
+	Success SyncGroupLogType = original.Success
+	Warning SyncGroupLogType = original.Warning
 )
 
 type SyncGroupState = original.SyncGroupState
 
 const (
-	SyncGroupStateError		SyncGroupState	= original.SyncGroupStateError
-	SyncGroupStateGood		SyncGroupState	= original.SyncGroupStateGood
-	SyncGroupStateNotReady		SyncGroupState	= original.SyncGroupStateNotReady
-	SyncGroupStateProgressing	SyncGroupState	= original.SyncGroupStateProgressing
-	SyncGroupStateWarning		SyncGroupState	= original.SyncGroupStateWarning
+	SyncGroupStateError       SyncGroupState = original.SyncGroupStateError
+	SyncGroupStateGood        SyncGroupState = original.SyncGroupStateGood
+	SyncGroupStateNotReady    SyncGroupState = original.SyncGroupStateNotReady
+	SyncGroupStateProgressing SyncGroupState = original.SyncGroupStateProgressing
+	SyncGroupStateWarning     SyncGroupState = original.SyncGroupStateWarning
 )
 
 type SyncMemberDbType = original.SyncMemberDbType
 
 const (
-	AzureSQLDatabase	SyncMemberDbType	= original.AzureSQLDatabase
-	SQLServerDatabase	SyncMemberDbType	= original.SQLServerDatabase
+	AzureSQLDatabase  SyncMemberDbType = original.AzureSQLDatabase
+	SQLServerDatabase SyncMemberDbType = original.SQLServerDatabase
 )
 
 type SyncMemberState = original.SyncMemberState
 
 const (
-	DeProvisioned			SyncMemberState	= original.DeProvisioned
-	DeProvisionFailed		SyncMemberState	= original.DeProvisionFailed
-	DeProvisioning			SyncMemberState	= original.DeProvisioning
-	DisabledBackupRestore		SyncMemberState	= original.DisabledBackupRestore
-	DisabledTombstoneCleanup	SyncMemberState	= original.DisabledTombstoneCleanup
-	Provisioned			SyncMemberState	= original.Provisioned
-	ProvisionFailed			SyncMemberState	= original.ProvisionFailed
-	Provisioning			SyncMemberState	= original.Provisioning
-	ReprovisionFailed		SyncMemberState	= original.ReprovisionFailed
-	Reprovisioning			SyncMemberState	= original.Reprovisioning
-	SyncCancelled			SyncMemberState	= original.SyncCancelled
-	SyncCancelling			SyncMemberState	= original.SyncCancelling
-	SyncFailed			SyncMemberState	= original.SyncFailed
-	SyncInProgress			SyncMemberState	= original.SyncInProgress
-	SyncSucceeded			SyncMemberState	= original.SyncSucceeded
-	SyncSucceededWithWarnings	SyncMemberState	= original.SyncSucceededWithWarnings
-	UnProvisioned			SyncMemberState	= original.UnProvisioned
-	UnReprovisioned			SyncMemberState	= original.UnReprovisioned
+	DeProvisioned             SyncMemberState = original.DeProvisioned
+	DeProvisionFailed         SyncMemberState = original.DeProvisionFailed
+	DeProvisioning            SyncMemberState = original.DeProvisioning
+	DisabledBackupRestore     SyncMemberState = original.DisabledBackupRestore
+	DisabledTombstoneCleanup  SyncMemberState = original.DisabledTombstoneCleanup
+	Provisioned               SyncMemberState = original.Provisioned
+	ProvisionFailed           SyncMemberState = original.ProvisionFailed
+	Provisioning              SyncMemberState = original.Provisioning
+	ReprovisionFailed         SyncMemberState = original.ReprovisionFailed
+	Reprovisioning            SyncMemberState = original.Reprovisioning
+	SyncCancelled             SyncMemberState = original.SyncCancelled
+	SyncCancelling            SyncMemberState = original.SyncCancelling
+	SyncFailed                SyncMemberState = original.SyncFailed
+	SyncInProgress            SyncMemberState = original.SyncInProgress
+	SyncSucceeded             SyncMemberState = original.SyncSucceeded
+	SyncSucceededWithWarnings SyncMemberState = original.SyncSucceededWithWarnings
+	UnProvisioned             SyncMemberState = original.UnProvisioned
+	UnReprovisioned           SyncMemberState = original.UnReprovisioned
 )
 
 type TransparentDataEncryptionActivityStatus = original.TransparentDataEncryptionActivityStatus
 
 const (
-	Decrypting	TransparentDataEncryptionActivityStatus	= original.Decrypting
-	Encrypting	TransparentDataEncryptionActivityStatus	= original.Encrypting
+	Decrypting TransparentDataEncryptionActivityStatus = original.Decrypting
+	Encrypting TransparentDataEncryptionActivityStatus = original.Encrypting
 )
 
 type TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatus
 
 const (
-	TransparentDataEncryptionStatusDisabled	TransparentDataEncryptionStatus	= original.TransparentDataEncryptionStatusDisabled
-	TransparentDataEncryptionStatusEnabled	TransparentDataEncryptionStatus	= original.TransparentDataEncryptionStatusEnabled
+	TransparentDataEncryptionStatusDisabled TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatusDisabled
+	TransparentDataEncryptionStatusEnabled  TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatusEnabled
 )
 
 type UnitDefinitionType = original.UnitDefinitionType
 
 const (
-	UnitDefinitionTypeBytes			UnitDefinitionType	= original.UnitDefinitionTypeBytes
-	UnitDefinitionTypeBytesPerSecond	UnitDefinitionType	= original.UnitDefinitionTypeBytesPerSecond
-	UnitDefinitionTypeCount			UnitDefinitionType	= original.UnitDefinitionTypeCount
-	UnitDefinitionTypeCountPerSecond	UnitDefinitionType	= original.UnitDefinitionTypeCountPerSecond
-	UnitDefinitionTypePercent		UnitDefinitionType	= original.UnitDefinitionTypePercent
-	UnitDefinitionTypeSeconds		UnitDefinitionType	= original.UnitDefinitionTypeSeconds
+	UnitDefinitionTypeBytes          UnitDefinitionType = original.UnitDefinitionTypeBytes
+	UnitDefinitionTypeBytesPerSecond UnitDefinitionType = original.UnitDefinitionTypeBytesPerSecond
+	UnitDefinitionTypeCount          UnitDefinitionType = original.UnitDefinitionTypeCount
+	UnitDefinitionTypeCountPerSecond UnitDefinitionType = original.UnitDefinitionTypeCountPerSecond
+	UnitDefinitionTypePercent        UnitDefinitionType = original.UnitDefinitionTypePercent
+	UnitDefinitionTypeSeconds        UnitDefinitionType = original.UnitDefinitionTypeSeconds
 )
 
 type UnitType = original.UnitType
 
 const (
-	UnitTypeBytes		UnitType	= original.UnitTypeBytes
-	UnitTypeBytesPerSecond	UnitType	= original.UnitTypeBytesPerSecond
-	UnitTypeCount		UnitType	= original.UnitTypeCount
-	UnitTypeCountPerSecond	UnitType	= original.UnitTypeCountPerSecond
-	UnitTypePercent		UnitType	= original.UnitTypePercent
-	UnitTypeSeconds		UnitType	= original.UnitTypeSeconds
+	UnitTypeBytes          UnitType = original.UnitTypeBytes
+	UnitTypeBytesPerSecond UnitType = original.UnitTypeBytesPerSecond
+	UnitTypeCount          UnitType = original.UnitTypeCount
+	UnitTypeCountPerSecond UnitType = original.UnitTypeCountPerSecond
+	UnitTypePercent        UnitType = original.UnitTypePercent
+	UnitTypeSeconds        UnitType = original.UnitTypeSeconds
 )
 
 type VirtualNetworkRuleState = original.VirtualNetworkRuleState
 
 const (
-	VirtualNetworkRuleStateDeleting		VirtualNetworkRuleState	= original.VirtualNetworkRuleStateDeleting
-	VirtualNetworkRuleStateInitializing	VirtualNetworkRuleState	= original.VirtualNetworkRuleStateInitializing
-	VirtualNetworkRuleStateInProgress	VirtualNetworkRuleState	= original.VirtualNetworkRuleStateInProgress
-	VirtualNetworkRuleStateReady		VirtualNetworkRuleState	= original.VirtualNetworkRuleStateReady
-	VirtualNetworkRuleStateUnknown		VirtualNetworkRuleState	= original.VirtualNetworkRuleStateUnknown
+	VirtualNetworkRuleStateDeleting     VirtualNetworkRuleState = original.VirtualNetworkRuleStateDeleting
+	VirtualNetworkRuleStateInitializing VirtualNetworkRuleState = original.VirtualNetworkRuleStateInitializing
+	VirtualNetworkRuleStateInProgress   VirtualNetworkRuleState = original.VirtualNetworkRuleStateInProgress
+	VirtualNetworkRuleStateReady        VirtualNetworkRuleState = original.VirtualNetworkRuleStateReady
+	VirtualNetworkRuleStateUnknown      VirtualNetworkRuleState = original.VirtualNetworkRuleStateUnknown
 )
 
 type BackupLongTermRetentionPolicy = original.BackupLongTermRetentionPolicy

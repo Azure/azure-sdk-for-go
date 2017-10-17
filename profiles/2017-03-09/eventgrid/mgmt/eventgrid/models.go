@@ -30,56 +30,56 @@ type EventSubscriptionsClient = original.EventSubscriptionsClient
 type EndpointType = original.EndpointType
 
 const (
-	EndpointTypeEventHub	EndpointType	= original.EndpointTypeEventHub
-	EndpointTypeWebHook	EndpointType	= original.EndpointTypeWebHook
+	EndpointTypeEventHub EndpointType = original.EndpointTypeEventHub
+	EndpointTypeWebHook  EndpointType = original.EndpointTypeWebHook
 )
 
 type EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningState
 
 const (
-	Canceled	EventSubscriptionProvisioningState	= original.Canceled
-	Creating	EventSubscriptionProvisioningState	= original.Creating
-	Deleting	EventSubscriptionProvisioningState	= original.Deleting
-	Failed		EventSubscriptionProvisioningState	= original.Failed
-	Succeeded	EventSubscriptionProvisioningState	= original.Succeeded
-	Updating	EventSubscriptionProvisioningState	= original.Updating
+	Canceled  EventSubscriptionProvisioningState = original.Canceled
+	Creating  EventSubscriptionProvisioningState = original.Creating
+	Deleting  EventSubscriptionProvisioningState = original.Deleting
+	Failed    EventSubscriptionProvisioningState = original.Failed
+	Succeeded EventSubscriptionProvisioningState = original.Succeeded
+	Updating  EventSubscriptionProvisioningState = original.Updating
 )
 
 type OperationOrigin = original.OperationOrigin
 
 const (
-	System		OperationOrigin	= original.System
-	User		OperationOrigin	= original.User
-	UserAndSystem	OperationOrigin	= original.UserAndSystem
+	System        OperationOrigin = original.System
+	User          OperationOrigin = original.User
+	UserAndSystem OperationOrigin = original.UserAndSystem
 )
 
 type ResourceRegionType = original.ResourceRegionType
 
 const (
-	GlobalResource		ResourceRegionType	= original.GlobalResource
-	RegionalResource	ResourceRegionType	= original.RegionalResource
+	GlobalResource   ResourceRegionType = original.GlobalResource
+	RegionalResource ResourceRegionType = original.RegionalResource
 )
 
 type TopicProvisioningState = original.TopicProvisioningState
 
 const (
-	TopicProvisioningStateCanceled	TopicProvisioningState	= original.TopicProvisioningStateCanceled
-	TopicProvisioningStateCreating	TopicProvisioningState	= original.TopicProvisioningStateCreating
-	TopicProvisioningStateDeleting	TopicProvisioningState	= original.TopicProvisioningStateDeleting
-	TopicProvisioningStateFailed	TopicProvisioningState	= original.TopicProvisioningStateFailed
-	TopicProvisioningStateSucceeded	TopicProvisioningState	= original.TopicProvisioningStateSucceeded
-	TopicProvisioningStateUpdating	TopicProvisioningState	= original.TopicProvisioningStateUpdating
+	TopicProvisioningStateCanceled  TopicProvisioningState = original.TopicProvisioningStateCanceled
+	TopicProvisioningStateCreating  TopicProvisioningState = original.TopicProvisioningStateCreating
+	TopicProvisioningStateDeleting  TopicProvisioningState = original.TopicProvisioningStateDeleting
+	TopicProvisioningStateFailed    TopicProvisioningState = original.TopicProvisioningStateFailed
+	TopicProvisioningStateSucceeded TopicProvisioningState = original.TopicProvisioningStateSucceeded
+	TopicProvisioningStateUpdating  TopicProvisioningState = original.TopicProvisioningStateUpdating
 )
 
 type TopicTypeProvisioningState = original.TopicTypeProvisioningState
 
 const (
-	TopicTypeProvisioningStateCanceled	TopicTypeProvisioningState	= original.TopicTypeProvisioningStateCanceled
-	TopicTypeProvisioningStateCreating	TopicTypeProvisioningState	= original.TopicTypeProvisioningStateCreating
-	TopicTypeProvisioningStateDeleting	TopicTypeProvisioningState	= original.TopicTypeProvisioningStateDeleting
-	TopicTypeProvisioningStateFailed	TopicTypeProvisioningState	= original.TopicTypeProvisioningStateFailed
-	TopicTypeProvisioningStateSucceeded	TopicTypeProvisioningState	= original.TopicTypeProvisioningStateSucceeded
-	TopicTypeProvisioningStateUpdating	TopicTypeProvisioningState	= original.TopicTypeProvisioningStateUpdating
+	TopicTypeProvisioningStateCanceled  TopicTypeProvisioningState = original.TopicTypeProvisioningStateCanceled
+	TopicTypeProvisioningStateCreating  TopicTypeProvisioningState = original.TopicTypeProvisioningStateCreating
+	TopicTypeProvisioningStateDeleting  TopicTypeProvisioningState = original.TopicTypeProvisioningStateDeleting
+	TopicTypeProvisioningStateFailed    TopicTypeProvisioningState = original.TopicTypeProvisioningStateFailed
+	TopicTypeProvisioningStateSucceeded TopicTypeProvisioningState = original.TopicTypeProvisioningStateSucceeded
+	TopicTypeProvisioningStateUpdating  TopicTypeProvisioningState = original.TopicTypeProvisioningStateUpdating
 )
 
 type EventHubEventSubscriptionDestination = original.EventHubEventSubscriptionDestination

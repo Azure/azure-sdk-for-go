@@ -31,78 +31,78 @@ type GroupClient = original.GroupClient
 type DataLakeStoreAccountState = original.DataLakeStoreAccountState
 
 const (
-	Active		DataLakeStoreAccountState	= original.Active
-	Suspended	DataLakeStoreAccountState	= original.Suspended
+	Active    DataLakeStoreAccountState = original.Active
+	Suspended DataLakeStoreAccountState = original.Suspended
 )
 
 type DataLakeStoreAccountStatus = original.DataLakeStoreAccountStatus
 
 const (
-	Canceled	DataLakeStoreAccountStatus	= original.Canceled
-	Creating	DataLakeStoreAccountStatus	= original.Creating
-	Deleted		DataLakeStoreAccountStatus	= original.Deleted
-	Deleting	DataLakeStoreAccountStatus	= original.Deleting
-	Failed		DataLakeStoreAccountStatus	= original.Failed
-	Patching	DataLakeStoreAccountStatus	= original.Patching
-	Resuming	DataLakeStoreAccountStatus	= original.Resuming
-	Running		DataLakeStoreAccountStatus	= original.Running
-	Succeeded	DataLakeStoreAccountStatus	= original.Succeeded
-	Suspending	DataLakeStoreAccountStatus	= original.Suspending
-	Undeleting	DataLakeStoreAccountStatus	= original.Undeleting
+	Canceled   DataLakeStoreAccountStatus = original.Canceled
+	Creating   DataLakeStoreAccountStatus = original.Creating
+	Deleted    DataLakeStoreAccountStatus = original.Deleted
+	Deleting   DataLakeStoreAccountStatus = original.Deleting
+	Failed     DataLakeStoreAccountStatus = original.Failed
+	Patching   DataLakeStoreAccountStatus = original.Patching
+	Resuming   DataLakeStoreAccountStatus = original.Resuming
+	Running    DataLakeStoreAccountStatus = original.Running
+	Succeeded  DataLakeStoreAccountStatus = original.Succeeded
+	Suspending DataLakeStoreAccountStatus = original.Suspending
+	Undeleting DataLakeStoreAccountStatus = original.Undeleting
 )
 
 type EncryptionConfigType = original.EncryptionConfigType
 
 const (
-	ServiceManaged	EncryptionConfigType	= original.ServiceManaged
-	UserManaged	EncryptionConfigType	= original.UserManaged
+	ServiceManaged EncryptionConfigType = original.ServiceManaged
+	UserManaged    EncryptionConfigType = original.UserManaged
 )
 
 type EncryptionProvisioningState = original.EncryptionProvisioningState
 
 const (
-	EncryptionProvisioningStateCreating	EncryptionProvisioningState	= original.EncryptionProvisioningStateCreating
-	EncryptionProvisioningStateSucceeded	EncryptionProvisioningState	= original.EncryptionProvisioningStateSucceeded
+	EncryptionProvisioningStateCreating  EncryptionProvisioningState = original.EncryptionProvisioningStateCreating
+	EncryptionProvisioningStateSucceeded EncryptionProvisioningState = original.EncryptionProvisioningStateSucceeded
 )
 
 type EncryptionState = original.EncryptionState
 
 const (
-	Disabled	EncryptionState	= original.Disabled
-	Enabled		EncryptionState	= original.Enabled
+	Disabled EncryptionState = original.Disabled
+	Enabled  EncryptionState = original.Enabled
 )
 
 type FirewallAllowAzureIpsState = original.FirewallAllowAzureIpsState
 
 const (
-	FirewallAllowAzureIpsStateDisabled	FirewallAllowAzureIpsState	= original.FirewallAllowAzureIpsStateDisabled
-	FirewallAllowAzureIpsStateEnabled	FirewallAllowAzureIpsState	= original.FirewallAllowAzureIpsStateEnabled
+	FirewallAllowAzureIpsStateDisabled FirewallAllowAzureIpsState = original.FirewallAllowAzureIpsStateDisabled
+	FirewallAllowAzureIpsStateEnabled  FirewallAllowAzureIpsState = original.FirewallAllowAzureIpsStateEnabled
 )
 
 type FirewallState = original.FirewallState
 
 const (
-	FirewallStateDisabled	FirewallState	= original.FirewallStateDisabled
-	FirewallStateEnabled	FirewallState	= original.FirewallStateEnabled
+	FirewallStateDisabled FirewallState = original.FirewallStateDisabled
+	FirewallStateEnabled  FirewallState = original.FirewallStateEnabled
 )
 
 type TierType = original.TierType
 
 const (
-	Commitment100TB	TierType	= original.Commitment100TB
-	Commitment10TB	TierType	= original.Commitment10TB
-	Commitment1PB	TierType	= original.Commitment1PB
-	Commitment1TB	TierType	= original.Commitment1TB
-	Commitment500TB	TierType	= original.Commitment500TB
-	Commitment5PB	TierType	= original.Commitment5PB
-	Consumption	TierType	= original.Consumption
+	Commitment100TB TierType = original.Commitment100TB
+	Commitment10TB  TierType = original.Commitment10TB
+	Commitment1PB   TierType = original.Commitment1PB
+	Commitment1TB   TierType = original.Commitment1TB
+	Commitment500TB TierType = original.Commitment500TB
+	Commitment5PB   TierType = original.Commitment5PB
+	Consumption     TierType = original.Consumption
 )
 
 type TrustedIDProviderState = original.TrustedIDProviderState
 
 const (
-	TrustedIDProviderStateDisabled	TrustedIDProviderState	= original.TrustedIDProviderStateDisabled
-	TrustedIDProviderStateEnabled	TrustedIDProviderState	= original.TrustedIDProviderStateEnabled
+	TrustedIDProviderStateDisabled TrustedIDProviderState = original.TrustedIDProviderStateDisabled
+	TrustedIDProviderStateEnabled  TrustedIDProviderState = original.TrustedIDProviderStateEnabled
 )
 
 type DataLakeStoreAccount = original.DataLakeStoreAccount

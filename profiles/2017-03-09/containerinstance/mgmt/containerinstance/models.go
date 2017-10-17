@@ -31,8 +31,8 @@ type ContainerLogsClient = original.ContainerLogsClient
 type ContainerGroupNetworkProtocol = original.ContainerGroupNetworkProtocol
 
 const (
-	TCP	ContainerGroupNetworkProtocol	= original.TCP
-	UDP	ContainerGroupNetworkProtocol	= original.UDP
+	TCP ContainerGroupNetworkProtocol = original.TCP
+	UDP ContainerGroupNetworkProtocol = original.UDP
 )
 
 type ContainerRestartPolicy = original.ContainerRestartPolicy
@@ -44,8 +44,8 @@ const (
 type OperatingSystemTypes = original.OperatingSystemTypes
 
 const (
-	Linux	OperatingSystemTypes	= original.Linux
-	Windows	OperatingSystemTypes	= original.Windows
+	Linux   OperatingSystemTypes = original.Linux
+	Windows OperatingSystemTypes = original.Windows
 )
 
 type AzureFileVolume = original.AzureFileVolume

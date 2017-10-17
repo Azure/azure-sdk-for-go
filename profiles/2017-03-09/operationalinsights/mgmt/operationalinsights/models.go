@@ -29,15 +29,15 @@ type ManagementClient = original.ManagementClient
 type SearchSortEnum = original.SearchSortEnum
 
 const (
-	Asc	SearchSortEnum	= original.Asc
-	Desc	SearchSortEnum	= original.Desc
+	Asc  SearchSortEnum = original.Asc
+	Desc SearchSortEnum = original.Desc
 )
 
 type StorageInsightState = original.StorageInsightState
 
 const (
-	ERROR	StorageInsightState	= original.ERROR
-	OK	StorageInsightState	= original.OK
+	ERROR StorageInsightState = original.ERROR
+	OK    StorageInsightState = original.OK
 )
 
 type CoreSummary = original.CoreSummary

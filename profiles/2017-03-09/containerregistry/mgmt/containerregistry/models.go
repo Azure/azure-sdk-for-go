@@ -29,58 +29,58 @@ type ManagementClient = original.ManagementClient
 type PasswordName = original.PasswordName
 
 const (
-	Password	PasswordName	= original.Password
-	Password2	PasswordName	= original.Password2
+	Password  PasswordName = original.Password
+	Password2 PasswordName = original.Password2
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled	ProvisioningState	= original.Canceled
-	Creating	ProvisioningState	= original.Creating
-	Deleting	ProvisioningState	= original.Deleting
-	Failed		ProvisioningState	= original.Failed
-	Succeeded	ProvisioningState	= original.Succeeded
-	Updating	ProvisioningState	= original.Updating
+	Canceled  ProvisioningState = original.Canceled
+	Creating  ProvisioningState = original.Creating
+	Deleting  ProvisioningState = original.Deleting
+	Failed    ProvisioningState = original.Failed
+	Succeeded ProvisioningState = original.Succeeded
+	Updating  ProvisioningState = original.Updating
 )
 
 type RegistryUsageUnit = original.RegistryUsageUnit
 
 const (
-	Bytes	RegistryUsageUnit	= original.Bytes
-	Count	RegistryUsageUnit	= original.Count
+	Bytes RegistryUsageUnit = original.Bytes
+	Count RegistryUsageUnit = original.Count
 )
 
 type SkuName = original.SkuName
 
 const (
-	Basic		SkuName	= original.Basic
-	Classic		SkuName	= original.Classic
-	Premium		SkuName	= original.Premium
-	Standard	SkuName	= original.Standard
+	Basic    SkuName = original.Basic
+	Classic  SkuName = original.Classic
+	Premium  SkuName = original.Premium
+	Standard SkuName = original.Standard
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	SkuTierBasic	SkuTier	= original.SkuTierBasic
-	SkuTierClassic	SkuTier	= original.SkuTierClassic
-	SkuTierPremium	SkuTier	= original.SkuTierPremium
-	SkuTierStandard	SkuTier	= original.SkuTierStandard
+	SkuTierBasic    SkuTier = original.SkuTierBasic
+	SkuTierClassic  SkuTier = original.SkuTierClassic
+	SkuTierPremium  SkuTier = original.SkuTierPremium
+	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
 type WebhookAction = original.WebhookAction
 
 const (
-	Delete	WebhookAction	= original.Delete
-	Push	WebhookAction	= original.Push
+	Delete WebhookAction = original.Delete
+	Push   WebhookAction = original.Push
 )
 
 type WebhookStatus = original.WebhookStatus
 
 const (
-	Disabled	WebhookStatus	= original.Disabled
-	Enabled		WebhookStatus	= original.Enabled
+	Disabled WebhookStatus = original.Disabled
+	Enabled  WebhookStatus = original.Enabled
 )
 
 type Actor = original.Actor

@@ -24,47 +24,47 @@ import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt
 type AssetType = original.AssetType
 
 const (
-	AssetTypeModule		AssetType	= original.AssetTypeModule
-	AssetTypeResource	AssetType	= original.AssetTypeResource
+	AssetTypeModule   AssetType = original.AssetTypeModule
+	AssetTypeResource AssetType = original.AssetTypeResource
 )
 
 type ColumnFormat = original.ColumnFormat
 
 const (
-	Byte		ColumnFormat	= original.Byte
-	Char		ColumnFormat	= original.Char
-	Complex128	ColumnFormat	= original.Complex128
-	Complex64	ColumnFormat	= original.Complex64
-	DateTime	ColumnFormat	= original.DateTime
-	DateTimeOffset	ColumnFormat	= original.DateTimeOffset
-	Double		ColumnFormat	= original.Double
-	Duration	ColumnFormat	= original.Duration
-	Float		ColumnFormat	= original.Float
-	Int16		ColumnFormat	= original.Int16
-	Int32		ColumnFormat	= original.Int32
-	Int64		ColumnFormat	= original.Int64
-	Int8		ColumnFormat	= original.Int8
-	Uint16		ColumnFormat	= original.Uint16
-	Uint32		ColumnFormat	= original.Uint32
-	Uint64		ColumnFormat	= original.Uint64
-	Uint8		ColumnFormat	= original.Uint8
+	Byte           ColumnFormat = original.Byte
+	Char           ColumnFormat = original.Char
+	Complex128     ColumnFormat = original.Complex128
+	Complex64      ColumnFormat = original.Complex64
+	DateTime       ColumnFormat = original.DateTime
+	DateTimeOffset ColumnFormat = original.DateTimeOffset
+	Double         ColumnFormat = original.Double
+	Duration       ColumnFormat = original.Duration
+	Float          ColumnFormat = original.Float
+	Int16          ColumnFormat = original.Int16
+	Int32          ColumnFormat = original.Int32
+	Int64          ColumnFormat = original.Int64
+	Int8           ColumnFormat = original.Int8
+	Uint16         ColumnFormat = original.Uint16
+	Uint32         ColumnFormat = original.Uint32
+	Uint64         ColumnFormat = original.Uint64
+	Uint8          ColumnFormat = original.Uint8
 )
 
 type ColumnType = original.ColumnType
 
 const (
-	Boolean	ColumnType	= original.Boolean
-	Integer	ColumnType	= original.Integer
-	Number	ColumnType	= original.Number
-	String	ColumnType	= original.String
+	Boolean ColumnType = original.Boolean
+	Integer ColumnType = original.Integer
+	Number  ColumnType = original.Number
+	String  ColumnType = original.String
 )
 
 type DiagnosticsLevel = original.DiagnosticsLevel
 
 const (
-	All	DiagnosticsLevel	= original.All
-	Error	DiagnosticsLevel	= original.Error
-	None	DiagnosticsLevel	= original.None
+	All   DiagnosticsLevel = original.All
+	Error DiagnosticsLevel = original.Error
+	None  DiagnosticsLevel = original.None
 )
 
 type InputPortType = original.InputPortType
@@ -88,27 +88,27 @@ const (
 type ParameterType = original.ParameterType
 
 const (
-	ParameterTypeBoolean		ParameterType	= original.ParameterTypeBoolean
-	ParameterTypeColumnPicker	ParameterType	= original.ParameterTypeColumnPicker
-	ParameterTypeCredential		ParameterType	= original.ParameterTypeCredential
-	ParameterTypeDataGatewayName	ParameterType	= original.ParameterTypeDataGatewayName
-	ParameterTypeDouble		ParameterType	= original.ParameterTypeDouble
-	ParameterTypeEnumerated		ParameterType	= original.ParameterTypeEnumerated
-	ParameterTypeFloat		ParameterType	= original.ParameterTypeFloat
-	ParameterTypeInt		ParameterType	= original.ParameterTypeInt
-	ParameterTypeMode		ParameterType	= original.ParameterTypeMode
-	ParameterTypeParameterRange	ParameterType	= original.ParameterTypeParameterRange
-	ParameterTypeScript		ParameterType	= original.ParameterTypeScript
-	ParameterTypeString		ParameterType	= original.ParameterTypeString
+	ParameterTypeBoolean         ParameterType = original.ParameterTypeBoolean
+	ParameterTypeColumnPicker    ParameterType = original.ParameterTypeColumnPicker
+	ParameterTypeCredential      ParameterType = original.ParameterTypeCredential
+	ParameterTypeDataGatewayName ParameterType = original.ParameterTypeDataGatewayName
+	ParameterTypeDouble          ParameterType = original.ParameterTypeDouble
+	ParameterTypeEnumerated      ParameterType = original.ParameterTypeEnumerated
+	ParameterTypeFloat           ParameterType = original.ParameterTypeFloat
+	ParameterTypeInt             ParameterType = original.ParameterTypeInt
+	ParameterTypeMode            ParameterType = original.ParameterTypeMode
+	ParameterTypeParameterRange  ParameterType = original.ParameterTypeParameterRange
+	ParameterTypeScript          ParameterType = original.ParameterTypeScript
+	ParameterTypeString          ParameterType = original.ParameterTypeString
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Failed		ProvisioningState	= original.Failed
-	Provisioning	ProvisioningState	= original.Provisioning
-	Succeeded	ProvisioningState	= original.Succeeded
-	Unknown		ProvisioningState	= original.Unknown
+	Failed       ProvisioningState = original.Failed
+	Provisioning ProvisioningState = original.Provisioning
+	Succeeded    ProvisioningState = original.Succeeded
+	Unknown      ProvisioningState = original.Unknown
 )
 
 type AssetItem = original.AssetItem

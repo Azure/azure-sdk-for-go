@@ -32,110 +32,110 @@ type IotHubResourceClient = original.IotHubResourceClient
 type AccessRights = original.AccessRights
 
 const (
-	DeviceConnect						AccessRights	= original.DeviceConnect
-	RegistryRead						AccessRights	= original.RegistryRead
-	RegistryReadDeviceConnect				AccessRights	= original.RegistryReadDeviceConnect
-	RegistryReadRegistryWrite				AccessRights	= original.RegistryReadRegistryWrite
-	RegistryReadRegistryWriteDeviceConnect			AccessRights	= original.RegistryReadRegistryWriteDeviceConnect
-	RegistryReadRegistryWriteServiceConnect			AccessRights	= original.RegistryReadRegistryWriteServiceConnect
-	RegistryReadRegistryWriteServiceConnectDeviceConnect	AccessRights	= original.RegistryReadRegistryWriteServiceConnectDeviceConnect
-	RegistryReadServiceConnect				AccessRights	= original.RegistryReadServiceConnect
-	RegistryReadServiceConnectDeviceConnect			AccessRights	= original.RegistryReadServiceConnectDeviceConnect
-	RegistryWrite						AccessRights	= original.RegistryWrite
-	RegistryWriteDeviceConnect				AccessRights	= original.RegistryWriteDeviceConnect
-	RegistryWriteServiceConnect				AccessRights	= original.RegistryWriteServiceConnect
-	RegistryWriteServiceConnectDeviceConnect		AccessRights	= original.RegistryWriteServiceConnectDeviceConnect
-	ServiceConnect						AccessRights	= original.ServiceConnect
-	ServiceConnectDeviceConnect				AccessRights	= original.ServiceConnectDeviceConnect
+	DeviceConnect                                        AccessRights = original.DeviceConnect
+	RegistryRead                                         AccessRights = original.RegistryRead
+	RegistryReadDeviceConnect                            AccessRights = original.RegistryReadDeviceConnect
+	RegistryReadRegistryWrite                            AccessRights = original.RegistryReadRegistryWrite
+	RegistryReadRegistryWriteDeviceConnect               AccessRights = original.RegistryReadRegistryWriteDeviceConnect
+	RegistryReadRegistryWriteServiceConnect              AccessRights = original.RegistryReadRegistryWriteServiceConnect
+	RegistryReadRegistryWriteServiceConnectDeviceConnect AccessRights = original.RegistryReadRegistryWriteServiceConnectDeviceConnect
+	RegistryReadServiceConnect                           AccessRights = original.RegistryReadServiceConnect
+	RegistryReadServiceConnectDeviceConnect              AccessRights = original.RegistryReadServiceConnectDeviceConnect
+	RegistryWrite                                        AccessRights = original.RegistryWrite
+	RegistryWriteDeviceConnect                           AccessRights = original.RegistryWriteDeviceConnect
+	RegistryWriteServiceConnect                          AccessRights = original.RegistryWriteServiceConnect
+	RegistryWriteServiceConnectDeviceConnect             AccessRights = original.RegistryWriteServiceConnectDeviceConnect
+	ServiceConnect                                       AccessRights = original.ServiceConnect
+	ServiceConnectDeviceConnect                          AccessRights = original.ServiceConnectDeviceConnect
 )
 
 type Capabilities = original.Capabilities
 
 const (
-	DeviceManagement	Capabilities	= original.DeviceManagement
-	None			Capabilities	= original.None
+	DeviceManagement Capabilities = original.DeviceManagement
+	None             Capabilities = original.None
 )
 
 type IotHubNameUnavailabilityReason = original.IotHubNameUnavailabilityReason
 
 const (
-	AlreadyExists	IotHubNameUnavailabilityReason	= original.AlreadyExists
-	Invalid		IotHubNameUnavailabilityReason	= original.Invalid
+	AlreadyExists IotHubNameUnavailabilityReason = original.AlreadyExists
+	Invalid       IotHubNameUnavailabilityReason = original.Invalid
 )
 
 type IotHubScaleType = original.IotHubScaleType
 
 const (
-	IotHubScaleTypeAutomatic	IotHubScaleType	= original.IotHubScaleTypeAutomatic
-	IotHubScaleTypeManual		IotHubScaleType	= original.IotHubScaleTypeManual
-	IotHubScaleTypeNone		IotHubScaleType	= original.IotHubScaleTypeNone
+	IotHubScaleTypeAutomatic IotHubScaleType = original.IotHubScaleTypeAutomatic
+	IotHubScaleTypeManual    IotHubScaleType = original.IotHubScaleTypeManual
+	IotHubScaleTypeNone      IotHubScaleType = original.IotHubScaleTypeNone
 )
 
 type IotHubSku = original.IotHubSku
 
 const (
-	F1	IotHubSku	= original.F1
-	S1	IotHubSku	= original.S1
-	S2	IotHubSku	= original.S2
-	S3	IotHubSku	= original.S3
+	F1 IotHubSku = original.F1
+	S1 IotHubSku = original.S1
+	S2 IotHubSku = original.S2
+	S3 IotHubSku = original.S3
 )
 
 type IotHubSkuTier = original.IotHubSkuTier
 
 const (
-	Free		IotHubSkuTier	= original.Free
-	Standard	IotHubSkuTier	= original.Standard
+	Free     IotHubSkuTier = original.Free
+	Standard IotHubSkuTier = original.Standard
 )
 
 type IPFilterActionType = original.IPFilterActionType
 
 const (
-	Accept	IPFilterActionType	= original.Accept
-	Reject	IPFilterActionType	= original.Reject
+	Accept IPFilterActionType = original.Accept
+	Reject IPFilterActionType = original.Reject
 )
 
 type JobStatus = original.JobStatus
 
 const (
-	Cancelled	JobStatus	= original.Cancelled
-	Completed	JobStatus	= original.Completed
-	Enqueued	JobStatus	= original.Enqueued
-	Failed		JobStatus	= original.Failed
-	Running		JobStatus	= original.Running
-	Unknown		JobStatus	= original.Unknown
+	Cancelled JobStatus = original.Cancelled
+	Completed JobStatus = original.Completed
+	Enqueued  JobStatus = original.Enqueued
+	Failed    JobStatus = original.Failed
+	Running   JobStatus = original.Running
+	Unknown   JobStatus = original.Unknown
 )
 
 type JobType = original.JobType
 
 const (
-	JobTypeBackup				JobType	= original.JobTypeBackup
-	JobTypeExport				JobType	= original.JobTypeExport
-	JobTypeFactoryResetDevice		JobType	= original.JobTypeFactoryResetDevice
-	JobTypeFirmwareUpdate			JobType	= original.JobTypeFirmwareUpdate
-	JobTypeImport				JobType	= original.JobTypeImport
-	JobTypeReadDeviceProperties		JobType	= original.JobTypeReadDeviceProperties
-	JobTypeRebootDevice			JobType	= original.JobTypeRebootDevice
-	JobTypeUnknown				JobType	= original.JobTypeUnknown
-	JobTypeUpdateDeviceConfiguration	JobType	= original.JobTypeUpdateDeviceConfiguration
-	JobTypeWriteDeviceProperties		JobType	= original.JobTypeWriteDeviceProperties
+	JobTypeBackup                    JobType = original.JobTypeBackup
+	JobTypeExport                    JobType = original.JobTypeExport
+	JobTypeFactoryResetDevice        JobType = original.JobTypeFactoryResetDevice
+	JobTypeFirmwareUpdate            JobType = original.JobTypeFirmwareUpdate
+	JobTypeImport                    JobType = original.JobTypeImport
+	JobTypeReadDeviceProperties      JobType = original.JobTypeReadDeviceProperties
+	JobTypeRebootDevice              JobType = original.JobTypeRebootDevice
+	JobTypeUnknown                   JobType = original.JobTypeUnknown
+	JobTypeUpdateDeviceConfiguration JobType = original.JobTypeUpdateDeviceConfiguration
+	JobTypeWriteDeviceProperties     JobType = original.JobTypeWriteDeviceProperties
 )
 
 type OperationMonitoringLevel = original.OperationMonitoringLevel
 
 const (
-	OperationMonitoringLevelError			OperationMonitoringLevel	= original.OperationMonitoringLevelError
-	OperationMonitoringLevelErrorInformation	OperationMonitoringLevel	= original.OperationMonitoringLevelErrorInformation
-	OperationMonitoringLevelInformation		OperationMonitoringLevel	= original.OperationMonitoringLevelInformation
-	OperationMonitoringLevelNone			OperationMonitoringLevel	= original.OperationMonitoringLevelNone
+	OperationMonitoringLevelError            OperationMonitoringLevel = original.OperationMonitoringLevelError
+	OperationMonitoringLevelErrorInformation OperationMonitoringLevel = original.OperationMonitoringLevelErrorInformation
+	OperationMonitoringLevelInformation      OperationMonitoringLevel = original.OperationMonitoringLevelInformation
+	OperationMonitoringLevelNone             OperationMonitoringLevel = original.OperationMonitoringLevelNone
 )
 
 type RoutingSource = original.RoutingSource
 
 const (
-	DeviceJobLifecycleEvents	RoutingSource	= original.DeviceJobLifecycleEvents
-	DeviceLifecycleEvents		RoutingSource	= original.DeviceLifecycleEvents
-	DeviceMessages			RoutingSource	= original.DeviceMessages
-	TwinChangeEvents		RoutingSource	= original.TwinChangeEvents
+	DeviceJobLifecycleEvents RoutingSource = original.DeviceJobLifecycleEvents
+	DeviceLifecycleEvents    RoutingSource = original.DeviceLifecycleEvents
+	DeviceMessages           RoutingSource = original.DeviceMessages
+	TwinChangeEvents         RoutingSource = original.TwinChangeEvents
 )
 
 type CertificateBodyDescription = original.CertificateBodyDescription

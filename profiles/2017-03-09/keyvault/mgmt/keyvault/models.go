@@ -29,83 +29,83 @@ type ManagementClient = original.ManagementClient
 type CertificatePermissions = original.CertificatePermissions
 
 const (
-	Create		CertificatePermissions	= original.Create
-	Delete		CertificatePermissions	= original.Delete
-	Deleteissuers	CertificatePermissions	= original.Deleteissuers
-	Get		CertificatePermissions	= original.Get
-	Getissuers	CertificatePermissions	= original.Getissuers
-	Import		CertificatePermissions	= original.Import
-	List		CertificatePermissions	= original.List
-	Listissuers	CertificatePermissions	= original.Listissuers
-	Managecontacts	CertificatePermissions	= original.Managecontacts
-	Manageissuers	CertificatePermissions	= original.Manageissuers
-	Purge		CertificatePermissions	= original.Purge
-	Recover		CertificatePermissions	= original.Recover
-	Setissuers	CertificatePermissions	= original.Setissuers
-	Update		CertificatePermissions	= original.Update
+	Create         CertificatePermissions = original.Create
+	Delete         CertificatePermissions = original.Delete
+	Deleteissuers  CertificatePermissions = original.Deleteissuers
+	Get            CertificatePermissions = original.Get
+	Getissuers     CertificatePermissions = original.Getissuers
+	Import         CertificatePermissions = original.Import
+	List           CertificatePermissions = original.List
+	Listissuers    CertificatePermissions = original.Listissuers
+	Managecontacts CertificatePermissions = original.Managecontacts
+	Manageissuers  CertificatePermissions = original.Manageissuers
+	Purge          CertificatePermissions = original.Purge
+	Recover        CertificatePermissions = original.Recover
+	Setissuers     CertificatePermissions = original.Setissuers
+	Update         CertificatePermissions = original.Update
 )
 
 type CreateMode = original.CreateMode
 
 const (
-	CreateModeDefault	CreateMode	= original.CreateModeDefault
-	CreateModeRecover	CreateMode	= original.CreateModeRecover
+	CreateModeDefault CreateMode = original.CreateModeDefault
+	CreateModeRecover CreateMode = original.CreateModeRecover
 )
 
 type KeyPermissions = original.KeyPermissions
 
 const (
-	KeyPermissionsBackup	KeyPermissions	= original.KeyPermissionsBackup
-	KeyPermissionsCreate	KeyPermissions	= original.KeyPermissionsCreate
-	KeyPermissionsDecrypt	KeyPermissions	= original.KeyPermissionsDecrypt
-	KeyPermissionsDelete	KeyPermissions	= original.KeyPermissionsDelete
-	KeyPermissionsEncrypt	KeyPermissions	= original.KeyPermissionsEncrypt
-	KeyPermissionsGet	KeyPermissions	= original.KeyPermissionsGet
-	KeyPermissionsImport	KeyPermissions	= original.KeyPermissionsImport
-	KeyPermissionsList	KeyPermissions	= original.KeyPermissionsList
-	KeyPermissionsPurge	KeyPermissions	= original.KeyPermissionsPurge
-	KeyPermissionsRecover	KeyPermissions	= original.KeyPermissionsRecover
-	KeyPermissionsRestore	KeyPermissions	= original.KeyPermissionsRestore
-	KeyPermissionsSign	KeyPermissions	= original.KeyPermissionsSign
-	KeyPermissionsUnwrapKey	KeyPermissions	= original.KeyPermissionsUnwrapKey
-	KeyPermissionsUpdate	KeyPermissions	= original.KeyPermissionsUpdate
-	KeyPermissionsVerify	KeyPermissions	= original.KeyPermissionsVerify
-	KeyPermissionsWrapKey	KeyPermissions	= original.KeyPermissionsWrapKey
+	KeyPermissionsBackup    KeyPermissions = original.KeyPermissionsBackup
+	KeyPermissionsCreate    KeyPermissions = original.KeyPermissionsCreate
+	KeyPermissionsDecrypt   KeyPermissions = original.KeyPermissionsDecrypt
+	KeyPermissionsDelete    KeyPermissions = original.KeyPermissionsDelete
+	KeyPermissionsEncrypt   KeyPermissions = original.KeyPermissionsEncrypt
+	KeyPermissionsGet       KeyPermissions = original.KeyPermissionsGet
+	KeyPermissionsImport    KeyPermissions = original.KeyPermissionsImport
+	KeyPermissionsList      KeyPermissions = original.KeyPermissionsList
+	KeyPermissionsPurge     KeyPermissions = original.KeyPermissionsPurge
+	KeyPermissionsRecover   KeyPermissions = original.KeyPermissionsRecover
+	KeyPermissionsRestore   KeyPermissions = original.KeyPermissionsRestore
+	KeyPermissionsSign      KeyPermissions = original.KeyPermissionsSign
+	KeyPermissionsUnwrapKey KeyPermissions = original.KeyPermissionsUnwrapKey
+	KeyPermissionsUpdate    KeyPermissions = original.KeyPermissionsUpdate
+	KeyPermissionsVerify    KeyPermissions = original.KeyPermissionsVerify
+	KeyPermissionsWrapKey   KeyPermissions = original.KeyPermissionsWrapKey
 )
 
 type SecretPermissions = original.SecretPermissions
 
 const (
-	SecretPermissionsBackup		SecretPermissions	= original.SecretPermissionsBackup
-	SecretPermissionsDelete		SecretPermissions	= original.SecretPermissionsDelete
-	SecretPermissionsGet		SecretPermissions	= original.SecretPermissionsGet
-	SecretPermissionsList		SecretPermissions	= original.SecretPermissionsList
-	SecretPermissionsPurge		SecretPermissions	= original.SecretPermissionsPurge
-	SecretPermissionsRecover	SecretPermissions	= original.SecretPermissionsRecover
-	SecretPermissionsRestore	SecretPermissions	= original.SecretPermissionsRestore
-	SecretPermissionsSet		SecretPermissions	= original.SecretPermissionsSet
+	SecretPermissionsBackup  SecretPermissions = original.SecretPermissionsBackup
+	SecretPermissionsDelete  SecretPermissions = original.SecretPermissionsDelete
+	SecretPermissionsGet     SecretPermissions = original.SecretPermissionsGet
+	SecretPermissionsList    SecretPermissions = original.SecretPermissionsList
+	SecretPermissionsPurge   SecretPermissions = original.SecretPermissionsPurge
+	SecretPermissionsRecover SecretPermissions = original.SecretPermissionsRecover
+	SecretPermissionsRestore SecretPermissions = original.SecretPermissionsRestore
+	SecretPermissionsSet     SecretPermissions = original.SecretPermissionsSet
 )
 
 type SkuName = original.SkuName
 
 const (
-	Premium		SkuName	= original.Premium
-	Standard	SkuName	= original.Standard
+	Premium  SkuName = original.Premium
+	Standard SkuName = original.Standard
 )
 
 type StoragePermissions = original.StoragePermissions
 
 const (
-	StoragePermissionsDelete	StoragePermissions	= original.StoragePermissionsDelete
-	StoragePermissionsDeletesas	StoragePermissions	= original.StoragePermissionsDeletesas
-	StoragePermissionsGet		StoragePermissions	= original.StoragePermissionsGet
-	StoragePermissionsGetsas	StoragePermissions	= original.StoragePermissionsGetsas
-	StoragePermissionsList		StoragePermissions	= original.StoragePermissionsList
-	StoragePermissionsListsas	StoragePermissions	= original.StoragePermissionsListsas
-	StoragePermissionsRegeneratekey	StoragePermissions	= original.StoragePermissionsRegeneratekey
-	StoragePermissionsSet		StoragePermissions	= original.StoragePermissionsSet
-	StoragePermissionsSetsas	StoragePermissions	= original.StoragePermissionsSetsas
-	StoragePermissionsUpdate	StoragePermissions	= original.StoragePermissionsUpdate
+	StoragePermissionsDelete        StoragePermissions = original.StoragePermissionsDelete
+	StoragePermissionsDeletesas     StoragePermissions = original.StoragePermissionsDeletesas
+	StoragePermissionsGet           StoragePermissions = original.StoragePermissionsGet
+	StoragePermissionsGetsas        StoragePermissions = original.StoragePermissionsGetsas
+	StoragePermissionsList          StoragePermissions = original.StoragePermissionsList
+	StoragePermissionsListsas       StoragePermissions = original.StoragePermissionsListsas
+	StoragePermissionsRegeneratekey StoragePermissions = original.StoragePermissionsRegeneratekey
+	StoragePermissionsSet           StoragePermissions = original.StoragePermissionsSet
+	StoragePermissionsSetsas        StoragePermissions = original.StoragePermissionsSetsas
+	StoragePermissionsUpdate        StoragePermissions = original.StoragePermissionsUpdate
 )
 
 type AccessPolicyEntry = original.AccessPolicyEntry

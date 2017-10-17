@@ -30,9 +30,9 @@ type ManagementLocksClient = original.ManagementLocksClient
 type LockLevel = original.LockLevel
 
 const (
-	CanNotDelete	LockLevel	= original.CanNotDelete
-	NotSpecified	LockLevel	= original.NotSpecified
-	ReadOnly	LockLevel	= original.ReadOnly
+	CanNotDelete LockLevel = original.CanNotDelete
+	NotSpecified LockLevel = original.NotSpecified
+	ReadOnly     LockLevel = original.ReadOnly
 )
 
 type ManagementLockListResult = original.ManagementLockListResult

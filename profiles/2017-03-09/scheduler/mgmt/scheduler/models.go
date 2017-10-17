@@ -25,118 +25,118 @@ type JobsClient = original.JobsClient
 type DayOfWeek = original.DayOfWeek
 
 const (
-	Friday		DayOfWeek	= original.Friday
-	Monday		DayOfWeek	= original.Monday
-	Saturday	DayOfWeek	= original.Saturday
-	Sunday		DayOfWeek	= original.Sunday
-	Thursday	DayOfWeek	= original.Thursday
-	Tuesday		DayOfWeek	= original.Tuesday
-	Wednesday	DayOfWeek	= original.Wednesday
+	Friday    DayOfWeek = original.Friday
+	Monday    DayOfWeek = original.Monday
+	Saturday  DayOfWeek = original.Saturday
+	Sunday    DayOfWeek = original.Sunday
+	Thursday  DayOfWeek = original.Thursday
+	Tuesday   DayOfWeek = original.Tuesday
+	Wednesday DayOfWeek = original.Wednesday
 )
 
 type HTTPAuthenticationType = original.HTTPAuthenticationType
 
 const (
-	ActiveDirectoryOAuth	HTTPAuthenticationType	= original.ActiveDirectoryOAuth
-	Basic			HTTPAuthenticationType	= original.Basic
-	ClientCertificate	HTTPAuthenticationType	= original.ClientCertificate
-	NotSpecified		HTTPAuthenticationType	= original.NotSpecified
+	ActiveDirectoryOAuth HTTPAuthenticationType = original.ActiveDirectoryOAuth
+	Basic                HTTPAuthenticationType = original.Basic
+	ClientCertificate    HTTPAuthenticationType = original.ClientCertificate
+	NotSpecified         HTTPAuthenticationType = original.NotSpecified
 )
 
 type JobActionType = original.JobActionType
 
 const (
-	HTTP		JobActionType	= original.HTTP
-	HTTPS		JobActionType	= original.HTTPS
-	ServiceBusQueue	JobActionType	= original.ServiceBusQueue
-	ServiceBusTopic	JobActionType	= original.ServiceBusTopic
-	StorageQueue	JobActionType	= original.StorageQueue
+	HTTP            JobActionType = original.HTTP
+	HTTPS           JobActionType = original.HTTPS
+	ServiceBusQueue JobActionType = original.ServiceBusQueue
+	ServiceBusTopic JobActionType = original.ServiceBusTopic
+	StorageQueue    JobActionType = original.StorageQueue
 )
 
 type JobCollectionState = original.JobCollectionState
 
 const (
-	Deleted		JobCollectionState	= original.Deleted
-	Disabled	JobCollectionState	= original.Disabled
-	Enabled		JobCollectionState	= original.Enabled
-	Suspended	JobCollectionState	= original.Suspended
+	Deleted   JobCollectionState = original.Deleted
+	Disabled  JobCollectionState = original.Disabled
+	Enabled   JobCollectionState = original.Enabled
+	Suspended JobCollectionState = original.Suspended
 )
 
 type JobExecutionStatus = original.JobExecutionStatus
 
 const (
-	Completed	JobExecutionStatus	= original.Completed
-	Failed		JobExecutionStatus	= original.Failed
-	Postponed	JobExecutionStatus	= original.Postponed
+	Completed JobExecutionStatus = original.Completed
+	Failed    JobExecutionStatus = original.Failed
+	Postponed JobExecutionStatus = original.Postponed
 )
 
 type JobHistoryActionName = original.JobHistoryActionName
 
 const (
-	ErrorAction	JobHistoryActionName	= original.ErrorAction
-	MainAction	JobHistoryActionName	= original.MainAction
+	ErrorAction JobHistoryActionName = original.ErrorAction
+	MainAction  JobHistoryActionName = original.MainAction
 )
 
 type JobScheduleDay = original.JobScheduleDay
 
 const (
-	JobScheduleDayFriday	JobScheduleDay	= original.JobScheduleDayFriday
-	JobScheduleDayMonday	JobScheduleDay	= original.JobScheduleDayMonday
-	JobScheduleDaySaturday	JobScheduleDay	= original.JobScheduleDaySaturday
-	JobScheduleDaySunday	JobScheduleDay	= original.JobScheduleDaySunday
-	JobScheduleDayThursday	JobScheduleDay	= original.JobScheduleDayThursday
-	JobScheduleDayTuesday	JobScheduleDay	= original.JobScheduleDayTuesday
-	JobScheduleDayWednesday	JobScheduleDay	= original.JobScheduleDayWednesday
+	JobScheduleDayFriday    JobScheduleDay = original.JobScheduleDayFriday
+	JobScheduleDayMonday    JobScheduleDay = original.JobScheduleDayMonday
+	JobScheduleDaySaturday  JobScheduleDay = original.JobScheduleDaySaturday
+	JobScheduleDaySunday    JobScheduleDay = original.JobScheduleDaySunday
+	JobScheduleDayThursday  JobScheduleDay = original.JobScheduleDayThursday
+	JobScheduleDayTuesday   JobScheduleDay = original.JobScheduleDayTuesday
+	JobScheduleDayWednesday JobScheduleDay = original.JobScheduleDayWednesday
 )
 
 type JobState = original.JobState
 
 const (
-	JobStateCompleted	JobState	= original.JobStateCompleted
-	JobStateDisabled	JobState	= original.JobStateDisabled
-	JobStateEnabled		JobState	= original.JobStateEnabled
-	JobStateFaulted		JobState	= original.JobStateFaulted
+	JobStateCompleted JobState = original.JobStateCompleted
+	JobStateDisabled  JobState = original.JobStateDisabled
+	JobStateEnabled   JobState = original.JobStateEnabled
+	JobStateFaulted   JobState = original.JobStateFaulted
 )
 
 type RecurrenceFrequency = original.RecurrenceFrequency
 
 const (
-	Day	RecurrenceFrequency	= original.Day
-	Hour	RecurrenceFrequency	= original.Hour
-	Minute	RecurrenceFrequency	= original.Minute
-	Month	RecurrenceFrequency	= original.Month
-	Week	RecurrenceFrequency	= original.Week
+	Day    RecurrenceFrequency = original.Day
+	Hour   RecurrenceFrequency = original.Hour
+	Minute RecurrenceFrequency = original.Minute
+	Month  RecurrenceFrequency = original.Month
+	Week   RecurrenceFrequency = original.Week
 )
 
 type RetryType = original.RetryType
 
 const (
-	Fixed	RetryType	= original.Fixed
-	None	RetryType	= original.None
+	Fixed RetryType = original.Fixed
+	None  RetryType = original.None
 )
 
 type ServiceBusAuthenticationType = original.ServiceBusAuthenticationType
 
 const (
-	ServiceBusAuthenticationTypeNotSpecified	ServiceBusAuthenticationType	= original.ServiceBusAuthenticationTypeNotSpecified
-	ServiceBusAuthenticationTypeSharedAccessKey	ServiceBusAuthenticationType	= original.ServiceBusAuthenticationTypeSharedAccessKey
+	ServiceBusAuthenticationTypeNotSpecified    ServiceBusAuthenticationType = original.ServiceBusAuthenticationTypeNotSpecified
+	ServiceBusAuthenticationTypeSharedAccessKey ServiceBusAuthenticationType = original.ServiceBusAuthenticationTypeSharedAccessKey
 )
 
 type ServiceBusTransportType = original.ServiceBusTransportType
 
 const (
-	ServiceBusTransportTypeAMQP		ServiceBusTransportType	= original.ServiceBusTransportTypeAMQP
-	ServiceBusTransportTypeNetMessaging	ServiceBusTransportType	= original.ServiceBusTransportTypeNetMessaging
-	ServiceBusTransportTypeNotSpecified	ServiceBusTransportType	= original.ServiceBusTransportTypeNotSpecified
+	ServiceBusTransportTypeAMQP         ServiceBusTransportType = original.ServiceBusTransportTypeAMQP
+	ServiceBusTransportTypeNetMessaging ServiceBusTransportType = original.ServiceBusTransportTypeNetMessaging
+	ServiceBusTransportTypeNotSpecified ServiceBusTransportType = original.ServiceBusTransportTypeNotSpecified
 )
 
 type SkuDefinition = original.SkuDefinition
 
 const (
-	Free		SkuDefinition	= original.Free
-	P10Premium	SkuDefinition	= original.P10Premium
-	P20Premium	SkuDefinition	= original.P20Premium
-	Standard	SkuDefinition	= original.Standard
+	Free       SkuDefinition = original.Free
+	P10Premium SkuDefinition = original.P10Premium
+	P20Premium SkuDefinition = original.P20Premium
+	Standard   SkuDefinition = original.Standard
 )
 
 type BasicAuthentication = original.BasicAuthentication

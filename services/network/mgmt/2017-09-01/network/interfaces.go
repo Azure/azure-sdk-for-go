@@ -354,6 +354,80 @@ func (client InterfacesClient) GetEffectiveRouteTableResponder(resp *http.Respon
 	return
 }
 
+// GetVirtualMachineScaleSetIPConfiguration get the specified network interface ip configuration in a virtual machine
+// scale set.
+//
+// resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual machine
+// scale set. virtualmachineIndex is the virtual machine index. networkInterfaceName is the name of the network
+// interface. IPConfigurationName is the name of the ip configuration. expand is expands referenced resources.
+func (client InterfacesClient) GetVirtualMachineScaleSetIPConfiguration(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, IPConfigurationName string, expand string) (result InterfaceIPConfiguration, err error) {
+	req, err := client.GetVirtualMachineScaleSetIPConfigurationPreparer(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, IPConfigurationName, expand)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetIPConfiguration", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetVirtualMachineScaleSetIPConfigurationSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetIPConfiguration", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetVirtualMachineScaleSetIPConfigurationResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetIPConfiguration", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetVirtualMachineScaleSetIPConfigurationPreparer prepares the GetVirtualMachineScaleSetIPConfiguration request.
+func (client InterfacesClient) GetVirtualMachineScaleSetIPConfigurationPreparer(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, IPConfigurationName string, expand string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"ipConfigurationName":        autorest.Encode("path", IPConfigurationName),
+		"networkInterfaceName":       autorest.Encode("path", networkInterfaceName),
+		"resourceGroupName":          autorest.Encode("path", resourceGroupName),
+		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
+		"virtualmachineIndex":        autorest.Encode("path", virtualmachineIndex),
+		"virtualMachineScaleSetName": autorest.Encode("path", virtualMachineScaleSetName),
+	}
+
+	const APIVersion = "2017-03-30"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipConfigurations/{ipConfigurationName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetVirtualMachineScaleSetIPConfigurationSender sends the GetVirtualMachineScaleSetIPConfiguration request. The method will close the
+// http.Response Body if it receives an error.
+func (client InterfacesClient) GetVirtualMachineScaleSetIPConfigurationSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// GetVirtualMachineScaleSetIPConfigurationResponder handles the response to the GetVirtualMachineScaleSetIPConfiguration request. The method always
+// closes the http.Response Body.
+func (client InterfacesClient) GetVirtualMachineScaleSetIPConfigurationResponder(resp *http.Response) (result InterfaceIPConfiguration, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetVirtualMachineScaleSetNetworkInterface get the specified network interface in a virtual machine scale set.
 //
 // resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual machine
@@ -771,6 +845,148 @@ func (client InterfacesClient) ListEffectiveNetworkSecurityGroupsResponder(resp 
 	return
 }
 
+// ListVirtualMachineScaleSetIPConfigurations get the specified network interface ip configuration in a virtual machine
+// scale set.
+//
+// resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual machine
+// scale set. virtualmachineIndex is the virtual machine index. networkInterfaceName is the name of the network
+// interface. expand is expands referenced resources.
+func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurations(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand string) (result InterfaceIPConfigurationListResult, err error) {
+	req, err := client.ListVirtualMachineScaleSetIPConfigurationsPreparer(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetIPConfigurations", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListVirtualMachineScaleSetIPConfigurationsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetIPConfigurations", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListVirtualMachineScaleSetIPConfigurationsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetIPConfigurations", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListVirtualMachineScaleSetIPConfigurationsPreparer prepares the ListVirtualMachineScaleSetIPConfigurations request.
+func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurationsPreparer(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"networkInterfaceName":       autorest.Encode("path", networkInterfaceName),
+		"resourceGroupName":          autorest.Encode("path", resourceGroupName),
+		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
+		"virtualmachineIndex":        autorest.Encode("path", virtualmachineIndex),
+		"virtualMachineScaleSetName": autorest.Encode("path", virtualMachineScaleSetName),
+	}
+
+	const APIVersion = "2017-03-30"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipConfigurations", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// ListVirtualMachineScaleSetIPConfigurationsSender sends the ListVirtualMachineScaleSetIPConfigurations request. The method will close the
+// http.Response Body if it receives an error.
+func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurationsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// ListVirtualMachineScaleSetIPConfigurationsResponder handles the response to the ListVirtualMachineScaleSetIPConfigurations request. The method always
+// closes the http.Response Body.
+func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurationsResponder(resp *http.Response) (result InterfaceIPConfigurationListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListVirtualMachineScaleSetIPConfigurationsNextResults retrieves the next set of results, if any.
+func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurationsNextResults(lastResults InterfaceIPConfigurationListResult) (result InterfaceIPConfigurationListResult, err error) {
+	req, err := lastResults.InterfaceIPConfigurationListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetIPConfigurations", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListVirtualMachineScaleSetIPConfigurationsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetIPConfigurations", resp, "Failure sending next results request")
+	}
+
+	result, err = client.ListVirtualMachineScaleSetIPConfigurationsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetIPConfigurations", resp, "Failure responding to next results request")
+	}
+
+	return
+}
+
+// ListVirtualMachineScaleSetIPConfigurationsComplete gets all elements from the list without paging.
+func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurationsComplete(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand string, cancel <-chan struct{}) (<-chan InterfaceIPConfiguration, <-chan error) {
+	resultChan := make(chan InterfaceIPConfiguration)
+	errChan := make(chan error, 1)
+	go func() {
+		defer func() {
+			close(resultChan)
+			close(errChan)
+		}()
+		list, err := client.ListVirtualMachineScaleSetIPConfigurations(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		if list.Value != nil {
+			for _, item := range *list.Value {
+				select {
+				case <-cancel:
+					return
+				case resultChan <- item:
+					// Intentionally left blank
+				}
+			}
+		}
+		for list.NextLink != nil {
+			list, err = client.ListVirtualMachineScaleSetIPConfigurationsNextResults(list)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			if list.Value != nil {
+				for _, item := range *list.Value {
+					select {
+					case <-cancel:
+						return
+					case resultChan <- item:
+						// Intentionally left blank
+					}
+				}
+			}
+		}
+	}()
+	return resultChan, errChan
+}
+
 // ListVirtualMachineScaleSetNetworkInterfaces gets all network interfaces in a virtual machine scale set.
 //
 // resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual machine
@@ -1041,4 +1257,88 @@ func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfacesComp
 		}
 	}()
 	return resultChan, errChan
+}
+
+// UpdateTags updates a network interface tags. This method may poll for completion. Polling can be canceled by passing
+// the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
+//
+// resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.
+// parameters is parameters supplied to update network interface tags.
+func (client InterfacesClient) UpdateTags(resourceGroupName string, networkInterfaceName string, parameters TagsObject, cancel <-chan struct{}) (<-chan Interface, <-chan error) {
+	resultChan := make(chan Interface, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result Interface
+		defer func() {
+			if err != nil {
+				errChan <- err
+			}
+			resultChan <- result
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.UpdateTagsPreparer(resourceGroupName, networkInterfaceName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.InterfacesClient", "UpdateTags", nil, "Failure preparing request")
+			return
+		}
+
+		resp, err := client.UpdateTagsSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "network.InterfacesClient", "UpdateTags", resp, "Failure sending request")
+			return
+		}
+
+		result, err = client.UpdateTagsResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.InterfacesClient", "UpdateTags", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
+}
+
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client InterfacesClient) UpdateTagsPreparer(resourceGroupName string, networkInterfaceName string, parameters TagsObject, cancel <-chan struct{}) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"networkInterfaceName": autorest.Encode("path", networkInterfaceName),
+		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
+		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
+}
+
+// UpdateTagsSender sends the UpdateTags request. The method will close the
+// http.Response Body if it receives an error.
+func (client InterfacesClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
+}
+
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
+// closes the http.Response Body.
+func (client InterfacesClient) UpdateTagsResponder(resp *http.Response) (result Interface, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

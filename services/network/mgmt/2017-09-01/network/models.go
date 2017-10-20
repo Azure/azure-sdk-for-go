@@ -1491,6 +1491,13 @@ type AuthorizationPropertiesFormat struct {
 	ProvisioningState      *string                `json:"provisioningState,omitempty"`
 }
 
+// Availability is availability of the metric.
+type Availability struct {
+	TimeGrain    *string `json:"timeGrain,omitempty"`
+	Retention    *string `json:"retention,omitempty"`
+	BlobDuration *string `json:"blobDuration,omitempty"`
+}
+
 // AvailableProvidersList is list of available countries with details.
 type AvailableProvidersList struct {
 	autorest.Response `json:"-"`
@@ -1724,6 +1731,13 @@ type ConnectivitySource struct {
 // Standard DHCP option for a subnet overrides VNET DHCP options.
 type DhcpOptions struct {
 	DNSServers *[]string `json:"dnsServers,omitempty"`
+}
+
+// Dimension is dimension of the metric.
+type Dimension struct {
+	Name         *string `json:"name,omitempty"`
+	DisplayName  *string `json:"displayName,omitempty"`
+	InternalName *string `json:"internalName,omitempty"`
 }
 
 // DNSNameAvailabilityResult is response for the CheckDnsNameAvailability API service call.
@@ -2535,6 +2549,31 @@ type LocalNetworkGatewayPropertiesFormat struct {
 	ProvisioningState        *string       `json:"provisioningState,omitempty"`
 }
 
+// LogSpecification is description of logging specification.
+type LogSpecification struct {
+	Name         *string `json:"name,omitempty"`
+	DisplayName  *string `json:"displayName,omitempty"`
+	BlobDuration *string `json:"blobDuration,omitempty"`
+}
+
+// MetricSpecification is description of metrics specification.
+type MetricSpecification struct {
+	Name                            *string         `json:"name,omitempty"`
+	DisplayName                     *string         `json:"displayName,omitempty"`
+	DisplayDescription              *string         `json:"displayDescription,omitempty"`
+	Unit                            *string         `json:"unit,omitempty"`
+	AggregationType                 *string         `json:"aggregationType,omitempty"`
+	Availabilities                  *[]Availability `json:"availabilities,omitempty"`
+	EnableRegionalMdmAccount        *bool           `json:"enableRegionalMdmAccount,omitempty"`
+	FillGapWithZero                 *bool           `json:"fillGapWithZero,omitempty"`
+	MetricFilterPattern             *string         `json:"metricFilterPattern,omitempty"`
+	Dimensions                      *[]Dimension    `json:"dimensions,omitempty"`
+	IsInternal                      *bool           `json:"isInternal,omitempty"`
+	SourceMdmAccount                *string         `json:"sourceMdmAccount,omitempty"`
+	SourceMdmNamespace              *string         `json:"sourceMdmNamespace,omitempty"`
+	ResourceIDDimensionNameOverride *string         `json:"resourceIdDimensionNameOverride,omitempty"`
+}
+
 // NextHopParameters is parameters that define the source and destination endpoint.
 type NextHopParameters struct {
 	TargetResourceID     *string `json:"targetResourceId,omitempty"`
@@ -2549,6 +2588,53 @@ type NextHopResult struct {
 	NextHopType       NextHopType `json:"nextHopType,omitempty"`
 	NextHopIPAddress  *string     `json:"nextHopIpAddress,omitempty"`
 	RouteTableID      *string     `json:"routeTableId,omitempty"`
+}
+
+// Operation is network REST API operation definition.
+type Operation struct {
+	Name                       *string           `json:"name,omitempty"`
+	Display                    *OperationDisplay `json:"display,omitempty"`
+	Origin                     *string           `json:"origin,omitempty"`
+	*OperationPropertiesFormat `json:"properties,omitempty"`
+}
+
+// OperationDisplay is display metadata associated with the operation.
+type OperationDisplay struct {
+	Provider    *string `json:"provider,omitempty"`
+	Resource    *string `json:"resource,omitempty"`
+	Operation   *string `json:"operation,omitempty"`
+	Description *string `json:"description,omitempty"`
+}
+
+// OperationListResult is result of the request to list Network operations. It contains a list of operations and a URL
+// link to get the next set of results.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Operation `json:"value,omitempty"`
+	NextLink          *string      `json:"nextLink,omitempty"`
+}
+
+// OperationListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client OperationListResult) OperationListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// OperationPropertiesFormat is description of operation properties format.
+type OperationPropertiesFormat struct {
+	ServiceSpecification *OperationPropertiesFormatServiceSpecification `json:"serviceSpecification,omitempty"`
+}
+
+// OperationPropertiesFormatServiceSpecification is specification of the service.
+type OperationPropertiesFormatServiceSpecification struct {
+	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
+	LogSpecifications    *[]LogSpecification    `json:"logSpecifications,omitempty"`
 }
 
 // OutboundNatRule is outbound NAT pool of the load balancer.
@@ -3094,6 +3180,11 @@ type SubResource struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// TagsObject is tags object for patch operations.
+type TagsObject struct {
+	Tags *map[string]*string `json:"tags,omitempty"`
+}
+
 // Topology is topology of the specified resource group.
 type Topology struct {
 	autorest.Response `json:"-"`
@@ -3266,6 +3357,7 @@ type VirtualNetworkGatewayConnection struct {
 
 // VirtualNetworkGatewayConnectionListEntity is a common class for general resource information
 type VirtualNetworkGatewayConnectionListEntity struct {
+	autorest.Response                                          `json:"-"`
 	ID                                                         *string             `json:"id,omitempty"`
 	Name                                                       *string             `json:"name,omitempty"`
 	Type                                                       *string             `json:"type,omitempty"`

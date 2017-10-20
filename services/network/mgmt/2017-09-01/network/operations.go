@@ -20,63 +20,49 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
-// UsagesClient is the network Client
-type UsagesClient struct {
+// OperationsClient is the network Client
+type OperationsClient struct {
 	ManagementClient
 }
 
-// NewUsagesClient creates an instance of the UsagesClient client.
-func NewUsagesClient(subscriptionID string) UsagesClient {
-	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewOperationsClient creates an instance of the OperationsClient client.
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewUsagesClientWithBaseURI creates an instance of the UsagesClient client.
-func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
-	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List list network usages for a subscription.
-//
-// location is the location where resource usage is queried.
-func (client UsagesClient) List(location string) (result UsagesListResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: location,
-			Constraints: []validation.Constraint{{Target: "location", Name: validation.Pattern, Rule: `^[-\w\._ ]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "network.UsagesClient", "List")
-	}
-
-	req, err := client.ListPreparer(location)
+// List lists all of the available Network Rest API operations.
+func (client OperationsClient) List() (result OperationListResult, err error) {
+	req, err := client.ListPreparer()
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.UsagesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "network.OperationsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.UsagesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.OperationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.UsagesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network.OperationsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client UsagesClient) ListPreparer(location string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"location":       autorest.Encode("path", location),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
+func (client OperationsClient) ListPreparer() (*http.Request, error) {
 	const APIVersion = "2017-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -85,20 +71,20 @@ func (client UsagesClient) ListPreparer(location string) (*http.Request, error) 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/usages", pathParameters),
+		autorest.WithPath("/providers/Microsoft.Network/operations"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsagesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client UsagesClient) ListResponder(resp *http.Response) (result UsagesListResult, err error) {
+func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -110,10 +96,10 @@ func (client UsagesClient) ListResponder(resp *http.Response) (result UsagesList
 }
 
 // ListNextResults retrieves the next set of results, if any.
-func (client UsagesClient) ListNextResults(lastResults UsagesListResult) (result UsagesListResult, err error) {
-	req, err := lastResults.UsagesListResultPreparer()
+func (client OperationsClient) ListNextResults(lastResults OperationListResult) (result OperationListResult, err error) {
+	req, err := lastResults.OperationListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.UsagesClient", "List", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "network.OperationsClient", "List", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -122,27 +108,27 @@ func (client UsagesClient) ListNextResults(lastResults UsagesListResult) (result
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network.UsagesClient", "List", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "network.OperationsClient", "List", resp, "Failure sending next results request")
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.UsagesClient", "List", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "network.OperationsClient", "List", resp, "Failure responding to next results request")
 	}
 
 	return
 }
 
 // ListComplete gets all elements from the list without paging.
-func (client UsagesClient) ListComplete(location string, cancel <-chan struct{}) (<-chan Usage, <-chan error) {
-	resultChan := make(chan Usage)
+func (client OperationsClient) ListComplete(cancel <-chan struct{}) (<-chan Operation, <-chan error) {
+	resultChan := make(chan Operation)
 	errChan := make(chan error, 1)
 	go func() {
 		defer func() {
 			close(resultChan)
 			close(errChan)
 		}()
-		list, err := client.List(location)
+		list, err := client.List()
 		if err != nil {
 			errChan <- err
 			return

@@ -685,3 +685,88 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKeyResponder(resp 
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// UpdateTags updates a virtual network gateway connection tags. This method may poll for completion. Polling can be
+// canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
+// requests.
+//
+// resourceGroupName is the name of the resource group. virtualNetworkGatewayConnectionName is the name of the virtual
+// network gateway connection. parameters is parameters supplied to update virtual network gateway connection tags.
+func (client VirtualNetworkGatewayConnectionsClient) UpdateTags(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters TagsObject, cancel <-chan struct{}) (<-chan VirtualNetworkGatewayConnectionListEntity, <-chan error) {
+	resultChan := make(chan VirtualNetworkGatewayConnectionListEntity, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result VirtualNetworkGatewayConnectionListEntity
+		defer func() {
+			if err != nil {
+				errChan <- err
+			}
+			resultChan <- result
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.UpdateTagsPreparer(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "UpdateTags", nil, "Failure preparing request")
+			return
+		}
+
+		resp, err := client.UpdateTagsSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "UpdateTags", resp, "Failure sending request")
+			return
+		}
+
+		result, err = client.UpdateTagsResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "UpdateTags", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
+}
+
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client VirtualNetworkGatewayConnectionsClient) UpdateTagsPreparer(resourceGroupName string, virtualNetworkGatewayConnectionName string, parameters TagsObject, cancel <-chan struct{}) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
+		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
+		"virtualNetworkGatewayConnectionName": autorest.Encode("path", virtualNetworkGatewayConnectionName),
+	}
+
+	const APIVersion = "2017-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
+}
+
+// UpdateTagsSender sends the UpdateTags request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualNetworkGatewayConnectionsClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
+}
+
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
+// closes the http.Response Body.
+func (client VirtualNetworkGatewayConnectionsClient) UpdateTagsResponder(resp *http.Response) (result VirtualNetworkGatewayConnectionListEntity, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

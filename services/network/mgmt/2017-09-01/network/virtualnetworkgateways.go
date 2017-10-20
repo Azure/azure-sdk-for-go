@@ -1210,6 +1210,90 @@ func (client VirtualNetworkGatewaysClient) SupportedVpnDevicesResponder(resp *ht
 	return
 }
 
+// UpdateTags updates a virtual network gateway tags. This method may poll for completion. Polling can be canceled by
+// passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
+//
+// resourceGroupName is the name of the resource group. virtualNetworkGatewayName is the name of the virtual network
+// gateway. parameters is parameters supplied to update virtual network gateway tags.
+func (client VirtualNetworkGatewaysClient) UpdateTags(resourceGroupName string, virtualNetworkGatewayName string, parameters TagsObject, cancel <-chan struct{}) (<-chan VirtualNetworkGateway, <-chan error) {
+	resultChan := make(chan VirtualNetworkGateway, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result VirtualNetworkGateway
+		defer func() {
+			if err != nil {
+				errChan <- err
+			}
+			resultChan <- result
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.UpdateTagsPreparer(resourceGroupName, virtualNetworkGatewayName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "UpdateTags", nil, "Failure preparing request")
+			return
+		}
+
+		resp, err := client.UpdateTagsSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "UpdateTags", resp, "Failure sending request")
+			return
+		}
+
+		result, err = client.UpdateTagsResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "UpdateTags", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
+}
+
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client VirtualNetworkGatewaysClient) UpdateTagsPreparer(resourceGroupName string, virtualNetworkGatewayName string, parameters TagsObject, cancel <-chan struct{}) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
+		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
+		"virtualNetworkGatewayName": autorest.Encode("path", virtualNetworkGatewayName),
+	}
+
+	const APIVersion = "2017-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
+}
+
+// UpdateTagsSender sends the UpdateTags request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualNetworkGatewaysClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
+}
+
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
+// closes the http.Response Body.
+func (client VirtualNetworkGatewaysClient) UpdateTagsResponder(resp *http.Response) (result VirtualNetworkGateway, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // VpnDeviceConfigurationScript gets a xml format representation for vpn device configuration script.
 //
 // resourceGroupName is the name of the resource group. virtualNetworkGatewayConnectionName is the name of the virtual

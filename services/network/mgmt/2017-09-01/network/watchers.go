@@ -1304,6 +1304,74 @@ func (client WatchersClient) SetFlowLogConfigurationResponder(resp *http.Respons
 	return
 }
 
+// UpdateTags updates a network watcher tags.
+//
+// resourceGroupName is the name of the resource group. networkWatcherName is the name of the network watcher.
+// parameters is parameters supplied to update network watcher tags.
+func (client WatchersClient) UpdateTags(resourceGroupName string, networkWatcherName string, parameters TagsObject) (result Watcher, err error) {
+	req, err := client.UpdateTagsPreparer(resourceGroupName, networkWatcherName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "UpdateTags", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateTagsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "UpdateTags", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateTagsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "UpdateTags", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client WatchersClient) UpdateTagsPreparer(resourceGroupName string, networkWatcherName string, parameters TagsObject) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"networkWatcherName": autorest.Encode("path", networkWatcherName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// UpdateTagsSender sends the UpdateTags request. The method will close the
+// http.Response Body if it receives an error.
+func (client WatchersClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
+// closes the http.Response Body.
+func (client WatchersClient) UpdateTagsResponder(resp *http.Response) (result Watcher, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // VerifyIPFlow verify IP flow from the specified VM to a location given the currently configured NSG rules. This
 // method may poll for completion. Polling can be canceled by passing the cancel channel argument. The channel will be
 // used to cancel polling and any outstanding HTTP requests.

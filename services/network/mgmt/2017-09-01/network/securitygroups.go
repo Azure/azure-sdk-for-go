@@ -535,3 +535,87 @@ func (client SecurityGroupsClient) ListAllComplete(cancel <-chan struct{}) (<-ch
 	}()
 	return resultChan, errChan
 }
+
+// UpdateTags updates a network security group tags. This method may poll for completion. Polling can be canceled by
+// passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
+//
+// resourceGroupName is the name of the resource group. networkSecurityGroupName is the name of the network security
+// group. parameters is parameters supplied to update network security group tags.
+func (client SecurityGroupsClient) UpdateTags(resourceGroupName string, networkSecurityGroupName string, parameters TagsObject, cancel <-chan struct{}) (<-chan SecurityGroup, <-chan error) {
+	resultChan := make(chan SecurityGroup, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result SecurityGroup
+		defer func() {
+			if err != nil {
+				errChan <- err
+			}
+			resultChan <- result
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.UpdateTagsPreparer(resourceGroupName, networkSecurityGroupName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.SecurityGroupsClient", "UpdateTags", nil, "Failure preparing request")
+			return
+		}
+
+		resp, err := client.UpdateTagsSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "network.SecurityGroupsClient", "UpdateTags", resp, "Failure sending request")
+			return
+		}
+
+		result, err = client.UpdateTagsResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.SecurityGroupsClient", "UpdateTags", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
+}
+
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client SecurityGroupsClient) UpdateTagsPreparer(resourceGroupName string, networkSecurityGroupName string, parameters TagsObject, cancel <-chan struct{}) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"networkSecurityGroupName": autorest.Encode("path", networkSecurityGroupName),
+		"resourceGroupName":        autorest.Encode("path", resourceGroupName),
+		"subscriptionId":           autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityGroups/{networkSecurityGroupName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
+}
+
+// UpdateTagsSender sends the UpdateTags request. The method will close the
+// http.Response Body if it receives an error.
+func (client SecurityGroupsClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
+}
+
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
+// closes the http.Response Body.
+func (client SecurityGroupsClient) UpdateTagsResponder(resp *http.Response) (result SecurityGroup, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

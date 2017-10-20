@@ -429,3 +429,96 @@ func (client LocalNetworkGatewaysClient) ListComplete(resourceGroupName string, 
 	}()
 	return resultChan, errChan
 }
+
+// UpdateTags updates a local network gateway tags. This method may poll for completion. Polling can be canceled by
+// passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
+//
+// resourceGroupName is the name of the resource group. localNetworkGatewayName is the name of the local network
+// gateway. parameters is parameters supplied to update local network gateway tags.
+func (client LocalNetworkGatewaysClient) UpdateTags(resourceGroupName string, localNetworkGatewayName string, parameters TagsObject, cancel <-chan struct{}) (<-chan LocalNetworkGateway, <-chan error) {
+	resultChan := make(chan LocalNetworkGateway, 1)
+	errChan := make(chan error, 1)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: localNetworkGatewayName,
+			Constraints: []validation.Constraint{{Target: "localNetworkGatewayName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		errChan <- validation.NewErrorWithValidationError(err, "network.LocalNetworkGatewaysClient", "UpdateTags")
+		close(errChan)
+		close(resultChan)
+		return resultChan, errChan
+	}
+
+	go func() {
+		var err error
+		var result LocalNetworkGateway
+		defer func() {
+			if err != nil {
+				errChan <- err
+			}
+			resultChan <- result
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.UpdateTagsPreparer(resourceGroupName, localNetworkGatewayName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "UpdateTags", nil, "Failure preparing request")
+			return
+		}
+
+		resp, err := client.UpdateTagsSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "UpdateTags", resp, "Failure sending request")
+			return
+		}
+
+		result, err = client.UpdateTagsResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysClient", "UpdateTags", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
+}
+
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client LocalNetworkGatewaysClient) UpdateTagsPreparer(resourceGroupName string, localNetworkGatewayName string, parameters TagsObject, cancel <-chan struct{}) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"localNetworkGatewayName": autorest.Encode("path", localNetworkGatewayName),
+		"resourceGroupName":       autorest.Encode("path", resourceGroupName),
+		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/localNetworkGateways/{localNetworkGatewayName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
+}
+
+// UpdateTagsSender sends the UpdateTags request. The method will close the
+// http.Response Body if it receives an error.
+func (client LocalNetworkGatewaysClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
+}
+
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
+// closes the http.Response Body.
+func (client LocalNetworkGatewaysClient) UpdateTagsResponder(resp *http.Response) (result LocalNetworkGateway, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

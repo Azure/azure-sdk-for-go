@@ -18,42 +18,35 @@
 // github.com/Azure/azure-sdk-for-go/tools/profileBuilder
 // commit ID: 09b7f75d0b75dab01d5152a968422915e4cb76ce
 
-package links
+package features
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
+import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-12-01/features"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type ManagementClient = original.ManagementClient
-type Filter = original.Filter
+type GroupClient = original.GroupClient
+type OperationsListResult = original.OperationsListResult
+type Properties = original.Properties
+type Result = original.Result
 
-const (
-	AtScope Filter = original.AtScope
-)
-
-type ResourceLink = original.ResourceLink
-type ResourceLinkFilter = original.ResourceLinkFilter
-type ResourceLinkProperties = original.ResourceLinkProperties
-type ResourceLinkResult = original.ResourceLinkResult
-type ResourceLinksClient = original.ResourceLinksClient
-
+func UserAgent() string {
+	return original.UserAgent()
+}
+func Version() string {
+	return original.Version()
+}
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewResourceLinksClient(subscriptionID string) ResourceLinksClient {
-	return original.NewResourceLinksClient(subscriptionID)
+func NewGroupClient(subscriptionID string) GroupClient {
+	return original.NewGroupClient(subscriptionID)
 }
-func NewResourceLinksClientWithBaseURI(baseURI string, subscriptionID string) ResourceLinksClient {
-	return original.NewResourceLinksClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent()
-}
-func Version() string {
-	return original.Version()
+func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClient {
+	return original.NewGroupClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,6 +22,7 @@ package locks
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-01-01/locks"
 
+type ManagementLocksClient = original.ManagementLocksClient
 type LockLevel = original.LockLevel
 
 const (
@@ -39,7 +40,6 @@ const (
 )
 
 type ManagementClient = original.ManagementClient
-type ManagementLocksClient = original.ManagementLocksClient
 
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)

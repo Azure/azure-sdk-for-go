@@ -45,6 +45,12 @@ const (
 type ManagementClient = original.ManagementClient
 type DefinitionsClient = original.DefinitionsClient
 
+func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClient(subscriptionID)
+}
+func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)
 }
@@ -62,10 +68,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClient(subscriptionID)
-}
-func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }

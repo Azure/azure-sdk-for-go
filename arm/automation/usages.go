@@ -39,6 +39,12 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewUsagesClientWithAuthFile creates an instance of the UsagesClient client.
+func NewUsagesClientWithAuthFile() (UsagesClient, error) {
+	c, err := NewWithAuthFile()
+	return UsagesClient{c}, err
+}
+
 // ListByAutomationAccount retrieve the usage for the account id.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name.

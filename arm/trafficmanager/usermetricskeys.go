@@ -38,6 +38,12 @@ func NewUserMetricsKeysClientWithBaseURI(baseURI string, subscriptionID string) 
 	return UserMetricsKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewUserMetricsKeysClientWithAuthFile creates an instance of the UserMetricsKeysClient client.
+func NewUserMetricsKeysClientWithAuthFile() (UserMetricsKeysClient, error) {
+	c, err := NewWithAuthFile()
+	return UserMetricsKeysClient{c}, err
+}
+
 // CreateOrUpdate create or update a subscription-level key used for Realtime User Metrics collection.
 func (client UserMetricsKeysClient) CreateOrUpdate() (result UserMetricsKeyModel, err error) {
 	req, err := client.CreateOrUpdatePreparer()

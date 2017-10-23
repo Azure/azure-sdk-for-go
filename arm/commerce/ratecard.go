@@ -38,6 +38,12 @@ func NewRateCardClientWithBaseURI(baseURI string, subscriptionID string) RateCar
 	return RateCardClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRateCardClientWithAuthFile creates an instance of the RateCardClient client.
+func NewRateCardClientWithAuthFile() (RateCardClient, error) {
+	c, err := NewWithAuthFile()
+	return RateCardClient{c}, err
+}
+
 // Get enables you to query for the resource/meter metadata and related prices used in a given subscription by Offer
 // ID, Currency, Locale and Region. The metadata associated with the billing meters, including but not limited to
 // service names, types, resources, units of measure, and regions, is subject to change at any time and without notice.

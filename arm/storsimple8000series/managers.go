@@ -39,6 +39,12 @@ func NewManagersClientWithBaseURI(baseURI string, subscriptionID string) Manager
 	return ManagersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewManagersClientWithAuthFile creates an instance of the ManagersClient client.
+func NewManagersClientWithAuthFile() (ManagersClient, error) {
+	c, err := NewWithAuthFile()
+	return ManagersClient{c}, err
+}
+
 // CreateExtendedInfo creates the extended info of the manager.
 //
 // parameters is the manager extended information. resourceGroupName is the resource group name managerName is the

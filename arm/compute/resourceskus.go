@@ -38,6 +38,12 @@ func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) Res
 	return ResourceSkusClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewResourceSkusClientWithAuthFile creates an instance of the ResourceSkusClient client.
+func NewResourceSkusClientWithAuthFile() (ResourceSkusClient, error) {
+	c, err := NewWithAuthFile()
+	return ResourceSkusClient{c}, err
+}
+
 // List gets the list of Microsoft.Compute SKUs available for your Subscription.
 func (client ResourceSkusClient) List() (result ResourceSkusResult, err error) {
 	req, err := client.ListPreparer()

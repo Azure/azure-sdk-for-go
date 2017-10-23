@@ -39,6 +39,12 @@ func NewSchemasClientWithBaseURI(baseURI string, subscriptionID string) SchemasC
 	return SchemasClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSchemasClientWithAuthFile creates an instance of the SchemasClient client.
+func NewSchemasClientWithAuthFile() (SchemasClient, error) {
+	c, err := NewWithAuthFile()
+	return SchemasClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an integration account schema.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. schemaName is

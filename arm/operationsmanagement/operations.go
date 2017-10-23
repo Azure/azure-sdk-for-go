@@ -38,6 +38,12 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, solut
 	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, solutionName)}
 }
 
+// NewOperationsClientWithAuthFile creates an instance of the OperationsClient client.
+func NewOperationsClientWithAuthFile(solutionName string) (OperationsClient, error) {
+	c, err := NewWithAuthFile(solutionName)
+	return OperationsClient{c}, err
+}
+
 // List lists all of the available OperationsManagement Rest API operations.
 func (client OperationsClient) List() (result OperationListResult, err error) {
 	req, err := client.ListPreparer()

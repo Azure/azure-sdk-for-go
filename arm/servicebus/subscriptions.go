@@ -39,6 +39,12 @@ func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) Su
 	return SubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSubscriptionsClientWithAuthFile creates an instance of the SubscriptionsClient client.
+func NewSubscriptionsClientWithAuthFile() (SubscriptionsClient, error) {
+	c, err := NewWithAuthFile()
+	return SubscriptionsClient{c}, err
+}
+
 // CreateOrUpdate creates a topic subscription.
 //
 // resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace name

@@ -39,6 +39,12 @@ func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient 
 	return MapsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewMapsClientWithAuthFile creates an instance of the MapsClient client.
+func NewMapsClientWithAuthFile() (MapsClient, error) {
+	c, err := NewWithAuthFile()
+	return MapsClient{c}, err
+}
+
 // Generate generates the specified map.
 //
 // resourceGroupName is resource group name within the specified subscriptionId. workspaceName is OMS workspace

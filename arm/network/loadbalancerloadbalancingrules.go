@@ -39,6 +39,13 @@ func NewLoadBalancerLoadBalancingRulesClientWithBaseURI(baseURI string, subscrip
 	return LoadBalancerLoadBalancingRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLoadBalancerLoadBalancingRulesClientWithAuthFile creates an instance of the
+// LoadBalancerLoadBalancingRulesClient client.
+func NewLoadBalancerLoadBalancingRulesClientWithAuthFile() (LoadBalancerLoadBalancingRulesClient, error) {
+	c, err := NewWithAuthFile()
+	return LoadBalancerLoadBalancingRulesClient{c}, err
+}
+
 // Get gets the specified load balancer load balancing rule.
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.

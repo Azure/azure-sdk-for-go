@@ -40,6 +40,12 @@ func NewDatabaseUsagesClientWithBaseURI(baseURI string, subscriptionID string) D
 	return DatabaseUsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDatabaseUsagesClientWithAuthFile creates an instance of the DatabaseUsagesClient client.
+func NewDatabaseUsagesClientWithAuthFile() (DatabaseUsagesClient, error) {
+	c, err := NewWithAuthFile()
+	return DatabaseUsagesClient{c}, err
+}
+
 // ListByDatabase returns database usages.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

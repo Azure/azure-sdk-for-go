@@ -40,6 +40,13 @@ func NewReplicationProtectedItemsClientWithBaseURI(baseURI string, subscriptionI
 	return ReplicationProtectedItemsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationProtectedItemsClientWithAuthFile creates an instance of the ReplicationProtectedItemsClient
+// client.
+func NewReplicationProtectedItemsClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationProtectedItemsClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationProtectedItemsClient{c}, err
+}
+
 // ApplyRecoveryPoint the operation to change the recovery point of a failed over replication protected item. This
 // method may poll for completion. Polling can be canceled by passing the cancel channel argument. The channel will be
 // used to cancel polling and any outstanding HTTP requests.

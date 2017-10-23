@@ -39,6 +39,12 @@ func NewVirtualMachineSchedulesClientWithBaseURI(baseURI string, subscriptionID 
 	return VirtualMachineSchedulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVirtualMachineSchedulesClientWithAuthFile creates an instance of the VirtualMachineSchedulesClient client.
+func NewVirtualMachineSchedulesClientWithAuthFile() (VirtualMachineSchedulesClient, error) {
+	c, err := NewWithAuthFile()
+	return VirtualMachineSchedulesClient{c}, err
+}
+
 // CreateOrUpdate create or replace an existing schedule.
 //
 // resourceGroupName is the name of the resource group. labName is the name of the lab. virtualMachineName is the name

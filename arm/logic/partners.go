@@ -39,6 +39,12 @@ func NewPartnersClientWithBaseURI(baseURI string, subscriptionID string) Partner
 	return PartnersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewPartnersClientWithAuthFile creates an instance of the PartnersClient client.
+func NewPartnersClientWithAuthFile() (PartnersClient, error) {
+	c, err := NewWithAuthFile()
+	return PartnersClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an integration account partner.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. partnerName is

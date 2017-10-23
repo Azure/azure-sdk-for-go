@@ -39,6 +39,12 @@ func NewSessionClientWithBaseURI(baseURI string, subscriptionID string) SessionC
 	return SessionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSessionClientWithAuthFile creates an instance of the SessionClient client.
+func NewSessionClientWithAuthFile() (SessionClient, error) {
+	c, err := NewWithAuthFile()
+	return SessionClient{c}, err
+}
+
 // Create creates a session for a node. This method may poll for completion. Polling can be canceled by passing the
 // cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

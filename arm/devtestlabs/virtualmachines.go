@@ -39,6 +39,12 @@ func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) 
 	return VirtualMachinesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVirtualMachinesClientWithAuthFile creates an instance of the VirtualMachinesClient client.
+func NewVirtualMachinesClientWithAuthFile() (VirtualMachinesClient, error) {
+	c, err := NewWithAuthFile()
+	return VirtualMachinesClient{c}, err
+}
+
 // AddDataDisk attach a new or existing data disk to virtual machine. This operation can take a while to complete. This
 // method may poll for completion. Polling can be canceled by passing the cancel channel argument. The channel will be
 // used to cancel polling and any outstanding HTTP requests.

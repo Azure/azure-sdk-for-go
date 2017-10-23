@@ -39,6 +39,12 @@ func NewActivityLogAlertsClientWithBaseURI(baseURI string, subscriptionID string
 	return ActivityLogAlertsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewActivityLogAlertsClientWithAuthFile creates an instance of the ActivityLogAlertsClient client.
+func NewActivityLogAlertsClientWithAuthFile() (ActivityLogAlertsClient, error) {
+	c, err := NewWithAuthFile()
+	return ActivityLogAlertsClient{c}, err
+}
+
 // CreateOrUpdate create a new activity log alert or update an existing one.
 //
 // resourceGroupName is the name of the resource group. activityLogAlertName is the name of the activity log alert.

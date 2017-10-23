@@ -39,6 +39,12 @@ func NewVolumeContainersClientWithBaseURI(baseURI string, subscriptionID string)
 	return VolumeContainersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVolumeContainersClientWithAuthFile creates an instance of the VolumeContainersClient client.
+func NewVolumeContainersClientWithAuthFile() (VolumeContainersClient, error) {
+	c, err := NewWithAuthFile()
+	return VolumeContainersClient{c}, err
+}
+
 // CreateOrUpdate creates or updates the volume container. This method may poll for completion. Polling can be canceled
 // by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

@@ -41,6 +41,12 @@ func NewConnectorMappingsClientWithBaseURI(baseURI string, subscriptionID string
 	return ConnectorMappingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewConnectorMappingsClientWithAuthFile creates an instance of the ConnectorMappingsClient client.
+func NewConnectorMappingsClientWithAuthFile() (ConnectorMappingsClient, error) {
+	c, err := NewWithAuthFile()
+	return ConnectorMappingsClient{c}, err
+}
+
 // CreateOrUpdate creates a connector mapping or updates an existing connector mapping in the connector.
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. connectorName is the name of

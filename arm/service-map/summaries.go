@@ -40,6 +40,12 @@ func NewSummariesClientWithBaseURI(baseURI string, subscriptionID string) Summar
 	return SummariesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSummariesClientWithAuthFile creates an instance of the SummariesClient client.
+func NewSummariesClientWithAuthFile() (SummariesClient, error) {
+	c, err := NewWithAuthFile()
+	return SummariesClient{c}, err
+}
+
 // GetMachines returns summary information about the machines in the workspace.
 //
 // resourceGroupName is resource group name within the specified subscriptionId. workspaceName is OMS workspace

@@ -39,6 +39,12 @@ func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) P
 	return PatchSchedulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewPatchSchedulesClientWithAuthFile creates an instance of the PatchSchedulesClient client.
+func NewPatchSchedulesClientWithAuthFile() (PatchSchedulesClient, error) {
+	c, err := NewWithAuthFile()
+	return PatchSchedulesClient{c}, err
+}
+
 // CreateOrUpdate create or replace the patching schedule for Redis cache (requires Premium SKU).
 //
 // resourceGroupName is the name of the resource group. name is the name of the Redis cache. parameters is parameters

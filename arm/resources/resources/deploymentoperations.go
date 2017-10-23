@@ -39,6 +39,12 @@ func NewDeploymentOperationsClientWithBaseURI(baseURI string, subscriptionID str
 	return DeploymentOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDeploymentOperationsClientWithAuthFile creates an instance of the DeploymentOperationsClient client.
+func NewDeploymentOperationsClientWithAuthFile() (DeploymentOperationsClient, error) {
+	c, err := NewWithAuthFile()
+	return DeploymentOperationsClient{c}, err
+}
+
 // Get gets a deployments operation.
 //
 // resourceGroupName is the name of the resource group. The name is case insensitive. deploymentName is the name of the

@@ -39,6 +39,12 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 	return GroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewGroupClientWithAuthFile creates an instance of the GroupClient client.
+func NewGroupClientWithAuthFile() (GroupClient, error) {
+	c, err := NewWithAuthFile()
+	return GroupClient{c}, err
+}
+
 // CheckAvailability checks the availability of the given notificationHub in a namespace.
 //
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name. parameters is the

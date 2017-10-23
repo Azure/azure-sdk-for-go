@@ -41,6 +41,12 @@ func NewInteractionsClientWithBaseURI(baseURI string, subscriptionID string) Int
 	return InteractionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewInteractionsClientWithAuthFile creates an instance of the InteractionsClient client.
+func NewInteractionsClientWithAuthFile() (InteractionsClient, error) {
+	c, err := NewWithAuthFile()
+	return InteractionsClient{c}, err
+}
+
 // CreateOrUpdate creates an interaction or updates an existing interaction within a hub. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

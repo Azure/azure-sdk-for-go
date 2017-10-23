@@ -39,6 +39,12 @@ func NewResourceClientWithBaseURI(baseURI string, subscriptionID string) Resourc
 	return ResourceClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewResourceClientWithAuthFile creates an instance of the ResourceClient client.
+func NewResourceClientWithAuthFile() (ResourceClient, error) {
+	c, err := NewWithAuthFile()
+	return ResourceClient{c}, err
+}
+
 // CheckNameAvailability check if an IoT hub name is available.
 //
 // operationInputs is set the name parameter in the OperationInputs structure to the name of the IoT hub to check.

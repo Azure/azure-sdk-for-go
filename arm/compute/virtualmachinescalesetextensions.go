@@ -39,6 +39,13 @@ func NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI string, subscr
 	return VirtualMachineScaleSetExtensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVirtualMachineScaleSetExtensionsClientWithAuthFile creates an instance of the
+// VirtualMachineScaleSetExtensionsClient client.
+func NewVirtualMachineScaleSetExtensionsClientWithAuthFile() (VirtualMachineScaleSetExtensionsClient, error) {
+	c, err := NewWithAuthFile()
+	return VirtualMachineScaleSetExtensionsClient{c}, err
+}
+
 // CreateOrUpdate the operation to create or update an extension. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

@@ -39,6 +39,12 @@ func NewMachineGroupsClientWithBaseURI(baseURI string, subscriptionID string) Ma
 	return MachineGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewMachineGroupsClientWithAuthFile creates an instance of the MachineGroupsClient client.
+func NewMachineGroupsClientWithAuthFile() (MachineGroupsClient, error) {
+	c, err := NewWithAuthFile()
+	return MachineGroupsClient{c}, err
+}
+
 // Create creates a new machine group.
 //
 // resourceGroupName is resource group name within the specified subscriptionId. workspaceName is OMS workspace

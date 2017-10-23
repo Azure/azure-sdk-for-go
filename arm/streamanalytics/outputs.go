@@ -38,6 +38,12 @@ func NewOutputsClientWithBaseURI(baseURI string, subscriptionID string) OutputsC
 	return OutputsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewOutputsClientWithAuthFile creates an instance of the OutputsClient client.
+func NewOutputsClientWithAuthFile() (OutputsClient, error) {
+	c, err := NewWithAuthFile()
+	return OutputsClient{c}, err
+}
+
 // CreateOrReplace creates an output or replaces an already existing output under an existing streaming job.
 //
 // output is the definition of the output that will be used to create a new output or replace the existing one under

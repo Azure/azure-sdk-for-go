@@ -38,6 +38,13 @@ func NewAvailableEndpointServicesClientWithBaseURI(baseURI string, subscriptionI
 	return AvailableEndpointServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAvailableEndpointServicesClientWithAuthFile creates an instance of the AvailableEndpointServicesClient
+// client.
+func NewAvailableEndpointServicesClientWithAuthFile() (AvailableEndpointServicesClient, error) {
+	c, err := NewWithAuthFile()
+	return AvailableEndpointServicesClient{c}, err
+}
+
 // List list what values of endpoint services are available for use.
 //
 // location is the location to check available endpoint services.

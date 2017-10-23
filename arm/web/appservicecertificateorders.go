@@ -39,6 +39,13 @@ func NewAppServiceCertificateOrdersClientWithBaseURI(baseURI string, subscriptio
 	return AppServiceCertificateOrdersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAppServiceCertificateOrdersClientWithAuthFile creates an instance of the AppServiceCertificateOrdersClient
+// client.
+func NewAppServiceCertificateOrdersClientWithAuthFile() (AppServiceCertificateOrdersClient, error) {
+	c, err := NewWithAuthFile()
+	return AppServiceCertificateOrdersClient{c}, err
+}
+
 // CreateOrUpdate create or update a certificate purchase order. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

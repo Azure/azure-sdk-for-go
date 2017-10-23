@@ -38,6 +38,12 @@ func NewRouteFiltersClientWithBaseURI(baseURI string, subscriptionID string) Rou
 	return RouteFiltersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRouteFiltersClientWithAuthFile creates an instance of the RouteFiltersClient client.
+func NewRouteFiltersClientWithAuthFile() (RouteFiltersClient, error) {
+	c, err := NewWithAuthFile()
+	return RouteFiltersClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a route filter in a specified resource group. This method may poll for completion.
 // Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.

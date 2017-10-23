@@ -40,6 +40,12 @@ func NewElasticPoolActivitiesClientWithBaseURI(baseURI string, subscriptionID st
 	return ElasticPoolActivitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewElasticPoolActivitiesClientWithAuthFile creates an instance of the ElasticPoolActivitiesClient client.
+func NewElasticPoolActivitiesClientWithAuthFile() (ElasticPoolActivitiesClient, error) {
+	c, err := NewWithAuthFile()
+	return ElasticPoolActivitiesClient{c}, err
+}
+
 // ListByElasticPool returns elastic pool activities.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

@@ -39,6 +39,12 @@ func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsCli
 	return AlertsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAlertsClientWithAuthFile creates an instance of the AlertsClient client.
+func NewAlertsClientWithAuthFile() (AlertsClient, error) {
+	c, err := NewWithAuthFile()
+	return AlertsClient{c}, err
+}
+
 // Clear clear the alerts.
 //
 // parameters is the clear alert request. resourceGroupName is the resource group name managerName is the manager name

@@ -39,6 +39,12 @@ func NewAutoscaleSettingsClientWithBaseURI(baseURI string, subscriptionID string
 	return AutoscaleSettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAutoscaleSettingsClientWithAuthFile creates an instance of the AutoscaleSettingsClient client.
+func NewAutoscaleSettingsClientWithAuthFile() (AutoscaleSettingsClient, error) {
+	c, err := NewWithAuthFile()
+	return AutoscaleSettingsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an autoscale setting.
 //
 // resourceGroupName is the name of the resource group. autoscaleSettingName is the autoscale setting name. parameters

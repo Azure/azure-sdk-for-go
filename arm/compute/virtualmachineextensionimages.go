@@ -39,6 +39,13 @@ func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscript
 	return VirtualMachineExtensionImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVirtualMachineExtensionImagesClientWithAuthFile creates an instance of the
+// VirtualMachineExtensionImagesClient client.
+func NewVirtualMachineExtensionImagesClientWithAuthFile() (VirtualMachineExtensionImagesClient, error) {
+	c, err := NewWithAuthFile()
+	return VirtualMachineExtensionImagesClient{c}, err
+}
+
 // Get gets a virtual machine extension image.
 //
 // location is the name of a supported Azure region.

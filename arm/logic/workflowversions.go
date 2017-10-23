@@ -38,6 +38,12 @@ func NewWorkflowVersionsClientWithBaseURI(baseURI string, subscriptionID string)
 	return WorkflowVersionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWorkflowVersionsClientWithAuthFile creates an instance of the WorkflowVersionsClient client.
+func NewWorkflowVersionsClientWithAuthFile() (WorkflowVersionsClient, error) {
+	c, err := NewWithAuthFile()
+	return WorkflowVersionsClient{c}, err
+}
+
 // Get gets a workflow version.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. versionID is the workflow

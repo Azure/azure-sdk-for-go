@@ -39,6 +39,12 @@ func NewBackupsClientWithBaseURI(baseURI string, subscriptionID string) BackupsC
 	return BackupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupsClientWithAuthFile creates an instance of the BackupsClient client.
+func NewBackupsClientWithAuthFile() (BackupsClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupsClient{c}, err
+}
+
 // Clone clones the backup element as a new volume. This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

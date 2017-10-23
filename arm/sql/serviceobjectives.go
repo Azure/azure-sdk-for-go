@@ -40,6 +40,12 @@ func NewServiceObjectivesClientWithBaseURI(baseURI string, subscriptionID string
 	return ServiceObjectivesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewServiceObjectivesClientWithAuthFile creates an instance of the ServiceObjectivesClient client.
+func NewServiceObjectivesClientWithAuthFile() (ServiceObjectivesClient, error) {
+	c, err := NewWithAuthFile()
+	return ServiceObjectivesClient{c}, err
+}
+
 // Get gets a database service objective.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

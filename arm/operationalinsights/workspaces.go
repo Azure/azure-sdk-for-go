@@ -39,6 +39,12 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 	return WorkspacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWorkspacesClientWithAuthFile creates an instance of the WorkspacesClient client.
+func NewWorkspacesClientWithAuthFile() (WorkspacesClient, error) {
+	c, err := NewWithAuthFile()
+	return WorkspacesClient{c}, err
+}
+
 // CreateOrUpdate create or update a workspace. This method may poll for completion. Polling can be canceled by passing
 // the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

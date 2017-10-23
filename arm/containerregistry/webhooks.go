@@ -39,6 +39,12 @@ func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) Webhook
 	return WebhooksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWebhooksClientWithAuthFile creates an instance of the WebhooksClient client.
+func NewWebhooksClientWithAuthFile() (WebhooksClient, error) {
+	c, err := NewWithAuthFile()
+	return WebhooksClient{c}, err
+}
+
 // Create creates a webhook for a container registry with the specified parameters. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

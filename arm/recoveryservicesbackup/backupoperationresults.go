@@ -38,6 +38,12 @@ func NewBackupOperationResultsClientWithBaseURI(baseURI string, subscriptionID s
 	return BackupOperationResultsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupOperationResultsClientWithAuthFile creates an instance of the BackupOperationResultsClient client.
+func NewBackupOperationResultsClientWithAuthFile() (BackupOperationResultsClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupOperationResultsClient{c}, err
+}
+
 // Get provides the status of the delete operations such as deleting backed up item. Once the operation has started,
 // the status code in the response would be Accepted. It will continue to be in this state till it reaches completion.
 // On successful completion, the status code will be OK. This method expects OperationID as an argument. OperationID is

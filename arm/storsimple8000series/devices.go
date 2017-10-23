@@ -39,6 +39,12 @@ func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesC
 	return DevicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDevicesClientWithAuthFile creates an instance of the DevicesClient client.
+func NewDevicesClientWithAuthFile() (DevicesClient, error) {
+	c, err := NewWithAuthFile()
+	return DevicesClient{c}, err
+}
+
 // AuthorizeForServiceEncryptionKeyRollover authorizes the specified device for service data encryption key rollover.
 //
 // deviceName is the device name resourceGroupName is the resource group name managerName is the manager name

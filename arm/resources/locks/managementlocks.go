@@ -40,6 +40,12 @@ func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) 
 	return ManagementLocksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewManagementLocksClientWithAuthFile creates an instance of the ManagementLocksClient client.
+func NewManagementLocksClientWithAuthFile() (ManagementLocksClient, error) {
+	c, err := NewWithAuthFile()
+	return ManagementLocksClient{c}, err
+}
+
 // CreateOrUpdateAtResourceGroupLevel when you apply a lock at a parent scope, all child resources inherit the same
 // lock. To create management locks, you must have access to Microsoft.Authorization/* or
 // Microsoft.Authorization/locks/* actions. Of the built-in roles, only Owner and User Access Administrator are granted

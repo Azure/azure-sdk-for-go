@@ -38,6 +38,13 @@ func NewBackupProtectionContainersClientWithBaseURI(baseURI string, subscription
 	return BackupProtectionContainersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupProtectionContainersClientWithAuthFile creates an instance of the BackupProtectionContainersClient
+// client.
+func NewBackupProtectionContainersClientWithAuthFile() (BackupProtectionContainersClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupProtectionContainersClient{c}, err
+}
+
 // List lists the containers registered to Recovery Services Vault.
 //
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the

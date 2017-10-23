@@ -39,6 +39,12 @@ func NewDataLakeStoreAccountsClientWithBaseURI(baseURI string, subscriptionID st
 	return DataLakeStoreAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDataLakeStoreAccountsClientWithAuthFile creates an instance of the DataLakeStoreAccountsClient client.
+func NewDataLakeStoreAccountsClientWithAuthFile() (DataLakeStoreAccountsClient, error) {
+	c, err := NewWithAuthFile()
+	return DataLakeStoreAccountsClient{c}, err
+}
+
 // Add updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
 //
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName

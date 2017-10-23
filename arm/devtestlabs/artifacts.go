@@ -38,6 +38,12 @@ func NewArtifactsClientWithBaseURI(baseURI string, subscriptionID string) Artifa
 	return ArtifactsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewArtifactsClientWithAuthFile creates an instance of the ArtifactsClient client.
+func NewArtifactsClientWithAuthFile() (ArtifactsClient, error) {
+	c, err := NewWithAuthFile()
+	return ArtifactsClient{c}, err
+}
+
 // GenerateArmTemplate generates an ARM template for the given artifact, uploads the required files to a storage
 // account, and validates the generated artifact.
 //

@@ -39,6 +39,12 @@ func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountC
 	return AccountClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAccountClientWithAuthFile creates an instance of the AccountClient client.
+func NewAccountClientWithAuthFile() (AccountClient, error) {
+	c, err := NewWithAuthFile()
+	return AccountClient{c}, err
+}
+
 // CreateOrUpdate create or update automation account.
 //
 // resourceGroupName is the resource group name. automationAccountName is parameters supplied to the create or update

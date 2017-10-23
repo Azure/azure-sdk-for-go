@@ -39,6 +39,12 @@ func NewBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) B
 	return BackupPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupPoliciesClientWithAuthFile creates an instance of the BackupPoliciesClient client.
+func NewBackupPoliciesClientWithAuthFile() (BackupPoliciesClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupPoliciesClient{c}, err
+}
+
 // BackupNow backup the backup policy now. This method may poll for completion. Polling can be canceled by passing the
 // cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

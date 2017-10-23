@@ -39,6 +39,13 @@ func NewExpressRouteServiceProvidersClientWithBaseURI(baseURI string, subscripti
 	return ExpressRouteServiceProvidersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewExpressRouteServiceProvidersClientWithAuthFile creates an instance of the ExpressRouteServiceProvidersClient
+// client.
+func NewExpressRouteServiceProvidersClientWithAuthFile() (ExpressRouteServiceProvidersClient, error) {
+	c, err := NewWithAuthFile()
+	return ExpressRouteServiceProvidersClient{c}, err
+}
+
 // List gets all the available express route service providers.
 func (client ExpressRouteServiceProvidersClient) List() (result ExpressRouteServiceProviderListResult, err error) {
 	req, err := client.ListPreparer()

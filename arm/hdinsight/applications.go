@@ -38,6 +38,12 @@ func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) App
 	return ApplicationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewApplicationsClientWithAuthFile creates an instance of the ApplicationsClient client.
+func NewApplicationsClientWithAuthFile() (ApplicationsClient, error) {
+	c, err := NewWithAuthFile()
+	return ApplicationsClient{c}, err
+}
+
 // Create the operation creates applications for the HDInsight cluster.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. applicationName is the

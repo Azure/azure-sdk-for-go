@@ -39,6 +39,12 @@ func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsC
 	return RegionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRegionsClientWithAuthFile creates an instance of the RegionsClient client.
+func NewRegionsClientWithAuthFile() (RegionsClient, error) {
+	c, err := NewWithAuthFile()
+	return RegionsClient{c}, err
+}
+
 // ListBySku gets the available Regions for a given sku
 //
 // sku is the sku type.

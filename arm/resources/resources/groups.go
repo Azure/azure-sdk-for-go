@@ -39,6 +39,12 @@ func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string) GroupsCli
 	return GroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewGroupsClientWithAuthFile creates an instance of the GroupsClient client.
+func NewGroupsClientWithAuthFile() (GroupsClient, error) {
+	c, err := NewWithAuthFile()
+	return GroupsClient{c}, err
+}
+
 // CheckExistence checks whether a resource group exists.
 //
 // resourceGroupName is the name of the resource group to check. The name is case insensitive.

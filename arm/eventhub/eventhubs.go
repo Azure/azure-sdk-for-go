@@ -39,6 +39,12 @@ func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventH
 	return EventHubsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewEventHubsClientWithAuthFile creates an instance of the EventHubsClient client.
+func NewEventHubsClientWithAuthFile() (EventHubsClient, error) {
+	c, err := NewWithAuthFile()
+	return EventHubsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a new Event Hub as a nested resource within a Namespace.
 //
 // resourceGroupName is name of the resource group within the azure subscription. namespaceName is the Namespace name

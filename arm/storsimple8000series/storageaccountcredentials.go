@@ -40,6 +40,13 @@ func NewStorageAccountCredentialsClientWithBaseURI(baseURI string, subscriptionI
 	return StorageAccountCredentialsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewStorageAccountCredentialsClientWithAuthFile creates an instance of the StorageAccountCredentialsClient
+// client.
+func NewStorageAccountCredentialsClientWithAuthFile() (StorageAccountCredentialsClient, error) {
+	c, err := NewWithAuthFile()
+	return StorageAccountCredentialsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates the storage account credential. This method may poll for completion. Polling can
 // be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding
 // HTTP requests.

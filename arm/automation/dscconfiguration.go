@@ -39,6 +39,12 @@ func NewDscConfigurationClientWithBaseURI(baseURI string, subscriptionID string)
 	return DscConfigurationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDscConfigurationClientWithAuthFile creates an instance of the DscConfigurationClient client.
+func NewDscConfigurationClientWithAuthFile() (DscConfigurationClient, error) {
+	c, err := NewWithAuthFile()
+	return DscConfigurationClient{c}, err
+}
+
 // CreateOrUpdate create the configuration identified by configuration name.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name.

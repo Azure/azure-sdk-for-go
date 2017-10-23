@@ -40,6 +40,12 @@ func NewJobScheduleClientWithBaseURI(baseURI string, subscriptionID string) JobS
 	return JobScheduleClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewJobScheduleClientWithAuthFile creates an instance of the JobScheduleClient client.
+func NewJobScheduleClientWithAuthFile() (JobScheduleClient, error) {
+	c, err := NewWithAuthFile()
+	return JobScheduleClient{c}, err
+}
+
 // Create create a job schedule.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. jobScheduleID is

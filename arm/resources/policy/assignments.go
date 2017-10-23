@@ -40,6 +40,12 @@ func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) Assi
 	return AssignmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAssignmentsClientWithAuthFile creates an instance of the AssignmentsClient client.
+func NewAssignmentsClientWithAuthFile() (AssignmentsClient, error) {
+	c, err := NewWithAuthFile()
+	return AssignmentsClient{c}, err
+}
+
 // Create policy assignments are inherited by child resources. For example, when you apply a policy to a resource group
 // that policy is assigned to all resources in the group.
 //

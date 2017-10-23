@@ -40,6 +40,12 @@ func NewEncryptionProtectorsClientWithBaseURI(baseURI string, subscriptionID str
 	return EncryptionProtectorsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewEncryptionProtectorsClientWithAuthFile creates an instance of the EncryptionProtectorsClient client.
+func NewEncryptionProtectorsClientWithAuthFile() (EncryptionProtectorsClient, error) {
+	c, err := NewWithAuthFile()
+	return EncryptionProtectorsClient{c}, err
+}
+
 // CreateOrUpdate updates an existing encryption protector. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

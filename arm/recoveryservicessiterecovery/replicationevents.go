@@ -38,6 +38,12 @@ func NewReplicationEventsClientWithBaseURI(baseURI string, subscriptionID string
 	return ReplicationEventsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationEventsClientWithAuthFile creates an instance of the ReplicationEventsClient client.
+func NewReplicationEventsClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationEventsClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationEventsClient{c}, err
+}
+
 // Get the operation to get the details of an Azure Site recovery event.
 //
 // eventName is the name of the Azure Site Recovery event.

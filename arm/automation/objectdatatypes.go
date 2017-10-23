@@ -39,6 +39,12 @@ func NewObjectDataTypesClientWithBaseURI(baseURI string, subscriptionID string) 
 	return ObjectDataTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewObjectDataTypesClientWithAuthFile creates an instance of the ObjectDataTypesClient client.
+func NewObjectDataTypesClientWithAuthFile() (ObjectDataTypesClient, error) {
+	c, err := NewWithAuthFile()
+	return ObjectDataTypesClient{c}, err
+}
+
 // ListFieldsByModuleAndType retrieve a list of fields of a given type identified by module name.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. moduleName is

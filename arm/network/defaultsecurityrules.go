@@ -38,6 +38,12 @@ func NewDefaultSecurityRulesClientWithBaseURI(baseURI string, subscriptionID str
 	return DefaultSecurityRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDefaultSecurityRulesClientWithAuthFile creates an instance of the DefaultSecurityRulesClient client.
+func NewDefaultSecurityRulesClientWithAuthFile() (DefaultSecurityRulesClient, error) {
+	c, err := NewWithAuthFile()
+	return DefaultSecurityRulesClient{c}, err
+}
+
 // Get get the specified default network security rule.
 //
 // resourceGroupName is the name of the resource group. networkSecurityGroupName is the name of the network security

@@ -40,6 +40,12 @@ func NewRunbookDraftClientWithBaseURI(baseURI string, subscriptionID string) Run
 	return RunbookDraftClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRunbookDraftClientWithAuthFile creates an instance of the RunbookDraftClient client.
+func NewRunbookDraftClientWithAuthFile() (RunbookDraftClient, error) {
+	c, err := NewWithAuthFile()
+	return RunbookDraftClient{c}, err
+}
+
 // CreateOrUpdate updates the runbook draft with runbookStream as its content. This method may poll for completion.
 // Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.

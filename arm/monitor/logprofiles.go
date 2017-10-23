@@ -39,6 +39,12 @@ func NewLogProfilesClientWithBaseURI(baseURI string, subscriptionID string) LogP
 	return LogProfilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLogProfilesClientWithAuthFile creates an instance of the LogProfilesClient client.
+func NewLogProfilesClientWithAuthFile() (LogProfilesClient, error) {
+	c, err := NewWithAuthFile()
+	return LogProfilesClient{c}, err
+}
+
 // CreateOrUpdate create or update a log profile in Azure Monitoring REST API.
 //
 // logProfileName is the name of the log profile. parameters is parameters supplied to the operation.

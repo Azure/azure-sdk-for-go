@@ -39,6 +39,12 @@ func NewHybridConnectionsClientWithBaseURI(baseURI string, subscriptionID string
 	return HybridConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewHybridConnectionsClientWithAuthFile creates an instance of the HybridConnectionsClient client.
+func NewHybridConnectionsClientWithAuthFile() (HybridConnectionsClient, error) {
+	c, err := NewWithAuthFile()
+	return HybridConnectionsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a service hybrid connection. This operation is idempotent.
 //
 // resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace name

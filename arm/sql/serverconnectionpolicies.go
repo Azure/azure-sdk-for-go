@@ -40,6 +40,12 @@ func NewServerConnectionPoliciesClientWithBaseURI(baseURI string, subscriptionID
 	return ServerConnectionPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewServerConnectionPoliciesClientWithAuthFile creates an instance of the ServerConnectionPoliciesClient client.
+func NewServerConnectionPoliciesClientWithAuthFile() (ServerConnectionPoliciesClient, error) {
+	c, err := NewWithAuthFile()
+	return ServerConnectionPoliciesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates the server's connection policy.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

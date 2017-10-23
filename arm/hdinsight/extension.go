@@ -38,6 +38,12 @@ func NewExtensionClientWithBaseURI(baseURI string, subscriptionID string) Extens
 	return ExtensionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewExtensionClientWithAuthFile creates an instance of the ExtensionClient client.
+func NewExtensionClientWithAuthFile() (ExtensionClient, error) {
+	c, err := NewWithAuthFile()
+	return ExtensionClient{c}, err
+}
+
 // Create create HDInsight cluster extension.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. parameters is the

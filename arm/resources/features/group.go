@@ -41,6 +41,12 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 	return GroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewGroupClientWithAuthFile creates an instance of the GroupClient client.
+func NewGroupClientWithAuthFile() (GroupClient, error) {
+	c, err := NewWithAuthFile()
+	return GroupClient{c}, err
+}
+
 // Get gets the preview feature with the specified name.
 //
 // resourceProviderNamespace is the resource provider namespace for the feature. featureName is the name of the feature

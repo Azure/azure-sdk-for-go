@@ -40,6 +40,12 @@ func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsCli
 	return VaultsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVaultsClientWithAuthFile creates an instance of the VaultsClient client.
+func NewVaultsClientWithAuthFile() (VaultsClient, error) {
+	c, err := NewWithAuthFile()
+	return VaultsClient{c}, err
+}
+
 // CreateOrUpdate create or update a key vault in the specified subscription.
 //
 // resourceGroupName is the name of the Resource Group to which the server belongs. vaultName is name of the vault

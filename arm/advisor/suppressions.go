@@ -38,6 +38,12 @@ func NewSuppressionsClientWithBaseURI(baseURI string, subscriptionID string) Sup
 	return SuppressionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSuppressionsClientWithAuthFile creates an instance of the SuppressionsClient client.
+func NewSuppressionsClientWithAuthFile() (SuppressionsClient, error) {
+	c, err := NewWithAuthFile()
+	return SuppressionsClient{c}, err
+}
+
 // Create enables the snoozed or dismissed attribute of a recommendation. The snoozed or dismissed attribute is
 // referred to as a suppression. Use this API to create or update the snoozed or dismissed status of a recommendation.
 //

@@ -40,6 +40,12 @@ func NewProcessesClientWithBaseURI(baseURI string, subscriptionID string) Proces
 	return ProcessesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewProcessesClientWithAuthFile creates an instance of the ProcessesClient client.
+func NewProcessesClientWithAuthFile() (ProcessesClient, error) {
+	c, err := NewWithAuthFile()
+	return ProcessesClient{c}, err
+}
+
 // Get returns the specified process.
 //
 // resourceGroupName is resource group name within the specified subscriptionId. workspaceName is OMS workspace

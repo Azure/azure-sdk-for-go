@@ -39,6 +39,12 @@ func NewAndroidClientWithBaseURI(baseURI string) AndroidClient {
 	return AndroidClient{NewWithBaseURI(baseURI)}
 }
 
+// NewAndroidClientWithAuthFile creates an instance of the AndroidClient client.
+func NewAndroidClientWithAuthFile() (AndroidClient, error) {
+	c, err := NewWithAuthFile()
+	return AndroidClient{c}, err
+}
+
 // AddAppForMAMPolicy add app to an AndroidMAMPolicy.
 //
 // hostName is location hostName for the tenant policyName is unique name for the policy appName is application unique

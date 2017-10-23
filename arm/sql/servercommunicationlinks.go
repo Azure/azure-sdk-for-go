@@ -41,6 +41,12 @@ func NewServerCommunicationLinksClientWithBaseURI(baseURI string, subscriptionID
 	return ServerCommunicationLinksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewServerCommunicationLinksClientWithAuthFile creates an instance of the ServerCommunicationLinksClient client.
+func NewServerCommunicationLinksClientWithAuthFile() (ServerCommunicationLinksClient, error) {
+	c, err := NewWithAuthFile()
+	return ServerCommunicationLinksClient{c}, err
+}
+
 // CreateOrUpdate creates a server communication link. This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

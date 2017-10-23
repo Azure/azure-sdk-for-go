@@ -42,6 +42,12 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 	return GroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewGroupClientWithAuthFile creates an instance of the GroupClient client.
+func NewGroupClientWithAuthFile() (GroupClient, error) {
+	c, err := NewWithAuthFile()
+	return GroupClient{c}, err
+}
+
 // CreateOrUpdate create or update a web service. This call will overwrite an existing web service. Note that there is
 // no warning or confirmation. This is a nonrecoverable operation. If your intent is to create a new web service, call
 // the Get operation first to verify that it does not exist. This method may poll for completion. Polling can be

@@ -39,6 +39,12 @@ func NewDeviceSettingsClientWithBaseURI(baseURI string, subscriptionID string) D
 	return DeviceSettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDeviceSettingsClientWithAuthFile creates an instance of the DeviceSettingsClient client.
+func NewDeviceSettingsClientWithAuthFile() (DeviceSettingsClient, error) {
+	c, err := NewWithAuthFile()
+	return DeviceSettingsClient{c}, err
+}
+
 // CreateOrUpdateAlertSettings creates or updates the alert settings of the specified device. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

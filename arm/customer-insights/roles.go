@@ -40,6 +40,12 @@ func NewRolesClientWithBaseURI(baseURI string, subscriptionID string) RolesClien
 	return RolesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRolesClientWithAuthFile creates an instance of the RolesClient client.
+func NewRolesClientWithAuthFile() (RolesClient, error) {
+	c, err := NewWithAuthFile()
+	return RolesClient{c}, err
+}
+
 // ListByHub gets all the roles for the hub.
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub.

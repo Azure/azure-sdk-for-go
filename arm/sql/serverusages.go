@@ -40,6 +40,12 @@ func NewServerUsagesClientWithBaseURI(baseURI string, subscriptionID string) Ser
 	return ServerUsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewServerUsagesClientWithAuthFile creates an instance of the ServerUsagesClient client.
+func NewServerUsagesClientWithAuthFile() (ServerUsagesClient, error) {
+	c, err := NewWithAuthFile()
+	return ServerUsagesClient{c}, err
+}
+
 // ListByServer returns server usages.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

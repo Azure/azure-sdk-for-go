@@ -38,6 +38,12 @@ func NewTopicTypesClientWithBaseURI(baseURI string, subscriptionID string) Topic
 	return TopicTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewTopicTypesClientWithAuthFile creates an instance of the TopicTypesClient client.
+func NewTopicTypesClientWithAuthFile() (TopicTypesClient, error) {
+	c, err := NewWithAuthFile()
+	return TopicTypesClient{c}, err
+}
+
 // Get get information about a topic type
 //
 // topicTypeName is name of the topic type

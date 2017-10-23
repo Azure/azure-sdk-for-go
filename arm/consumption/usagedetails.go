@@ -41,6 +41,12 @@ func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) Usa
 	return UsageDetailsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewUsageDetailsClientWithAuthFile creates an instance of the UsageDetailsClient client.
+func NewUsageDetailsClientWithAuthFile() (UsageDetailsClient, error) {
+	c, err := NewWithAuthFile()
+	return UsageDetailsClient{c}, err
+}
+
 // List lists the usage details for a scope in reverse chronological order by billing period. Usage details are
 // available via this API only for January 1, 2017 or later.
 //

@@ -39,6 +39,12 @@ func NewCredentialClientWithBaseURI(baseURI string, subscriptionID string) Crede
 	return CredentialClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewCredentialClientWithAuthFile creates an instance of the CredentialClient client.
+func NewCredentialClientWithAuthFile() (CredentialClient, error) {
+	c, err := NewWithAuthFile()
+	return CredentialClient{c}, err
+}
+
 // CreateOrUpdate create a credential.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. credentialName

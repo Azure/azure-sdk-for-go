@@ -38,6 +38,12 @@ func NewWorkflowTriggersClientWithBaseURI(baseURI string, subscriptionID string)
 	return WorkflowTriggersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWorkflowTriggersClientWithAuthFile creates an instance of the WorkflowTriggersClient client.
+func NewWorkflowTriggersClientWithAuthFile() (WorkflowTriggersClient, error) {
+	c, err := NewWithAuthFile()
+	return WorkflowTriggersClient{c}, err
+}
+
 // Get gets a workflow trigger.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. triggerName is the workflow trigger

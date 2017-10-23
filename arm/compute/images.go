@@ -39,6 +39,12 @@ func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesCli
 	return ImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewImagesClientWithAuthFile creates an instance of the ImagesClient client.
+func NewImagesClientWithAuthFile() (ImagesClient, error) {
+	c, err := NewWithAuthFile()
+	return ImagesClient{c}, err
+}
+
 // CreateOrUpdate create or update an image. This method may poll for completion. Polling can be canceled by passing
 // the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

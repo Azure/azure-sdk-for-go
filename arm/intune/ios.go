@@ -39,6 +39,12 @@ func NewIosClientWithBaseURI(baseURI string) IosClient {
 	return IosClient{NewWithBaseURI(baseURI)}
 }
 
+// NewIosClientWithAuthFile creates an instance of the IosClient client.
+func NewIosClientWithAuthFile() (IosClient, error) {
+	c, err := NewWithAuthFile()
+	return IosClient{c}, err
+}
+
 // AddAppForMAMPolicy add app to an iOSMAMPolicy.
 //
 // hostName is location hostName for the tenant policyName is unique name for the policy appName is application unique

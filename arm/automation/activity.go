@@ -39,6 +39,12 @@ func NewActivityClientWithBaseURI(baseURI string, subscriptionID string) Activit
 	return ActivityClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewActivityClientWithAuthFile creates an instance of the ActivityClient client.
+func NewActivityClientWithAuthFile() (ActivityClient, error) {
+	c, err := NewWithAuthFile()
+	return ActivityClient{c}, err
+}
+
 // Get retrieve the activity in the module identified by module name and activity name.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. moduleName is

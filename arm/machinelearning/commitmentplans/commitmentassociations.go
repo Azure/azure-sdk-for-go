@@ -41,6 +41,12 @@ func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID s
 	return CommitmentAssociationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewCommitmentAssociationsClientWithAuthFile creates an instance of the CommitmentAssociationsClient client.
+func NewCommitmentAssociationsClientWithAuthFile() (CommitmentAssociationsClient, error) {
+	c, err := NewWithAuthFile()
+	return CommitmentAssociationsClient{c}, err
+}
+
 // Get get a commitment association.
 //
 // resourceGroupName is the resource group name. commitmentPlanName is the Azure ML commitment plan name.

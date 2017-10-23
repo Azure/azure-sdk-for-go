@@ -38,6 +38,12 @@ func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClien
 	return UsageClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewUsageClientWithAuthFile creates an instance of the UsageClient client.
+func NewUsageClientWithAuthFile() (UsageClient, error) {
+	c, err := NewWithAuthFile()
+	return UsageClient{c}, err
+}
+
 // List gets the current usage count and the limit for the resources under the subscription.
 func (client UsageClient) List() (result UsageListResult, err error) {
 	req, err := client.ListPreparer()

@@ -39,6 +39,12 @@ func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) Defi
 	return DefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDefinitionsClientWithAuthFile creates an instance of the DefinitionsClient client.
+func NewDefinitionsClientWithAuthFile() (DefinitionsClient, error) {
+	c, err := NewWithAuthFile()
+	return DefinitionsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a policy definition.
 //
 // policyDefinitionName is the name of the policy definition to create. parameters is the policy definition properties.

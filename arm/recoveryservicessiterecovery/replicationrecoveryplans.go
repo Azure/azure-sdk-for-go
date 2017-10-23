@@ -40,6 +40,12 @@ func NewReplicationRecoveryPlansClientWithBaseURI(baseURI string, subscriptionID
 	return ReplicationRecoveryPlansClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationRecoveryPlansClientWithAuthFile creates an instance of the ReplicationRecoveryPlansClient client.
+func NewReplicationRecoveryPlansClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationRecoveryPlansClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationRecoveryPlansClient{c}, err
+}
+
 // Create the operation to create a recovery plan. This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

@@ -41,6 +41,12 @@ func NewKpiClientWithBaseURI(baseURI string, subscriptionID string) KpiClient {
 	return KpiClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewKpiClientWithAuthFile creates an instance of the KpiClient client.
+func NewKpiClientWithAuthFile() (KpiClient, error) {
+	c, err := NewWithAuthFile()
+	return KpiClient{c}, err
+}
+
 // CreateOrUpdate creates a KPI or updates an existing KPI in the hub. This method may poll for completion. Polling can
 // be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding
 // HTTP requests.

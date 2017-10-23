@@ -38,6 +38,12 @@ func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) Endpoi
 	return EndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewEndpointsClientWithAuthFile creates an instance of the EndpointsClient client.
+func NewEndpointsClientWithAuthFile() (EndpointsClient, error) {
+	c, err := NewWithAuthFile()
+	return EndpointsClient{c}, err
+}
+
 // CreateOrUpdate create or update a Traffic Manager endpoint.
 //
 // resourceGroupName is the name of the resource group containing the Traffic Manager endpoint to be created or

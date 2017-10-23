@@ -39,6 +39,12 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewUsagesClientWithAuthFile creates an instance of the UsagesClient client.
+func NewUsagesClientWithAuthFile() (UsagesClient, error) {
+	c, err := NewWithAuthFile()
+	return UsagesClient{c}, err
+}
+
 // List list network usages for a subscription.
 //
 // location is the location where resource usage is queried.

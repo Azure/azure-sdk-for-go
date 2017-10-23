@@ -38,6 +38,12 @@ func NewSupportedPlatformsClientWithBaseURI(baseURI string, subscriptionID strin
 	return SupportedPlatformsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSupportedPlatformsClientWithAuthFile creates an instance of the SupportedPlatformsClient client.
+func NewSupportedPlatformsClientWithAuthFile() (SupportedPlatformsClient, error) {
+	c, err := NewWithAuthFile()
+	return SupportedPlatformsClient{c}, err
+}
+
 // List lists supported platforms for Engagement applications.
 func (client SupportedPlatformsClient) List() (result SupportedPlatformsListResult, err error) {
 	req, err := client.ListPreparer()

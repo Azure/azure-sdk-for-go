@@ -42,6 +42,12 @@ func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) Project
 	return ProjectsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewProjectsClientWithAuthFile creates an instance of the ProjectsClient client.
+func NewProjectsClientWithAuthFile() (ProjectsClient, error) {
+	c, err := NewWithAuthFile()
+	return ProjectsClient{c}, err
+}
+
 // Create creates a Team Services project in the collection with the specified name. 'VersionControlOption' and
 // 'ProcessTemplateId' must be specified in the resource properties. Valid values for VersionControlOption: Git, Tfvc.
 // Valid values for ProcessTemplateId: 6B724908-EF14-45CF-84F8-768B5384DA45, ADCC42AB-9882-485E-A3ED-7678F01F66BC,

@@ -39,6 +39,12 @@ func NewImportTasksClientWithBaseURI(baseURI string, subscriptionID string) Impo
 	return ImportTasksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewImportTasksClientWithAuthFile creates an instance of the ImportTasksClient client.
+func NewImportTasksClientWithAuthFile() (ImportTasksClient, error) {
+	c, err := NewWithAuthFile()
+	return ImportTasksClient{c}, err
+}
+
 // Create creates a job to import the specified data to a storageUrl.
 //
 // resourceGroupName is the name of the resource group. appCollection is application collection. appName is application

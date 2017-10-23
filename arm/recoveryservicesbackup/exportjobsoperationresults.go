@@ -38,6 +38,13 @@ func NewExportJobsOperationResultsClientWithBaseURI(baseURI string, subscription
 	return ExportJobsOperationResultsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewExportJobsOperationResultsClientWithAuthFile creates an instance of the ExportJobsOperationResultsClient
+// client.
+func NewExportJobsOperationResultsClientWithAuthFile() (ExportJobsOperationResultsClient, error) {
+	c, err := NewWithAuthFile()
+	return ExportJobsOperationResultsClient{c}, err
+}
+
 // Get gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it
 // also contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
 // format.

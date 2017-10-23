@@ -38,6 +38,12 @@ func NewArmTemplatesClientWithBaseURI(baseURI string, subscriptionID string) Arm
 	return ArmTemplatesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewArmTemplatesClientWithAuthFile creates an instance of the ArmTemplatesClient client.
+func NewArmTemplatesClientWithAuthFile() (ArmTemplatesClient, error) {
+	c, err := NewWithAuthFile()
+	return ArmTemplatesClient{c}, err
+}
+
 // Get get azure resource manager template.
 //
 // resourceGroupName is the name of the resource group. labName is the name of the lab. artifactSourceName is the name

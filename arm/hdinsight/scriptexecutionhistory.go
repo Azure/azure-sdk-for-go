@@ -38,6 +38,12 @@ func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID s
 	return ScriptExecutionHistoryClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewScriptExecutionHistoryClientWithAuthFile creates an instance of the ScriptExecutionHistoryClient client.
+func NewScriptExecutionHistoryClientWithAuthFile() (ScriptExecutionHistoryClient, error) {
+	c, err := NewWithAuthFile()
+	return ScriptExecutionHistoryClient{c}, err
+}
+
 // Get gets the script execution detail for the given script execution id.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. scriptExecutionID is

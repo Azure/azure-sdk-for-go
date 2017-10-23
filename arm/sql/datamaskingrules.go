@@ -41,6 +41,12 @@ func NewDataMaskingRulesClientWithBaseURI(baseURI string, subscriptionID string)
 	return DataMaskingRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDataMaskingRulesClientWithAuthFile creates an instance of the DataMaskingRulesClient client.
+func NewDataMaskingRulesClientWithAuthFile() (DataMaskingRulesClient, error) {
+	c, err := NewWithAuthFile()
+	return DataMaskingRulesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a database data masking rule.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

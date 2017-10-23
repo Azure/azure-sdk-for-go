@@ -41,6 +41,13 @@ func NewServerAzureADAdministratorsClientWithBaseURI(baseURI string, subscriptio
 	return ServerAzureADAdministratorsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewServerAzureADAdministratorsClientWithAuthFile creates an instance of the ServerAzureADAdministratorsClient
+// client.
+func NewServerAzureADAdministratorsClientWithAuthFile() (ServerAzureADAdministratorsClient, error) {
+	c, err := NewWithAuthFile()
+	return ServerAzureADAdministratorsClient{c}, err
+}
+
 // CreateOrUpdate creates a new Server Active Directory Administrator or updates an existing server Active Directory
 // Administrator. This method may poll for completion. Polling can be canceled by passing the cancel channel argument.
 // The channel will be used to cancel polling and any outstanding HTTP requests.

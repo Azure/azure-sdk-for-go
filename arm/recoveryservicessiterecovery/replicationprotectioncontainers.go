@@ -40,6 +40,13 @@ func NewReplicationProtectionContainersClientWithBaseURI(baseURI string, subscri
 	return ReplicationProtectionContainersClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationProtectionContainersClientWithAuthFile creates an instance of the
+// ReplicationProtectionContainersClient client.
+func NewReplicationProtectionContainersClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationProtectionContainersClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationProtectionContainersClient{c}, err
+}
+
 // Create operation to create a protection container. This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

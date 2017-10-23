@@ -38,6 +38,12 @@ func NewWorkflowTriggerHistoriesClientWithBaseURI(baseURI string, subscriptionID
 	return WorkflowTriggerHistoriesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWorkflowTriggerHistoriesClientWithAuthFile creates an instance of the WorkflowTriggerHistoriesClient client.
+func NewWorkflowTriggerHistoriesClientWithAuthFile() (WorkflowTriggerHistoriesClient, error) {
+	c, err := NewWithAuthFile()
+	return WorkflowTriggerHistoriesClient{c}, err
+}
+
 // Get gets a workflow trigger history.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. triggerName is the workflow trigger

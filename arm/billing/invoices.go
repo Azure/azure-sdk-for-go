@@ -41,6 +41,12 @@ func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) Invoice
 	return InvoicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewInvoicesClientWithAuthFile creates an instance of the InvoicesClient client.
+func NewInvoicesClientWithAuthFile() (InvoicesClient, error) {
+	c, err := NewWithAuthFile()
+	return InvoicesClient{c}, err
+}
+
 // Get gets a named invoice resource. When getting a single invoice, the downloadUrl property is expanded
 // automatically.
 //

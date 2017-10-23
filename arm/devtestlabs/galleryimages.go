@@ -38,6 +38,12 @@ func NewGalleryImagesClientWithBaseURI(baseURI string, subscriptionID string) Ga
 	return GalleryImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewGalleryImagesClientWithAuthFile creates an instance of the GalleryImagesClient client.
+func NewGalleryImagesClientWithAuthFile() (GalleryImagesClient, error) {
+	c, err := NewWithAuthFile()
+	return GalleryImagesClient{c}, err
+}
+
 // List list gallery images in a given lab.
 //
 // resourceGroupName is the name of the resource group. labName is the name of the lab. expand is specify the $expand

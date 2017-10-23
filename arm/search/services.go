@@ -40,6 +40,12 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 	return ServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewServicesClientWithAuthFile creates an instance of the ServicesClient client.
+func NewServicesClientWithAuthFile() (ServicesClient, error) {
+	c, err := NewWithAuthFile()
+	return ServicesClient{c}, err
+}
+
 // CheckNameAvailability checks whether or not the given Search service name is available for use. Search service names
 // must be globally unique since they are part of the service URI (https://<name>.search.windows.net).
 //

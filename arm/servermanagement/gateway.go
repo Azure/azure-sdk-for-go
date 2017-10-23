@@ -39,6 +39,12 @@ func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayC
 	return GatewayClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewGatewayClientWithAuthFile creates an instance of the GatewayClient client.
+func NewGatewayClientWithAuthFile() (GatewayClient, error) {
+	c, err := NewWithAuthFile()
+	return GatewayClient{c}, err
+}
+
 // Create creates or updates a ManagementService gateway. This method may poll for completion. Polling can be canceled
 // by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

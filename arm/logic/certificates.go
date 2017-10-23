@@ -39,6 +39,12 @@ func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) Cer
 	return CertificatesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewCertificatesClientWithAuthFile creates an instance of the CertificatesClient client.
+func NewCertificatesClientWithAuthFile() (CertificatesClient, error) {
+	c, err := NewWithAuthFile()
+	return CertificatesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an integration account certificate.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name.

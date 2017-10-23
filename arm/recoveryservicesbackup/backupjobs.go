@@ -38,6 +38,12 @@ func NewBackupJobsClientWithBaseURI(baseURI string, subscriptionID string) Backu
 	return BackupJobsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupJobsClientWithAuthFile creates an instance of the BackupJobsClient client.
+func NewBackupJobsClientWithAuthFile() (BackupJobsClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupJobsClient{c}, err
+}
+
 // List provides a pageable list of jobs.
 //
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the

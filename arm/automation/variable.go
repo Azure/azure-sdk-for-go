@@ -39,6 +39,12 @@ func NewVariableClientWithBaseURI(baseURI string, subscriptionID string) Variabl
 	return VariableClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVariableClientWithAuthFile creates an instance of the VariableClient client.
+func NewVariableClientWithAuthFile() (VariableClient, error) {
+	c, err := NewWithAuthFile()
+	return VariableClient{c}, err
+}
+
 // CreateOrUpdate create a variable.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. variableName is

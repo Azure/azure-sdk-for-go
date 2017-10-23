@@ -39,6 +39,12 @@ func NewNodeClientWithBaseURI(baseURI string, subscriptionID string) NodeClient 
 	return NodeClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewNodeClientWithAuthFile creates an instance of the NodeClient client.
+func NewNodeClientWithAuthFile() (NodeClient, error) {
+	c, err := NewWithAuthFile()
+	return NodeClient{c}, err
+}
+
 // Create creates or updates a management node. This method may poll for completion. Polling can be canceled by passing
 // the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

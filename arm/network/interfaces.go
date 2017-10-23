@@ -38,6 +38,12 @@ func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) Inter
 	return InterfacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewInterfacesClientWithAuthFile creates an instance of the InterfacesClient client.
+func NewInterfacesClientWithAuthFile() (InterfacesClient, error) {
+	c, err := NewWithAuthFile()
+	return InterfacesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a network interface. This method may poll for completion. Polling can be canceled
 // by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

@@ -40,6 +40,12 @@ func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersC
 	return ServersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewServersClientWithAuthFile creates an instance of the ServersClient client.
+func NewServersClientWithAuthFile() (ServersClient, error) {
+	c, err := NewWithAuthFile()
+	return ServersClient{c}, err
+}
+
 // Create provisions the specified Analysis Services server based on the configuration specified in the request. This
 // method may poll for completion. Polling can be canceled by passing the cancel channel argument. The channel will be
 // used to cancel polling and any outstanding HTTP requests.

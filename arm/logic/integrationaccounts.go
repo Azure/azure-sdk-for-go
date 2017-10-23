@@ -38,6 +38,12 @@ func NewIntegrationAccountsClientWithBaseURI(baseURI string, subscriptionID stri
 	return IntegrationAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewIntegrationAccountsClientWithAuthFile creates an instance of the IntegrationAccountsClient client.
+func NewIntegrationAccountsClientWithAuthFile() (IntegrationAccountsClient, error) {
+	c, err := NewWithAuthFile()
+	return IntegrationAccountsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an integration account.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name.

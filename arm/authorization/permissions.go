@@ -41,6 +41,12 @@ func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) Perm
 	return PermissionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewPermissionsClientWithAuthFile creates an instance of the PermissionsClient client.
+func NewPermissionsClientWithAuthFile() (PermissionsClient, error) {
+	c, err := NewWithAuthFile()
+	return PermissionsClient{c}, err
+}
+
 // ListForResource gets all permissions the caller has for a resource.
 //
 // resourceGroupName is the name of the resource group containing the resource. The name is case insensitive.

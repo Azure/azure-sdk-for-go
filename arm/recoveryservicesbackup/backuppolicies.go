@@ -38,6 +38,12 @@ func NewBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) B
 	return BackupPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupPoliciesClientWithAuthFile creates an instance of the BackupPoliciesClient client.
+func NewBackupPoliciesClientWithAuthFile() (BackupPoliciesClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupPoliciesClient{c}, err
+}
+
 // List lists of backup policies associated with Recovery Services Vault. API provides pagination parameters to fetch
 // scoped results.
 //

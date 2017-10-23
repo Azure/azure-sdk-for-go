@@ -38,6 +38,12 @@ func NewAppCollectionsClientWithBaseURI(baseURI string, subscriptionID string) A
 	return AppCollectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAppCollectionsClientWithAuthFile creates an instance of the AppCollectionsClient client.
+func NewAppCollectionsClientWithAuthFile() (AppCollectionsClient, error) {
+	c, err := NewWithAuthFile()
+	return AppCollectionsClient{c}, err
+}
+
 // CheckNameAvailability checks availability of an app collection name in the Engagement domain.
 //
 func (client AppCollectionsClient) CheckNameAvailability(parameters AppCollectionNameAvailability) (result AppCollectionNameAvailability, err error) {

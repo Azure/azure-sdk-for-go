@@ -39,6 +39,12 @@ func NewFormulasClientWithBaseURI(baseURI string, subscriptionID string) Formula
 	return FormulasClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewFormulasClientWithAuthFile creates an instance of the FormulasClient client.
+func NewFormulasClientWithAuthFile() (FormulasClient, error) {
+	c, err := NewWithAuthFile()
+	return FormulasClient{c}, err
+}
+
 // CreateOrUpdate create or replace an existing Formula. This operation can take a while to complete. This method may
 // poll for completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to
 // cancel polling and any outstanding HTTP requests.

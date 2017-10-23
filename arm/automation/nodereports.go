@@ -39,6 +39,12 @@ func NewNodeReportsClientWithBaseURI(baseURI string, subscriptionID string) Node
 	return NodeReportsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewNodeReportsClientWithAuthFile creates an instance of the NodeReportsClient client.
+func NewNodeReportsClientWithAuthFile() (NodeReportsClient, error) {
+	c, err := NewWithAuthFile()
+	return NodeReportsClient{c}, err
+}
+
 // Get retrieve the Dsc node report data by node id and report id.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. nodeID is the

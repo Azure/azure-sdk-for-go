@@ -39,6 +39,12 @@ func NewRulesClientWithBaseURI(baseURI string, subscriptionID string) RulesClien
 	return RulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRulesClientWithAuthFile creates an instance of the RulesClient client.
+func NewRulesClientWithAuthFile() (RulesClient, error) {
+	c, err := NewWithAuthFile()
+	return RulesClient{c}, err
+}
+
 // CreateOrUpdate creates a new rule and updates an existing rule
 //
 // resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace name

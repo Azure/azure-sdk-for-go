@@ -40,6 +40,12 @@ func NewDscCompilationJobClientWithBaseURI(baseURI string, subscriptionID string
 	return DscCompilationJobClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDscCompilationJobClientWithAuthFile creates an instance of the DscCompilationJobClient client.
+func NewDscCompilationJobClientWithAuthFile() (DscCompilationJobClient, error) {
+	c, err := NewWithAuthFile()
+	return DscCompilationJobClient{c}, err
+}
+
 // Create creates the Dsc compilation job of the configuration.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. compilationJobID

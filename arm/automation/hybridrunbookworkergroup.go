@@ -39,6 +39,12 @@ func NewHybridRunbookWorkerGroupClientWithBaseURI(baseURI string, subscriptionID
 	return HybridRunbookWorkerGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewHybridRunbookWorkerGroupClientWithAuthFile creates an instance of the HybridRunbookWorkerGroupClient client.
+func NewHybridRunbookWorkerGroupClientWithAuthFile() (HybridRunbookWorkerGroupClient, error) {
+	c, err := NewWithAuthFile()
+	return HybridRunbookWorkerGroupClient{c}, err
+}
+
 // Delete delete a hybrid runbook worker group.
 //
 // resourceGroupName is the resource group name. automationAccountName is automation account name.

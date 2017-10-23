@@ -38,6 +38,12 @@ func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) Lo
 	return LoadBalancersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLoadBalancersClientWithAuthFile creates an instance of the LoadBalancersClient client.
+func NewLoadBalancersClientWithAuthFile() (LoadBalancersClient, error) {
+	c, err := NewWithAuthFile()
+	return LoadBalancersClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a load balancer. This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

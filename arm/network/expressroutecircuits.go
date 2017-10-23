@@ -38,6 +38,12 @@ func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID str
 	return ExpressRouteCircuitsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewExpressRouteCircuitsClientWithAuthFile creates an instance of the ExpressRouteCircuitsClient client.
+func NewExpressRouteCircuitsClientWithAuthFile() (ExpressRouteCircuitsClient, error) {
+	c, err := NewWithAuthFile()
+	return ExpressRouteCircuitsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates an express route circuit. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

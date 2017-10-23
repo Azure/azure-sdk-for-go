@@ -39,6 +39,12 @@ func NewUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) 
 	return UsageAggregatesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewUsageAggregatesClientWithAuthFile creates an instance of the UsageAggregatesClient client.
+func NewUsageAggregatesClientWithAuthFile() (UsageAggregatesClient, error) {
+	c, err := NewWithAuthFile()
+	return UsageAggregatesClient{c}, err
+}
+
 // List query aggregated Azure subscription consumption data for a date range.
 //
 // reportedStartTime is the start of the time range to retrieve data for. reportedEndTime is the end of the time range

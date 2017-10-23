@@ -38,6 +38,12 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewOperationsClientWithAuthFile creates an instance of the OperationsClient client.
+func NewOperationsClientWithAuthFile() (OperationsClient, error) {
+	c, err := NewWithAuthFile()
+	return OperationsClient{c}, err
+}
+
 // List lists all of the available Cosmos DB Resource Provider operations.
 func (client OperationsClient) List() (result OperationListResult, err error) {
 	req, err := client.ListPreparer()

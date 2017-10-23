@@ -39,6 +39,12 @@ func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return RecommendationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRecommendationsClientWithAuthFile creates an instance of the RecommendationsClient client.
+func NewRecommendationsClientWithAuthFile() (RecommendationsClient, error) {
+	c, err := NewWithAuthFile()
+	return RecommendationsClient{c}, err
+}
+
 // DisableAllForWebApp disable all recommendations for an app.
 //
 // resourceGroupName is name of the resource group to which the resource belongs. siteName is name of the app.

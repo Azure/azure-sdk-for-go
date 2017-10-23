@@ -39,6 +39,12 @@ func NewRegistriesClientWithBaseURI(baseURI string, subscriptionID string) Regis
 	return RegistriesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRegistriesClientWithAuthFile creates an instance of the RegistriesClient client.
+func NewRegistriesClientWithAuthFile() (RegistriesClient, error) {
+	c, err := NewWithAuthFile()
+	return RegistriesClient{c}, err
+}
+
 // CheckNameAvailability checks whether the container registry name is available for use. The name must contain only
 // alphanumeric characters, be globally unique, and between 5 and 50 characters in length.
 //

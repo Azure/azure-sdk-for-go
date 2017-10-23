@@ -38,6 +38,12 @@ func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) Profile
 	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewProfilesClientWithAuthFile creates an instance of the ProfilesClient client.
+func NewProfilesClientWithAuthFile() (ProfilesClient, error) {
+	c, err := NewWithAuthFile()
+	return ProfilesClient{c}, err
+}
+
 // CheckTrafficManagerRelativeDNSNameAvailability checks the availability of a Traffic Manager Relative DNS name.
 //
 // parameters is the Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability operation.

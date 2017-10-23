@@ -39,6 +39,12 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 	return GroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewGroupClientWithAuthFile creates an instance of the GroupClient client.
+func NewGroupClientWithAuthFile() (GroupClient, error) {
+	c, err := NewWithAuthFile()
+	return GroupClient{c}, err
+}
+
 // Create creates the specified Data Lake Store account. This method may poll for completion. Polling can be canceled
 // by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

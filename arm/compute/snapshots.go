@@ -39,6 +39,12 @@ func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) Snapsh
 	return SnapshotsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSnapshotsClientWithAuthFile creates an instance of the SnapshotsClient client.
+func NewSnapshotsClientWithAuthFile() (SnapshotsClient, error) {
+	c, err := NewWithAuthFile()
+	return SnapshotsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a snapshot. This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

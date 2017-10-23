@@ -40,6 +40,12 @@ func NewServerKeysClientWithBaseURI(baseURI string, subscriptionID string) Serve
 	return ServerKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewServerKeysClientWithAuthFile creates an instance of the ServerKeysClient client.
+func NewServerKeysClientWithAuthFile() (ServerKeysClient, error) {
+	c, err := NewWithAuthFile()
+	return ServerKeysClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a server key. This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

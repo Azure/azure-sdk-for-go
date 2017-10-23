@@ -38,6 +38,13 @@ func NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI string, subscriptionI
 	return VirtualMachineScaleSetVMsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVirtualMachineScaleSetVMsClientWithAuthFile creates an instance of the VirtualMachineScaleSetVMsClient
+// client.
+func NewVirtualMachineScaleSetVMsClientWithAuthFile() (VirtualMachineScaleSetVMsClient, error) {
+	c, err := NewWithAuthFile()
+	return VirtualMachineScaleSetVMsClient{c}, err
+}
+
 // Deallocate deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the
 // compute resources it uses. You are not billed for the compute resources of this virtual machine once it is
 // deallocated. This method may poll for completion. Polling can be canceled by passing the cancel channel argument.

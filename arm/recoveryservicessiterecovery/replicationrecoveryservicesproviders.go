@@ -41,6 +41,13 @@ func NewReplicationRecoveryServicesProvidersClientWithBaseURI(baseURI string, su
 	return ReplicationRecoveryServicesProvidersClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationRecoveryServicesProvidersClientWithAuthFile creates an instance of the
+// ReplicationRecoveryServicesProvidersClient client.
+func NewReplicationRecoveryServicesProvidersClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationRecoveryServicesProvidersClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationRecoveryServicesProvidersClient{c}, err
+}
+
 // Delete the operation to removes/delete(unregister) a recovery services provider from the vault This method may poll
 // for completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

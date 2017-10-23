@@ -41,6 +41,12 @@ func NewViewsClientWithBaseURI(baseURI string, subscriptionID string) ViewsClien
 	return ViewsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewViewsClientWithAuthFile creates an instance of the ViewsClient client.
+func NewViewsClientWithAuthFile() (ViewsClient, error) {
+	c, err := NewWithAuthFile()
+	return ViewsClient{c}, err
+}
+
 // CreateOrUpdate creates a view or updates an exisiting view in the hub.
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. viewName is the name of the

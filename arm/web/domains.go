@@ -39,6 +39,12 @@ func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsC
 	return DomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDomainsClientWithAuthFile creates an instance of the DomainsClient client.
+func NewDomainsClientWithAuthFile() (DomainsClient, error) {
+	c, err := NewWithAuthFile()
+	return DomainsClient{c}, err
+}
+
 // CheckAvailability check if a domain is available for registration.
 //
 // identifier is name of the domain.

@@ -38,6 +38,12 @@ func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string, r
 	return RecoveryPointsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewRecoveryPointsClientWithAuthFile creates an instance of the RecoveryPointsClient client.
+func NewRecoveryPointsClientWithAuthFile(resourceGroupName string, resourceName string) (RecoveryPointsClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return RecoveryPointsClient{c}, err
+}
+
 // Get get the details of specified recovery point.
 //
 // fabricName is the fabric name. protectionContainerName is the protection container name. replicatedProtectedItemName

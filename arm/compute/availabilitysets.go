@@ -38,6 +38,12 @@ func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string)
 	return AvailabilitySetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAvailabilitySetsClientWithAuthFile creates an instance of the AvailabilitySetsClient client.
+func NewAvailabilitySetsClientWithAuthFile() (AvailabilitySetsClient, error) {
+	c, err := NewWithAuthFile()
+	return AvailabilitySetsClient{c}, err
+}
+
 // CreateOrUpdate create or update an availability set.
 //
 // resourceGroupName is the name of the resource group. availabilitySetName is the name of the availability set.

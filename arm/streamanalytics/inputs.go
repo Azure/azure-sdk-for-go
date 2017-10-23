@@ -38,6 +38,12 @@ func NewInputsClientWithBaseURI(baseURI string, subscriptionID string) InputsCli
 	return InputsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewInputsClientWithAuthFile creates an instance of the InputsClient client.
+func NewInputsClientWithAuthFile() (InputsClient, error) {
+	c, err := NewWithAuthFile()
+	return InputsClient{c}, err
+}
+
 // CreateOrReplace creates an input or replaces an already existing input under an existing streaming job.
 //
 // input is the definition of the input that will be used to create a new input or replace the existing one under the

@@ -38,6 +38,12 @@ func NewLoadBalancerProbesClientWithBaseURI(baseURI string, subscriptionID strin
 	return LoadBalancerProbesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLoadBalancerProbesClientWithAuthFile creates an instance of the LoadBalancerProbesClient client.
+func NewLoadBalancerProbesClientWithAuthFile() (LoadBalancerProbesClient, error) {
+	c, err := NewWithAuthFile()
+	return LoadBalancerProbesClient{c}, err
+}
+
 // Get gets load balancer probe.
 //
 // resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer. probeName is

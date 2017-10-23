@@ -41,6 +41,13 @@ func NewProviderOperationsMetadataClientWithBaseURI(baseURI string, subscription
 	return ProviderOperationsMetadataClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewProviderOperationsMetadataClientWithAuthFile creates an instance of the ProviderOperationsMetadataClient
+// client.
+func NewProviderOperationsMetadataClientWithAuthFile() (ProviderOperationsMetadataClient, error) {
+	c, err := NewWithAuthFile()
+	return ProviderOperationsMetadataClient{c}, err
+}
+
 // Get gets provider operations metadata for the specified resource provider.
 //
 // resourceProviderNamespace is the namespace of the resource provider. expand is specifies whether to expand the

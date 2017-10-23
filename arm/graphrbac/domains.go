@@ -38,6 +38,12 @@ func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient 
 	return DomainsClient{NewWithBaseURI(baseURI, tenantID)}
 }
 
+// NewDomainsClientWithAuthFile creates an instance of the DomainsClient client.
+func NewDomainsClientWithAuthFile() (DomainsClient, error) {
+	c, err := NewWithAuthFile()
+	return DomainsClient{c}, err
+}
+
 // Get gets a specific domain in the current tenant.
 //
 // domainName is name of the domain.

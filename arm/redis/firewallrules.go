@@ -38,6 +38,12 @@ func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) Fi
 	return FirewallRulesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewFirewallRulesClientWithAuthFile creates an instance of the FirewallRulesClient client.
+func NewFirewallRulesClientWithAuthFile() (FirewallRulesClient, error) {
+	c, err := NewWithAuthFile()
+	return FirewallRulesClient{c}, err
+}
+
 // List gets all firewall rules in the specified redis cache.
 //
 // resourceGroupName is the name of the resource group. cacheName is the name of the Redis cache.

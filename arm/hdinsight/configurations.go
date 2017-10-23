@@ -38,6 +38,12 @@ func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) C
 	return ConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewConfigurationsClientWithAuthFile creates an instance of the ConfigurationsClient client.
+func NewConfigurationsClientWithAuthFile() (ConfigurationsClient, error) {
+	c, err := NewWithAuthFile()
+	return ConfigurationsClient{c}, err
+}
+
 // Get the configuration object for the specified cluster.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. configurationName is

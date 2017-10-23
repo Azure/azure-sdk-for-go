@@ -41,6 +41,12 @@ func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return RoleAssignmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRoleAssignmentsClientWithAuthFile creates an instance of the RoleAssignmentsClient client.
+func NewRoleAssignmentsClientWithAuthFile() (RoleAssignmentsClient, error) {
+	c, err := NewWithAuthFile()
+	return RoleAssignmentsClient{c}, err
+}
+
 // Create creates a role assignment.
 //
 // scope is the scope of the role assignment to create. The scope can be any REST resource instance. For example, use

@@ -40,6 +40,12 @@ func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesCli
 	return ImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewImagesClientWithAuthFile creates an instance of the ImagesClient client.
+func NewImagesClientWithAuthFile() (ImagesClient, error) {
+	c, err := NewWithAuthFile()
+	return ImagesClient{c}, err
+}
+
 // GetUploadURLForData gets data image upload URL.
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the hub. parameters is parameters

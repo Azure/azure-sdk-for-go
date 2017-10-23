@@ -39,6 +39,12 @@ func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID str
 	return LocalNetworkGatewaysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLocalNetworkGatewaysClientWithAuthFile creates an instance of the LocalNetworkGatewaysClient client.
+func NewLocalNetworkGatewaysClientWithAuthFile() (LocalNetworkGatewaysClient, error) {
+	c, err := NewWithAuthFile()
+	return LocalNetworkGatewaysClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a local network gateway in the specified resource group. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.

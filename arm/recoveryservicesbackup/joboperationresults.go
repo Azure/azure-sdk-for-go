@@ -38,6 +38,12 @@ func NewJobOperationResultsClientWithBaseURI(baseURI string, subscriptionID stri
 	return JobOperationResultsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewJobOperationResultsClientWithAuthFile creates an instance of the JobOperationResultsClient client.
+func NewJobOperationResultsClientWithAuthFile() (JobOperationResultsClient, error) {
+	c, err := NewWithAuthFile()
+	return JobOperationResultsClient{c}, err
+}
+
 // Get fetches the result of any operation.
 // the operation.
 //

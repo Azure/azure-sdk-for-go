@@ -40,6 +40,12 @@ func NewGroupClientWithBaseURI(baseURI string) GroupClient {
 	return GroupClient{NewWithBaseURI(baseURI)}
 }
 
+// NewGroupClientWithAuthFile creates an instance of the GroupClient client.
+func NewGroupClientWithAuthFile() (GroupClient, error) {
+	c, err := NewWithAuthFile()
+	return GroupClient{c}, err
+}
+
 // Get gets details about a specified subscription.
 //
 // subscriptionID is the ID of the target subscription.

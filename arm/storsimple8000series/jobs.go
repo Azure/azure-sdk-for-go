@@ -39,6 +39,12 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 	return JobsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewJobsClientWithAuthFile creates an instance of the JobsClient client.
+func NewJobsClientWithAuthFile() (JobsClient, error) {
+	c, err := NewWithAuthFile()
+	return JobsClient{c}, err
+}
+
 // Cancel cancels a job on the device. This method may poll for completion. Polling can be canceled by passing the
 // cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

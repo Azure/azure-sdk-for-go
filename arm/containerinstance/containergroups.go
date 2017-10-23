@@ -39,6 +39,12 @@ func NewContainerGroupsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return ContainerGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewContainerGroupsClientWithAuthFile creates an instance of the ContainerGroupsClient client.
+func NewContainerGroupsClientWithAuthFile() (ContainerGroupsClient, error) {
+	c, err := NewWithAuthFile()
+	return ContainerGroupsClient{c}, err
+}
+
 // CreateOrUpdate create or update container groups with specified configurations.
 //
 // resourceGroupName is the name of the resource group to contain the container group to be created or updated.

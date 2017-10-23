@@ -38,6 +38,12 @@ func NewProvidersClientWithBaseURI(baseURI string, subscriptionID string) Provid
 	return ProvidersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewProvidersClientWithAuthFile creates an instance of the ProvidersClient client.
+func NewProvidersClientWithAuthFile() (ProvidersClient, error) {
+	c, err := NewWithAuthFile()
+	return ProvidersClient{c}, err
+}
+
 // Get gets the specified resource provider.
 //
 // resourceProviderNamespace is the namespace of the resource provider. expand is the $expand query parameter. For

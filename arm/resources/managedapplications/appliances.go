@@ -39,6 +39,12 @@ func NewAppliancesClientWithBaseURI(baseURI string, subscriptionID string) Appli
 	return AppliancesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAppliancesClientWithAuthFile creates an instance of the AppliancesClient client.
+func NewAppliancesClientWithAuthFile() (AppliancesClient, error) {
+	c, err := NewWithAuthFile()
+	return AppliancesClient{c}, err
+}
+
 // CreateOrUpdate creates a new appliance. This method may poll for completion. Polling can be canceled by passing the
 // cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

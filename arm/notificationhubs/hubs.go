@@ -39,6 +39,12 @@ func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient 
 	return HubsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewHubsClientWithAuthFile creates an instance of the HubsClient client.
+func NewHubsClientWithAuthFile() (HubsClient, error) {
+	c, err := NewWithAuthFile()
+	return HubsClient{c}, err
+}
+
 // CheckAvailability checks the availability of the given notificationHub in a namespace.
 //
 // resourceGroupName is the name of the resource group. namespaceName is the namespace name. parameters is the

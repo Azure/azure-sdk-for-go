@@ -38,6 +38,12 @@ func NewBackupOperationStatusesClientWithBaseURI(baseURI string, subscriptionID 
 	return BackupOperationStatusesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupOperationStatusesClientWithAuthFile creates an instance of the BackupOperationStatusesClient client.
+func NewBackupOperationStatusesClientWithAuthFile() (BackupOperationStatusesClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupOperationStatusesClient{c}, err
+}
+
 // Get fetches the status of an operation such as triggering a backup, restore. The status can be in progress,
 // completed or failed. You can refer to the OperationStatus enum for all the possible states of an operation. Some
 // operations create jobs. This method returns the list of jobs when the operation is complete.

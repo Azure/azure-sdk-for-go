@@ -39,6 +39,12 @@ func NewConnectionClientWithBaseURI(baseURI string, subscriptionID string) Conne
 	return ConnectionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewConnectionClientWithAuthFile creates an instance of the ConnectionClient client.
+func NewConnectionClientWithAuthFile() (ConnectionClient, error) {
+	c, err := NewWithAuthFile()
+	return ConnectionClient{c}, err
+}
+
 // CreateOrUpdate create or update a connection.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. connectionName

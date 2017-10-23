@@ -39,6 +39,12 @@ func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) Names
 	return NamespacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewNamespacesClientWithAuthFile creates an instance of the NamespacesClient client.
+func NewNamespacesClientWithAuthFile() (NamespacesClient, error) {
+	c, err := NewWithAuthFile()
+	return NamespacesClient{c}, err
+}
+
 // CheckNameAvailabilityMethod check the give namespace name availability.
 //
 // parameters is parameters to check availability of the given namespace name

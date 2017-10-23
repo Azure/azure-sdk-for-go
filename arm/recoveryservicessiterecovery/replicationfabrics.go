@@ -39,6 +39,12 @@ func NewReplicationFabricsClientWithBaseURI(baseURI string, subscriptionID strin
 	return ReplicationFabricsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationFabricsClientWithAuthFile creates an instance of the ReplicationFabricsClient client.
+func NewReplicationFabricsClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationFabricsClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationFabricsClient{c}, err
+}
+
 // CheckConsistency the operation to perform a consistency check on the fabric. This method may poll for completion.
 // Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.

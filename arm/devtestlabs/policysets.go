@@ -38,6 +38,12 @@ func NewPolicySetsClientWithBaseURI(baseURI string, subscriptionID string) Polic
 	return PolicySetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewPolicySetsClientWithAuthFile creates an instance of the PolicySetsClient client.
+func NewPolicySetsClientWithAuthFile() (PolicySetsClient, error) {
+	c, err := NewWithAuthFile()
+	return PolicySetsClient{c}, err
+}
+
 // EvaluatePolicies evaluates lab policy.
 //
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the policy

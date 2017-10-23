@@ -39,6 +39,13 @@ func NewReplicationLogicalNetworksClientWithBaseURI(baseURI string, subscription
 	return ReplicationLogicalNetworksClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationLogicalNetworksClientWithAuthFile creates an instance of the ReplicationLogicalNetworksClient
+// client.
+func NewReplicationLogicalNetworksClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationLogicalNetworksClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationLogicalNetworksClient{c}, err
+}
+
 // Get gets the details of a logical network.
 //
 // fabricName is server Id. logicalNetworkName is logical network name.

@@ -38,6 +38,12 @@ func NewProtectedItemsClientWithBaseURI(baseURI string, subscriptionID string) P
 	return ProtectedItemsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewProtectedItemsClientWithAuthFile creates an instance of the ProtectedItemsClient client.
+func NewProtectedItemsClientWithAuthFile() (ProtectedItemsClient, error) {
+	c, err := NewWithAuthFile()
+	return ProtectedItemsClient{c}, err
+}
+
 // CreateOrUpdate enables backup of an item or to modifies the backup policy information of an already backed up item.
 // This is an asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
 //

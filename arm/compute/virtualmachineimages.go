@@ -38,6 +38,12 @@ func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID str
 	return VirtualMachineImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVirtualMachineImagesClientWithAuthFile creates an instance of the VirtualMachineImagesClient client.
+func NewVirtualMachineImagesClientWithAuthFile() (VirtualMachineImagesClient, error) {
+	c, err := NewWithAuthFile()
+	return VirtualMachineImagesClient{c}, err
+}
+
 // Get gets a virtual machine image.
 //
 // location is the name of a supported Azure region. publisherName is a valid image publisher. offer is a valid image

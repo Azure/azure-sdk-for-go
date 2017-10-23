@@ -39,6 +39,12 @@ func NewPacketCapturesClientWithBaseURI(baseURI string, subscriptionID string) P
 	return PacketCapturesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewPacketCapturesClientWithAuthFile creates an instance of the PacketCapturesClient client.
+func NewPacketCapturesClientWithAuthFile() (PacketCapturesClient, error) {
+	c, err := NewWithAuthFile()
+	return PacketCapturesClient{c}, err
+}
+
 // Create create and start a packet capture on the specified VM. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

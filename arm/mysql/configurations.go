@@ -39,6 +39,12 @@ func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) C
 	return ConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewConfigurationsClientWithAuthFile creates an instance of the ConfigurationsClient client.
+func NewConfigurationsClientWithAuthFile() (ConfigurationsClient, error) {
+	c, err := NewWithAuthFile()
+	return ConfigurationsClient{c}, err
+}
+
 // CreateOrUpdate updates a configuration of a server. This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

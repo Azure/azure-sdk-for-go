@@ -41,6 +41,12 @@ func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return RoleDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRoleDefinitionsClientWithAuthFile creates an instance of the RoleDefinitionsClient client.
+func NewRoleDefinitionsClientWithAuthFile() (RoleDefinitionsClient, error) {
+	c, err := NewWithAuthFile()
+	return RoleDefinitionsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a role definition.
 //
 // scope is the scope of the role definition. roleDefinitionID is the ID of the role definition. roleDefinition is the

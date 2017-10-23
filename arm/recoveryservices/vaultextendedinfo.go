@@ -38,6 +38,12 @@ func NewVaultExtendedInfoClientWithBaseURI(baseURI string, subscriptionID string
 	return VaultExtendedInfoClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVaultExtendedInfoClientWithAuthFile creates an instance of the VaultExtendedInfoClient client.
+func NewVaultExtendedInfoClientWithAuthFile() (VaultExtendedInfoClient, error) {
+	c, err := NewWithAuthFile()
+	return VaultExtendedInfoClient{c}, err
+}
+
 // CreateOrUpdate create vault extended info.
 //
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the

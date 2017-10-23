@@ -39,6 +39,12 @@ func NewActionGroupsClientWithBaseURI(baseURI string, subscriptionID string) Act
 	return ActionGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewActionGroupsClientWithAuthFile creates an instance of the ActionGroupsClient client.
+func NewActionGroupsClientWithAuthFile() (ActionGroupsClient, error) {
+	c, err := NewWithAuthFile()
+	return ActionGroupsClient{c}, err
+}
+
 // CreateOrUpdate create a new action group or update an existing one.
 //
 // resourceGroupName is the name of the resource group. actionGroupName is the name of the action group. actionGroup is

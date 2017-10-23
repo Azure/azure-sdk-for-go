@@ -39,6 +39,12 @@ func NewEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) Env
 	return EnvironmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewEnvironmentsClientWithAuthFile creates an instance of the EnvironmentsClient client.
+func NewEnvironmentsClientWithAuthFile() (EnvironmentsClient, error) {
+	c, err := NewWithAuthFile()
+	return EnvironmentsClient{c}, err
+}
+
 // CreateOrUpdate create or replace an existing environment. This operation can take a while to complete. This method
 // may poll for completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to
 // cancel polling and any outstanding HTTP requests.

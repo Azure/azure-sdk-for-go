@@ -38,6 +38,12 @@ func NewRegisteredIdentitiesClientWithBaseURI(baseURI string, subscriptionID str
 	return RegisteredIdentitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRegisteredIdentitiesClientWithAuthFile creates an instance of the RegisteredIdentitiesClient client.
+func NewRegisteredIdentitiesClientWithAuthFile() (RegisteredIdentitiesClient, error) {
+	c, err := NewWithAuthFile()
+	return RegisteredIdentitiesClient{c}, err
+}
+
 // Delete unregisters the given container from your Recovery Services vault.
 //
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the

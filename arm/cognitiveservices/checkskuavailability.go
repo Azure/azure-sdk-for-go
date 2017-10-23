@@ -39,6 +39,12 @@ func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID str
 	return CheckSkuAvailabilityClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewCheckSkuAvailabilityClientWithAuthFile creates an instance of the CheckSkuAvailabilityClient client.
+func NewCheckSkuAvailabilityClientWithAuthFile() (CheckSkuAvailabilityClient, error) {
+	c, err := NewWithAuthFile()
+	return CheckSkuAvailabilityClient{c}, err
+}
+
 // List check available SKUs.
 //
 // location is resource location. parameters is check SKU Availablity POST body.

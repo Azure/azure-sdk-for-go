@@ -38,6 +38,12 @@ func NewTopLevelDomainsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return TopLevelDomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewTopLevelDomainsClientWithAuthFile creates an instance of the TopLevelDomainsClient client.
+func NewTopLevelDomainsClientWithAuthFile() (TopLevelDomainsClient, error) {
+	c, err := NewWithAuthFile()
+	return TopLevelDomainsClient{c}, err
+}
+
 // Get get details of a top-level domain.
 //
 // name is name of the top-level domain.

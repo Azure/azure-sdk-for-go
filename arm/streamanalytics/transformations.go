@@ -38,6 +38,12 @@ func NewTransformationsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return TransformationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewTransformationsClientWithAuthFile creates an instance of the TransformationsClient client.
+func NewTransformationsClientWithAuthFile() (TransformationsClient, error) {
+	c, err := NewWithAuthFile()
+	return TransformationsClient{c}, err
+}
+
 // CreateOrReplace creates a transformation or replaces an already existing transformation under an existing streaming
 // job.
 //

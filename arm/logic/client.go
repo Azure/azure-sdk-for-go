@@ -23,6 +23,7 @@ package logic
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/azure/auth"
 	"net/http"
 )
 
@@ -50,6 +51,17 @@ func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 		BaseURI:        baseURI,
 		SubscriptionID: subscriptionID,
 	}
+}
+
+// NewWithAuthFile creates an instance of the ManagementClient client.
+func NewWithAuthFile() (c ManagementClient, err error) {
+	authentication, err := auth.GetClientSetup(DefaultBaseURI)
+	if err != nil {
+		return
+	}
+	c = NewWithBaseURI(authentication.BaseURI, authentication.SubscriptionID)
+	c.Authorizer = authentication
+	return
 }
 
 // ListOperations lists all of the available Logic REST API operations.

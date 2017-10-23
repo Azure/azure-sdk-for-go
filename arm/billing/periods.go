@@ -41,6 +41,12 @@ func NewPeriodsClientWithBaseURI(baseURI string, subscriptionID string) PeriodsC
 	return PeriodsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewPeriodsClientWithAuthFile creates an instance of the PeriodsClient client.
+func NewPeriodsClientWithAuthFile() (PeriodsClient, error) {
+	c, err := NewWithAuthFile()
+	return PeriodsClient{c}, err
+}
+
 // Get gets a named billing period.
 //
 // billingPeriodName is the name of a BillingPeriod resource.

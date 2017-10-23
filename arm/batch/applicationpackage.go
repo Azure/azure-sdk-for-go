@@ -39,6 +39,12 @@ func NewApplicationPackageClientWithBaseURI(baseURI string, subscriptionID strin
 	return ApplicationPackageClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewApplicationPackageClientWithAuthFile creates an instance of the ApplicationPackageClient client.
+func NewApplicationPackageClientWithAuthFile() (ApplicationPackageClient, error) {
+	c, err := NewWithAuthFile()
+	return ApplicationPackageClient{c}, err
+}
+
 // Activate activates the specified application package.
 //
 // resourceGroupName is the name of the resource group that contains the Batch account. accountName is the name of the

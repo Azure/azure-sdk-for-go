@@ -41,6 +41,12 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 	return AccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAccountsClientWithAuthFile creates an instance of the AccountsClient client.
+func NewAccountsClientWithAuthFile() (AccountsClient, error) {
+	c, err := NewWithAuthFile()
+	return AccountsClient{c}, err
+}
+
 // CheckNameAvailability checks if the specified Visual Studio Team Services account name is available. Resource name
 // can be either an account name or an account name and PUID.
 //

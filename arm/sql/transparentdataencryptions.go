@@ -40,6 +40,13 @@ func NewTransparentDataEncryptionsClientWithBaseURI(baseURI string, subscription
 	return TransparentDataEncryptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewTransparentDataEncryptionsClientWithAuthFile creates an instance of the TransparentDataEncryptionsClient
+// client.
+func NewTransparentDataEncryptionsClientWithAuthFile() (TransparentDataEncryptionsClient, error) {
+	c, err := NewWithAuthFile()
+	return TransparentDataEncryptionsClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a database's transparent data encryption configuration.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

@@ -38,6 +38,12 @@ func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) Su
 	return SubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSubscriptionsClientWithAuthFile creates an instance of the SubscriptionsClient client.
+func NewSubscriptionsClientWithAuthFile() (SubscriptionsClient, error) {
+	c, err := NewWithAuthFile()
+	return SubscriptionsClient{c}, err
+}
+
 // ListQuotas retrieves the subscription's current quota information in a particular region.
 //
 // location is the region in which to retrieve the subscription's quota information. You can find out which regions

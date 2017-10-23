@@ -38,6 +38,12 @@ func NewClusterVersionsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return ClusterVersionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewClusterVersionsClientWithAuthFile creates an instance of the ClusterVersionsClient client.
+func NewClusterVersionsClientWithAuthFile() (ClusterVersionsClient, error) {
+	c, err := NewWithAuthFile()
+	return ClusterVersionsClient{c}, err
+}
+
 // Get get cluster code versions by environment and version
 //
 // location is the location for the cluster code versions, this is different from cluster location environment is

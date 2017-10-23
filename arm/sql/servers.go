@@ -41,6 +41,12 @@ func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersC
 	return ServersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewServersClientWithAuthFile creates an instance of the ServersClient client.
+func NewServersClientWithAuthFile() (ServersClient, error) {
+	c, err := NewWithAuthFile()
+	return ServersClient{c}, err
+}
+
 // CheckNameAvailability determines whether a resource can be created with the specified name.
 //
 // parameters is the parameters to request for name availability.

@@ -38,6 +38,12 @@ func NewBackupUsageSummariesClientWithBaseURI(baseURI string, subscriptionID str
 	return BackupUsageSummariesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupUsageSummariesClientWithAuthFile creates an instance of the BackupUsageSummariesClient client.
+func NewBackupUsageSummariesClientWithAuthFile() (BackupUsageSummariesClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupUsageSummariesClient{c}, err
+}
+
 // List fetches the backup management usage summaries of the vault.
 //
 // vaultName is the name of the recovery services vault. resourceGroupName is the name of the resource group where the

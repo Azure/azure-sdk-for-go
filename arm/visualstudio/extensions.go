@@ -41,6 +41,12 @@ func NewExtensionsClientWithBaseURI(baseURI string, subscriptionID string) Exten
 	return ExtensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewExtensionsClientWithAuthFile creates an instance of the ExtensionsClient client.
+func NewExtensionsClientWithAuthFile() (ExtensionsClient, error) {
+	c, err := NewWithAuthFile()
+	return ExtensionsClient{c}, err
+}
+
 // Create registers the extension with a Visual Studio Team Services account.
 //
 // resourceGroupName is name of the resource group within the Azure subscription. body is an object containing

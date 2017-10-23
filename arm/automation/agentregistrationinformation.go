@@ -40,6 +40,13 @@ func NewAgentRegistrationInformationClientWithBaseURI(baseURI string, subscripti
 	return AgentRegistrationInformationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAgentRegistrationInformationClientWithAuthFile creates an instance of the AgentRegistrationInformationClient
+// client.
+func NewAgentRegistrationInformationClientWithAuthFile() (AgentRegistrationInformationClient, error) {
+	c, err := NewWithAuthFile()
+	return AgentRegistrationInformationClient{c}, err
+}
+
 // Get retrieve the automation agent registration information.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name.

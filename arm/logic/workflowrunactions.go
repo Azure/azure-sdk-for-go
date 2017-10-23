@@ -38,6 +38,12 @@ func NewWorkflowRunActionsClientWithBaseURI(baseURI string, subscriptionID strin
 	return WorkflowRunActionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewWorkflowRunActionsClientWithAuthFile creates an instance of the WorkflowRunActionsClient client.
+func NewWorkflowRunActionsClientWithAuthFile() (WorkflowRunActionsClient, error) {
+	c, err := NewWithAuthFile()
+	return WorkflowRunActionsClient{c}, err
+}
+
 // Get gets a workflow run action.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. runName is the workflow run name.

@@ -38,6 +38,12 @@ func NewReplicationJobsClientWithBaseURI(baseURI string, subscriptionID string, 
 	return ReplicationJobsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationJobsClientWithAuthFile creates an instance of the ReplicationJobsClient client.
+func NewReplicationJobsClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationJobsClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationJobsClient{c}, err
+}
+
 // Cancel the operation to cancel an Azure Site Recovery job. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

@@ -38,6 +38,12 @@ func NewMarketplaceAgreementsClientWithBaseURI(baseURI string, subscriptionID st
 	return MarketplaceAgreementsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewMarketplaceAgreementsClientWithAuthFile creates an instance of the MarketplaceAgreementsClient client.
+func NewMarketplaceAgreementsClientWithAuthFile() (MarketplaceAgreementsClient, error) {
+	c, err := NewWithAuthFile()
+	return MarketplaceAgreementsClient{c}, err
+}
+
 // Create save marketplace terms.
 //
 // offerType is offer Type, currently only virtualmachine type is supported. publisherID is publisher identifier string

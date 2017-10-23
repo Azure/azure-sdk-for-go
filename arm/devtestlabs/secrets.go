@@ -39,6 +39,12 @@ func NewSecretsClientWithBaseURI(baseURI string, subscriptionID string) SecretsC
 	return SecretsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewSecretsClientWithAuthFile creates an instance of the SecretsClient client.
+func NewSecretsClientWithAuthFile() (SecretsClient, error) {
+	c, err := NewWithAuthFile()
+	return SecretsClient{c}, err
+}
+
 // CreateOrUpdate create or replace an existing secret.
 //
 // resourceGroupName is the name of the resource group. labName is the name of the lab. userName is the name of the

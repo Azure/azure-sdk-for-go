@@ -41,6 +41,12 @@ func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient 
 	return HubsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewHubsClientWithAuthFile creates an instance of the HubsClient client.
+func NewHubsClientWithAuthFile() (HubsClient, error) {
+	c, err := NewWithAuthFile()
+	return HubsClient{c}, err
+}
+
 // CreateOrUpdate creates a hub, or updates an existing hub.
 //
 // resourceGroupName is the name of the resource group. hubName is the name of the Hub. parameters is parameters

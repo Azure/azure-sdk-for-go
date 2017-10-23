@@ -41,6 +41,13 @@ func NewReplicationStorageClassificationMappingsClientWithBaseURI(baseURI string
 	return ReplicationStorageClassificationMappingsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationStorageClassificationMappingsClientWithAuthFile creates an instance of the
+// ReplicationStorageClassificationMappingsClient client.
+func NewReplicationStorageClassificationMappingsClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationStorageClassificationMappingsClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationStorageClassificationMappingsClient{c}, err
+}
+
 // Create the operation to create a storage classification mapping. This method may poll for completion. Polling can be
 // canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
 // requests.

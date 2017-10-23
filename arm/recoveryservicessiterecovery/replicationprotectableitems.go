@@ -39,6 +39,13 @@ func NewReplicationProtectableItemsClientWithBaseURI(baseURI string, subscriptio
 	return ReplicationProtectableItemsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationProtectableItemsClientWithAuthFile creates an instance of the ReplicationProtectableItemsClient
+// client.
+func NewReplicationProtectableItemsClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationProtectableItemsClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationProtectableItemsClient{c}, err
+}
+
 // Get the operation to get the details of a protectable item.
 //
 // fabricName is fabric name. protectionContainerName is protection container name. protectableItemName is protectable

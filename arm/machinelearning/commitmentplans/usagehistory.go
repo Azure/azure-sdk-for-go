@@ -41,6 +41,12 @@ func NewUsageHistoryClientWithBaseURI(baseURI string, subscriptionID string) Usa
 	return UsageHistoryClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewUsageHistoryClientWithAuthFile creates an instance of the UsageHistoryClient client.
+func NewUsageHistoryClientWithAuthFile() (UsageHistoryClient, error) {
+	c, err := NewWithAuthFile()
+	return UsageHistoryClient{c}, err
+}
+
 // List retrieve the usage history for an Azure ML commitment plan.
 //
 // resourceGroupName is the resource group name. commitmentPlanName is the Azure ML commitment plan name. skipToken is

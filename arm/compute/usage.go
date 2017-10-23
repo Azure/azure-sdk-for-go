@@ -39,6 +39,12 @@ func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClien
 	return UsageClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewUsageClientWithAuthFile creates an instance of the UsageClient client.
+func NewUsageClientWithAuthFile() (UsageClient, error) {
+	c, err := NewWithAuthFile()
+	return UsageClient{c}, err
+}
+
 // List gets, for the specified location, the current compute resource usage information as well as the limits for
 // compute resources under the subscription.
 //

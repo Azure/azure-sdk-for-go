@@ -39,6 +39,12 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 	return AccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewAccountsClientWithAuthFile creates an instance of the AccountsClient client.
+func NewAccountsClientWithAuthFile() (AccountsClient, error) {
+	c, err := NewWithAuthFile()
+	return AccountsClient{c}, err
+}
+
 // Create create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
 // developer to access intelligent APIs. It's also the resource type for billing.
 //

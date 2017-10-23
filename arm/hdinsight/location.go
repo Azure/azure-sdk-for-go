@@ -38,6 +38,12 @@ func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) Locatio
 	return LocationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewLocationClientWithAuthFile creates an instance of the LocationClient client.
+func NewLocationClientWithAuthFile() (LocationClient, error) {
+	c, err := NewWithAuthFile()
+	return LocationClient{c}, err
+}
+
 // GetCapabilities gets the capabilities for the specified location.
 //
 // location is the location to get capabilities for.

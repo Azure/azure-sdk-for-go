@@ -39,6 +39,12 @@ func NewDscNodeClientWithBaseURI(baseURI string, subscriptionID string) DscNodeC
 	return DscNodeClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDscNodeClientWithAuthFile creates an instance of the DscNodeClient client.
+func NewDscNodeClientWithAuthFile() (DscNodeClient, error) {
+	c, err := NewWithAuthFile()
+	return DscNodeClient{c}, err
+}
+
 // Delete delete the dsc node identified by node id.
 //
 // resourceGroupName is the resource group name. automationAccountName is automation account name. nodeID is the node

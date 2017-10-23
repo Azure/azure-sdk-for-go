@@ -38,6 +38,12 @@ func NewVaultCertificatesClientWithBaseURI(baseURI string, subscriptionID string
 	return VaultCertificatesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewVaultCertificatesClientWithAuthFile creates an instance of the VaultCertificatesClient client.
+func NewVaultCertificatesClientWithAuthFile() (VaultCertificatesClient, error) {
+	c, err := NewWithAuthFile()
+	return VaultCertificatesClient{c}, err
+}
+
 // Create upload a certificate for a resource.
 //
 // resourceGroupName is the name of the resource group where the recovery services vault is present. vaultName is the

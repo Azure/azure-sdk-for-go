@@ -41,6 +41,13 @@ func NewDatabaseBlobAuditingPoliciesClientWithBaseURI(baseURI string, subscripti
 	return DatabaseBlobAuditingPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewDatabaseBlobAuditingPoliciesClientWithAuthFile creates an instance of the DatabaseBlobAuditingPoliciesClient
+// client.
+func NewDatabaseBlobAuditingPoliciesClientWithAuthFile() (DatabaseBlobAuditingPoliciesClient, error) {
+	c, err := NewWithAuthFile()
+	return DatabaseBlobAuditingPoliciesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a database's blob auditing policy.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the

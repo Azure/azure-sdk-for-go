@@ -39,6 +39,12 @@ func NewReplicationvCentersClientWithBaseURI(baseURI string, subscriptionID stri
 	return ReplicationvCentersClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)}
 }
 
+// NewReplicationvCentersClientWithAuthFile creates an instance of the ReplicationvCentersClient client.
+func NewReplicationvCentersClientWithAuthFile(resourceGroupName string, resourceName string) (ReplicationvCentersClient, error) {
+	c, err := NewWithAuthFile(resourceGroupName, resourceName)
+	return ReplicationvCentersClient{c}, err
+}
+
 // Create the operation to create a vCenter object.. This method may poll for completion. Polling can be canceled by
 // passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //

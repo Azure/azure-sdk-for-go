@@ -38,6 +38,12 @@ func NewFunctionsClientWithBaseURI(baseURI string, subscriptionID string) Functi
 	return FunctionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewFunctionsClientWithAuthFile creates an instance of the FunctionsClient client.
+func NewFunctionsClientWithAuthFile() (FunctionsClient, error) {
+	c, err := NewWithAuthFile()
+	return FunctionsClient{c}, err
+}
+
 // CreateOrReplace creates a function or replaces an already existing function under an existing streaming job.
 //
 // function is the definition of the function that will be used to create a new function or replace the existing one

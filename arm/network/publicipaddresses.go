@@ -39,6 +39,12 @@ func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string
 	return PublicIPAddressesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewPublicIPAddressesClientWithAuthFile creates an instance of the PublicIPAddressesClient client.
+func NewPublicIPAddressesClientWithAuthFile() (PublicIPAddressesClient, error) {
+	c, err := NewWithAuthFile()
+	return PublicIPAddressesClient{c}, err
+}
+
 // CreateOrUpdate creates or updates a static or dynamic public IP address. This method may poll for completion.
 // Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.

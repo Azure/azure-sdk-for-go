@@ -38,6 +38,12 @@ func NewUsersClientWithBaseURI(baseURI string, subscriptionID string) UsersClien
 	return UsersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewUsersClientWithAuthFile creates an instance of the UsersClient client.
+func NewUsersClientWithAuthFile() (UsersClient, error) {
+	c, err := NewWithAuthFile()
+	return UsersClient{c}, err
+}
+
 // CreateOrUpdate create or replace an existing user profile.
 //
 // resourceGroupName is the name of the resource group. labName is the name of the lab. name is the name of the user

@@ -38,6 +38,12 @@ func NewBackupProtectableItemsClientWithBaseURI(baseURI string, subscriptionID s
 	return BackupProtectableItemsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewBackupProtectableItemsClientWithAuthFile creates an instance of the BackupProtectableItemsClient client.
+func NewBackupProtectableItemsClientWithAuthFile() (BackupProtectableItemsClient, error) {
+	c, err := NewWithAuthFile()
+	return BackupProtectableItemsClient{c}, err
+}
+
 // List provides a pageable list of protectable objects within your subscription according to the query filter and the
 // pagination parameters.
 //

@@ -38,6 +38,12 @@ func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient 
 	return TagsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewTagsClientWithAuthFile creates an instance of the TagsClient client.
+func NewTagsClientWithAuthFile() (TagsClient, error) {
+	c, err := NewWithAuthFile()
+	return TagsClient{c}, err
+}
+
 // CreateOrUpdate the tag name can have a maximum of 512 characters and is case insensitive. Tag names created by Azure
 // have prefixes of microsoft, azure, or windows. You cannot create tags with one of these prefixes.
 //

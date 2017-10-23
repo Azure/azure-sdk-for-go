@@ -38,6 +38,12 @@ func NewRestoresClientWithBaseURI(baseURI string, subscriptionID string) Restore
 	return RestoresClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// NewRestoresClientWithAuthFile creates an instance of the RestoresClient client.
+func NewRestoresClientWithAuthFile() (RestoresClient, error) {
+	c, err := NewWithAuthFile()
+	return RestoresClient{c}, err
+}
+
 // Trigger restores the specified backed up data. This is an asynchronous operation. To know the status of this API
 // call, use GetProtectedItemOperationResult API.
 //

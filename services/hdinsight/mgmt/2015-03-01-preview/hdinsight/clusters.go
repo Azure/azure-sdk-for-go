@@ -39,103 +39,8 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 	return ClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ChangeRdpSettings begins changing the RDP settings on the specified cluster. This method may poll for completion.
-// Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
-// outstanding HTTP requests.
-//
-// resourceGroupName is the name of the resource group. clusterName is the name of the cluster. parameters is the OS
-// profile for RDP.
-func (client ClustersClient) ChangeRdpSettings(resourceGroupName string, clusterName string, parameters RDPSettingsParameters, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
-	resultChan := make(chan autorest.Response, 1)
-	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: clusterName,
-			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.Pattern, Rule: `^[0-9a-zA-Z][0-9a-zA-Z-]*[a-zA-Z0-9]$`, Chain: nil}}},
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.OsProfile", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "hdinsight.ClustersClient", "ChangeRdpSettings")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
-	go func() {
-		var err error
-		var result autorest.Response
-		defer func() {
-			if err != nil {
-				errChan <- err
-			}
-			resultChan <- result
-			close(resultChan)
-			close(errChan)
-		}()
-		req, err := client.ChangeRdpSettingsPreparer(resourceGroupName, clusterName, parameters, cancel)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hdinsight.ClustersClient", "ChangeRdpSettings", nil, "Failure preparing request")
-			return
-		}
-
-		resp, err := client.ChangeRdpSettingsSender(req)
-		if err != nil {
-			result.Response = resp
-			err = autorest.NewErrorWithError(err, "hdinsight.ClustersClient", "ChangeRdpSettings", resp, "Failure sending request")
-			return
-		}
-
-		result, err = client.ChangeRdpSettingsResponder(resp)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "hdinsight.ClustersClient", "ChangeRdpSettings", resp, "Failure responding to request")
-		}
-	}()
-	return resultChan, errChan
-}
-
-// ChangeRdpSettingsPreparer prepares the ChangeRdpSettings request.
-func (client ClustersClient) ChangeRdpSettingsPreparer(resourceGroupName string, clusterName string, parameters RDPSettingsParameters, cancel <-chan struct{}) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-03-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/changerdpsetting", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{Cancel: cancel})
-}
-
-// ChangeRdpSettingsSender sends the ChangeRdpSettings request. The method will close the
-// http.Response Body if it receives an error.
-func (client ClustersClient) ChangeRdpSettingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
-		azure.DoPollForAsynchronous(client.PollingDelay))
-}
-
-// ChangeRdpSettingsResponder handles the response to the ChangeRdpSettings request. The method always
-// closes the http.Response Body.
-func (client ClustersClient) ChangeRdpSettingsResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
-// Create begins creating a new HDInsight cluster with the specified parameters. This method may poll for completion.
-// Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
+// Create creates a new HDInsight cluster with the specified parameters. This method may poll for completion. Polling
+// can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. parameters is the
@@ -219,9 +124,8 @@ func (client ClustersClient) CreateResponder(resp *http.Response) (result Cluste
 	return
 }
 
-// Delete begins deleting the specified HDInsight cluster. This method may poll for completion. Polling can be canceled
-// by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
-// requests.
+// Delete deletes the specified HDInsight cluster. This method may poll for completion. Polling can be canceled by
+// passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster.
 func (client ClustersClient) Delete(resourceGroupName string, clusterName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
@@ -300,7 +204,7 @@ func (client ClustersClient) DeleteResponder(resp *http.Response) (result autore
 	return
 }
 
-// ExecuteScriptActions begins executing script actions on the specified HDInsight cluster. This method may poll for
+// ExecuteScriptActions executes script actions on the specified HDInsight cluster. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.
 //
@@ -458,7 +362,7 @@ func (client ClustersClient) GetResponder(resp *http.Response) (result Cluster, 
 	return
 }
 
-// List lists HDInsight clusters under the subscription.
+// List lists all the HDInsight clusters under the subscription.
 func (client ClustersClient) List() (result ClusterListResult, err error) {
 	req, err := client.ListPreparer()
 	if err != nil {
@@ -588,7 +492,7 @@ func (client ClustersClient) ListComplete(cancel <-chan struct{}) (<-chan Cluste
 	return resultChan, errChan
 }
 
-// ListByResourceGroup list the HDInsight clusters in a resource group.
+// ListByResourceGroup lists the HDInsight clusters in a resource group.
 //
 // resourceGroupName is the name of the resource group.
 func (client ClustersClient) ListByResourceGroup(resourceGroupName string) (result ClusterListResult, err error) {
@@ -721,7 +625,7 @@ func (client ClustersClient) ListByResourceGroupComplete(resourceGroupName strin
 	return resultChan, errChan
 }
 
-// Resize begins a resize operation on the specified HDInsight cluster. This method may poll for completion. Polling
+// Resize resizes the specified HDInsight cluster to the specified size. This method may poll for completion. Polling
 // can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
 // outstanding HTTP requests.
 //
@@ -800,7 +704,7 @@ func (client ClustersClient) ResizeResponder(resp *http.Response) (result autore
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusAccepted, http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return

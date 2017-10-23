@@ -551,6 +551,14 @@ const (
 	Integrated ManagedPipelineMode = "Integrated"
 )
 
+// ManagedServiceIdentityType enumerates the values for managed service identity type.
+type ManagedServiceIdentityType string
+
+const (
+	// SystemAssigned specifies the system assigned state for managed service identity type.
+	SystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+)
+
 // MSDeployLogEntryType enumerates the values for ms deploy log entry type.
 type MSDeployLogEntryType string
 
@@ -966,6 +974,7 @@ type AppServiceCertificateOrder struct {
 	Location                              *string             `json:"location,omitempty"`
 	Type                                  *string             `json:"type,omitempty"`
 	Tags                                  *map[string]*string `json:"tags,omitempty"`
+	Identity                              *ResourceIdentity   `json:"identity,omitempty"`
 	*AppServiceCertificateOrderProperties `json:"properties,omitempty"`
 }
 
@@ -1020,6 +1029,7 @@ type AppServiceCertificateResource struct {
 	Location               *string             `json:"location,omitempty"`
 	Type                   *string             `json:"type,omitempty"`
 	Tags                   *map[string]*string `json:"tags,omitempty"`
+	Identity               *ResourceIdentity   `json:"identity,omitempty"`
 	*AppServiceCertificate `json:"properties,omitempty"`
 }
 
@@ -1090,6 +1100,7 @@ type AppServiceEnvironmentResource struct {
 	Location               *string             `json:"location,omitempty"`
 	Type                   *string             `json:"type,omitempty"`
 	Tags                   *map[string]*string `json:"tags,omitempty"`
+	Identity               *ResourceIdentity   `json:"identity,omitempty"`
 	*AppServiceEnvironment `json:"properties,omitempty"`
 }
 
@@ -1102,6 +1113,7 @@ type AppServicePlan struct {
 	Location                  *string             `json:"location,omitempty"`
 	Type                      *string             `json:"type,omitempty"`
 	Tags                      *map[string]*string `json:"tags,omitempty"`
+	Identity                  *ResourceIdentity   `json:"identity,omitempty"`
 	*AppServicePlanProperties `json:"properties,omitempty"`
 	Sku                       *SkuDescription `json:"sku,omitempty"`
 }
@@ -1286,6 +1298,7 @@ type Certificate struct {
 	Location               *string             `json:"location,omitempty"`
 	Type                   *string             `json:"type,omitempty"`
 	Tags                   *map[string]*string `json:"tags,omitempty"`
+	Identity               *ResourceIdentity   `json:"identity,omitempty"`
 	*CertificateProperties `json:"properties,omitempty"`
 }
 
@@ -1369,6 +1382,7 @@ type CertificateOrderAction struct {
 	Location                          *string             `json:"location,omitempty"`
 	Type                              *string             `json:"type,omitempty"`
 	Tags                              *map[string]*string `json:"tags,omitempty"`
+	Identity                          *ResourceIdentity   `json:"identity,omitempty"`
 	*CertificateOrderActionProperties `json:"properties,omitempty"`
 }
 
@@ -1687,6 +1701,7 @@ type Domain struct {
 	Location          *string             `json:"location,omitempty"`
 	Type              *string             `json:"type,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
+	Identity          *ResourceIdentity   `json:"identity,omitempty"`
 	*DomainProperties `json:"properties,omitempty"`
 }
 
@@ -1758,6 +1773,7 @@ type DomainOwnershipIdentifier struct {
 	Location                             *string             `json:"location,omitempty"`
 	Type                                 *string             `json:"type,omitempty"`
 	Tags                                 *map[string]*string `json:"tags,omitempty"`
+	Identity                             *ResourceIdentity   `json:"identity,omitempty"`
 	*DomainOwnershipIdentifierProperties `json:"properties,omitempty"`
 }
 
@@ -2504,6 +2520,7 @@ type PremierAddOn struct {
 	Location                *string             `json:"location,omitempty"`
 	Type                    *string             `json:"type,omitempty"`
 	Tags                    *map[string]*string `json:"tags,omitempty"`
+	Identity                *ResourceIdentity   `json:"identity,omitempty"`
 	*PremierAddOnProperties `json:"properties,omitempty"`
 }
 
@@ -2853,6 +2870,7 @@ type ReissueCertificateOrderRequest struct {
 	Location                                  *string             `json:"location,omitempty"`
 	Type                                      *string             `json:"type,omitempty"`
 	Tags                                      *map[string]*string `json:"tags,omitempty"`
+	Identity                                  *ResourceIdentity   `json:"identity,omitempty"`
 	*ReissueCertificateOrderRequestProperties `json:"properties,omitempty"`
 }
 
@@ -2893,6 +2911,7 @@ type RenewCertificateOrderRequest struct {
 	Location                                *string             `json:"location,omitempty"`
 	Type                                    *string             `json:"type,omitempty"`
 	Tags                                    *map[string]*string `json:"tags,omitempty"`
+	Identity                                *ResourceIdentity   `json:"identity,omitempty"`
 	*RenewCertificateOrderRequestProperties `json:"properties,omitempty"`
 }
 
@@ -2917,6 +2936,14 @@ type Resource struct {
 	Location *string             `json:"location,omitempty"`
 	Type     *string             `json:"type,omitempty"`
 	Tags     *map[string]*string `json:"tags,omitempty"`
+	Identity *ResourceIdentity   `json:"identity,omitempty"`
+}
+
+// ResourceIdentity is identity for the resource.
+type ResourceIdentity struct {
+	PrincipalID *string                    `json:"principalId,omitempty"`
+	TenantID    *string                    `json:"tenantId,omitempty"`
+	Type        ManagedServiceIdentityType `json:"type,omitempty"`
 }
 
 // ResourceCollection is collection of resources.
@@ -3113,6 +3140,7 @@ type Site struct {
 	Location          *string             `json:"location,omitempty"`
 	Type              *string             `json:"type,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
+	Identity          *ResourceIdentity   `json:"identity,omitempty"`
 	*SiteProperties   `json:"properties,omitempty"`
 }
 

@@ -117,6 +117,34 @@ const (
 	FirewallStateEnabled FirewallState = "Enabled"
 )
 
+// OperationOrigin enumerates the values for operation origin.
+type OperationOrigin string
+
+const (
+	// System specifies the system state for operation origin.
+	System OperationOrigin = "system"
+	// User specifies the user state for operation origin.
+	User OperationOrigin = "user"
+	// Usersystem specifies the usersystem state for operation origin.
+	Usersystem OperationOrigin = "user,system"
+)
+
+// SubscriptionState enumerates the values for subscription state.
+type SubscriptionState string
+
+const (
+	// SubscriptionStateDeleted specifies the subscription state deleted state for subscription state.
+	SubscriptionStateDeleted SubscriptionState = "Deleted"
+	// SubscriptionStateRegistered specifies the subscription state registered state for subscription state.
+	SubscriptionStateRegistered SubscriptionState = "Registered"
+	// SubscriptionStateSuspended specifies the subscription state suspended state for subscription state.
+	SubscriptionStateSuspended SubscriptionState = "Suspended"
+	// SubscriptionStateUnregistered specifies the subscription state unregistered state for subscription state.
+	SubscriptionStateUnregistered SubscriptionState = "Unregistered"
+	// SubscriptionStateWarned specifies the subscription state warned state for subscription state.
+	SubscriptionStateWarned SubscriptionState = "Warned"
+)
+
 // TierType enumerates the values for tier type.
 type TierType string
 
@@ -146,6 +174,22 @@ const (
 	// TrustedIDProviderStateEnabled specifies the trusted id provider state enabled state for trusted id provider state.
 	TrustedIDProviderStateEnabled TrustedIDProviderState = "Enabled"
 )
+
+// CapabilityInformation is subscription-level properties and limits for Data Lake Store
+type CapabilityInformation struct {
+	autorest.Response `json:"-"`
+	SubscriptionID    *uuid.UUID        `json:"subscriptionId,omitempty"`
+	State             SubscriptionState `json:"state,omitempty"`
+	MaxAccountCount   *int32            `json:"maxAccountCount,omitempty"`
+	AccountCount      *int32            `json:"accountCount,omitempty"`
+	MigrationState    *bool             `json:"migrationState,omitempty"`
+}
+
+// CheckNameAvailabilityParameters is data Lake Store account name availability check parameters
+type CheckNameAvailabilityParameters struct {
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
+}
 
 // DataLakeStoreAccount is data Lake Store account information
 type DataLakeStoreAccount struct {
@@ -306,6 +350,36 @@ type KeyVaultMetaInfo struct {
 	EncryptionKeyVersion *string `json:"encryptionKeyVersion,omitempty"`
 }
 
+// NameAvailabilityInformation is data Lake Store account name availability result information
+type NameAvailabilityInformation struct {
+	autorest.Response `json:"-"`
+	NameAvailable     *bool   `json:"nameAvailable,omitempty"`
+	Reason            *string `json:"reason,omitempty"`
+	Message           *string `json:"message,omitempty"`
+}
+
+// Operation is an available operation for Data Lake Store
+type Operation struct {
+	Name    *string           `json:"name,omitempty"`
+	Display *OperationDisplay `json:"display,omitempty"`
+	Origin  OperationOrigin   `json:"origin,omitempty"`
+}
+
+// OperationDisplay is the display information for a particular operation
+type OperationDisplay struct {
+	Provider    *string `json:"provider,omitempty"`
+	Resource    *string `json:"resource,omitempty"`
+	Operation   *string `json:"operation,omitempty"`
+	Description *string `json:"description,omitempty"`
+}
+
+// OperationListResult is the list of available operations for Data Lake Store
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Operation `json:"value,omitempty"`
+	NextLink          *string      `json:"nextLink,omitempty"`
+}
+
 // Resource is the Resource model definition.
 type Resource struct {
 	ID       *string             `json:"id,omitempty"`
@@ -351,12 +425,12 @@ type UpdateEncryptionConfig struct {
 	KeyVaultMetaInfo *UpdateKeyVaultMetaInfo `json:"keyVaultMetaInfo,omitempty"`
 }
 
-// UpdateFirewallRuleParameters is data Lake Analytics firewall rule update parameters
+// UpdateFirewallRuleParameters is data Lake Store firewall rule update parameters
 type UpdateFirewallRuleParameters struct {
 	*UpdateFirewallRuleProperties `json:"properties,omitempty"`
 }
 
-// UpdateFirewallRuleProperties is data Lake Analytics firewall rule properties information
+// UpdateFirewallRuleProperties is data Lake Store firewall rule properties information
 type UpdateFirewallRuleProperties struct {
 	StartIPAddress *string `json:"startIpAddress,omitempty"`
 	EndIPAddress   *string `json:"endIpAddress,omitempty"`

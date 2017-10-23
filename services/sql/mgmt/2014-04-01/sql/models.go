@@ -384,6 +384,7 @@ type DatabaseProperties struct {
 	FailoverGroupID                         *string                      `json:"failoverGroupId,omitempty"`
 	ReadScale                               ReadScale                    `json:"readScale,omitempty"`
 	SampleName                              SampleName                   `json:"sampleName,omitempty"`
+	ZoneRedundant                           *bool                        `json:"zoneRedundant,omitempty"`
 }
 
 // DatabaseSecurityAlertPolicy is contains information about a database Threat Detection policy.
@@ -518,6 +519,7 @@ type ElasticPoolProperties struct {
 	DatabaseDtuMax *int32             `json:"databaseDtuMax,omitempty"`
 	DatabaseDtuMin *int32             `json:"databaseDtuMin,omitempty"`
 	StorageMB      *int32             `json:"storageMB,omitempty"`
+	ZoneRedundant  *bool              `json:"zoneRedundant,omitempty"`
 }
 
 // ElasticPoolUpdate is represents an elastic pool update.

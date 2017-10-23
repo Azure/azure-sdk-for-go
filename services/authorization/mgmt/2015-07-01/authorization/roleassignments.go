@@ -114,7 +114,10 @@ func (client RoleAssignmentsClient) CreateResponder(resp *http.Response) (result
 
 // CreateByID creates a role assignment by ID.
 //
-// roleAssignmentID is the ID of the role assignment to create. parameters is parameters for the role assignment.
+// roleAssignmentID is the fully qualified ID of the role assignment, including the scope, resource name and resource
+// type. Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+// /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+// parameters is parameters for the role assignment.
 func (client RoleAssignmentsClient) CreateByID(roleAssignmentID string, parameters RoleAssignmentCreateParameters) (result RoleAssignment, err error) {
 	req, err := client.CreateByIDPreparer(roleAssignmentID, parameters)
 	if err != nil {
@@ -244,7 +247,9 @@ func (client RoleAssignmentsClient) DeleteResponder(resp *http.Response) (result
 
 // DeleteByID deletes a role assignment.
 //
-// roleAssignmentID is the ID of the role assignment to delete.
+// roleAssignmentID is the fully qualified ID of the role assignment, including the scope, resource name and resource
+// type. Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+// /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
 func (client RoleAssignmentsClient) DeleteByID(roleAssignmentID string) (result RoleAssignment, err error) {
 	req, err := client.DeleteByIDPreparer(roleAssignmentID)
 	if err != nil {
@@ -371,7 +376,9 @@ func (client RoleAssignmentsClient) GetResponder(resp *http.Response) (result Ro
 
 // GetByID gets a role assignment by ID.
 //
-// roleAssignmentID is the ID of the role assignment to get.
+// roleAssignmentID is the fully qualified ID of the role assignment, including the scope, resource name and resource
+// type. Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+// /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
 func (client RoleAssignmentsClient) GetByID(roleAssignmentID string) (result RoleAssignment, err error) {
 	req, err := client.GetByIDPreparer(roleAssignmentID)
 	if err != nil {

@@ -29,13 +29,13 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string, resourceGroupName string, resourceName string, certificateName string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, resourceName, certificateName)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string, certificateName string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName, certificateName)}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all of the available IoT Hub REST API operations.

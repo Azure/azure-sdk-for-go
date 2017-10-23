@@ -95,6 +95,34 @@ const (
 	FirewallStateEnabled FirewallState = "Enabled"
 )
 
+// OperationOrigin enumerates the values for operation origin.
+type OperationOrigin string
+
+const (
+	// OperationOriginSystem specifies the operation origin system state for operation origin.
+	OperationOriginSystem OperationOrigin = "system"
+	// OperationOriginUser specifies the operation origin user state for operation origin.
+	OperationOriginUser OperationOrigin = "user"
+	// OperationOriginUsersystem specifies the operation origin usersystem state for operation origin.
+	OperationOriginUsersystem OperationOrigin = "user,system"
+)
+
+// SubscriptionState enumerates the values for subscription state.
+type SubscriptionState string
+
+const (
+	// SubscriptionStateDeleted specifies the subscription state deleted state for subscription state.
+	SubscriptionStateDeleted SubscriptionState = "Deleted"
+	// SubscriptionStateRegistered specifies the subscription state registered state for subscription state.
+	SubscriptionStateRegistered SubscriptionState = "Registered"
+	// SubscriptionStateSuspended specifies the subscription state suspended state for subscription state.
+	SubscriptionStateSuspended SubscriptionState = "Suspended"
+	// SubscriptionStateUnregistered specifies the subscription state unregistered state for subscription state.
+	SubscriptionStateUnregistered SubscriptionState = "Unregistered"
+	// SubscriptionStateWarned specifies the subscription state warned state for subscription state.
+	SubscriptionStateWarned SubscriptionState = "Warned"
+)
+
 // TierType enumerates the values for tier type.
 type TierType string
 
@@ -128,6 +156,22 @@ type AddDataLakeStoreParameters struct {
 // account.
 type AddStorageAccountParameters struct {
 	*StorageAccountProperties `json:"properties,omitempty"`
+}
+
+// CapabilityInformation is subscription-level properties and limits for Data Lake Analytics
+type CapabilityInformation struct {
+	autorest.Response `json:"-"`
+	SubscriptionID    *uuid.UUID        `json:"subscriptionId,omitempty"`
+	State             SubscriptionState `json:"state,omitempty"`
+	MaxAccountCount   *int32            `json:"maxAccountCount,omitempty"`
+	AccountCount      *int32            `json:"accountCount,omitempty"`
+	MigrationState    *bool             `json:"migrationState,omitempty"`
+}
+
+// CheckNameAvailabilityParameters is data Lake Analytics account name availability check parameters
+type CheckNameAvailabilityParameters struct {
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // ComputePolicy is the parameters used to create a new compute policy.
@@ -394,6 +438,36 @@ func (client ListStorageContainersResult) ListStorageContainersResultPreparer() 
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// NameAvailabilityInformation is data Lake Analytics account name availability result information
+type NameAvailabilityInformation struct {
+	autorest.Response `json:"-"`
+	NameAvailable     *bool   `json:"nameAvailable,omitempty"`
+	Reason            *string `json:"reason,omitempty"`
+	Message           *string `json:"message,omitempty"`
+}
+
+// Operation is an available operation for Data Lake Analytics
+type Operation struct {
+	Name    *string           `json:"name,omitempty"`
+	Display *OperationDisplay `json:"display,omitempty"`
+	Origin  OperationOrigin   `json:"origin,omitempty"`
+}
+
+// OperationDisplay is the display information for a particular operation
+type OperationDisplay struct {
+	Provider    *string `json:"provider,omitempty"`
+	Resource    *string `json:"resource,omitempty"`
+	Operation   *string `json:"operation,omitempty"`
+	Description *string `json:"description,omitempty"`
+}
+
+// OperationListResult is the list of available operations for Data Lake Analytics
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Operation `json:"value,omitempty"`
+	NextLink          *string      `json:"nextLink,omitempty"`
 }
 
 // OptionalSubResource is the Resource model definition for a nested resource with no required properties.

@@ -877,6 +877,7 @@ type DatabaseProperties struct {
 	FailoverGroupID                         *string                      `json:"failoverGroupId,omitempty"`
 	ReadScale                               ReadScale                    `json:"readScale,omitempty"`
 	SampleName                              SampleName                   `json:"sampleName,omitempty"`
+	ZoneRedundant                           *bool                        `json:"zoneRedundant,omitempty"`
 }
 
 // DatabaseSecurityAlertPolicy is contains information about a database Threat Detection policy.
@@ -985,6 +986,7 @@ type EditionCapability struct {
 	Name                            *string                       `json:"name,omitempty"`
 	Status                          CapabilityStatus              `json:"status,omitempty"`
 	SupportedServiceLevelObjectives *[]ServiceObjectiveCapability `json:"supportedServiceLevelObjectives,omitempty"`
+	ZoneRedundant                   *bool                         `json:"zoneRedundant,omitempty"`
 }
 
 // ElasticPool is represents a database elastic pool.
@@ -1088,6 +1090,7 @@ type ElasticPoolEditionCapability struct {
 	Name                     *string                     `json:"name,omitempty"`
 	Status                   CapabilityStatus            `json:"status,omitempty"`
 	SupportedElasticPoolDtus *[]ElasticPoolDtuCapability `json:"supportedElasticPoolDtus,omitempty"`
+	ZoneRedundant            *bool                       `json:"zoneRedundant,omitempty"`
 }
 
 // ElasticPoolListResult is represents the response to a list elastic pool request.
@@ -1118,6 +1121,7 @@ type ElasticPoolProperties struct {
 	DatabaseDtuMax *int32             `json:"databaseDtuMax,omitempty"`
 	DatabaseDtuMin *int32             `json:"databaseDtuMin,omitempty"`
 	StorageMB      *int32             `json:"storageMB,omitempty"`
+	ZoneRedundant  *bool              `json:"zoneRedundant,omitempty"`
 }
 
 // ElasticPoolUpdate is represents an elastic pool update.
@@ -1730,6 +1734,44 @@ type ServerConnectionPolicy struct {
 // ServerConnectionPolicyProperties is the properties of a server secure connection policy.
 type ServerConnectionPolicyProperties struct {
 	ConnectionType ServerConnectionType `json:"connectionType,omitempty"`
+}
+
+// ServerDNSAlias is a server DNS alias.
+type ServerDNSAlias struct {
+	autorest.Response         `json:"-"`
+	ID                        *string `json:"id,omitempty"`
+	Name                      *string `json:"name,omitempty"`
+	Type                      *string `json:"type,omitempty"`
+	*ServerDNSAliasProperties `json:"properties,omitempty"`
+}
+
+// ServerDNSAliasAcquisition is a server DNS alias acquisition request.
+type ServerDNSAliasAcquisition struct {
+	OldServerDNSAliasID *string `json:"oldServerDnsAliasId,omitempty"`
+}
+
+// ServerDNSAliasListResult is a list of server DNS aliases.
+type ServerDNSAliasListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]ServerDNSAlias `json:"value,omitempty"`
+	NextLink          *string           `json:"nextLink,omitempty"`
+}
+
+// ServerDNSAliasListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client ServerDNSAliasListResult) ServerDNSAliasListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// ServerDNSAliasProperties is properties of a server DNS alias.
+type ServerDNSAliasProperties struct {
+	AzureDNSRecord *string `json:"azureDnsRecord,omitempty"`
 }
 
 // ServerKey is a server key.

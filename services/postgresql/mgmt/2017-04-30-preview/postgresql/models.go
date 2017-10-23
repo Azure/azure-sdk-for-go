@@ -22,6 +22,8 @@ import (
 	"errors"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
+	"net/http"
 )
 
 // CreateMode enumerates the values for create mode.
@@ -86,6 +88,26 @@ const (
 	SslEnforcementEnumDisabled SslEnforcementEnum = "Disabled"
 	// SslEnforcementEnumEnabled specifies the ssl enforcement enum enabled state for ssl enforcement enum.
 	SslEnforcementEnumEnabled SslEnforcementEnum = "Enabled"
+)
+
+// VirtualNetworkRuleState enumerates the values for virtual network rule state.
+type VirtualNetworkRuleState string
+
+const (
+	// VirtualNetworkRuleStateDeleting specifies the virtual network rule state deleting state for virtual network rule
+	// state.
+	VirtualNetworkRuleStateDeleting VirtualNetworkRuleState = "Deleting"
+	// VirtualNetworkRuleStateInitializing specifies the virtual network rule state initializing state for virtual network
+	// rule state.
+	VirtualNetworkRuleStateInitializing VirtualNetworkRuleState = "Initializing"
+	// VirtualNetworkRuleStateInProgress specifies the virtual network rule state in progress state for virtual network
+	// rule state.
+	VirtualNetworkRuleStateInProgress VirtualNetworkRuleState = "InProgress"
+	// VirtualNetworkRuleStateReady specifies the virtual network rule state ready state for virtual network rule state.
+	VirtualNetworkRuleStateReady VirtualNetworkRuleState = "Ready"
+	// VirtualNetworkRuleStateUnknown specifies the virtual network rule state unknown state for virtual network rule
+	// state.
+	VirtualNetworkRuleStateUnknown VirtualNetworkRuleState = "Unknown"
 )
 
 // Configuration is represents a Configuration.
@@ -468,4 +490,39 @@ type TrackedResource struct {
 	Type     *string             `json:"type,omitempty"`
 	Location *string             `json:"location,omitempty"`
 	Tags     *map[string]*string `json:"tags,omitempty"`
+}
+
+// VirtualNetworkRule is a virtual network rule.
+type VirtualNetworkRule struct {
+	autorest.Response             `json:"-"`
+	ID                            *string `json:"id,omitempty"`
+	Name                          *string `json:"name,omitempty"`
+	Type                          *string `json:"type,omitempty"`
+	*VirtualNetworkRuleProperties `json:"properties,omitempty"`
+}
+
+// VirtualNetworkRuleListResult is a list of virtual network rules.
+type VirtualNetworkRuleListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]VirtualNetworkRule `json:"value,omitempty"`
+	NextLink          *string               `json:"nextLink,omitempty"`
+}
+
+// VirtualNetworkRuleListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client VirtualNetworkRuleListResult) VirtualNetworkRuleListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// VirtualNetworkRuleProperties is properties of a virtual network rule.
+type VirtualNetworkRuleProperties struct {
+	VirtualNetworkSubnetID           *string                 `json:"virtualNetworkSubnetId,omitempty"`
+	IgnoreMissingVnetServiceEndpoint *bool                   `json:"ignoreMissingVnetServiceEndpoint,omitempty"`
+	State                            VirtualNetworkRuleState `json:"state,omitempty"`
 }

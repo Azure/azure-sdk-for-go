@@ -60,6 +60,13 @@ const (
 	Ping WebTestKind = "ping"
 )
 
+// APIKeyRequest is an Application Insights component API Key createion request definition.
+type APIKeyRequest struct {
+	Name                  *string   `json:"name,omitempty"`
+	LinkedReadProperties  *[]string `json:"linkedReadProperties,omitempty"`
+	LinkedWriteProperties *[]string `json:"linkedWriteProperties,omitempty"`
+}
+
 // ApplicationInsightsComponent is an Application Insights component definition.
 type ApplicationInsightsComponent struct {
 	autorest.Response                       `json:"-"`
@@ -70,6 +77,78 @@ type ApplicationInsightsComponent struct {
 	Tags                                    *map[string]*string `json:"tags,omitempty"`
 	Kind                                    *string             `json:"kind,omitempty"`
 	*ApplicationInsightsComponentProperties `json:"properties,omitempty"`
+}
+
+// ApplicationInsightsComponentAPIKey is properties that define an API key of an Application Insights Component.
+type ApplicationInsightsComponentAPIKey struct {
+	autorest.Response     `json:"-"`
+	ID                    *string   `json:"id,omitempty"`
+	APIKey                *string   `json:"apiKey,omitempty"`
+	CreatedDate           *string   `json:"createdDate,omitempty"`
+	Name                  *string   `json:"name,omitempty"`
+	LinkedReadProperties  *[]string `json:"linkedReadProperties,omitempty"`
+	LinkedWriteProperties *[]string `json:"linkedWriteProperties,omitempty"`
+}
+
+// ApplicationInsightsComponentAPIKeyListResult is describes the list of API Keys of an Application Insights Component.
+type ApplicationInsightsComponentAPIKeyListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]ApplicationInsightsComponentAPIKey `json:"value,omitempty"`
+}
+
+// ApplicationInsightsComponentBillingFeatures is an Application Insights component billing features
+type ApplicationInsightsComponentBillingFeatures struct {
+	autorest.Response      `json:"-"`
+	DataVolumeCap          *ApplicationInsightsComponentDataVolumeCap `json:"DataVolumeCap,omitempty"`
+	CurrentBillingFeatures *[]string                                  `json:"CurrentBillingFeatures,omitempty"`
+}
+
+// ApplicationInsightsComponentDataVolumeCap is an Application Insights component daily data volumne cap
+type ApplicationInsightsComponentDataVolumeCap struct {
+	Cap                                  *float64 `json:"Cap,omitempty"`
+	ResetTime                            *int32   `json:"ResetTime,omitempty"`
+	WarningThreshold                     *int32   `json:"WarningThreshold,omitempty"`
+	StopSendNotificationWhenHitThreshold *bool    `json:"StopSendNotificationWhenHitThreshold,omitempty"`
+	StopSendNotificationWhenHitCap       *bool    `json:"StopSendNotificationWhenHitCap,omitempty"`
+	MaxHistoryCap                        *float64 `json:"MaxHistoryCap,omitempty"`
+}
+
+// ApplicationInsightsComponentExportConfiguration is properties that define a Continuous Export configuration.
+type ApplicationInsightsComponentExportConfiguration struct {
+	autorest.Response                `json:"-"`
+	ExportID                         *string `json:"ExportId,omitempty"`
+	InstrumentationKey               *string `json:"InstrumentationKey,omitempty"`
+	RecordTypes                      *string `json:"RecordTypes,omitempty"`
+	ApplicationName                  *string `json:"ApplicationName,omitempty"`
+	SubscriptionID                   *string `json:"SubscriptionId,omitempty"`
+	ResourceGroup                    *string `json:"ResourceGroup,omitempty"`
+	DestinationStorageSubscriptionID *string `json:"DestinationStorageSubscriptionId,omitempty"`
+	DestinationStorageLocationID     *string `json:"DestinationStorageLocationId,omitempty"`
+	DestinationAccountID             *string `json:"DestinationAccountId,omitempty"`
+	DestinationType                  *string `json:"DestinationType,omitempty"`
+	IsUserEnabled                    *string `json:"IsUserEnabled,omitempty"`
+	LastUserUpdate                   *string `json:"LastUserUpdate,omitempty"`
+	NotificationQueueEnabled         *string `json:"NotificationQueueEnabled,omitempty"`
+	ExportStatus                     *string `json:"ExportStatus,omitempty"`
+	LastSuccessTime                  *string `json:"LastSuccessTime,omitempty"`
+	LastGapTime                      *string `json:"LastGapTime,omitempty"`
+	PermanentErrorReason             *string `json:"PermanentErrorReason,omitempty"`
+	StorageName                      *string `json:"StorageName,omitempty"`
+	ContainerName                    *string `json:"ContainerName,omitempty"`
+}
+
+// ApplicationInsightsComponentExportRequest is an Application Insights component Continuous Export configuration
+// request definition.
+type ApplicationInsightsComponentExportRequest struct {
+	RecordTypes                      *string `json:"RecordTypes,omitempty"`
+	DestinationType                  *string `json:"DestinationType,omitempty"`
+	DestinationAddress               *string `json:"DestinationAddress,omitempty"`
+	IsEnabled                        *string `json:"IsEnabled,omitempty"`
+	NotificationQueueEnabled         *string `json:"NotificationQueueEnabled,omitempty"`
+	NotificationQueueURI             *string `json:"NotificationQueueUri,omitempty"`
+	DestinationStorageSubscriptionID *string `json:"DestinationStorageSubscriptionId,omitempty"`
+	DestinationStorageLocationID     *string `json:"DestinationStorageLocationId,omitempty"`
+	DestinationAccountID             *string `json:"DestinationAccountId,omitempty"`
 }
 
 // ApplicationInsightsComponentListResult is describes the list of Application Insights Resources.
@@ -107,11 +186,25 @@ type ApplicationInsightsComponentProperties struct {
 	SamplingPercentage *float64        `json:"SamplingPercentage,omitempty"`
 }
 
+// ApplicationInsightsComponentQuotaStatus is an Application Insights component daily data volume cap status
+type ApplicationInsightsComponentQuotaStatus struct {
+	autorest.Response `json:"-"`
+	AppID             *string `json:"AppId,omitempty"`
+	ShouldBeThrottled *bool   `json:"ShouldBeThrottled,omitempty"`
+	ExpirationTime    *string `json:"ExpirationTime,omitempty"`
+}
+
 // ErrorResponse is error reponse indicates Insights service is not able to process the incoming request. The reason is
 // provided in the error message.
 type ErrorResponse struct {
 	Code    *string `json:"code,omitempty"`
 	Message *string `json:"message,omitempty"`
+}
+
+// ListApplicationInsightsComponentExportConfiguration is
+type ListApplicationInsightsComponentExportConfiguration struct {
+	autorest.Response `json:"-"`
+	Value             *[]ApplicationInsightsComponentExportConfiguration `json:"value,omitempty"`
 }
 
 // Operation is CDN REST API operation

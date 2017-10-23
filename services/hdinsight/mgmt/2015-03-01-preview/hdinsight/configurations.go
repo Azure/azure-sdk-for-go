@@ -42,7 +42,7 @@ func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) C
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. configurationName is
 // the constant for configuration type of gateway.
-func (client ConfigurationsClient) Get(resourceGroupName string, clusterName string, configurationName Configurationname) (result HTTPConnectivitySettings, err error) {
+func (client ConfigurationsClient) Get(resourceGroupName string, clusterName string, configurationName string) (result SetString, err error) {
 	req, err := client.GetPreparer(resourceGroupName, clusterName, configurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ConfigurationsClient", "Get", nil, "Failure preparing request")
@@ -65,7 +65,7 @@ func (client ConfigurationsClient) Get(resourceGroupName string, clusterName str
 }
 
 // GetPreparer prepares the Get request.
-func (client ConfigurationsClient) GetPreparer(resourceGroupName string, clusterName string, configurationName Configurationname) (*http.Request, error) {
+func (client ConfigurationsClient) GetPreparer(resourceGroupName string, clusterName string, configurationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"configurationName": autorest.Encode("path", configurationName),
@@ -94,20 +94,20 @@ func (client ConfigurationsClient) GetSender(req *http.Request) (*http.Response,
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ConfigurationsClient) GetResponder(resp *http.Response) (result HTTPConnectivitySettings, err error) {
+func (client ConfigurationsClient) GetResponder(resp *http.Response) (result SetString, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// UpdateHTTPSettings begins configuring the HTTP settings on the specified cluster. This method may poll for
-// completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
-// polling and any outstanding HTTP requests.
+// UpdateHTTPSettings configures the HTTP settings on the specified cluster. This method may poll for completion.
+// Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
+// outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. configurationName is
 // the constant for configuration type of gateway. parameters is the name of the resource group.

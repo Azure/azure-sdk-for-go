@@ -38,7 +38,7 @@ func NewExtensionClientWithBaseURI(baseURI string, subscriptionID string) Extens
 	return ExtensionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create create HDInsight cluster extension.
+// Create creates an HDInsight cluster extension.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. parameters is the
 // cluster extensions create request. extensionName is the name of the cluster extension.
@@ -100,13 +100,13 @@ func (client ExtensionClient) CreateResponder(resp *http.Response) (result autor
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return
 }
 
-// Delete delete extension for HDInsight cluster.
+// Delete deletes the specified extension for HDInsight cluster.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. extensionName is the
 // name of the cluster extension.
@@ -166,13 +166,178 @@ func (client ExtensionClient) DeleteResponder(resp *http.Response) (result autor
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return
 }
 
-// Get get extension properties for HDInsight cluster extension.
+// DisableMonitoring disables the Operations Management Suite (OMS) on the HDInsight cluster. This method may poll for
+// completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
+// polling and any outstanding HTTP requests.
+//
+// resourceGroupName is the name of the resource group. clusterName is the name of the cluster.
+func (client ExtensionClient) DisableMonitoring(resourceGroupName string, clusterName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			if err != nil {
+				errChan <- err
+			}
+			resultChan <- result
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.DisableMonitoringPreparer(resourceGroupName, clusterName, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "DisableMonitoring", nil, "Failure preparing request")
+			return
+		}
+
+		resp, err := client.DisableMonitoringSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "DisableMonitoring", resp, "Failure sending request")
+			return
+		}
+
+		result, err = client.DisableMonitoringResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "DisableMonitoring", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
+}
+
+// DisableMonitoringPreparer prepares the DisableMonitoring request.
+func (client ExtensionClient) DisableMonitoringPreparer(resourceGroupName string, clusterName string, cancel <-chan struct{}) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-03-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
+}
+
+// DisableMonitoringSender sends the DisableMonitoring request. The method will close the
+// http.Response Body if it receives an error.
+func (client ExtensionClient) DisableMonitoringSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
+}
+
+// DisableMonitoringResponder handles the response to the DisableMonitoring request. The method always
+// closes the http.Response Body.
+func (client ExtensionClient) DisableMonitoringResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// EnableMonitoring enables the Operations Management Suite (OMS) on the HDInsight cluster. This method may poll for
+// completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
+// polling and any outstanding HTTP requests.
+//
+// resourceGroupName is the name of the resource group. clusterName is the name of the cluster. parameters is the
+// Operations Management Suite (OMS) workspace parameters.
+func (client ExtensionClient) EnableMonitoring(resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			if err != nil {
+				errChan <- err
+			}
+			resultChan <- result
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.EnableMonitoringPreparer(resourceGroupName, clusterName, parameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "EnableMonitoring", nil, "Failure preparing request")
+			return
+		}
+
+		resp, err := client.EnableMonitoringSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "EnableMonitoring", resp, "Failure sending request")
+			return
+		}
+
+		result, err = client.EnableMonitoringResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "EnableMonitoring", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
+}
+
+// EnableMonitoringPreparer prepares the EnableMonitoring request.
+func (client ExtensionClient) EnableMonitoringPreparer(resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest, cancel <-chan struct{}) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-03-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
+}
+
+// EnableMonitoringSender sends the EnableMonitoring request. The method will close the
+// http.Response Body if it receives an error.
+func (client ExtensionClient) EnableMonitoringSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoPollForAsynchronous(client.PollingDelay))
+}
+
+// EnableMonitoringResponder handles the response to the EnableMonitoring request. The method always
+// closes the http.Response Body.
+func (client ExtensionClient) EnableMonitoringResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get gets the extension properties for the specified HDInsight cluster extension.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. extensionName is the
 // name of the cluster extension.
@@ -229,6 +394,71 @@ func (client ExtensionClient) GetSender(req *http.Request) (*http.Response, erro
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ExtensionClient) GetResponder(resp *http.Response) (result Extension, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetMonitoringStatus gets the status of Operations Management Suite (OMS) on the HDInsight cluster.
+//
+// resourceGroupName is the name of the resource group. clusterName is the name of the cluster.
+func (client ExtensionClient) GetMonitoringStatus(resourceGroupName string, clusterName string) (result ClusterMonitoringResponse, err error) {
+	req, err := client.GetMonitoringStatusPreparer(resourceGroupName, clusterName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "GetMonitoringStatus", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetMonitoringStatusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "GetMonitoringStatus", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetMonitoringStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "GetMonitoringStatus", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetMonitoringStatusPreparer prepares the GetMonitoringStatus request.
+func (client ExtensionClient) GetMonitoringStatusPreparer(resourceGroupName string, clusterName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-03-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetMonitoringStatusSender sends the GetMonitoringStatus request. The method will close the
+// http.Response Body if it receives an error.
+func (client ExtensionClient) GetMonitoringStatusSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// GetMonitoringStatusResponder handles the response to the GetMonitoringStatus request. The method always
+// closes the http.Response Body.
+func (client ExtensionClient) GetMonitoringStatusResponder(resp *http.Response) (result ClusterMonitoringResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

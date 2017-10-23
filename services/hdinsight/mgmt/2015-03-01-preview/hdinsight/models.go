@@ -19,7 +19,6 @@ package hdinsight
 
 import (
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
 )
@@ -59,22 +58,22 @@ const (
 	ClusterProvisioningStateSucceeded ClusterProvisioningState = "Succeeded"
 )
 
-// Configurationname enumerates the values for configurationname.
-type Configurationname string
-
-const (
-	// CoreSite specifies the core site state for configurationname.
-	CoreSite Configurationname = "core-site"
-	// Gateway specifies the gateway state for configurationname.
-	Gateway Configurationname = "gateway"
-)
-
 // DirectoryType enumerates the values for directory type.
 type DirectoryType string
 
 const (
 	// ActiveDirectory specifies the active directory state for directory type.
 	ActiveDirectory DirectoryType = "ActiveDirectory"
+)
+
+// EnabledCredential enumerates the values for enabled credential.
+type EnabledCredential string
+
+const (
+	// False specifies the false state for enabled credential.
+	False EnabledCredential = "false"
+	// True specifies the true state for enabled credential.
+	True EnabledCredential = "true"
 )
 
 // OSType enumerates the values for os type.
@@ -97,10 +96,10 @@ const (
 	Standard Tier = "Standard"
 )
 
-// Application is hDInsight cluster application
+// Application is the HDInsight cluster application
 type Application struct {
 	autorest.Response `json:"-"`
-	ID                *SubResource              `json:"id,omitempty"`
+	ID                *string                   `json:"id,omitempty"`
 	Name              *string                   `json:"name,omitempty"`
 	Type              *string                   `json:"type,omitempty"`
 	Etag              *string                   `json:"etag,omitempty"`
@@ -108,14 +107,14 @@ type Application struct {
 	Properties        *ApplicationGetProperties `json:"properties,omitempty"`
 }
 
-// ApplicationGetEndpoint is gets Application ssh endpoint
+// ApplicationGetEndpoint is gets the application SSH endpoint
 type ApplicationGetEndpoint struct {
 	Location        *string `json:"location,omitempty"`
 	DestinationPort *int32  `json:"destinationPort,omitempty"`
 	PublicPort      *int32  `json:"publicPort,omitempty"`
 }
 
-// ApplicationGetHTTPSEndpoint is gets application Http endpoints.
+// ApplicationGetHTTPSEndpoint is gets the application HTTP endpoints.
 type ApplicationGetHTTPSEndpoint struct {
 	AdditionalProperties *map[string]*string `json:",omitempty"`
 	AccessModes          *[]string           `json:"accessModes,omitempty"`
@@ -124,7 +123,7 @@ type ApplicationGetHTTPSEndpoint struct {
 	PublicPort           *int32              `json:"publicPort,omitempty"`
 }
 
-// ApplicationGetProperties is hDInsight cluster application.
+// ApplicationGetProperties is the HDInsight cluster application GET response.
 type ApplicationGetProperties struct {
 	ComputeProfile         *ComputeProfile                `json:"computeProfile,omitempty"`
 	InstallScriptActions   *[]RuntimeScriptAction         `json:"installScriptActions,omitempty"`
@@ -165,13 +164,13 @@ type CapabilitiesResult struct {
 	autorest.Response `json:"-"`
 	Versions          *map[string]*VersionsCapability `json:"versions,omitempty"`
 	Regions           *map[string]*RegionsCapability  `json:"regions,omitempty"`
-	Vmsizes           *map[string]*VMSizesCapability  `json:"vmsizes,omitempty"`
-	VmsizeFilters     *[]VMSizeCompatibilityFilter    `json:"vmsize_filters,omitempty"`
+	VMSizes           *map[string]*VMSizesCapability  `json:"vmSizes,omitempty"`
+	VMSizeFilters     *[]VMSizeCompatibilityFilter    `json:"vmSize_filters,omitempty"`
 	Features          *[]string                       `json:"features,omitempty"`
 	Quota             *QuotaCapability                `json:"quota,omitempty"`
 }
 
-// Cluster is describes the cluster.
+// Cluster is the HDInsight cluster.
 type Cluster struct {
 	autorest.Response `json:"-"`
 	ID                *string               `json:"id,omitempty"`
@@ -201,7 +200,7 @@ type ClusterCreateProperties struct {
 	StorageProfile    *StorageProfile    `json:"storageProfile,omitempty"`
 }
 
-// ClusterDefinition is the cluste definition.
+// ClusterDefinition is the cluster definition.
 type ClusterDefinition struct {
 	Blueprint        *string                 `json:"blueprint,omitempty"`
 	Kind             *string                 `json:"kind,omitempty"`
@@ -225,7 +224,7 @@ type ClusterGetProperties struct {
 	ConnectivityEndpoints *[]ConnectivityEndpoint  `json:"connectivityEndpoints,omitempty"`
 }
 
-// ClusterListPersistedScriptActionsResult is list PersistedScriptActions operations response.
+// ClusterListPersistedScriptActionsResult is the ListPersistedScriptActions operation response.
 type ClusterListPersistedScriptActionsResult struct {
 	Value    *[]RuntimeScriptAction `json:"value,omitempty"`
 	NextLink *string                `json:"nextLink,omitempty"`
@@ -250,10 +249,23 @@ func (client ClusterListResult) ClusterListResultPreparer() (*http.Request, erro
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// ClusterListRuntimeScriptActionDetailResult is the ListScriptExecutionHistory response.
+// ClusterListRuntimeScriptActionDetailResult is the list runtime script action detail response.
 type ClusterListRuntimeScriptActionDetailResult struct {
 	Value    *[]RuntimeScriptActionDetail `json:"value,omitempty"`
 	NextLink *string                      `json:"nextLink,omitempty"`
+}
+
+// ClusterMonitoringRequest is the Operations Management Suite (OMS) parameters.
+type ClusterMonitoringRequest struct {
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	PrimaryKey  *string `json:"primaryKey,omitempty"`
+}
+
+// ClusterMonitoringResponse is the Operations Management Suite (OMS) status response
+type ClusterMonitoringResponse struct {
+	autorest.Response        `json:"-"`
+	ClusterMonitoringEnabled *bool   `json:"ClusterMonitoringEnabled,omitempty"`
+	WorkspaceID              *string `json:"WorkspaceId,omitempty"`
 }
 
 // ClusterPatchParameters is the PatchCluster request parameters
@@ -279,16 +291,23 @@ type ConnectivityEndpoint struct {
 	Port     *int32  `json:"port,omitempty"`
 }
 
+// DataDisksGroups is the data disks groups for the role.
+type DataDisksGroups struct {
+	DisksPerNode       *int32  `json:"disksPerNode,omitempty"`
+	StorageAccountType *string `json:"storageAccountType,omitempty"`
+	DiskSizeGB         *int32  `json:"diskSizeGB,omitempty"`
+}
+
 // Errors is the error message associated with the cluster creation.
 type Errors struct {
 	Code    *string `json:"code,omitempty"`
 	Message *string `json:"message,omitempty"`
 }
 
-// ExecuteScriptActionParameters is describes the script actions on a running cluster.
+// ExecuteScriptActionParameters is the parameters for the script actions to execute on a running cluster.
 type ExecuteScriptActionParameters struct {
 	ScriptActions    *[]RuntimeScriptAction `json:"scriptActions,omitempty"`
-	PersistOnSuccess *string                `json:"persistOnSuccess,omitempty"`
+	PersistOnSuccess *bool                  `json:"persistOnSuccess,omitempty"`
 }
 
 // Extension is cluster monitoring extensions
@@ -298,24 +317,16 @@ type Extension struct {
 	PrimaryKey        *string `json:"primaryKey,omitempty"`
 }
 
-// HardwareProfile is describes the hardware profile.
+// HardwareProfile is the hardware profile.
 type HardwareProfile struct {
 	VMSize *string `json:"vmSize,omitempty"`
 }
 
 // HTTPConnectivitySettings is the payload for a Configure HTTP settings request.
 type HTTPConnectivitySettings struct {
-	autorest.Response `json:"-"`
-	EnabledCredential *string `json:"restAuthCredential.isEnabled,omitempty"`
-	Username          *string `json:"restAuthCredential.username,omitempty"`
-	Password          *string `json:"restAuthCredential.password,omitempty"`
-}
-
-// HTTPSettingsParameters is the payload for a Configure HTTP settings request.
-type HTTPSettingsParameters struct {
-	RestAuthCredentialIsEnabled *string `json:"restAuthCredential.isEnabled,omitempty"`
-	RestAuthCredentialUsername  *string `json:"restAuthCredential.username,omitempty"`
-	RestAuthCredentialPassword  *string `json:"restAuthCredential.password,omitempty"`
+	EnabledCredential EnabledCredential `json:"restAuthCredential.isEnabled,omitempty"`
+	Username          *string           `json:"restAuthCredential.username,omitempty"`
+	Password          *string           `json:"restAuthCredential.password,omitempty"`
 }
 
 // LinuxOperatingSystemProfile is the ssh username, password, and ssh public key.
@@ -325,7 +336,7 @@ type LinuxOperatingSystemProfile struct {
 	SSHProfile *SSHProfile `json:"sshProfile,omitempty"`
 }
 
-// Operation is hDInsight REST API operation
+// Operation is the HDInsight REST API operation.
 type Operation struct {
 	Name    *string           `json:"name,omitempty"`
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -364,10 +375,17 @@ type OperationResource struct {
 	Error  *Errors             `json:"error,omitempty"`
 }
 
-// OsProfile is the Windows operation systems profile, and configure remote desktop settings.
+// OsProfile is the Linux operation systems profile.
 type OsProfile struct {
-	WindowsOperatingSystemProfile *WindowsOperatingSystemProfile `json:"windowsOperatingSystemProfile,omitempty"`
-	LinuxOperatingSystemProfile   *LinuxOperatingSystemProfile   `json:"linuxOperatingSystemProfile,omitempty"`
+	LinuxOperatingSystemProfile *LinuxOperatingSystemProfile `json:"linuxOperatingSystemProfile,omitempty"`
+}
+
+// ProxyResource is the resource model definition for a ARM proxy resource. It will have everything other than required
+// location and tags
+type ProxyResource struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // QuotaCapability is the regional quota capability.
@@ -375,21 +393,9 @@ type QuotaCapability struct {
 	RegionalQuotas *[]RegionalQuotaCapability `json:"regionalQuotas,omitempty"`
 }
 
-// QuotaInfo is gets or sets Quota properties for the cluster.
+// QuotaInfo is the quota properties for the cluster.
 type QuotaInfo struct {
 	CoresUsed *int32 `json:"coresUsed,omitempty"`
-}
-
-// RdpSettings is the RDP settings for the windows cluster.
-type RdpSettings struct {
-	Username   *string    `json:"username,omitempty"`
-	Password   *string    `json:"password,omitempty"`
-	ExpiryDate *date.Date `json:"expiryDate,omitempty"`
-}
-
-// RDPSettingsParameters is parameters specifying the data factory gateway definition for a create or update operation.
-type RDPSettingsParameters struct {
-	OsProfile *OsProfile `json:"osProfile,omitempty"`
 }
 
 // RegionalQuotaCapability is the regional quota capacity.
@@ -404,13 +410,11 @@ type RegionsCapability struct {
 	Available *[]string `json:"available,omitempty"`
 }
 
-// Resource is the resource definition.
+// Resource is the core properties of ARM resources
 type Resource struct {
-	ID       *string             `json:"id,omitempty"`
-	Name     *string             `json:"name,omitempty"`
-	Type     *string             `json:"type,omitempty"`
-	Location *string             `json:"location,omitempty"`
-	Tags     *map[string]*string `json:"tags,omitempty"`
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // Role is describes a role on the cluster.
@@ -421,6 +425,7 @@ type Role struct {
 	HardwareProfile       *HardwareProfile       `json:"hardwareProfile,omitempty"`
 	OsProfile             *OsProfile             `json:"osProfile,omitempty"`
 	VirtualNetworkProfile *VirtualNetworkProfile `json:"virtualNetworkProfile,omitempty"`
+	DataDisksGroups       *[]DataDisksGroups     `json:"dataDisksGroups,omitempty"`
 	ScriptActions         *[]ScriptAction        `json:"scriptActions,omitempty"`
 }
 
@@ -433,9 +438,14 @@ type RuntimeScriptAction struct {
 	ApplicationName *string   `json:"applicationName,omitempty"`
 }
 
-// RuntimeScriptActionDetail is describes the execution details of a script action.
+// RuntimeScriptActionDetail is the execution details of a script action.
 type RuntimeScriptActionDetail struct {
 	autorest.Response `json:"-"`
+	Name              *string                         `json:"name,omitempty"`
+	URI               *string                         `json:"uri,omitempty"`
+	Parameters        *string                         `json:"parameters,omitempty"`
+	Roles             *[]string                       `json:"roles,omitempty"`
+	ApplicationName   *string                         `json:"applicationName,omitempty"`
 	ScriptExecutionID *int64                          `json:"scriptExecutionId,omitempty"`
 	StartTime         *string                         `json:"startTime,omitempty"`
 	EndTime           *string                         `json:"endTime,omitempty"`
@@ -443,11 +453,6 @@ type RuntimeScriptActionDetail struct {
 	Operation         *string                         `json:"operation,omitempty"`
 	ExecutionSummary  *[]ScriptActionExecutionSummary `json:"executionSummary,omitempty"`
 	DebugInformation  *string                         `json:"debugInformation,omitempty"`
-	Name              *string                         `json:"name,omitempty"`
-	URI               *string                         `json:"uri,omitempty"`
-	Parameters        *string                         `json:"parameters,omitempty"`
-	Roles             *[]string                       `json:"roles,omitempty"`
-	ApplicationName   *string                         `json:"applicationName,omitempty"`
 }
 
 // ScriptAction is describes a script action on role on the cluster.
@@ -457,7 +462,7 @@ type ScriptAction struct {
 	Parameters *string `json:"parameters,omitempty"`
 }
 
-// ScriptActionExecutionHistoryList is the ListScriptExecutionHistory response.
+// ScriptActionExecutionHistoryList is the list script execution history response.
 type ScriptActionExecutionHistoryList struct {
 	autorest.Response `json:"-"`
 	Value             *[]RuntimeScriptActionDetail `json:"value,omitempty"`
@@ -476,13 +481,13 @@ func (client ScriptActionExecutionHistoryList) ScriptActionExecutionHistoryListP
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// ScriptActionExecutionSummary is describes the execution summary of a script action.
+// ScriptActionExecutionSummary is the execution summary of a script action.
 type ScriptActionExecutionSummary struct {
 	Status        *string `json:"status,omitempty"`
 	InstanceCount *int32  `json:"instanceCount,omitempty"`
 }
 
-// ScriptActionPersistedGetResponseSpec is the persisted script action for cluster
+// ScriptActionPersistedGetResponseSpec is the persisted script action for cluster.
 type ScriptActionPersistedGetResponseSpec struct {
 	Name            *string   `json:"name,omitempty"`
 	URI             *string   `json:"uri,omitempty"`
@@ -491,7 +496,7 @@ type ScriptActionPersistedGetResponseSpec struct {
 	ApplicationName *string   `json:"applicationName,omitempty"`
 }
 
-// ScriptActionsList is all persisted script action for the cluster.
+// ScriptActionsList is the persisted script action for the cluster.
 type ScriptActionsList struct {
 	autorest.Response `json:"-"`
 	Value             *[]RuntimeScriptActionDetail `json:"value,omitempty"`
@@ -521,17 +526,23 @@ type SecurityProfile struct {
 	ClusterUsersGroupDNS *[]string     `json:"clusterUsersGroupDNs,omitempty"`
 }
 
-// SSHProfile is the list of Ssh public keys.
+// SetString is
+type SetString struct {
+	autorest.Response `json:"-"`
+	Value             *map[string]*string `json:"value,omitempty"`
+}
+
+// SSHProfile is the list of SSH public keys.
 type SSHProfile struct {
 	PublicKeys *[]SSHPublicKey `json:"publicKeys,omitempty"`
 }
 
-// SSHPublicKey is the Ssh public key for the cluster nodes.
+// SSHPublicKey is the SSH public key for the cluster nodes.
 type SSHPublicKey struct {
 	CertificateData *string `json:"certificateData,omitempty"`
 }
 
-// StorageAccount is describes the storage Account.
+// StorageAccount is the storage Account.
 type StorageAccount struct {
 	Name      *string `json:"name,omitempty"`
 	IsDefault *bool   `json:"isDefault,omitempty"`
@@ -539,14 +550,18 @@ type StorageAccount struct {
 	Key       *string `json:"key,omitempty"`
 }
 
-// StorageProfile is describes the storage profile.
+// StorageProfile is the storage profile.
 type StorageProfile struct {
 	Storageaccounts *[]StorageAccount `json:"storageaccounts,omitempty"`
 }
 
-// SubResource is the sub resource definition.
-type SubResource struct {
-	ID *string `json:"id,omitempty"`
+// TrackedResource is the resource model definition for a ARM tracked top level resource
+type TrackedResource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Location *string             `json:"location,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
 }
 
 // VersionsCapability is the version capability.
@@ -554,7 +569,7 @@ type VersionsCapability struct {
 	Available *[]VersionSpec `json:"available,omitempty"`
 }
 
-// VersionSpec is gets or sets Version spec properties.
+// VersionSpec is the version properties.
 type VersionSpec struct {
 	FriendlyName      *string             `json:"friendlyName,omitempty"`
 	DisplayName       *string             `json:"displayName,omitempty"`
@@ -562,7 +577,7 @@ type VersionSpec struct {
 	ComponentVersions *map[string]*string `json:"componentVersions,omitempty"`
 }
 
-// VirtualNetworkProfile is the Virtual network properties.
+// VirtualNetworkProfile is the virtual network properties.
 type VirtualNetworkProfile struct {
 	ID     *string `json:"id,omitempty"`
 	Subnet *string `json:"subnet,omitempty"`
@@ -581,9 +596,4 @@ type VMSizeCompatibilityFilter struct {
 // VMSizesCapability is the virtual machine sizes capability.
 type VMSizesCapability struct {
 	Available *[]string `json:"available,omitempty"`
-}
-
-// WindowsOperatingSystemProfile is the Windows operation system settings.
-type WindowsOperatingSystemProfile struct {
-	RdpSettings *RdpSettings `json:"rdpSettings,omitempty"`
 }

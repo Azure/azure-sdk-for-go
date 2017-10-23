@@ -20,11 +20,13 @@ package mysql
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
 // CheckNameAvailabilityClient is the the Microsoft Azure management API provides create, read, update, and delete
-// functionality for Azure MySQL resources including servers, databases, firewall rules, log files and configurations.
+// functionality for Azure MySQL resources including servers, databases, firewall rules, VNET rules, log files and
+// configurations.
 type CheckNameAvailabilityClient struct {
 	ManagementClient
 }
@@ -43,6 +45,12 @@ func NewCheckNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID st
 //
 // nameAvailabilityRequest is the required parameters for checking if resource name is available.
 func (client CheckNameAvailabilityClient) Execute(nameAvailabilityRequest NameAvailabilityRequest) (result NameAvailability, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: nameAvailabilityRequest,
+			Constraints: []validation.Constraint{{Target: "nameAvailabilityRequest.Name", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "mysql.CheckNameAvailabilityClient", "Execute")
+	}
+
 	req, err := client.ExecutePreparer(nameAvailabilityRequest)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysql.CheckNameAvailabilityClient", "Execute", nil, "Failure preparing request")

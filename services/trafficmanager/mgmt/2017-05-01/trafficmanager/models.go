@@ -252,7 +252,6 @@ type TrackedResource struct {
 
 // UserMetricsKeyModel is class representing a Traffic Manager Real User Metrics key response.
 type UserMetricsKeyModel struct {
-	autorest.Response         `json:"-"`
 	ID                        *string `json:"id,omitempty"`
 	Name                      *string `json:"name,omitempty"`
 	Type                      *string `json:"type,omitempty"`

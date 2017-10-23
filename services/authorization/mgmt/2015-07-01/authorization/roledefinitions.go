@@ -238,7 +238,10 @@ func (client RoleDefinitionsClient) GetResponder(resp *http.Response) (result Ro
 
 // GetByID gets a role definition by ID.
 //
-// roleDefinitionID is the fully qualified role definition ID to get.
+// roleDefinitionID is the fully qualified role definition ID. Use the format,
+// /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for subscription level
+// role definitions, or /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant level role
+// definitions.
 func (client RoleDefinitionsClient) GetByID(roleDefinitionID string) (result RoleDefinition, err error) {
 	req, err := client.GetByIDPreparer(roleDefinitionID)
 	if err != nil {

@@ -91,6 +91,96 @@ const (
 	HostCachingOptionsReadWrite HostCachingOptions = "ReadWrite"
 )
 
+// HTTPStatusCode enumerates the values for http status code.
+type HTTPStatusCode string
+
+const (
+	// Accepted specifies the accepted state for http status code.
+	Accepted HTTPStatusCode = "Accepted"
+	// BadGateway specifies the bad gateway state for http status code.
+	BadGateway HTTPStatusCode = "BadGateway"
+	// BadRequest specifies the bad request state for http status code.
+	BadRequest HTTPStatusCode = "BadRequest"
+	// Conflict specifies the conflict state for http status code.
+	Conflict HTTPStatusCode = "Conflict"
+	// Continue specifies the continue state for http status code.
+	Continue HTTPStatusCode = "Continue"
+	// Created specifies the created state for http status code.
+	Created HTTPStatusCode = "Created"
+	// ExpectationFailed specifies the expectation failed state for http status code.
+	ExpectationFailed HTTPStatusCode = "ExpectationFailed"
+	// Forbidden specifies the forbidden state for http status code.
+	Forbidden HTTPStatusCode = "Forbidden"
+	// GatewayTimeout specifies the gateway timeout state for http status code.
+	GatewayTimeout HTTPStatusCode = "GatewayTimeout"
+	// Gone specifies the gone state for http status code.
+	Gone HTTPStatusCode = "Gone"
+	// HTTPVersionNotSupported specifies the http version not supported state for http status code.
+	HTTPVersionNotSupported HTTPStatusCode = "HttpVersionNotSupported"
+	// InternalServerError specifies the internal server error state for http status code.
+	InternalServerError HTTPStatusCode = "InternalServerError"
+	// LengthRequired specifies the length required state for http status code.
+	LengthRequired HTTPStatusCode = "LengthRequired"
+	// MethodNotAllowed specifies the method not allowed state for http status code.
+	MethodNotAllowed HTTPStatusCode = "MethodNotAllowed"
+	// MovedPermanently specifies the moved permanently state for http status code.
+	MovedPermanently HTTPStatusCode = "MovedPermanently"
+	// MultipleChoices specifies the multiple choices state for http status code.
+	MultipleChoices HTTPStatusCode = "MultipleChoices"
+	// NoContent specifies the no content state for http status code.
+	NoContent HTTPStatusCode = "NoContent"
+	// NonAuthoritativeInformation specifies the non authoritative information state for http status code.
+	NonAuthoritativeInformation HTTPStatusCode = "NonAuthoritativeInformation"
+	// NotAcceptable specifies the not acceptable state for http status code.
+	NotAcceptable HTTPStatusCode = "NotAcceptable"
+	// NotFound specifies the not found state for http status code.
+	NotFound HTTPStatusCode = "NotFound"
+	// NotImplemented specifies the not implemented state for http status code.
+	NotImplemented HTTPStatusCode = "NotImplemented"
+	// NotModified specifies the not modified state for http status code.
+	NotModified HTTPStatusCode = "NotModified"
+	// OK specifies the ok state for http status code.
+	OK HTTPStatusCode = "OK"
+	// PartialContent specifies the partial content state for http status code.
+	PartialContent HTTPStatusCode = "PartialContent"
+	// PaymentRequired specifies the payment required state for http status code.
+	PaymentRequired HTTPStatusCode = "PaymentRequired"
+	// PreconditionFailed specifies the precondition failed state for http status code.
+	PreconditionFailed HTTPStatusCode = "PreconditionFailed"
+	// ProxyAuthenticationRequired specifies the proxy authentication required state for http status code.
+	ProxyAuthenticationRequired HTTPStatusCode = "ProxyAuthenticationRequired"
+	// Redirect specifies the redirect state for http status code.
+	Redirect HTTPStatusCode = "Redirect"
+	// RequestedRangeNotSatisfiable specifies the requested range not satisfiable state for http status code.
+	RequestedRangeNotSatisfiable HTTPStatusCode = "RequestedRangeNotSatisfiable"
+	// RequestEntityTooLarge specifies the request entity too large state for http status code.
+	RequestEntityTooLarge HTTPStatusCode = "RequestEntityTooLarge"
+	// RequestTimeout specifies the request timeout state for http status code.
+	RequestTimeout HTTPStatusCode = "RequestTimeout"
+	// RequestURITooLong specifies the request uri too long state for http status code.
+	RequestURITooLong HTTPStatusCode = "RequestUriTooLong"
+	// ResetContent specifies the reset content state for http status code.
+	ResetContent HTTPStatusCode = "ResetContent"
+	// SeeOther specifies the see other state for http status code.
+	SeeOther HTTPStatusCode = "SeeOther"
+	// ServiceUnavailable specifies the service unavailable state for http status code.
+	ServiceUnavailable HTTPStatusCode = "ServiceUnavailable"
+	// SwitchingProtocols specifies the switching protocols state for http status code.
+	SwitchingProtocols HTTPStatusCode = "SwitchingProtocols"
+	// TemporaryRedirect specifies the temporary redirect state for http status code.
+	TemporaryRedirect HTTPStatusCode = "TemporaryRedirect"
+	// Unauthorized specifies the unauthorized state for http status code.
+	Unauthorized HTTPStatusCode = "Unauthorized"
+	// UnsupportedMediaType specifies the unsupported media type state for http status code.
+	UnsupportedMediaType HTTPStatusCode = "UnsupportedMediaType"
+	// Unused specifies the unused state for http status code.
+	Unused HTTPStatusCode = "Unused"
+	// UpgradeRequired specifies the upgrade required state for http status code.
+	UpgradeRequired HTTPStatusCode = "UpgradeRequired"
+	// UseProxy specifies the use proxy state for http status code.
+	UseProxy HTTPStatusCode = "UseProxy"
+)
+
 // LinuxOsState enumerates the values for linux os state.
 type LinuxOsState string
 
@@ -1147,6 +1237,20 @@ type NotificationSettingsFragment struct {
 type NotifyParameters struct {
 	EventName   NotificationChannelEventType `json:"eventName,omitempty"`
 	JSONPayload *string                      `json:"jsonPayload,omitempty"`
+}
+
+// OperationError is error details for the operation in case of a failure.
+type OperationError struct {
+	Code    *string `json:"code,omitempty"`
+	Message *string `json:"message,omitempty"`
+}
+
+// OperationResult is an Operation Result
+type OperationResult struct {
+	autorest.Response `json:"-"`
+	Status            *string         `json:"status,omitempty"`
+	StatusCode        HTTPStatusCode  `json:"statusCode,omitempty"`
+	Error             *OperationError `json:"error,omitempty"`
 }
 
 // ParameterInfo is information about an artifact's parameter.

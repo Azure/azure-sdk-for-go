@@ -67,7 +67,7 @@ func (client UserMetricsKeysClient) CreateOrUpdatePreparer() (*http.Request, err
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-05-01"
+	const APIVersion = "2017-09-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -128,7 +128,7 @@ func (client UserMetricsKeysClient) DeletePreparer() (*http.Request, error) {
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-05-01"
+	const APIVersion = "2017-09-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -189,7 +189,7 @@ func (client UserMetricsKeysClient) GetDefaultPreparer() (*http.Request, error) 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-05-01"
+	const APIVersion = "2017-09-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

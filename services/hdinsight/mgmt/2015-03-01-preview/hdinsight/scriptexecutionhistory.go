@@ -38,74 +38,7 @@ func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID s
 	return ScriptExecutionHistoryClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get gets the script execution detail for the given script execution id.
-//
-// resourceGroupName is the name of the resource group. clusterName is the name of the cluster. scriptExecutionID is
-// the script execution Id
-func (client ScriptExecutionHistoryClient) Get(resourceGroupName string, clusterName string, scriptExecutionID string) (result RuntimeScriptActionDetail, err error) {
-	req, err := client.GetPreparer(resourceGroupName, clusterName, scriptExecutionID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "Get", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "Get", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetPreparer prepares the Get request.
-func (client ScriptExecutionHistoryClient) GetPreparer(resourceGroupName string, clusterName string, scriptExecutionID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"scriptExecutionId": autorest.Encode("path", scriptExecutionID),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-03-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/scriptExecutionHistory/{scriptExecutionId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
-}
-
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client ScriptExecutionHistoryClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client ScriptExecutionHistoryClient) GetResponder(resp *http.Response) (result RuntimeScriptActionDetail, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// List lists all scripts execution history for the given cluster.
+// List lists all scripts' execution history for the specified cluster.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster.
 func (client ScriptExecutionHistoryClient) List(resourceGroupName string, clusterName string) (result ScriptActionExecutionHistoryList, err error) {
@@ -239,10 +172,10 @@ func (client ScriptExecutionHistoryClient) ListComplete(resourceGroupName string
 	return resultChan, errChan
 }
 
-// Promote promote ad-hoc script execution to a persisted script.
+// Promote promotes the specified ad-hoc script execution to a persisted script.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. scriptExecutionID is
-// the script execution Id
+// the script execution ID.
 func (client ScriptExecutionHistoryClient) Promote(resourceGroupName string, clusterName string, scriptExecutionID int64) (result autorest.Response, err error) {
 	req, err := client.PromotePreparer(resourceGroupName, clusterName, scriptExecutionID)
 	if err != nil {

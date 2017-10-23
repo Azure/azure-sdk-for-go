@@ -38,10 +38,10 @@ func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) App
 	return ApplicationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create the operation creates applications for the HDInsight cluster.
+// Create creates applications for the HDInsight cluster.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. applicationName is the
-// constant value for the applicationName parameters is the application create request.
+// constant value for the application name. parameters is the application create request.
 func (client ApplicationsClient) Create(resourceGroupName string, clusterName string, applicationName string, parameters ApplicationGetProperties) (result Application, err error) {
 	req, err := client.CreatePreparer(resourceGroupName, clusterName, applicationName, parameters)
 	if err != nil {
@@ -107,12 +107,12 @@ func (client ApplicationsClient) CreateResponder(resp *http.Response) (result Ap
 	return
 }
 
-// Delete lists all of the applications HDInsight cluster. This method may poll for completion. Polling can be canceled
-// by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
-// requests.
+// Delete deletes the specified application on the HDInsight cluster. This method may poll for completion. Polling can
+// be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding
+// HTTP requests.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. applicationName is the
-// constant value for the applicationName.
+// constant value for the application name.
 func (client ApplicationsClient) Delete(resourceGroupName string, clusterName string, applicationName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
 	resultChan := make(chan autorest.Response, 1)
 	errChan := make(chan error, 1)
@@ -190,10 +190,10 @@ func (client ApplicationsClient) DeleteResponder(resp *http.Response) (result au
 	return
 }
 
-// Get lists properties of the application.
+// Get lists properties of the specified application.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. applicationName is the
-// constant value for the applicationName
+// constant value for the application name.
 func (client ApplicationsClient) Get(resourceGroupName string, clusterName string, applicationName ApplicationName) (result Application, err error) {
 	req, err := client.GetPreparer(resourceGroupName, clusterName, applicationName)
 	if err != nil {

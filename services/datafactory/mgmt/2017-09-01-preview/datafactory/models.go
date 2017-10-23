@@ -636,6 +636,8 @@ const (
 	TypeBlobSink TypeCopySink = "BlobSink"
 	// TypeDocumentDbCollectionSink specifies the type document db collection sink state for type copy sink.
 	TypeDocumentDbCollectionSink TypeCopySink = "DocumentDbCollectionSink"
+	// TypeDynamicsSink specifies the type dynamics sink state for type copy sink.
+	TypeDynamicsSink TypeCopySink = "DynamicsSink"
 	// TypeFileSystemSink specifies the type file system sink state for type copy sink.
 	TypeFileSystemSink TypeCopySink = "FileSystemSink"
 	// TypeOdbcSink specifies the type odbc sink state for type copy sink.
@@ -2839,6 +2841,11 @@ func (adlss AzureDataLakeStoreSink) MarshalJSON() ([]byte, error) {
 	})
 }
 
+// AsDynamicsSink is the CopySink implementation for AzureDataLakeStoreSink.
+func (adlss AzureDataLakeStoreSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return nil, false
+}
+
 // AsOdbcSink is the CopySink implementation for AzureDataLakeStoreSink.
 func (adlss AzureDataLakeStoreSink) AsOdbcSink() (*OdbcSink, bool) {
 	return nil, false
@@ -3765,6 +3772,11 @@ func (aqs AzureQueueSink) MarshalJSON() ([]byte, error) {
 	})
 }
 
+// AsDynamicsSink is the CopySink implementation for AzureQueueSink.
+func (aqs AzureQueueSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return nil, false
+}
+
 // AsOdbcSink is the CopySink implementation for AzureQueueSink.
 func (aqs AzureQueueSink) AsOdbcSink() (*OdbcSink, bool) {
 	return nil, false
@@ -3960,6 +3972,11 @@ func (asis AzureSearchIndexSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(asis),
 	})
+}
+
+// AsDynamicsSink is the CopySink implementation for AzureSearchIndexSink.
+func (asis AzureSearchIndexSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return nil, false
 }
 
 // AsOdbcSink is the CopySink implementation for AzureSearchIndexSink.
@@ -5226,6 +5243,11 @@ func (ats AzureTableSink) MarshalJSON() ([]byte, error) {
 	})
 }
 
+// AsDynamicsSink is the CopySink implementation for AzureTableSink.
+func (ats AzureTableSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return nil, false
+}
+
 // AsOdbcSink is the CopySink implementation for AzureTableSink.
 func (ats AzureTableSink) AsOdbcSink() (*OdbcSink, bool) {
 	return nil, false
@@ -5403,6 +5425,11 @@ func (bs BlobSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(bs),
 	})
+}
+
+// AsDynamicsSink is the CopySink implementation for BlobSink.
+func (bs BlobSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return nil, false
 }
 
 // AsOdbcSink is the CopySink implementation for BlobSink.
@@ -6396,6 +6423,7 @@ func (catp *CopyActivityTypeProperties) UnmarshalJSON(body []byte) error {
 
 // CopySink is a copy activity sink.
 type CopySink interface {
+	AsDynamicsSink() (*DynamicsSink, bool)
 	AsOdbcSink() (*OdbcSink, bool)
 	AsAzureSearchIndexSink() (*AzureSearchIndexSink, bool)
 	AsAzureDataLakeStoreSink() (*AzureDataLakeStoreSink, bool)
@@ -6417,6 +6445,10 @@ func unmarshalCopySink(body []byte) (CopySink, error) {
 	}
 
 	switch m["type"] {
+	case string(TypeDynamicsSink):
+		var ds DynamicsSink
+		err := json.Unmarshal(body, &ds)
+		return ds, err
 	case string(TypeOdbcSink):
 		var osVar OdbcSink
 		err := json.Unmarshal(body, &osVar)
@@ -8337,6 +8369,11 @@ func (ddcs DocumentDbCollectionSink) MarshalJSON() ([]byte, error) {
 	})
 }
 
+// AsDynamicsSink is the CopySink implementation for DocumentDbCollectionSink.
+func (ddcs DocumentDbCollectionSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return nil, false
+}
+
 // AsOdbcSink is the CopySink implementation for DocumentDbCollectionSink.
 func (ddcs DocumentDbCollectionSink) AsOdbcSink() (*OdbcSink, bool) {
 	return nil, false
@@ -8823,7 +8860,89 @@ type DynamicsLinkedServiceTypeProperties struct {
 	Password           *AzureKeyVaultSecretReference `json:"password,omitempty"`
 }
 
-// DynamicsSource is a copy activity Dynamics entity source.
+// DynamicsSink is a copy activity Dynamics sink.
+type DynamicsSink struct {
+	WriteBatchSize    *map[string]interface{} `json:"writeBatchSize,omitempty"`
+	WriteBatchTimeout *map[string]interface{} `json:"writeBatchTimeout,omitempty"`
+	SinkRetryCount    *map[string]interface{} `json:"sinkRetryCount,omitempty"`
+	SinkRetryWait     *map[string]interface{} `json:"sinkRetryWait,omitempty"`
+	Type              TypeCopySink            `json:"type,omitempty"`
+	WriteBehavior     *string                 `json:"writeBehavior,omitempty"`
+	IgnoreNullValues  *map[string]interface{} `json:"ignoreNullValues,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DynamicsSink.
+func (ds DynamicsSink) MarshalJSON() ([]byte, error) {
+	ds.Type = TypeDynamicsSink
+	type Alias DynamicsSink
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(ds),
+	})
+}
+
+// AsDynamicsSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return &ds, true
+}
+
+// AsOdbcSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsOdbcSink() (*OdbcSink, bool) {
+	return nil, false
+}
+
+// AsAzureSearchIndexSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsAzureSearchIndexSink() (*AzureSearchIndexSink, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsAzureDataLakeStoreSink() (*AzureDataLakeStoreSink, bool) {
+	return nil, false
+}
+
+// AsOracleSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsOracleSink() (*OracleSink, bool) {
+	return nil, false
+}
+
+// AsSQLDWSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsSQLDWSink() (*SQLDWSink, bool) {
+	return nil, false
+}
+
+// AsSQLSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsSQLSink() (*SQLSink, bool) {
+	return nil, false
+}
+
+// AsDocumentDbCollectionSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsDocumentDbCollectionSink() (*DocumentDbCollectionSink, bool) {
+	return nil, false
+}
+
+// AsFileSystemSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsFileSystemSink() (*FileSystemSink, bool) {
+	return nil, false
+}
+
+// AsBlobSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsBlobSink() (*BlobSink, bool) {
+	return nil, false
+}
+
+// AsAzureTableSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsAzureTableSink() (*AzureTableSink, bool) {
+	return nil, false
+}
+
+// AsAzureQueueSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsAzureQueueSink() (*AzureQueueSink, bool) {
+	return nil, false
+}
+
+// DynamicsSource is a copy activity Dynamics source.
 type DynamicsSource struct {
 	SourceRetryCount *map[string]interface{} `json:"sourceRetryCount,omitempty"`
 	SourceRetryWait  *map[string]interface{} `json:"sourceRetryWait,omitempty"`
@@ -9656,6 +9775,11 @@ func (fss FileSystemSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(fss),
 	})
+}
+
+// AsDynamicsSink is the CopySink implementation for FileSystemSink.
+func (fss FileSystemSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return nil, false
 }
 
 // AsOdbcSink is the CopySink implementation for FileSystemSink.
@@ -14595,6 +14719,11 @@ func (osVar OdbcSink) MarshalJSON() ([]byte, error) {
 	})
 }
 
+// AsDynamicsSink is the CopySink implementation for OdbcSink.
+func (osVar OdbcSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return nil, false
+}
+
 // AsOdbcSink is the CopySink implementation for OdbcSink.
 func (osVar OdbcSink) AsOdbcSink() (*OdbcSink, bool) {
 	return &osVar, true
@@ -14934,6 +15063,11 @@ func (osVar OracleSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(osVar),
 	})
+}
+
+// AsDynamicsSink is the CopySink implementation for OracleSink.
+func (osVar OracleSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return nil, false
 }
 
 // AsOdbcSink is the CopySink implementation for OracleSink.
@@ -16930,6 +17064,11 @@ func (sds SQLDWSink) MarshalJSON() ([]byte, error) {
 	})
 }
 
+// AsDynamicsSink is the CopySink implementation for SQLDWSink.
+func (sds SQLDWSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return nil, false
+}
+
 // AsOdbcSink is the CopySink implementation for SQLDWSink.
 func (sds SQLDWSink) AsOdbcSink() (*OdbcSink, bool) {
 	return nil, false
@@ -17569,6 +17708,11 @@ func (ss SQLSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(ss),
 	})
+}
+
+// AsDynamicsSink is the CopySink implementation for SQLSink.
+func (ss SQLSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return nil, false
 }
 
 // AsOdbcSink is the CopySink implementation for SQLSink.

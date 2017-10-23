@@ -799,6 +799,39 @@ type MetadataDefinitionBase struct {
 	LargeImage          *string                        `json:"largeImage,omitempty"`
 }
 
+// Operation is a Customer Insights REST API operation
+type Operation struct {
+	Name    *string           `json:"name,omitempty"`
+	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// OperationDisplay is the object that represents the operation.
+type OperationDisplay struct {
+	Provider  *string `json:"provider,omitempty"`
+	Resource  *string `json:"resource,omitempty"`
+	Operation *string `json:"operation,omitempty"`
+}
+
+// OperationListResult is result of the request to list Customer Insights operations. It contains a list of operations
+// and a URL link to get the next set of results.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Operation `json:"value,omitempty"`
+	NextLink          *string      `json:"nextLink,omitempty"`
+}
+
+// OperationListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client OperationListResult) OperationListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // Participant is describes a profile type participating in an interaction.
 type Participant struct {
 	ProfileTypeName               *string                         `json:"profileTypeName,omitempty"`

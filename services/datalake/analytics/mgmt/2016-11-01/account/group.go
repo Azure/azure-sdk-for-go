@@ -39,6 +39,80 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 	return GroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// CheckNameAvailability checks whether the specified account name is available or taken.
+//
+// location is the Resource location without whitespace. parameters is parameters supplied to check the Data Lake
+// Analytics account name availability.
+func (client GroupClient) CheckNameAvailability(location string, parameters CheckNameAvailabilityParameters) (result NameAvailabilityInformation, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.Type", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "account.GroupClient", "CheckNameAvailability")
+	}
+
+	req, err := client.CheckNameAvailabilityPreparer(location, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "account.GroupClient", "CheckNameAvailability", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CheckNameAvailabilitySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "account.GroupClient", "CheckNameAvailability", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CheckNameAvailabilityResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "account.GroupClient", "CheckNameAvailability", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
+func (client GroupClient) CheckNameAvailabilityPreparer(location string, parameters CheckNameAvailabilityParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/locations/{location}/checkNameAvailability", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
+// http.Response Body if it receives an error.
+func (client GroupClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
+// closes the http.Response Body.
+func (client GroupClient) CheckNameAvailabilityResponder(resp *http.Response) (result NameAvailabilityInformation, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Create creates the specified Data Lake Analytics account. This supplies the user with computation services for Data
 // Lake Analytics workloads This method may poll for completion. Polling can be canceled by passing the cancel channel
 // argument. The channel will be used to cancel polling and any outstanding HTTP requests.

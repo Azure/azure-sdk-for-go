@@ -798,7 +798,7 @@ func (client GroupClient) YieldPreparer(accountName string, jobIdentity uuid.UUI
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{accountName}.{adlaJobDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/Jobs/{jobIdentity}/Yield", pathParameters),
+		autorest.WithPathParameters("/Jobs/{jobIdentity}/YieldJob", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{Cancel: cancel})
 }

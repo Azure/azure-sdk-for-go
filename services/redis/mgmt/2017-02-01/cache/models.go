@@ -114,6 +114,48 @@ type ImportRDBParameters struct {
 	Files  *[]string `json:"files,omitempty"`
 }
 
+// Operation is REST API operation
+type Operation struct {
+	Name    *string           `json:"name,omitempty"`
+	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// OperationDisplay is the object that describes the operation.
+type OperationDisplay struct {
+	Provider    *string `json:"provider,omitempty"`
+	Operation   *string `json:"operation,omitempty"`
+	Resource    *string `json:"resource,omitempty"`
+	Description *string `json:"description,omitempty"`
+}
+
+// OperationListResult is result of the request to list REST API operations. It contains a list of operations and a URL
+// nextLink to get the next set of results.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]Operation `json:"value,omitempty"`
+	NextLink          *string      `json:"nextLink,omitempty"`
+}
+
+// OperationListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client OperationListResult) OperationListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// ProxyResource is the resource model definition for a ARM proxy resource. It will have everything other than required
+// location and tags
+type ProxyResource struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
+}
+
 // RedisAccessKeys is redis cache access keys.
 type RedisAccessKeys struct {
 	autorest.Response `json:"-"`
@@ -126,8 +168,8 @@ type RedisCreateParameters struct {
 	ID                     *string             `json:"id,omitempty"`
 	Name                   *string             `json:"name,omitempty"`
 	Type                   *string             `json:"type,omitempty"`
-	Location               *string             `json:"location,omitempty"`
 	Tags                   *map[string]*string `json:"tags,omitempty"`
+	Location               *string             `json:"location,omitempty"`
 	*RedisCreateProperties `json:"properties,omitempty"`
 }
 
@@ -140,6 +182,41 @@ type RedisCreateProperties struct {
 	SubnetID           *string             `json:"subnetId,omitempty"`
 	StaticIP           *string             `json:"staticIP,omitempty"`
 	Sku                *Sku                `json:"sku,omitempty"`
+}
+
+// RedisFirewallRule is a firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses
+// permitted to connect
+type RedisFirewallRule struct {
+	autorest.Response            `json:"-"`
+	ID                           *string `json:"id,omitempty"`
+	Name                         *string `json:"name,omitempty"`
+	Type                         *string `json:"type,omitempty"`
+	*RedisFirewallRuleProperties `json:"properties,omitempty"`
+}
+
+// RedisFirewallRuleListResult is the response of list firewall rules Redis operation.
+type RedisFirewallRuleListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]RedisFirewallRule `json:"value,omitempty"`
+	NextLink          *string              `json:"nextLink,omitempty"`
+}
+
+// RedisFirewallRuleListResultPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client RedisFirewallRuleListResult) RedisFirewallRuleListResultPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// RedisFirewallRuleProperties is specifies a range of IP addresses permitted to connect to the cache
+type RedisFirewallRuleProperties struct {
+	StartIP *string `json:"startIP,omitempty"`
+	EndIP   *string `json:"endIP,omitempty"`
 }
 
 // RedisForceRebootResponse is response to force reboot for Redis cache.
@@ -249,8 +326,8 @@ type RedisResource struct {
 	ID                       *string             `json:"id,omitempty"`
 	Name                     *string             `json:"name,omitempty"`
 	Type                     *string             `json:"type,omitempty"`
-	Location                 *string             `json:"location,omitempty"`
 	Tags                     *map[string]*string `json:"tags,omitempty"`
+	Location                 *string             `json:"location,omitempty"`
 	*RedisResourceProperties `json:"properties,omitempty"`
 }
 
@@ -291,11 +368,9 @@ type RedisUpdateProperties struct {
 
 // Resource is the Resource definition.
 type Resource struct {
-	ID       *string             `json:"id,omitempty"`
-	Name     *string             `json:"name,omitempty"`
-	Type     *string             `json:"type,omitempty"`
-	Location *string             `json:"location,omitempty"`
-	Tags     *map[string]*string `json:"tags,omitempty"`
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // ScheduleEntries is list of patch schedules for a Redis cache.
@@ -315,4 +390,13 @@ type Sku struct {
 	Name     SkuName   `json:"name,omitempty"`
 	Family   SkuFamily `json:"family,omitempty"`
 	Capacity *int32    `json:"capacity,omitempty"`
+}
+
+// TrackedResource is the resource model definition for a ARM tracked top level resource
+type TrackedResource struct {
+	ID       *string             `json:"id,omitempty"`
+	Name     *string             `json:"name,omitempty"`
+	Type     *string             `json:"type,omitempty"`
+	Tags     *map[string]*string `json:"tags,omitempty"`
+	Location *string             `json:"location,omitempty"`
 }

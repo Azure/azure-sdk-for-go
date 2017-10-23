@@ -19,10 +19,10 @@ package sql
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/0.0.0 arm-sql/2014-04-01"
+	return "Azure-SDK-For-Go/v11.2.0-beta arm-sql/2014-04-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.
 func Version() string {
-	return "0.0.0"
+	return "v11.2.0-beta"
 }

@@ -32,26 +32,20 @@ const (
 // ManagementClient is the base client for Devices.
 type ManagementClient struct {
 	autorest.Client
-	BaseURI           string
-	SubscriptionID    string
-	ResourceGroupName string
-	ResourceName      string
-	CertificateName   string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the ManagementClient client.
-func New(subscriptionID string, resourceGroupName string, resourceName string, certificateName string) ManagementClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, resourceName, certificateName)
+func New(subscriptionID string) ManagementClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the ManagementClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string, certificateName string) ManagementClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return ManagementClient{
-		Client:            autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:           baseURI,
-		SubscriptionID:    subscriptionID,
-		ResourceGroupName: resourceGroupName,
-		ResourceName:      resourceName,
-		CertificateName:   certificateName,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

@@ -38,7 +38,7 @@ func NewScriptActionsClientWithBaseURI(baseURI string, subscriptionID string) Sc
 	return ScriptActionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Delete deletes a given persisted script action of the cluster.
+// Delete deletes a specified persisted script action of the cluster.
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. scriptName is the name
 // of the script.
@@ -104,33 +104,100 @@ func (client ScriptActionsClient) DeleteResponder(resp *http.Response) (result a
 	return
 }
 
-// List lists all persisted script actions for the given cluster.
+// GetExecutionDetail gets the script execution detail for the given script execution ID.
 //
-// resourceGroupName is the name of the resource group. clusterName is the name of the cluster.
-func (client ScriptActionsClient) List(resourceGroupName string, clusterName string) (result ScriptActionsList, err error) {
-	req, err := client.ListPreparer(resourceGroupName, clusterName)
+// resourceGroupName is the name of the resource group. clusterName is the name of the cluster. scriptExecutionID is
+// the script execution Id
+func (client ScriptActionsClient) GetExecutionDetail(resourceGroupName string, clusterName string, scriptExecutionID string) (result RuntimeScriptActionDetail, err error) {
+	req, err := client.GetExecutionDetailPreparer(resourceGroupName, clusterName, scriptExecutionID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "GetExecutionDetail", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListSender(req)
+	resp, err := client.GetExecutionDetailSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "GetExecutionDetail", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result, err = client.GetExecutionDetailResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "GetExecutionDetail", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListPreparer prepares the List request.
-func (client ScriptActionsClient) ListPreparer(resourceGroupName string, clusterName string) (*http.Request, error) {
+// GetExecutionDetailPreparer prepares the GetExecutionDetail request.
+func (client ScriptActionsClient) GetExecutionDetailPreparer(resourceGroupName string, clusterName string, scriptExecutionID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"scriptExecutionId": autorest.Encode("path", scriptExecutionID),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-03-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/scriptExecutionHistory/{scriptExecutionId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetExecutionDetailSender sends the GetExecutionDetail request. The method will close the
+// http.Response Body if it receives an error.
+func (client ScriptActionsClient) GetExecutionDetailSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req)
+}
+
+// GetExecutionDetailResponder handles the response to the GetExecutionDetail request. The method always
+// closes the http.Response Body.
+func (client ScriptActionsClient) GetExecutionDetailResponder(resp *http.Response) (result RuntimeScriptActionDetail, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListPersistedScripts lists all the persisted script actions for the specified cluster.
+//
+// resourceGroupName is the name of the resource group. clusterName is the name of the cluster.
+func (client ScriptActionsClient) ListPersistedScripts(resourceGroupName string, clusterName string) (result ScriptActionsList, err error) {
+	req, err := client.ListPersistedScriptsPreparer(resourceGroupName, clusterName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListPersistedScripts", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListPersistedScriptsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListPersistedScripts", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListPersistedScriptsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListPersistedScripts", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListPersistedScriptsPreparer prepares the ListPersistedScripts request.
+func (client ScriptActionsClient) ListPersistedScriptsPreparer(resourceGroupName string, clusterName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -150,15 +217,15 @@ func (client ScriptActionsClient) ListPreparer(resourceGroupName string, cluster
 	return preparer.Prepare(&http.Request{})
 }
 
-// ListSender sends the List request. The method will close the
+// ListPersistedScriptsSender sends the ListPersistedScripts request. The method will close the
 // http.Response Body if it receives an error.
-func (client ScriptActionsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ScriptActionsClient) ListPersistedScriptsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req)
 }
 
-// ListResponder handles the response to the List request. The method always
+// ListPersistedScriptsResponder handles the response to the ListPersistedScripts request. The method always
 // closes the http.Response Body.
-func (client ScriptActionsClient) ListResponder(resp *http.Response) (result ScriptActionsList, err error) {
+func (client ScriptActionsClient) ListPersistedScriptsResponder(resp *http.Response) (result ScriptActionsList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -169,32 +236,32 @@ func (client ScriptActionsClient) ListResponder(resp *http.Response) (result Scr
 	return
 }
 
-// ListNextResults retrieves the next set of results, if any.
-func (client ScriptActionsClient) ListNextResults(lastResults ScriptActionsList) (result ScriptActionsList, err error) {
+// ListPersistedScriptsNextResults retrieves the next set of results, if any.
+func (client ScriptActionsClient) ListPersistedScriptsNextResults(lastResults ScriptActionsList) (result ScriptActionsList, err error) {
 	req, err := lastResults.ScriptActionsListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "List", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListPersistedScripts", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
 
-	resp, err := client.ListSender(req)
+	resp, err := client.ListPersistedScriptsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "List", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListPersistedScripts", resp, "Failure sending next results request")
 	}
 
-	result, err = client.ListResponder(resp)
+	result, err = client.ListPersistedScriptsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "List", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListPersistedScripts", resp, "Failure responding to next results request")
 	}
 
 	return
 }
 
-// ListComplete gets all elements from the list without paging.
-func (client ScriptActionsClient) ListComplete(resourceGroupName string, clusterName string, cancel <-chan struct{}) (<-chan RuntimeScriptActionDetail, <-chan error) {
+// ListPersistedScriptsComplete gets all elements from the list without paging.
+func (client ScriptActionsClient) ListPersistedScriptsComplete(resourceGroupName string, clusterName string, cancel <-chan struct{}) (<-chan RuntimeScriptActionDetail, <-chan error) {
 	resultChan := make(chan RuntimeScriptActionDetail)
 	errChan := make(chan error, 1)
 	go func() {
@@ -202,7 +269,7 @@ func (client ScriptActionsClient) ListComplete(resourceGroupName string, cluster
 			close(resultChan)
 			close(errChan)
 		}()
-		list, err := client.List(resourceGroupName, clusterName)
+		list, err := client.ListPersistedScripts(resourceGroupName, clusterName)
 		if err != nil {
 			errChan <- err
 			return
@@ -218,7 +285,7 @@ func (client ScriptActionsClient) ListComplete(resourceGroupName string, cluster
 			}
 		}
 		for list.NextLink != nil {
-			list, err = client.ListNextResults(list)
+			list, err = client.ListPersistedScriptsNextResults(list)
 			if err != nil {
 				errChan <- err
 				return

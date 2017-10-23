@@ -25,7 +25,7 @@ import (
 )
 
 // ServersClient is the the Microsoft Azure management API provides create, read, update, and delete functionality for
-// Azure PostgreSQL resources including servers, databases, firewall rules, log files and configurations.
+// Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, log files and configurations.
 type ServersClient struct {
 	ManagementClient
 }

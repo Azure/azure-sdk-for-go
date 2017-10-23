@@ -30,13 +30,13 @@ type IotHubResourceClient struct {
 }
 
 // NewIotHubResourceClient creates an instance of the IotHubResourceClient client.
-func NewIotHubResourceClient(subscriptionID string, resourceGroupName string, resourceName string, certificateName string) IotHubResourceClient {
-	return NewIotHubResourceClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, resourceName, certificateName)
+func NewIotHubResourceClient(subscriptionID string) IotHubResourceClient {
+	return NewIotHubResourceClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewIotHubResourceClientWithBaseURI creates an instance of the IotHubResourceClient client.
-func NewIotHubResourceClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string, certificateName string) IotHubResourceClient {
-	return IotHubResourceClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName, certificateName)}
+func NewIotHubResourceClientWithBaseURI(baseURI string, subscriptionID string) IotHubResourceClient {
+	return IotHubResourceClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CheckNameAvailability check if an IoT hub name is available.
@@ -112,10 +112,11 @@ func (client IotHubResourceClient) CheckNameAvailabilityResponder(resp *http.Res
 
 // CreateEventHubConsumerGroup add a consumer group to an Event Hub-compatible endpoint in an IoT hub.
 //
-// eventHubEndpointName is the name of the Event Hub-compatible endpoint in the IoT hub. name is the name of the
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub. eventHubEndpointName is the name of the Event Hub-compatible endpoint in the IoT hub. name is the name of the
 // consumer group to add.
-func (client IotHubResourceClient) CreateEventHubConsumerGroup(eventHubEndpointName string, name string) (result EventHubConsumerGroupInfo, err error) {
-	req, err := client.CreateEventHubConsumerGroupPreparer(eventHubEndpointName, name)
+func (client IotHubResourceClient) CreateEventHubConsumerGroup(resourceGroupName string, resourceName string, eventHubEndpointName string, name string) (result EventHubConsumerGroupInfo, err error) {
+	req, err := client.CreateEventHubConsumerGroupPreparer(resourceGroupName, resourceName, eventHubEndpointName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "CreateEventHubConsumerGroup", nil, "Failure preparing request")
 		return
@@ -137,12 +138,12 @@ func (client IotHubResourceClient) CreateEventHubConsumerGroup(eventHubEndpointN
 }
 
 // CreateEventHubConsumerGroupPreparer prepares the CreateEventHubConsumerGroup request.
-func (client IotHubResourceClient) CreateEventHubConsumerGroupPreparer(eventHubEndpointName string, name string) (*http.Request, error) {
+func (client IotHubResourceClient) CreateEventHubConsumerGroupPreparer(resourceGroupName string, resourceName string, eventHubEndpointName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"eventHubEndpointName": autorest.Encode("path", eventHubEndpointName),
 		"name":                 autorest.Encode("path", name),
-		"resourceGroupName":    autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":         autorest.Encode("path", client.ResourceName),
+		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
+		"resourceName":         autorest.Encode("path", resourceName),
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -183,8 +184,10 @@ func (client IotHubResourceClient) CreateEventHubConsumerGroupResponder(resp *ht
 // the IoT hub. This method may poll for completion. Polling can be canceled by passing the cancel channel argument.
 // The channel will be used to cancel polling and any outstanding HTTP requests.
 //
-// iotHubDescription is the IoT hub metadata and security metadata.
-func (client IotHubResourceClient) CreateOrUpdate(iotHubDescription IotHubDescription, cancel <-chan struct{}) (<-chan IotHubDescription, <-chan error) {
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub. iotHubDescription is the IoT hub metadata and security metadata. ifMatch is eTag of the IoT Hub. Do not specify
+// for creating a brand new IoT Hub. Required to update an existing IoT Hub.
+func (client IotHubResourceClient) CreateOrUpdate(resourceGroupName string, resourceName string, iotHubDescription IotHubDescription, ifMatch string, cancel <-chan struct{}) (<-chan IotHubDescription, <-chan error) {
 	resultChan := make(chan IotHubDescription, 1)
 	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
@@ -234,7 +237,7 @@ func (client IotHubResourceClient) CreateOrUpdate(iotHubDescription IotHubDescri
 			close(resultChan)
 			close(errChan)
 		}()
-		req, err := client.CreateOrUpdatePreparer(iotHubDescription, cancel)
+		req, err := client.CreateOrUpdatePreparer(resourceGroupName, resourceName, iotHubDescription, ifMatch, cancel)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "CreateOrUpdate", nil, "Failure preparing request")
 			return
@@ -256,10 +259,10 @@ func (client IotHubResourceClient) CreateOrUpdate(iotHubDescription IotHubDescri
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client IotHubResourceClient) CreateOrUpdatePreparer(iotHubDescription IotHubDescription, cancel <-chan struct{}) (*http.Request, error) {
+func (client IotHubResourceClient) CreateOrUpdatePreparer(resourceGroupName string, resourceName string, iotHubDescription IotHubDescription, ifMatch string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -275,6 +278,10 @@ func (client IotHubResourceClient) CreateOrUpdatePreparer(iotHubDescription IotH
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}", pathParameters),
 		autorest.WithJSON(iotHubDescription),
 		autorest.WithQueryParameters(queryParameters))
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
 	return preparer.Prepare(&http.Request{Cancel: cancel})
 }
 
@@ -301,7 +308,10 @@ func (client IotHubResourceClient) CreateOrUpdateResponder(resp *http.Response) 
 
 // Delete delete an IoT hub. This method may poll for completion. Polling can be canceled by passing the cancel channel
 // argument. The channel will be used to cancel polling and any outstanding HTTP requests.
-func (client IotHubResourceClient) Delete(cancel <-chan struct{}) (<-chan SetObject, <-chan error) {
+//
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub.
+func (client IotHubResourceClient) Delete(resourceGroupName string, resourceName string, cancel <-chan struct{}) (<-chan SetObject, <-chan error) {
 	resultChan := make(chan SetObject, 1)
 	errChan := make(chan error, 1)
 	go func() {
@@ -315,7 +325,7 @@ func (client IotHubResourceClient) Delete(cancel <-chan struct{}) (<-chan SetObj
 			close(resultChan)
 			close(errChan)
 		}()
-		req, err := client.DeletePreparer(cancel)
+		req, err := client.DeletePreparer(resourceGroupName, resourceName, cancel)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "Delete", nil, "Failure preparing request")
 			return
@@ -337,10 +347,10 @@ func (client IotHubResourceClient) Delete(cancel <-chan struct{}) (<-chan SetObj
 }
 
 // DeletePreparer prepares the Delete request.
-func (client IotHubResourceClient) DeletePreparer(cancel <-chan struct{}) (*http.Request, error) {
+func (client IotHubResourceClient) DeletePreparer(resourceGroupName string, resourceName string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -380,10 +390,11 @@ func (client IotHubResourceClient) DeleteResponder(resp *http.Response) (result 
 
 // DeleteEventHubConsumerGroup delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
 //
-// eventHubEndpointName is the name of the Event Hub-compatible endpoint in the IoT hub. name is the name of the
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub. eventHubEndpointName is the name of the Event Hub-compatible endpoint in the IoT hub. name is the name of the
 // consumer group to delete.
-func (client IotHubResourceClient) DeleteEventHubConsumerGroup(eventHubEndpointName string, name string) (result autorest.Response, err error) {
-	req, err := client.DeleteEventHubConsumerGroupPreparer(eventHubEndpointName, name)
+func (client IotHubResourceClient) DeleteEventHubConsumerGroup(resourceGroupName string, resourceName string, eventHubEndpointName string, name string) (result autorest.Response, err error) {
+	req, err := client.DeleteEventHubConsumerGroupPreparer(resourceGroupName, resourceName, eventHubEndpointName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "DeleteEventHubConsumerGroup", nil, "Failure preparing request")
 		return
@@ -405,12 +416,12 @@ func (client IotHubResourceClient) DeleteEventHubConsumerGroup(eventHubEndpointN
 }
 
 // DeleteEventHubConsumerGroupPreparer prepares the DeleteEventHubConsumerGroup request.
-func (client IotHubResourceClient) DeleteEventHubConsumerGroupPreparer(eventHubEndpointName string, name string) (*http.Request, error) {
+func (client IotHubResourceClient) DeleteEventHubConsumerGroupPreparer(resourceGroupName string, resourceName string, eventHubEndpointName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"eventHubEndpointName": autorest.Encode("path", eventHubEndpointName),
 		"name":                 autorest.Encode("path", name),
-		"resourceGroupName":    autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":         autorest.Encode("path", client.ResourceName),
+		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
+		"resourceName":         autorest.Encode("path", resourceName),
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -449,8 +460,9 @@ func (client IotHubResourceClient) DeleteEventHubConsumerGroupResponder(resp *ht
 // For more information, see:
 // https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
 //
-// exportDevicesParameters is the parameters that specify the export devices operation.
-func (client IotHubResourceClient) ExportDevices(exportDevicesParameters ExportDevicesRequest) (result JobResponse, err error) {
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub. exportDevicesParameters is the parameters that specify the export devices operation.
+func (client IotHubResourceClient) ExportDevices(resourceGroupName string, resourceName string, exportDevicesParameters ExportDevicesRequest) (result JobResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: exportDevicesParameters,
 			Constraints: []validation.Constraint{{Target: "exportDevicesParameters.ExportBlobContainerURI", Name: validation.Null, Rule: true, Chain: nil},
@@ -458,7 +470,7 @@ func (client IotHubResourceClient) ExportDevices(exportDevicesParameters ExportD
 		return result, validation.NewErrorWithValidationError(err, "devices.IotHubResourceClient", "ExportDevices")
 	}
 
-	req, err := client.ExportDevicesPreparer(exportDevicesParameters)
+	req, err := client.ExportDevicesPreparer(resourceGroupName, resourceName, exportDevicesParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ExportDevices", nil, "Failure preparing request")
 		return
@@ -480,10 +492,10 @@ func (client IotHubResourceClient) ExportDevices(exportDevicesParameters ExportD
 }
 
 // ExportDevicesPreparer prepares the ExportDevices request.
-func (client IotHubResourceClient) ExportDevicesPreparer(exportDevicesParameters ExportDevicesRequest) (*http.Request, error) {
+func (client IotHubResourceClient) ExportDevicesPreparer(resourceGroupName string, resourceName string, exportDevicesParameters ExportDevicesRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -522,8 +534,11 @@ func (client IotHubResourceClient) ExportDevicesResponder(resp *http.Response) (
 }
 
 // Get get the non-security related metadata of an IoT hub.
-func (client IotHubResourceClient) Get() (result IotHubDescription, err error) {
-	req, err := client.GetPreparer()
+//
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub.
+func (client IotHubResourceClient) Get(resourceGroupName string, resourceName string) (result IotHubDescription, err error) {
+	req, err := client.GetPreparer(resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "Get", nil, "Failure preparing request")
 		return
@@ -545,10 +560,10 @@ func (client IotHubResourceClient) Get() (result IotHubDescription, err error) {
 }
 
 // GetPreparer prepares the Get request.
-func (client IotHubResourceClient) GetPreparer() (*http.Request, error) {
+func (client IotHubResourceClient) GetPreparer(resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -586,10 +601,11 @@ func (client IotHubResourceClient) GetResponder(resp *http.Response) (result Iot
 
 // GetEventHubConsumerGroup get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
 //
-// eventHubEndpointName is the name of the Event Hub-compatible endpoint in the IoT hub. name is the name of the
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub. eventHubEndpointName is the name of the Event Hub-compatible endpoint in the IoT hub. name is the name of the
 // consumer group to retrieve.
-func (client IotHubResourceClient) GetEventHubConsumerGroup(eventHubEndpointName string, name string) (result EventHubConsumerGroupInfo, err error) {
-	req, err := client.GetEventHubConsumerGroupPreparer(eventHubEndpointName, name)
+func (client IotHubResourceClient) GetEventHubConsumerGroup(resourceGroupName string, resourceName string, eventHubEndpointName string, name string) (result EventHubConsumerGroupInfo, err error) {
+	req, err := client.GetEventHubConsumerGroupPreparer(resourceGroupName, resourceName, eventHubEndpointName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "GetEventHubConsumerGroup", nil, "Failure preparing request")
 		return
@@ -611,12 +627,12 @@ func (client IotHubResourceClient) GetEventHubConsumerGroup(eventHubEndpointName
 }
 
 // GetEventHubConsumerGroupPreparer prepares the GetEventHubConsumerGroup request.
-func (client IotHubResourceClient) GetEventHubConsumerGroupPreparer(eventHubEndpointName string, name string) (*http.Request, error) {
+func (client IotHubResourceClient) GetEventHubConsumerGroupPreparer(resourceGroupName string, resourceName string, eventHubEndpointName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"eventHubEndpointName": autorest.Encode("path", eventHubEndpointName),
 		"name":                 autorest.Encode("path", name),
-		"resourceGroupName":    autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":         autorest.Encode("path", client.ResourceName),
+		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
+		"resourceName":         autorest.Encode("path", resourceName),
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -655,9 +671,10 @@ func (client IotHubResourceClient) GetEventHubConsumerGroupResponder(resp *http.
 // GetJob get the details of a job from an IoT hub. For more information, see:
 // https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
 //
-// jobID is the job identifier.
-func (client IotHubResourceClient) GetJob(jobID string) (result JobResponse, err error) {
-	req, err := client.GetJobPreparer(jobID)
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub. jobID is the job identifier.
+func (client IotHubResourceClient) GetJob(resourceGroupName string, resourceName string, jobID string) (result JobResponse, err error) {
+	req, err := client.GetJobPreparer(resourceGroupName, resourceName, jobID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "GetJob", nil, "Failure preparing request")
 		return
@@ -679,11 +696,11 @@ func (client IotHubResourceClient) GetJob(jobID string) (result JobResponse, err
 }
 
 // GetJobPreparer prepares the GetJob request.
-func (client IotHubResourceClient) GetJobPreparer(jobID string) (*http.Request, error) {
+func (client IotHubResourceClient) GetJobPreparer(resourceGroupName string, resourceName string, jobID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobId":             autorest.Encode("path", jobID),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -722,9 +739,10 @@ func (client IotHubResourceClient) GetJobResponder(resp *http.Response) (result 
 // GetKeysForKeyName get a shared access policy by name from an IoT hub. For more information, see:
 // https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
 //
-// keyName is the name of the shared access policy.
-func (client IotHubResourceClient) GetKeysForKeyName(keyName string) (result SharedAccessSignatureAuthorizationRule, err error) {
-	req, err := client.GetKeysForKeyNamePreparer(keyName)
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub. keyName is the name of the shared access policy.
+func (client IotHubResourceClient) GetKeysForKeyName(resourceGroupName string, resourceName string, keyName string) (result SharedAccessSignatureAuthorizationRule, err error) {
+	req, err := client.GetKeysForKeyNamePreparer(resourceGroupName, resourceName, keyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "GetKeysForKeyName", nil, "Failure preparing request")
 		return
@@ -746,11 +764,11 @@ func (client IotHubResourceClient) GetKeysForKeyName(keyName string) (result Sha
 }
 
 // GetKeysForKeyNamePreparer prepares the GetKeysForKeyName request.
-func (client IotHubResourceClient) GetKeysForKeyNamePreparer(keyName string) (*http.Request, error) {
+func (client IotHubResourceClient) GetKeysForKeyNamePreparer(resourceGroupName string, resourceName string, keyName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"keyName":           autorest.Encode("path", keyName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -787,8 +805,11 @@ func (client IotHubResourceClient) GetKeysForKeyNameResponder(resp *http.Respons
 }
 
 // GetQuotaMetrics get the quota metrics for an IoT hub.
-func (client IotHubResourceClient) GetQuotaMetrics() (result IotHubQuotaMetricInfoListResult, err error) {
-	req, err := client.GetQuotaMetricsPreparer()
+//
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub.
+func (client IotHubResourceClient) GetQuotaMetrics(resourceGroupName string, resourceName string) (result IotHubQuotaMetricInfoListResult, err error) {
+	req, err := client.GetQuotaMetricsPreparer(resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "GetQuotaMetrics", nil, "Failure preparing request")
 		return
@@ -810,10 +831,10 @@ func (client IotHubResourceClient) GetQuotaMetrics() (result IotHubQuotaMetricIn
 }
 
 // GetQuotaMetricsPreparer prepares the GetQuotaMetrics request.
-func (client IotHubResourceClient) GetQuotaMetricsPreparer() (*http.Request, error) {
+func (client IotHubResourceClient) GetQuotaMetricsPreparer(resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -874,7 +895,7 @@ func (client IotHubResourceClient) GetQuotaMetricsNextResults(lastResults IotHub
 }
 
 // GetQuotaMetricsComplete gets all elements from the list without paging.
-func (client IotHubResourceClient) GetQuotaMetricsComplete(cancel <-chan struct{}) (<-chan IotHubQuotaMetricInfo, <-chan error) {
+func (client IotHubResourceClient) GetQuotaMetricsComplete(resourceGroupName string, resourceName string, cancel <-chan struct{}) (<-chan IotHubQuotaMetricInfo, <-chan error) {
 	resultChan := make(chan IotHubQuotaMetricInfo)
 	errChan := make(chan error, 1)
 	go func() {
@@ -882,7 +903,7 @@ func (client IotHubResourceClient) GetQuotaMetricsComplete(cancel <-chan struct{
 			close(resultChan)
 			close(errChan)
 		}()
-		list, err := client.GetQuotaMetrics()
+		list, err := client.GetQuotaMetrics(resourceGroupName, resourceName)
 		if err != nil {
 			errChan <- err
 			return
@@ -919,8 +940,11 @@ func (client IotHubResourceClient) GetQuotaMetricsComplete(cancel <-chan struct{
 }
 
 // GetStats get the statistics from an IoT hub.
-func (client IotHubResourceClient) GetStats() (result RegistryStatistics, err error) {
-	req, err := client.GetStatsPreparer()
+//
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub.
+func (client IotHubResourceClient) GetStats(resourceGroupName string, resourceName string) (result RegistryStatistics, err error) {
+	req, err := client.GetStatsPreparer(resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "GetStats", nil, "Failure preparing request")
 		return
@@ -942,10 +966,10 @@ func (client IotHubResourceClient) GetStats() (result RegistryStatistics, err er
 }
 
 // GetStatsPreparer prepares the GetStats request.
-func (client IotHubResourceClient) GetStatsPreparer() (*http.Request, error) {
+func (client IotHubResourceClient) GetStatsPreparer(resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -982,8 +1006,11 @@ func (client IotHubResourceClient) GetStatsResponder(resp *http.Response) (resul
 }
 
 // GetValidSkus get the list of valid SKUs for an IoT hub.
-func (client IotHubResourceClient) GetValidSkus() (result IotHubSkuDescriptionListResult, err error) {
-	req, err := client.GetValidSkusPreparer()
+//
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub.
+func (client IotHubResourceClient) GetValidSkus(resourceGroupName string, resourceName string) (result IotHubSkuDescriptionListResult, err error) {
+	req, err := client.GetValidSkusPreparer(resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "GetValidSkus", nil, "Failure preparing request")
 		return
@@ -1005,10 +1032,10 @@ func (client IotHubResourceClient) GetValidSkus() (result IotHubSkuDescriptionLi
 }
 
 // GetValidSkusPreparer prepares the GetValidSkus request.
-func (client IotHubResourceClient) GetValidSkusPreparer() (*http.Request, error) {
+func (client IotHubResourceClient) GetValidSkusPreparer(resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -1069,7 +1096,7 @@ func (client IotHubResourceClient) GetValidSkusNextResults(lastResults IotHubSku
 }
 
 // GetValidSkusComplete gets all elements from the list without paging.
-func (client IotHubResourceClient) GetValidSkusComplete(cancel <-chan struct{}) (<-chan IotHubSkuDescription, <-chan error) {
+func (client IotHubResourceClient) GetValidSkusComplete(resourceGroupName string, resourceName string, cancel <-chan struct{}) (<-chan IotHubSkuDescription, <-chan error) {
 	resultChan := make(chan IotHubSkuDescription)
 	errChan := make(chan error, 1)
 	go func() {
@@ -1077,7 +1104,7 @@ func (client IotHubResourceClient) GetValidSkusComplete(cancel <-chan struct{}) 
 			close(resultChan)
 			close(errChan)
 		}()
-		list, err := client.GetValidSkus()
+		list, err := client.GetValidSkus(resourceGroupName, resourceName)
 		if err != nil {
 			errChan <- err
 			return
@@ -1117,8 +1144,9 @@ func (client IotHubResourceClient) GetValidSkusComplete(cancel <-chan struct{}) 
 // information, see:
 // https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
 //
-// importDevicesParameters is the parameters that specify the import devices operation.
-func (client IotHubResourceClient) ImportDevices(importDevicesParameters ImportDevicesRequest) (result JobResponse, err error) {
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub. importDevicesParameters is the parameters that specify the import devices operation.
+func (client IotHubResourceClient) ImportDevices(resourceGroupName string, resourceName string, importDevicesParameters ImportDevicesRequest) (result JobResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: importDevicesParameters,
 			Constraints: []validation.Constraint{{Target: "importDevicesParameters.InputBlobContainerURI", Name: validation.Null, Rule: true, Chain: nil},
@@ -1126,7 +1154,7 @@ func (client IotHubResourceClient) ImportDevices(importDevicesParameters ImportD
 		return result, validation.NewErrorWithValidationError(err, "devices.IotHubResourceClient", "ImportDevices")
 	}
 
-	req, err := client.ImportDevicesPreparer(importDevicesParameters)
+	req, err := client.ImportDevicesPreparer(resourceGroupName, resourceName, importDevicesParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ImportDevices", nil, "Failure preparing request")
 		return
@@ -1148,10 +1176,10 @@ func (client IotHubResourceClient) ImportDevices(importDevicesParameters ImportD
 }
 
 // ImportDevicesPreparer prepares the ImportDevices request.
-func (client IotHubResourceClient) ImportDevicesPreparer(importDevicesParameters ImportDevicesRequest) (*http.Request, error) {
+func (client IotHubResourceClient) ImportDevicesPreparer(resourceGroupName string, resourceName string, importDevicesParameters ImportDevicesRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -1190,8 +1218,10 @@ func (client IotHubResourceClient) ImportDevicesResponder(resp *http.Response) (
 }
 
 // ListByResourceGroup get all the IoT hubs in a resource group.
-func (client IotHubResourceClient) ListByResourceGroup() (result IotHubDescriptionListResult, err error) {
-	req, err := client.ListByResourceGroupPreparer()
+//
+// resourceGroupName is the name of the resource group that contains the IoT hub.
+func (client IotHubResourceClient) ListByResourceGroup(resourceGroupName string) (result IotHubDescriptionListResult, err error) {
+	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -1213,9 +1243,9 @@ func (client IotHubResourceClient) ListByResourceGroup() (result IotHubDescripti
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client IotHubResourceClient) ListByResourceGroupPreparer() (*http.Request, error) {
+func (client IotHubResourceClient) ListByResourceGroupPreparer(resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -1276,7 +1306,7 @@ func (client IotHubResourceClient) ListByResourceGroupNextResults(lastResults Io
 }
 
 // ListByResourceGroupComplete gets all elements from the list without paging.
-func (client IotHubResourceClient) ListByResourceGroupComplete(cancel <-chan struct{}) (<-chan IotHubDescription, <-chan error) {
+func (client IotHubResourceClient) ListByResourceGroupComplete(resourceGroupName string, cancel <-chan struct{}) (<-chan IotHubDescription, <-chan error) {
 	resultChan := make(chan IotHubDescription)
 	errChan := make(chan error, 1)
 	go func() {
@@ -1284,7 +1314,7 @@ func (client IotHubResourceClient) ListByResourceGroupComplete(cancel <-chan str
 			close(resultChan)
 			close(errChan)
 		}()
-		list, err := client.ListByResourceGroup()
+		list, err := client.ListByResourceGroup(resourceGroupName)
 		if err != nil {
 			errChan <- err
 			return
@@ -1453,9 +1483,10 @@ func (client IotHubResourceClient) ListBySubscriptionComplete(cancel <-chan stru
 // ListEventHubConsumerGroups get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in
 // an IoT hub.
 //
-// eventHubEndpointName is the name of the Event Hub-compatible endpoint.
-func (client IotHubResourceClient) ListEventHubConsumerGroups(eventHubEndpointName string) (result EventHubConsumerGroupsListResult, err error) {
-	req, err := client.ListEventHubConsumerGroupsPreparer(eventHubEndpointName)
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub. eventHubEndpointName is the name of the Event Hub-compatible endpoint.
+func (client IotHubResourceClient) ListEventHubConsumerGroups(resourceGroupName string, resourceName string, eventHubEndpointName string) (result EventHubConsumerGroupsListResult, err error) {
+	req, err := client.ListEventHubConsumerGroupsPreparer(resourceGroupName, resourceName, eventHubEndpointName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ListEventHubConsumerGroups", nil, "Failure preparing request")
 		return
@@ -1477,11 +1508,11 @@ func (client IotHubResourceClient) ListEventHubConsumerGroups(eventHubEndpointNa
 }
 
 // ListEventHubConsumerGroupsPreparer prepares the ListEventHubConsumerGroups request.
-func (client IotHubResourceClient) ListEventHubConsumerGroupsPreparer(eventHubEndpointName string) (*http.Request, error) {
+func (client IotHubResourceClient) ListEventHubConsumerGroupsPreparer(resourceGroupName string, resourceName string, eventHubEndpointName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"eventHubEndpointName": autorest.Encode("path", eventHubEndpointName),
-		"resourceGroupName":    autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":         autorest.Encode("path", client.ResourceName),
+		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
+		"resourceName":         autorest.Encode("path", resourceName),
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -1542,7 +1573,7 @@ func (client IotHubResourceClient) ListEventHubConsumerGroupsNextResults(lastRes
 }
 
 // ListEventHubConsumerGroupsComplete gets all elements from the list without paging.
-func (client IotHubResourceClient) ListEventHubConsumerGroupsComplete(eventHubEndpointName string, cancel <-chan struct{}) (<-chan string, <-chan error) {
+func (client IotHubResourceClient) ListEventHubConsumerGroupsComplete(resourceGroupName string, resourceName string, eventHubEndpointName string, cancel <-chan struct{}) (<-chan string, <-chan error) {
 	resultChan := make(chan string)
 	errChan := make(chan error, 1)
 	go func() {
@@ -1550,7 +1581,7 @@ func (client IotHubResourceClient) ListEventHubConsumerGroupsComplete(eventHubEn
 			close(resultChan)
 			close(errChan)
 		}()
-		list, err := client.ListEventHubConsumerGroups(eventHubEndpointName)
+		list, err := client.ListEventHubConsumerGroups(resourceGroupName, resourceName, eventHubEndpointName)
 		if err != nil {
 			errChan <- err
 			return
@@ -1588,8 +1619,11 @@ func (client IotHubResourceClient) ListEventHubConsumerGroupsComplete(eventHubEn
 
 // ListJobs get a list of all the jobs in an IoT hub. For more information, see:
 // https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-func (client IotHubResourceClient) ListJobs() (result JobResponseListResult, err error) {
-	req, err := client.ListJobsPreparer()
+//
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub.
+func (client IotHubResourceClient) ListJobs(resourceGroupName string, resourceName string) (result JobResponseListResult, err error) {
+	req, err := client.ListJobsPreparer(resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ListJobs", nil, "Failure preparing request")
 		return
@@ -1611,10 +1645,10 @@ func (client IotHubResourceClient) ListJobs() (result JobResponseListResult, err
 }
 
 // ListJobsPreparer prepares the ListJobs request.
-func (client IotHubResourceClient) ListJobsPreparer() (*http.Request, error) {
+func (client IotHubResourceClient) ListJobsPreparer(resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -1675,7 +1709,7 @@ func (client IotHubResourceClient) ListJobsNextResults(lastResults JobResponseLi
 }
 
 // ListJobsComplete gets all elements from the list without paging.
-func (client IotHubResourceClient) ListJobsComplete(cancel <-chan struct{}) (<-chan JobResponse, <-chan error) {
+func (client IotHubResourceClient) ListJobsComplete(resourceGroupName string, resourceName string, cancel <-chan struct{}) (<-chan JobResponse, <-chan error) {
 	resultChan := make(chan JobResponse)
 	errChan := make(chan error, 1)
 	go func() {
@@ -1683,7 +1717,7 @@ func (client IotHubResourceClient) ListJobsComplete(cancel <-chan struct{}) (<-c
 			close(resultChan)
 			close(errChan)
 		}()
-		list, err := client.ListJobs()
+		list, err := client.ListJobs(resourceGroupName, resourceName)
 		if err != nil {
 			errChan <- err
 			return
@@ -1721,8 +1755,11 @@ func (client IotHubResourceClient) ListJobsComplete(cancel <-chan struct{}) (<-c
 
 // ListKeys get the security metadata for an IoT hub. For more information, see:
 // https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-func (client IotHubResourceClient) ListKeys() (result SharedAccessSignatureAuthorizationRuleListResult, err error) {
-	req, err := client.ListKeysPreparer()
+//
+// resourceGroupName is the name of the resource group that contains the IoT hub. resourceName is the name of the IoT
+// hub.
+func (client IotHubResourceClient) ListKeys(resourceGroupName string, resourceName string) (result SharedAccessSignatureAuthorizationRuleListResult, err error) {
+	req, err := client.ListKeysPreparer(resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "ListKeys", nil, "Failure preparing request")
 		return
@@ -1744,10 +1781,10 @@ func (client IotHubResourceClient) ListKeys() (result SharedAccessSignatureAutho
 }
 
 // ListKeysPreparer prepares the ListKeys request.
-func (client IotHubResourceClient) ListKeysPreparer() (*http.Request, error) {
+func (client IotHubResourceClient) ListKeysPreparer(resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -1808,7 +1845,7 @@ func (client IotHubResourceClient) ListKeysNextResults(lastResults SharedAccessS
 }
 
 // ListKeysComplete gets all elements from the list without paging.
-func (client IotHubResourceClient) ListKeysComplete(cancel <-chan struct{}) (<-chan SharedAccessSignatureAuthorizationRule, <-chan error) {
+func (client IotHubResourceClient) ListKeysComplete(resourceGroupName string, resourceName string, cancel <-chan struct{}) (<-chan SharedAccessSignatureAuthorizationRule, <-chan error) {
 	resultChan := make(chan SharedAccessSignatureAuthorizationRule)
 	errChan := make(chan error, 1)
 	go func() {
@@ -1816,7 +1853,7 @@ func (client IotHubResourceClient) ListKeysComplete(cancel <-chan struct{}) (<-c
 			close(resultChan)
 			close(errChan)
 		}()
-		list, err := client.ListKeys()
+		list, err := client.ListKeys(resourceGroupName, resourceName)
 		if err != nil {
 			errChan <- err
 			return

@@ -27,8 +27,6 @@ import (
 	"net/http"
 )
 
-const ()
-
 // ManagementClient is the base client for Keyvault.
 type ManagementClient struct {
 	autorest.Client

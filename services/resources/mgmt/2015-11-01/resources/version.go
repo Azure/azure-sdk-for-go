@@ -1,4 +1,4 @@
-package subscriptions
+package resources
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,7 +19,7 @@ package subscriptions
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/0.0.0 arm-subscriptions/2016-06-01"
+	return "Azure-SDK-For-Go/0.0.0 arm-resources/2015-11-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

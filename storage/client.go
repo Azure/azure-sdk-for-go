@@ -31,6 +31,7 @@ import (
 	"net/url"
 	"regexp"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
 
@@ -657,12 +658,13 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 		return nil, errors.New("azure/storage: error creating request: " + err.Error())
 	}
 
-	// if a body was provided ensure that the content length was set.
-	// http.NewRequest() will automatically do this for a handful of types
-	// and for those that it doesn't we will handle here.
-	if body != nil && req.ContentLength < 1 {
-		if lr, ok := body.(*io.LimitedReader); ok {
-			setContentLengthFromLimitedReader(req, lr)
+	// http.NewRequest() will automatically set req.ContentLength for a handful of types
+	// otherwise we will handle here.
+	if req.ContentLength < 1 {
+		if clstr, ok := headers["Content-Length"]; ok {
+			if cl, err := strconv.ParseInt(clstr, 10, 64); err == nil {
+				req.ContentLength = cl
+			}
 		}
 	}
 

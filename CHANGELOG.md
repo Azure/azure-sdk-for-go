@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## `v11.1.1-beta`
+ 
+### ARM
+ 
+- Registers resource providers if necessary.
+- Requires go-autorest v9.1.0
+ 
+### Generated code notes
+
+- [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) commits:
+  - All services except trafficmanager and containerregistry: 0c2a12b50d8598f68d6715b507f7dd53e163407e
+  - trafficmanager and containerregistry: c97a18ed775029207715b09c80761334724740b9
+- [AutoRest Go Generator](https://github.com/Azure/autorest.go) version: 2.0.36
+ 
+### Storage
+ 
+- Fixed bug in which blob types were unmarshaed incorrectly.
+
 ## `v11.1.0-beta`
 
 ### ARM
@@ -46,6 +64,8 @@
 
 ### Data plane
 
+| api                                 | version            | note                                |
+|:------------------------------------|:-------------------|:------------------------------------|
 | dataplane/cognitiveservices/face          | 1.0          | new                                 |
 | dataplane/cognitiveservices/textanalytics | v2.0         | new                                 |
 

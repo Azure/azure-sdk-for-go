@@ -65,7 +65,7 @@ func (client ProfilesClient) CheckTrafficManagerRelativeDNSNameAvailability(para
 
 // CheckTrafficManagerRelativeDNSNameAvailabilityPreparer prepares the CheckTrafficManagerRelativeDNSNameAvailability request.
 func (client ProfilesClient) CheckTrafficManagerRelativeDNSNameAvailabilityPreparer(parameters CheckTrafficManagerRelativeDNSNameAvailabilityParameters) (*http.Request, error) {
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2017-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -136,7 +136,7 @@ func (client ProfilesClient) CreateOrUpdatePreparer(resourceGroupName string, pr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2017-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -206,7 +206,7 @@ func (client ProfilesClient) DeletePreparer(resourceGroupName string, profileNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2017-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -274,7 +274,7 @@ func (client ProfilesClient) GetPreparer(resourceGroupName string, profileName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2017-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -340,7 +340,7 @@ func (client ProfilesClient) ListByResourceGroupPreparer(resourceGroupName strin
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2017-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -403,7 +403,7 @@ func (client ProfilesClient) ListBySubscriptionPreparer() (*http.Request, error)
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2017-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -472,7 +472,7 @@ func (client ProfilesClient) UpdatePreparer(resourceGroupName string, profileNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2017-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

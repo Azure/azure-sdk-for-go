@@ -5,7 +5,7 @@
 ### ARM
  
 - Registers resource providers if necessary.
-- Requires go-autorest v9.1.1
+- Requires go-autorest v9.1.0
  
 ### Generated code notes
 

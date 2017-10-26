@@ -63,6 +63,8 @@
 
 ### Data plane
 
+| api                                 | version            | note                                |
+|:------------------------------------|:-------------------|:------------------------------------|
 | dataplane/cognitiveservices/face          | 1.0          | new                                 |
 | dataplane/cognitiveservices/textanalytics | v2.0         | new                                 |
 

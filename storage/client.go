@@ -69,6 +69,11 @@ const (
 	userAgentHeader = "User-Agent"
 
 	userDefinedMetadataHeaderPrefix = "x-ms-meta-"
+
+	connectionStringAccountName      = "accountname"
+	connectionStringAccountKey       = "accountkey"
+	connectionStringEndpointSuffix   = "endpointsuffix"
+	connectionStringEndpointProtocol = "defaultendpointsprotocol"
 )
 
 var (
@@ -202,6 +207,45 @@ func (e UnexpectedStatusCodeError) Error() string {
 // Got is the actual status code returned by Azure.
 func (e UnexpectedStatusCodeError) Got() int {
 	return e.got
+}
+
+// NewClientFromConnectionString creates a Client from the connection string.
+func NewClientFromConnectionString(input string) (Client, error) {
+	var (
+		accountName, accountKey, endpointSuffix string
+		useHTTPS                                = defaultUseHTTPS
+	)
+
+	for _, pair := range strings.Split(input, ";") {
+		if pair == "" {
+			continue
+		}
+
+		equalDex := strings.IndexByte(pair, '=')
+		if equalDex <= 0 {
+			return Client{}, fmt.Errorf("Invalid connection segment %q", pair)
+		}
+
+		value := pair[equalDex+1:]
+		key := strings.ToLower(pair[:equalDex])
+		switch key {
+		case connectionStringAccountName:
+			accountName = value
+		case connectionStringAccountKey:
+			accountKey = value
+		case connectionStringEndpointSuffix:
+			endpointSuffix = value
+		case connectionStringEndpointProtocol:
+			useHTTPS = value == "https"
+		default:
+			// ignored
+		}
+	}
+
+	if accountName == StorageEmulatorAccountName {
+		return NewEmulatorClient()
+	}
+	return NewClient(accountName, accountKey, endpointSuffix, DefaultAPIVersion, useHTTPS)
 }
 
 // NewBasicClient constructs a Client with given storage service name and

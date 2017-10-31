@@ -147,7 +147,7 @@ func (b *Blob) GetPageRanges(options *GetPageRangesOptions) (GetPageRangesRespon
 		params = addTimeout(params, options.Timeout)
 		params = addSnapshot(params, options.Snapshot)
 		if options.PreviousSnapshot != nil {
-			params.Add("prevsnapshot", timeRfc1123Formatted(*options.PreviousSnapshot))
+			params.Add("prevsnapshot", timeRFC3339Formatted(*options.PreviousSnapshot))
 		}
 		if options.Range != nil {
 			headers["Range"] = options.Range.String()

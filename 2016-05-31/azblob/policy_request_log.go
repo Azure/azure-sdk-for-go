@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"net/http"
 	"runtime"
 	"time"
 
@@ -47,7 +48,7 @@ func (p *requestLogPolicy) Do(ctx context.Context, request pipeline.Request) (re
 	// Log the outgoing request as informational
 	if p.node.WouldLog(pipeline.LogInfo) {
 		b := &bytes.Buffer{}
-		fmt.Fprintf(b, "===== OUTGOING REQUEST (Try=%d):\n", p.try)
+		fmt.Fprintf(b, "==> OUTGOING REQUEST (Try=%d)\n", p.try)
 		pipeline.WriteRequest(b, request.Request)
 		p.node.Log(pipeline.LogInfo, b.String())
 	}
@@ -61,16 +62,16 @@ func (p *requestLogPolicy) Do(ctx context.Context, request pipeline.Request) (re
 
 	severity := pipeline.LogInfo // Assume success and default to informational logging
 	logMsg := func(b *bytes.Buffer) {
-		b.WriteString("SUCCESS:\n")
+		b.WriteString("SUCCESS\n")
 		pipeline.WriteResponseWithRequest(b, response.Response())
 	}
 
 	// If the response took too long, we'll upgrade to warning.
-	if p.o.LogWarningIfTryOverThreshold != 0 && tryDuration > p.o.LogWarningIfTryOverThreshold {
+	if p.o.LogWarningIfTryOverThreshold > 0 && tryDuration > p.o.LogWarningIfTryOverThreshold {
 		// Log a warning if the try duration exceeded the specified threshold
 		severity = pipeline.LogWarning
 		logMsg = func(b *bytes.Buffer) {
-			fmt.Fprintf(b, "SLOW [tryDuration > %v]:\n", p.o.LogWarningIfTryOverThreshold)
+			fmt.Fprintf(b, "SLOW [tryDuration > %v]\n", p.o.LogWarningIfTryOverThreshold)
 			pipeline.WriteResponseWithRequest(b, response.Response())
 		}
 	}
@@ -85,18 +86,20 @@ func (p *requestLogPolicy) Do(ctx context.Context, request pipeline.Request) (re
 			// This error did not get an HTTP response from the service; upgrade the severity to Error
 			severity = pipeline.LogError
 			logMsg = func(b *bytes.Buffer) {
-				// Write the error, the originating requestm and the stack
+				// Write the error, the originating request and the stack
 				fmt.Fprintf(b, "NETWORK ERROR:\n%v\n", err)
 				pipeline.WriteRequest(b, request.Request)
 				b.Write(stack()) // For errors, we append the stack trace (an expensive operation)
 			}
 		}
+	} else if response.Response().StatusCode == http.StatusInternalServerError || response.Response().StatusCode == http.StatusServiceUnavailable {
+		severity = pipeline.LogError // If the service returns 500 or 503, then log this as an error
 	}
 
 	if p.node.WouldLog(severity) || true { // true is for testing
 		// We're going to log this; build the string to log
 		b := &bytes.Buffer{}
-		fmt.Fprintf(b, "RESPONSE (Try=%d, TryDuration=%v, OpDuration=%v) -- ", p.try, tryDuration, opDuration)
+		fmt.Fprintf(b, "==> REQUEST/RESPONSE (Try=%d, TryDuration=%v, OpDuration=%v) -- ", p.try, tryDuration, opDuration)
 		logMsg(b)
 		p.node.Log(severity, b.String())
 	}

@@ -137,7 +137,7 @@ func (p *retryPolicy) Do(ctx context.Context, request pipeline.Request) (respons
 	primaryTry := 0 // This indicates how many tries we've attempted against the primary DC
 
 	// We only consider retring against a secondary if we have a read request (GET/HEAD) AND this policy has a Secondary URL it can use
-	considerSecondary := (request.Method == "GET" || request.Method == "HEAD") && p.o.RetryReadsFromSecondaryHost != ""
+	considerSecondary := (request.Method == http.MethodGet || request.Method == http.MethodHead) && p.o.RetryReadsFromSecondaryHost != ""
 	if considerSecondary {
 		secondaryHost = p.o.RetryReadsFromSecondaryHost
 	}

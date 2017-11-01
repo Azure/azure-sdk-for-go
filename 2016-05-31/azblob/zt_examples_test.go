@@ -872,7 +872,7 @@ func Example_progressUploadDownload() {
 	// Here's how to create a blob with HTTP headers and metadata (I'm using the same metadata that was put on the container):
 	blobURL := containerURL.NewBlockBlobURL("Data.bin")
 
-	// body is the stream of data to write
+	// requestBody is the stream of data to write
 	requestBody := strings.NewReader("Some text to write")
 
 	// Wrap the request body in a RequestBodyProgress and pass a callback function for progress reporting.
@@ -900,7 +900,6 @@ func Example_progressUploadDownload() {
 
 	downloadedData := &bytes.Buffer{}
 	downloadedData.ReadFrom(responseBody)
-
 	// The downloaded blob data is in downloadData's buffer
 }
 

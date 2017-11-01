@@ -870,8 +870,16 @@ func Example_progressUploadDownload() {
 
 	ctx := context.Background() // This example uses a never-expiring context
 	// Here's how to create a blob with HTTP headers and metadata (I'm using the same metadata that was put on the container):
-	blobURL := containerURL.NewBlockBlobURL("BigData.bin")
-	_, err := blobURL.PutBlob(ctx, strings.NewReader("Some text"),
+	blobURL := containerURL.NewBlockBlobURL("Data.bin")
+
+	// body is the stream of data to write
+	requestBody := strings.NewReader("Some text to write")
+
+	// Wrap the request body in a RequestBodyProgress and pass a callback function for progress reporting.
+	_, err := blobURL.PutBlob(ctx,
+		pipeline.NewRequestBodyProgress(requestBody, func(bytesTransferred int64) {
+			fmt.Printf("Wrote %d of %d bytes.", bytesTransferred, requestBody.Len())
+		}),
 		BlobHTTPHeaders{
 			ContentType:        "text/html; charset=utf-8",
 			ContentDisposition: "attachment",
@@ -880,15 +888,20 @@ func Example_progressUploadDownload() {
 		log.Fatal(err)
 	}
 
-	// Here's how to read the blob's properties and metadata:
+	// Here's how to read the blob's data with progress reporting:
 	get, err := blobURL.GetBlob(ctx, BlobRange{}, BlobAccessConditions{}, false)
 	if err != nil {
 		log.Fatal(err)
 	}
-	stream := pipeline.NewResponseBodyProgress(get.Body(), func(bytesTransferred int64) {
+	// Wrap the response body in a ResponseBodyProgress and pass a callback function for progress reporting.
+	responseBody := pipeline.NewResponseBodyProgress(get.Body(), func(bytesTransferred int64) {
 		fmt.Printf("Read %d of %d bytes.", bytesTransferred, get.ContentLength())
 	})
-	_ = stream
+
+	downloadedData := &bytes.Buffer{}
+	downloadedData.ReadFrom(responseBody)
+
+	// The downloaded blob data is in downloadData's buffer
 }
 
 // This example shows how to copy a source document on the Internet to a blob.

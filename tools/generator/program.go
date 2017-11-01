@@ -142,7 +142,7 @@ func main() {
 
 			if packageVersion != "" {
 				args = append(args, fmt.Sprintf("--package-version='%s'", packageVersion))
-				args = append(args, fmt.Sprintf("Azure-SDK-for-Go/%s services", packageVersion))
+				args = append(args, fmt.Sprintf("--user-agent='Azure-SDK-For-Go/%s services'", packageVersion))
 			}
 
 			logFileLoc := filepath.Join(logDirBase, tuple.outputFolder)

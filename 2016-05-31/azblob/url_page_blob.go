@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"net/http"
 	"net/url"
 	"strconv"
 	"time"
@@ -51,13 +50,15 @@ func (pb PageBlobURL) WithSnapshot(snapshot time.Time) PageBlobURL {
 
 // Create creates a page blob of the specified length. Call PutPage to upload data data to a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
-func (pb PageBlobURL) Create(ctx context.Context, size int64, sequenceNumber int64, metadata Metadata, h BlobHTTPHeaders, ac BlobAccessConditions) (*http.Response, error) {
+func (pb PageBlobURL) Create(ctx context.Context, size int64, sequenceNumber int64, metadata Metadata, h BlobHTTPHeaders, ac BlobAccessConditions) (*BlobsPutResponse, error) {
+	if sequenceNumber < 0 {
+		panic("sequenceNumber must be greater than or equal to 0")
+	}
 	ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag := ac.HTTPAccessConditions.pointers()
-	resp, err := pb.blobClient.Put(ctx, BlobPageBlob, nil, nil, nil,
+	return pb.blobClient.Put(ctx, BlobPageBlob, nil, nil, nil,
 		&h.ContentType, &h.ContentEncoding, &h.ContentLanguage, h.contentMD5Pointer(), &h.CacheControl,
 		metadata, ac.LeaseAccessConditions.pointers(),
 		&h.ContentDisposition, ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag, &size, &sequenceNumber, nil)
-	return resp.Response(), err
 }
 
 // PutPages writes 1 or more pages to the page blob. The start and end offsets must be a multiple of 512.
@@ -82,71 +83,78 @@ func (pb PageBlobURL) ClearPages(ctx context.Context, pr PageRange, ac BlobAcces
 
 // GetPageRanges returns the list of valid page ranges for a page blob or snapshot of a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb PageBlobURL) GetPageRanges(ctx context.Context, pr PageRange, ac BlobAccessConditions) (*PageList, error) {
+func (pb PageBlobURL) GetPageRanges(ctx context.Context, br BlobRange, ac BlobAccessConditions) (*PageList, error) {
 	ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag := ac.HTTPAccessConditions.pointers()
-	return pb.pbClient.GetPageRanges(ctx, nil, nil, nil, pr.pointers(), ac.LeaseAccessConditions.pointers(),
+	return pb.pbClient.GetPageRanges(ctx, nil, nil, nil, br.pointers(), ac.LeaseAccessConditions.pointers(),
 		ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag, nil)
 }
 
 // GetPageRangesDiff gets the collection of page ranges that differ between a specified snapshot and this page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb PageBlobURL) GetPageRangesDiff(ctx context.Context, pr PageRange, prevSnapshot time.Time, ac BlobAccessConditions) (*PageList, error) {
+func (pb PageBlobURL) GetPageRangesDiff(ctx context.Context, br BlobRange, prevSnapshot time.Time, ac BlobAccessConditions) (*PageList, error) {
 	ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag := ac.HTTPAccessConditions.pointers()
-	return pb.pbClient.GetPageRanges(ctx, nil, nil, &prevSnapshot, pr.pointers(),
+	return pb.pbClient.GetPageRanges(ctx, nil, nil, &prevSnapshot, br.pointers(),
 		ac.LeaseAccessConditions.pointers(), ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag, nil)
 }
 
 // Resize resizes the page blob to the specified size (which must be a multiple of 512).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
 func (pb PageBlobURL) Resize(ctx context.Context, length int64, ac BlobAccessConditions) (*BlobsSetPropertiesResponse, error) {
+	if length%PageBlobPageBytes != 0 {
+		panic("Length must be a multiple of PageBlobPageBytes (512)")
+	}
 	ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag := ac.HTTPAccessConditions.pointers()
 	return pb.blobClient.SetProperties(ctx, nil, nil, nil, nil, nil, nil, ac.LeaseAccessConditions.pointers(),
 		ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag, nil, &length, SequenceNumberActionNone, nil, nil)
 }
 
-/* TODO: Remove because it's too advanced?
 // SetSequenceNumber sets the page blob's sequence number.
 func (pb PageBlobURL) SetSequenceNumber(ctx context.Context, action SequenceNumberActionType, sequenceNumber int64,
 	h BlobHTTPHeaders, ac BlobAccessConditions) (*BlobsSetPropertiesResponse, error) {
+	if sequenceNumber < 0 {
+		panic("sequenceNumber must be greater than or equal to 0")
+	}
 	sn := &sequenceNumber
 	if action == SequenceNumberActionIncrement {
 		sn = nil
 	}
 	ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch := ac.HTTPAccessConditions.pointers()
-	return pb.blobClient.SetProperties(ctx, nil, &h.CacheControl, &h.ContentType, &h.ContentMD5, &h.ContentEncoding, &h.ContentLanguage,
+	return pb.blobClient.SetProperties(ctx, nil, &h.CacheControl, &h.ContentType, h.contentMD5Pointer(), &h.ContentEncoding, &h.ContentLanguage,
 		ac.LeaseAccessConditions.pointers(),
 		ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, &h.ContentDisposition, nil, action, sn, nil)
 }
-*/
 
 // StartIncrementalCopy begins an operation to start an incremental copy from one page blob's snapshot to this page blob.
 // The snapshot is copied such that only the differential changes between the previously copied snapshot are transferred to the destination.
 // The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob and
 // https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots.
-func (pb PageBlobURL) StartIncrementalCopy(ctx context.Context, source url.URL, snapshot time.Time, metadata Metadata, ac BlobAccessConditions) (*PageBlobsIncrementalCopyResponse, error) {
+func (pb PageBlobURL) StartIncrementalCopy(ctx context.Context, source url.URL, snapshot time.Time, ac BlobAccessConditions) (*PageBlobsIncrementalCopyResponse, error) {
 	ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag := ac.HTTPAccessConditions.pointers()
 	qp := source.Query()
 	qp.Set("snapshot", snapshot.Format(snapshotTimeFormat))
 	source.RawQuery = qp.Encode()
-	return pb.pbClient.IncrementalCopy(ctx, source.String(), nil, metadata,
+	return pb.pbClient.IncrementalCopy(ctx, source.String(), nil, nil,
 		ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag, nil)
 }
 
 func (pr PageRange) pointers() *string {
-	if pr.Start == 0 && pr.End == 0 {
-		return nil
+	if pr.Start < 0 {
+		panic("PageRange's Start value must be greater than or equal to 0")
+	}
+	if pr.End <= 0 {
+		panic("PageRange's End value must be greater than 0")
 	}
 	if pr.Start%512 != 0 {
 		panic("PageRange's Start value must be a multiple of 512")
 	}
-	endOffset := ""
-	if pr.End > 0 {
-		if pr.End%512 != 511 {
-			panic("PageRange's End value must be 1 less than a multiple of 512")
-		}
-		endOffset = strconv.FormatInt(int64(pr.End), 10)
+	if pr.End%512 != 511 {
+		panic("PageRange's End value must be 1 less than a multiple of 512")
 	}
+	if pr.End <= pr.Start {
+		panic("PageRange's End value must be after the start")
+	}
+	endOffset := strconv.FormatInt(int64(pr.End), 10)
 	asString := fmt.Sprintf("bytes=%v-%s", pr.Start, endOffset)
 	return &asString
 }
@@ -176,7 +184,7 @@ type PageBlobAccessConditions struct {
 }
 
 // pointers is for internal infrastructure. It returns the fields as pointers.
-func (ac PageBlobAccessConditions) pointers() (snlt *int32, snltoe *int32, sne *int32) {
+func (ac PageBlobAccessConditions) pointers() (snltoe *int32, snlt *int32, sne *int32) {
 	if ac.IfSequenceNumberLessThan < -1 {
 		panic("Ifsequencenumberlessthan can't be less than -1")
 	}
@@ -203,7 +211,7 @@ func (ac PageBlobAccessConditions) pointers() (snlt *int32, snltoe *int32, sne *
 	case 0:
 		snltoe = nil
 	default:
-		snltoe = &ac.IfSequenceNumberLessThan
+		snltoe = &ac.IfSequenceNumberLessThanOrEqual
 	}
 	switch ac.IfSequenceNumberEqual {
 	case -1:

@@ -3,6 +3,7 @@ package azblob
 import (
 	"crypto/md5"
 	"encoding/base64"
+	"time"
 )
 
 // BlobHTTPHeaders contains read/writeable blob properties.
@@ -97,4 +98,17 @@ func (gr GetResponse) ContentMD5() [md5.Size]byte {
 // ContentMD5 returns the value for header Content-MD5.
 func (pbppr PageBlobsPutPageResponse) ContentMD5() [md5.Size]byte {
 	return md5StringToMD5(pbppr.rawResponse.Header.Get("Content-MD5"))
+}
+
+// DestinationSnapshot returns the value for header x-ms-copy-destination-snapshot
+func (bgpr BlobsGetPropertiesResponse) DestinationSnapshot() time.Time {
+	if bgpr.IsIncrementalCopy() == "true" {
+		t := bgpr.rawResponse.Header.Get("x-ms-copy-destination-snapshot")
+		snapshot, err := time.Parse("2006-01-02T15:04:05Z", t)
+		if err != nil {
+			panic(err)
+		}
+		return snapshot
+	}
+	return time.Time{}
 }

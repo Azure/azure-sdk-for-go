@@ -737,7 +737,7 @@ func ExamplePageBlobURL() {
 		log.Fatal(err)
 	}
 
-	getPages, err := blobURL.GetPageRanges(ctx, PageRange{Start: 0 * PageBlobPageBytes, End: 10*PageBlobPageBytes - 1}, BlobAccessConditions{})
+	getPages, err := blobURL.GetPageRanges(ctx, BlobRange{Offset: 0 * PageBlobPageBytes, Count: 10*PageBlobPageBytes - 1}, BlobAccessConditions{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -750,7 +750,7 @@ func ExamplePageBlobURL() {
 		log.Fatal(err)
 	}
 
-	getPages, err = blobURL.GetPageRanges(ctx, PageRange{Start: 0 * PageBlobPageBytes, End: 10*PageBlobPageBytes - 1}, BlobAccessConditions{})
+	getPages, err = blobURL.GetPageRanges(ctx, BlobRange{Offset: 0 * PageBlobPageBytes, Count: 10*PageBlobPageBytes - 1}, BlobAccessConditions{})
 	if err != nil {
 		log.Fatal(err)
 	}

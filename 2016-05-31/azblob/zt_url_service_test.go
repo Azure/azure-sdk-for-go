@@ -1,35 +1,15 @@
-package azblob
+package azblob_test
 
 import (
 	"context"
-	"fmt"
-	"net/url"
-	"os"
-	"testing"
 
+	"github.com/Azure/azure-storage-blob-go/2016-05-31/azblob"
 	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
 )
-
-// Hook up gocheck to testing
-func Test(t *testing.T) { chk.TestingT(t) }
 
 type StorageAccountSuite struct{}
 
 var _ = chk.Suite(&StorageAccountSuite{})
-
-func getStorageAccount(c *chk.C) ServiceURL {
-	name := os.Getenv("ACCOUNT_NAME")
-	key := os.Getenv("ACCOUNT_KEY")
-	if name == "" || key == "" {
-		panic("ACCOUNT_NAME and ACCOUNT_KEY environment vars must be set before running tests")
-	}
-	u, err := url.Parse(fmt.Sprintf("https://%s.blob.core.windows.net", name))
-	c.Assert(err, chk.IsNil)
-
-	credential := NewSharedKeyCredential(name, key)
-	pipeline := NewPipeline(credential, PipelineOptions{})
-	return NewServiceURL(*u, pipeline)
-}
 
 /*func (s *StorageAccountSuite) TestGetSetProperties(c *chk.C) {
 	sa := getStorageAccount(c)
@@ -63,8 +43,8 @@ func (s *StorageAccountSuite) TestGetStatus(c *chk.C) {
 }*/
 
 func (s *StorageAccountSuite) TestListContainers(c *chk.C) {
-	sa := getStorageAccount(c)
-	resp, err := sa.ListContainers(context.Background(), Marker{}, ListContainersOptions{Prefix: containerPrefix})
+	sa := getBSU()
+	resp, err := sa.ListContainers(context.Background(), azblob.Marker{}, azblob.ListContainersOptions{Prefix: containerPrefix})
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.Response().StatusCode, chk.Equals, 200)
 	c.Assert(resp.RequestID(), chk.Not(chk.Equals), "")
@@ -72,40 +52,40 @@ func (s *StorageAccountSuite) TestListContainers(c *chk.C) {
 	c.Assert(resp.Containers, chk.HasLen, 0)
 	c.Assert(resp.ServiceEndpoint, chk.NotNil)
 
-	container := getContainer(c)
+	container, _ := createNewContainer(c, sa)
 	defer delContainer(c, container)
 
-	md := Metadata{
+	md := azblob.Metadata{
 		"foo": "foovalue",
 		"bar": "barvalue",
 	}
-	_, err = container.SetMetadata(context.Background(), md, ContainerAccessConditions{})
+	_, err = container.SetMetadata(context.Background(), md, azblob.ContainerAccessConditions{})
 	c.Assert(err, chk.IsNil)
 
-	resp, err = sa.ListContainers(context.Background(), Marker{}, ListContainersOptions{Detail: ListContainersDetail{Metadata: true}, Prefix: containerPrefix})
+	resp, err = sa.ListContainers(context.Background(), azblob.Marker{}, azblob.ListContainersOptions{Detail: azblob.ListContainersDetail{Metadata: true}, Prefix: containerPrefix})
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.Containers, chk.HasLen, 1)
 	c.Assert(resp.Containers[0].Name, chk.NotNil)
 	c.Assert(resp.Containers[0].Properties, chk.NotNil)
 	c.Assert(resp.Containers[0].Properties.LastModified, chk.NotNil)
 	c.Assert(resp.Containers[0].Properties.Etag, chk.NotNil)
-	c.Assert(resp.Containers[0].Properties.LeaseStatus, chk.Equals, LeaseStatusUnlocked)
-	c.Assert(resp.Containers[0].Properties.LeaseState, chk.Equals, LeaseStateAvailable)
+	c.Assert(resp.Containers[0].Properties.LeaseStatus, chk.Equals, azblob.LeaseStatusUnlocked)
+	c.Assert(resp.Containers[0].Properties.LeaseState, chk.Equals, azblob.LeaseStateAvailable)
 	c.Assert(string(resp.Containers[0].Properties.LeaseDuration), chk.Equals, "")
-	c.Assert(string(resp.Containers[0].Properties.PublicAccess), chk.Equals, "")
+	c.Assert(string(resp.Containers[0].Properties.PublicAccess), chk.Equals, "blob")
 	c.Assert(resp.Containers[0].Metadata, chk.DeepEquals, md)
 }
 
 func (s *StorageAccountSuite) TestListContainersPaged(c *chk.C) {
-	sa := getStorageAccount(c)
+	sa := getBSU()
 
 	const numContainers = 4
 	const maxResultsPerPage = 2
 	const pagedContainersPrefix = "azblobspagedtest"
 
-	containers := make([]ContainerURL, numContainers)
+	containers := make([]azblob.ContainerURL, numContainers)
 	for i := 0; i < numContainers; i++ {
-		containers[i] = getContainerWithPrefix(c, pagedContainersPrefix)
+		containers[i], _ = createNewContainerWithSuffix(c, sa, pagedContainersPrefix)
 	}
 
 	defer func() {
@@ -114,11 +94,11 @@ func (s *StorageAccountSuite) TestListContainersPaged(c *chk.C) {
 		}
 	}()
 
-	marker := Marker{}
+	marker := azblob.Marker{}
 	iterations := numContainers / maxResultsPerPage
 
 	for i := 0; i < iterations; i++ {
-		resp, err := sa.ListContainers(context.Background(), marker, ListContainersOptions{MaxResults: maxResultsPerPage, Prefix: pagedContainersPrefix})
+		resp, err := sa.ListContainers(context.Background(), marker, azblob.ListContainersOptions{MaxResults: maxResultsPerPage, Prefix: containerPrefix + pagedContainersPrefix})
 		c.Assert(err, chk.IsNil)
 		c.Assert(resp.Containers, chk.HasLen, maxResultsPerPage)
 

@@ -3,7 +3,6 @@ package azblob
 import (
 	"context"
 	"io"
-	"net/http"
 	"net/url"
 	"time"
 
@@ -38,14 +37,14 @@ func (ab AppendBlobURL) WithSnapshot(snapshot time.Time) AppendBlobURL {
 
 // Create creates a 0-length append blob. Call AppendBlock to append data to an append blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
-func (ab AppendBlobURL) Create(ctx context.Context, metadata Metadata, h BlobHTTPHeaders, ac BlobAccessConditions) (*http.Response, error) {
+func (ab AppendBlobURL) Create(ctx context.Context, metadata Metadata, h BlobHTTPHeaders, ac BlobAccessConditions) (*BlobsPutResponse, error) {
 	ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch := ac.HTTPAccessConditions.pointers()
-	resp, err := ab.blobClient.Put(ctx, BlobAppendBlob, nil, nil, nil,
+	return ab.blobClient.Put(ctx, BlobAppendBlob, nil, nil, nil,
 		&h.ContentType, &h.ContentEncoding, &h.ContentLanguage, h.contentMD5Pointer(), &h.CacheControl,
 		metadata, ac.LeaseAccessConditions.pointers(),
 		&h.ContentDisposition,
 		ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, nil, nil, nil)
-	return resp.Response(), err
+
 }
 
 // AppendBlock commits a new block of data to the end of the existing append blob.
@@ -99,7 +98,7 @@ func (ac AppendBlobAccessConditions) pointers() (iape *int32, imsltoe *int32) {
 	case 0:
 		imsltoe = nil
 	default:
-		imsltoe = &ac.IfAppendPositionEqual
+		imsltoe = &ac.IfMaxSizeLessThanOrEqual
 	}
 	return
 }

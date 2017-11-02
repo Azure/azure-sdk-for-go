@@ -82,12 +82,15 @@ func main() {
 		TargetPath string
 	}
 
+	// Find the names of all of the packages for inclusion in this profile.
 	packages = packageStrategy.Enumerate(nil).Select(func(x interface{}) interface{} {
 		if cast, ok := x.(string); ok {
 			return filepath.Join(os.Getenv("GOPATH"), "src", cast)
 		}
 		return nil
 	})
+
+	// Parse the packages that were selected for inclusion in this profile.
 	packages = packages.SelectMany(func(x interface{}) collection.Enumerator {
 		results := make(chan interface{})
 
@@ -112,6 +115,8 @@ func main() {
 
 		return results
 	})
+
+	// Generate the alias package from the originally parsed one.
 	packages = packages.ParallelSelect(func(x interface{}) interface{} {
 		var err error
 		var subject *goalias.AliasPackage
@@ -144,6 +149,45 @@ func main() {
 		return x != nil
 	})
 
+	// Update the "UserAgent" function in the generated profile, if it is present.
+	packages = packages.Select(func(x interface{}) interface{} {
+		cast := x.(*alias)
+
+		var userAgent *ast.FuncDecl
+
+		// Grab all functions in the alias package named "UserAgent"
+		userAgentCandidates := collection.Where(collection.AsEnumerable(cast.Files["models.go"].Decls), func(x interface{}) bool {
+			cast, ok := x.(*ast.FuncDecl)
+			return ok && cast.Name.Name == "UserAgent"
+		})
+
+		// There should really only be one of them, otherwise bailout because we don't understand the world anymore.
+		candidate, err := collection.Single(userAgentCandidates)
+		if err != nil {
+			return x
+		}
+		userAgent, ok := candidate.(*ast.FuncDecl)
+		if !ok {
+			return x
+		}
+
+		// Grab the expression being returned.
+		retResults := &userAgent.Body.List[0].(*ast.ReturnStmt).Results[0]
+
+		// Append a string literal to the result
+		updated := &ast.BinaryExpr{
+			Op: token.ADD,
+			X:  *retResults,
+			Y: &ast.BasicLit{
+				Value: fmt.Sprintf("\" profiles/%s\"", profileName),
+			},
+		}
+
+		*retResults = updated
+		return x
+	})
+
+	// Add the MSFT Copyright Header, then write the alias package to disk.
 	products := packages.ParallelSelect(func(x interface{}) interface{} {
 		cast, ok := x.(*alias)
 		if !ok {

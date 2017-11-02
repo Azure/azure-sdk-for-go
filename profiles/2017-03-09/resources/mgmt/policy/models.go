@@ -45,6 +45,12 @@ type Definition = original.Definition
 type DefinitionListResult = original.DefinitionListResult
 type DefinitionProperties = original.DefinitionProperties
 
+func UserAgent() string {
+	return original.UserAgent()
+}
+func Version() string {
+	return original.Version()
+}
 func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
 	return original.NewAssignmentsClient(subscriptionID)
 }
@@ -62,10 +68,4 @@ func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
 }
 func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) DefinitionsClient {
 	return original.NewDefinitionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent()
-}
-func Version() string {
-	return original.Version()
 }

@@ -20,15 +20,15 @@
 
 package storage
 
-import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2015-06-15/storage"
+import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2016-01-01/storage"
 
-type AccountsClient = original.AccountsClient
+type AccessTier = original.AccessTier
 
 const (
-	DefaultBaseURI = original.DefaultBaseURI
+	Cool	AccessTier	= original.Cool
+	Hot	AccessTier	= original.Hot
 )
 
-type ManagementClient = original.ManagementClient
 type AccountStatus = original.AccountStatus
 
 const (
@@ -36,14 +36,18 @@ const (
 	Unavailable	AccountStatus	= original.Unavailable
 )
 
-type AccountType = original.AccountType
+type KeyPermission = original.KeyPermission
 
 const (
-	PremiumLRS	AccountType	= original.PremiumLRS
-	StandardGRS	AccountType	= original.StandardGRS
-	StandardLRS	AccountType	= original.StandardLRS
-	StandardRAGRS	AccountType	= original.StandardRAGRS
-	StandardZRS	AccountType	= original.StandardZRS
+	FULL	KeyPermission	= original.FULL
+	READ	KeyPermission	= original.READ
+)
+
+type Kind = original.Kind
+
+const (
+	BlobStorage	Kind	= original.BlobStorage
+	Storage		Kind	= original.Storage
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -61,6 +65,23 @@ const (
 	AlreadyExists		Reason	= original.AlreadyExists
 )
 
+type SkuName = original.SkuName
+
+const (
+	PremiumLRS	SkuName	= original.PremiumLRS
+	StandardGRS	SkuName	= original.StandardGRS
+	StandardLRS	SkuName	= original.StandardLRS
+	StandardRAGRS	SkuName	= original.StandardRAGRS
+	StandardZRS	SkuName	= original.StandardZRS
+)
+
+type SkuTier = original.SkuTier
+
+const (
+	Premium		SkuTier	= original.Premium
+	Standard	SkuTier	= original.Standard
+)
+
 type UsageUnit = original.UsageUnit
 
 const (
@@ -75,7 +96,8 @@ const (
 type Account = original.Account
 type AccountCheckNameAvailabilityParameters = original.AccountCheckNameAvailabilityParameters
 type AccountCreateParameters = original.AccountCreateParameters
-type AccountKeys = original.AccountKeys
+type AccountKey = original.AccountKey
+type AccountListKeysResult = original.AccountListKeysResult
 type AccountListResult = original.AccountListResult
 type AccountProperties = original.AccountProperties
 type AccountPropertiesCreateParameters = original.AccountPropertiesCreateParameters
@@ -84,12 +106,23 @@ type AccountRegenerateKeyParameters = original.AccountRegenerateKeyParameters
 type AccountUpdateParameters = original.AccountUpdateParameters
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type CustomDomain = original.CustomDomain
+type Encryption = original.Encryption
+type EncryptionService = original.EncryptionService
+type EncryptionServices = original.EncryptionServices
 type Endpoints = original.Endpoints
 type Resource = original.Resource
+type Sku = original.Sku
 type Usage = original.Usage
 type UsageListResult = original.UsageListResult
 type UsageName = original.UsageName
 type UsageClient = original.UsageClient
+type AccountsClient = original.AccountsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
 
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)

@@ -22,6 +22,11 @@ package subscriptions
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-06-01/subscriptions"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
 type GroupClient = original.GroupClient
 type SpendingLimit = original.SpendingLimit
 
@@ -49,12 +54,6 @@ type Subscription = original.Subscription
 type TenantIDDescription = original.TenantIDDescription
 type TenantListResult = original.TenantListResult
 type TenantsClient = original.TenantsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
 
 func NewTenantsClient() TenantsClient {
 	return original.NewTenantsClient()

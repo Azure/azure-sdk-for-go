@@ -143,7 +143,6 @@ func main() {
 		}
 
 		bundle.AliasPackage = subject
-
 		return &bundle
 	})
 	packages = packages.Where(func(x interface{}) bool {

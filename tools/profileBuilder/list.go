@@ -19,6 +19,8 @@ package main
 import (
 	"fmt"
 	"io"
+	"os"
+	"path"
 
 	"github.com/marstr/collection"
 )
@@ -42,6 +44,8 @@ func (list ListStrategy) Enumerate(cancel <-chan struct{}) collection.Enumerator
 			if err != nil {
 				return
 			}
+
+			currentLine = path.Join(os.Getenv("GOPATH"), "src", currentLine)
 
 			select {
 			case results <- currentLine:

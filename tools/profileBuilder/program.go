@@ -85,7 +85,7 @@ func main() {
 	// Find the names of all of the packages for inclusion in this profile.
 	packages = packageStrategy.Enumerate(nil).Select(func(x interface{}) interface{} {
 		if cast, ok := x.(string); ok {
-			return filepath.Join(os.Getenv("GOPATH"), "src", cast)
+			return cast
 		}
 		return nil
 	})

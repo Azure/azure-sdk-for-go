@@ -20,8 +20,10 @@ import (
 	"bytes"
 	"io"
 	"os"
+	"path"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -32,19 +34,21 @@ func TestList_Enumerate(t *testing.T) {
 		return
 	}
 
+	gopath := strings.Replace(os.Getenv("GOPATH"), "\\", "/", -1)
+
 	testCases := []struct {
 		io.Reader
 		expected map[string]struct{}
 	}{
 		{
 			bytes.NewReader([]byte("a.md")),
-			map[string]struct{}{"a.md": struct{}{}},
+			map[string]struct{}{path.Join(gopath, "src", "a.md"): struct{}{}},
 		},
 		{
 			smallProfile,
 			map[string]struct{}{
-				"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2015-06-15/compute": struct{}{},
-				"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2015-06-15/network": struct{}{},
+				path.Join(gopath, "src", "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2015-06-15/compute"): struct{}{},
+				path.Join(gopath, "src", "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2015-06-15/network"): struct{}{},
 			},
 		},
 	}
@@ -62,6 +66,8 @@ func TestList_Enumerate(t *testing.T) {
 					t.Fail()
 					return
 				}
+
+				cast = strings.Replace(cast, "\\", "/", -1)
 
 				if _, ok = tc.expected[cast]; !ok {
 					t.Logf("Unexpected value %q encountered", cast)

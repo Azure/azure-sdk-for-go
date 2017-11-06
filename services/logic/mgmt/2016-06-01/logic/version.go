@@ -19,10 +19,10 @@ package logic
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/0.0.0 arm-logic/2016-06-01"
+	return "Azure-SDK-For-Go/v11.2.0-beta services"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.
 func Version() string {
-	return "0.0.0"
+	return "v11.2.0-beta"
 }

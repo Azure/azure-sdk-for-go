@@ -8,7 +8,12 @@
 
 ### Storage
  - Added operations for getting and setting container metadata.
- - Fixed unmarshaling bug on list containers operation.
+ - Fixed unmarshaling bug on list containers operation.'
+
+### Generated code notes
+
+- Services directory generated from [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) commit: 274c99f7bd93d8b98048e31b74a34333cecded74
+- [AutoRest Go Generator](https://github.com/Azure/autorest.go) version: 2.0.41
 
 ## `v11.1.1-beta`
  

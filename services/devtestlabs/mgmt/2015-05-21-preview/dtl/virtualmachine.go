@@ -108,6 +108,7 @@ func (client VirtualMachineClient) ApplyArtifactsPreparer(resourceGroupName stri
 func (client VirtualMachineClient) ApplyArtifactsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -193,6 +194,7 @@ func (client VirtualMachineClient) CreateOrUpdateResourcePreparer(resourceGroupN
 func (client VirtualMachineClient) CreateOrUpdateResourceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -277,6 +279,7 @@ func (client VirtualMachineClient) DeleteResourcePreparer(resourceGroupName stri
 func (client VirtualMachineClient) DeleteResourceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -343,7 +346,9 @@ func (client VirtualMachineClient) GetResourcePreparer(resourceGroupName string,
 // GetResourceSender sends the GetResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineClient) GetResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResourceResponder handles the response to the GetResource request. The method always
@@ -418,7 +423,9 @@ func (client VirtualMachineClient) ListPreparer(resourceGroupName string, labNam
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -556,7 +563,9 @@ func (client VirtualMachineClient) PatchResourcePreparer(resourceGroupName strin
 // PatchResourceSender sends the PatchResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineClient) PatchResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // PatchResourceResponder handles the response to the PatchResource request. The method always
@@ -640,6 +649,7 @@ func (client VirtualMachineClient) StartPreparer(resourceGroupName string, labNa
 func (client VirtualMachineClient) StartSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -723,6 +733,7 @@ func (client VirtualMachineClient) StopPreparer(resourceGroupName string, labNam
 func (client VirtualMachineClient) StopSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 

@@ -89,7 +89,9 @@ func (client DeployedCodePackagesClient) GetPreparer(nodeName string, applicatio
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeployedCodePackagesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always

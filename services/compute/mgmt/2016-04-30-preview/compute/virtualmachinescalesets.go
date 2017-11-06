@@ -107,6 +107,7 @@ func (client VirtualMachineScaleSetsClient) CreateOrUpdatePreparer(resourceGroup
 func (client VirtualMachineScaleSetsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -196,6 +197,7 @@ func (client VirtualMachineScaleSetsClient) DeallocatePreparer(resourceGroupName
 func (client VirtualMachineScaleSetsClient) DeallocateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -277,6 +279,7 @@ func (client VirtualMachineScaleSetsClient) DeletePreparer(resourceGroupName str
 func (client VirtualMachineScaleSetsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -371,6 +374,7 @@ func (client VirtualMachineScaleSetsClient) DeleteInstancesPreparer(resourceGrou
 func (client VirtualMachineScaleSetsClient) DeleteInstancesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -436,7 +440,9 @@ func (client VirtualMachineScaleSetsClient) GetPreparer(resourceGroupName string
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -501,7 +507,9 @@ func (client VirtualMachineScaleSetsClient) GetInstanceViewPreparer(resourceGrou
 // GetInstanceViewSender sends the GetInstanceView request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) GetInstanceViewSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceViewResponder handles the response to the GetInstanceView request. The method always
@@ -565,7 +573,9 @@ func (client VirtualMachineScaleSetsClient) ListPreparer(resourceGroupName strin
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -697,7 +707,9 @@ func (client VirtualMachineScaleSetsClient) ListAllPreparer() (*http.Request, er
 // ListAllSender sends the ListAll request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) ListAllSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAllResponder handles the response to the ListAll request. The method always
@@ -832,7 +844,9 @@ func (client VirtualMachineScaleSetsClient) ListSkusPreparer(resourceGroupName s
 // ListSkusSender sends the ListSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachineScaleSetsClient) ListSkusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSkusResponder handles the response to the ListSkus request. The method always
@@ -990,6 +1004,7 @@ func (client VirtualMachineScaleSetsClient) PowerOffPreparer(resourceGroupName s
 func (client VirtualMachineScaleSetsClient) PowerOffSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1072,6 +1087,7 @@ func (client VirtualMachineScaleSetsClient) ReimagePreparer(resourceGroupName st
 func (client VirtualMachineScaleSetsClient) ReimageSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1154,6 +1170,7 @@ func (client VirtualMachineScaleSetsClient) ReimageAllPreparer(resourceGroupName
 func (client VirtualMachineScaleSetsClient) ReimageAllSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1242,6 +1259,7 @@ func (client VirtualMachineScaleSetsClient) RestartPreparer(resourceGroupName st
 func (client VirtualMachineScaleSetsClient) RestartSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1330,6 +1348,7 @@ func (client VirtualMachineScaleSetsClient) StartPreparer(resourceGroupName stri
 func (client VirtualMachineScaleSetsClient) StartSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1424,6 +1443,7 @@ func (client VirtualMachineScaleSetsClient) UpdateInstancesPreparer(resourceGrou
 func (client VirtualMachineScaleSetsClient) UpdateInstancesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 

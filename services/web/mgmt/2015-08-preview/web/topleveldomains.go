@@ -83,7 +83,9 @@ func (client TopLevelDomainsClient) GetGetTopLevelDomainsPreparer() (*http.Reque
 // GetGetTopLevelDomainsSender sends the GetGetTopLevelDomains request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopLevelDomainsClient) GetGetTopLevelDomainsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetGetTopLevelDomainsResponder handles the response to the GetGetTopLevelDomains request. The method always
@@ -216,7 +218,9 @@ func (client TopLevelDomainsClient) GetTopLevelDomainPreparer(name string) (*htt
 // GetTopLevelDomainSender sends the GetTopLevelDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopLevelDomainsClient) GetTopLevelDomainSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetTopLevelDomainResponder handles the response to the GetTopLevelDomain request. The method always
@@ -282,7 +286,9 @@ func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsPreparer(name st
 // ListTopLevelDomainAgreementsSender sends the ListTopLevelDomainAgreements request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListTopLevelDomainAgreementsResponder handles the response to the ListTopLevelDomainAgreements request. The method always

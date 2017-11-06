@@ -1018,12 +1018,6 @@ type Application struct {
 	HealthState       HealthState                  `json:"HealthState,omitempty"`
 }
 
-// ApplicationParametersItem is the parameters
-type ApplicationParametersItem struct {
-	Key   *string `json:"Key,omitempty"`
-	Value *string `json:"Value,omitempty"`
-}
-
 // ApplicationDescription is the description of the application
 type ApplicationDescription struct {
 	Name          *string                                    `json:"Name,omitempty"`
@@ -1053,12 +1047,6 @@ type ApplicationHealth struct {
 type ApplicationHealthDeployedApplicationHealthStatesItem struct {
 	ApplicationName       *string               `json:"ApplicationName,omitempty"`
 	NodeName              *string               `json:"NodeName,omitempty"`
-	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
-}
-
-// ApplicationHealthServiceHealthStatesItem is the states of the service health
-type ApplicationHealthServiceHealthStatesItem struct {
-	ServiceName           *string               `json:"ServiceName,omitempty"`
 	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 }
 
@@ -1222,6 +1210,12 @@ type ApplicationHealthReport struct {
 	RemoveWhenExpired        *bool       `json:"RemoveWhenExpired,omitempty"`
 }
 
+// ApplicationHealthServiceHealthStatesItem is the states of the service health
+type ApplicationHealthServiceHealthStatesItem struct {
+	ServiceName           *string               `json:"ServiceName,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
+}
+
 // ApplicationList is the list of the application
 type ApplicationList struct {
 	autorest.Response `json:"-"`
@@ -1233,6 +1227,12 @@ type ApplicationList struct {
 type ApplicationManifest struct {
 	autorest.Response `json:"-"`
 	Manifest          *string `json:"Manifest,omitempty"`
+}
+
+// ApplicationParametersItem is the parameters
+type ApplicationParametersItem struct {
+	Key   *string `json:"Key,omitempty"`
+	Value *string `json:"Value,omitempty"`
 }
 
 // ApplicationsHealthEvaluation is the evaluation of the applications health
@@ -2928,17 +2928,6 @@ type Node struct {
 	NodeDeactivationInfo *NodeNodeDeactivationInfo `json:"NodeDeactivationInfo,omitempty"`
 }
 
-// NodeID is the id
-type NodeID struct {
-	ID *string `json:"Id,omitempty"`
-}
-
-// NodeNodeDeactivationInfo is the info of the deactivation info
-type NodeNodeDeactivationInfo struct {
-	NodeDeactivationIntent NodeDeactivationIntent `json:"NodeDeactivationIntent,omitempty"`
-	NodeDeactivationStatus NodeDeactivationStatus `json:"NodeDeactivationStatus,omitempty"`
-}
-
 // NodeHealth is the health of the node
 type NodeHealth struct {
 	autorest.Response     `json:"-"`
@@ -3083,6 +3072,11 @@ type NodeHealthReport struct {
 	RemoveWhenExpired        *bool       `json:"RemoveWhenExpired,omitempty"`
 }
 
+// NodeID is the id
+type NodeID struct {
+	ID *string `json:"Id,omitempty"`
+}
+
 // NodeList is the list of the node
 type NodeList struct {
 	autorest.Response `json:"-"`
@@ -3106,6 +3100,12 @@ type NodeLoadMetricInformation struct {
 	IsCapacityViolation           *bool   `json:"IsCapacityViolation,omitempty"`
 	NodeBufferedCapacity          *string `json:"NodeBufferedCapacity,omitempty"`
 	NodeRemainingBufferedCapacity *string `json:"NodeRemainingBufferedCapacity,omitempty"`
+}
+
+// NodeNodeDeactivationInfo is the info of the deactivation info
+type NodeNodeDeactivationInfo struct {
+	NodeDeactivationIntent NodeDeactivationIntent `json:"NodeDeactivationIntent,omitempty"`
+	NodeDeactivationStatus NodeDeactivationStatus `json:"NodeDeactivationStatus,omitempty"`
 }
 
 // NodesHealthEvaluation is the evaluation of the nodes health
@@ -3271,14 +3271,6 @@ type PartitionHealth struct {
 	ReplicaHealthStates   *[]PartitionHealthReplicaHealthStatesItem `json:"ReplicaHealthStates,omitempty"`
 }
 
-// PartitionHealthReplicaHealthStatesItem is the states of the replica health
-type PartitionHealthReplicaHealthStatesItem struct {
-	HealthEvents          *int32                `json:"HealthEvents,omitempty"`
-	PartitionID           *string               `json:"PartitionId,omitempty"`
-	ReplicaID             *string               `json:"ReplicaId,omitempty"`
-	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
-}
-
 // PartitionHealthEvaluation is the evaluation of the partition health
 type PartitionHealthEvaluation struct {
 	Description           *string                `json:"Description,omitempty"`
@@ -3402,6 +3394,14 @@ func (phe PartitionHealthEvaluation) AsUpgradeDomainDeltaNodesCheckHealthEvaluat
 // AsApplicationTypeHealthEvaluation is the HealthEvaluation implementation for PartitionHealthEvaluation.
 func (phe PartitionHealthEvaluation) AsApplicationTypeHealthEvaluation() (*ApplicationTypeHealthEvaluation, bool) {
 	return nil, false
+}
+
+// PartitionHealthReplicaHealthStatesItem is the states of the replica health
+type PartitionHealthReplicaHealthStatesItem struct {
+	HealthEvents          *int32                `json:"HealthEvents,omitempty"`
+	PartitionID           *string               `json:"PartitionId,omitempty"`
+	ReplicaID             *string               `json:"ReplicaId,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 }
 
 // PartitionHealthReport is the report of the partition health
@@ -4076,12 +4076,6 @@ type ServiceHealth struct {
 	PartitionHealthStates *[]ServiceHealthPartitionHealthStatesItem `json:"PartitionHealthStates,omitempty"`
 }
 
-// ServiceHealthPartitionHealthStatesItem is the states of the partition health
-type ServiceHealthPartitionHealthStatesItem struct {
-	PartitionID           *string               `json:"PartitionId,omitempty"`
-	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
-}
-
 // ServiceHealthEvaluation is the evaluation of the service health
 type ServiceHealthEvaluation struct {
 	Description           *string                `json:"Description,omitempty"`
@@ -4205,6 +4199,12 @@ func (she ServiceHealthEvaluation) AsUpgradeDomainDeltaNodesCheckHealthEvaluatio
 // AsApplicationTypeHealthEvaluation is the HealthEvaluation implementation for ServiceHealthEvaluation.
 func (she ServiceHealthEvaluation) AsApplicationTypeHealthEvaluation() (*ApplicationTypeHealthEvaluation, bool) {
 	return nil, false
+}
+
+// ServiceHealthPartitionHealthStatesItem is the states of the partition health
+type ServiceHealthPartitionHealthStatesItem struct {
+	PartitionID           *string               `json:"PartitionId,omitempty"`
+	AggregatedHealthState AggregatedHealthState `json:"AggregatedHealthState,omitempty"`
 }
 
 // ServiceHealthReport is the report of the service health

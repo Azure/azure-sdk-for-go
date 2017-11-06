@@ -91,7 +91,9 @@ func (client ApplicationsClient) CreatePreparer(resourceGroupName string, cluste
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -175,6 +177,7 @@ func (client ApplicationsClient) DeletePreparer(resourceGroupName string, cluste
 func (client ApplicationsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -194,7 +197,7 @@ func (client ApplicationsClient) DeleteResponder(resp *http.Response) (result au
 //
 // resourceGroupName is the name of the resource group. clusterName is the name of the cluster. applicationName is the
 // constant value for the application name.
-func (client ApplicationsClient) Get(resourceGroupName string, clusterName string, applicationName ApplicationName) (result Application, err error) {
+func (client ApplicationsClient) Get(resourceGroupName string, clusterName string, applicationName string) (result Application, err error) {
 	req, err := client.GetPreparer(resourceGroupName, clusterName, applicationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "Get", nil, "Failure preparing request")
@@ -217,7 +220,7 @@ func (client ApplicationsClient) Get(resourceGroupName string, clusterName strin
 }
 
 // GetPreparer prepares the Get request.
-func (client ApplicationsClient) GetPreparer(resourceGroupName string, clusterName string, applicationName ApplicationName) (*http.Request, error) {
+func (client ApplicationsClient) GetPreparer(resourceGroupName string, clusterName string, applicationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationName":   autorest.Encode("path", applicationName),
 		"clusterName":       autorest.Encode("path", clusterName),
@@ -241,7 +244,9 @@ func (client ApplicationsClient) GetPreparer(resourceGroupName string, clusterNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -306,7 +311,9 @@ func (client ApplicationsClient) ListPreparer(resourceGroupName string, clusterN
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

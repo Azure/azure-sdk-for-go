@@ -106,6 +106,7 @@ func (client LabClient) CreateEnvironmentPreparer(resourceGroupName string, name
 func (client LabClient) CreateEnvironmentSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -189,6 +190,7 @@ func (client LabClient) CreateOrUpdateResourcePreparer(resourceGroupName string,
 func (client LabClient) CreateOrUpdateResourceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -271,6 +273,7 @@ func (client LabClient) DeleteResourcePreparer(resourceGroupName string, name st
 func (client LabClient) DeleteResourceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -337,7 +340,9 @@ func (client LabClient) GenerateUploadURIPreparer(resourceGroupName string, name
 // GenerateUploadURISender sends the GenerateUploadURI request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabClient) GenerateUploadURISender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GenerateUploadURIResponder handles the response to the GenerateUploadURI request. The method always
@@ -402,7 +407,9 @@ func (client LabClient) GetResourcePreparer(resourceGroupName string, name strin
 // GetResourceSender sends the GetResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabClient) GetResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResourceResponder handles the response to the GetResource request. The method always
@@ -475,7 +482,9 @@ func (client LabClient) ListByResourceGroupPreparer(resourceGroupName string, fi
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -616,7 +625,9 @@ func (client LabClient) ListBySubscriptionPreparer(filter string, top *int32, or
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
@@ -750,7 +761,9 @@ func (client LabClient) ListVhdsPreparer(resourceGroupName string, name string) 
 // ListVhdsSender sends the ListVhds request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabClient) ListVhdsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListVhdsResponder handles the response to the ListVhds request. The method always
@@ -886,7 +899,9 @@ func (client LabClient) PatchResourcePreparer(resourceGroupName string, name str
 // PatchResourceSender sends the PatchResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client LabClient) PatchResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // PatchResourceResponder handles the response to the PatchResource request. The method always

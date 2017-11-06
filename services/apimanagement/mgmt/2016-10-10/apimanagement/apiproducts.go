@@ -121,7 +121,9 @@ func (client APIProductsClient) ListByApisPreparer(resourceGroupName string, ser
 // ListByApisSender sends the ListByApis request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIProductsClient) ListByApisSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByApisResponder handles the response to the ListByApis request. The method always

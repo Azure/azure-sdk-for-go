@@ -87,7 +87,9 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileServicePreparer(res
 // DeleteClassicMobileServiceSender sends the DeleteClassicMobileService request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClassicMobileServicesClient) DeleteClassicMobileServiceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteClassicMobileServiceResponder handles the response to the DeleteClassicMobileService request. The method always
@@ -152,7 +154,9 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicePreparer(resour
 // GetClassicMobileServiceSender sends the GetClassicMobileService request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClassicMobileServicesClient) GetClassicMobileServiceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetClassicMobileServiceResponder handles the response to the GetClassicMobileService request. The method always
@@ -216,7 +220,9 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicesPreparer(resou
 // GetClassicMobileServicesSender sends the GetClassicMobileServices request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClassicMobileServicesClient) GetClassicMobileServicesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetClassicMobileServicesResponder handles the response to the GetClassicMobileServices request. The method always

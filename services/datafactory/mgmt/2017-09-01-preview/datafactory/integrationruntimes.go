@@ -113,7 +113,9 @@ func (client IntegrationRuntimesClient) CreateOrUpdatePreparer(resourceGroupName
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationRuntimesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -192,7 +194,9 @@ func (client IntegrationRuntimesClient) DeletePreparer(resourceGroupName string,
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationRuntimesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -270,7 +274,9 @@ func (client IntegrationRuntimesClient) GetPreparer(resourceGroupName string, fa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationRuntimesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -350,7 +356,9 @@ func (client IntegrationRuntimesClient) GetConnectionInfoPreparer(resourceGroupN
 // GetConnectionInfoSender sends the GetConnectionInfo request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationRuntimesClient) GetConnectionInfoSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetConnectionInfoResponder handles the response to the GetConnectionInfo request. The method always
@@ -430,7 +438,9 @@ func (client IntegrationRuntimesClient) GetMonitoringDataPreparer(resourceGroupN
 // GetMonitoringDataSender sends the GetMonitoringData request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationRuntimesClient) GetMonitoringDataSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMonitoringDataResponder handles the response to the GetMonitoringData request. The method always
@@ -509,7 +519,9 @@ func (client IntegrationRuntimesClient) GetStatusPreparer(resourceGroupName stri
 // GetStatusSender sends the GetStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationRuntimesClient) GetStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetStatusResponder handles the response to the GetStatus request. The method always
@@ -588,7 +600,9 @@ func (client IntegrationRuntimesClient) ListAuthKeysPreparer(resourceGroupName s
 // ListAuthKeysSender sends the ListAuthKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationRuntimesClient) ListAuthKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAuthKeysResponder handles the response to the ListAuthKeys request. The method always
@@ -665,7 +679,9 @@ func (client IntegrationRuntimesClient) ListByFactoryPreparer(resourceGroupName 
 // ListByFactorySender sends the ListByFactory request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationRuntimesClient) ListByFactorySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByFactoryResponder handles the response to the ListByFactory request. The method always
@@ -816,7 +832,9 @@ func (client IntegrationRuntimesClient) RegenerateAuthKeyPreparer(resourceGroupN
 // RegenerateAuthKeySender sends the RegenerateAuthKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationRuntimesClient) RegenerateAuthKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RegenerateAuthKeyResponder handles the response to the RegenerateAuthKey request. The method always
@@ -897,7 +915,9 @@ func (client IntegrationRuntimesClient) RemoveNodePreparer(resourceGroupName str
 // RemoveNodeSender sends the RemoveNode request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationRuntimesClient) RemoveNodeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RemoveNodeResponder handles the response to the RemoveNode request. The method always
@@ -995,6 +1015,7 @@ func (client IntegrationRuntimesClient) StartPreparer(resourceGroupName string, 
 func (client IntegrationRuntimesClient) StartSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1094,6 +1115,7 @@ func (client IntegrationRuntimesClient) StopPreparer(resourceGroupName string, f
 func (client IntegrationRuntimesClient) StopSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1172,7 +1194,9 @@ func (client IntegrationRuntimesClient) SyncCredentialsPreparer(resourceGroupNam
 // SyncCredentialsSender sends the SyncCredentials request. The method will close the
 // http.Response Body if it receives an error.
 func (client IntegrationRuntimesClient) SyncCredentialsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // SyncCredentialsResponder handles the response to the SyncCredentials request. The method always

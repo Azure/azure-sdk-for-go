@@ -108,6 +108,7 @@ func (client ScheduleClient) CreateOrUpdateResourcePreparer(resourceGroupName st
 func (client ScheduleClient) CreateOrUpdateResourceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -192,6 +193,7 @@ func (client ScheduleClient) DeleteResourcePreparer(resourceGroupName string, la
 func (client ScheduleClient) DeleteResourceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -275,6 +277,7 @@ func (client ScheduleClient) ExecutePreparer(resourceGroupName string, labName s
 func (client ScheduleClient) ExecuteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -341,7 +344,9 @@ func (client ScheduleClient) GetResourcePreparer(resourceGroupName string, labNa
 // GetResourceSender sends the GetResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScheduleClient) GetResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResourceResponder handles the response to the GetResource request. The method always
@@ -416,7 +421,9 @@ func (client ScheduleClient) ListPreparer(resourceGroupName string, labName stri
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScheduleClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -554,7 +561,9 @@ func (client ScheduleClient) PatchResourcePreparer(resourceGroupName string, lab
 // PatchResourceSender sends the PatchResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScheduleClient) PatchResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // PatchResourceResponder handles the response to the PatchResource request. The method always

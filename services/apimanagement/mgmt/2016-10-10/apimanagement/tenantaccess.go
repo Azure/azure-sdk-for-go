@@ -96,7 +96,9 @@ func (client TenantAccessClient) GetPreparer(resourceGroupName string, serviceNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantAccessClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -169,7 +171,9 @@ func (client TenantAccessClient) RegeneratePrimaryKeyPreparer(resourceGroupName 
 // RegeneratePrimaryKeySender sends the RegeneratePrimaryKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantAccessClient) RegeneratePrimaryKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RegeneratePrimaryKeyResponder handles the response to the RegeneratePrimaryKey request. The method always
@@ -241,7 +245,9 @@ func (client TenantAccessClient) RegenerateSecondaryKeyPreparer(resourceGroupNam
 // RegenerateSecondaryKeySender sends the RegenerateSecondaryKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantAccessClient) RegenerateSecondaryKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RegenerateSecondaryKeyResponder handles the response to the RegenerateSecondaryKey request. The method always
@@ -318,7 +324,9 @@ func (client TenantAccessClient) UpdatePreparer(resourceGroupName string, servic
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client TenantAccessClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

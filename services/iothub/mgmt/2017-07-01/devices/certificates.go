@@ -103,7 +103,9 @@ func (client CertificatesClient) CreateOrUpdatePreparer(resourceGroupName string
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -177,7 +179,9 @@ func (client CertificatesClient) DeletePreparer(resourceGroupName string, resour
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -251,7 +255,9 @@ func (client CertificatesClient) GenerateVerificationCodePreparer(resourceGroupN
 // GenerateVerificationCodeSender sends the GenerateVerificationCode request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) GenerateVerificationCodeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GenerateVerificationCodeResponder handles the response to the GenerateVerificationCode request. The method always
@@ -324,7 +330,9 @@ func (client CertificatesClient) GetPreparer(resourceGroupName string, resourceN
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -390,7 +398,9 @@ func (client CertificatesClient) ListByIotHubPreparer(resourceGroupName string, 
 // ListByIotHubSender sends the ListByIotHub request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) ListByIotHubSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByIotHubResponder handles the response to the ListByIotHub request. The method always
@@ -468,7 +478,9 @@ func (client CertificatesClient) VerifyPreparer(resourceGroupName string, resour
 // VerifySender sends the Verify request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) VerifySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // VerifyResponder handles the response to the Verify request. The method always

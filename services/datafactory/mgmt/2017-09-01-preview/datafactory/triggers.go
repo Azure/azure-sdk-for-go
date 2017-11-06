@@ -117,7 +117,9 @@ func (client TriggersClient) CreateOrUpdatePreparer(resourceGroupName string, fa
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TriggersClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -199,7 +201,9 @@ func (client TriggersClient) DeletePreparer(resourceGroupName string, factoryNam
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client TriggersClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -280,7 +284,9 @@ func (client TriggersClient) GetPreparer(resourceGroupName string, factoryName s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TriggersClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -357,7 +363,9 @@ func (client TriggersClient) ListByFactoryPreparer(resourceGroupName string, fac
 // ListByFactorySender sends the ListByFactory request. The method will close the
 // http.Response Body if it receives an error.
 func (client TriggersClient) ListByFactorySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByFactoryResponder handles the response to the ListByFactory request. The method always
@@ -511,7 +519,9 @@ func (client TriggersClient) ListRunsPreparer(resourceGroupName string, factoryN
 // ListRunsSender sends the ListRuns request. The method will close the
 // http.Response Body if it receives an error.
 func (client TriggersClient) ListRunsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListRunsResponder handles the response to the ListRuns request. The method always
@@ -681,6 +691,7 @@ func (client TriggersClient) StartPreparer(resourceGroupName string, factoryName
 func (client TriggersClient) StartSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -781,6 +792,7 @@ func (client TriggersClient) StopPreparer(resourceGroupName string, factoryName 
 func (client TriggersClient) StopSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 

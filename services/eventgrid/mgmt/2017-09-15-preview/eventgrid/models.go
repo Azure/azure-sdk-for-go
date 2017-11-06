@@ -449,6 +449,11 @@ type TopicTypesListResult struct {
 	Value             *[]TopicTypeInfo `json:"value,omitempty"`
 }
 
+// TopicUpdateParameters is properties of the Topic update
+type TopicUpdateParameters struct {
+	Tags *map[string]*string `json:"tags,omitempty"`
+}
+
 // TrackedResource is definition of a Tracked Resource
 type TrackedResource struct {
 	ID       *string             `json:"id,omitempty"`

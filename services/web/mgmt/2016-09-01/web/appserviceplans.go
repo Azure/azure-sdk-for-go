@@ -119,6 +119,7 @@ func (client AppServicePlansClient) CreateOrUpdatePreparer(resourceGroupName str
 func (client AppServicePlansClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -198,7 +199,9 @@ func (client AppServicePlansClient) CreateOrUpdateVnetRoutePreparer(resourceGrou
 // CreateOrUpdateVnetRouteSender sends the CreateOrUpdateVnetRoute request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) CreateOrUpdateVnetRouteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateVnetRouteResponder handles the response to the CreateOrUpdateVnetRoute request. The method always
@@ -271,7 +274,9 @@ func (client AppServicePlansClient) DeletePreparer(resourceGroupName string, nam
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -280,7 +285,7 @@ func (client AppServicePlansClient) DeleteResponder(resp *http.Response) (result
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -346,7 +351,9 @@ func (client AppServicePlansClient) DeleteHybridConnectionPreparer(resourceGroup
 // DeleteHybridConnectionSender sends the DeleteHybridConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) DeleteHybridConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteHybridConnectionResponder handles the response to the DeleteHybridConnection request. The method always
@@ -421,7 +428,9 @@ func (client AppServicePlansClient) DeleteVnetRoutePreparer(resourceGroupName st
 // DeleteVnetRouteSender sends the DeleteVnetRoute request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) DeleteVnetRouteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteVnetRouteResponder handles the response to the DeleteVnetRoute request. The method always
@@ -493,7 +502,9 @@ func (client AppServicePlansClient) GetPreparer(resourceGroupName string, name s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -502,7 +513,7 @@ func (client AppServicePlansClient) GetResponder(resp *http.Response) (result Ap
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -569,7 +580,9 @@ func (client AppServicePlansClient) GetHybridConnectionPreparer(resourceGroupNam
 // GetHybridConnectionSender sends the GetHybridConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetHybridConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHybridConnectionResponder handles the response to the GetHybridConnection request. The method always
@@ -642,7 +655,9 @@ func (client AppServicePlansClient) GetHybridConnectionPlanLimitPreparer(resourc
 // GetHybridConnectionPlanLimitSender sends the GetHybridConnectionPlanLimit request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetHybridConnectionPlanLimitSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHybridConnectionPlanLimitResponder handles the response to the GetHybridConnectionPlanLimit request. The method always
@@ -718,7 +733,9 @@ func (client AppServicePlansClient) GetRouteForVnetPreparer(resourceGroupName st
 // GetRouteForVnetSender sends the GetRouteForVnet request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetRouteForVnetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetRouteForVnetResponder handles the response to the GetRouteForVnet request. The method always
@@ -728,6 +745,81 @@ func (client AppServicePlansClient) GetRouteForVnetResponder(resp *http.Response
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetServerFarmSkus gets all selectable sku's for a given App Service Plan
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is name of App Service Plan
+func (client AppServicePlansClient) GetServerFarmSkus(resourceGroupName string, name string) (result SetObject, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppServicePlansClient", "GetServerFarmSkus")
+	}
+
+	req, err := client.GetServerFarmSkusPreparer(resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetServerFarmSkus", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetServerFarmSkusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetServerFarmSkus", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetServerFarmSkusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "GetServerFarmSkus", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetServerFarmSkusPreparer prepares the GetServerFarmSkus request.
+func (client AppServicePlansClient) GetServerFarmSkusPreparer(resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/skus", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetServerFarmSkusSender sends the GetServerFarmSkus request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppServicePlansClient) GetServerFarmSkusSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetServerFarmSkusResponder handles the response to the GetServerFarmSkus request. The method always
+// closes the http.Response Body.
+func (client AppServicePlansClient) GetServerFarmSkusResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -793,7 +885,9 @@ func (client AppServicePlansClient) GetVnetFromServerFarmPreparer(resourceGroupN
 // GetVnetFromServerFarmSender sends the GetVnetFromServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetVnetFromServerFarmSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetVnetFromServerFarmResponder handles the response to the GetVnetFromServerFarm request. The method always
@@ -870,7 +964,9 @@ func (client AppServicePlansClient) GetVnetGatewayPreparer(resourceGroupName str
 // GetVnetGatewaySender sends the GetVnetGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) GetVnetGatewaySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetVnetGatewayResponder handles the response to the GetVnetGateway request. The method always
@@ -938,7 +1034,9 @@ func (client AppServicePlansClient) ListPreparer(detailed *bool) (*http.Request,
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -1079,7 +1177,9 @@ func (client AppServicePlansClient) ListByResourceGroupPreparer(resourceGroupNam
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -1221,7 +1321,9 @@ func (client AppServicePlansClient) ListCapabilitiesPreparer(resourceGroupName s
 // ListCapabilitiesSender sends the ListCapabilities request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListCapabilitiesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListCapabilitiesResponder handles the response to the ListCapabilities request. The method always
@@ -1297,7 +1399,9 @@ func (client AppServicePlansClient) ListHybridConnectionKeysPreparer(resourceGro
 // ListHybridConnectionKeysSender sends the ListHybridConnectionKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListHybridConnectionKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListHybridConnectionKeysResponder handles the response to the ListHybridConnectionKeys request. The method always
@@ -1370,7 +1474,9 @@ func (client AppServicePlansClient) ListHybridConnectionsPreparer(resourceGroupN
 // ListHybridConnectionsSender sends the ListHybridConnections request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListHybridConnectionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListHybridConnectionsResponder handles the response to the ListHybridConnections request. The method always
@@ -1512,7 +1618,9 @@ func (client AppServicePlansClient) ListMetricDefintionsPreparer(resourceGroupNa
 // ListMetricDefintionsSender sends the ListMetricDefintions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListMetricDefintionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricDefintionsResponder handles the response to the ListMetricDefintions request. The method always
@@ -1664,7 +1772,9 @@ func (client AppServicePlansClient) ListMetricsPreparer(resourceGroupName string
 // ListMetricsSender sends the ListMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricsResponder handles the response to the ListMetrics request. The method always
@@ -1808,7 +1918,9 @@ func (client AppServicePlansClient) ListRoutesForVnetPreparer(resourceGroupName 
 // ListRoutesForVnetSender sends the ListRoutesForVnet request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListRoutesForVnetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListRoutesForVnetResponder handles the response to the ListRoutesForVnet request. The method always
@@ -1822,6 +1934,155 @@ func (client AppServicePlansClient) ListRoutesForVnetResponder(resp *http.Respon
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
+}
+
+// ListUsages gets server farm usage information
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is name of App Service Plan
+// filter is return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
+// $filter=(name.value eq 'Metric1' or name.value eq 'Metric2').
+func (client AppServicePlansClient) ListUsages(resourceGroupName string, name string, filter string) (result CsmUsageQuotaCollection, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppServicePlansClient", "ListUsages")
+	}
+
+	req, err := client.ListUsagesPreparer(resourceGroupName, name, filter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListUsages", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListUsagesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListUsages", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListUsagesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListUsages", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListUsagesPreparer prepares the ListUsages request.
+func (client AppServicePlansClient) ListUsagesPreparer(resourceGroupName string, name string, filter string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = filter
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/usages", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// ListUsagesSender sends the ListUsages request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppServicePlansClient) ListUsagesSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListUsagesResponder handles the response to the ListUsages request. The method always
+// closes the http.Response Body.
+func (client AppServicePlansClient) ListUsagesResponder(resp *http.Response) (result CsmUsageQuotaCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListUsagesNextResults retrieves the next set of results, if any.
+func (client AppServicePlansClient) ListUsagesNextResults(lastResults CsmUsageQuotaCollection) (result CsmUsageQuotaCollection, err error) {
+	req, err := lastResults.CsmUsageQuotaCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListUsages", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListUsagesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListUsages", resp, "Failure sending next results request")
+	}
+
+	result, err = client.ListUsagesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "ListUsages", resp, "Failure responding to next results request")
+	}
+
+	return
+}
+
+// ListUsagesComplete gets all elements from the list without paging.
+func (client AppServicePlansClient) ListUsagesComplete(resourceGroupName string, name string, filter string, cancel <-chan struct{}) (<-chan CsmUsageQuota, <-chan error) {
+	resultChan := make(chan CsmUsageQuota)
+	errChan := make(chan error, 1)
+	go func() {
+		defer func() {
+			close(resultChan)
+			close(errChan)
+		}()
+		list, err := client.ListUsages(resourceGroupName, name, filter)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		if list.Value != nil {
+			for _, item := range *list.Value {
+				select {
+				case <-cancel:
+					return
+				case resultChan <- item:
+					// Intentionally left blank
+				}
+			}
+		}
+		for list.NextLink != nil {
+			list, err = client.ListUsagesNextResults(list)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			if list.Value != nil {
+				for _, item := range *list.Value {
+					select {
+					case <-cancel:
+						return
+					case resultChan <- item:
+						// Intentionally left blank
+					}
+				}
+			}
+		}
+	}()
+	return resultChan, errChan
 }
 
 // ListVnets get all Virtual Networks associated with an App Service plan.
@@ -1881,7 +2142,9 @@ func (client AppServicePlansClient) ListVnetsPreparer(resourceGroupName string, 
 // ListVnetsSender sends the ListVnets request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListVnetsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListVnetsResponder handles the response to the ListVnets request. The method always
@@ -1967,7 +2230,9 @@ func (client AppServicePlansClient) ListWebAppsPreparer(resourceGroupName string
 // ListWebAppsSender sends the ListWebApps request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListWebAppsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWebAppsResponder handles the response to the ListWebApps request. The method always
@@ -2112,7 +2377,9 @@ func (client AppServicePlansClient) ListWebAppsByHybridConnectionPreparer(resour
 // ListWebAppsByHybridConnectionSender sends the ListWebAppsByHybridConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) ListWebAppsByHybridConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWebAppsByHybridConnectionResponder handles the response to the ListWebAppsByHybridConnection request. The method always
@@ -2256,7 +2523,9 @@ func (client AppServicePlansClient) RebootWorkerPreparer(resourceGroupName strin
 // RebootWorkerSender sends the RebootWorker request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) RebootWorkerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RebootWorkerResponder handles the response to the RebootWorker request. The method always
@@ -2333,7 +2602,9 @@ func (client AppServicePlansClient) RestartWebAppsPreparer(resourceGroupName str
 // RestartWebAppsSender sends the RestartWebApps request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) RestartWebAppsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RestartWebAppsResponder handles the response to the RestartWebApps request. The method always
@@ -2345,6 +2616,84 @@ func (client AppServicePlansClient) RestartWebAppsResponder(resp *http.Response)
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
+	return
+}
+
+// Update creates or updates an App Service Plan.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is name of the App Service plan.
+// appServicePlan is details of the App Service plan.
+func (client AppServicePlansClient) Update(resourceGroupName string, name string, appServicePlan AppServicePlanPatchResource) (result AppServicePlan, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppServicePlansClient", "Update")
+	}
+
+	req, err := client.UpdatePreparer(resourceGroupName, name, appServicePlan)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServicePlansClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client AppServicePlansClient) UpdatePreparer(resourceGroupName string, name string, appServicePlan AppServicePlanPatchResource) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}", pathParameters),
+		autorest.WithJSON(appServicePlan),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppServicePlansClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client AppServicePlansClient) UpdateResponder(resp *http.Response) (result AppServicePlan, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -2411,7 +2760,9 @@ func (client AppServicePlansClient) UpdateVnetGatewayPreparer(resourceGroupName 
 // UpdateVnetGatewaySender sends the UpdateVnetGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) UpdateVnetGatewaySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateVnetGatewayResponder handles the response to the UpdateVnetGateway request. The method always
@@ -2490,7 +2841,9 @@ func (client AppServicePlansClient) UpdateVnetRoutePreparer(resourceGroupName st
 // UpdateVnetRouteSender sends the UpdateVnetRoute request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServicePlansClient) UpdateVnetRouteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateVnetRouteResponder handles the response to the UpdateVnetRoute request. The method always

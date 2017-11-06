@@ -24,93 +24,90 @@ import (
 	"net/http"
 )
 
-// JobsClient is the the Microsoft Azure Storage Import/Export Resource Provider API.
+// JobsClient is the the Storage Import/Export Resource Provider API.
 type JobsClient struct {
 	ManagementClient
 }
 
 // NewJobsClient creates an instance of the JobsClient client.
-func NewJobsClient(subscriptionID string) JobsClient {
-	return NewJobsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewJobsClient(subscriptionID string, acceptLanguage string) JobsClient {
+	return NewJobsClientWithBaseURI(DefaultBaseURI, subscriptionID, acceptLanguage)
 }
 
 // NewJobsClientWithBaseURI creates an instance of the JobsClient client.
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
-	return JobsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) JobsClient {
+	return JobsClient{NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)}
 }
 
-// CreateOrUpdate creates a new import/export job or updates an existing import/export job in the specified
-// subscription.
+// Create creates a new job or updates an existing job in the specified subscription.
 //
-// resourceGroupName is the resource group name uniquely identifies the resource group within the user subscription.
-// jobName is the name of the import/export job. jobProperties is properties of the import/export job that need to be
-// specified during creation.
-func (client JobsClient) CreateOrUpdate(resourceGroupName string, jobName string, jobProperties Job) (result Job, err error) {
+// jobName is the name of the import/export job. resourceGroupName is the resource group name uniquely identifies the
+// resource group within the user subscription. body is the parameters used for creating the job clientTenantID is the
+// tenant ID of the client making the request.
+func (client JobsClient) Create(jobName string, resourceGroupName string, body PutJobParameters, clientTenantID string) (result JobResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: jobProperties,
-			Constraints: []validation.Constraint{{Target: "jobProperties.JobProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "jobProperties.JobProperties.StorageAccountID", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "jobProperties.JobProperties.ReturnAddress", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "jobProperties.JobProperties.ReturnAddress.RecipientName", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.ReturnAddress.StreetAddress1", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.ReturnAddress.City", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.ReturnAddress.PostalCode", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.ReturnAddress.CountryOrRegion", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.ReturnAddress.Phone", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.ReturnAddress.Email", Name: validation.Null, Rule: true, Chain: nil},
+		{TargetValue: body,
+			Constraints: []validation.Constraint{{Target: "body.Properties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "body.Properties.ReturnAddress", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "body.Properties.ReturnAddress.RecipientName", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "body.Properties.ReturnAddress.StreetAddress1", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "body.Properties.ReturnAddress.City", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "body.Properties.ReturnAddress.PostalCode", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "body.Properties.ReturnAddress.CountryOrRegion", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "body.Properties.ReturnAddress.Phone", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "body.Properties.ReturnAddress.Email", Name: validation.Null, Rule: true, Chain: nil},
+					}},
+					{Target: "body.Properties.ReturnShipping", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "body.Properties.ReturnShipping.CarrierName", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Properties.ReturnShipping.CarrierAccountNumber", Name: validation.Null, Rule: true, Chain: nil},
 						}},
-					{Target: "jobProperties.JobProperties.ReturnShipping", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "jobProperties.JobProperties.ReturnShipping.CarrierName", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.ReturnShipping.CarrierAccountNumber", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "body.Properties.ShippingInformation", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "body.Properties.ShippingInformation.RecipientName", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Properties.ShippingInformation.StreetAddress1", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Properties.ShippingInformation.City", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Properties.ShippingInformation.StateOrProvince", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Properties.ShippingInformation.PostalCode", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Properties.ShippingInformation.CountryOrRegion", Name: validation.Null, Rule: true, Chain: nil},
 						}},
-					{Target: "jobProperties.JobProperties.ShippingInformation", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "jobProperties.JobProperties.ShippingInformation.Name", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.ShippingInformation.Address", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "body.Properties.DeliveryPackage", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "body.Properties.DeliveryPackage.CarrierName", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Properties.DeliveryPackage.TrackingNumber", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Properties.DeliveryPackage.DriveCount", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Properties.DeliveryPackage.ShipDate", Name: validation.Null, Rule: true, Chain: nil},
 						}},
-					{Target: "jobProperties.JobProperties.DeliveryPackage", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "jobProperties.JobProperties.DeliveryPackage.CarrierName", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.DeliveryPackage.TrackingNumber", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.DeliveryPackage.DriveCount", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.DeliveryPackage.ShipDate", Name: validation.Null, Rule: true, Chain: nil},
-						}},
-					{Target: "jobProperties.JobProperties.ReturnPackage", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "jobProperties.JobProperties.ReturnPackage.CarrierName", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.ReturnPackage.TrackingNumber", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.ReturnPackage.DriveCount", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "jobProperties.JobProperties.ReturnPackage.ShipDate", Name: validation.Null, Rule: true, Chain: nil},
-						}},
-					{Target: "jobProperties.JobProperties.DiagnosticsPath", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "jobProperties.JobProperties.DriveList", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "jobProperties.JobProperties.DriveList", Name: validation.MaxItems, Rule: 10, Chain: nil},
-							{Target: "jobProperties.JobProperties.DriveList", Name: validation.MinItems, Rule: 0, Chain: nil},
+					{Target: "body.Properties.ReturnPackage", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "body.Properties.ReturnPackage.CarrierName", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Properties.ReturnPackage.TrackingNumber", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Properties.ReturnPackage.DriveCount", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "body.Properties.ReturnPackage.ShipDate", Name: validation.Null, Rule: true, Chain: nil},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storageimportexport.JobsClient", "CreateOrUpdate")
+		return result, validation.NewErrorWithValidationError(err, "storageimportexport.JobsClient", "Create")
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, jobName, jobProperties)
+	req, err := client.CreatePreparer(jobName, resourceGroupName, body, clientTenantID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateOrUpdateSender(req)
+	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Create", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateOrUpdateResponder(resp)
+	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client JobsClient) CreateOrUpdatePreparer(resourceGroupName string, jobName string, jobProperties Job) (*http.Request, error) {
+// CreatePreparer prepares the Create request.
+func (client JobsClient) CreatePreparer(jobName string, resourceGroupName string, body PutJobParameters, clientTenantID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobName":           autorest.Encode("path", jobName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -127,21 +124,30 @@ func (client JobsClient) CreateOrUpdatePreparer(resourceGroupName string, jobNam
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}", pathParameters),
-		autorest.WithJSON(jobProperties),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
+		autorest.WithJSON(body),
+		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
+	if len(clientTenantID) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-tenant-id", autorest.String(clientTenantID)))
+	}
 	return preparer.Prepare(&http.Request{})
 }
 
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client JobsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+func (client JobsClient) CreateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client JobsClient) CreateOrUpdateResponder(resp *http.Response) (result Job, err error) {
+func (client JobsClient) CreateResponder(resp *http.Response) (result JobResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -152,13 +158,12 @@ func (client JobsClient) CreateOrUpdateResponder(resp *http.Response) (result Jo
 	return
 }
 
-// Delete deletes an existing import/export job. Only import/export jobs in the Creating or Completed states can be
-// deleted.
+// Delete deletes an existing job. Only jobs in the Creating or Completed states can be deleted.
 //
-// resourceGroupName is the resource group name uniquely identifies the resource group within the user subscription.
-// jobName is the name of the import/export job.
-func (client JobsClient) Delete(resourceGroupName string, jobName string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(resourceGroupName, jobName)
+// jobName is the name of the import/export job. resourceGroupName is the resource group name uniquely identifies the
+// resource group within the user subscription.
+func (client JobsClient) Delete(jobName string, resourceGroupName string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(jobName, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -180,7 +185,7 @@ func (client JobsClient) Delete(resourceGroupName string, jobName string) (resul
 }
 
 // DeletePreparer prepares the Delete request.
-func (client JobsClient) DeletePreparer(resourceGroupName string, jobName string) (*http.Request, error) {
+func (client JobsClient) DeletePreparer(jobName string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobName":           autorest.Encode("path", jobName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -196,15 +201,20 @@ func (client JobsClient) DeletePreparer(resourceGroupName string, jobName string
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
+		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
 	return preparer.Prepare(&http.Request{})
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -219,12 +229,12 @@ func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.R
 	return
 }
 
-// Get gets information about an existing import/export job.
+// Get gets information about an existing job.
 //
-// resourceGroupName is the resource group name uniquely identifies the resource group within the user subscription.
-// jobName is the name of the import/export job.
-func (client JobsClient) Get(resourceGroupName string, jobName string) (result Job, err error) {
-	req, err := client.GetPreparer(resourceGroupName, jobName)
+// jobName is the name of the import/export job. resourceGroupName is the resource group name uniquely identifies the
+// resource group within the user subscription.
+func (client JobsClient) Get(jobName string, resourceGroupName string) (result JobResponse, err error) {
+	req, err := client.GetPreparer(jobName, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Get", nil, "Failure preparing request")
 		return
@@ -246,7 +256,7 @@ func (client JobsClient) Get(resourceGroupName string, jobName string) (result J
 }
 
 // GetPreparer prepares the Get request.
-func (client JobsClient) GetPreparer(resourceGroupName string, jobName string) (*http.Request, error) {
+func (client JobsClient) GetPreparer(jobName string, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobName":           autorest.Encode("path", jobName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -262,20 +272,25 @@ func (client JobsClient) GetPreparer(resourceGroupName string, jobName string) (
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
+		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
 	return preparer.Prepare(&http.Request{})
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client JobsClient) GetResponder(resp *http.Response) (result Job, err error) {
+func (client JobsClient) GetResponder(resp *http.Response) (result JobResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -286,245 +301,12 @@ func (client JobsClient) GetResponder(resp *http.Response) (result Job, err erro
 	return
 }
 
-// List gets all the active and completed import/export jobs in a subscription.
-//
-// top is an integer value that specifies how many jobs at most should be returned. The value cannot exceed 100. filter
-// is can be used to restrict the results to certain conditions. The following possible values can be used with
-// $filter: 1) $filter=type eq '{type}'; 2) $filter=trackingnumber eq '{trackingnumber}'; 3) $filter=state eq
-// '{state}'; 4) Logical and combination of the above, for example: $filter=type eq 'Import' and state eq
-// 'Transferring'. Valid values for type are Import and Export. Valid values for state are Creating, Shipping,
-// Received, Transferring, Packaging, Closed, and Completed.
-func (client JobsClient) List(top *int32, filter string) (result JobListResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: top,
-			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 100, Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storageimportexport.JobsClient", "List")
-	}
-
-	req, err := client.ListPreparer(top, filter)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListPreparer prepares the List request.
-func (client JobsClient) ListPreparer(top *int32, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2016-11-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.ImportExport/jobs", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
-	return preparer.Prepare(&http.Request{})
-}
-
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client JobsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client JobsClient) ListResponder(resp *http.Response) (result JobListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListNextResults retrieves the next set of results, if any.
-func (client JobsClient) ListNextResults(lastResults JobListResult) (result JobListResult, err error) {
-	req, err := lastResults.JobListResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", resp, "Failure sending next results request")
-	}
-
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "List", resp, "Failure responding to next results request")
-	}
-
-	return
-}
-
-// ListComplete gets all elements from the list without paging.
-func (client JobsClient) ListComplete(top *int32, filter string, cancel <-chan struct{}) (<-chan Job, <-chan error) {
-	resultChan := make(chan Job)
-	errChan := make(chan error, 1)
-	go func() {
-		defer func() {
-			close(resultChan)
-			close(errChan)
-		}()
-		list, err := client.List(top, filter)
-		if err != nil {
-			errChan <- err
-			return
-		}
-		if list.Value != nil {
-			for _, item := range *list.Value {
-				select {
-				case <-cancel:
-					return
-				case resultChan <- item:
-					// Intentionally left blank
-				}
-			}
-		}
-		for list.NextLink != nil {
-			list, err = client.ListNextResults(list)
-			if err != nil {
-				errChan <- err
-				return
-			}
-			if list.Value != nil {
-				for _, item := range *list.Value {
-					select {
-					case <-cancel:
-						return
-					case resultChan <- item:
-						// Intentionally left blank
-					}
-				}
-			}
-		}
-	}()
-	return resultChan, errChan
-}
-
-// ListBitLockerKeys lists the BitLocker keys for all drives in the specified import/export job.
-//
-// resourceGroupName is the resource group name uniquely identifies the resource group within the user subscription.
-// jobName is the name of the import/export job.
-func (client JobsClient) ListBitLockerKeys(resourceGroupName string, jobName string) (result BitLockerKeysListResult, err error) {
-	req, err := client.ListBitLockerKeysPreparer(resourceGroupName, jobName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBitLockerKeys", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListBitLockerKeysSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBitLockerKeys", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListBitLockerKeysResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBitLockerKeys", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListBitLockerKeysPreparer prepares the ListBitLockerKeys request.
-func (client JobsClient) ListBitLockerKeysPreparer(resourceGroupName string, jobName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"jobName":           autorest.Encode("path", jobName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2016-11-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}/listBitLockerKeys", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
-	return preparer.Prepare(&http.Request{})
-}
-
-// ListBitLockerKeysSender sends the ListBitLockerKeys request. The method will close the
-// http.Response Body if it receives an error.
-func (client JobsClient) ListBitLockerKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
-}
-
-// ListBitLockerKeysResponder handles the response to the ListBitLockerKeys request. The method always
-// closes the http.Response Body.
-func (client JobsClient) ListBitLockerKeysResponder(resp *http.Response) (result BitLockerKeysListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListByResourceGroup returns all active and completed import/export jobs in a resource group.
+// ListByResourceGroup returns all active and completed jobs in a resource group.
 //
 // resourceGroupName is the resource group name uniquely identifies the resource group within the user subscription.
 // top is an integer value that specifies how many jobs at most should be returned. The value cannot exceed 100. filter
-// is can be used to restrict the results to certain conditions. The following possible values can be used with
-// $filter: 1) $filter=type eq '{type}'; 2) $filter=trackingnumber eq '{trackingnumber}'; 3) $filter=state eq
-// '{state}'; 4) Logical and combination of the above, for example: $filter=type eq 'Import' and state eq
-// 'Transferring'. Valid values for type are Import and Export. Valid values for state are Creating, Shipping,
-// Received, Transferring, Packaging, Closed, and Completed.
-func (client JobsClient) ListByResourceGroup(resourceGroupName string, top *int32, filter string) (result JobListResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: top,
-			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 100, Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storageimportexport.JobsClient", "ListByResourceGroup")
-	}
-
+// is can be used to restrict the results to certain conditions.
+func (client JobsClient) ListByResourceGroup(resourceGroupName string, top *int32, filter string) (result ListJobsResponse, err error) {
 	req, err := client.ListByResourceGroupPreparer(resourceGroupName, top, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -568,20 +350,25 @@ func (client JobsClient) ListByResourceGroupPreparer(resourceGroupName string, t
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
+		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
 	return preparer.Prepare(&http.Request{})
 }
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client JobsClient) ListByResourceGroupResponder(resp *http.Response) (result JobListResult, err error) {
+func (client JobsClient) ListByResourceGroupResponder(resp *http.Response) (result ListJobsResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -593,8 +380,8 @@ func (client JobsClient) ListByResourceGroupResponder(resp *http.Response) (resu
 }
 
 // ListByResourceGroupNextResults retrieves the next set of results, if any.
-func (client JobsClient) ListByResourceGroupNextResults(lastResults JobListResult) (result JobListResult, err error) {
-	req, err := lastResults.JobListResultPreparer()
+func (client JobsClient) ListByResourceGroupNextResults(lastResults ListJobsResponse) (result ListJobsResponse, err error) {
+	req, err := lastResults.ListJobsResponsePreparer()
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListByResourceGroup", nil, "Failure preparing next results request")
 	}
@@ -617,8 +404,8 @@ func (client JobsClient) ListByResourceGroupNextResults(lastResults JobListResul
 }
 
 // ListByResourceGroupComplete gets all elements from the list without paging.
-func (client JobsClient) ListByResourceGroupComplete(resourceGroupName string, top *int32, filter string, cancel <-chan struct{}) (<-chan Job, <-chan error) {
-	resultChan := make(chan Job)
+func (client JobsClient) ListByResourceGroupComplete(resourceGroupName string, top *int32, filter string, cancel <-chan struct{}) (<-chan JobResponse, <-chan error) {
+	resultChan := make(chan JobResponse)
 	errChan := make(chan error, 1)
 	go func() {
 		defer func() {
@@ -661,89 +448,159 @@ func (client JobsClient) ListByResourceGroupComplete(resourceGroupName string, t
 	return resultChan, errChan
 }
 
-// Move moves the specified import/export jobs from the resource group to a target resource group. The target resource
-// group may be in a different subscription.
+// ListBySubscription returns all active and completed jobs in a subscription.
 //
-// resourceGroupName is the resource group name uniquely identifies the resource group within the user subscription.
-// moveJobsParameters is parameters to be provided to move a job from one resource group to another.
-func (client JobsClient) Move(resourceGroupName string, moveJobsParameters MoveJobParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: moveJobsParameters,
-			Constraints: []validation.Constraint{{Target: "moveJobsParameters.TargetResourceGroup", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "moveJobsParameters.Resources", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "storageimportexport.JobsClient", "Move")
-	}
-
-	req, err := client.MovePreparer(resourceGroupName, moveJobsParameters)
+// top is an integer value that specifies how many jobs at most should be returned. The value cannot exceed 100. filter
+// is can be used to restrict the results to certain conditions.
+func (client JobsClient) ListBySubscription(top *int32, filter string) (result ListJobsResponse, err error) {
+	req, err := client.ListBySubscriptionPreparer(top, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Move", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBySubscription", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.MoveSender(req)
+	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Move", resp, "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBySubscription", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.MoveResponder(resp)
+	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Move", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBySubscription", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// MovePreparer prepares the Move request.
-func (client JobsClient) MovePreparer(resourceGroupName string, moveJobsParameters MoveJobParameters) (*http.Request, error) {
+// ListBySubscriptionPreparer prepares the ListBySubscription request.
+func (client JobsClient) ListBySubscriptionPreparer(top *int32, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2016-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/moveResources", pathParameters),
-		autorest.WithJSON(moveJobsParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.ImportExport/jobs", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
 	return preparer.Prepare(&http.Request{})
 }
 
-// MoveSender sends the Move request. The method will close the
+// ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
-func (client JobsClient) MoveSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+func (client JobsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
-// MoveResponder handles the response to the Move request. The method always
+// ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
 // closes the http.Response Body.
-func (client JobsClient) MoveResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client JobsClient) ListBySubscriptionResponder(resp *http.Response) (result ListJobsResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// Update updates specific properties of the import/export job. You can call this operation to notify the Import/Export
-// service that the hard drives comprising the import or export job have been shipped to the Microsoft data center. It
-// can also be used to cancel an existing job.
+// ListBySubscriptionNextResults retrieves the next set of results, if any.
+func (client JobsClient) ListBySubscriptionNextResults(lastResults ListJobsResponse) (result ListJobsResponse, err error) {
+	req, err := lastResults.ListJobsResponsePreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBySubscription", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListBySubscriptionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBySubscription", resp, "Failure sending next results request")
+	}
+
+	result, err = client.ListBySubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBySubscription", resp, "Failure responding to next results request")
+	}
+
+	return
+}
+
+// ListBySubscriptionComplete gets all elements from the list without paging.
+func (client JobsClient) ListBySubscriptionComplete(top *int32, filter string, cancel <-chan struct{}) (<-chan JobResponse, <-chan error) {
+	resultChan := make(chan JobResponse)
+	errChan := make(chan error, 1)
+	go func() {
+		defer func() {
+			close(resultChan)
+			close(errChan)
+		}()
+		list, err := client.ListBySubscription(top, filter)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		if list.Value != nil {
+			for _, item := range *list.Value {
+				select {
+				case <-cancel:
+					return
+				case resultChan <- item:
+					// Intentionally left blank
+				}
+			}
+		}
+		for list.NextLink != nil {
+			list, err = client.ListBySubscriptionNextResults(list)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			if list.Value != nil {
+				for _, item := range *list.Value {
+					select {
+					case <-cancel:
+						return
+					case resultChan <- item:
+						// Intentionally left blank
+					}
+				}
+			}
+		}
+	}()
+	return resultChan, errChan
+}
+
+// Update updates specific properties of a job. You can call this operation to notify the Import/Export service that
+// the hard drives comprising the import or export job have been shipped to the Microsoft data center. It can also be
+// used to cancel an existing job.
 //
-// resourceGroupName is the resource group name uniquely identifies the resource group within the user subscription.
-// jobName is the name of the import/export job. jobProperties is import/export job properties that need to be updated.
-func (client JobsClient) Update(resourceGroupName string, jobName string, jobProperties MutableJob) (result Job, err error) {
-	req, err := client.UpdatePreparer(resourceGroupName, jobName, jobProperties)
+// jobName is the name of the import/export job. resourceGroupName is the resource group name uniquely identifies the
+// resource group within the user subscription. body is the parameters to update in the job
+func (client JobsClient) Update(jobName string, resourceGroupName string, body UpdateJobParameters) (result JobResponse, err error) {
+	req, err := client.UpdatePreparer(jobName, resourceGroupName, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "Update", nil, "Failure preparing request")
 		return
@@ -765,7 +622,7 @@ func (client JobsClient) Update(resourceGroupName string, jobName string, jobPro
 }
 
 // UpdatePreparer prepares the Update request.
-func (client JobsClient) UpdatePreparer(resourceGroupName string, jobName string, jobProperties MutableJob) (*http.Request, error) {
+func (client JobsClient) UpdatePreparer(jobName string, resourceGroupName string, body UpdateJobParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jobName":           autorest.Encode("path", jobName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -782,21 +639,26 @@ func (client JobsClient) UpdatePreparer(resourceGroupName string, jobName string
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ImportExport/jobs/{jobName}", pathParameters),
-		autorest.WithJSON(jobProperties),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Accept-Language", client.AcceptLanguage))
+		autorest.WithJSON(body),
+		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
 	return preparer.Prepare(&http.Request{})
 }
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client JobsClient) UpdateResponder(resp *http.Response) (result Job, err error) {
+func (client JobsClient) UpdateResponder(resp *http.Response) (result JobResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -102,7 +102,9 @@ func (client PipelineRunsClient) GetPreparer(resourceGroupName string, factoryNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PipelineRunsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -185,7 +187,9 @@ func (client PipelineRunsClient) QueryByFactoryPreparer(resourceGroupName string
 // QueryByFactorySender sends the QueryByFactory request. The method will close the
 // http.Response Body if it receives an error.
 func (client PipelineRunsClient) QueryByFactorySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // QueryByFactoryResponder handles the response to the QueryByFactory request. The method always

@@ -86,7 +86,9 @@ func (client ClusterPackagesClient) RegisterPreparer(registerClusterPackage Regi
 // RegisterSender sends the Register request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClusterPackagesClient) RegisterSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RegisterResponder handles the response to the Register request. The method always
@@ -150,7 +152,9 @@ func (client ClusterPackagesClient) UnregisterPreparer(unregisterClusterPackage 
 // UnregisterSender sends the Unregister request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClusterPackagesClient) UnregisterSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UnregisterResponder handles the response to the Unregister request. The method always

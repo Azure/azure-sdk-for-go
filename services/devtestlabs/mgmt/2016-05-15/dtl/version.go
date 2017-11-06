@@ -19,10 +19,10 @@ package dtl
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v11.2.0-beta arm-dtl/2016-05-15"
+	return "Azure-SDK-For-Go/0.0.0 arm-dtl/2016-05-15"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.
 func Version() string {
-	return "v11.2.0-beta"
+	return "0.0.0"
 }

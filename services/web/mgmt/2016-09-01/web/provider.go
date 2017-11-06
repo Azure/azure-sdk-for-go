@@ -79,7 +79,9 @@ func (client ProviderClient) GetAvailableStacksPreparer() (*http.Request, error)
 // GetAvailableStacksSender sends the GetAvailableStacks request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) GetAvailableStacksSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAvailableStacksResponder handles the response to the GetAvailableStacks request. The method always
@@ -140,7 +142,9 @@ func (client ProviderClient) GetAvailableStacksOnPremPreparer() (*http.Request, 
 // GetAvailableStacksOnPremSender sends the GetAvailableStacksOnPrem request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) GetAvailableStacksOnPremSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAvailableStacksOnPremResponder handles the response to the GetAvailableStacksOnPrem request. The method always
@@ -156,7 +160,8 @@ func (client ProviderClient) GetAvailableStacksOnPremResponder(resp *http.Respon
 	return
 }
 
-// ListOperations sends the list operations request.
+// ListOperations gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric
+// definitions
 func (client ProviderClient) ListOperations() (result CsmOperationCollection, err error) {
 	req, err := client.ListOperationsPreparer()
 	if err != nil {
@@ -197,7 +202,9 @@ func (client ProviderClient) ListOperationsPreparer() (*http.Request, error) {
 // ListOperationsSender sends the ListOperations request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) ListOperationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListOperationsResponder handles the response to the ListOperations request. The method always

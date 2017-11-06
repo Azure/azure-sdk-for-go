@@ -20,7 +20,6 @@ package network
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -49,18 +48,6 @@ func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) Se
 func (client SecurityRulesClient) CreateOrUpdate(resourceGroupName string, networkSecurityGroupName string, securityRuleName string, securityRuleParameters SecurityRule, cancel <-chan struct{}) (<-chan SecurityRule, <-chan error) {
 	resultChan := make(chan SecurityRule, 1)
 	errChan := make(chan error, 1)
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: securityRuleParameters,
-			Constraints: []validation.Constraint{{Target: "securityRuleParameters.SecurityRulePropertiesFormat", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "securityRuleParameters.SecurityRulePropertiesFormat.SourceAddressPrefix", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "securityRuleParameters.SecurityRulePropertiesFormat.DestinationAddressPrefix", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "network.SecurityRulesClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
-	}
-
 	go func() {
 		var err error
 		var result SecurityRule
@@ -122,6 +109,7 @@ func (client SecurityRulesClient) CreateOrUpdatePreparer(resourceGroupName strin
 func (client SecurityRulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -205,6 +193,7 @@ func (client SecurityRulesClient) DeletePreparer(resourceGroupName string, netwo
 func (client SecurityRulesClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -271,7 +260,9 @@ func (client SecurityRulesClient) GetPreparer(resourceGroupName string, networkS
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SecurityRulesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -337,7 +328,9 @@ func (client SecurityRulesClient) ListPreparer(resourceGroupName string, network
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client SecurityRulesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

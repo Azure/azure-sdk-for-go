@@ -21,7 +21,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
-	uuid "github.com/satori/go.uuid"
+	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -87,7 +87,9 @@ func (client GroupClient) BuildPreparer(accountName string, parameters BuildJobP
 // BuildSender sends the Build request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) BuildSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // BuildResponder handles the response to the Build request. The method always
@@ -156,7 +158,9 @@ func (client GroupClient) CancelPreparer(accountName string, jobIdentity uuid.UU
 // CancelSender sends the Cancel request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) CancelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CancelResponder handles the response to the Cancel request. The method always
@@ -239,7 +243,9 @@ func (client GroupClient) CreatePreparer(accountName string, jobIdentity uuid.UU
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -307,7 +313,9 @@ func (client GroupClient) GetPreparer(accountName string, jobIdentity uuid.UUID)
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -376,7 +384,9 @@ func (client GroupClient) GetDebugDataPathPreparer(accountName string, jobIdenti
 // GetDebugDataPathSender sends the GetDebugDataPath request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetDebugDataPathSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDebugDataPathResponder handles the response to the GetDebugDataPath request. The method always
@@ -445,7 +455,9 @@ func (client GroupClient) GetStatisticsPreparer(accountName string, jobIdentity 
 // GetStatisticsSender sends the GetStatistics request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetStatisticsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetStatisticsResponder handles the response to the GetStatistics request. The method always
@@ -544,7 +556,9 @@ func (client GroupClient) ListPreparer(accountName string, filter string, top *i
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

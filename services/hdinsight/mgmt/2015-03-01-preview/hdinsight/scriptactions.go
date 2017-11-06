@@ -89,7 +89,9 @@ func (client ScriptActionsClient) DeletePreparer(resourceGroupName string, clust
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScriptActionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -155,7 +157,9 @@ func (client ScriptActionsClient) GetExecutionDetailPreparer(resourceGroupName s
 // GetExecutionDetailSender sends the GetExecutionDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScriptActionsClient) GetExecutionDetailSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetExecutionDetailResponder handles the response to the GetExecutionDetail request. The method always
@@ -220,7 +224,9 @@ func (client ScriptActionsClient) ListPersistedScriptsPreparer(resourceGroupName
 // ListPersistedScriptsSender sends the ListPersistedScripts request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScriptActionsClient) ListPersistedScriptsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListPersistedScriptsResponder handles the response to the ListPersistedScripts request. The method always

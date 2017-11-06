@@ -3578,6 +3578,7 @@ type VirtualNetworkPeeringPropertiesFormat struct {
 	AllowGatewayTransit       *bool                      `json:"allowGatewayTransit,omitempty"`
 	UseRemoteGateways         *bool                      `json:"useRemoteGateways,omitempty"`
 	RemoteVirtualNetwork      *SubResource               `json:"remoteVirtualNetwork,omitempty"`
+	RemoteAddressSpace        *AddressSpace              `json:"remoteAddressSpace,omitempty"`
 	PeeringState              VirtualNetworkPeeringState `json:"peeringState,omitempty"`
 	ProvisioningState         *string                    `json:"provisioningState,omitempty"`
 }

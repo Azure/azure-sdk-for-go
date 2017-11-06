@@ -94,7 +94,9 @@ func (client IotHubResourceClient) CheckNameAvailabilityPreparer(operationInputs
 // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
@@ -163,7 +165,9 @@ func (client IotHubResourceClient) CreateEventHubConsumerGroupPreparer(resourceG
 // CreateEventHubConsumerGroupSender sends the CreateEventHubConsumerGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) CreateEventHubConsumerGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateEventHubConsumerGroupResponder handles the response to the CreateEventHubConsumerGroup request. The method always
@@ -285,6 +289,7 @@ func (client IotHubResourceClient) CreateOrUpdatePreparer(resourceGroupName stri
 func (client IotHubResourceClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -367,6 +372,7 @@ func (client IotHubResourceClient) DeletePreparer(resourceGroupName string, reso
 func (client IotHubResourceClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -436,7 +442,9 @@ func (client IotHubResourceClient) DeleteEventHubConsumerGroupPreparer(resourceG
 // DeleteEventHubConsumerGroupSender sends the DeleteEventHubConsumerGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) DeleteEventHubConsumerGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteEventHubConsumerGroupResponder handles the response to the DeleteEventHubConsumerGroup request. The method always
@@ -512,7 +520,9 @@ func (client IotHubResourceClient) ExportDevicesPreparer(resourceGroupName strin
 // ExportDevicesSender sends the ExportDevices request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) ExportDevicesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ExportDevicesResponder handles the response to the ExportDevices request. The method always
@@ -578,7 +588,9 @@ func (client IotHubResourceClient) GetPreparer(resourceGroupName string, resourc
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -647,7 +659,9 @@ func (client IotHubResourceClient) GetEventHubConsumerGroupPreparer(resourceGrou
 // GetEventHubConsumerGroupSender sends the GetEventHubConsumerGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) GetEventHubConsumerGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEventHubConsumerGroupResponder handles the response to the GetEventHubConsumerGroup request. The method always
@@ -715,7 +729,9 @@ func (client IotHubResourceClient) GetJobPreparer(resourceGroupName string, reso
 // GetJobSender sends the GetJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) GetJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetJobResponder handles the response to the GetJob request. The method always
@@ -783,7 +799,9 @@ func (client IotHubResourceClient) GetKeysForKeyNamePreparer(resourceGroupName s
 // GetKeysForKeyNameSender sends the GetKeysForKeyName request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) GetKeysForKeyNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetKeysForKeyNameResponder handles the response to the GetKeysForKeyName request. The method always
@@ -849,7 +867,9 @@ func (client IotHubResourceClient) GetQuotaMetricsPreparer(resourceGroupName str
 // GetQuotaMetricsSender sends the GetQuotaMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) GetQuotaMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetQuotaMetricsResponder handles the response to the GetQuotaMetrics request. The method always
@@ -984,7 +1004,9 @@ func (client IotHubResourceClient) GetStatsPreparer(resourceGroupName string, re
 // GetStatsSender sends the GetStats request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) GetStatsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetStatsResponder handles the response to the GetStats request. The method always
@@ -1050,7 +1072,9 @@ func (client IotHubResourceClient) GetValidSkusPreparer(resourceGroupName string
 // GetValidSkusSender sends the GetValidSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) GetValidSkusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetValidSkusResponder handles the response to the GetValidSkus request. The method always
@@ -1196,7 +1220,9 @@ func (client IotHubResourceClient) ImportDevicesPreparer(resourceGroupName strin
 // ImportDevicesSender sends the ImportDevices request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) ImportDevicesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ImportDevicesResponder handles the response to the ImportDevices request. The method always
@@ -1260,7 +1286,9 @@ func (client IotHubResourceClient) ListByResourceGroupPreparer(resourceGroupName
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -1390,7 +1418,9 @@ func (client IotHubResourceClient) ListBySubscriptionPreparer() (*http.Request, 
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
@@ -1527,7 +1557,9 @@ func (client IotHubResourceClient) ListEventHubConsumerGroupsPreparer(resourceGr
 // ListEventHubConsumerGroupsSender sends the ListEventHubConsumerGroups request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) ListEventHubConsumerGroupsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListEventHubConsumerGroupsResponder handles the response to the ListEventHubConsumerGroups request. The method always
@@ -1663,7 +1695,9 @@ func (client IotHubResourceClient) ListJobsPreparer(resourceGroupName string, re
 // ListJobsSender sends the ListJobs request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) ListJobsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListJobsResponder handles the response to the ListJobs request. The method always
@@ -1799,7 +1833,9 @@ func (client IotHubResourceClient) ListKeysPreparer(resourceGroupName string, re
 // ListKeysSender sends the ListKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) ListKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListKeysResponder handles the response to the ListKeys request. The method always

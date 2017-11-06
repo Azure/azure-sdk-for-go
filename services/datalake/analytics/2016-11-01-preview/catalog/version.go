@@ -19,10 +19,10 @@ package catalog
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v11.2.0-beta arm-catalog/2016-11-01"
+	return "Azure-SDK-For-Go/0.0.0 arm-catalog/2016-11-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.
 func Version() string {
-	return "v11.2.0-beta"
+	return "0.0.0"
 }

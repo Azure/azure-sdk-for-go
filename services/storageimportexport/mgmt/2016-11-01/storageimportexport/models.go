@@ -43,100 +43,47 @@ const (
 	Transferring DriveState = "Transferring"
 )
 
-// JobState enumerates the values for job state.
-type JobState string
-
-const (
-	// JobStateClosed specifies the job state closed state for job state.
-	JobStateClosed JobState = "Closed"
-	// JobStateCompleted specifies the job state completed state for job state.
-	JobStateCompleted JobState = "Completed"
-	// JobStateCreating specifies the job state creating state for job state.
-	JobStateCreating JobState = "Creating"
-	// JobStatePackaging specifies the job state packaging state for job state.
-	JobStatePackaging JobState = "Packaging"
-	// JobStateReceived specifies the job state received state for job state.
-	JobStateReceived JobState = "Received"
-	// JobStateShipping specifies the job state shipping state for job state.
-	JobStateShipping JobState = "Shipping"
-	// JobStateTransferring specifies the job state transferring state for job state.
-	JobStateTransferring JobState = "Transferring"
-)
-
-// JobType enumerates the values for job type.
-type JobType string
-
-const (
-	// JobTypeExport specifies the job type export state for job type.
-	JobTypeExport JobType = "Export"
-	// JobTypeImport specifies the job type import state for job type.
-	JobTypeImport JobType = "Import"
-)
-
-// LogLevel enumerates the values for log level.
-type LogLevel string
-
-const (
-	// Error specifies the error state for log level.
-	Error LogLevel = "Error"
-	// Verbose specifies the verbose state for log level.
-	Verbose LogLevel = "Verbose"
-)
-
-// MutableJobState enumerates the values for mutable job state.
-type MutableJobState string
-
-const (
-	// Shipping specifies the shipping state for mutable job state.
-	Shipping MutableJobState = "Shipping"
-)
-
-// BitLockerKeysListResult is list of BitLocker keys for the specified import/export job.
-type BitLockerKeysListResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]DriveStatus `json:"value,omitempty"`
-}
-
-// Drive is provides information about the drive that contains information about the import/export jobs.
-type Drive struct {
-	DriveID      *string `json:"driveId,omitempty"`
+// DriveBitLockerKey is bitLocker recovery key or password to the specified drive
+type DriveBitLockerKey struct {
 	BitLockerKey *string `json:"bitLockerKey,omitempty"`
-	ManifestFile *string `json:"manifestFile,omitempty"`
-	ManifestHash *string `json:"manifestHash,omitempty"`
+	DriveID      *string `json:"driveId,omitempty"`
 }
 
-// DriveStatus is provides information about the drive's status.
+// DriveStatus is provides information about the drive's status
 type DriveStatus struct {
 	DriveID         *string    `json:"driveId,omitempty"`
 	BitLockerKey    *string    `json:"bitLockerKey,omitempty"`
 	ManifestFile    *string    `json:"manifestFile,omitempty"`
 	ManifestHash    *string    `json:"manifestHash,omitempty"`
+	DriveHeaderHash *string    `json:"driveHeaderHash,omitempty"`
 	State           DriveState `json:"state,omitempty"`
 	CopyStatus      *string    `json:"copyStatus,omitempty"`
 	PercentComplete *int32     `json:"percentComplete,omitempty"`
 	VerboseLogURI   *string    `json:"verboseLogUri,omitempty"`
 	ErrorLogURI     *string    `json:"errorLogUri,omitempty"`
 	ManifestURI     *string    `json:"manifestUri,omitempty"`
+	BytesSucceeded  *int64     `json:"bytesSucceeded,omitempty"`
 }
 
-// ErrorBase is describes the common properties of the Error object
-type ErrorBase struct {
-	Code    *string `json:"code,omitempty"`
-	Message *string `json:"message,omitempty"`
-	Target  *string `json:"target,omitempty"`
-}
-
-// ErrorInfo is describes the error information.
-type ErrorInfo struct {
-	Code    *string      `json:"code,omitempty"`
-	Message *string      `json:"message,omitempty"`
-	Target  *string      `json:"target,omitempty"`
-	Details *[]ErrorBase `json:"details,omitempty"`
-}
-
-// ErrorResponse is describes the model for Error Response.
+// ErrorResponse is response when errors occurred
 type ErrorResponse struct {
-	Error *ErrorInfo `json:"error,omitempty"`
+	*ErrorResponseError `json:"error,omitempty"`
+}
+
+// ErrorResponseError is describes the error information.
+type ErrorResponseError struct {
+	Code       *string                          `json:"code,omitempty"`
+	Message    *string                          `json:"message,omitempty"`
+	Target     *string                          `json:"target,omitempty"`
+	Details    *[]ErrorResponseErrorDetailsItem `json:"details,omitempty"`
+	Innererror *map[string]interface{}          `json:"innererror,omitempty"`
+}
+
+// ErrorResponseErrorDetailsItem is
+type ErrorResponseErrorDetailsItem struct {
+	Code    *string `json:"code,omitempty"`
+	Target  *string `json:"target,omitempty"`
+	Message *string `json:"message,omitempty"`
 }
 
 // Export is a property containing information about the blobs to be exported for an export job. This property is
@@ -152,27 +99,54 @@ type ExportBlobList struct {
 	BlobPathPrefix *[]string `json:"blobPathPrefix,omitempty"`
 }
 
-// Job is describes an import/export job.
-type Job struct {
+// GetBitLockerKeysResponse is getBitLockerKeys response
+type GetBitLockerKeysResponse struct {
+	autorest.Response `json:"-"`
+	Value             *[]DriveBitLockerKey `json:"value,omitempty"`
+}
+
+// JobDetails is specifies the job properties
+type JobDetails struct {
+	StorageAccountID      *string              `json:"storageAccountId,omitempty"`
+	JobType               *string              `json:"jobType,omitempty"`
+	ReturnAddress         *ReturnAddress       `json:"returnAddress,omitempty"`
+	ReturnShipping        *ReturnShipping      `json:"returnShipping,omitempty"`
+	ShippingInformation   *ShippingInformation `json:"shippingInformation,omitempty"`
+	DeliveryPackage       *PackageInfomation   `json:"deliveryPackage,omitempty"`
+	ReturnPackage         *PackageInfomation   `json:"returnPackage,omitempty"`
+	DiagnosticsPath       *string              `json:"diagnosticsPath,omitempty"`
+	LogLevel              *string              `json:"logLevel,omitempty"`
+	BackupDriveManifest   *bool                `json:"backupDriveManifest,omitempty"`
+	State                 *string              `json:"state,omitempty"`
+	CancelRequested       *bool                `json:"cancelRequested,omitempty"`
+	PercentComplete       *int32               `json:"percentComplete,omitempty"`
+	IncompleteBlobListURI *string              `json:"incompleteBlobListUri,omitempty"`
+	DriveList             *[]DriveStatus       `json:"driveList,omitempty"`
+	Export                *Export              `json:"export,omitempty"`
+	ProvisioningState     *string              `json:"provisioningState,omitempty"`
+}
+
+// JobResponse is contains the job information.
+type JobResponse struct {
 	autorest.Response `json:"-"`
 	ID                *string                 `json:"id,omitempty"`
 	Name              *string                 `json:"name,omitempty"`
 	Type              *string                 `json:"type,omitempty"`
 	Location          *string                 `json:"location,omitempty"`
 	Tags              *map[string]interface{} `json:"tags,omitempty"`
-	*JobProperties    `json:"properties,omitempty"`
+	Properties        *JobDetails             `json:"properties,omitempty"`
 }
 
-// JobListResult is list of import/export jobs.
-type JobListResult struct {
+// ListJobsResponse is list jobs response
+type ListJobsResponse struct {
 	autorest.Response `json:"-"`
-	NextLink          *string `json:"nextLink,omitempty"`
-	Value             *[]Job  `json:"value,omitempty"`
+	NextLink          *string        `json:"nextLink,omitempty"`
+	Value             *[]JobResponse `json:"value,omitempty"`
 }
 
-// JobListResultPreparer prepares a request to retrieve the next set of results. It returns
+// ListJobsResponsePreparer prepares a request to retrieve the next set of results. It returns
 // nil if no more results exist.
-func (client JobListResult) JobListResultPreparer() (*http.Request, error) {
+func (client ListJobsResponse) ListJobsResponsePreparer() (*http.Request, error) {
 	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
 		return nil, nil
 	}
@@ -182,26 +156,10 @@ func (client JobListResult) JobListResultPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
-// JobProperties is import/export job specific properties.
-type JobProperties struct {
-	StorageAccountID      *string              `json:"storageAccountId,omitempty"`
-	ContainerSas          *string              `json:"containerSas,omitempty"`
-	JobType               JobType              `json:"jobType,omitempty"`
-	ReturnAddress         *ReturnAddress       `json:"returnAddress,omitempty"`
-	ReturnShipping        *ReturnShipping      `json:"returnShipping,omitempty"`
-	ShippingInformation   *ShippingInformation `json:"shippingInformation,omitempty"`
-	DeliveryPackage       *PackageInfomation   `json:"deliveryPackage,omitempty"`
-	ReturnPackage         *PackageInfomation   `json:"returnPackage,omitempty"`
-	DiagnosticsPath       *string              `json:"diagnosticsPath,omitempty"`
-	LogLevel              LogLevel             `json:"logLevel,omitempty"`
-	BackupDriveManifest   *bool                `json:"backupDriveManifest,omitempty"`
-	State                 JobState             `json:"state,omitempty"`
-	CancelRequested       *bool                `json:"cancelRequested,omitempty"`
-	PercentComplete       *int32               `json:"percentComplete,omitempty"`
-	IncompleteBlobListURI *string              `json:"incompleteBlobListUri,omitempty"`
-	DriveList             *[]DriveStatus       `json:"driveList,omitempty"`
-	Export                *Export              `json:"export,omitempty"`
-	ProvisioningState     *string              `json:"provisioningState,omitempty"`
+// ListOperationsResponse is list operations response
+type ListOperationsResponse struct {
+	autorest.Response `json:"-"`
+	Value             *[]Operation `json:"value,omitempty"`
 }
 
 // Location is provides information about an Azure data center location.
@@ -213,7 +171,7 @@ type Location struct {
 	*LocationProperties `json:"properties,omitempty"`
 }
 
-// LocationProperties is describes the properties of a location.
+// LocationProperties is location properties
 type LocationProperties struct {
 	RecipientName      *string   `json:"recipientName,omitempty"`
 	StreetAddress1     *string   `json:"streetAddress1,omitempty"`
@@ -227,51 +185,27 @@ type LocationProperties struct {
 	AlternateLocations *[]string `json:"alternateLocations,omitempty"`
 }
 
-// LocationsListResult is list of locations.
-type LocationsListResult struct {
+// LocationsResponse is locations response
+type LocationsResponse struct {
 	autorest.Response `json:"-"`
 	Value             *[]Location `json:"value,omitempty"`
 }
 
-// MoveJobParameters is defines the parameters that need to be provided for moving an import/export job from one
-// reesource group to another.
-type MoveJobParameters struct {
-	TargetResourceGroup *string   `json:"targetResourceGroup,omitempty"`
-	Resources           *[]string `json:"resources,omitempty"`
-}
-
-// MutableJob is describes the updatable properties of the job
-type MutableJob struct {
-	Tags                  *map[string]interface{} `json:"tags,omitempty"`
-	*MutableJobProperties `json:"properties,omitempty"`
-}
-
-// MutableJobProperties is properties of the job that can be updated.
-type MutableJobProperties struct {
-	CancelRequested     *bool              `json:"cancelRequested,omitempty"`
-	State               MutableJobState    `json:"state,omitempty"`
-	ReturnAddress       *ReturnAddress     `json:"returnAddress,omitempty"`
-	ReturnShipping      *ReturnShipping    `json:"returnShipping,omitempty"`
-	DeliveryPackage     *PackageInfomation `json:"deliveryPackage,omitempty"`
-	LogLevel            *string            `json:"logLevel,omitempty"`
-	BackupDriveManifest *bool              `json:"backupDriveManifest,omitempty"`
-}
-
 // Operation is describes a supported operation by the Storage Import/Export job API.
 type Operation struct {
-	Name                         *string `json:"name,omitempty"`
-	*OperationDisplayInformation `json:"display,omitempty"`
+	Name              *string `json:"name,omitempty"`
+	*OperationDisplay `json:"display,omitempty"`
 }
 
-// OperationDisplayInformation is display information about the operation.
-type OperationDisplayInformation struct {
+// OperationDisplay is operation display properties
+type OperationDisplay struct {
 	Provider    *string `json:"provider,omitempty"`
 	Resource    *string `json:"resource,omitempty"`
 	Operation   *string `json:"operation,omitempty"`
 	Description *string `json:"description,omitempty"`
 }
 
-// PackageInfomation is provides information about the package being shipped by the customer to the Microsoft data
+// PackageInfomation is contains information about the package being shipped by the customer to the Microsoft data
 // center.
 type PackageInfomation struct {
 	CarrierName    *string `json:"carrierName,omitempty"`
@@ -280,13 +214,11 @@ type PackageInfomation struct {
 	ShipDate       *string `json:"shipDate,omitempty"`
 }
 
-// Resource is the Resource model definition.
-type Resource struct {
-	ID       *string                 `json:"id,omitempty"`
-	Name     *string                 `json:"name,omitempty"`
-	Type     *string                 `json:"type,omitempty"`
-	Location *string                 `json:"location,omitempty"`
-	Tags     *map[string]interface{} `json:"tags,omitempty"`
+// PutJobParameters is put Job parameters
+type PutJobParameters struct {
+	Location   *string                 `json:"location,omitempty"`
+	Tags       *map[string]interface{} `json:"tags,omitempty"`
+	Properties *JobDetails             `json:"properties,omitempty"`
 }
 
 // ReturnAddress is specifies the return address information for the job.
@@ -308,14 +240,32 @@ type ReturnShipping struct {
 	CarrierAccountNumber *string `json:"carrierAccountNumber,omitempty"`
 }
 
-// ShippingInformation is provides information about the Microsoft datacenter to which the drives should be shipped.
+// ShippingInformation is contains information about the Microsoft datacenter to which the drives should be shipped.
 type ShippingInformation struct {
-	Name    *string `json:"name,omitempty"`
-	Address *string `json:"address,omitempty"`
+	RecipientName   *string `json:"recipientName,omitempty"`
+	StreetAddress1  *string `json:"streetAddress1,omitempty"`
+	StreetAddress2  *string `json:"streetAddress2,omitempty"`
+	City            *string `json:"city,omitempty"`
+	StateOrProvince *string `json:"stateOrProvince,omitempty"`
+	PostalCode      *string `json:"postalCode,omitempty"`
+	CountryOrRegion *string `json:"countryOrRegion,omitempty"`
+	Phone           *string `json:"phone,omitempty"`
 }
 
-// SupportedOperationsListResult is list of supported operations by the import/export resource provider.
-type SupportedOperationsListResult struct {
-	autorest.Response `json:"-"`
-	Value             *[]Operation `json:"value,omitempty"`
+// UpdateJobParameters is update Job parameters
+type UpdateJobParameters struct {
+	Tags                           *map[string]interface{} `json:"tags,omitempty"`
+	*UpdateJobParametersProperties `json:"properties,omitempty"`
+}
+
+// UpdateJobParametersProperties is specifies the properties of a UpdateJob.
+type UpdateJobParametersProperties struct {
+	CancelRequested     *bool              `json:"cancelRequested,omitempty"`
+	State               *string            `json:"state,omitempty"`
+	ReturnAddress       *ReturnAddress     `json:"returnAddress,omitempty"`
+	ReturnShipping      *ReturnShipping    `json:"returnShipping,omitempty"`
+	DeliveryPackage     *PackageInfomation `json:"deliveryPackage,omitempty"`
+	LogLevel            *string            `json:"logLevel,omitempty"`
+	BackupDriveManifest *bool              `json:"backupDriveManifest,omitempty"`
+	DriveList           *[]DriveStatus     `json:"driveList,omitempty"`
 }

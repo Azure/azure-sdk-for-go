@@ -23,9 +23,6 @@ import (
 	"net/http"
 )
 
-// ApplicationName enumerates the values for application name.
-type ApplicationName string
-
 // AsyncOperationState enumerates the values for async operation state.
 type AsyncOperationState string
 

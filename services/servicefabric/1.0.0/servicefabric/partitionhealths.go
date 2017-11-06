@@ -95,7 +95,9 @@ func (client PartitionHealthsClient) GetPreparer(partitionID string, eventsHealt
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PartitionHealthsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -163,7 +165,9 @@ func (client PartitionHealthsClient) SendPreparer(partitionID string, partitionH
 // SendSender sends the Send request. The method will close the
 // http.Response Body if it receives an error.
 func (client PartitionHealthsClient) SendSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SendResponder handles the response to the Send request. The method always

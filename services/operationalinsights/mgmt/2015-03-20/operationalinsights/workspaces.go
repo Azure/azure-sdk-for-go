@@ -97,7 +97,9 @@ func (client WorkspacesClient) GetSchemaPreparer(resourceGroupName string, works
 // GetSchemaSender sends the GetSchema request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) GetSchemaSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetSchemaResponder handles the response to the GetSchema request. The method always
@@ -196,6 +198,7 @@ func (client WorkspacesClient) GetSearchResultsPreparer(resourceGroupName string
 func (client WorkspacesClient) GetSearchResultsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -258,7 +261,9 @@ func (client WorkspacesClient) ListLinkTargetsPreparer() (*http.Request, error) 
 // ListLinkTargetsSender sends the ListLinkTargets request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) ListLinkTargetsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListLinkTargetsResponder handles the response to the ListLinkTargets request. The method always
@@ -334,7 +339,9 @@ func (client WorkspacesClient) UpdateSearchResultsPreparer(resourceGroupName str
 // UpdateSearchResultsSender sends the UpdateSearchResults request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) UpdateSearchResultsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateSearchResultsResponder handles the response to the UpdateSearchResults request. The method always

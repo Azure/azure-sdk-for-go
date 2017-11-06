@@ -108,6 +108,7 @@ func (client TopicsClient) CreateOrUpdatePreparer(resourceGroupName string, topi
 func (client TopicsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -189,6 +190,7 @@ func (client TopicsClient) DeletePreparer(resourceGroupName string, topicName st
 func (client TopicsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -253,7 +255,9 @@ func (client TopicsClient) GetPreparer(resourceGroupName string, topicName strin
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopicsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -317,7 +321,9 @@ func (client TopicsClient) ListByResourceGroupPreparer(resourceGroupName string)
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopicsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -378,7 +384,9 @@ func (client TopicsClient) ListBySubscriptionPreparer() (*http.Request, error) {
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopicsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
@@ -446,7 +454,9 @@ func (client TopicsClient) ListEventTypesPreparer(resourceGroupName string, prov
 // ListEventTypesSender sends the ListEventTypes request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopicsClient) ListEventTypesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListEventTypesResponder handles the response to the ListEventTypes request. The method always
@@ -511,7 +521,9 @@ func (client TopicsClient) ListSharedAccessKeysPreparer(resourceGroupName string
 // ListSharedAccessKeysSender sends the ListSharedAccessKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopicsClient) ListSharedAccessKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSharedAccessKeysResponder handles the response to the ListSharedAccessKeys request. The method always
@@ -585,7 +597,9 @@ func (client TopicsClient) RegenerateKeyPreparer(resourceGroupName string, topic
 // RegenerateKeySender sends the RegenerateKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopicsClient) RegenerateKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RegenerateKeyResponder handles the response to the RegenerateKey request. The method always
@@ -595,6 +609,92 @@ func (client TopicsClient) RegenerateKeyResponder(resp *http.Response) (result T
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Update asynchronously updates a topic with the specified parameters. This method may poll for completion. Polling
+// can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
+// outstanding HTTP requests.
+//
+// resourceGroupName is the name of the resource group within the user's subscription. topicName is name of the topic
+// topicUpdateParameters is topic update information
+func (client TopicsClient) Update(resourceGroupName string, topicName string, topicUpdateParameters TopicUpdateParameters, cancel <-chan struct{}) (<-chan Topic, <-chan error) {
+	resultChan := make(chan Topic, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result Topic
+		defer func() {
+			if err != nil {
+				errChan <- err
+			}
+			resultChan <- result
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.UpdatePreparer(resourceGroupName, topicName, topicUpdateParameters, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "Update", nil, "Failure preparing request")
+			return
+		}
+
+		resp, err := client.UpdateSender(req)
+		if err != nil {
+			result.Response = autorest.Response{Response: resp}
+			err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "Update", resp, "Failure sending request")
+			return
+		}
+
+		result, err = client.UpdateResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "Update", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
+}
+
+// UpdatePreparer prepares the Update request.
+func (client TopicsClient) UpdatePreparer(resourceGroupName string, topicName string, topicUpdateParameters TopicUpdateParameters, cancel <-chan struct{}) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"topicName":         autorest.Encode("path", topicName),
+	}
+
+	const APIVersion = "2017-09-15-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}", pathParameters),
+		autorest.WithJSON(topicUpdateParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{Cancel: cancel})
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client TopicsClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client),
+		azure.DoPollForAsynchronous(client.PollingDelay))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client TopicsClient) UpdateResponder(resp *http.Response) (result Topic, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

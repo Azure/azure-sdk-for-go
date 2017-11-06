@@ -89,7 +89,9 @@ func (client PartitionsClient) GetPreparer(serviceName string, partitionID strin
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PartitionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -155,7 +157,9 @@ func (client PartitionsClient) ListPreparer(serviceName string) (*http.Request, 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client PartitionsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -221,7 +225,9 @@ func (client PartitionsClient) RepairPreparer(partitionID string) (*http.Request
 // RepairSender sends the Repair request. The method will close the
 // http.Response Body if it receives an error.
 func (client PartitionsClient) RepairSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RepairResponder handles the response to the Repair request. The method always

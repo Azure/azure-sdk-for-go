@@ -86,7 +86,9 @@ func (client ClusterUpgradesClient) ResumePreparer(resumeClusterUpgrade ResumeCl
 // ResumeSender sends the Resume request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClusterUpgradesClient) ResumeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ResumeResponder handles the response to the Resume request. The method always
@@ -146,7 +148,9 @@ func (client ClusterUpgradesClient) RollbackPreparer() (*http.Request, error) {
 // RollbackSender sends the Rollback request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClusterUpgradesClient) RollbackSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RollbackResponder handles the response to the Rollback request. The method always
@@ -210,7 +214,9 @@ func (client ClusterUpgradesClient) StartPreparer(startClusterUpgrade StartClust
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClusterUpgradesClient) StartSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // StartResponder handles the response to the Start request. The method always
@@ -274,7 +280,9 @@ func (client ClusterUpgradesClient) UpdatePreparer(updateClusterUpgrade UpdateCl
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClusterUpgradesClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

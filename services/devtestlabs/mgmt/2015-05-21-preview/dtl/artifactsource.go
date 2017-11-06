@@ -91,7 +91,9 @@ func (client ArtifactSourceClient) CreateOrUpdateResourcePreparer(resourceGroupN
 // CreateOrUpdateResourceSender sends the CreateOrUpdateResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client ArtifactSourceClient) CreateOrUpdateResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResourceResponder handles the response to the CreateOrUpdateResource request. The method always
@@ -158,7 +160,9 @@ func (client ArtifactSourceClient) DeleteResourcePreparer(resourceGroupName stri
 // DeleteResourceSender sends the DeleteResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client ArtifactSourceClient) DeleteResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResourceResponder handles the response to the DeleteResource request. The method always
@@ -224,7 +228,9 @@ func (client ArtifactSourceClient) GetResourcePreparer(resourceGroupName string,
 // GetResourceSender sends the GetResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client ArtifactSourceClient) GetResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResourceResponder handles the response to the GetResource request. The method always
@@ -299,7 +305,9 @@ func (client ArtifactSourceClient) ListPreparer(resourceGroupName string, labNam
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ArtifactSourceClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -437,7 +445,9 @@ func (client ArtifactSourceClient) PatchResourcePreparer(resourceGroupName strin
 // PatchResourceSender sends the PatchResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client ArtifactSourceClient) PatchResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // PatchResourceResponder handles the response to the PatchResource request. The method always

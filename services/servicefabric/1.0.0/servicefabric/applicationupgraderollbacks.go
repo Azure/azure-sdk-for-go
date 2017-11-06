@@ -89,7 +89,9 @@ func (client ApplicationUpgradeRollbacksClient) StartPreparer(applicationName st
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client ApplicationUpgradeRollbacksClient) StartSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // StartResponder handles the response to the Start request. The method always

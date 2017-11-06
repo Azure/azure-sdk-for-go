@@ -111,6 +111,7 @@ func (client ServerDNSAliasesClient) AcquirePreparer(resourceGroupName string, s
 func (client ServerDNSAliasesClient) AcquireSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -194,6 +195,7 @@ func (client ServerDNSAliasesClient) CreateOrUpdatePreparer(resourceGroupName st
 func (client ServerDNSAliasesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -279,6 +281,7 @@ func (client ServerDNSAliasesClient) DeletePreparer(resourceGroupName string, se
 func (client ServerDNSAliasesClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -346,7 +349,9 @@ func (client ServerDNSAliasesClient) GetPreparer(resourceGroupName string, serve
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerDNSAliasesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -412,7 +417,9 @@ func (client ServerDNSAliasesClient) ListByServerPreparer(resourceGroupName stri
 // ListByServerSender sends the ListByServer request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerDNSAliasesClient) ListByServerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByServerResponder handles the response to the ListByServer request. The method always

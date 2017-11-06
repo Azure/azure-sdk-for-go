@@ -123,7 +123,9 @@ func (client UserGroupsClient) ListByUsersPreparer(resourceGroupName string, ser
 // ListByUsersSender sends the ListByUsers request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserGroupsClient) ListByUsersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByUsersResponder handles the response to the ListByUsers request. The method always

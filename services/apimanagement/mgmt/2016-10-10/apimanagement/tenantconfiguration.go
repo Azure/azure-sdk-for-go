@@ -122,6 +122,7 @@ func (client TenantConfigurationClient) DeployPreparer(resourceGroupName string,
 func (client TenantConfigurationClient) DeploySender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -221,6 +222,7 @@ func (client TenantConfigurationClient) SavePreparer(resourceGroupName string, s
 func (client TenantConfigurationClient) SaveSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -319,6 +321,7 @@ func (client TenantConfigurationClient) ValidatePreparer(resourceGroupName strin
 func (client TenantConfigurationClient) ValidateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 

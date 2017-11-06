@@ -109,7 +109,9 @@ func (client ConsumerGroupsClient) CreateOrUpdatePreparer(resourceGroupName stri
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConsumerGroupsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -192,7 +194,9 @@ func (client ConsumerGroupsClient) DeletePreparer(resourceGroupName string, name
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConsumerGroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -274,7 +278,9 @@ func (client ConsumerGroupsClient) GetPreparer(resourceGroupName string, namespa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConsumerGroupsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -354,7 +360,9 @@ func (client ConsumerGroupsClient) ListByEventHubPreparer(resourceGroupName stri
 // ListByEventHubSender sends the ListByEventHub request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConsumerGroupsClient) ListByEventHubSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByEventHubResponder handles the response to the ListByEventHub request. The method always

@@ -88,7 +88,9 @@ func (client NodeStatesClient) RemovePreparer(nodeName string) (*http.Request, e
 // RemoveSender sends the Remove request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodeStatesClient) RemoveSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RemoveResponder handles the response to the Remove request. The method always

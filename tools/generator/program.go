@@ -138,6 +138,7 @@ func main() {
 				fmt.Sprintf("--go-sdk-folder='%s'", outputBase),
 				"--verbose",
 				"--tag=" + tuple.packageName,
+				"--use=@microsoft.azure/autorest.go@v2.0.41",
 			}
 
 			if packageVersion != "" {

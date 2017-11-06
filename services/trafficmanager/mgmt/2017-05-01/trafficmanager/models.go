@@ -249,16 +249,3 @@ type TrackedResource struct {
 	Tags     *map[string]*string `json:"tags,omitempty"`
 	Location *string             `json:"location,omitempty"`
 }
-
-// UserMetricsKeyModel is class representing a Traffic Manager Real User Metrics key response.
-type UserMetricsKeyModel struct {
-	ID                        *string `json:"id,omitempty"`
-	Name                      *string `json:"name,omitempty"`
-	Type                      *string `json:"type,omitempty"`
-	*UserMetricsKeyProperties `json:"properties,omitempty"`
-}
-
-// UserMetricsKeyProperties is class representing the properties of a Real User Metrics key operation response.
-type UserMetricsKeyProperties struct {
-	Key *string `json:"key,omitempty"`
-}

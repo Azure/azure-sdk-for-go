@@ -19,10 +19,10 @@ package storsimple
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v11.2.0-beta arm-storsimple/2017-06-01"
+	return "Azure-SDK-For-Go/0.0.0 arm-storsimple/2017-06-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.
 func Version() string {
-	return "v11.2.0-beta"
+	return "0.0.0"
 }

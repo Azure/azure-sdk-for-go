@@ -117,6 +117,7 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdatePreparer(resourceGroupN
 func (client VirtualNetworkGatewaysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -200,6 +201,7 @@ func (client VirtualNetworkGatewaysClient) DeletePreparer(resourceGroupName stri
 func (client VirtualNetworkGatewaysClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -268,7 +270,9 @@ func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackagePreparer(reso
 // GeneratevpnclientpackageSender sends the Generatevpnclientpackage request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackageSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GeneratevpnclientpackageResponder handles the response to the Generatevpnclientpackage request. The method always
@@ -334,7 +338,9 @@ func (client VirtualNetworkGatewaysClient) GetPreparer(resourceGroupName string,
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -418,6 +424,7 @@ func (client VirtualNetworkGatewaysClient) GetAdvertisedRoutesPreparer(resourceG
 func (client VirtualNetworkGatewaysClient) GetAdvertisedRoutesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -504,6 +511,7 @@ func (client VirtualNetworkGatewaysClient) GetBgpPeerStatusPreparer(resourceGrou
 func (client VirtualNetworkGatewaysClient) GetBgpPeerStatusSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -587,6 +595,7 @@ func (client VirtualNetworkGatewaysClient) GetLearnedRoutesPreparer(resourceGrou
 func (client VirtualNetworkGatewaysClient) GetLearnedRoutesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -651,7 +660,9 @@ func (client VirtualNetworkGatewaysClient) ListPreparer(resourceGroupName string
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -807,6 +818,7 @@ func (client VirtualNetworkGatewaysClient) ResetPreparer(resourceGroupName strin
 func (client VirtualNetworkGatewaysClient) ResetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 

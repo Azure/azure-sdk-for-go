@@ -2,6 +2,10 @@
 
 ## `v11.2.0-beta`
 
+### Repository Structure
+ - Adding support for Multi-API Version paradigm in `services` directory.
+ - Adding support for Azure Profile in `profiles` directory.
+
 ### Storage
  - Added operations for getting and setting container metadata.
  - Fixed unmarshaling bug on list containers operation.

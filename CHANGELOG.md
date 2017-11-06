@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v11.2.0-beta`
+
+### Storage
+ - Added operations for getting and setting container metadata.
+ - Fixed unmarshaling bug on list containers operation.
+
 ## `v11.1.1-beta`
  
 ### ARM

@@ -22,75 +22,67 @@ package cognitiveservices
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices"
 
-type AccountsClient = original.AccountsClient
-type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
 type KeyName = original.KeyName
 
 const (
-	Key1	KeyName	= original.Key1
-	Key2	KeyName	= original.Key2
+	Key1 KeyName = original.Key1
+	Key2 KeyName = original.Key2
 )
 
 type Kind = original.Kind
 
 const (
-	Academic		Kind	= original.Academic
-	BingAutosuggest		Kind	= original.BingAutosuggest
-	BingSearch		Kind	= original.BingSearch
-	BingSpeech		Kind	= original.BingSpeech
-	BingSpellCheck		Kind	= original.BingSpellCheck
-	ComputerVision		Kind	= original.ComputerVision
-	ContentModerator	Kind	= original.ContentModerator
-	CustomSpeech		Kind	= original.CustomSpeech
-	Emotion			Kind	= original.Emotion
-	Face			Kind	= original.Face
-	LUIS			Kind	= original.LUIS
-	Recommendations		Kind	= original.Recommendations
-	SpeakerRecognition	Kind	= original.SpeakerRecognition
-	Speech			Kind	= original.Speech
-	SpeechTranslation	Kind	= original.SpeechTranslation
-	TextAnalytics		Kind	= original.TextAnalytics
-	TextTranslation		Kind	= original.TextTranslation
-	WebLM			Kind	= original.WebLM
+	Academic           Kind = original.Academic
+	BingAutosuggest    Kind = original.BingAutosuggest
+	BingSearch         Kind = original.BingSearch
+	BingSpeech         Kind = original.BingSpeech
+	BingSpellCheck     Kind = original.BingSpellCheck
+	ComputerVision     Kind = original.ComputerVision
+	ContentModerator   Kind = original.ContentModerator
+	CustomSpeech       Kind = original.CustomSpeech
+	Emotion            Kind = original.Emotion
+	Face               Kind = original.Face
+	LUIS               Kind = original.LUIS
+	Recommendations    Kind = original.Recommendations
+	SpeakerRecognition Kind = original.SpeakerRecognition
+	Speech             Kind = original.Speech
+	SpeechTranslation  Kind = original.SpeechTranslation
+	TextAnalytics      Kind = original.TextAnalytics
+	TextTranslation    Kind = original.TextTranslation
+	WebLM              Kind = original.WebLM
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Creating	ProvisioningState	= original.Creating
-	Failed		ProvisioningState	= original.Failed
-	ResolvingDNS	ProvisioningState	= original.ResolvingDNS
-	Succeeded	ProvisioningState	= original.Succeeded
+	Creating     ProvisioningState = original.Creating
+	Failed       ProvisioningState = original.Failed
+	ResolvingDNS ProvisioningState = original.ResolvingDNS
+	Succeeded    ProvisioningState = original.Succeeded
 )
 
 type SkuName = original.SkuName
 
 const (
-	F0	SkuName	= original.F0
-	P0	SkuName	= original.P0
-	P1	SkuName	= original.P1
-	P2	SkuName	= original.P2
-	S0	SkuName	= original.S0
-	S1	SkuName	= original.S1
-	S2	SkuName	= original.S2
-	S3	SkuName	= original.S3
-	S4	SkuName	= original.S4
-	S5	SkuName	= original.S5
-	S6	SkuName	= original.S6
+	F0 SkuName = original.F0
+	P0 SkuName = original.P0
+	P1 SkuName = original.P1
+	P2 SkuName = original.P2
+	S0 SkuName = original.S0
+	S1 SkuName = original.S1
+	S2 SkuName = original.S2
+	S3 SkuName = original.S3
+	S4 SkuName = original.S4
+	S5 SkuName = original.S5
+	S6 SkuName = original.S6
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	Free		SkuTier	= original.Free
-	Premium		SkuTier	= original.Premium
-	Standard	SkuTier	= original.Standard
+	Free     SkuTier = original.Free
+	Premium  SkuTier = original.Premium
+	Standard SkuTier = original.Standard
 )
 
 type Account = original.Account
@@ -112,7 +104,27 @@ type RegenerateKeyParameters = original.RegenerateKeyParameters
 type ResourceAndSku = original.ResourceAndSku
 type Sku = original.Sku
 type OperationsClient = original.OperationsClient
+type AccountsClient = original.AccountsClient
+type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)
 }
@@ -130,16 +142,4 @@ func New(subscriptionID string) ManagementClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

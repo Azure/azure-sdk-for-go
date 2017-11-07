@@ -20,7 +20,10 @@
 
 package management
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-08-31-preview/management"
+import (
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-08-31-preview/management"
+	"github.com/satori/go.uuid"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -31,28 +34,28 @@ type GroupsClient = original.GroupsClient
 type ChildType = original.ChildType
 
 const (
-	Account		ChildType	= original.Account
-	Department	ChildType	= original.Department
-	Enrollment	ChildType	= original.Enrollment
-	Subscription	ChildType	= original.Subscription
+	Account      ChildType = original.Account
+	Department   ChildType = original.Department
+	Enrollment   ChildType = original.Enrollment
+	Subscription ChildType = original.Subscription
 )
 
 type ChildType1 = original.ChildType1
 
 const (
-	ChildType1Account	ChildType1	= original.ChildType1Account
-	ChildType1Department	ChildType1	= original.ChildType1Department
-	ChildType1Enrollment	ChildType1	= original.ChildType1Enrollment
-	ChildType1Subscription	ChildType1	= original.ChildType1Subscription
+	ChildType1Account      ChildType1 = original.ChildType1Account
+	ChildType1Department   ChildType1 = original.ChildType1Department
+	ChildType1Enrollment   ChildType1 = original.ChildType1Enrollment
+	ChildType1Subscription ChildType1 = original.ChildType1Subscription
 )
 
 type ManagementGroupType = original.ManagementGroupType
 
 const (
-	ManagementGroupTypeAccount	ManagementGroupType	= original.ManagementGroupTypeAccount
-	ManagementGroupTypeDepartment	ManagementGroupType	= original.ManagementGroupTypeDepartment
-	ManagementGroupTypeEnrollment	ManagementGroupType	= original.ManagementGroupTypeEnrollment
-	ManagementGroupTypeSubscription	ManagementGroupType	= original.ManagementGroupTypeSubscription
+	ManagementGroupTypeAccount      ManagementGroupType = original.ManagementGroupTypeAccount
+	ManagementGroupTypeDepartment   ManagementGroupType = original.ManagementGroupTypeDepartment
+	ManagementGroupTypeEnrollment   ManagementGroupType = original.ManagementGroupTypeEnrollment
+	ManagementGroupTypeSubscription ManagementGroupType = original.ManagementGroupTypeSubscription
 )
 
 type ErrorDetails = original.ErrorDetails

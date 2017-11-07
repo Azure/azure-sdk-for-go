@@ -22,25 +22,24 @@ package locks
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/locks"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
 type ManagementLocksClient = original.ManagementLocksClient
 type LockLevel = original.LockLevel
 
 const (
-	CanNotDelete	LockLevel	= original.CanNotDelete
-	NotSpecified	LockLevel	= original.NotSpecified
-	ReadOnly	LockLevel	= original.ReadOnly
+	CanNotDelete LockLevel = original.CanNotDelete
+	NotSpecified LockLevel = original.NotSpecified
+	ReadOnly     LockLevel = original.ReadOnly
 )
 
 type ManagementLockListResult = original.ManagementLockListResult
 type ManagementLockObject = original.ManagementLockObject
 type ManagementLockOwner = original.ManagementLockOwner
 type ManagementLockProperties = original.ManagementLockProperties
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
 
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

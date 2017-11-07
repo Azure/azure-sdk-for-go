@@ -22,19 +22,25 @@ package aad
 
 import original "github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-01-01/aad"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+type DomainServiceOperationsClient = original.DomainServiceOperationsClient
 type DomainServicesClient = original.DomainServicesClient
 type ExternalAccess = original.ExternalAccess
 
 const (
-	Disabled	ExternalAccess	= original.Disabled
-	Enabled		ExternalAccess	= original.Enabled
+	Disabled ExternalAccess = original.Disabled
+	Enabled  ExternalAccess = original.Enabled
 )
 
 type Ldaps = original.Ldaps
 
 const (
-	LdapsDisabled	Ldaps	= original.LdapsDisabled
-	LdapsEnabled	Ldaps	= original.LdapsEnabled
+	LdapsDisabled Ldaps = original.LdapsDisabled
+	LdapsEnabled  Ldaps = original.LdapsEnabled
 )
 
 type DomainService = original.DomainService
@@ -47,25 +53,6 @@ type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type Resource = original.Resource
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-type DomainServiceOperationsClient = original.DomainServiceOperationsClient
-
-func NewDomainServicesClient(subscriptionID string) DomainServicesClient {
-	return original.NewDomainServicesClient(subscriptionID)
-}
-func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) DomainServicesClient {
-	return original.NewDomainServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)
 }
@@ -77,4 +64,16 @@ func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperat
 }
 func NewDomainServiceOperationsClientWithBaseURI(baseURI string, subscriptionID string) DomainServiceOperationsClient {
 	return original.NewDomainServiceOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDomainServicesClient(subscriptionID string) DomainServicesClient {
+	return original.NewDomainServicesClient(subscriptionID)
+}
+func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) DomainServicesClient {
+	return original.NewDomainServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

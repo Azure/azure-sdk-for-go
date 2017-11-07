@@ -22,16 +22,15 @@ package features
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-12-01/features"
 
-type GroupClient = original.GroupClient
-type OperationsListResult = original.OperationsListResult
-type Properties = original.Properties
-type Result = original.Result
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type ManagementClient = original.ManagementClient
+type GroupClient = original.GroupClient
+type OperationsListResult = original.OperationsListResult
+type Properties = original.Properties
+type Result = original.Result
 
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)

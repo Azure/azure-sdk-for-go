@@ -22,14 +22,6 @@ package marketplaceordering
 
 import original "github.com/Azure/azure-sdk-for-go/services/marketplaceordering/mgmt/2015-06-01/marketplaceordering"
 
-type AgreementProperties = original.AgreementProperties
-type AgreementTerms = original.AgreementTerms
-type ErrorResponse = original.ErrorResponse
-type ErrorResponseError = original.ErrorResponseError
-type Operation = original.Operation
-type OperationDisplay = original.OperationDisplay
-type OperationListResult = original.OperationListResult
-type Resource = original.Resource
 type OperationsClient = original.OperationsClient
 
 const (
@@ -38,6 +30,14 @@ const (
 
 type ManagementClient = original.ManagementClient
 type MarketplaceAgreementsClient = original.MarketplaceAgreementsClient
+type AgreementProperties = original.AgreementProperties
+type AgreementTerms = original.AgreementTerms
+type ErrorResponse = original.ErrorResponse
+type ErrorResponseError = original.ErrorResponseError
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationListResult = original.OperationListResult
+type Resource = original.Resource
 
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)

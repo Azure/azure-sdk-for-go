@@ -20,463 +20,358 @@
 
 package apimanagement
 
-import original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2017-03-01/apimanagement"
+import original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2016-10-10/apimanagement"
 
-type PropertyClient = original.PropertyClient
+type NetworkStatusClient = original.NetworkStatusClient
+type OpenIDConnectProvidersClient = original.OpenIDConnectProvidersClient
 type QuotaByCounterKeysClient = original.QuotaByCounterKeysClient
-type UserGroupClient = original.UserGroupClient
-type APIClient = original.APIClient
-type APIOperationClient = original.APIOperationClient
-type ProductAPIClient = original.ProductAPIClient
-type DelegationSettingsClient = original.DelegationSettingsClient
-type PolicyClient = original.PolicyClient
-type RegionsClient = original.RegionsClient
-type SignInSettingsClient = original.SignInSettingsClient
-type APIExportClient = original.APIExportClient
-type IdentityProviderClient = original.IdentityProviderClient
-type APIType = original.APIType
-
-const (
-	HTTP	APIType	= original.HTTP
-	Soap	APIType	= original.Soap
-)
-
-type AsyncOperationStatus = original.AsyncOperationStatus
-
-const (
-	Failed		AsyncOperationStatus	= original.Failed
-	InProgress	AsyncOperationStatus	= original.InProgress
-	Started		AsyncOperationStatus	= original.Started
-	Succeeded	AsyncOperationStatus	= original.Succeeded
-)
-
-type AuthorizationMethod = original.AuthorizationMethod
-
-const (
-	DELETE	AuthorizationMethod	= original.DELETE
-	GET	AuthorizationMethod	= original.GET
-	HEAD	AuthorizationMethod	= original.HEAD
-	OPTIONS	AuthorizationMethod	= original.OPTIONS
-	PATCH	AuthorizationMethod	= original.PATCH
-	POST	AuthorizationMethod	= original.POST
-	PUT	AuthorizationMethod	= original.PUT
-	TRACE	AuthorizationMethod	= original.TRACE
-)
-
-type BackendProtocol = original.BackendProtocol
-
-const (
-	BackendProtocolHTTP	BackendProtocol	= original.BackendProtocolHTTP
-	BackendProtocolSoap	BackendProtocol	= original.BackendProtocolSoap
-)
-
-type BearerTokenSendingMethod = original.BearerTokenSendingMethod
-
-const (
-	AuthorizationHeader	BearerTokenSendingMethod	= original.AuthorizationHeader
-	Query			BearerTokenSendingMethod	= original.Query
-)
-
-type ClientAuthenticationMethod = original.ClientAuthenticationMethod
-
-const (
-	Basic	ClientAuthenticationMethod	= original.Basic
-	Body	ClientAuthenticationMethod	= original.Body
-)
-
-type ConnectivityStatusType = original.ConnectivityStatusType
-
-const (
-	Failure		ConnectivityStatusType	= original.Failure
-	Initializing	ConnectivityStatusType	= original.Initializing
-	Success		ConnectivityStatusType	= original.Success
-)
-
-type ContentFormat = original.ContentFormat
-
-const (
-	SwaggerJSON	ContentFormat	= original.SwaggerJSON
-	SwaggerLinkJSON	ContentFormat	= original.SwaggerLinkJSON
-	WadlLinkJSON	ContentFormat	= original.WadlLinkJSON
-	WadlXML		ContentFormat	= original.WadlXML
-	Wsdl		ContentFormat	= original.Wsdl
-	WsdlLink	ContentFormat	= original.WsdlLink
-)
-
-type GrantType = original.GrantType
-
-const (
-	AuthorizationCode	GrantType	= original.AuthorizationCode
-	ClientCredentials	GrantType	= original.ClientCredentials
-	Implicit		GrantType	= original.Implicit
-	ResourceOwnerPassword	GrantType	= original.ResourceOwnerPassword
-)
-
-type GroupType = original.GroupType
-
-const (
-	Custom		GroupType	= original.Custom
-	External	GroupType	= original.External
-	System		GroupType	= original.System
-)
-
-type HostnameType = original.HostnameType
-
-const (
-	Management	HostnameType	= original.Management
-	Portal		HostnameType	= original.Portal
-	Proxy		HostnameType	= original.Proxy
-	Scm		HostnameType	= original.Scm
-)
-
-type IdentityProviderType = original.IdentityProviderType
-
-const (
-	Aad		IdentityProviderType	= original.Aad
-	AadB2C		IdentityProviderType	= original.AadB2C
-	Facebook	IdentityProviderType	= original.Facebook
-	Google		IdentityProviderType	= original.Google
-	Microsoft	IdentityProviderType	= original.Microsoft
-	Twitter		IdentityProviderType	= original.Twitter
-)
-
-type KeyType = original.KeyType
-
-const (
-	Primary		KeyType	= original.Primary
-	Secondary	KeyType	= original.Secondary
-)
-
-type LoggerType = original.LoggerType
-
-const (
-	AzureEventHub LoggerType = original.AzureEventHub
-)
-
-type NameAvailabilityReason = original.NameAvailabilityReason
-
-const (
-	AlreadyExists	NameAvailabilityReason	= original.AlreadyExists
-	Invalid		NameAvailabilityReason	= original.Invalid
-	Valid		NameAvailabilityReason	= original.Valid
-)
-
-type PolicyScopeContract = original.PolicyScopeContract
-
-const (
-	PolicyScopeContractAll		PolicyScopeContract	= original.PolicyScopeContractAll
-	PolicyScopeContractAPI		PolicyScopeContract	= original.PolicyScopeContractAPI
-	PolicyScopeContractOperation	PolicyScopeContract	= original.PolicyScopeContractOperation
-	PolicyScopeContractProduct	PolicyScopeContract	= original.PolicyScopeContractProduct
-	PolicyScopeContractTenant	PolicyScopeContract	= original.PolicyScopeContractTenant
-)
-
-type ProductState = original.ProductState
-
-const (
-	NotPublished	ProductState	= original.NotPublished
-	Published	ProductState	= original.Published
-)
-
-type Protocol = original.Protocol
-
-const (
-	ProtocolHTTP	Protocol	= original.ProtocolHTTP
-	ProtocolHTTPS	Protocol	= original.ProtocolHTTPS
-)
-
-type SkuType = original.SkuType
-
-const (
-	Developer	SkuType	= original.Developer
-	Premium		SkuType	= original.Premium
-	Standard	SkuType	= original.Standard
-)
-
-type StoreName = original.StoreName
-
-const (
-	CertificateAuthority	StoreName	= original.CertificateAuthority
-	Root			StoreName	= original.Root
-)
-
-type SubscriptionState = original.SubscriptionState
-
-const (
-	Active		SubscriptionState	= original.Active
-	Cancelled	SubscriptionState	= original.Cancelled
-	Expired		SubscriptionState	= original.Expired
-	Rejected	SubscriptionState	= original.Rejected
-	Submitted	SubscriptionState	= original.Submitted
-	Suspended	SubscriptionState	= original.Suspended
-)
-
-type TemplateName = original.TemplateName
-
-const (
-	AccountClosedDeveloper					TemplateName	= original.AccountClosedDeveloper
-	ApplicationApprovedNotificationMessage			TemplateName	= original.ApplicationApprovedNotificationMessage
-	ConfirmSignUpIdentityDefault				TemplateName	= original.ConfirmSignUpIdentityDefault
-	EmailChangeIdentityDefault				TemplateName	= original.EmailChangeIdentityDefault
-	InviteUserNotificationMessage				TemplateName	= original.InviteUserNotificationMessage
-	NewCommentNotificationMessage				TemplateName	= original.NewCommentNotificationMessage
-	NewDeveloperNotificationMessage				TemplateName	= original.NewDeveloperNotificationMessage
-	NewIssueNotificationMessage				TemplateName	= original.NewIssueNotificationMessage
-	PasswordResetByAdminNotificationMessage			TemplateName	= original.PasswordResetByAdminNotificationMessage
-	PasswordResetIdentityDefault				TemplateName	= original.PasswordResetIdentityDefault
-	PurchaseDeveloperNotificationMessage			TemplateName	= original.PurchaseDeveloperNotificationMessage
-	QuotaLimitApproachingDeveloperNotificationMessage	TemplateName	= original.QuotaLimitApproachingDeveloperNotificationMessage
-	RejectDeveloperNotificationMessage			TemplateName	= original.RejectDeveloperNotificationMessage
-	RequestDeveloperNotificationMessage			TemplateName	= original.RequestDeveloperNotificationMessage
-)
-
-type UserState = original.UserState
-
-const (
-	UserStateActive		UserState	= original.UserStateActive
-	UserStateBlocked	UserState	= original.UserStateBlocked
-)
-
-type VirtualNetworkType = original.VirtualNetworkType
-
-const (
-	VirtualNetworkTypeExternal	VirtualNetworkType	= original.VirtualNetworkTypeExternal
-	VirtualNetworkTypeInternal	VirtualNetworkType	= original.VirtualNetworkTypeInternal
-	VirtualNetworkTypeNone		VirtualNetworkType	= original.VirtualNetworkTypeNone
-)
-
-type AccessInformationContract = original.AccessInformationContract
-type AccessInformationUpdateParameters = original.AccessInformationUpdateParameters
-type AdditionalLocation = original.AdditionalLocation
-type APICollection = original.APICollection
-type APIContract = original.APIContract
-type APIContractProperties = original.APIContractProperties
-type APIContractUpdateProperties = original.APIContractUpdateProperties
-type APICreateOrUpdateParameter = original.APICreateOrUpdateParameter
-type APICreateOrUpdateProperties = original.APICreateOrUpdateProperties
-type APICreateOrUpdatePropertiesWsdlSelector = original.APICreateOrUpdatePropertiesWsdlSelector
-type APIEntityBaseContract = original.APIEntityBaseContract
-type APIExportResult = original.APIExportResult
-type ApimResource = original.ApimResource
-type APIUpdateContract = original.APIUpdateContract
-type AuthenticationSettingsContract = original.AuthenticationSettingsContract
-type AuthorizationServerCollection = original.AuthorizationServerCollection
-type AuthorizationServerContract = original.AuthorizationServerContract
-type AuthorizationServerContractBaseProperties = original.AuthorizationServerContractBaseProperties
-type AuthorizationServerContractProperties = original.AuthorizationServerContractProperties
-type AuthorizationServerUpdateContract = original.AuthorizationServerUpdateContract
-type AuthorizationServerUpdateContractProperties = original.AuthorizationServerUpdateContractProperties
-type BackendAuthorizationHeaderCredentials = original.BackendAuthorizationHeaderCredentials
-type BackendBaseParameters = original.BackendBaseParameters
-type BackendCollection = original.BackendCollection
-type BackendContract = original.BackendContract
-type BackendContractProperties = original.BackendContractProperties
-type BackendCredentialsContract = original.BackendCredentialsContract
-type BackendProperties = original.BackendProperties
-type BackendProxyContract = original.BackendProxyContract
-type BackendServiceFabricClusterProperties = original.BackendServiceFabricClusterProperties
-type BackendTLSProperties = original.BackendTLSProperties
-type BackendUpdateParameterProperties = original.BackendUpdateParameterProperties
-type BackendUpdateParameters = original.BackendUpdateParameters
-type CertificateCollection = original.CertificateCollection
-type CertificateConfiguration = original.CertificateConfiguration
-type CertificateContract = original.CertificateContract
-type CertificateContractProperties = original.CertificateContractProperties
-type CertificateCreateOrUpdateParameters = original.CertificateCreateOrUpdateParameters
-type CertificateCreateOrUpdateProperties = original.CertificateCreateOrUpdateProperties
-type CertificateInformation = original.CertificateInformation
-type ConnectivityStatusContract = original.ConnectivityStatusContract
-type DeployConfigurationParameters = original.DeployConfigurationParameters
-type EmailTemplateCollection = original.EmailTemplateCollection
-type EmailTemplateContract = original.EmailTemplateContract
-type EmailTemplateContractProperties = original.EmailTemplateContractProperties
-type EmailTemplateParametersContractProperties = original.EmailTemplateParametersContractProperties
-type EmailTemplateUpdateParameterProperties = original.EmailTemplateUpdateParameterProperties
-type EmailTemplateUpdateParameters = original.EmailTemplateUpdateParameters
-type ErrorFieldContract = original.ErrorFieldContract
-type ErrorResponse = original.ErrorResponse
-type GenerateSsoURLResult = original.GenerateSsoURLResult
-type GroupCollection = original.GroupCollection
-type GroupContract = original.GroupContract
-type GroupContractProperties = original.GroupContractProperties
-type GroupCreateParameters = original.GroupCreateParameters
-type GroupCreateParametersProperties = original.GroupCreateParametersProperties
-type GroupUpdateParameters = original.GroupUpdateParameters
-type GroupUpdateParametersProperties = original.GroupUpdateParametersProperties
-type HostnameConfiguration = original.HostnameConfiguration
-type HostnameConfigurationOld = original.HostnameConfigurationOld
-type IdentityProviderBaseParameters = original.IdentityProviderBaseParameters
-type IdentityProviderContract = original.IdentityProviderContract
-type IdentityProviderContractProperties = original.IdentityProviderContractProperties
-type IdentityProviderList = original.IdentityProviderList
-type IdentityProviderUpdateParameters = original.IdentityProviderUpdateParameters
-type IdentityProviderUpdateProperties = original.IdentityProviderUpdateProperties
-type LoggerCollection = original.LoggerCollection
-type LoggerContract = original.LoggerContract
-type LoggerContractProperties = original.LoggerContractProperties
-type LoggerUpdateContract = original.LoggerUpdateContract
-type LoggerUpdateParameters = original.LoggerUpdateParameters
-type NetworkStatusContract = original.NetworkStatusContract
-type OAuth2AuthenticationSettingsContract = original.OAuth2AuthenticationSettingsContract
-type OpenIDConnectProviderCollection = original.OpenIDConnectProviderCollection
-type OpenidConnectProviderContract = original.OpenidConnectProviderContract
-type OpenidConnectProviderContractProperties = original.OpenidConnectProviderContractProperties
-type OpenidConnectProviderUpdateContract = original.OpenidConnectProviderUpdateContract
-type OpenidConnectProviderUpdateContractProperties = original.OpenidConnectProviderUpdateContractProperties
-type Operation = original.Operation
-type OperationCollection = original.OperationCollection
-type OperationContract = original.OperationContract
-type OperationContractProperties = original.OperationContractProperties
-type OperationDisplay = original.OperationDisplay
-type OperationEntityBaseContract = original.OperationEntityBaseContract
-type OperationListResult = original.OperationListResult
-type OperationResultContract = original.OperationResultContract
-type OperationUpdateContract = original.OperationUpdateContract
-type OperationUpdateContractProperties = original.OperationUpdateContractProperties
-type ParameterContract = original.ParameterContract
-type PolicyCollection = original.PolicyCollection
-type PolicyContract = original.PolicyContract
-type PolicyContractProperties = original.PolicyContractProperties
-type PolicySnippetContract = original.PolicySnippetContract
-type PolicySnippetsCollection = original.PolicySnippetsCollection
-type PortalDelegationSettings = original.PortalDelegationSettings
-type PortalDelegationSettingsProperties = original.PortalDelegationSettingsProperties
-type PortalSigninSettingProperties = original.PortalSigninSettingProperties
-type PortalSigninSettings = original.PortalSigninSettings
-type PortalSignupSettings = original.PortalSignupSettings
-type PortalSignupSettingsProperties = original.PortalSignupSettingsProperties
-type ProductCollection = original.ProductCollection
-type ProductContract = original.ProductContract
-type ProductContractProperties = original.ProductContractProperties
-type ProductEntityBaseParameters = original.ProductEntityBaseParameters
-type ProductUpdateParameters = original.ProductUpdateParameters
-type ProductUpdateProperties = original.ProductUpdateProperties
-type PropertyCollection = original.PropertyCollection
-type PropertyContract = original.PropertyContract
-type PropertyContractProperties = original.PropertyContractProperties
-type PropertyEntityBaseParameters = original.PropertyEntityBaseParameters
-type PropertyUpdateParameterProperties = original.PropertyUpdateParameterProperties
-type PropertyUpdateParameters = original.PropertyUpdateParameters
-type QuotaCounterCollection = original.QuotaCounterCollection
-type QuotaCounterContract = original.QuotaCounterContract
-type QuotaCounterValueContract = original.QuotaCounterValueContract
-type QuotaCounterValueContractProperties = original.QuotaCounterValueContractProperties
-type RegionContract = original.RegionContract
-type RegionListResult = original.RegionListResult
-type RegistrationDelegationSettingsProperties = original.RegistrationDelegationSettingsProperties
-type ReportCollection = original.ReportCollection
-type ReportRecordContract = original.ReportRecordContract
-type RepresentationContract = original.RepresentationContract
-type RequestContract = original.RequestContract
-type RequestReportCollection = original.RequestReportCollection
-type RequestReportRecordContract = original.RequestReportRecordContract
-type Resource = original.Resource
-type ResponseContract = original.ResponseContract
-type SaveConfigurationParameter = original.SaveConfigurationParameter
-type SchemaCollection = original.SchemaCollection
-type SchemaContract = original.SchemaContract
-type SchemaContractProperties = original.SchemaContractProperties
-type SchemaDocumentProperties = original.SchemaDocumentProperties
-type ServiceApplyNetworkConfigurationParameters = original.ServiceApplyNetworkConfigurationParameters
-type ServiceBackupRestoreParameters = original.ServiceBackupRestoreParameters
-type ServiceBaseProperties = original.ServiceBaseProperties
-type ServiceCheckNameAvailabilityParameters = original.ServiceCheckNameAvailabilityParameters
-type ServiceGetSsoTokenResult = original.ServiceGetSsoTokenResult
-type ServiceListResult = original.ServiceListResult
-type ServiceNameAvailabilityResult = original.ServiceNameAvailabilityResult
-type ServiceProperties = original.ServiceProperties
-type ServiceResource = original.ServiceResource
-type ServiceSkuProperties = original.ServiceSkuProperties
-type ServiceUpdateHostnameParameters = original.ServiceUpdateHostnameParameters
-type ServiceUpdateParameters = original.ServiceUpdateParameters
-type ServiceUpdateProperties = original.ServiceUpdateProperties
-type ServiceUploadCertificateParameters = original.ServiceUploadCertificateParameters
-type SubscriptionCollection = original.SubscriptionCollection
-type SubscriptionContract = original.SubscriptionContract
-type SubscriptionContractProperties = original.SubscriptionContractProperties
-type SubscriptionCreateParameterProperties = original.SubscriptionCreateParameterProperties
-type SubscriptionCreateParameters = original.SubscriptionCreateParameters
-type SubscriptionKeyParameterNamesContract = original.SubscriptionKeyParameterNamesContract
-type SubscriptionsDelegationSettingsProperties = original.SubscriptionsDelegationSettingsProperties
-type SubscriptionUpdateParameterProperties = original.SubscriptionUpdateParameterProperties
-type SubscriptionUpdateParameters = original.SubscriptionUpdateParameters
-type TenantConfigurationSyncStateContract = original.TenantConfigurationSyncStateContract
-type TermsOfServiceProperties = original.TermsOfServiceProperties
-type TokenBodyParameterContract = original.TokenBodyParameterContract
-type UserCollection = original.UserCollection
-type UserContract = original.UserContract
-type UserContractProperties = original.UserContractProperties
-type UserCreateParameterProperties = original.UserCreateParameterProperties
-type UserCreateParameters = original.UserCreateParameters
-type UserEntityBaseParameters = original.UserEntityBaseParameters
-type UserIdentityCollection = original.UserIdentityCollection
-type UserIdentityContract = original.UserIdentityContract
-type UserTokenParameters = original.UserTokenParameters
-type UserTokenResult = original.UserTokenResult
-type UserUpdateParameters = original.UserUpdateParameters
-type UserUpdateParametersProperties = original.UserUpdateParametersProperties
-type VirtualNetworkConfiguration = original.VirtualNetworkConfiguration
-type X509CertificateName = original.X509CertificateName
-type ProductGroupClient = original.ProductGroupClient
-type ProductPolicyClient = original.ProductPolicyClient
+type UserGroupsClient = original.UserGroupsClient
+type UserIdentitiesClient = original.UserIdentitiesClient
+type APIOperationsClient = original.APIOperationsClient
+type APIPolicyClient = original.APIPolicyClient
+type PropertiesClient = original.PropertiesClient
+type QuotaByPeriodKeysClient = original.QuotaByPeriodKeysClient
+type GroupsClient = original.GroupsClient
+type OperationsClient = original.OperationsClient
+type BackendsClient = original.BackendsClient
+type PolicySnippetsClient = original.PolicySnippetsClient
+type ProductApisClient = original.ProductApisClient
 type ReportsClient = original.ReportsClient
-type UserGroupClient = original.UserGroupClient
-type APIOperationPolicyClient = original.APIOperationPolicyClient
+type TenantAccessGitClient = original.TenantAccessGitClient
+type TenantPolicyClient = original.TenantPolicyClient
+type APIExportClient = original.APIExportClient
+type APIProductsClient = original.APIProductsClient
+type UsersClient = original.UsersClient
+type GroupUsersClient = original.GroupUsersClient
+type IdentityProvidersClient = original.IdentityProvidersClient
+type ProductGroupsClient = original.ProductGroupsClient
+type CertificatesClient = original.CertificatesClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type ManagementClient = original.ManagementClient
-type GroupClient = original.GroupClient
-type OperationsClient = original.OperationsClient
 type ProductSubscriptionsClient = original.ProductSubscriptionsClient
-type QuotaByPeriodKeysClient = original.QuotaByPeriodKeysClient
-type TenantAccessClient = original.TenantAccessClient
-type APIProductClient = original.APIProductClient
-type APISchemaClient = original.APISchemaClient
-type NetworkStatusClient = original.NetworkStatusClient
-type PolicySnippetsClient = original.PolicySnippetsClient
-type ProductClient = original.ProductClient
-type UserIdentitiesClient = original.UserIdentitiesClient
-type GroupUserClient = original.GroupUserClient
-type LoggerClient = original.LoggerClient
-type OpenIDConnectProviderClient = original.OpenIDConnectProviderClient
-type SignUpSettingsClient = original.SignUpSettingsClient
-type SubscriptionClient = original.SubscriptionClient
-type TenantAccessGitClient = original.TenantAccessGitClient
+type ServicesClient = original.ServicesClient
+type SubscriptionsClient = original.SubscriptionsClient
 type TenantConfigurationClient = original.TenantConfigurationClient
-type BackendClient = original.BackendClient
-type CertificateClient = original.CertificateClient
-type ServiceClient = original.ServiceClient
-type UserSubscriptionClient = original.UserSubscriptionClient
-type APIPolicyClient = original.APIPolicyClient
-type AuthorizationServerClient = original.AuthorizationServerClient
-type EmailTemplateClient = original.EmailTemplateClient
+type APIOperationsPolicyClient = original.APIOperationsPolicyClient
+type APIProtocolContract = original.APIProtocolContract
 
-func NewAPIClient(subscriptionID string) APIClient {
-	return original.NewAPIClient(subscriptionID)
+const (
+	HTTP  APIProtocolContract = original.HTTP
+	HTTPS APIProtocolContract = original.HTTPS
+)
+
+type APITypeContract = original.APITypeContract
+
+const (
+	APITypeContractHTTP APITypeContract = original.APITypeContractHTTP
+	APITypeContractSoap APITypeContract = original.APITypeContractSoap
+)
+
+type AsyncOperationState = original.AsyncOperationState
+
+const (
+	Failed     AsyncOperationState = original.Failed
+	InProgress AsyncOperationState = original.InProgress
+	Started    AsyncOperationState = original.Started
+	Succeeded  AsyncOperationState = original.Succeeded
+)
+
+type BackendProtocol = original.BackendProtocol
+
+const (
+	BackendProtocolHTTP BackendProtocol = original.BackendProtocolHTTP
+	BackendProtocolSoap BackendProtocol = original.BackendProtocolSoap
+)
+
+type BearerTokenSendingMethodsContract = original.BearerTokenSendingMethodsContract
+
+const (
+	AuthorizationHeader BearerTokenSendingMethodsContract = original.AuthorizationHeader
+	Query               BearerTokenSendingMethodsContract = original.Query
+)
+
+type ClientAuthenticationMethodContract = original.ClientAuthenticationMethodContract
+
+const (
+	Basic ClientAuthenticationMethodContract = original.Basic
+	Body  ClientAuthenticationMethodContract = original.Body
+)
+
+type ConnectivityStatusType = original.ConnectivityStatusType
+
+const (
+	Failure      ConnectivityStatusType = original.Failure
+	Initializing ConnectivityStatusType = original.Initializing
+	Success      ConnectivityStatusType = original.Success
+)
+
+type GrantTypesContract = original.GrantTypesContract
+
+const (
+	AuthorizationCode     GrantTypesContract = original.AuthorizationCode
+	ClientCredentials     GrantTypesContract = original.ClientCredentials
+	Implicit              GrantTypesContract = original.Implicit
+	ResourceOwnerPassword GrantTypesContract = original.ResourceOwnerPassword
+)
+
+type GroupTypeContract = original.GroupTypeContract
+
+const (
+	Custom   GroupTypeContract = original.Custom
+	External GroupTypeContract = original.External
+	System   GroupTypeContract = original.System
+)
+
+type HostnameType = original.HostnameType
+
+const (
+	Management HostnameType = original.Management
+	Portal     HostnameType = original.Portal
+	Proxy      HostnameType = original.Proxy
+	Scm        HostnameType = original.Scm
+)
+
+type HTTPStatusCode = original.HTTPStatusCode
+
+const (
+	Accepted HTTPStatusCode = original.Accepted
+	Conflict HTTPStatusCode = original.Conflict
+	Continue HTTPStatusCode = original.Continue
+	Created  HTTPStatusCode = original.Created
+	NotFound HTTPStatusCode = original.NotFound
+	OK       HTTPStatusCode = original.OK
+)
+
+type IdentityProviderNameType = original.IdentityProviderNameType
+
+const (
+	Aad       IdentityProviderNameType = original.Aad
+	AadB2C    IdentityProviderNameType = original.AadB2C
+	Facebook  IdentityProviderNameType = original.Facebook
+	Google    IdentityProviderNameType = original.Google
+	Microsoft IdentityProviderNameType = original.Microsoft
+	Twitter   IdentityProviderNameType = original.Twitter
+)
+
+type KeyTypeContract = original.KeyTypeContract
+
+const (
+	Primary   KeyTypeContract = original.Primary
+	Secondary KeyTypeContract = original.Secondary
+)
+
+type MethodContract = original.MethodContract
+
+const (
+	DELETE  MethodContract = original.DELETE
+	GET     MethodContract = original.GET
+	HEAD    MethodContract = original.HEAD
+	OPTIONS MethodContract = original.OPTIONS
+	PATCH   MethodContract = original.PATCH
+	POST    MethodContract = original.POST
+	PUT     MethodContract = original.PUT
+	TRACE   MethodContract = original.TRACE
+)
+
+type NameAvailabilityReason = original.NameAvailabilityReason
+
+const (
+	AlreadyExists NameAvailabilityReason = original.AlreadyExists
+	Invalid       NameAvailabilityReason = original.Invalid
+	Valid         NameAvailabilityReason = original.Valid
+)
+
+type PolicyScopeContract = original.PolicyScopeContract
+
+const (
+	PolicyScopeContractAll       PolicyScopeContract = original.PolicyScopeContractAll
+	PolicyScopeContractAPI       PolicyScopeContract = original.PolicyScopeContractAPI
+	PolicyScopeContractOperation PolicyScopeContract = original.PolicyScopeContractOperation
+	PolicyScopeContractProduct   PolicyScopeContract = original.PolicyScopeContractProduct
+	PolicyScopeContractTenant    PolicyScopeContract = original.PolicyScopeContractTenant
+)
+
+type ProductStateContract = original.ProductStateContract
+
+const (
+	NotPublished ProductStateContract = original.NotPublished
+	Published    ProductStateContract = original.Published
+)
+
+type ReportsAggregation = original.ReportsAggregation
+
+const (
+	ByAPI          ReportsAggregation = original.ByAPI
+	ByGeo          ReportsAggregation = original.ByGeo
+	ByOperation    ReportsAggregation = original.ByOperation
+	ByProduct      ReportsAggregation = original.ByProduct
+	BySubscription ReportsAggregation = original.BySubscription
+	ByTime         ReportsAggregation = original.ByTime
+	ByUser         ReportsAggregation = original.ByUser
+)
+
+type SkuType = original.SkuType
+
+const (
+	Developer SkuType = original.Developer
+	Premium   SkuType = original.Premium
+	Standard  SkuType = original.Standard
+)
+
+type SubscriptionStateContract = original.SubscriptionStateContract
+
+const (
+	Active    SubscriptionStateContract = original.Active
+	Cancelled SubscriptionStateContract = original.Cancelled
+	Expired   SubscriptionStateContract = original.Expired
+	Rejected  SubscriptionStateContract = original.Rejected
+	Submitted SubscriptionStateContract = original.Submitted
+	Suspended SubscriptionStateContract = original.Suspended
+)
+
+type UserStateContract = original.UserStateContract
+
+const (
+	UserStateContractActive  UserStateContract = original.UserStateContractActive
+	UserStateContractBlocked UserStateContract = original.UserStateContractBlocked
+)
+
+type VirtualNetworkType = original.VirtualNetworkType
+
+const (
+	VirtualNetworkTypeExternal VirtualNetworkType = original.VirtualNetworkTypeExternal
+	VirtualNetworkTypeInternal VirtualNetworkType = original.VirtualNetworkTypeInternal
+	VirtualNetworkTypeNone     VirtualNetworkType = original.VirtualNetworkTypeNone
+)
+
+type AccessInformationContract = original.AccessInformationContract
+type AccessInformationUpdateParameters = original.AccessInformationUpdateParameters
+type AdditionalRegion = original.AdditionalRegion
+type APICollection = original.APICollection
+type APIContract = original.APIContract
+type APIEntityBaseContract = original.APIEntityBaseContract
+type APIExportResult = original.APIExportResult
+type APIUpdateContract = original.APIUpdateContract
+type AuthenticationSettingsContract = original.AuthenticationSettingsContract
+type AuthorizationServerCollection = original.AuthorizationServerCollection
+type BackendAuthorizationHeaderCredentials = original.BackendAuthorizationHeaderCredentials
+type BackendBaseParameters = original.BackendBaseParameters
+type BackendCollection = original.BackendCollection
+type BackendContract = original.BackendContract
+type BackendCredentialsContract = original.BackendCredentialsContract
+type BackendProperties = original.BackendProperties
+type BackendProxyContract = original.BackendProxyContract
+type BackendResponse = original.BackendResponse
+type BackendUpdateParameters = original.BackendUpdateParameters
+type CertificateCollection = original.CertificateCollection
+type CertificateContract = original.CertificateContract
+type CertificateCreateOrUpdateParameters = original.CertificateCreateOrUpdateParameters
+type CertificateInformation = original.CertificateInformation
+type ConnectivityStatusContract = original.ConnectivityStatusContract
+type DeployConfigurationParameters = original.DeployConfigurationParameters
+type ErrorBodyContract = original.ErrorBodyContract
+type ErrorFieldContract = original.ErrorFieldContract
+type ErrorResponse = original.ErrorResponse
+type GenerateSsoURLResult = original.GenerateSsoURLResult
+type GroupCollection = original.GroupCollection
+type GroupContract = original.GroupContract
+type GroupCreateParameters = original.GroupCreateParameters
+type GroupUpdateParameters = original.GroupUpdateParameters
+type HostnameConfiguration = original.HostnameConfiguration
+type IdentityProviderContract = original.IdentityProviderContract
+type IdentityProviderList = original.IdentityProviderList
+type IdentityProviderUpdateParameters = original.IdentityProviderUpdateParameters
+type LoggerCollection = original.LoggerCollection
+type LoggerCreateParameters = original.LoggerCreateParameters
+type LoggerResponse = original.LoggerResponse
+type LoggerUpdateParameters = original.LoggerUpdateParameters
+type NetworkStatusContract = original.NetworkStatusContract
+type OAuth2AuthenticationSettingsContract = original.OAuth2AuthenticationSettingsContract
+type OAuth2AuthorizationServerContract = original.OAuth2AuthorizationServerContract
+type OAuth2AuthorizationServerUpdateContract = original.OAuth2AuthorizationServerUpdateContract
+type OpenIDConnectProviderCollection = original.OpenIDConnectProviderCollection
+type OpenidConnectProviderContract = original.OpenidConnectProviderContract
+type OpenidConnectProviderCreateContract = original.OpenidConnectProviderCreateContract
+type OpenidConnectProviderUpdateContract = original.OpenidConnectProviderUpdateContract
+type Operation = original.Operation
+type OperationCollection = original.OperationCollection
+type OperationContract = original.OperationContract
+type OperationDisplay = original.OperationDisplay
+type OperationEntityBaseContract = original.OperationEntityBaseContract
+type OperationListResult = original.OperationListResult
+type OperationResultContract = original.OperationResultContract
+type OperationUpdateContract = original.OperationUpdateContract
+type ParameterContract = original.ParameterContract
+type PolicySnippetContract = original.PolicySnippetContract
+type PolicySnippetsCollection = original.PolicySnippetsCollection
+type ProductCollection = original.ProductCollection
+type ProductContract = original.ProductContract
+type ProductUpdateParameters = original.ProductUpdateParameters
+type PropertyCollection = original.PropertyCollection
+type PropertyContract = original.PropertyContract
+type PropertyCreateParameters = original.PropertyCreateParameters
+type PropertyUpdateParameters = original.PropertyUpdateParameters
+type QuotaCounterCollection = original.QuotaCounterCollection
+type QuotaCounterContract = original.QuotaCounterContract
+type QuotaCounterValueContract = original.QuotaCounterValueContract
+type ReadCloser = original.ReadCloser
+type RegionContract = original.RegionContract
+type RegionListResult = original.RegionListResult
+type ReportCollection = original.ReportCollection
+type ReportRecordContract = original.ReportRecordContract
+type RepresentationContract = original.RepresentationContract
+type RequestContract = original.RequestContract
+type Resource = original.Resource
+type ResultContract = original.ResultContract
+type SaveConfigurationParameter = original.SaveConfigurationParameter
+type ServiceBackupRestoreParameters = original.ServiceBackupRestoreParameters
+type ServiceCheckNameAvailabilityParameters = original.ServiceCheckNameAvailabilityParameters
+type ServiceGetSsoTokenResult = original.ServiceGetSsoTokenResult
+type ServiceListResult = original.ServiceListResult
+type ServiceManageDeploymentsParameters = original.ServiceManageDeploymentsParameters
+type ServiceNameAvailabilityResult = original.ServiceNameAvailabilityResult
+type ServiceProperties = original.ServiceProperties
+type ServiceResource = original.ServiceResource
+type ServiceSkuProperties = original.ServiceSkuProperties
+type ServiceUpdateHostnameParameters = original.ServiceUpdateHostnameParameters
+type ServiceUpdateParameters = original.ServiceUpdateParameters
+type ServiceUploadCertificateParameters = original.ServiceUploadCertificateParameters
+type SubscriptionCollection = original.SubscriptionCollection
+type SubscriptionContract = original.SubscriptionContract
+type SubscriptionCreateParameters = original.SubscriptionCreateParameters
+type SubscriptionKeyParameterNamesContract = original.SubscriptionKeyParameterNamesContract
+type SubscriptionUpdateParameters = original.SubscriptionUpdateParameters
+type TenantConfigurationSyncStateContract = original.TenantConfigurationSyncStateContract
+type TokenBodyParameterContract = original.TokenBodyParameterContract
+type UserCollection = original.UserCollection
+type UserContract = original.UserContract
+type UserCreateParameters = original.UserCreateParameters
+type UserIdentityCollection = original.UserIdentityCollection
+type UserIdentityContract = original.UserIdentityContract
+type UserTokenParameters = original.UserTokenParameters
+type UserTokenResult = original.UserTokenResult
+type UserUpdateParameters = original.UserUpdateParameters
+type VirtualNetworkConfiguration = original.VirtualNetworkConfiguration
+type ProductPolicyClient = original.ProductPolicyClient
+type ProductsClient = original.ProductsClient
+type TenantAccessClient = original.TenantAccessClient
+type TenantConfigurationSyncStateClient = original.TenantConfigurationSyncStateClient
+type UserSubscriptionsClient = original.UserSubscriptionsClient
+type AuthorizationServersClient = original.AuthorizationServersClient
+type LoggersClient = original.LoggersClient
+type RegionsClient = original.RegionsClient
+type ApisClient = original.ApisClient
+type PropertyClient = original.PropertyClient
+
+func NewAPIPolicyClient(subscriptionID string) APIPolicyClient {
+	return original.NewAPIPolicyClient(subscriptionID)
 }
-func NewAPIClientWithBaseURI(baseURI string, subscriptionID string) APIClient {
-	return original.NewAPIClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAPIOperationClient(subscriptionID string) APIOperationClient {
-	return original.NewAPIOperationClient(subscriptionID)
-}
-func NewAPIOperationClientWithBaseURI(baseURI string, subscriptionID string) APIOperationClient {
-	return original.NewAPIOperationClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProductAPIClient(subscriptionID string) ProductAPIClient {
-	return original.NewProductAPIClient(subscriptionID)
-}
-func NewProductAPIClientWithBaseURI(baseURI string, subscriptionID string) ProductAPIClient {
-	return original.NewProductAPIClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPropertyClient(subscriptionID string) PropertyClient {
-	return original.NewPropertyClient(subscriptionID)
-}
-func NewPropertyClientWithBaseURI(baseURI string, subscriptionID string) PropertyClient {
-	return original.NewPropertyClientWithBaseURI(baseURI, subscriptionID)
+func NewAPIPolicyClientWithBaseURI(baseURI string, subscriptionID string) APIPolicyClient {
+	return original.NewAPIPolicyClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewQuotaByCounterKeysClient(subscriptionID string) QuotaByCounterKeysClient {
 	return original.NewQuotaByCounterKeysClient(subscriptionID)
@@ -484,167 +379,11 @@ func NewQuotaByCounterKeysClient(subscriptionID string) QuotaByCounterKeysClient
 func NewQuotaByCounterKeysClientWithBaseURI(baseURI string, subscriptionID string) QuotaByCounterKeysClient {
 	return original.NewQuotaByCounterKeysClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewUserGroupClient(subscriptionID string) UserGroupClient {
-	return original.NewUserGroupClient(subscriptionID)
+func NewUserGroupsClient(subscriptionID string) UserGroupsClient {
+	return original.NewUserGroupsClient(subscriptionID)
 }
-func NewUserGroupClientWithBaseURI(baseURI string, subscriptionID string) UserGroupClient {
-	return original.NewUserGroupClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewDelegationSettingsClient(subscriptionID string) DelegationSettingsClient {
-	return original.NewDelegationSettingsClient(subscriptionID)
-}
-func NewDelegationSettingsClientWithBaseURI(baseURI string, subscriptionID string) DelegationSettingsClient {
-	return original.NewDelegationSettingsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPolicyClient(subscriptionID string) PolicyClient {
-	return original.NewPolicyClient(subscriptionID)
-}
-func NewPolicyClientWithBaseURI(baseURI string, subscriptionID string) PolicyClient {
-	return original.NewPolicyClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAPIExportClient(subscriptionID string) APIExportClient {
-	return original.NewAPIExportClient(subscriptionID)
-}
-func NewAPIExportClientWithBaseURI(baseURI string, subscriptionID string) APIExportClient {
-	return original.NewAPIExportClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewIdentityProviderClient(subscriptionID string) IdentityProviderClient {
-	return original.NewIdentityProviderClient(subscriptionID)
-}
-func NewIdentityProviderClientWithBaseURI(baseURI string, subscriptionID string) IdentityProviderClient {
-	return original.NewIdentityProviderClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRegionsClient(subscriptionID string) RegionsClient {
-	return original.NewRegionsClient(subscriptionID)
-}
-func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsClient {
-	return original.NewRegionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSignInSettingsClient(subscriptionID string) SignInSettingsClient {
-	return original.NewSignInSettingsClient(subscriptionID)
-}
-func NewSignInSettingsClientWithBaseURI(baseURI string, subscriptionID string) SignInSettingsClient {
-	return original.NewSignInSettingsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAPIOperationPolicyClient(subscriptionID string) APIOperationPolicyClient {
-	return original.NewAPIOperationPolicyClient(subscriptionID)
-}
-func NewAPIOperationPolicyClientWithBaseURI(baseURI string, subscriptionID string) APIOperationPolicyClient {
-	return original.NewAPIOperationPolicyClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewGroupClient(subscriptionID string) GroupClient {
-	return original.NewGroupClient(subscriptionID)
-}
-func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClient {
-	return original.NewGroupClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProductGroupClient(subscriptionID string) ProductGroupClient {
-	return original.NewProductGroupClient(subscriptionID)
-}
-func NewProductGroupClientWithBaseURI(baseURI string, subscriptionID string) ProductGroupClient {
-	return original.NewProductGroupClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProductPolicyClient(subscriptionID string) ProductPolicyClient {
-	return original.NewProductPolicyClient(subscriptionID)
-}
-func NewProductPolicyClientWithBaseURI(baseURI string, subscriptionID string) ProductPolicyClient {
-	return original.NewProductPolicyClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewReportsClient(subscriptionID string) ReportsClient {
-	return original.NewReportsClient(subscriptionID)
-}
-func NewReportsClientWithBaseURI(baseURI string, subscriptionID string) ReportsClient {
-	return original.NewReportsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUserGroupClient(subscriptionID string) UserGroupClient {
-	return original.NewUserGroupClient(subscriptionID)
-}
-func NewUserGroupClientWithBaseURI(baseURI string, subscriptionID string) UserGroupClient {
-	return original.NewUserGroupClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAPIProductClient(subscriptionID string) APIProductClient {
-	return original.NewAPIProductClient(subscriptionID)
-}
-func NewAPIProductClientWithBaseURI(baseURI string, subscriptionID string) APIProductClient {
-	return original.NewAPIProductClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAPISchemaClient(subscriptionID string) APISchemaClient {
-	return original.NewAPISchemaClient(subscriptionID)
-}
-func NewAPISchemaClientWithBaseURI(baseURI string, subscriptionID string) APISchemaClient {
-	return original.NewAPISchemaClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewNetworkStatusClient(subscriptionID string) NetworkStatusClient {
-	return original.NewNetworkStatusClient(subscriptionID)
-}
-func NewNetworkStatusClientWithBaseURI(baseURI string, subscriptionID string) NetworkStatusClient {
-	return original.NewNetworkStatusClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProductSubscriptionsClient(subscriptionID string) ProductSubscriptionsClient {
-	return original.NewProductSubscriptionsClient(subscriptionID)
-}
-func NewProductSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) ProductSubscriptionsClient {
-	return original.NewProductSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewQuotaByPeriodKeysClient(subscriptionID string) QuotaByPeriodKeysClient {
-	return original.NewQuotaByPeriodKeysClient(subscriptionID)
-}
-func NewQuotaByPeriodKeysClientWithBaseURI(baseURI string, subscriptionID string) QuotaByPeriodKeysClient {
-	return original.NewQuotaByPeriodKeysClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTenantAccessClient(subscriptionID string) TenantAccessClient {
-	return original.NewTenantAccessClient(subscriptionID)
-}
-func NewTenantAccessClientWithBaseURI(baseURI string, subscriptionID string) TenantAccessClient {
-	return original.NewTenantAccessClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewGroupUserClient(subscriptionID string) GroupUserClient {
-	return original.NewGroupUserClient(subscriptionID)
-}
-func NewGroupUserClientWithBaseURI(baseURI string, subscriptionID string) GroupUserClient {
-	return original.NewGroupUserClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewLoggerClient(subscriptionID string) LoggerClient {
-	return original.NewLoggerClient(subscriptionID)
-}
-func NewLoggerClientWithBaseURI(baseURI string, subscriptionID string) LoggerClient {
-	return original.NewLoggerClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOpenIDConnectProviderClient(subscriptionID string) OpenIDConnectProviderClient {
-	return original.NewOpenIDConnectProviderClient(subscriptionID)
-}
-func NewOpenIDConnectProviderClientWithBaseURI(baseURI string, subscriptionID string) OpenIDConnectProviderClient {
-	return original.NewOpenIDConnectProviderClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPolicySnippetsClient(subscriptionID string) PolicySnippetsClient {
-	return original.NewPolicySnippetsClient(subscriptionID)
-}
-func NewPolicySnippetsClientWithBaseURI(baseURI string, subscriptionID string) PolicySnippetsClient {
-	return original.NewPolicySnippetsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProductClient(subscriptionID string) ProductClient {
-	return original.NewProductClient(subscriptionID)
-}
-func NewProductClientWithBaseURI(baseURI string, subscriptionID string) ProductClient {
-	return original.NewProductClientWithBaseURI(baseURI, subscriptionID)
+func NewUserGroupsClientWithBaseURI(baseURI string, subscriptionID string) UserGroupsClient {
+	return original.NewUserGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewUserIdentitiesClient(subscriptionID string) UserIdentitiesClient {
 	return original.NewUserIdentitiesClient(subscriptionID)
@@ -652,35 +391,71 @@ func NewUserIdentitiesClient(subscriptionID string) UserIdentitiesClient {
 func NewUserIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) UserIdentitiesClient {
 	return original.NewUserIdentitiesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewBackendClient(subscriptionID string) BackendClient {
-	return original.NewBackendClient(subscriptionID)
+func NewAPIOperationsClient(subscriptionID string) APIOperationsClient {
+	return original.NewAPIOperationsClient(subscriptionID)
 }
-func NewBackendClientWithBaseURI(baseURI string, subscriptionID string) BackendClient {
-	return original.NewBackendClientWithBaseURI(baseURI, subscriptionID)
+func NewAPIOperationsClientWithBaseURI(baseURI string, subscriptionID string) APIOperationsClient {
+	return original.NewAPIOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewCertificateClient(subscriptionID string) CertificateClient {
-	return original.NewCertificateClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) CertificateClient {
-	return original.NewCertificateClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewServiceClient(subscriptionID string) ServiceClient {
-	return original.NewServiceClient(subscriptionID)
+func NewPropertiesClient(subscriptionID string) PropertiesClient {
+	return original.NewPropertiesClient(subscriptionID)
 }
-func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
-	return original.NewServiceClientWithBaseURI(baseURI, subscriptionID)
+func NewPropertiesClientWithBaseURI(baseURI string, subscriptionID string) PropertiesClient {
+	return original.NewPropertiesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSignUpSettingsClient(subscriptionID string) SignUpSettingsClient {
-	return original.NewSignUpSettingsClient(subscriptionID)
+func NewQuotaByPeriodKeysClient(subscriptionID string) QuotaByPeriodKeysClient {
+	return original.NewQuotaByPeriodKeysClient(subscriptionID)
 }
-func NewSignUpSettingsClientWithBaseURI(baseURI string, subscriptionID string) SignUpSettingsClient {
-	return original.NewSignUpSettingsClientWithBaseURI(baseURI, subscriptionID)
+func NewQuotaByPeriodKeysClientWithBaseURI(baseURI string, subscriptionID string) QuotaByPeriodKeysClient {
+	return original.NewQuotaByPeriodKeysClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSubscriptionClient(subscriptionID string) SubscriptionClient {
-	return original.NewSubscriptionClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewSubscriptionClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionClient {
-	return original.NewSubscriptionClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
+}
+func NewGroupsClient(subscriptionID string) GroupsClient {
+	return original.NewGroupsClient(subscriptionID)
+}
+func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string) GroupsClient {
+	return original.NewGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAPIProductsClient(subscriptionID string) APIProductsClient {
+	return original.NewAPIProductsClient(subscriptionID)
+}
+func NewAPIProductsClientWithBaseURI(baseURI string, subscriptionID string) APIProductsClient {
+	return original.NewAPIProductsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBackendsClient(subscriptionID string) BackendsClient {
+	return original.NewBackendsClient(subscriptionID)
+}
+func NewBackendsClientWithBaseURI(baseURI string, subscriptionID string) BackendsClient {
+	return original.NewBackendsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPolicySnippetsClient(subscriptionID string) PolicySnippetsClient {
+	return original.NewPolicySnippetsClient(subscriptionID)
+}
+func NewPolicySnippetsClientWithBaseURI(baseURI string, subscriptionID string) PolicySnippetsClient {
+	return original.NewPolicySnippetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProductApisClient(subscriptionID string) ProductApisClient {
+	return original.NewProductApisClient(subscriptionID)
+}
+func NewProductApisClientWithBaseURI(baseURI string, subscriptionID string) ProductApisClient {
+	return original.NewProductApisClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewReportsClient(subscriptionID string) ReportsClient {
+	return original.NewReportsClient(subscriptionID)
+}
+func NewReportsClientWithBaseURI(baseURI string, subscriptionID string) ReportsClient {
+	return original.NewReportsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTenantAccessGitClient(subscriptionID string) TenantAccessGitClient {
 	return original.NewTenantAccessGitClient(subscriptionID)
@@ -688,33 +463,153 @@ func NewTenantAccessGitClient(subscriptionID string) TenantAccessGitClient {
 func NewTenantAccessGitClientWithBaseURI(baseURI string, subscriptionID string) TenantAccessGitClient {
 	return original.NewTenantAccessGitClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewTenantPolicyClient(subscriptionID string) TenantPolicyClient {
+	return original.NewTenantPolicyClient(subscriptionID)
+}
+func NewTenantPolicyClientWithBaseURI(baseURI string, subscriptionID string) TenantPolicyClient {
+	return original.NewTenantPolicyClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAPIExportClient(subscriptionID string) APIExportClient {
+	return original.NewAPIExportClient(subscriptionID)
+}
+func NewAPIExportClientWithBaseURI(baseURI string, subscriptionID string) APIExportClient {
+	return original.NewAPIExportClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsersClient(subscriptionID string) UsersClient {
+	return original.NewUsersClient(subscriptionID)
+}
+func NewUsersClientWithBaseURI(baseURI string, subscriptionID string) UsersClient {
+	return original.NewUsersClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewGroupUsersClient(subscriptionID string) GroupUsersClient {
+	return original.NewGroupUsersClient(subscriptionID)
+}
+func NewGroupUsersClientWithBaseURI(baseURI string, subscriptionID string) GroupUsersClient {
+	return original.NewGroupUsersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIdentityProvidersClient(subscriptionID string) IdentityProvidersClient {
+	return original.NewIdentityProvidersClient(subscriptionID)
+}
+func NewIdentityProvidersClientWithBaseURI(baseURI string, subscriptionID string) IdentityProvidersClient {
+	return original.NewIdentityProvidersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProductGroupsClient(subscriptionID string) ProductGroupsClient {
+	return original.NewProductGroupsClient(subscriptionID)
+}
+func NewProductGroupsClientWithBaseURI(baseURI string, subscriptionID string) ProductGroupsClient {
+	return original.NewProductGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCertificatesClient(subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClient(subscriptionID)
+}
+func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProductSubscriptionsClient(subscriptionID string) ProductSubscriptionsClient {
+	return original.NewProductSubscriptionsClient(subscriptionID)
+}
+func NewProductSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) ProductSubscriptionsClient {
+	return original.NewProductSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServicesClient(subscriptionID string) ServicesClient {
+	return original.NewServicesClient(subscriptionID)
+}
+func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
+	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
+	return original.NewSubscriptionsClient(subscriptionID)
+}
+func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewTenantConfigurationClient(subscriptionID string) TenantConfigurationClient {
 	return original.NewTenantConfigurationClient(subscriptionID)
 }
 func NewTenantConfigurationClientWithBaseURI(baseURI string, subscriptionID string) TenantConfigurationClient {
 	return original.NewTenantConfigurationClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAPIPolicyClient(subscriptionID string) APIPolicyClient {
-	return original.NewAPIPolicyClient(subscriptionID)
+func NewAPIOperationsPolicyClient(subscriptionID string) APIOperationsPolicyClient {
+	return original.NewAPIOperationsPolicyClient(subscriptionID)
 }
-func NewAPIPolicyClientWithBaseURI(baseURI string, subscriptionID string) APIPolicyClient {
-	return original.NewAPIPolicyClientWithBaseURI(baseURI, subscriptionID)
+func NewAPIOperationsPolicyClientWithBaseURI(baseURI string, subscriptionID string) APIOperationsPolicyClient {
+	return original.NewAPIOperationsPolicyClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAuthorizationServerClient(subscriptionID string) AuthorizationServerClient {
-	return original.NewAuthorizationServerClient(subscriptionID)
+func NewLoggersClient(subscriptionID string) LoggersClient {
+	return original.NewLoggersClient(subscriptionID)
 }
-func NewAuthorizationServerClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationServerClient {
-	return original.NewAuthorizationServerClientWithBaseURI(baseURI, subscriptionID)
+func NewLoggersClientWithBaseURI(baseURI string, subscriptionID string) LoggersClient {
+	return original.NewLoggersClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewEmailTemplateClient(subscriptionID string) EmailTemplateClient {
-	return original.NewEmailTemplateClient(subscriptionID)
+func NewProductPolicyClient(subscriptionID string) ProductPolicyClient {
+	return original.NewProductPolicyClient(subscriptionID)
 }
-func NewEmailTemplateClientWithBaseURI(baseURI string, subscriptionID string) EmailTemplateClient {
-	return original.NewEmailTemplateClientWithBaseURI(baseURI, subscriptionID)
+func NewProductPolicyClientWithBaseURI(baseURI string, subscriptionID string) ProductPolicyClient {
+	return original.NewProductPolicyClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewUserSubscriptionClient(subscriptionID string) UserSubscriptionClient {
-	return original.NewUserSubscriptionClient(subscriptionID)
+func NewProductsClient(subscriptionID string) ProductsClient {
+	return original.NewProductsClient(subscriptionID)
 }
-func NewUserSubscriptionClientWithBaseURI(baseURI string, subscriptionID string) UserSubscriptionClient {
-	return original.NewUserSubscriptionClientWithBaseURI(baseURI, subscriptionID)
+func NewProductsClientWithBaseURI(baseURI string, subscriptionID string) ProductsClient {
+	return original.NewProductsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTenantAccessClient(subscriptionID string) TenantAccessClient {
+	return original.NewTenantAccessClient(subscriptionID)
+}
+func NewTenantAccessClientWithBaseURI(baseURI string, subscriptionID string) TenantAccessClient {
+	return original.NewTenantAccessClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTenantConfigurationSyncStateClient(subscriptionID string) TenantConfigurationSyncStateClient {
+	return original.NewTenantConfigurationSyncStateClient(subscriptionID)
+}
+func NewTenantConfigurationSyncStateClientWithBaseURI(baseURI string, subscriptionID string) TenantConfigurationSyncStateClient {
+	return original.NewTenantConfigurationSyncStateClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUserSubscriptionsClient(subscriptionID string) UserSubscriptionsClient {
+	return original.NewUserSubscriptionsClient(subscriptionID)
+}
+func NewUserSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) UserSubscriptionsClient {
+	return original.NewUserSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAuthorizationServersClient(subscriptionID string) AuthorizationServersClient {
+	return original.NewAuthorizationServersClient(subscriptionID)
+}
+func NewAuthorizationServersClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationServersClient {
+	return original.NewAuthorizationServersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPropertyClient(subscriptionID string) PropertyClient {
+	return original.NewPropertyClient(subscriptionID)
+}
+func NewPropertyClientWithBaseURI(baseURI string, subscriptionID string) PropertyClient {
+	return original.NewPropertyClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRegionsClient(subscriptionID string) RegionsClient {
+	return original.NewRegionsClient(subscriptionID)
+}
+func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsClient {
+	return original.NewRegionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewApisClient(subscriptionID string) ApisClient {
+	return original.NewApisClient(subscriptionID)
+}
+func NewApisClientWithBaseURI(baseURI string, subscriptionID string) ApisClient {
+	return original.NewApisClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOpenIDConnectProvidersClient(subscriptionID string) OpenIDConnectProvidersClient {
+	return original.NewOpenIDConnectProvidersClient(subscriptionID)
+}
+func NewOpenIDConnectProvidersClientWithBaseURI(baseURI string, subscriptionID string) OpenIDConnectProvidersClient {
+	return original.NewOpenIDConnectProvidersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNetworkStatusClient(subscriptionID string) NetworkStatusClient {
+	return original.NewNetworkStatusClient(subscriptionID)
+}
+func NewNetworkStatusClientWithBaseURI(baseURI string, subscriptionID string) NetworkStatusClient {
+	return original.NewNetworkStatusClientWithBaseURI(baseURI, subscriptionID)
 }

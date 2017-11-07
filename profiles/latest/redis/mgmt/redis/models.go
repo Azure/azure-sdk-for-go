@@ -22,56 +22,57 @@ package redis
 
 import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-02-01/redis"
 
+type GroupClient = original.GroupClient
 type LinkedServerClient = original.LinkedServerClient
 type DayOfWeek = original.DayOfWeek
 
 const (
-	Everyday	DayOfWeek	= original.Everyday
-	Friday		DayOfWeek	= original.Friday
-	Monday		DayOfWeek	= original.Monday
-	Saturday	DayOfWeek	= original.Saturday
-	Sunday		DayOfWeek	= original.Sunday
-	Thursday	DayOfWeek	= original.Thursday
-	Tuesday		DayOfWeek	= original.Tuesday
-	Wednesday	DayOfWeek	= original.Wednesday
-	Weekend		DayOfWeek	= original.Weekend
+	Everyday  DayOfWeek = original.Everyday
+	Friday    DayOfWeek = original.Friday
+	Monday    DayOfWeek = original.Monday
+	Saturday  DayOfWeek = original.Saturday
+	Sunday    DayOfWeek = original.Sunday
+	Thursday  DayOfWeek = original.Thursday
+	Tuesday   DayOfWeek = original.Tuesday
+	Wednesday DayOfWeek = original.Wednesday
+	Weekend   DayOfWeek = original.Weekend
 )
 
 type KeyType = original.KeyType
 
 const (
-	Primary		KeyType	= original.Primary
-	Secondary	KeyType	= original.Secondary
+	Primary   KeyType = original.Primary
+	Secondary KeyType = original.Secondary
 )
 
 type RebootType = original.RebootType
 
 const (
-	AllNodes	RebootType	= original.AllNodes
-	PrimaryNode	RebootType	= original.PrimaryNode
-	SecondaryNode	RebootType	= original.SecondaryNode
+	AllNodes      RebootType = original.AllNodes
+	PrimaryNode   RebootType = original.PrimaryNode
+	SecondaryNode RebootType = original.SecondaryNode
 )
 
 type ReplicationRole = original.ReplicationRole
 
 const (
-	ReplicationRolePrimary		ReplicationRole	= original.ReplicationRolePrimary
-	ReplicationRoleSecondary	ReplicationRole	= original.ReplicationRoleSecondary
+	ReplicationRolePrimary   ReplicationRole = original.ReplicationRolePrimary
+	ReplicationRoleSecondary ReplicationRole = original.ReplicationRoleSecondary
 )
 
 type SkuFamily = original.SkuFamily
 
 const (
-	C	SkuFamily	= original.C
-	P	SkuFamily	= original.P
+	C SkuFamily = original.C
+	P SkuFamily = original.P
 )
 
 type SkuName = original.SkuName
 
 const (
-	Basic		SkuName	= original.Basic
-	Premium		SkuName	= original.Premium
-	Standard	SkuName	= original.Standard
+	Basic    SkuName = original.Basic
+	Premium  SkuName = original.Premium
+	Standard SkuName = original.Standard
 )
 
 type AccessKeys = original.AccessKeys
@@ -117,8 +118,19 @@ const (
 
 type ManagementClient = original.ManagementClient
 type FirewallRulesClient = original.FirewallRulesClient
-type GroupClient = original.GroupClient
 
+func NewGroupClient(subscriptionID string) GroupClient {
+	return original.NewGroupClient(subscriptionID)
+}
+func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClient {
+	return original.NewGroupClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLinkedServerClient(subscriptionID string) LinkedServerClient {
+	return original.NewLinkedServerClient(subscriptionID)
+}
+func NewLinkedServerClientWithBaseURI(baseURI string, subscriptionID string) LinkedServerClient {
+	return original.NewLinkedServerClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -148,16 +160,4 @@ func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
 }
 func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
 	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewGroupClient(subscriptionID string) GroupClient {
-	return original.NewGroupClient(subscriptionID)
-}
-func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClient {
-	return original.NewGroupClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewLinkedServerClient(subscriptionID string) LinkedServerClient {
-	return original.NewLinkedServerClient(subscriptionID)
-}
-func NewLinkedServerClientWithBaseURI(baseURI string, subscriptionID string) LinkedServerClient {
-	return original.NewLinkedServerClientWithBaseURI(baseURI, subscriptionID)
 }

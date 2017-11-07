@@ -26,85 +26,85 @@ type ManagementClient = original.ManagementClient
 type ActionType = original.ActionType
 
 const (
-	AutoRenew	ActionType	= original.AutoRenew
-	EmailContacts	ActionType	= original.EmailContacts
+	AutoRenew     ActionType = original.AutoRenew
+	EmailContacts ActionType = original.EmailContacts
 )
 
 type DeletionRecoveryLevel = original.DeletionRecoveryLevel
 
 const (
-	Purgeable				DeletionRecoveryLevel	= original.Purgeable
-	Recoverable				DeletionRecoveryLevel	= original.Recoverable
-	RecoverableProtectedSubscription	DeletionRecoveryLevel	= original.RecoverableProtectedSubscription
-	RecoverablePurgeable			DeletionRecoveryLevel	= original.RecoverablePurgeable
+	Purgeable                        DeletionRecoveryLevel = original.Purgeable
+	Recoverable                      DeletionRecoveryLevel = original.Recoverable
+	RecoverableProtectedSubscription DeletionRecoveryLevel = original.RecoverableProtectedSubscription
+	RecoverablePurgeable             DeletionRecoveryLevel = original.RecoverablePurgeable
 )
 
 type JSONWebKeyCurveName = original.JSONWebKeyCurveName
 
 const (
-	P256		JSONWebKeyCurveName	= original.P256
-	P384		JSONWebKeyCurveName	= original.P384
-	P521		JSONWebKeyCurveName	= original.P521
-	SECP256K1	JSONWebKeyCurveName	= original.SECP256K1
+	P256      JSONWebKeyCurveName = original.P256
+	P384      JSONWebKeyCurveName = original.P384
+	P521      JSONWebKeyCurveName = original.P521
+	SECP256K1 JSONWebKeyCurveName = original.SECP256K1
 )
 
 type JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithm
 
 const (
-	RSA15		JSONWebKeyEncryptionAlgorithm	= original.RSA15
-	RSAOAEP		JSONWebKeyEncryptionAlgorithm	= original.RSAOAEP
-	RSAOAEP256	JSONWebKeyEncryptionAlgorithm	= original.RSAOAEP256
+	RSA15      JSONWebKeyEncryptionAlgorithm = original.RSA15
+	RSAOAEP    JSONWebKeyEncryptionAlgorithm = original.RSAOAEP
+	RSAOAEP256 JSONWebKeyEncryptionAlgorithm = original.RSAOAEP256
 )
 
 type JSONWebKeyOperation = original.JSONWebKeyOperation
 
 const (
-	Decrypt		JSONWebKeyOperation	= original.Decrypt
-	Encrypt		JSONWebKeyOperation	= original.Encrypt
-	Sign		JSONWebKeyOperation	= original.Sign
-	UnwrapKey	JSONWebKeyOperation	= original.UnwrapKey
-	Verify		JSONWebKeyOperation	= original.Verify
-	WrapKey		JSONWebKeyOperation	= original.WrapKey
+	Decrypt   JSONWebKeyOperation = original.Decrypt
+	Encrypt   JSONWebKeyOperation = original.Encrypt
+	Sign      JSONWebKeyOperation = original.Sign
+	UnwrapKey JSONWebKeyOperation = original.UnwrapKey
+	Verify    JSONWebKeyOperation = original.Verify
+	WrapKey   JSONWebKeyOperation = original.WrapKey
 )
 
 type JSONWebKeySignatureAlgorithm = original.JSONWebKeySignatureAlgorithm
 
 const (
-	ECDSA256	JSONWebKeySignatureAlgorithm	= original.ECDSA256
-	ES256		JSONWebKeySignatureAlgorithm	= original.ES256
-	ES384		JSONWebKeySignatureAlgorithm	= original.ES384
-	ES512		JSONWebKeySignatureAlgorithm	= original.ES512
-	PS256		JSONWebKeySignatureAlgorithm	= original.PS256
-	PS384		JSONWebKeySignatureAlgorithm	= original.PS384
-	PS512		JSONWebKeySignatureAlgorithm	= original.PS512
-	RS256		JSONWebKeySignatureAlgorithm	= original.RS256
-	RS384		JSONWebKeySignatureAlgorithm	= original.RS384
-	RS512		JSONWebKeySignatureAlgorithm	= original.RS512
-	RSNULL		JSONWebKeySignatureAlgorithm	= original.RSNULL
+	ECDSA256 JSONWebKeySignatureAlgorithm = original.ECDSA256
+	ES256    JSONWebKeySignatureAlgorithm = original.ES256
+	ES384    JSONWebKeySignatureAlgorithm = original.ES384
+	ES512    JSONWebKeySignatureAlgorithm = original.ES512
+	PS256    JSONWebKeySignatureAlgorithm = original.PS256
+	PS384    JSONWebKeySignatureAlgorithm = original.PS384
+	PS512    JSONWebKeySignatureAlgorithm = original.PS512
+	RS256    JSONWebKeySignatureAlgorithm = original.RS256
+	RS384    JSONWebKeySignatureAlgorithm = original.RS384
+	RS512    JSONWebKeySignatureAlgorithm = original.RS512
+	RSNULL   JSONWebKeySignatureAlgorithm = original.RSNULL
 )
 
 type JSONWebKeyType = original.JSONWebKeyType
 
 const (
-	EC	JSONWebKeyType	= original.EC
-	ECHSM	JSONWebKeyType	= original.ECHSM
-	Oct	JSONWebKeyType	= original.Oct
-	RSA	JSONWebKeyType	= original.RSA
-	RSAHSM	JSONWebKeyType	= original.RSAHSM
+	EC     JSONWebKeyType = original.EC
+	ECHSM  JSONWebKeyType = original.ECHSM
+	Oct    JSONWebKeyType = original.Oct
+	RSA    JSONWebKeyType = original.RSA
+	RSAHSM JSONWebKeyType = original.RSAHSM
 )
 
 type KeyUsageType = original.KeyUsageType
 
 const (
-	CRLSign			KeyUsageType	= original.CRLSign
-	DataEncipherment	KeyUsageType	= original.DataEncipherment
-	DecipherOnly		KeyUsageType	= original.DecipherOnly
-	DigitalSignature	KeyUsageType	= original.DigitalSignature
-	EncipherOnly		KeyUsageType	= original.EncipherOnly
-	KeyAgreement		KeyUsageType	= original.KeyAgreement
-	KeyCertSign		KeyUsageType	= original.KeyCertSign
-	KeyEncipherment		KeyUsageType	= original.KeyEncipherment
-	NonRepudiation		KeyUsageType	= original.NonRepudiation
+	CRLSign          KeyUsageType = original.CRLSign
+	DataEncipherment KeyUsageType = original.DataEncipherment
+	DecipherOnly     KeyUsageType = original.DecipherOnly
+	DigitalSignature KeyUsageType = original.DigitalSignature
+	EncipherOnly     KeyUsageType = original.EncipherOnly
+	KeyAgreement     KeyUsageType = original.KeyAgreement
+	KeyCertSign      KeyUsageType = original.KeyCertSign
+	KeyEncipherment  KeyUsageType = original.KeyEncipherment
+	NonRepudiation   KeyUsageType = original.NonRepudiation
 )
 
 type Action = original.Action

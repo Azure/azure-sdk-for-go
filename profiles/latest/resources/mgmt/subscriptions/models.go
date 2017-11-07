@@ -22,28 +22,22 @@ package subscriptions
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-06-01/subscriptions"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-type GroupClient = original.GroupClient
 type SpendingLimit = original.SpendingLimit
 
 const (
-	CurrentPeriodOff	SpendingLimit	= original.CurrentPeriodOff
-	Off			SpendingLimit	= original.Off
-	On			SpendingLimit	= original.On
+	CurrentPeriodOff SpendingLimit = original.CurrentPeriodOff
+	Off              SpendingLimit = original.Off
+	On               SpendingLimit = original.On
 )
 
 type State = original.State
 
 const (
-	Deleted		State	= original.Deleted
-	Disabled	State	= original.Disabled
-	Enabled		State	= original.Enabled
-	PastDue		State	= original.PastDue
-	Warned		State	= original.Warned
+	Deleted  State = original.Deleted
+	Disabled State = original.Disabled
+	Enabled  State = original.Enabled
+	PastDue  State = original.PastDue
+	Warned   State = original.Warned
 )
 
 type ListResult = original.ListResult
@@ -55,12 +49,13 @@ type TenantIDDescription = original.TenantIDDescription
 type TenantListResult = original.TenantListResult
 type TenantsClient = original.TenantsClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+type GroupClient = original.GroupClient
+
 func New() ManagementClient {
 	return original.New()
 }
@@ -78,4 +73,10 @@ func NewTenantsClient() TenantsClient {
 }
 func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
 	return original.NewTenantsClientWithBaseURI(baseURI)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }

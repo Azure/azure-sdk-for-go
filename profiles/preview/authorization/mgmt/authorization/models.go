@@ -22,6 +22,16 @@ package authorization
 
 import original "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 
+type ProviderOperationsMetadataClient = original.ProviderOperationsMetadataClient
+type RoleAssignmentsClient = original.RoleAssignmentsClient
+type RoleDefinitionsClient = original.RoleDefinitionsClient
+type ClassicAdministratorsClient = original.ClassicAdministratorsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
 type ClassicAdministrator = original.ClassicAdministrator
 type ClassicAdministratorListResult = original.ClassicAdministratorListResult
 type ClassicAdministratorProperties = original.ClassicAdministratorProperties
@@ -42,17 +52,13 @@ type RoleDefinitionFilter = original.RoleDefinitionFilter
 type RoleDefinitionListResult = original.RoleDefinitionListResult
 type RoleDefinitionProperties = original.RoleDefinitionProperties
 type PermissionsClient = original.PermissionsClient
-type ProviderOperationsMetadataClient = original.ProviderOperationsMetadataClient
-type RoleAssignmentsClient = original.RoleAssignmentsClient
-type RoleDefinitionsClient = original.RoleDefinitionsClient
-type ClassicAdministratorsClient = original.ClassicAdministratorsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-
+func NewPermissionsClient(subscriptionID string) PermissionsClient {
+	return original.NewPermissionsClient(subscriptionID)
+}
+func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) PermissionsClient {
+	return original.NewPermissionsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewProviderOperationsMetadataClient(subscriptionID string) ProviderOperationsMetadataClient {
 	return original.NewProviderOperationsMetadataClient(subscriptionID)
 }
@@ -88,10 +94,4 @@ func New(subscriptionID string) ManagementClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewPermissionsClient(subscriptionID string) PermissionsClient {
-	return original.NewPermissionsClient(subscriptionID)
-}
-func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) PermissionsClient {
-	return original.NewPermissionsClientWithBaseURI(baseURI, subscriptionID)
 }

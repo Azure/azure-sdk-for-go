@@ -22,8 +22,6 @@ package powerbiembedded
 
 import original "github.com/Azure/azure-sdk-for-go/services/powerbiembedded/mgmt/2016-01-29/powerbiembedded"
 
-type WorkspacesClient = original.WorkspacesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -32,15 +30,15 @@ type ManagementClient = original.ManagementClient
 type AccessKeyName = original.AccessKeyName
 
 const (
-	Key1	AccessKeyName	= original.Key1
-	Key2	AccessKeyName	= original.Key2
+	Key1 AccessKeyName = original.Key1
+	Key2 AccessKeyName = original.Key2
 )
 
 type CheckNameReason = original.CheckNameReason
 
 const (
-	Invalid		CheckNameReason	= original.Invalid
-	Unavailable	CheckNameReason	= original.Unavailable
+	Invalid     CheckNameReason = original.Invalid
+	Unavailable CheckNameReason = original.Unavailable
 )
 
 type AzureSku = original.AzureSku
@@ -61,13 +59,8 @@ type WorkspaceCollectionAccessKeys = original.WorkspaceCollectionAccessKeys
 type WorkspaceCollectionList = original.WorkspaceCollectionList
 type WorkspaceList = original.WorkspaceList
 type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
+type WorkspacesClient = original.WorkspacesClient
 
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
@@ -85,4 +78,10 @@ func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 }
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

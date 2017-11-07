@@ -22,27 +22,19 @@ package media
 
 import original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2015-10-01/media"
 
-type OperationsClient = original.OperationsClient
-type ServiceClient = original.ServiceClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
 type EntityNameUnavailabilityReason = original.EntityNameUnavailabilityReason
 
 const (
-	AlreadyExists	EntityNameUnavailabilityReason	= original.AlreadyExists
-	Invalid		EntityNameUnavailabilityReason	= original.Invalid
-	None		EntityNameUnavailabilityReason	= original.None
+	AlreadyExists EntityNameUnavailabilityReason = original.AlreadyExists
+	Invalid       EntityNameUnavailabilityReason = original.Invalid
+	None          EntityNameUnavailabilityReason = original.None
 )
 
 type KeyType = original.KeyType
 
 const (
-	Primary		KeyType	= original.Primary
-	Secondary	KeyType	= original.Secondary
+	Primary   KeyType = original.Primary
+	Secondary KeyType = original.Secondary
 )
 
 type ResourceType = original.ResourceType
@@ -67,13 +59,15 @@ type ServiceKeys = original.ServiceKeys
 type ServiceProperties = original.ServiceProperties
 type StorageAccount = original.StorageAccount
 type SyncStorageKeysInput = original.SyncStorageKeysInput
+type OperationsClient = original.OperationsClient
+type ServiceClient = original.ServiceClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)
 }
@@ -91,4 +85,10 @@ func NewServiceClient(subscriptionID string) ServiceClient {
 }
 func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
 	return original.NewServiceClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }

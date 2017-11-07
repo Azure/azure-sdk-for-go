@@ -22,13 +22,6 @@ package operationsmanagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationsmanagement/mgmt/2015-11-01-preview/operationsmanagement"
 
-type SolutionsClient = original.SolutionsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
 type CodeMessageError = original.CodeMessageError
 type CodeMessageErrorError = original.CodeMessageErrorError
 type Operation = original.Operation
@@ -39,7 +32,20 @@ type SolutionPlan = original.SolutionPlan
 type SolutionProperties = original.SolutionProperties
 type SolutionPropertiesList = original.SolutionPropertiesList
 type OperationsClient = original.OperationsClient
+type SolutionsClient = original.SolutionsClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+
+func NewOperationsClient(subscriptionID string, solutionName string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, solutionName)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, solutionName string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, solutionName)
+}
 func NewSolutionsClient(subscriptionID string, solutionName string) SolutionsClient {
 	return original.NewSolutionsClient(subscriptionID, solutionName)
 }
@@ -57,10 +63,4 @@ func New(subscriptionID string, solutionName string) ManagementClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string, solutionName string) ManagementClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID, solutionName)
-}
-func NewOperationsClient(subscriptionID string, solutionName string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, solutionName)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, solutionName string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, solutionName)
 }

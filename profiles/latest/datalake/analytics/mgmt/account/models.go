@@ -22,83 +22,81 @@ package account
 
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/mgmt/2016-11-01/account"
 
-type FirewallRulesClient = original.FirewallRulesClient
-type LocationsClient = original.LocationsClient
 type AADObjectType = original.AADObjectType
 
 const (
-	Group			AADObjectType	= original.Group
-	ServicePrincipal	AADObjectType	= original.ServicePrincipal
-	User			AADObjectType	= original.User
+	Group            AADObjectType = original.Group
+	ServicePrincipal AADObjectType = original.ServicePrincipal
+	User             AADObjectType = original.User
 )
 
 type DataLakeAnalyticsAccountState = original.DataLakeAnalyticsAccountState
 
 const (
-	Active		DataLakeAnalyticsAccountState	= original.Active
-	Suspended	DataLakeAnalyticsAccountState	= original.Suspended
+	Active    DataLakeAnalyticsAccountState = original.Active
+	Suspended DataLakeAnalyticsAccountState = original.Suspended
 )
 
 type DataLakeAnalyticsAccountStatus = original.DataLakeAnalyticsAccountStatus
 
 const (
-	Canceled	DataLakeAnalyticsAccountStatus	= original.Canceled
-	Creating	DataLakeAnalyticsAccountStatus	= original.Creating
-	Deleted		DataLakeAnalyticsAccountStatus	= original.Deleted
-	Deleting	DataLakeAnalyticsAccountStatus	= original.Deleting
-	Failed		DataLakeAnalyticsAccountStatus	= original.Failed
-	Patching	DataLakeAnalyticsAccountStatus	= original.Patching
-	Resuming	DataLakeAnalyticsAccountStatus	= original.Resuming
-	Running		DataLakeAnalyticsAccountStatus	= original.Running
-	Succeeded	DataLakeAnalyticsAccountStatus	= original.Succeeded
-	Suspending	DataLakeAnalyticsAccountStatus	= original.Suspending
-	Undeleting	DataLakeAnalyticsAccountStatus	= original.Undeleting
+	Canceled   DataLakeAnalyticsAccountStatus = original.Canceled
+	Creating   DataLakeAnalyticsAccountStatus = original.Creating
+	Deleted    DataLakeAnalyticsAccountStatus = original.Deleted
+	Deleting   DataLakeAnalyticsAccountStatus = original.Deleting
+	Failed     DataLakeAnalyticsAccountStatus = original.Failed
+	Patching   DataLakeAnalyticsAccountStatus = original.Patching
+	Resuming   DataLakeAnalyticsAccountStatus = original.Resuming
+	Running    DataLakeAnalyticsAccountStatus = original.Running
+	Succeeded  DataLakeAnalyticsAccountStatus = original.Succeeded
+	Suspending DataLakeAnalyticsAccountStatus = original.Suspending
+	Undeleting DataLakeAnalyticsAccountStatus = original.Undeleting
 )
 
 type FirewallAllowAzureIpsState = original.FirewallAllowAzureIpsState
 
 const (
-	Disabled	FirewallAllowAzureIpsState	= original.Disabled
-	Enabled		FirewallAllowAzureIpsState	= original.Enabled
+	Disabled FirewallAllowAzureIpsState = original.Disabled
+	Enabled  FirewallAllowAzureIpsState = original.Enabled
 )
 
 type FirewallState = original.FirewallState
 
 const (
-	FirewallStateDisabled	FirewallState	= original.FirewallStateDisabled
-	FirewallStateEnabled	FirewallState	= original.FirewallStateEnabled
+	FirewallStateDisabled FirewallState = original.FirewallStateDisabled
+	FirewallStateEnabled  FirewallState = original.FirewallStateEnabled
 )
 
 type OperationOrigin = original.OperationOrigin
 
 const (
-	OperationOriginSystem		OperationOrigin	= original.OperationOriginSystem
-	OperationOriginUser		OperationOrigin	= original.OperationOriginUser
-	OperationOriginUsersystem	OperationOrigin	= original.OperationOriginUsersystem
+	OperationOriginSystem     OperationOrigin = original.OperationOriginSystem
+	OperationOriginUser       OperationOrigin = original.OperationOriginUser
+	OperationOriginUsersystem OperationOrigin = original.OperationOriginUsersystem
 )
 
 type SubscriptionState = original.SubscriptionState
 
 const (
-	SubscriptionStateDeleted	SubscriptionState	= original.SubscriptionStateDeleted
-	SubscriptionStateRegistered	SubscriptionState	= original.SubscriptionStateRegistered
-	SubscriptionStateSuspended	SubscriptionState	= original.SubscriptionStateSuspended
-	SubscriptionStateUnregistered	SubscriptionState	= original.SubscriptionStateUnregistered
-	SubscriptionStateWarned		SubscriptionState	= original.SubscriptionStateWarned
+	SubscriptionStateDeleted      SubscriptionState = original.SubscriptionStateDeleted
+	SubscriptionStateRegistered   SubscriptionState = original.SubscriptionStateRegistered
+	SubscriptionStateSuspended    SubscriptionState = original.SubscriptionStateSuspended
+	SubscriptionStateUnregistered SubscriptionState = original.SubscriptionStateUnregistered
+	SubscriptionStateWarned       SubscriptionState = original.SubscriptionStateWarned
 )
 
 type TierType = original.TierType
 
 const (
-	Commitment100000AUHours	TierType	= original.Commitment100000AUHours
-	Commitment10000AUHours	TierType	= original.Commitment10000AUHours
-	Commitment1000AUHours	TierType	= original.Commitment1000AUHours
-	Commitment100AUHours	TierType	= original.Commitment100AUHours
-	Commitment500000AUHours	TierType	= original.Commitment500000AUHours
-	Commitment50000AUHours	TierType	= original.Commitment50000AUHours
-	Commitment5000AUHours	TierType	= original.Commitment5000AUHours
-	Commitment500AUHours	TierType	= original.Commitment500AUHours
-	Consumption		TierType	= original.Consumption
+	Commitment100000AUHours TierType = original.Commitment100000AUHours
+	Commitment10000AUHours  TierType = original.Commitment10000AUHours
+	Commitment1000AUHours   TierType = original.Commitment1000AUHours
+	Commitment100AUHours    TierType = original.Commitment100AUHours
+	Commitment500000AUHours TierType = original.Commitment500000AUHours
+	Commitment50000AUHours  TierType = original.Commitment50000AUHours
+	Commitment5000AUHours   TierType = original.Commitment5000AUHours
+	Commitment500AUHours    TierType = original.Commitment500AUHours
+	Consumption             TierType = original.Consumption
 )
 
 type AddDataLakeStoreParameters = original.AddDataLakeStoreParameters
@@ -143,35 +141,25 @@ type UpdateFirewallRuleParameters = original.UpdateFirewallRuleParameters
 type UpdateFirewallRuleProperties = original.UpdateFirewallRuleProperties
 type UpdateStorageAccountParameters = original.UpdateStorageAccountParameters
 type UpdateStorageAccountProperties = original.UpdateStorageAccountProperties
+type OperationsClient = original.OperationsClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type ManagementClient = original.ManagementClient
-type ComputePoliciesClient = original.ComputePoliciesClient
 type DataLakeStoreAccountsClient = original.DataLakeStoreAccountsClient
 type GroupClient = original.GroupClient
-type OperationsClient = original.OperationsClient
 type StorageAccountsClient = original.StorageAccountsClient
+type ComputePoliciesClient = original.ComputePoliciesClient
+type FirewallRulesClient = original.FirewallRulesClient
+type LocationsClient = original.LocationsClient
 
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewComputePoliciesClient(subscriptionID string) ComputePoliciesClient {
 	return original.NewComputePoliciesClient(subscriptionID)
 }
 func NewComputePoliciesClientWithBaseURI(baseURI string, subscriptionID string) ComputePoliciesClient {
 	return original.NewComputePoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDataLakeStoreAccountsClient(subscriptionID string) DataLakeStoreAccountsClient {
-	return original.NewDataLakeStoreAccountsClient(subscriptionID)
-}
-func NewDataLakeStoreAccountsClientWithBaseURI(baseURI string, subscriptionID string) DataLakeStoreAccountsClient {
-	return original.NewDataLakeStoreAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
 	return original.NewFirewallRulesClient(subscriptionID)
@@ -185,6 +173,24 @@ func NewLocationsClient(subscriptionID string) LocationsClient {
 func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
 	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewStorageAccountsClient(subscriptionID string) StorageAccountsClient {
+	return original.NewStorageAccountsClient(subscriptionID)
+}
+func NewStorageAccountsClientWithBaseURI(baseURI string, subscriptionID string) StorageAccountsClient {
+	return original.NewStorageAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewDataLakeStoreAccountsClient(subscriptionID string) DataLakeStoreAccountsClient {
+	return original.NewDataLakeStoreAccountsClient(subscriptionID)
+}
+func NewDataLakeStoreAccountsClientWithBaseURI(baseURI string, subscriptionID string) DataLakeStoreAccountsClient {
+	return original.NewDataLakeStoreAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewGroupClient(subscriptionID string) GroupClient {
 	return original.NewGroupClient(subscriptionID)
 }
@@ -196,12 +202,6 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewStorageAccountsClient(subscriptionID string) StorageAccountsClient {
-	return original.NewStorageAccountsClient(subscriptionID)
-}
-func NewStorageAccountsClientWithBaseURI(baseURI string, subscriptionID string) StorageAccountsClient {
-	return original.NewStorageAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

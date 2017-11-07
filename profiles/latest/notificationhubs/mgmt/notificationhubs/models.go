@@ -22,9 +22,6 @@ package notificationhubs
 
 import original "github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs"
 
-type NameClient = original.NameClient
-type NamespacesClient = original.NamespacesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -35,24 +32,24 @@ type HubsClient = original.HubsClient
 type AccessRights = original.AccessRights
 
 const (
-	Listen	AccessRights	= original.Listen
-	Manage	AccessRights	= original.Manage
-	Send	AccessRights	= original.Send
+	Listen AccessRights = original.Listen
+	Manage AccessRights = original.Manage
+	Send   AccessRights = original.Send
 )
 
 type NamespaceType = original.NamespaceType
 
 const (
-	Messaging	NamespaceType	= original.Messaging
-	NotificationHub	NamespaceType	= original.NotificationHub
+	Messaging       NamespaceType = original.Messaging
+	NotificationHub NamespaceType = original.NotificationHub
 )
 
 type SkuName = original.SkuName
 
 const (
-	Basic		SkuName	= original.Basic
-	Free		SkuName	= original.Free
-	Standard	SkuName	= original.Standard
+	Basic    SkuName = original.Basic
+	Free     SkuName = original.Free
+	Standard SkuName = original.Standard
 )
 
 type AdmCredential = original.AdmCredential
@@ -91,6 +88,8 @@ type Sku = original.Sku
 type SubResource = original.SubResource
 type WnsCredential = original.WnsCredential
 type WnsCredentialProperties = original.WnsCredentialProperties
+type NameClient = original.NameClient
+type NamespacesClient = original.NamespacesClient
 
 func NewNameClient(subscriptionID string) NameClient {
 	return original.NewNameClient(subscriptionID)

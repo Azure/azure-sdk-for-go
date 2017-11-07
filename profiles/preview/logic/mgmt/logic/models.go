@@ -22,322 +22,325 @@ package logic
 
 import original "github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic"
 
+type CertificatesClient = original.CertificatesClient
+type WorkflowVersionsClient = original.WorkflowVersionsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+type WorkflowsClient = original.WorkflowsClient
+type WorkflowTriggerHistoriesClient = original.WorkflowTriggerHistoriesClient
 type WorkflowTriggersClient = original.WorkflowTriggersClient
 type AgreementsClient = original.AgreementsClient
-type MapsClient = original.MapsClient
-type WorkflowTriggerHistoriesClient = original.WorkflowTriggerHistoriesClient
-type WorkflowsClient = original.WorkflowsClient
-type SessionsClient = original.SessionsClient
-type WorkflowRunActionsClient = original.WorkflowRunActionsClient
-type WorkflowRunsClient = original.WorkflowRunsClient
-type WorkflowVersionsClient = original.WorkflowVersionsClient
 type AgreementType = original.AgreementType
 
 const (
-	AS2		AgreementType	= original.AS2
-	Edifact		AgreementType	= original.Edifact
-	NotSpecified	AgreementType	= original.NotSpecified
-	X12		AgreementType	= original.X12
+	AS2          AgreementType = original.AS2
+	Edifact      AgreementType = original.Edifact
+	NotSpecified AgreementType = original.NotSpecified
+	X12          AgreementType = original.X12
 )
 
 type DayOfWeek = original.DayOfWeek
 
 const (
-	Friday		DayOfWeek	= original.Friday
-	Monday		DayOfWeek	= original.Monday
-	Saturday	DayOfWeek	= original.Saturday
-	Sunday		DayOfWeek	= original.Sunday
-	Thursday	DayOfWeek	= original.Thursday
-	Tuesday		DayOfWeek	= original.Tuesday
-	Wednesday	DayOfWeek	= original.Wednesday
+	Friday    DayOfWeek = original.Friday
+	Monday    DayOfWeek = original.Monday
+	Saturday  DayOfWeek = original.Saturday
+	Sunday    DayOfWeek = original.Sunday
+	Thursday  DayOfWeek = original.Thursday
+	Tuesday   DayOfWeek = original.Tuesday
+	Wednesday DayOfWeek = original.Wednesday
 )
 
 type DaysOfWeek = original.DaysOfWeek
 
 const (
-	DaysOfWeekFriday	DaysOfWeek	= original.DaysOfWeekFriday
-	DaysOfWeekMonday	DaysOfWeek	= original.DaysOfWeekMonday
-	DaysOfWeekSaturday	DaysOfWeek	= original.DaysOfWeekSaturday
-	DaysOfWeekSunday	DaysOfWeek	= original.DaysOfWeekSunday
-	DaysOfWeekThursday	DaysOfWeek	= original.DaysOfWeekThursday
-	DaysOfWeekTuesday	DaysOfWeek	= original.DaysOfWeekTuesday
-	DaysOfWeekWednesday	DaysOfWeek	= original.DaysOfWeekWednesday
+	DaysOfWeekFriday    DaysOfWeek = original.DaysOfWeekFriday
+	DaysOfWeekMonday    DaysOfWeek = original.DaysOfWeekMonday
+	DaysOfWeekSaturday  DaysOfWeek = original.DaysOfWeekSaturday
+	DaysOfWeekSunday    DaysOfWeek = original.DaysOfWeekSunday
+	DaysOfWeekThursday  DaysOfWeek = original.DaysOfWeekThursday
+	DaysOfWeekTuesday   DaysOfWeek = original.DaysOfWeekTuesday
+	DaysOfWeekWednesday DaysOfWeek = original.DaysOfWeekWednesday
 )
 
 type EdifactCharacterSet = original.EdifactCharacterSet
 
 const (
-	EdifactCharacterSetKECA		EdifactCharacterSet	= original.EdifactCharacterSetKECA
-	EdifactCharacterSetNotSpecified	EdifactCharacterSet	= original.EdifactCharacterSetNotSpecified
-	EdifactCharacterSetUNOA		EdifactCharacterSet	= original.EdifactCharacterSetUNOA
-	EdifactCharacterSetUNOB		EdifactCharacterSet	= original.EdifactCharacterSetUNOB
-	EdifactCharacterSetUNOC		EdifactCharacterSet	= original.EdifactCharacterSetUNOC
-	EdifactCharacterSetUNOD		EdifactCharacterSet	= original.EdifactCharacterSetUNOD
-	EdifactCharacterSetUNOE		EdifactCharacterSet	= original.EdifactCharacterSetUNOE
-	EdifactCharacterSetUNOF		EdifactCharacterSet	= original.EdifactCharacterSetUNOF
-	EdifactCharacterSetUNOG		EdifactCharacterSet	= original.EdifactCharacterSetUNOG
-	EdifactCharacterSetUNOH		EdifactCharacterSet	= original.EdifactCharacterSetUNOH
-	EdifactCharacterSetUNOI		EdifactCharacterSet	= original.EdifactCharacterSetUNOI
-	EdifactCharacterSetUNOJ		EdifactCharacterSet	= original.EdifactCharacterSetUNOJ
-	EdifactCharacterSetUNOK		EdifactCharacterSet	= original.EdifactCharacterSetUNOK
-	EdifactCharacterSetUNOX		EdifactCharacterSet	= original.EdifactCharacterSetUNOX
-	EdifactCharacterSetUNOY		EdifactCharacterSet	= original.EdifactCharacterSetUNOY
+	EdifactCharacterSetKECA         EdifactCharacterSet = original.EdifactCharacterSetKECA
+	EdifactCharacterSetNotSpecified EdifactCharacterSet = original.EdifactCharacterSetNotSpecified
+	EdifactCharacterSetUNOA         EdifactCharacterSet = original.EdifactCharacterSetUNOA
+	EdifactCharacterSetUNOB         EdifactCharacterSet = original.EdifactCharacterSetUNOB
+	EdifactCharacterSetUNOC         EdifactCharacterSet = original.EdifactCharacterSetUNOC
+	EdifactCharacterSetUNOD         EdifactCharacterSet = original.EdifactCharacterSetUNOD
+	EdifactCharacterSetUNOE         EdifactCharacterSet = original.EdifactCharacterSetUNOE
+	EdifactCharacterSetUNOF         EdifactCharacterSet = original.EdifactCharacterSetUNOF
+	EdifactCharacterSetUNOG         EdifactCharacterSet = original.EdifactCharacterSetUNOG
+	EdifactCharacterSetUNOH         EdifactCharacterSet = original.EdifactCharacterSetUNOH
+	EdifactCharacterSetUNOI         EdifactCharacterSet = original.EdifactCharacterSetUNOI
+	EdifactCharacterSetUNOJ         EdifactCharacterSet = original.EdifactCharacterSetUNOJ
+	EdifactCharacterSetUNOK         EdifactCharacterSet = original.EdifactCharacterSetUNOK
+	EdifactCharacterSetUNOX         EdifactCharacterSet = original.EdifactCharacterSetUNOX
+	EdifactCharacterSetUNOY         EdifactCharacterSet = original.EdifactCharacterSetUNOY
 )
 
 type EdifactDecimalIndicator = original.EdifactDecimalIndicator
 
 const (
-	EdifactDecimalIndicatorComma		EdifactDecimalIndicator	= original.EdifactDecimalIndicatorComma
-	EdifactDecimalIndicatorDecimal		EdifactDecimalIndicator	= original.EdifactDecimalIndicatorDecimal
-	EdifactDecimalIndicatorNotSpecified	EdifactDecimalIndicator	= original.EdifactDecimalIndicatorNotSpecified
+	EdifactDecimalIndicatorComma        EdifactDecimalIndicator = original.EdifactDecimalIndicatorComma
+	EdifactDecimalIndicatorDecimal      EdifactDecimalIndicator = original.EdifactDecimalIndicatorDecimal
+	EdifactDecimalIndicatorNotSpecified EdifactDecimalIndicator = original.EdifactDecimalIndicatorNotSpecified
 )
 
 type EncryptionAlgorithm = original.EncryptionAlgorithm
 
 const (
-	EncryptionAlgorithmAES128	EncryptionAlgorithm	= original.EncryptionAlgorithmAES128
-	EncryptionAlgorithmAES192	EncryptionAlgorithm	= original.EncryptionAlgorithmAES192
-	EncryptionAlgorithmAES256	EncryptionAlgorithm	= original.EncryptionAlgorithmAES256
-	EncryptionAlgorithmDES3		EncryptionAlgorithm	= original.EncryptionAlgorithmDES3
-	EncryptionAlgorithmNone		EncryptionAlgorithm	= original.EncryptionAlgorithmNone
-	EncryptionAlgorithmNotSpecified	EncryptionAlgorithm	= original.EncryptionAlgorithmNotSpecified
-	EncryptionAlgorithmRC2		EncryptionAlgorithm	= original.EncryptionAlgorithmRC2
+	EncryptionAlgorithmAES128       EncryptionAlgorithm = original.EncryptionAlgorithmAES128
+	EncryptionAlgorithmAES192       EncryptionAlgorithm = original.EncryptionAlgorithmAES192
+	EncryptionAlgorithmAES256       EncryptionAlgorithm = original.EncryptionAlgorithmAES256
+	EncryptionAlgorithmDES3         EncryptionAlgorithm = original.EncryptionAlgorithmDES3
+	EncryptionAlgorithmNone         EncryptionAlgorithm = original.EncryptionAlgorithmNone
+	EncryptionAlgorithmNotSpecified EncryptionAlgorithm = original.EncryptionAlgorithmNotSpecified
+	EncryptionAlgorithmRC2          EncryptionAlgorithm = original.EncryptionAlgorithmRC2
 )
 
 type HashingAlgorithm = original.HashingAlgorithm
 
 const (
-	HashingAlgorithmMD5		HashingAlgorithm	= original.HashingAlgorithmMD5
-	HashingAlgorithmNone		HashingAlgorithm	= original.HashingAlgorithmNone
-	HashingAlgorithmNotSpecified	HashingAlgorithm	= original.HashingAlgorithmNotSpecified
-	HashingAlgorithmSHA1		HashingAlgorithm	= original.HashingAlgorithmSHA1
-	HashingAlgorithmSHA2256		HashingAlgorithm	= original.HashingAlgorithmSHA2256
-	HashingAlgorithmSHA2384		HashingAlgorithm	= original.HashingAlgorithmSHA2384
-	HashingAlgorithmSHA2512		HashingAlgorithm	= original.HashingAlgorithmSHA2512
+	HashingAlgorithmMD5          HashingAlgorithm = original.HashingAlgorithmMD5
+	HashingAlgorithmNone         HashingAlgorithm = original.HashingAlgorithmNone
+	HashingAlgorithmNotSpecified HashingAlgorithm = original.HashingAlgorithmNotSpecified
+	HashingAlgorithmSHA1         HashingAlgorithm = original.HashingAlgorithmSHA1
+	HashingAlgorithmSHA2256      HashingAlgorithm = original.HashingAlgorithmSHA2256
+	HashingAlgorithmSHA2384      HashingAlgorithm = original.HashingAlgorithmSHA2384
+	HashingAlgorithmSHA2512      HashingAlgorithm = original.HashingAlgorithmSHA2512
 )
 
 type IntegrationAccountSkuName = original.IntegrationAccountSkuName
 
 const (
-	IntegrationAccountSkuNameFree		IntegrationAccountSkuName	= original.IntegrationAccountSkuNameFree
-	IntegrationAccountSkuNameNotSpecified	IntegrationAccountSkuName	= original.IntegrationAccountSkuNameNotSpecified
-	IntegrationAccountSkuNameStandard	IntegrationAccountSkuName	= original.IntegrationAccountSkuNameStandard
+	IntegrationAccountSkuNameFree         IntegrationAccountSkuName = original.IntegrationAccountSkuNameFree
+	IntegrationAccountSkuNameNotSpecified IntegrationAccountSkuName = original.IntegrationAccountSkuNameNotSpecified
+	IntegrationAccountSkuNameStandard     IntegrationAccountSkuName = original.IntegrationAccountSkuNameStandard
 )
 
 type KeyType = original.KeyType
 
 const (
-	KeyTypeNotSpecified	KeyType	= original.KeyTypeNotSpecified
-	KeyTypePrimary		KeyType	= original.KeyTypePrimary
-	KeyTypeSecondary	KeyType	= original.KeyTypeSecondary
+	KeyTypeNotSpecified KeyType = original.KeyTypeNotSpecified
+	KeyTypePrimary      KeyType = original.KeyTypePrimary
+	KeyTypeSecondary    KeyType = original.KeyTypeSecondary
 )
 
 type MapType = original.MapType
 
 const (
-	MapTypeNotSpecified	MapType	= original.MapTypeNotSpecified
-	MapTypeXslt		MapType	= original.MapTypeXslt
+	MapTypeNotSpecified MapType = original.MapTypeNotSpecified
+	MapTypeXslt         MapType = original.MapTypeXslt
 )
 
 type MessageFilterType = original.MessageFilterType
 
 const (
-	MessageFilterTypeExclude	MessageFilterType	= original.MessageFilterTypeExclude
-	MessageFilterTypeInclude	MessageFilterType	= original.MessageFilterTypeInclude
-	MessageFilterTypeNotSpecified	MessageFilterType	= original.MessageFilterTypeNotSpecified
+	MessageFilterTypeExclude      MessageFilterType = original.MessageFilterTypeExclude
+	MessageFilterTypeInclude      MessageFilterType = original.MessageFilterTypeInclude
+	MessageFilterTypeNotSpecified MessageFilterType = original.MessageFilterTypeNotSpecified
 )
 
 type ParameterType = original.ParameterType
 
 const (
-	ParameterTypeArray		ParameterType	= original.ParameterTypeArray
-	ParameterTypeBool		ParameterType	= original.ParameterTypeBool
-	ParameterTypeFloat		ParameterType	= original.ParameterTypeFloat
-	ParameterTypeInt		ParameterType	= original.ParameterTypeInt
-	ParameterTypeNotSpecified	ParameterType	= original.ParameterTypeNotSpecified
-	ParameterTypeObject		ParameterType	= original.ParameterTypeObject
-	ParameterTypeSecureObject	ParameterType	= original.ParameterTypeSecureObject
-	ParameterTypeSecureString	ParameterType	= original.ParameterTypeSecureString
-	ParameterTypeString		ParameterType	= original.ParameterTypeString
+	ParameterTypeArray        ParameterType = original.ParameterTypeArray
+	ParameterTypeBool         ParameterType = original.ParameterTypeBool
+	ParameterTypeFloat        ParameterType = original.ParameterTypeFloat
+	ParameterTypeInt          ParameterType = original.ParameterTypeInt
+	ParameterTypeNotSpecified ParameterType = original.ParameterTypeNotSpecified
+	ParameterTypeObject       ParameterType = original.ParameterTypeObject
+	ParameterTypeSecureObject ParameterType = original.ParameterTypeSecureObject
+	ParameterTypeSecureString ParameterType = original.ParameterTypeSecureString
+	ParameterTypeString       ParameterType = original.ParameterTypeString
 )
 
 type PartnerType = original.PartnerType
 
 const (
-	PartnerTypeB2B		PartnerType	= original.PartnerTypeB2B
-	PartnerTypeNotSpecified	PartnerType	= original.PartnerTypeNotSpecified
+	PartnerTypeB2B          PartnerType = original.PartnerTypeB2B
+	PartnerTypeNotSpecified PartnerType = original.PartnerTypeNotSpecified
 )
 
 type RecurrenceFrequency = original.RecurrenceFrequency
 
 const (
-	RecurrenceFrequencyDay		RecurrenceFrequency	= original.RecurrenceFrequencyDay
-	RecurrenceFrequencyHour		RecurrenceFrequency	= original.RecurrenceFrequencyHour
-	RecurrenceFrequencyMinute	RecurrenceFrequency	= original.RecurrenceFrequencyMinute
-	RecurrenceFrequencyMonth	RecurrenceFrequency	= original.RecurrenceFrequencyMonth
-	RecurrenceFrequencyNotSpecified	RecurrenceFrequency	= original.RecurrenceFrequencyNotSpecified
-	RecurrenceFrequencySecond	RecurrenceFrequency	= original.RecurrenceFrequencySecond
-	RecurrenceFrequencyWeek		RecurrenceFrequency	= original.RecurrenceFrequencyWeek
-	RecurrenceFrequencyYear		RecurrenceFrequency	= original.RecurrenceFrequencyYear
+	RecurrenceFrequencyDay          RecurrenceFrequency = original.RecurrenceFrequencyDay
+	RecurrenceFrequencyHour         RecurrenceFrequency = original.RecurrenceFrequencyHour
+	RecurrenceFrequencyMinute       RecurrenceFrequency = original.RecurrenceFrequencyMinute
+	RecurrenceFrequencyMonth        RecurrenceFrequency = original.RecurrenceFrequencyMonth
+	RecurrenceFrequencyNotSpecified RecurrenceFrequency = original.RecurrenceFrequencyNotSpecified
+	RecurrenceFrequencySecond       RecurrenceFrequency = original.RecurrenceFrequencySecond
+	RecurrenceFrequencyWeek         RecurrenceFrequency = original.RecurrenceFrequencyWeek
+	RecurrenceFrequencyYear         RecurrenceFrequency = original.RecurrenceFrequencyYear
 )
 
 type SchemaType = original.SchemaType
 
 const (
-	SchemaTypeNotSpecified	SchemaType	= original.SchemaTypeNotSpecified
-	SchemaTypeXML		SchemaType	= original.SchemaTypeXML
+	SchemaTypeNotSpecified SchemaType = original.SchemaTypeNotSpecified
+	SchemaTypeXML          SchemaType = original.SchemaTypeXML
 )
 
 type SegmentTerminatorSuffix = original.SegmentTerminatorSuffix
 
 const (
-	SegmentTerminatorSuffixCR		SegmentTerminatorSuffix	= original.SegmentTerminatorSuffixCR
-	SegmentTerminatorSuffixCRLF		SegmentTerminatorSuffix	= original.SegmentTerminatorSuffixCRLF
-	SegmentTerminatorSuffixLF		SegmentTerminatorSuffix	= original.SegmentTerminatorSuffixLF
-	SegmentTerminatorSuffixNone		SegmentTerminatorSuffix	= original.SegmentTerminatorSuffixNone
-	SegmentTerminatorSuffixNotSpecified	SegmentTerminatorSuffix	= original.SegmentTerminatorSuffixNotSpecified
+	SegmentTerminatorSuffixCR           SegmentTerminatorSuffix = original.SegmentTerminatorSuffixCR
+	SegmentTerminatorSuffixCRLF         SegmentTerminatorSuffix = original.SegmentTerminatorSuffixCRLF
+	SegmentTerminatorSuffixLF           SegmentTerminatorSuffix = original.SegmentTerminatorSuffixLF
+	SegmentTerminatorSuffixNone         SegmentTerminatorSuffix = original.SegmentTerminatorSuffixNone
+	SegmentTerminatorSuffixNotSpecified SegmentTerminatorSuffix = original.SegmentTerminatorSuffixNotSpecified
 )
 
 type SigningAlgorithm = original.SigningAlgorithm
 
 const (
-	SigningAlgorithmDefault		SigningAlgorithm	= original.SigningAlgorithmDefault
-	SigningAlgorithmNotSpecified	SigningAlgorithm	= original.SigningAlgorithmNotSpecified
-	SigningAlgorithmSHA1		SigningAlgorithm	= original.SigningAlgorithmSHA1
-	SigningAlgorithmSHA2256		SigningAlgorithm	= original.SigningAlgorithmSHA2256
-	SigningAlgorithmSHA2384		SigningAlgorithm	= original.SigningAlgorithmSHA2384
-	SigningAlgorithmSHA2512		SigningAlgorithm	= original.SigningAlgorithmSHA2512
+	SigningAlgorithmDefault      SigningAlgorithm = original.SigningAlgorithmDefault
+	SigningAlgorithmNotSpecified SigningAlgorithm = original.SigningAlgorithmNotSpecified
+	SigningAlgorithmSHA1         SigningAlgorithm = original.SigningAlgorithmSHA1
+	SigningAlgorithmSHA2256      SigningAlgorithm = original.SigningAlgorithmSHA2256
+	SigningAlgorithmSHA2384      SigningAlgorithm = original.SigningAlgorithmSHA2384
+	SigningAlgorithmSHA2512      SigningAlgorithm = original.SigningAlgorithmSHA2512
 )
 
 type SkuName = original.SkuName
 
 const (
-	SkuNameBasic		SkuName	= original.SkuNameBasic
-	SkuNameFree		SkuName	= original.SkuNameFree
-	SkuNameNotSpecified	SkuName	= original.SkuNameNotSpecified
-	SkuNamePremium		SkuName	= original.SkuNamePremium
-	SkuNameShared		SkuName	= original.SkuNameShared
-	SkuNameStandard		SkuName	= original.SkuNameStandard
+	SkuNameBasic        SkuName = original.SkuNameBasic
+	SkuNameFree         SkuName = original.SkuNameFree
+	SkuNameNotSpecified SkuName = original.SkuNameNotSpecified
+	SkuNamePremium      SkuName = original.SkuNamePremium
+	SkuNameShared       SkuName = original.SkuNameShared
+	SkuNameStandard     SkuName = original.SkuNameStandard
 )
 
 type TrailingSeparatorPolicy = original.TrailingSeparatorPolicy
 
 const (
-	TrailingSeparatorPolicyMandatory	TrailingSeparatorPolicy	= original.TrailingSeparatorPolicyMandatory
-	TrailingSeparatorPolicyNotAllowed	TrailingSeparatorPolicy	= original.TrailingSeparatorPolicyNotAllowed
-	TrailingSeparatorPolicyNotSpecified	TrailingSeparatorPolicy	= original.TrailingSeparatorPolicyNotSpecified
-	TrailingSeparatorPolicyOptional		TrailingSeparatorPolicy	= original.TrailingSeparatorPolicyOptional
+	TrailingSeparatorPolicyMandatory    TrailingSeparatorPolicy = original.TrailingSeparatorPolicyMandatory
+	TrailingSeparatorPolicyNotAllowed   TrailingSeparatorPolicy = original.TrailingSeparatorPolicyNotAllowed
+	TrailingSeparatorPolicyNotSpecified TrailingSeparatorPolicy = original.TrailingSeparatorPolicyNotSpecified
+	TrailingSeparatorPolicyOptional     TrailingSeparatorPolicy = original.TrailingSeparatorPolicyOptional
 )
 
 type UsageIndicator = original.UsageIndicator
 
 const (
-	UsageIndicatorInformation	UsageIndicator	= original.UsageIndicatorInformation
-	UsageIndicatorNotSpecified	UsageIndicator	= original.UsageIndicatorNotSpecified
-	UsageIndicatorProduction	UsageIndicator	= original.UsageIndicatorProduction
-	UsageIndicatorTest		UsageIndicator	= original.UsageIndicatorTest
+	UsageIndicatorInformation  UsageIndicator = original.UsageIndicatorInformation
+	UsageIndicatorNotSpecified UsageIndicator = original.UsageIndicatorNotSpecified
+	UsageIndicatorProduction   UsageIndicator = original.UsageIndicatorProduction
+	UsageIndicatorTest         UsageIndicator = original.UsageIndicatorTest
 )
 
 type WorkflowProvisioningState = original.WorkflowProvisioningState
 
 const (
-	WorkflowProvisioningStateAccepted	WorkflowProvisioningState	= original.WorkflowProvisioningStateAccepted
-	WorkflowProvisioningStateCanceled	WorkflowProvisioningState	= original.WorkflowProvisioningStateCanceled
-	WorkflowProvisioningStateCompleted	WorkflowProvisioningState	= original.WorkflowProvisioningStateCompleted
-	WorkflowProvisioningStateCreated	WorkflowProvisioningState	= original.WorkflowProvisioningStateCreated
-	WorkflowProvisioningStateCreating	WorkflowProvisioningState	= original.WorkflowProvisioningStateCreating
-	WorkflowProvisioningStateDeleted	WorkflowProvisioningState	= original.WorkflowProvisioningStateDeleted
-	WorkflowProvisioningStateDeleting	WorkflowProvisioningState	= original.WorkflowProvisioningStateDeleting
-	WorkflowProvisioningStateFailed		WorkflowProvisioningState	= original.WorkflowProvisioningStateFailed
-	WorkflowProvisioningStateMoving		WorkflowProvisioningState	= original.WorkflowProvisioningStateMoving
-	WorkflowProvisioningStateNotSpecified	WorkflowProvisioningState	= original.WorkflowProvisioningStateNotSpecified
-	WorkflowProvisioningStateReady		WorkflowProvisioningState	= original.WorkflowProvisioningStateReady
-	WorkflowProvisioningStateRegistered	WorkflowProvisioningState	= original.WorkflowProvisioningStateRegistered
-	WorkflowProvisioningStateRegistering	WorkflowProvisioningState	= original.WorkflowProvisioningStateRegistering
-	WorkflowProvisioningStateRunning	WorkflowProvisioningState	= original.WorkflowProvisioningStateRunning
-	WorkflowProvisioningStateSucceeded	WorkflowProvisioningState	= original.WorkflowProvisioningStateSucceeded
-	WorkflowProvisioningStateUnregistered	WorkflowProvisioningState	= original.WorkflowProvisioningStateUnregistered
-	WorkflowProvisioningStateUnregistering	WorkflowProvisioningState	= original.WorkflowProvisioningStateUnregistering
-	WorkflowProvisioningStateUpdating	WorkflowProvisioningState	= original.WorkflowProvisioningStateUpdating
+	WorkflowProvisioningStateAccepted      WorkflowProvisioningState = original.WorkflowProvisioningStateAccepted
+	WorkflowProvisioningStateCanceled      WorkflowProvisioningState = original.WorkflowProvisioningStateCanceled
+	WorkflowProvisioningStateCompleted     WorkflowProvisioningState = original.WorkflowProvisioningStateCompleted
+	WorkflowProvisioningStateCreated       WorkflowProvisioningState = original.WorkflowProvisioningStateCreated
+	WorkflowProvisioningStateCreating      WorkflowProvisioningState = original.WorkflowProvisioningStateCreating
+	WorkflowProvisioningStateDeleted       WorkflowProvisioningState = original.WorkflowProvisioningStateDeleted
+	WorkflowProvisioningStateDeleting      WorkflowProvisioningState = original.WorkflowProvisioningStateDeleting
+	WorkflowProvisioningStateFailed        WorkflowProvisioningState = original.WorkflowProvisioningStateFailed
+	WorkflowProvisioningStateMoving        WorkflowProvisioningState = original.WorkflowProvisioningStateMoving
+	WorkflowProvisioningStateNotSpecified  WorkflowProvisioningState = original.WorkflowProvisioningStateNotSpecified
+	WorkflowProvisioningStateReady         WorkflowProvisioningState = original.WorkflowProvisioningStateReady
+	WorkflowProvisioningStateRegistered    WorkflowProvisioningState = original.WorkflowProvisioningStateRegistered
+	WorkflowProvisioningStateRegistering   WorkflowProvisioningState = original.WorkflowProvisioningStateRegistering
+	WorkflowProvisioningStateRunning       WorkflowProvisioningState = original.WorkflowProvisioningStateRunning
+	WorkflowProvisioningStateSucceeded     WorkflowProvisioningState = original.WorkflowProvisioningStateSucceeded
+	WorkflowProvisioningStateUnregistered  WorkflowProvisioningState = original.WorkflowProvisioningStateUnregistered
+	WorkflowProvisioningStateUnregistering WorkflowProvisioningState = original.WorkflowProvisioningStateUnregistering
+	WorkflowProvisioningStateUpdating      WorkflowProvisioningState = original.WorkflowProvisioningStateUpdating
 )
 
 type WorkflowState = original.WorkflowState
 
 const (
-	WorkflowStateCompleted		WorkflowState	= original.WorkflowStateCompleted
-	WorkflowStateDeleted		WorkflowState	= original.WorkflowStateDeleted
-	WorkflowStateDisabled		WorkflowState	= original.WorkflowStateDisabled
-	WorkflowStateEnabled		WorkflowState	= original.WorkflowStateEnabled
-	WorkflowStateNotSpecified	WorkflowState	= original.WorkflowStateNotSpecified
-	WorkflowStateSuspended		WorkflowState	= original.WorkflowStateSuspended
+	WorkflowStateCompleted    WorkflowState = original.WorkflowStateCompleted
+	WorkflowStateDeleted      WorkflowState = original.WorkflowStateDeleted
+	WorkflowStateDisabled     WorkflowState = original.WorkflowStateDisabled
+	WorkflowStateEnabled      WorkflowState = original.WorkflowStateEnabled
+	WorkflowStateNotSpecified WorkflowState = original.WorkflowStateNotSpecified
+	WorkflowStateSuspended    WorkflowState = original.WorkflowStateSuspended
 )
 
 type WorkflowStatus = original.WorkflowStatus
 
 const (
-	WorkflowStatusAborted		WorkflowStatus	= original.WorkflowStatusAborted
-	WorkflowStatusCancelled		WorkflowStatus	= original.WorkflowStatusCancelled
-	WorkflowStatusFailed		WorkflowStatus	= original.WorkflowStatusFailed
-	WorkflowStatusFaulted		WorkflowStatus	= original.WorkflowStatusFaulted
-	WorkflowStatusIgnored		WorkflowStatus	= original.WorkflowStatusIgnored
-	WorkflowStatusNotSpecified	WorkflowStatus	= original.WorkflowStatusNotSpecified
-	WorkflowStatusPaused		WorkflowStatus	= original.WorkflowStatusPaused
-	WorkflowStatusRunning		WorkflowStatus	= original.WorkflowStatusRunning
-	WorkflowStatusSkipped		WorkflowStatus	= original.WorkflowStatusSkipped
-	WorkflowStatusSucceeded		WorkflowStatus	= original.WorkflowStatusSucceeded
-	WorkflowStatusSuspended		WorkflowStatus	= original.WorkflowStatusSuspended
-	WorkflowStatusTimedOut		WorkflowStatus	= original.WorkflowStatusTimedOut
-	WorkflowStatusWaiting		WorkflowStatus	= original.WorkflowStatusWaiting
+	WorkflowStatusAborted      WorkflowStatus = original.WorkflowStatusAborted
+	WorkflowStatusCancelled    WorkflowStatus = original.WorkflowStatusCancelled
+	WorkflowStatusFailed       WorkflowStatus = original.WorkflowStatusFailed
+	WorkflowStatusFaulted      WorkflowStatus = original.WorkflowStatusFaulted
+	WorkflowStatusIgnored      WorkflowStatus = original.WorkflowStatusIgnored
+	WorkflowStatusNotSpecified WorkflowStatus = original.WorkflowStatusNotSpecified
+	WorkflowStatusPaused       WorkflowStatus = original.WorkflowStatusPaused
+	WorkflowStatusRunning      WorkflowStatus = original.WorkflowStatusRunning
+	WorkflowStatusSkipped      WorkflowStatus = original.WorkflowStatusSkipped
+	WorkflowStatusSucceeded    WorkflowStatus = original.WorkflowStatusSucceeded
+	WorkflowStatusSuspended    WorkflowStatus = original.WorkflowStatusSuspended
+	WorkflowStatusTimedOut     WorkflowStatus = original.WorkflowStatusTimedOut
+	WorkflowStatusWaiting      WorkflowStatus = original.WorkflowStatusWaiting
 )
 
 type WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningState
 
 const (
-	WorkflowTriggerProvisioningStateAccepted	WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateAccepted
-	WorkflowTriggerProvisioningStateCanceled	WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateCanceled
-	WorkflowTriggerProvisioningStateCompleted	WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateCompleted
-	WorkflowTriggerProvisioningStateCreated		WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateCreated
-	WorkflowTriggerProvisioningStateCreating	WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateCreating
-	WorkflowTriggerProvisioningStateDeleted		WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateDeleted
-	WorkflowTriggerProvisioningStateDeleting	WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateDeleting
-	WorkflowTriggerProvisioningStateFailed		WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateFailed
-	WorkflowTriggerProvisioningStateMoving		WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateMoving
-	WorkflowTriggerProvisioningStateNotSpecified	WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateNotSpecified
-	WorkflowTriggerProvisioningStateReady		WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateReady
-	WorkflowTriggerProvisioningStateRegistered	WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateRegistered
-	WorkflowTriggerProvisioningStateRegistering	WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateRegistering
-	WorkflowTriggerProvisioningStateRunning		WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateRunning
-	WorkflowTriggerProvisioningStateSucceeded	WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateSucceeded
-	WorkflowTriggerProvisioningStateUnregistered	WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateUnregistered
-	WorkflowTriggerProvisioningStateUnregistering	WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateUnregistering
-	WorkflowTriggerProvisioningStateUpdating	WorkflowTriggerProvisioningState	= original.WorkflowTriggerProvisioningStateUpdating
+	WorkflowTriggerProvisioningStateAccepted      WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateAccepted
+	WorkflowTriggerProvisioningStateCanceled      WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateCanceled
+	WorkflowTriggerProvisioningStateCompleted     WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateCompleted
+	WorkflowTriggerProvisioningStateCreated       WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateCreated
+	WorkflowTriggerProvisioningStateCreating      WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateCreating
+	WorkflowTriggerProvisioningStateDeleted       WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateDeleted
+	WorkflowTriggerProvisioningStateDeleting      WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateDeleting
+	WorkflowTriggerProvisioningStateFailed        WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateFailed
+	WorkflowTriggerProvisioningStateMoving        WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateMoving
+	WorkflowTriggerProvisioningStateNotSpecified  WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateNotSpecified
+	WorkflowTriggerProvisioningStateReady         WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateReady
+	WorkflowTriggerProvisioningStateRegistered    WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateRegistered
+	WorkflowTriggerProvisioningStateRegistering   WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateRegistering
+	WorkflowTriggerProvisioningStateRunning       WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateRunning
+	WorkflowTriggerProvisioningStateSucceeded     WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateSucceeded
+	WorkflowTriggerProvisioningStateUnregistered  WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateUnregistered
+	WorkflowTriggerProvisioningStateUnregistering WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateUnregistering
+	WorkflowTriggerProvisioningStateUpdating      WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateUpdating
 )
 
 type X12CharacterSet = original.X12CharacterSet
 
 const (
-	X12CharacterSetBasic		X12CharacterSet	= original.X12CharacterSetBasic
-	X12CharacterSetExtended		X12CharacterSet	= original.X12CharacterSetExtended
-	X12CharacterSetNotSpecified	X12CharacterSet	= original.X12CharacterSetNotSpecified
-	X12CharacterSetUTF8		X12CharacterSet	= original.X12CharacterSetUTF8
+	X12CharacterSetBasic        X12CharacterSet = original.X12CharacterSetBasic
+	X12CharacterSetExtended     X12CharacterSet = original.X12CharacterSetExtended
+	X12CharacterSetNotSpecified X12CharacterSet = original.X12CharacterSetNotSpecified
+	X12CharacterSetUTF8         X12CharacterSet = original.X12CharacterSetUTF8
 )
 
 type X12DateFormat = original.X12DateFormat
 
 const (
-	X12DateFormatCCYYMMDD		X12DateFormat	= original.X12DateFormatCCYYMMDD
-	X12DateFormatNotSpecified	X12DateFormat	= original.X12DateFormatNotSpecified
-	X12DateFormatYYMMDD		X12DateFormat	= original.X12DateFormatYYMMDD
+	X12DateFormatCCYYMMDD     X12DateFormat = original.X12DateFormatCCYYMMDD
+	X12DateFormatNotSpecified X12DateFormat = original.X12DateFormatNotSpecified
+	X12DateFormatYYMMDD       X12DateFormat = original.X12DateFormatYYMMDD
 )
 
 type X12TimeFormat = original.X12TimeFormat
 
 const (
-	X12TimeFormatHHMM		X12TimeFormat	= original.X12TimeFormatHHMM
-	X12TimeFormatHHMMSS		X12TimeFormat	= original.X12TimeFormatHHMMSS
-	X12TimeFormatHHMMSSd		X12TimeFormat	= original.X12TimeFormatHHMMSSd
-	X12TimeFormatHHMMSSdd		X12TimeFormat	= original.X12TimeFormatHHMMSSdd
-	X12TimeFormatNotSpecified	X12TimeFormat	= original.X12TimeFormatNotSpecified
+	X12TimeFormatHHMM         X12TimeFormat = original.X12TimeFormatHHMM
+	X12TimeFormatHHMMSS       X12TimeFormat = original.X12TimeFormatHHMMSS
+	X12TimeFormatHHMMSSd      X12TimeFormat = original.X12TimeFormatHHMMSSd
+	X12TimeFormatHHMMSSdd     X12TimeFormat = original.X12TimeFormatHHMMSSdd
+	X12TimeFormatNotSpecified X12TimeFormat = original.X12TimeFormatNotSpecified
 )
 
 type AgreementContent = original.AgreementContent
@@ -462,27 +465,30 @@ type X12SecuritySettings = original.X12SecuritySettings
 type X12ValidationOverride = original.X12ValidationOverride
 type X12ValidationSettings = original.X12ValidationSettings
 type PartnersClient = original.PartnersClient
-type SchemasClient = original.SchemasClient
-type CertificatesClient = original.CertificatesClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
+type WorkflowRunsClient = original.WorkflowRunsClient
 type IntegrationAccountsClient = original.IntegrationAccountsClient
+type MapsClient = original.MapsClient
+type SchemasClient = original.SchemasClient
+type SessionsClient = original.SessionsClient
+type WorkflowRunActionsClient = original.WorkflowRunActionsClient
 
+func NewAgreementsClient(subscriptionID string) AgreementsClient {
+	return original.NewAgreementsClient(subscriptionID)
+}
+func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string) AgreementsClient {
+	return original.NewAgreementsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPartnersClient(subscriptionID string) PartnersClient {
+	return original.NewPartnersClient(subscriptionID)
+}
+func NewPartnersClientWithBaseURI(baseURI string, subscriptionID string) PartnersClient {
+	return original.NewPartnersClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSessionsClient(subscriptionID string) SessionsClient {
 	return original.NewSessionsClient(subscriptionID)
 }
 func NewSessionsClientWithBaseURI(baseURI string, subscriptionID string) SessionsClient {
 	return original.NewSessionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }
 func NewWorkflowRunActionsClient(subscriptionID string) WorkflowRunActionsClient {
 	return original.NewWorkflowRunActionsClient(subscriptionID)
@@ -490,29 +496,23 @@ func NewWorkflowRunActionsClient(subscriptionID string) WorkflowRunActionsClient
 func NewWorkflowRunActionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionsClient {
 	return original.NewWorkflowRunActionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewWorkflowsClient(subscriptionID string) WorkflowsClient {
-	return original.NewWorkflowsClient(subscriptionID)
-}
-func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowsClient {
-	return original.NewWorkflowsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewWorkflowRunsClient(subscriptionID string) WorkflowRunsClient {
 	return original.NewWorkflowRunsClient(subscriptionID)
 }
 func NewWorkflowRunsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunsClient {
 	return original.NewWorkflowRunsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewWorkflowVersionsClient(subscriptionID string) WorkflowVersionsClient {
-	return original.NewWorkflowVersionsClient(subscriptionID)
+func NewIntegrationAccountsClient(subscriptionID string) IntegrationAccountsClient {
+	return original.NewIntegrationAccountsClient(subscriptionID)
 }
-func NewWorkflowVersionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowVersionsClient {
-	return original.NewWorkflowVersionsClientWithBaseURI(baseURI, subscriptionID)
+func NewIntegrationAccountsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountsClient {
+	return original.NewIntegrationAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPartnersClient(subscriptionID string) PartnersClient {
-	return original.NewPartnersClient(subscriptionID)
+func NewMapsClient(subscriptionID string) MapsClient {
+	return original.NewMapsClient(subscriptionID)
 }
-func NewPartnersClientWithBaseURI(baseURI string, subscriptionID string) PartnersClient {
-	return original.NewPartnersClientWithBaseURI(baseURI, subscriptionID)
+func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient {
+	return original.NewMapsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSchemasClient(subscriptionID string) SchemasClient {
 	return original.NewSchemasClient(subscriptionID)
@@ -526,30 +526,6 @@ func NewCertificatesClient(subscriptionID string) CertificatesClient {
 func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
 	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewIntegrationAccountsClient(subscriptionID string) IntegrationAccountsClient {
-	return original.NewIntegrationAccountsClient(subscriptionID)
-}
-func NewIntegrationAccountsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountsClient {
-	return original.NewIntegrationAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAgreementsClient(subscriptionID string) AgreementsClient {
-	return original.NewAgreementsClient(subscriptionID)
-}
-func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string) AgreementsClient {
-	return original.NewAgreementsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewMapsClient(subscriptionID string) MapsClient {
-	return original.NewMapsClient(subscriptionID)
-}
-func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient {
-	return original.NewMapsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewWorkflowTriggerHistoriesClient(subscriptionID string) WorkflowTriggerHistoriesClient {
 	return original.NewWorkflowTriggerHistoriesClient(subscriptionID)
 }
@@ -561,4 +537,28 @@ func NewWorkflowTriggersClient(subscriptionID string) WorkflowTriggersClient {
 }
 func NewWorkflowTriggersClientWithBaseURI(baseURI string, subscriptionID string) WorkflowTriggersClient {
 	return original.NewWorkflowTriggersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkflowVersionsClient(subscriptionID string) WorkflowVersionsClient {
+	return original.NewWorkflowVersionsClient(subscriptionID)
+}
+func NewWorkflowVersionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowVersionsClient {
+	return original.NewWorkflowVersionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewWorkflowsClient(subscriptionID string) WorkflowsClient {
+	return original.NewWorkflowsClient(subscriptionID)
+}
+func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowsClient {
+	return original.NewWorkflowsClientWithBaseURI(baseURI, subscriptionID)
 }

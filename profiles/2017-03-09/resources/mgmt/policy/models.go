@@ -31,9 +31,9 @@ type DefinitionsClient = original.DefinitionsClient
 type Type = original.Type
 
 const (
-	BuiltIn		Type	= original.BuiltIn
-	Custom		Type	= original.Custom
-	NotSpecified	Type	= original.NotSpecified
+	BuiltIn      Type = original.BuiltIn
+	Custom       Type = original.Custom
+	NotSpecified Type = original.NotSpecified
 )
 
 type Assignment = original.Assignment

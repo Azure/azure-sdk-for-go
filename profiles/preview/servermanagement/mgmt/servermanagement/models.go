@@ -22,12 +22,6 @@ package servermanagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/servermanagement/mgmt/2016-07-01-preview/servermanagement"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-type GatewayClient = original.GatewayClient
 type CredentialDataFormat = original.CredentialDataFormat
 
 const (
@@ -37,8 +31,8 @@ const (
 type GatewayExpandOption = original.GatewayExpandOption
 
 const (
-	Download	GatewayExpandOption	= original.Download
-	Status		GatewayExpandOption	= original.Status
+	Download GatewayExpandOption = original.Download
+	Status   GatewayExpandOption = original.Status
 )
 
 type PowerShellExpandOption = original.PowerShellExpandOption
@@ -50,23 +44,23 @@ const (
 type PromptFieldType = original.PromptFieldType
 
 const (
-	Credential	PromptFieldType	= original.Credential
-	SecureString	PromptFieldType	= original.SecureString
-	String		PromptFieldType	= original.String
+	Credential   PromptFieldType = original.Credential
+	SecureString PromptFieldType = original.SecureString
+	String       PromptFieldType = original.String
 )
 
 type RetentionPeriod = original.RetentionPeriod
 
 const (
-	Persistent	RetentionPeriod	= original.Persistent
-	Session		RetentionPeriod	= original.Session
+	Persistent RetentionPeriod = original.Persistent
+	Session    RetentionPeriod = original.Session
 )
 
 type UpgradeMode = original.UpgradeMode
 
 const (
-	Automatic	UpgradeMode	= original.Automatic
-	Manual		UpgradeMode	= original.Manual
+	Automatic UpgradeMode = original.Automatic
+	Manual    UpgradeMode = original.Manual
 )
 
 type EncryptionJwkResource = original.EncryptionJwkResource
@@ -105,12 +99,13 @@ type NodeClient = original.NodeClient
 type PowerShellClient = original.PowerShellClient
 type SessionClient = original.SessionClient
 
-func NewPowerShellClient(subscriptionID string) PowerShellClient {
-	return original.NewPowerShellClient(subscriptionID)
-}
-func NewPowerShellClientWithBaseURI(baseURI string, subscriptionID string) PowerShellClient {
-	return original.NewPowerShellClientWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+type GatewayClient = original.GatewayClient
+
 func NewSessionClient(subscriptionID string) SessionClient {
 	return original.NewSessionClient(subscriptionID)
 }
@@ -140,4 +135,10 @@ func NewNodeClient(subscriptionID string) NodeClient {
 }
 func NewNodeClientWithBaseURI(baseURI string, subscriptionID string) NodeClient {
 	return original.NewNodeClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPowerShellClient(subscriptionID string) PowerShellClient {
+	return original.NewPowerShellClient(subscriptionID)
+}
+func NewPowerShellClientWithBaseURI(baseURI string, subscriptionID string) PowerShellClient {
+	return original.NewPowerShellClientWithBaseURI(baseURI, subscriptionID)
 }

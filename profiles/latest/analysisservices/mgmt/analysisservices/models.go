@@ -22,6 +22,8 @@ package analysisservices
 
 import original "github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2017-07-14/analysisservices"
 
+type ServersClient = original.ServersClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -30,43 +32,43 @@ type ManagementClient = original.ManagementClient
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Deleting	ProvisioningState	= original.Deleting
-	Failed		ProvisioningState	= original.Failed
-	Paused		ProvisioningState	= original.Paused
-	Pausing		ProvisioningState	= original.Pausing
-	Preparing	ProvisioningState	= original.Preparing
-	Provisioning	ProvisioningState	= original.Provisioning
-	Resuming	ProvisioningState	= original.Resuming
-	Scaling		ProvisioningState	= original.Scaling
-	Succeeded	ProvisioningState	= original.Succeeded
-	Suspended	ProvisioningState	= original.Suspended
-	Suspending	ProvisioningState	= original.Suspending
-	Updating	ProvisioningState	= original.Updating
+	Deleting     ProvisioningState = original.Deleting
+	Failed       ProvisioningState = original.Failed
+	Paused       ProvisioningState = original.Paused
+	Pausing      ProvisioningState = original.Pausing
+	Preparing    ProvisioningState = original.Preparing
+	Provisioning ProvisioningState = original.Provisioning
+	Resuming     ProvisioningState = original.Resuming
+	Scaling      ProvisioningState = original.Scaling
+	Succeeded    ProvisioningState = original.Succeeded
+	Suspended    ProvisioningState = original.Suspended
+	Suspending   ProvisioningState = original.Suspending
+	Updating     ProvisioningState = original.Updating
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	Basic		SkuTier	= original.Basic
-	Development	SkuTier	= original.Development
-	Standard	SkuTier	= original.Standard
+	Basic       SkuTier = original.Basic
+	Development SkuTier = original.Development
+	Standard    SkuTier = original.Standard
 )
 
 type State = original.State
 
 const (
-	StateDeleting		State	= original.StateDeleting
-	StateFailed		State	= original.StateFailed
-	StatePaused		State	= original.StatePaused
-	StatePausing		State	= original.StatePausing
-	StatePreparing		State	= original.StatePreparing
-	StateProvisioning	State	= original.StateProvisioning
-	StateResuming		State	= original.StateResuming
-	StateScaling		State	= original.StateScaling
-	StateSucceeded		State	= original.StateSucceeded
-	StateSuspended		State	= original.StateSuspended
-	StateSuspending		State	= original.StateSuspending
-	StateUpdating		State	= original.StateUpdating
+	StateDeleting     State = original.StateDeleting
+	StateFailed       State = original.StateFailed
+	StatePaused       State = original.StatePaused
+	StatePausing      State = original.StatePausing
+	StatePreparing    State = original.StatePreparing
+	StateProvisioning State = original.StateProvisioning
+	StateResuming     State = original.StateResuming
+	StateScaling      State = original.StateScaling
+	StateSucceeded    State = original.StateSucceeded
+	StateSuspended    State = original.StateSuspended
+	StateSuspending   State = original.StateSuspending
+	StateUpdating     State = original.StateUpdating
 )
 
 type Status = original.Status
@@ -90,7 +92,6 @@ type ServerUpdateParameters = original.ServerUpdateParameters
 type SkuDetailsForExistingResource = original.SkuDetailsForExistingResource
 type SkuEnumerationForExistingResourceResult = original.SkuEnumerationForExistingResourceResult
 type SkuEnumerationForNewResourceResult = original.SkuEnumerationForNewResourceResult
-type ServersClient = original.ServersClient
 
 func NewServersClient(subscriptionID string) ServersClient {
 	return original.NewServersClient(subscriptionID)

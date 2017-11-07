@@ -22,81 +22,92 @@ package eventhub
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventhub/mgmt/2017-04-01/eventhub"
 
+type NamespacesClient = original.NamespacesClient
+type OperationsClient = original.OperationsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+type ConsumerGroupsClient = original.ConsumerGroupsClient
+type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
+type EventHubsClient = original.EventHubsClient
 type AccessRights = original.AccessRights
 
 const (
-	Listen	AccessRights	= original.Listen
-	Manage	AccessRights	= original.Manage
-	Send	AccessRights	= original.Send
+	Listen AccessRights = original.Listen
+	Manage AccessRights = original.Manage
+	Send   AccessRights = original.Send
 )
 
 type EncodingCaptureDescription = original.EncodingCaptureDescription
 
 const (
-	Avro		EncodingCaptureDescription	= original.Avro
-	AvroDeflate	EncodingCaptureDescription	= original.AvroDeflate
+	Avro        EncodingCaptureDescription = original.Avro
+	AvroDeflate EncodingCaptureDescription = original.AvroDeflate
 )
 
 type EntityStatus = original.EntityStatus
 
 const (
-	Active		EntityStatus	= original.Active
-	Creating	EntityStatus	= original.Creating
-	Deleting	EntityStatus	= original.Deleting
-	Disabled	EntityStatus	= original.Disabled
-	ReceiveDisabled	EntityStatus	= original.ReceiveDisabled
-	Renaming	EntityStatus	= original.Renaming
-	Restoring	EntityStatus	= original.Restoring
-	SendDisabled	EntityStatus	= original.SendDisabled
-	Unknown		EntityStatus	= original.Unknown
+	Active          EntityStatus = original.Active
+	Creating        EntityStatus = original.Creating
+	Deleting        EntityStatus = original.Deleting
+	Disabled        EntityStatus = original.Disabled
+	ReceiveDisabled EntityStatus = original.ReceiveDisabled
+	Renaming        EntityStatus = original.Renaming
+	Restoring       EntityStatus = original.Restoring
+	SendDisabled    EntityStatus = original.SendDisabled
+	Unknown         EntityStatus = original.Unknown
 )
 
 type KeyType = original.KeyType
 
 const (
-	PrimaryKey	KeyType	= original.PrimaryKey
-	SecondaryKey	KeyType	= original.SecondaryKey
+	PrimaryKey   KeyType = original.PrimaryKey
+	SecondaryKey KeyType = original.SecondaryKey
 )
 
 type ProvisioningStateDR = original.ProvisioningStateDR
 
 const (
-	Accepted	ProvisioningStateDR	= original.Accepted
-	Failed		ProvisioningStateDR	= original.Failed
-	Succeeded	ProvisioningStateDR	= original.Succeeded
+	Accepted  ProvisioningStateDR = original.Accepted
+	Failed    ProvisioningStateDR = original.Failed
+	Succeeded ProvisioningStateDR = original.Succeeded
 )
 
 type RoleDisasterRecovery = original.RoleDisasterRecovery
 
 const (
-	Primary			RoleDisasterRecovery	= original.Primary
-	PrimaryNotReplicating	RoleDisasterRecovery	= original.PrimaryNotReplicating
-	Secondary		RoleDisasterRecovery	= original.Secondary
+	Primary               RoleDisasterRecovery = original.Primary
+	PrimaryNotReplicating RoleDisasterRecovery = original.PrimaryNotReplicating
+	Secondary             RoleDisasterRecovery = original.Secondary
 )
 
 type SkuName = original.SkuName
 
 const (
-	Basic		SkuName	= original.Basic
-	Standard	SkuName	= original.Standard
+	Basic    SkuName = original.Basic
+	Standard SkuName = original.Standard
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	SkuTierBasic	SkuTier	= original.SkuTierBasic
-	SkuTierStandard	SkuTier	= original.SkuTierStandard
+	SkuTierBasic    SkuTier = original.SkuTierBasic
+	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
 type UnavailableReason = original.UnavailableReason
 
 const (
-	InvalidName				UnavailableReason	= original.InvalidName
-	NameInLockdown				UnavailableReason	= original.NameInLockdown
-	NameInUse				UnavailableReason	= original.NameInUse
-	None					UnavailableReason	= original.None
-	SubscriptionIsDisabled			UnavailableReason	= original.SubscriptionIsDisabled
-	TooManyNamespaceInCurrentSubscription	UnavailableReason	= original.TooManyNamespaceInCurrentSubscription
+	InvalidName                           UnavailableReason = original.InvalidName
+	NameInLockdown                        UnavailableReason = original.NameInLockdown
+	NameInUse                             UnavailableReason = original.NameInUse
+	None                                  UnavailableReason = original.None
+	SubscriptionIsDisabled                UnavailableReason = original.SubscriptionIsDisabled
+	TooManyNamespaceInCurrentSubscription UnavailableReason = original.TooManyNamespaceInCurrentSubscription
 )
 
 type AccessKeys = original.AccessKeys
@@ -128,36 +139,7 @@ type RegenerateAccessKeyParameters = original.RegenerateAccessKeyParameters
 type Resource = original.Resource
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
-type NamespacesClient = original.NamespacesClient
-type OperationsClient = original.OperationsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-type ConsumerGroupsClient = original.ConsumerGroupsClient
-type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
-type EventHubsClient = original.EventHubsClient
-
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
-}
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)
 }
@@ -181,4 +163,22 @@ func NewEventHubsClient(subscriptionID string) EventHubsClient {
 }
 func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
 	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
+}
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

@@ -22,6 +22,11 @@ package filesystem
 
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/store/2016-11-01/filesystem"
 
+const (
+	DefaultAdlsFileSystemDNSSuffix = original.DefaultAdlsFileSystemDNSSuffix
+)
+
+type ManagementClient = original.ManagementClient
 type GroupClient = original.GroupClient
 type AppendModeType = original.AppendModeType
 
@@ -32,40 +37,40 @@ const (
 type Exception = original.Exception
 
 const (
-	ExceptionAccessControlException		Exception	= original.ExceptionAccessControlException
-	ExceptionBadOffsetException		Exception	= original.ExceptionBadOffsetException
-	ExceptionFileAlreadyExistsException	Exception	= original.ExceptionFileAlreadyExistsException
-	ExceptionFileNotFoundException		Exception	= original.ExceptionFileNotFoundException
-	ExceptionIllegalArgumentException	Exception	= original.ExceptionIllegalArgumentException
-	ExceptionIOException			Exception	= original.ExceptionIOException
-	ExceptionRuntimeException		Exception	= original.ExceptionRuntimeException
-	ExceptionSecurityException		Exception	= original.ExceptionSecurityException
-	ExceptionThrottledException		Exception	= original.ExceptionThrottledException
-	ExceptionUnsupportedOperationException	Exception	= original.ExceptionUnsupportedOperationException
+	ExceptionAccessControlException        Exception = original.ExceptionAccessControlException
+	ExceptionBadOffsetException            Exception = original.ExceptionBadOffsetException
+	ExceptionFileAlreadyExistsException    Exception = original.ExceptionFileAlreadyExistsException
+	ExceptionFileNotFoundException         Exception = original.ExceptionFileNotFoundException
+	ExceptionIllegalArgumentException      Exception = original.ExceptionIllegalArgumentException
+	ExceptionIOException                   Exception = original.ExceptionIOException
+	ExceptionRuntimeException              Exception = original.ExceptionRuntimeException
+	ExceptionSecurityException             Exception = original.ExceptionSecurityException
+	ExceptionThrottledException            Exception = original.ExceptionThrottledException
+	ExceptionUnsupportedOperationException Exception = original.ExceptionUnsupportedOperationException
 )
 
 type ExpiryOptionType = original.ExpiryOptionType
 
 const (
-	Absolute		ExpiryOptionType	= original.Absolute
-	NeverExpire		ExpiryOptionType	= original.NeverExpire
-	RelativeToCreationDate	ExpiryOptionType	= original.RelativeToCreationDate
-	RelativeToNow		ExpiryOptionType	= original.RelativeToNow
+	Absolute               ExpiryOptionType = original.Absolute
+	NeverExpire            ExpiryOptionType = original.NeverExpire
+	RelativeToCreationDate ExpiryOptionType = original.RelativeToCreationDate
+	RelativeToNow          ExpiryOptionType = original.RelativeToNow
 )
 
 type FileType = original.FileType
 
 const (
-	DIRECTORY	FileType	= original.DIRECTORY
-	FILE		FileType	= original.FILE
+	DIRECTORY FileType = original.DIRECTORY
+	FILE      FileType = original.FILE
 )
 
 type SyncFlag = original.SyncFlag
 
 const (
-	CLOSE		SyncFlag	= original.CLOSE
-	DATA		SyncFlag	= original.DATA
-	METADATA	SyncFlag	= original.METADATA
+	CLOSE    SyncFlag = original.CLOSE
+	DATA     SyncFlag = original.DATA
+	METADATA SyncFlag = original.METADATA
 )
 
 type ACLStatus = original.ACLStatus
@@ -90,12 +95,6 @@ type FileStatusesResult = original.FileStatusesResult
 type FileStatusProperties = original.FileStatusProperties
 type FileStatusResult = original.FileStatusResult
 type ReadCloser = original.ReadCloser
-
-const (
-	DefaultAdlsFileSystemDNSSuffix = original.DefaultAdlsFileSystemDNSSuffix
-)
-
-type ManagementClient = original.ManagementClient
 
 func New() ManagementClient {
 	return original.New()

@@ -23,214 +23,223 @@ package customerinsights
 import original "github.com/Azure/azure-sdk-for-go/services/customerinsights/mgmt/2017-04-26/customerinsights"
 
 type AuthorizationPoliciesClient = original.AuthorizationPoliciesClient
+type RelationshipsClient = original.RelationshipsClient
+type WidgetTypesClient = original.WidgetTypesClient
+type OperationsClient = original.OperationsClient
+type PredictionsClient = original.PredictionsClient
+type ProfilesClient = original.ProfilesClient
+type RelationshipLinksClient = original.RelationshipLinksClient
+type RoleAssignmentsClient = original.RoleAssignmentsClient
+type ViewsClient = original.ViewsClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type ManagementClient = original.ManagementClient
-type KpiClient = original.KpiClient
-type RelationshipLinksClient = original.RelationshipLinksClient
-type ViewsClient = original.ViewsClient
+type ConnectorMappingsClient = original.ConnectorMappingsClient
+type HubsClient = original.HubsClient
+type ImagesClient = original.ImagesClient
+type LinksClient = original.LinksClient
 type CalculationWindowTypes = original.CalculationWindowTypes
 
 const (
-	Day		CalculationWindowTypes	= original.Day
-	Hour		CalculationWindowTypes	= original.Hour
-	Lifetime	CalculationWindowTypes	= original.Lifetime
-	Month		CalculationWindowTypes	= original.Month
-	Week		CalculationWindowTypes	= original.Week
+	Day      CalculationWindowTypes = original.Day
+	Hour     CalculationWindowTypes = original.Hour
+	Lifetime CalculationWindowTypes = original.Lifetime
+	Month    CalculationWindowTypes = original.Month
+	Week     CalculationWindowTypes = original.Week
 )
 
 type CanonicalPropertyValueType = original.CanonicalPropertyValueType
 
 const (
-	Categorical		CanonicalPropertyValueType	= original.Categorical
-	DerivedCategorical	CanonicalPropertyValueType	= original.DerivedCategorical
-	DerivedNumeric		CanonicalPropertyValueType	= original.DerivedNumeric
-	Numeric			CanonicalPropertyValueType	= original.Numeric
+	Categorical        CanonicalPropertyValueType = original.Categorical
+	DerivedCategorical CanonicalPropertyValueType = original.DerivedCategorical
+	DerivedNumeric     CanonicalPropertyValueType = original.DerivedNumeric
+	Numeric            CanonicalPropertyValueType = original.Numeric
 )
 
 type CardinalityTypes = original.CardinalityTypes
 
 const (
-	ManyToMany	CardinalityTypes	= original.ManyToMany
-	OneToMany	CardinalityTypes	= original.OneToMany
-	OneToOne	CardinalityTypes	= original.OneToOne
+	ManyToMany CardinalityTypes = original.ManyToMany
+	OneToMany  CardinalityTypes = original.OneToMany
+	OneToOne   CardinalityTypes = original.OneToOne
 )
 
 type CompletionOperationTypes = original.CompletionOperationTypes
 
 const (
-	DeleteFile	CompletionOperationTypes	= original.DeleteFile
-	DoNothing	CompletionOperationTypes	= original.DoNothing
-	MoveFile	CompletionOperationTypes	= original.MoveFile
+	DeleteFile CompletionOperationTypes = original.DeleteFile
+	DoNothing  CompletionOperationTypes = original.DoNothing
+	MoveFile   CompletionOperationTypes = original.MoveFile
 )
 
 type ConnectorMappingStates = original.ConnectorMappingStates
 
 const (
-	Created		ConnectorMappingStates	= original.Created
-	Creating	ConnectorMappingStates	= original.Creating
-	Expiring	ConnectorMappingStates	= original.Expiring
-	Failed		ConnectorMappingStates	= original.Failed
-	Ready		ConnectorMappingStates	= original.Ready
-	Running		ConnectorMappingStates	= original.Running
-	Stopped		ConnectorMappingStates	= original.Stopped
+	Created  ConnectorMappingStates = original.Created
+	Creating ConnectorMappingStates = original.Creating
+	Expiring ConnectorMappingStates = original.Expiring
+	Failed   ConnectorMappingStates = original.Failed
+	Ready    ConnectorMappingStates = original.Ready
+	Running  ConnectorMappingStates = original.Running
+	Stopped  ConnectorMappingStates = original.Stopped
 )
 
 type ConnectorStates = original.ConnectorStates
 
 const (
-	ConnectorStatesCreated	ConnectorStates	= original.ConnectorStatesCreated
-	ConnectorStatesCreating	ConnectorStates	= original.ConnectorStatesCreating
-	ConnectorStatesDeleting	ConnectorStates	= original.ConnectorStatesDeleting
-	ConnectorStatesExpiring	ConnectorStates	= original.ConnectorStatesExpiring
-	ConnectorStatesFailed	ConnectorStates	= original.ConnectorStatesFailed
-	ConnectorStatesReady	ConnectorStates	= original.ConnectorStatesReady
+	ConnectorStatesCreated  ConnectorStates = original.ConnectorStatesCreated
+	ConnectorStatesCreating ConnectorStates = original.ConnectorStatesCreating
+	ConnectorStatesDeleting ConnectorStates = original.ConnectorStatesDeleting
+	ConnectorStatesExpiring ConnectorStates = original.ConnectorStatesExpiring
+	ConnectorStatesFailed   ConnectorStates = original.ConnectorStatesFailed
+	ConnectorStatesReady    ConnectorStates = original.ConnectorStatesReady
 )
 
 type ConnectorTypes = original.ConnectorTypes
 
 const (
-	AzureBlob	ConnectorTypes	= original.AzureBlob
-	CRM		ConnectorTypes	= original.CRM
-	ExchangeOnline	ConnectorTypes	= original.ExchangeOnline
-	None		ConnectorTypes	= original.None
-	Outbound	ConnectorTypes	= original.Outbound
-	Salesforce	ConnectorTypes	= original.Salesforce
+	AzureBlob      ConnectorTypes = original.AzureBlob
+	CRM            ConnectorTypes = original.CRM
+	ExchangeOnline ConnectorTypes = original.ExchangeOnline
+	None           ConnectorTypes = original.None
+	Outbound       ConnectorTypes = original.Outbound
+	Salesforce     ConnectorTypes = original.Salesforce
 )
 
 type DataSourceType = original.DataSourceType
 
 const (
-	DataSourceTypeConnector		DataSourceType	= original.DataSourceTypeConnector
-	DataSourceTypeLinkInteraction	DataSourceType	= original.DataSourceTypeLinkInteraction
-	DataSourceTypeSystemDefault	DataSourceType	= original.DataSourceTypeSystemDefault
+	DataSourceTypeConnector       DataSourceType = original.DataSourceTypeConnector
+	DataSourceTypeLinkInteraction DataSourceType = original.DataSourceTypeLinkInteraction
+	DataSourceTypeSystemDefault   DataSourceType = original.DataSourceTypeSystemDefault
 )
 
 type EntityType = original.EntityType
 
 const (
-	EntityTypeInteraction	EntityType	= original.EntityTypeInteraction
-	EntityTypeNone		EntityType	= original.EntityTypeNone
-	EntityTypeProfile	EntityType	= original.EntityTypeProfile
-	EntityTypeRelationship	EntityType	= original.EntityTypeRelationship
+	EntityTypeInteraction  EntityType = original.EntityTypeInteraction
+	EntityTypeNone         EntityType = original.EntityTypeNone
+	EntityTypeProfile      EntityType = original.EntityTypeProfile
+	EntityTypeRelationship EntityType = original.EntityTypeRelationship
 )
 
 type EntityTypes = original.EntityTypes
 
 const (
-	EntityTypesInteraction	EntityTypes	= original.EntityTypesInteraction
-	EntityTypesNone		EntityTypes	= original.EntityTypesNone
-	EntityTypesProfile	EntityTypes	= original.EntityTypesProfile
-	EntityTypesRelationship	EntityTypes	= original.EntityTypesRelationship
+	EntityTypesInteraction  EntityTypes = original.EntityTypesInteraction
+	EntityTypesNone         EntityTypes = original.EntityTypesNone
+	EntityTypesProfile      EntityTypes = original.EntityTypesProfile
+	EntityTypesRelationship EntityTypes = original.EntityTypesRelationship
 )
 
 type ErrorManagementTypes = original.ErrorManagementTypes
 
 const (
-	RejectAndContinue	ErrorManagementTypes	= original.RejectAndContinue
-	RejectUntilLimit	ErrorManagementTypes	= original.RejectUntilLimit
-	StopImport		ErrorManagementTypes	= original.StopImport
+	RejectAndContinue ErrorManagementTypes = original.RejectAndContinue
+	RejectUntilLimit  ErrorManagementTypes = original.RejectUntilLimit
+	StopImport        ErrorManagementTypes = original.StopImport
 )
 
 type FrequencyTypes = original.FrequencyTypes
 
 const (
-	FrequencyTypesDay	FrequencyTypes	= original.FrequencyTypesDay
-	FrequencyTypesHour	FrequencyTypes	= original.FrequencyTypesHour
-	FrequencyTypesMinute	FrequencyTypes	= original.FrequencyTypesMinute
-	FrequencyTypesMonth	FrequencyTypes	= original.FrequencyTypesMonth
-	FrequencyTypesWeek	FrequencyTypes	= original.FrequencyTypesWeek
+	FrequencyTypesDay    FrequencyTypes = original.FrequencyTypesDay
+	FrequencyTypesHour   FrequencyTypes = original.FrequencyTypesHour
+	FrequencyTypesMinute FrequencyTypes = original.FrequencyTypesMinute
+	FrequencyTypesMonth  FrequencyTypes = original.FrequencyTypesMonth
+	FrequencyTypesWeek   FrequencyTypes = original.FrequencyTypesWeek
 )
 
 type InstanceOperationType = original.InstanceOperationType
 
 const (
-	Delete	InstanceOperationType	= original.Delete
-	Upsert	InstanceOperationType	= original.Upsert
+	Delete InstanceOperationType = original.Delete
+	Upsert InstanceOperationType = original.Upsert
 )
 
 type KpiFunctions = original.KpiFunctions
 
 const (
-	KpiFunctionsAvg			KpiFunctions	= original.KpiFunctionsAvg
-	KpiFunctionsCount		KpiFunctions	= original.KpiFunctionsCount
-	KpiFunctionsCountDistinct	KpiFunctions	= original.KpiFunctionsCountDistinct
-	KpiFunctionsLast		KpiFunctions	= original.KpiFunctionsLast
-	KpiFunctionsMax			KpiFunctions	= original.KpiFunctionsMax
-	KpiFunctionsMin			KpiFunctions	= original.KpiFunctionsMin
-	KpiFunctionsNone		KpiFunctions	= original.KpiFunctionsNone
-	KpiFunctionsSum			KpiFunctions	= original.KpiFunctionsSum
+	KpiFunctionsAvg           KpiFunctions = original.KpiFunctionsAvg
+	KpiFunctionsCount         KpiFunctions = original.KpiFunctionsCount
+	KpiFunctionsCountDistinct KpiFunctions = original.KpiFunctionsCountDistinct
+	KpiFunctionsLast          KpiFunctions = original.KpiFunctionsLast
+	KpiFunctionsMax           KpiFunctions = original.KpiFunctionsMax
+	KpiFunctionsMin           KpiFunctions = original.KpiFunctionsMin
+	KpiFunctionsNone          KpiFunctions = original.KpiFunctionsNone
+	KpiFunctionsSum           KpiFunctions = original.KpiFunctionsSum
 )
 
 type LinkTypes = original.LinkTypes
 
 const (
-	CopyIfNull	LinkTypes	= original.CopyIfNull
-	UpdateAlways	LinkTypes	= original.UpdateAlways
+	CopyIfNull   LinkTypes = original.CopyIfNull
+	UpdateAlways LinkTypes = original.UpdateAlways
 )
 
 type PermissionTypes = original.PermissionTypes
 
 const (
-	Manage	PermissionTypes	= original.Manage
-	Read	PermissionTypes	= original.Read
-	Write	PermissionTypes	= original.Write
+	Manage PermissionTypes = original.Manage
+	Read   PermissionTypes = original.Read
+	Write  PermissionTypes = original.Write
 )
 
 type PredictionModelLifeCycle = original.PredictionModelLifeCycle
 
 const (
-	PredictionModelLifeCycleActive				PredictionModelLifeCycle	= original.PredictionModelLifeCycleActive
-	PredictionModelLifeCycleDeleted				PredictionModelLifeCycle	= original.PredictionModelLifeCycleDeleted
-	PredictionModelLifeCycleDiscovering			PredictionModelLifeCycle	= original.PredictionModelLifeCycleDiscovering
-	PredictionModelLifeCycleEvaluating			PredictionModelLifeCycle	= original.PredictionModelLifeCycleEvaluating
-	PredictionModelLifeCycleEvaluatingFailed		PredictionModelLifeCycle	= original.PredictionModelLifeCycleEvaluatingFailed
-	PredictionModelLifeCycleFailed				PredictionModelLifeCycle	= original.PredictionModelLifeCycleFailed
-	PredictionModelLifeCycleFeaturing			PredictionModelLifeCycle	= original.PredictionModelLifeCycleFeaturing
-	PredictionModelLifeCycleFeaturingFailed			PredictionModelLifeCycle	= original.PredictionModelLifeCycleFeaturingFailed
-	PredictionModelLifeCycleHumanIntervention		PredictionModelLifeCycle	= original.PredictionModelLifeCycleHumanIntervention
-	PredictionModelLifeCycleNew				PredictionModelLifeCycle	= original.PredictionModelLifeCycleNew
-	PredictionModelLifeCyclePendingDiscovering		PredictionModelLifeCycle	= original.PredictionModelLifeCyclePendingDiscovering
-	PredictionModelLifeCyclePendingFeaturing		PredictionModelLifeCycle	= original.PredictionModelLifeCyclePendingFeaturing
-	PredictionModelLifeCyclePendingModelConfirmation	PredictionModelLifeCycle	= original.PredictionModelLifeCyclePendingModelConfirmation
-	PredictionModelLifeCyclePendingTraining			PredictionModelLifeCycle	= original.PredictionModelLifeCyclePendingTraining
-	PredictionModelLifeCycleProvisioning			PredictionModelLifeCycle	= original.PredictionModelLifeCycleProvisioning
-	PredictionModelLifeCycleProvisioningFailed		PredictionModelLifeCycle	= original.PredictionModelLifeCycleProvisioningFailed
-	PredictionModelLifeCycleTraining			PredictionModelLifeCycle	= original.PredictionModelLifeCycleTraining
-	PredictionModelLifeCycleTrainingFailed			PredictionModelLifeCycle	= original.PredictionModelLifeCycleTrainingFailed
+	PredictionModelLifeCycleActive                   PredictionModelLifeCycle = original.PredictionModelLifeCycleActive
+	PredictionModelLifeCycleDeleted                  PredictionModelLifeCycle = original.PredictionModelLifeCycleDeleted
+	PredictionModelLifeCycleDiscovering              PredictionModelLifeCycle = original.PredictionModelLifeCycleDiscovering
+	PredictionModelLifeCycleEvaluating               PredictionModelLifeCycle = original.PredictionModelLifeCycleEvaluating
+	PredictionModelLifeCycleEvaluatingFailed         PredictionModelLifeCycle = original.PredictionModelLifeCycleEvaluatingFailed
+	PredictionModelLifeCycleFailed                   PredictionModelLifeCycle = original.PredictionModelLifeCycleFailed
+	PredictionModelLifeCycleFeaturing                PredictionModelLifeCycle = original.PredictionModelLifeCycleFeaturing
+	PredictionModelLifeCycleFeaturingFailed          PredictionModelLifeCycle = original.PredictionModelLifeCycleFeaturingFailed
+	PredictionModelLifeCycleHumanIntervention        PredictionModelLifeCycle = original.PredictionModelLifeCycleHumanIntervention
+	PredictionModelLifeCycleNew                      PredictionModelLifeCycle = original.PredictionModelLifeCycleNew
+	PredictionModelLifeCyclePendingDiscovering       PredictionModelLifeCycle = original.PredictionModelLifeCyclePendingDiscovering
+	PredictionModelLifeCyclePendingFeaturing         PredictionModelLifeCycle = original.PredictionModelLifeCyclePendingFeaturing
+	PredictionModelLifeCyclePendingModelConfirmation PredictionModelLifeCycle = original.PredictionModelLifeCyclePendingModelConfirmation
+	PredictionModelLifeCyclePendingTraining          PredictionModelLifeCycle = original.PredictionModelLifeCyclePendingTraining
+	PredictionModelLifeCycleProvisioning             PredictionModelLifeCycle = original.PredictionModelLifeCycleProvisioning
+	PredictionModelLifeCycleProvisioningFailed       PredictionModelLifeCycle = original.PredictionModelLifeCycleProvisioningFailed
+	PredictionModelLifeCycleTraining                 PredictionModelLifeCycle = original.PredictionModelLifeCycleTraining
+	PredictionModelLifeCycleTrainingFailed           PredictionModelLifeCycle = original.PredictionModelLifeCycleTrainingFailed
 )
 
 type ProvisioningStates = original.ProvisioningStates
 
 const (
-	ProvisioningStatesDeleting		ProvisioningStates	= original.ProvisioningStatesDeleting
-	ProvisioningStatesExpiring		ProvisioningStates	= original.ProvisioningStatesExpiring
-	ProvisioningStatesFailed		ProvisioningStates	= original.ProvisioningStatesFailed
-	ProvisioningStatesHumanIntervention	ProvisioningStates	= original.ProvisioningStatesHumanIntervention
-	ProvisioningStatesProvisioning		ProvisioningStates	= original.ProvisioningStatesProvisioning
-	ProvisioningStatesSucceeded		ProvisioningStates	= original.ProvisioningStatesSucceeded
+	ProvisioningStatesDeleting          ProvisioningStates = original.ProvisioningStatesDeleting
+	ProvisioningStatesExpiring          ProvisioningStates = original.ProvisioningStatesExpiring
+	ProvisioningStatesFailed            ProvisioningStates = original.ProvisioningStatesFailed
+	ProvisioningStatesHumanIntervention ProvisioningStates = original.ProvisioningStatesHumanIntervention
+	ProvisioningStatesProvisioning      ProvisioningStates = original.ProvisioningStatesProvisioning
+	ProvisioningStatesSucceeded         ProvisioningStates = original.ProvisioningStatesSucceeded
 )
 
 type RoleTypes = original.RoleTypes
 
 const (
-	Admin		RoleTypes	= original.Admin
-	DataAdmin	RoleTypes	= original.DataAdmin
-	DataReader	RoleTypes	= original.DataReader
-	ManageAdmin	RoleTypes	= original.ManageAdmin
-	ManageReader	RoleTypes	= original.ManageReader
-	Reader		RoleTypes	= original.Reader
+	Admin        RoleTypes = original.Admin
+	DataAdmin    RoleTypes = original.DataAdmin
+	DataReader   RoleTypes = original.DataReader
+	ManageAdmin  RoleTypes = original.ManageAdmin
+	ManageReader RoleTypes = original.ManageReader
+	Reader       RoleTypes = original.Reader
 )
 
 type Status = original.Status
 
 const (
-	StatusActive	Status	= original.StatusActive
-	StatusDeleted	Status	= original.StatusDeleted
-	StatusNone	Status	= original.StatusNone
+	StatusActive  Status = original.StatusActive
+	StatusDeleted Status = original.StatusDeleted
+	StatusNone    Status = original.StatusNone
 )
 
 type AssignmentPrincipal = original.AssignmentPrincipal
@@ -332,31 +341,82 @@ type ViewResourceFormat = original.ViewResourceFormat
 type WidgetType = original.WidgetType
 type WidgetTypeListResult = original.WidgetTypeListResult
 type WidgetTypeResourceFormat = original.WidgetTypeResourceFormat
-type ProfilesClient = original.ProfilesClient
-type WidgetTypesClient = original.WidgetTypesClient
-type InteractionsClient = original.InteractionsClient
-type LinksClient = original.LinksClient
-type OperationsClient = original.OperationsClient
-type RoleAssignmentsClient = original.RoleAssignmentsClient
-type RolesClient = original.RolesClient
-type RelationshipsClient = original.RelationshipsClient
-type ConnectorMappingsClient = original.ConnectorMappingsClient
 type ConnectorsClient = original.ConnectorsClient
-type HubsClient = original.HubsClient
-type ImagesClient = original.ImagesClient
-type PredictionsClient = original.PredictionsClient
+type InteractionsClient = original.InteractionsClient
+type KpiClient = original.KpiClient
+type RolesClient = original.RolesClient
 
+func NewAuthorizationPoliciesClient(subscriptionID string) AuthorizationPoliciesClient {
+	return original.NewAuthorizationPoliciesClient(subscriptionID)
+}
+func NewAuthorizationPoliciesClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationPoliciesClient {
+	return original.NewAuthorizationPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRelationshipsClient(subscriptionID string) RelationshipsClient {
+	return original.NewRelationshipsClient(subscriptionID)
+}
+func NewRelationshipsClientWithBaseURI(baseURI string, subscriptionID string) RelationshipsClient {
+	return original.NewRelationshipsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewWidgetTypesClient(subscriptionID string) WidgetTypesClient {
+	return original.NewWidgetTypesClient(subscriptionID)
+}
+func NewWidgetTypesClientWithBaseURI(baseURI string, subscriptionID string) WidgetTypesClient {
+	return original.NewWidgetTypesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPredictionsClient(subscriptionID string) PredictionsClient {
+	return original.NewPredictionsClient(subscriptionID)
+}
+func NewPredictionsClientWithBaseURI(baseURI string, subscriptionID string) PredictionsClient {
+	return original.NewPredictionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProfilesClient(subscriptionID string) ProfilesClient {
+	return original.NewProfilesClient(subscriptionID)
+}
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
+	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRelationshipLinksClient(subscriptionID string) RelationshipLinksClient {
+	return original.NewRelationshipLinksClient(subscriptionID)
+}
+func NewRelationshipLinksClientWithBaseURI(baseURI string, subscriptionID string) RelationshipLinksClient {
+	return original.NewRelationshipLinksClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClient(subscriptionID)
+}
+func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewViewsClient(subscriptionID string) ViewsClient {
+	return original.NewViewsClient(subscriptionID)
+}
+func NewViewsClientWithBaseURI(baseURI string, subscriptionID string) ViewsClient {
+	return original.NewViewsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func NewConnectorMappingsClient(subscriptionID string) ConnectorMappingsClient {
 	return original.NewConnectorMappingsClient(subscriptionID)
 }
 func NewConnectorMappingsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorMappingsClient {
 	return original.NewConnectorMappingsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewConnectorsClient(subscriptionID string) ConnectorsClient {
-	return original.NewConnectorsClient(subscriptionID)
-}
-func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorsClient {
-	return original.NewConnectorsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewHubsClient(subscriptionID string) HubsClient {
 	return original.NewHubsClient(subscriptionID)
@@ -370,53 +430,17 @@ func NewImagesClient(subscriptionID string) ImagesClient {
 func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
 	return original.NewImagesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPredictionsClient(subscriptionID string) PredictionsClient {
-	return original.NewPredictionsClient(subscriptionID)
+func NewLinksClient(subscriptionID string) LinksClient {
+	return original.NewLinksClient(subscriptionID)
 }
-func NewPredictionsClientWithBaseURI(baseURI string, subscriptionID string) PredictionsClient {
-	return original.NewPredictionsClientWithBaseURI(baseURI, subscriptionID)
+func NewLinksClientWithBaseURI(baseURI string, subscriptionID string) LinksClient {
+	return original.NewLinksClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewRelationshipsClient(subscriptionID string) RelationshipsClient {
-	return original.NewRelationshipsClient(subscriptionID)
+func NewConnectorsClient(subscriptionID string) ConnectorsClient {
+	return original.NewConnectorsClient(subscriptionID)
 }
-func NewRelationshipsClientWithBaseURI(baseURI string, subscriptionID string) RelationshipsClient {
-	return original.NewRelationshipsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAuthorizationPoliciesClient(subscriptionID string) AuthorizationPoliciesClient {
-	return original.NewAuthorizationPoliciesClient(subscriptionID)
-}
-func NewAuthorizationPoliciesClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationPoliciesClient {
-	return original.NewAuthorizationPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewKpiClient(subscriptionID string) KpiClient {
-	return original.NewKpiClient(subscriptionID)
-}
-func NewKpiClientWithBaseURI(baseURI string, subscriptionID string) KpiClient {
-	return original.NewKpiClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRelationshipLinksClient(subscriptionID string) RelationshipLinksClient {
-	return original.NewRelationshipLinksClient(subscriptionID)
-}
-func NewRelationshipLinksClientWithBaseURI(baseURI string, subscriptionID string) RelationshipLinksClient {
-	return original.NewRelationshipLinksClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewViewsClient(subscriptionID string) ViewsClient {
-	return original.NewViewsClient(subscriptionID)
-}
-func NewViewsClientWithBaseURI(baseURI string, subscriptionID string) ViewsClient {
-	return original.NewViewsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProfilesClient(subscriptionID string) ProfilesClient {
-	return original.NewProfilesClient(subscriptionID)
-}
-func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
-	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
+func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorsClient {
+	return original.NewConnectorsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInteractionsClient(subscriptionID string) InteractionsClient {
 	return original.NewInteractionsClient(subscriptionID)
@@ -424,39 +448,15 @@ func NewInteractionsClient(subscriptionID string) InteractionsClient {
 func NewInteractionsClientWithBaseURI(baseURI string, subscriptionID string) InteractionsClient {
 	return original.NewInteractionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewLinksClient(subscriptionID string) LinksClient {
-	return original.NewLinksClient(subscriptionID)
+func NewKpiClient(subscriptionID string) KpiClient {
+	return original.NewKpiClient(subscriptionID)
 }
-func NewLinksClientWithBaseURI(baseURI string, subscriptionID string) LinksClient {
-	return original.NewLinksClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
-	return original.NewRoleAssignmentsClient(subscriptionID)
-}
-func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
-	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+func NewKpiClientWithBaseURI(baseURI string, subscriptionID string) KpiClient {
+	return original.NewKpiClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRolesClient(subscriptionID string) RolesClient {
 	return original.NewRolesClient(subscriptionID)
 }
 func NewRolesClientWithBaseURI(baseURI string, subscriptionID string) RolesClient {
 	return original.NewRolesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewWidgetTypesClient(subscriptionID string) WidgetTypesClient {
-	return original.NewWidgetTypesClient(subscriptionID)
-}
-func NewWidgetTypesClientWithBaseURI(baseURI string, subscriptionID string) WidgetTypesClient {
-	return original.NewWidgetTypesClientWithBaseURI(baseURI, subscriptionID)
 }

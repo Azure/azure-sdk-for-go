@@ -93,7 +93,9 @@ func (client ManagementClient) GetAvailableOperationsPreparer() (*http.Request, 
 // GetAvailableOperationsSender sends the GetAvailableOperations request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetAvailableOperationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetAvailableOperationsResponder handles the response to the GetAvailableOperations request. The method always

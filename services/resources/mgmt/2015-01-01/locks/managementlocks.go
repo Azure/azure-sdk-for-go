@@ -99,7 +99,9 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevelPreparer(r
 // CreateOrUpdateAtResourceGroupLevelSender sends the CreateOrUpdateAtResourceGroupLevel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateAtResourceGroupLevelResponder handles the response to the CreateOrUpdateAtResourceGroupLevel request. The method always
@@ -180,7 +182,9 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceLevelPreparer(resour
 // CreateOrUpdateAtResourceLevelSender sends the CreateOrUpdateAtResourceLevel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementLocksClient) CreateOrUpdateAtResourceLevelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateAtResourceLevelResponder handles the response to the CreateOrUpdateAtResourceLevel request. The method always
@@ -246,7 +250,9 @@ func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevelPreparer(lo
 // CreateOrUpdateAtSubscriptionLevelSender sends the CreateOrUpdateAtSubscriptionLevel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateAtSubscriptionLevelResponder handles the response to the CreateOrUpdateAtSubscriptionLevel request. The method always
@@ -319,7 +325,9 @@ func (client ManagementLocksClient) DeleteAtResourceGroupLevelPreparer(resourceG
 // DeleteAtResourceGroupLevelSender sends the DeleteAtResourceGroupLevel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementLocksClient) DeleteAtResourceGroupLevelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteAtResourceGroupLevelResponder handles the response to the DeleteAtResourceGroupLevel request. The method always
@@ -397,7 +405,9 @@ func (client ManagementLocksClient) DeleteAtResourceLevelPreparer(resourceGroupN
 // DeleteAtResourceLevelSender sends the DeleteAtResourceLevel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementLocksClient) DeleteAtResourceLevelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteAtResourceLevelResponder handles the response to the DeleteAtResourceLevel request. The method always
@@ -460,7 +470,9 @@ func (client ManagementLocksClient) DeleteAtSubscriptionLevelPreparer(lockName s
 // DeleteAtSubscriptionLevelSender sends the DeleteAtSubscriptionLevel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementLocksClient) DeleteAtSubscriptionLevelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteAtSubscriptionLevelResponder handles the response to the DeleteAtSubscriptionLevel request. The method always
@@ -523,7 +535,9 @@ func (client ManagementLocksClient) GetPreparer(lockName string) (*http.Request,
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementLocksClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -596,7 +610,9 @@ func (client ManagementLocksClient) GetAtResourceGroupLevelPreparer(resourceGrou
 // GetAtResourceGroupLevelSender sends the GetAtResourceGroupLevel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementLocksClient) GetAtResourceGroupLevelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAtResourceGroupLevelResponder handles the response to the GetAtResourceGroupLevel request. The method always
@@ -671,7 +687,9 @@ func (client ManagementLocksClient) ListAtResourceGroupLevelPreparer(resourceGro
 // ListAtResourceGroupLevelSender sends the ListAtResourceGroupLevel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementLocksClient) ListAtResourceGroupLevelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAtResourceGroupLevelResponder handles the response to the ListAtResourceGroupLevel request. The method always
@@ -821,7 +839,9 @@ func (client ManagementLocksClient) ListAtResourceLevelPreparer(resourceGroupNam
 // ListAtResourceLevelSender sends the ListAtResourceLevel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementLocksClient) ListAtResourceLevelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAtResourceLevelResponder handles the response to the ListAtResourceLevel request. The method always
@@ -956,7 +976,9 @@ func (client ManagementLocksClient) ListAtSubscriptionLevelPreparer(filter strin
 // ListAtSubscriptionLevelSender sends the ListAtSubscriptionLevel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementLocksClient) ListAtSubscriptionLevelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAtSubscriptionLevelResponder handles the response to the ListAtSubscriptionLevel request. The method always

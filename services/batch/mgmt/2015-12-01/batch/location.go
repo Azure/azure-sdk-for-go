@@ -86,7 +86,9 @@ func (client LocationClient) GetQuotasPreparer(locationName string) (*http.Reque
 // GetQuotasSender sends the GetQuotas request. The method will close the
 // http.Response Body if it receives an error.
 func (client LocationClient) GetQuotasSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetQuotasResponder handles the response to the GetQuotas request. The method always

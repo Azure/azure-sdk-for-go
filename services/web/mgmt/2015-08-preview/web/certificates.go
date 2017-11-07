@@ -90,7 +90,9 @@ func (client CertificatesClient) CreateOrUpdateCertificatePreparer(resourceGroup
 // CreateOrUpdateCertificateSender sends the CreateOrUpdateCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) CreateOrUpdateCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateCertificateResponder handles the response to the CreateOrUpdateCertificate request. The method always
@@ -158,7 +160,9 @@ func (client CertificatesClient) CreateOrUpdateCsrPreparer(resourceGroupName str
 // CreateOrUpdateCsrSender sends the CreateOrUpdateCsr request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) CreateOrUpdateCsrSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateCsrResponder handles the response to the CreateOrUpdateCsr request. The method always
@@ -223,7 +227,9 @@ func (client CertificatesClient) DeleteCertificatePreparer(resourceGroupName str
 // DeleteCertificateSender sends the DeleteCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) DeleteCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteCertificateResponder handles the response to the DeleteCertificate request. The method always
@@ -288,7 +294,9 @@ func (client CertificatesClient) DeleteCsrPreparer(resourceGroupName string, nam
 // DeleteCsrSender sends the DeleteCsr request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) DeleteCsrSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteCsrResponder handles the response to the DeleteCsr request. The method always
@@ -353,7 +361,9 @@ func (client CertificatesClient) GetCertificatePreparer(resourceGroupName string
 // GetCertificateSender sends the GetCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) GetCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetCertificateResponder handles the response to the GetCertificate request. The method always
@@ -417,7 +427,9 @@ func (client CertificatesClient) GetCertificatesPreparer(resourceGroupName strin
 // GetCertificatesSender sends the GetCertificates request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) GetCertificatesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetCertificatesResponder handles the response to the GetCertificates request. The method always
@@ -551,7 +563,9 @@ func (client CertificatesClient) GetCsrPreparer(resourceGroupName string, name s
 // GetCsrSender sends the GetCsr request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) GetCsrSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetCsrResponder handles the response to the GetCsr request. The method always
@@ -615,7 +629,9 @@ func (client CertificatesClient) GetCsrsPreparer(resourceGroupName string) (*htt
 // GetCsrsSender sends the GetCsrs request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) GetCsrsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetCsrsResponder handles the response to the GetCsrs request. The method always
@@ -683,7 +699,9 @@ func (client CertificatesClient) UpdateCertificatePreparer(resourceGroupName str
 // UpdateCertificateSender sends the UpdateCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) UpdateCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateCertificateResponder handles the response to the UpdateCertificate request. The method always
@@ -751,7 +769,9 @@ func (client CertificatesClient) UpdateCsrPreparer(resourceGroupName string, nam
 // UpdateCsrSender sends the UpdateCsr request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificatesClient) UpdateCsrSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateCsrResponder handles the response to the UpdateCsr request. The method always

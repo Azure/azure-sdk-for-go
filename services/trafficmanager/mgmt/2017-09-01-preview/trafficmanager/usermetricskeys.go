@@ -38,7 +38,7 @@ func NewUserMetricsKeysClientWithBaseURI(baseURI string, subscriptionID string) 
 	return UserMetricsKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or update a subscription-level key used for Realtime User Metrics collection.
+// CreateOrUpdate create or update a subscription-level key used for Real User Metrics collection.
 func (client UserMetricsKeysClient) CreateOrUpdate() (result UserMetricsKeyModel, err error) {
 	req, err := client.CreateOrUpdatePreparer()
 	if err != nil {
@@ -75,7 +75,7 @@ func (client UserMetricsKeysClient) CreateOrUpdatePreparer() (*http.Request, err
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -83,7 +83,9 @@ func (client UserMetricsKeysClient) CreateOrUpdatePreparer() (*http.Request, err
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserMetricsKeysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -99,7 +101,7 @@ func (client UserMetricsKeysClient) CreateOrUpdateResponder(resp *http.Response)
 	return
 }
 
-// Delete delete a subscription-level key used for Realtime User Metrics collection.
+// Delete delete a subscription-level key used for Real User Metrics collection.
 func (client UserMetricsKeysClient) Delete() (result DeleteOperationResult, err error) {
 	req, err := client.DeletePreparer()
 	if err != nil {
@@ -136,7 +138,7 @@ func (client UserMetricsKeysClient) DeletePreparer() (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -144,7 +146,9 @@ func (client UserMetricsKeysClient) DeletePreparer() (*http.Request, error) {
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserMetricsKeysClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -160,31 +164,31 @@ func (client UserMetricsKeysClient) DeleteResponder(resp *http.Response) (result
 	return
 }
 
-// GetDefault get the subscription-level key used for Realtime User Metrics collection.
-func (client UserMetricsKeysClient) GetDefault() (result UserMetricsKeyModel, err error) {
-	req, err := client.GetDefaultPreparer()
+// Get get the subscription-level key used for Real User Metrics collection.
+func (client UserMetricsKeysClient) Get() (result UserMetricsKeyModel, err error) {
+	req, err := client.GetPreparer()
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "trafficmanager.UserMetricsKeysClient", "GetDefault", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "trafficmanager.UserMetricsKeysClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetDefaultSender(req)
+	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "trafficmanager.UserMetricsKeysClient", "GetDefault", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "trafficmanager.UserMetricsKeysClient", "Get", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetDefaultResponder(resp)
+	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "trafficmanager.UserMetricsKeysClient", "GetDefault", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "trafficmanager.UserMetricsKeysClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetDefaultPreparer prepares the GetDefault request.
-func (client UserMetricsKeysClient) GetDefaultPreparer() (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client UserMetricsKeysClient) GetPreparer() (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -197,24 +201,26 @@ func (client UserMetricsKeysClient) GetDefaultPreparer() (*http.Request, error) 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
 
-// GetDefaultSender sends the GetDefault request. The method will close the
+// GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client UserMetricsKeysClient) GetDefaultSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+func (client UserMetricsKeysClient) GetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
-// GetDefaultResponder handles the response to the GetDefault request. The method always
+// GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client UserMetricsKeysClient) GetDefaultResponder(resp *http.Response) (result UserMetricsKeyModel, err error) {
+func (client UserMetricsKeysClient) GetResponder(resp *http.Response) (result UserMetricsKeyModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

@@ -113,7 +113,9 @@ func (client RulesClient) CreateOrUpdatePreparer(resourceGroupName string, names
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client RulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -200,7 +202,9 @@ func (client RulesClient) DeletePreparer(resourceGroupName string, namespaceName
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client RulesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -286,7 +290,9 @@ func (client RulesClient) GetPreparer(resourceGroupName string, namespaceName st
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client RulesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -369,7 +375,9 @@ func (client RulesClient) ListBySubscriptionsPreparer(resourceGroupName string, 
 // ListBySubscriptionsSender sends the ListBySubscriptions request. The method will close the
 // http.Response Body if it receives an error.
 func (client RulesClient) ListBySubscriptionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySubscriptionsResponder handles the response to the ListBySubscriptions request. The method always

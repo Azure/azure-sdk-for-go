@@ -108,7 +108,9 @@ func (client ManagementClient) CheckNameAvailabilityPreparer(request ResourceNam
 // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
@@ -165,12 +167,142 @@ func (client ManagementClient) GetPublishingUserPreparer() (*http.Request, error
 // GetPublishingUserSender sends the GetPublishingUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetPublishingUserSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPublishingUserResponder handles the response to the GetPublishingUser request. The method always
 // closes the http.Response Body.
 func (client ManagementClient) GetPublishingUserResponder(resp *http.Response) (result User, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetSourceControl gets source control token
+//
+// sourceControlType is type of source control
+func (client ManagementClient) GetSourceControl(sourceControlType string) (result SourceControl, err error) {
+	req, err := client.GetSourceControlPreparer(sourceControlType)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "GetSourceControl", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSourceControlSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "GetSourceControl", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetSourceControlResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "GetSourceControl", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetSourceControlPreparer prepares the GetSourceControl request.
+func (client ManagementClient) GetSourceControlPreparer(sourceControlType string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"sourceControlType": autorest.Encode("path", sourceControlType),
+	}
+
+	const APIVersion = "2016-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Web/sourcecontrols/{sourceControlType}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetSourceControlSender sends the GetSourceControl request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagementClient) GetSourceControlSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetSourceControlResponder handles the response to the GetSourceControl request. The method always
+// closes the http.Response Body.
+func (client ManagementClient) GetSourceControlResponder(resp *http.Response) (result SourceControl, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetSubscriptionDeploymentLocations gets list of available geo regions plus ministamps
+func (client ManagementClient) GetSubscriptionDeploymentLocations() (result DeploymentLocations, err error) {
+	req, err := client.GetSubscriptionDeploymentLocationsPreparer()
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "GetSubscriptionDeploymentLocations", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSubscriptionDeploymentLocationsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "GetSubscriptionDeploymentLocations", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetSubscriptionDeploymentLocationsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.ManagementClient", "GetSubscriptionDeploymentLocations", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetSubscriptionDeploymentLocationsPreparer prepares the GetSubscriptionDeploymentLocations request.
+func (client ManagementClient) GetSubscriptionDeploymentLocationsPreparer() (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Web/deploymentLocations", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetSubscriptionDeploymentLocationsSender sends the GetSubscriptionDeploymentLocations request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagementClient) GetSubscriptionDeploymentLocationsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetSubscriptionDeploymentLocationsResponder handles the response to the GetSubscriptionDeploymentLocations request. The method always
+// closes the http.Response Body.
+func (client ManagementClient) GetSubscriptionDeploymentLocationsResponder(resp *http.Response) (result DeploymentLocations, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -235,7 +367,9 @@ func (client ManagementClient) ListGeoRegionsPreparer(sku SkuName, linuxWorkersE
 // ListGeoRegionsSender sends the ListGeoRegions request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ListGeoRegionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListGeoRegionsResponder handles the response to the ListGeoRegions request. The method always
@@ -365,7 +499,9 @@ func (client ManagementClient) ListPremierAddOnOffersPreparer() (*http.Request, 
 // ListPremierAddOnOffersSender sends the ListPremierAddOnOffers request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ListPremierAddOnOffersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListPremierAddOnOffersResponder handles the response to the ListPremierAddOnOffers request. The method always
@@ -495,7 +631,9 @@ func (client ManagementClient) ListSkusPreparer() (*http.Request, error) {
 // ListSkusSender sends the ListSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ListSkusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSkusResponder handles the response to the ListSkus request. The method always
@@ -552,7 +690,9 @@ func (client ManagementClient) ListSourceControlsPreparer() (*http.Request, erro
 // ListSourceControlsSender sends the ListSourceControls request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ListSourceControlsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListSourceControlsResponder handles the response to the ListSourceControls request. The method always
@@ -702,7 +842,9 @@ func (client ManagementClient) MovePreparer(resourceGroupName string, moveResour
 // MoveSender sends the Move request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) MoveSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // MoveResponder handles the response to the Move request. The method always
@@ -762,7 +904,9 @@ func (client ManagementClient) UpdatePublishingUserPreparer(userDetails User) (*
 // UpdatePublishingUserSender sends the UpdatePublishingUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) UpdatePublishingUserSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdatePublishingUserResponder handles the response to the UpdatePublishingUser request. The method always
@@ -827,7 +971,9 @@ func (client ManagementClient) UpdateSourceControlPreparer(sourceControlType str
 // UpdateSourceControlSender sends the UpdateSourceControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) UpdateSourceControlSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateSourceControlResponder handles the response to the UpdateSourceControl request. The method always
@@ -909,7 +1055,9 @@ func (client ManagementClient) ValidatePreparer(resourceGroupName string, valida
 // ValidateSender sends the Validate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ValidateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ValidateResponder handles the response to the Validate request. The method always
@@ -990,7 +1138,9 @@ func (client ManagementClient) ValidateMovePreparer(resourceGroupName string, mo
 // ValidateMoveSender sends the ValidateMove request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ValidateMoveSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ValidateMoveResponder handles the response to the ValidateMove request. The method always
@@ -1055,7 +1205,9 @@ func (client ManagementClient) VerifyHostingEnvironmentVnetPreparer(parameters V
 // VerifyHostingEnvironmentVnetSender sends the VerifyHostingEnvironmentVnet request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) VerifyHostingEnvironmentVnetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // VerifyHostingEnvironmentVnetResponder handles the response to the VerifyHostingEnvironmentVnet request. The method always

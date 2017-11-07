@@ -108,7 +108,9 @@ func (client GroupUsersClient) CreatePreparer(resourceGroupName string, serviceN
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupUsersClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -193,7 +195,9 @@ func (client GroupUsersClient) DeletePreparer(resourceGroupName string, serviceN
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupUsersClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -297,7 +301,9 @@ func (client GroupUsersClient) ListByGroupsPreparer(resourceGroupName string, se
 // ListByGroupsSender sends the ListByGroups request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupUsersClient) ListByGroupsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByGroupsResponder handles the response to the ListByGroups request. The method always

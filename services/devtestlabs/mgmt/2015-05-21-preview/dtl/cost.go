@@ -88,7 +88,9 @@ func (client CostClient) GetResourcePreparer(resourceGroupName string, labName s
 // GetResourceSender sends the GetResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client CostClient) GetResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResourceResponder handles the response to the GetResource request. The method always
@@ -163,7 +165,9 @@ func (client CostClient) ListPreparer(resourceGroupName string, labName string, 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client CostClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -315,6 +319,7 @@ func (client CostClient) RefreshDataPreparer(resourceGroupName string, labName s
 func (client CostClient) RefreshDataSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 

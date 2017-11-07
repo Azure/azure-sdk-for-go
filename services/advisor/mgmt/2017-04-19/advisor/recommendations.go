@@ -20,7 +20,7 @@ package advisor
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	uuid "github.com/satori/go.uuid"
+	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -85,7 +85,9 @@ func (client RecommendationsClient) GeneratePreparer() (*http.Request, error) {
 // GenerateSender sends the Generate request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) GenerateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GenerateResponder handles the response to the Generate request. The method always
@@ -149,7 +151,9 @@ func (client RecommendationsClient) GetPreparer(resourceURI string, recommendati
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -167,34 +171,48 @@ func (client RecommendationsClient) GetResponder(resp *http.Response) (result Re
 
 // GetGenerateStatus retrieves the status of the recommendation computation or generation process. Invoke this API
 // after calling the generation recommendation. The URI of this API is returned in the Location field of the response
-// header.
+// header. This method may poll for completion. Polling can be canceled by passing the cancel channel argument. The
+// channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // operationID is the operation ID, which can be found from the Location field in the generate recommendation response
 // header.
-func (client RecommendationsClient) GetGenerateStatus(operationID uuid.UUID) (result autorest.Response, err error) {
-	req, err := client.GetGenerateStatusPreparer(operationID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "advisor.RecommendationsClient", "GetGenerateStatus", nil, "Failure preparing request")
-		return
-	}
+func (client RecommendationsClient) GetGenerateStatus(operationID uuid.UUID, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
+	resultChan := make(chan autorest.Response, 1)
+	errChan := make(chan error, 1)
+	go func() {
+		var err error
+		var result autorest.Response
+		defer func() {
+			if err != nil {
+				errChan <- err
+			}
+			resultChan <- result
+			close(resultChan)
+			close(errChan)
+		}()
+		req, err := client.GetGenerateStatusPreparer(operationID, cancel)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "advisor.RecommendationsClient", "GetGenerateStatus", nil, "Failure preparing request")
+			return
+		}
 
-	resp, err := client.GetGenerateStatusSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "advisor.RecommendationsClient", "GetGenerateStatus", resp, "Failure sending request")
-		return
-	}
+		resp, err := client.GetGenerateStatusSender(req)
+		if err != nil {
+			result.Response = resp
+			err = autorest.NewErrorWithError(err, "advisor.RecommendationsClient", "GetGenerateStatus", resp, "Failure sending request")
+			return
+		}
 
-	result, err = client.GetGenerateStatusResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "advisor.RecommendationsClient", "GetGenerateStatus", resp, "Failure responding to request")
-	}
-
-	return
+		result, err = client.GetGenerateStatusResponder(resp)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "advisor.RecommendationsClient", "GetGenerateStatus", resp, "Failure responding to request")
+		}
+	}()
+	return resultChan, errChan
 }
 
 // GetGenerateStatusPreparer prepares the GetGenerateStatus request.
-func (client RecommendationsClient) GetGenerateStatusPreparer(operationID uuid.UUID) (*http.Request, error) {
+func (client RecommendationsClient) GetGenerateStatusPreparer(operationID uuid.UUID, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"operationId":    autorest.Encode("path", operationID),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -210,13 +228,16 @@ func (client RecommendationsClient) GetGenerateStatusPreparer(operationID uuid.U
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/generateRecommendations/{operationId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare(&http.Request{Cancel: cancel})
 }
 
 // GetGenerateStatusSender sends the GetGenerateStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) GetGenerateStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client),
+		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
 // GetGenerateStatusResponder handles the response to the GetGenerateStatus request. The method always
@@ -289,7 +310,9 @@ func (client RecommendationsClient) ListPreparer(filter string, top *int32, skip
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

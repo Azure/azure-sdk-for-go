@@ -88,7 +88,9 @@ func (client ServiceHealthsClient) GetPreparer(serviceName string) (*http.Reques
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceHealthsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -156,7 +158,9 @@ func (client ServiceHealthsClient) SendPreparer(serviceName string, serviceHealt
 // SendSender sends the Send request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceHealthsClient) SendSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SendResponder handles the response to the Send request. The method always

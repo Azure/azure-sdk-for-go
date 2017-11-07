@@ -79,7 +79,9 @@ func (client ProviderClient) GetPublishingUserPreparer() (*http.Request, error) 
 // GetPublishingUserSender sends the GetPublishingUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) GetPublishingUserSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPublishingUserResponder handles the response to the GetPublishingUser request. The method always
@@ -142,7 +144,9 @@ func (client ProviderClient) GetSourceControlPreparer(sourceControlType string) 
 // GetSourceControlSender sends the GetSourceControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) GetSourceControlSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetSourceControlResponder handles the response to the GetSourceControl request. The method always
@@ -199,7 +203,9 @@ func (client ProviderClient) GetSourceControlsPreparer() (*http.Request, error) 
 // GetSourceControlsSender sends the GetSourceControls request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) GetSourceControlsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetSourceControlsResponder handles the response to the GetSourceControls request. The method always
@@ -329,7 +335,9 @@ func (client ProviderClient) UpdatePublishingUserPreparer(requestMessage User) (
 // UpdatePublishingUserSender sends the UpdatePublishingUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) UpdatePublishingUserSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdatePublishingUserResponder handles the response to the UpdatePublishingUser request. The method always
@@ -394,7 +402,9 @@ func (client ProviderClient) UpdateSourceControlPreparer(sourceControlType strin
 // UpdateSourceControlSender sends the UpdateSourceControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderClient) UpdateSourceControlSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateSourceControlResponder handles the response to the UpdateSourceControl request. The method always

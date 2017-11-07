@@ -91,7 +91,9 @@ func (client CertificateOrdersClient) CreateOrUpdateCertificatePreparer(resource
 // CreateOrUpdateCertificateSender sends the CreateOrUpdateCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) CreateOrUpdateCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateCertificateResponder handles the response to the CreateOrUpdateCertificate request. The method always
@@ -159,7 +161,9 @@ func (client CertificateOrdersClient) CreateOrUpdateCertificateOrderPreparer(res
 // CreateOrUpdateCertificateOrderSender sends the CreateOrUpdateCertificateOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) CreateOrUpdateCertificateOrderSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateCertificateOrderResponder handles the response to the CreateOrUpdateCertificateOrder request. The method always
@@ -225,7 +229,9 @@ func (client CertificateOrdersClient) DeleteCertificatePreparer(resourceGroupNam
 // DeleteCertificateSender sends the DeleteCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) DeleteCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteCertificateResponder handles the response to the DeleteCertificate request. The method always
@@ -290,7 +296,9 @@ func (client CertificateOrdersClient) DeleteCertificateOrderPreparer(resourceGro
 // DeleteCertificateOrderSender sends the DeleteCertificateOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) DeleteCertificateOrderSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteCertificateOrderResponder handles the response to the DeleteCertificateOrder request. The method always
@@ -356,7 +364,9 @@ func (client CertificateOrdersClient) GetCertificatePreparer(resourceGroupName s
 // GetCertificateSender sends the GetCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) GetCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetCertificateResponder handles the response to the GetCertificate request. The method always
@@ -421,7 +431,9 @@ func (client CertificateOrdersClient) GetCertificateOrderPreparer(resourceGroupN
 // GetCertificateOrderSender sends the GetCertificateOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) GetCertificateOrderSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetCertificateOrderResponder handles the response to the GetCertificateOrder request. The method always
@@ -485,7 +497,9 @@ func (client CertificateOrdersClient) GetCertificateOrdersPreparer(resourceGroup
 // GetCertificateOrdersSender sends the GetCertificateOrders request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) GetCertificateOrdersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetCertificateOrdersResponder handles the response to the GetCertificateOrders request. The method always
@@ -619,7 +633,9 @@ func (client CertificateOrdersClient) GetCertificatesPreparer(resourceGroupName 
 // GetCertificatesSender sends the GetCertificates request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) GetCertificatesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetCertificatesResponder handles the response to the GetCertificates request. The method always
@@ -756,7 +772,9 @@ func (client CertificateOrdersClient) ReissueCertificateOrderPreparer(resourceGr
 // ReissueCertificateOrderSender sends the ReissueCertificateOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) ReissueCertificateOrderSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ReissueCertificateOrderResponder handles the response to the ReissueCertificateOrder request. The method always
@@ -824,7 +842,9 @@ func (client CertificateOrdersClient) RenewCertificateOrderPreparer(resourceGrou
 // RenewCertificateOrderSender sends the RenewCertificateOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) RenewCertificateOrderSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RenewCertificateOrderResponder handles the response to the RenewCertificateOrder request. The method always
@@ -889,7 +909,9 @@ func (client CertificateOrdersClient) ResendCertificateEmailPreparer(resourceGro
 // ResendCertificateEmailSender sends the ResendCertificateEmail request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) ResendCertificateEmailSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ResendCertificateEmailResponder handles the response to the ResendCertificateEmail request. The method always
@@ -954,7 +976,9 @@ func (client CertificateOrdersClient) RetrieveCertificateActionsPreparer(resourc
 // RetrieveCertificateActionsSender sends the RetrieveCertificateActions request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) RetrieveCertificateActionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RetrieveCertificateActionsResponder handles the response to the RetrieveCertificateActions request. The method always
@@ -1019,7 +1043,9 @@ func (client CertificateOrdersClient) RetrieveCertificateEmailHistoryPreparer(re
 // RetrieveCertificateEmailHistorySender sends the RetrieveCertificateEmailHistory request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) RetrieveCertificateEmailHistorySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RetrieveCertificateEmailHistoryResponder handles the response to the RetrieveCertificateEmailHistory request. The method always
@@ -1088,7 +1114,9 @@ func (client CertificateOrdersClient) UpdateCertificatePreparer(resourceGroupNam
 // UpdateCertificateSender sends the UpdateCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) UpdateCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateCertificateResponder handles the response to the UpdateCertificate request. The method always
@@ -1156,7 +1184,9 @@ func (client CertificateOrdersClient) UpdateCertificateOrderPreparer(resourceGro
 // UpdateCertificateOrderSender sends the UpdateCertificateOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) UpdateCertificateOrderSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateCertificateOrderResponder handles the response to the UpdateCertificateOrder request. The method always
@@ -1221,7 +1251,9 @@ func (client CertificateOrdersClient) VerifyDomainOwnershipPreparer(resourceGrou
 // VerifyDomainOwnershipSender sends the VerifyDomainOwnership request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) VerifyDomainOwnershipSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // VerifyDomainOwnershipResponder handles the response to the VerifyDomainOwnership request. The method always

@@ -100,7 +100,9 @@ func (client AppsClient) AddPremierAddOnPreparer(resourceGroupName string, name 
 // AddPremierAddOnSender sends the AddPremierAddOn request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) AddPremierAddOnSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // AddPremierAddOnResponder handles the response to the AddPremierAddOn request. The method always
@@ -179,7 +181,9 @@ func (client AppsClient) AddPremierAddOnSlotPreparer(resourceGroupName string, n
 // AddPremierAddOnSlotSender sends the AddPremierAddOnSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) AddPremierAddOnSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // AddPremierAddOnSlotResponder handles the response to the AddPremierAddOnSlot request. The method always
@@ -256,7 +260,9 @@ func (client AppsClient) AnalyzeCustomHostnamePreparer(resourceGroupName string,
 // AnalyzeCustomHostnameSender sends the AnalyzeCustomHostname request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) AnalyzeCustomHostnameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // AnalyzeCustomHostnameResponder handles the response to the AnalyzeCustomHostname request. The method always
@@ -334,7 +340,9 @@ func (client AppsClient) AnalyzeCustomHostnameSlotPreparer(resourceGroupName str
 // AnalyzeCustomHostnameSlotSender sends the AnalyzeCustomHostnameSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) AnalyzeCustomHostnameSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // AnalyzeCustomHostnameSlotResponder handles the response to the AnalyzeCustomHostnameSlot request. The method always
@@ -413,7 +421,9 @@ func (client AppsClient) ApplySlotConfigToProductionPreparer(resourceGroupName s
 // ApplySlotConfigToProductionSender sends the ApplySlotConfigToProduction request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ApplySlotConfigToProductionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ApplySlotConfigToProductionResponder handles the response to the ApplySlotConfigToProduction request. The method always
@@ -493,7 +503,9 @@ func (client AppsClient) ApplySlotConfigurationSlotPreparer(resourceGroupName st
 // ApplySlotConfigurationSlotSender sends the ApplySlotConfigurationSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ApplySlotConfigurationSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ApplySlotConfigurationSlotResponder handles the response to the ApplySlotConfigurationSlot request. The method always
@@ -576,7 +588,9 @@ func (client AppsClient) BackupPreparer(resourceGroupName string, name string, r
 // BackupSender sends the Backup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) BackupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // BackupResponder handles the response to the Backup request. The method always
@@ -662,7 +676,9 @@ func (client AppsClient) BackupSlotPreparer(resourceGroupName string, name strin
 // BackupSlotSender sends the BackupSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) BackupSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // BackupSlotResponder handles the response to the BackupSlot request. The method always
@@ -739,7 +755,9 @@ func (client AppsClient) CreateDeploymentPreparer(resourceGroupName string, name
 // CreateDeploymentSender sends the CreateDeployment request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateDeploymentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateDeploymentResponder handles the response to the CreateDeployment request. The method always
@@ -818,7 +836,9 @@ func (client AppsClient) CreateDeploymentSlotPreparer(resourceGroupName string, 
 // CreateDeploymentSlotSender sends the CreateDeploymentSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateDeploymentSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateDeploymentSlotResponder handles the response to the CreateDeploymentSlot request. The method always
@@ -915,6 +935,7 @@ func (client AppsClient) CreateFunctionPreparer(resourceGroupName string, name s
 func (client AppsClient) CreateFunctionSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1014,6 +1035,7 @@ func (client AppsClient) CreateInstanceFunctionSlotPreparer(resourceGroupName st
 func (client AppsClient) CreateInstanceFunctionSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1111,6 +1133,7 @@ func (client AppsClient) CreateInstanceMSDeployOperationPreparer(resourceGroupNa
 func (client AppsClient) CreateInstanceMSDeployOperationSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1210,6 +1233,7 @@ func (client AppsClient) CreateInstanceMSDeployOperationSlotPreparer(resourceGro
 func (client AppsClient) CreateInstanceMSDeployOperationSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1306,6 +1330,7 @@ func (client AppsClient) CreateMSDeployOperationPreparer(resourceGroupName strin
 func (client AppsClient) CreateMSDeployOperationSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1403,6 +1428,7 @@ func (client AppsClient) CreateMSDeployOperationSlotPreparer(resourceGroupName s
 func (client AppsClient) CreateMSDeployOperationSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1521,6 +1547,7 @@ func (client AppsClient) CreateOrUpdatePreparer(resourceGroupName string, name s
 func (client AppsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1597,7 +1624,9 @@ func (client AppsClient) CreateOrUpdateConfigurationPreparer(resourceGroupName s
 // CreateOrUpdateConfigurationSender sends the CreateOrUpdateConfiguration request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateConfigurationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateConfigurationResponder handles the response to the CreateOrUpdateConfiguration request. The method always
@@ -1675,7 +1704,9 @@ func (client AppsClient) CreateOrUpdateConfigurationSlotPreparer(resourceGroupNa
 // CreateOrUpdateConfigurationSlotSender sends the CreateOrUpdateConfigurationSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateConfigurationSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateConfigurationSlotResponder handles the response to the CreateOrUpdateConfigurationSlot request. The method always
@@ -1754,7 +1785,9 @@ func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifierPreparer(resourc
 // CreateOrUpdateDomainOwnershipIdentifierSender sends the CreateOrUpdateDomainOwnershipIdentifier request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifierSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateDomainOwnershipIdentifierResponder handles the response to the CreateOrUpdateDomainOwnershipIdentifier request. The method always
@@ -1835,7 +1868,9 @@ func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifierSlotPreparer(res
 // CreateOrUpdateDomainOwnershipIdentifierSlotSender sends the CreateOrUpdateDomainOwnershipIdentifierSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifierSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateDomainOwnershipIdentifierSlotResponder handles the response to the CreateOrUpdateDomainOwnershipIdentifierSlot request. The method always
@@ -1913,7 +1948,9 @@ func (client AppsClient) CreateOrUpdateHostNameBindingPreparer(resourceGroupName
 // CreateOrUpdateHostNameBindingSender sends the CreateOrUpdateHostNameBinding request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateHostNameBindingSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateHostNameBindingResponder handles the response to the CreateOrUpdateHostNameBinding request. The method always
@@ -1993,7 +2030,9 @@ func (client AppsClient) CreateOrUpdateHostNameBindingSlotPreparer(resourceGroup
 // CreateOrUpdateHostNameBindingSlotSender sends the CreateOrUpdateHostNameBindingSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateHostNameBindingSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateHostNameBindingSlotResponder handles the response to the CreateOrUpdateHostNameBindingSlot request. The method always
@@ -2072,7 +2111,9 @@ func (client AppsClient) CreateOrUpdateHybridConnectionPreparer(resourceGroupNam
 // CreateOrUpdateHybridConnectionSender sends the CreateOrUpdateHybridConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateHybridConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateHybridConnectionResponder handles the response to the CreateOrUpdateHybridConnection request. The method always
@@ -2152,7 +2193,9 @@ func (client AppsClient) CreateOrUpdateHybridConnectionSlotPreparer(resourceGrou
 // CreateOrUpdateHybridConnectionSlotSender sends the CreateOrUpdateHybridConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateHybridConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateHybridConnectionSlotResponder handles the response to the CreateOrUpdateHybridConnectionSlot request. The method always
@@ -2230,7 +2273,9 @@ func (client AppsClient) CreateOrUpdatePublicCertificatePreparer(resourceGroupNa
 // CreateOrUpdatePublicCertificateSender sends the CreateOrUpdatePublicCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdatePublicCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdatePublicCertificateResponder handles the response to the CreateOrUpdatePublicCertificate request. The method always
@@ -2310,7 +2355,9 @@ func (client AppsClient) CreateOrUpdatePublicCertificateSlotPreparer(resourceGro
 // CreateOrUpdatePublicCertificateSlotSender sends the CreateOrUpdatePublicCertificateSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdatePublicCertificateSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdatePublicCertificateSlotResponder handles the response to the CreateOrUpdatePublicCertificateSlot request. The method always
@@ -2389,7 +2436,9 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionPreparer(resourceGr
 // CreateOrUpdateRelayServiceConnectionSender sends the CreateOrUpdateRelayServiceConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateRelayServiceConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateRelayServiceConnectionResponder handles the response to the CreateOrUpdateRelayServiceConnection request. The method always
@@ -2470,7 +2519,9 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionSlotPreparer(resour
 // CreateOrUpdateRelayServiceConnectionSlotSender sends the CreateOrUpdateRelayServiceConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateRelayServiceConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateRelayServiceConnectionSlotResponder handles the response to the CreateOrUpdateRelayServiceConnectionSlot request. The method always
@@ -2590,6 +2641,7 @@ func (client AppsClient) CreateOrUpdateSlotPreparer(resourceGroupName string, na
 func (client AppsClient) CreateOrUpdateSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -2686,6 +2738,7 @@ func (client AppsClient) CreateOrUpdateSourceControlPreparer(resourceGroupName s
 func (client AppsClient) CreateOrUpdateSourceControlSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -2784,6 +2837,7 @@ func (client AppsClient) CreateOrUpdateSourceControlSlotPreparer(resourceGroupNa
 func (client AppsClient) CreateOrUpdateSourceControlSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -2863,7 +2917,9 @@ func (client AppsClient) CreateOrUpdateVnetConnectionPreparer(resourceGroupName 
 // CreateOrUpdateVnetConnectionSender sends the CreateOrUpdateVnetConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateVnetConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateVnetConnectionResponder handles the response to the CreateOrUpdateVnetConnection request. The method always
@@ -2942,7 +2998,9 @@ func (client AppsClient) CreateOrUpdateVnetConnectionGatewayPreparer(resourceGro
 // CreateOrUpdateVnetConnectionGatewaySender sends the CreateOrUpdateVnetConnectionGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateVnetConnectionGatewaySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateVnetConnectionGatewayResponder handles the response to the CreateOrUpdateVnetConnectionGateway request. The method always
@@ -3023,7 +3081,9 @@ func (client AppsClient) CreateOrUpdateVnetConnectionGatewaySlotPreparer(resourc
 // CreateOrUpdateVnetConnectionGatewaySlotSender sends the CreateOrUpdateVnetConnectionGatewaySlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateVnetConnectionGatewaySlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateVnetConnectionGatewaySlotResponder handles the response to the CreateOrUpdateVnetConnectionGatewaySlot request. The method always
@@ -3104,7 +3164,9 @@ func (client AppsClient) CreateOrUpdateVnetConnectionSlotPreparer(resourceGroupN
 // CreateOrUpdateVnetConnectionSlotSender sends the CreateOrUpdateVnetConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateVnetConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateVnetConnectionSlotResponder handles the response to the CreateOrUpdateVnetConnectionSlot request. The method always
@@ -3189,7 +3251,9 @@ func (client AppsClient) DeletePreparer(resourceGroupName string, name string, d
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -3198,7 +3262,7 @@ func (client AppsClient) DeleteResponder(resp *http.Response) (result autorest.R
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -3263,7 +3327,9 @@ func (client AppsClient) DeleteBackupPreparer(resourceGroupName string, name str
 // DeleteBackupSender sends the DeleteBackup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteBackupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteBackupResponder handles the response to the DeleteBackup request. The method always
@@ -3335,7 +3401,9 @@ func (client AppsClient) DeleteBackupConfigurationPreparer(resourceGroupName str
 // DeleteBackupConfigurationSender sends the DeleteBackupConfiguration request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteBackupConfigurationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteBackupConfigurationResponder handles the response to the DeleteBackupConfiguration request. The method always
@@ -3410,7 +3478,9 @@ func (client AppsClient) DeleteBackupConfigurationSlotPreparer(resourceGroupName
 // DeleteBackupConfigurationSlotSender sends the DeleteBackupConfigurationSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteBackupConfigurationSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteBackupConfigurationSlotResponder handles the response to the DeleteBackupConfigurationSlot request. The method always
@@ -3486,7 +3556,9 @@ func (client AppsClient) DeleteBackupSlotPreparer(resourceGroupName string, name
 // DeleteBackupSlotSender sends the DeleteBackupSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteBackupSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteBackupSlotResponder handles the response to the DeleteBackupSlot request. The method always
@@ -3503,9 +3575,9 @@ func (client AppsClient) DeleteBackupSlotResponder(resp *http.Response) (result 
 
 // DeleteContinuousWebJob delete a continuous web job by its ID for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID.
-func (client AppsClient) DeleteContinuousWebJob(resourceGroupName string, name string, webJobID string, webJobName string) (result autorest.Response, err error) {
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job.
+func (client AppsClient) DeleteContinuousWebJob(resourceGroupName string, name string, webJobName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -3514,7 +3586,7 @@ func (client AppsClient) DeleteContinuousWebJob(resourceGroupName string, name s
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteContinuousWebJob")
 	}
 
-	req, err := client.DeleteContinuousWebJobPreparer(resourceGroupName, name, webJobID, webJobName)
+	req, err := client.DeleteContinuousWebJobPreparer(resourceGroupName, name, webJobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteContinuousWebJob", nil, "Failure preparing request")
 		return
@@ -3536,7 +3608,7 @@ func (client AppsClient) DeleteContinuousWebJob(resourceGroupName string, name s
 }
 
 // DeleteContinuousWebJobPreparer prepares the DeleteContinuousWebJob request.
-func (client AppsClient) DeleteContinuousWebJobPreparer(resourceGroupName string, name string, webJobID string, webJobName string) (*http.Request, error) {
+func (client AppsClient) DeleteContinuousWebJobPreparer(resourceGroupName string, name string, webJobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -3547,7 +3619,6 @@ func (client AppsClient) DeleteContinuousWebJobPreparer(resourceGroupName string
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -3561,7 +3632,9 @@ func (client AppsClient) DeleteContinuousWebJobPreparer(resourceGroupName string
 // DeleteContinuousWebJobSender sends the DeleteContinuousWebJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteContinuousWebJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteContinuousWebJobResponder handles the response to the DeleteContinuousWebJob request. The method always
@@ -3578,10 +3651,10 @@ func (client AppsClient) DeleteContinuousWebJobResponder(resp *http.Response) (r
 
 // DeleteContinuousWebJobSlot delete a continuous web job by its ID for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
 // production slot.
-func (client AppsClient) DeleteContinuousWebJobSlot(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (result autorest.Response, err error) {
+func (client AppsClient) DeleteContinuousWebJobSlot(resourceGroupName string, name string, webJobName string, slot string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -3590,7 +3663,7 @@ func (client AppsClient) DeleteContinuousWebJobSlot(resourceGroupName string, na
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteContinuousWebJobSlot")
 	}
 
-	req, err := client.DeleteContinuousWebJobSlotPreparer(resourceGroupName, name, webJobID, slot, webJobName)
+	req, err := client.DeleteContinuousWebJobSlotPreparer(resourceGroupName, name, webJobName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteContinuousWebJobSlot", nil, "Failure preparing request")
 		return
@@ -3612,7 +3685,7 @@ func (client AppsClient) DeleteContinuousWebJobSlot(resourceGroupName string, na
 }
 
 // DeleteContinuousWebJobSlotPreparer prepares the DeleteContinuousWebJobSlot request.
-func (client AppsClient) DeleteContinuousWebJobSlotPreparer(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (*http.Request, error) {
+func (client AppsClient) DeleteContinuousWebJobSlotPreparer(resourceGroupName string, name string, webJobName string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -3624,7 +3697,6 @@ func (client AppsClient) DeleteContinuousWebJobSlotPreparer(resourceGroupName st
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -3638,7 +3710,9 @@ func (client AppsClient) DeleteContinuousWebJobSlotPreparer(resourceGroupName st
 // DeleteContinuousWebJobSlotSender sends the DeleteContinuousWebJobSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteContinuousWebJobSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteContinuousWebJobSlotResponder handles the response to the DeleteContinuousWebJobSlot request. The method always
@@ -3712,7 +3786,9 @@ func (client AppsClient) DeleteDeploymentPreparer(resourceGroupName string, name
 // DeleteDeploymentSender sends the DeleteDeployment request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteDeploymentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteDeploymentResponder handles the response to the DeleteDeployment request. The method always
@@ -3788,7 +3864,9 @@ func (client AppsClient) DeleteDeploymentSlotPreparer(resourceGroupName string, 
 // DeleteDeploymentSlotSender sends the DeleteDeploymentSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteDeploymentSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteDeploymentSlotResponder handles the response to the DeleteDeploymentSlot request. The method always
@@ -3862,7 +3940,9 @@ func (client AppsClient) DeleteDomainOwnershipIdentifierPreparer(resourceGroupNa
 // DeleteDomainOwnershipIdentifierSender sends the DeleteDomainOwnershipIdentifier request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteDomainOwnershipIdentifierSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteDomainOwnershipIdentifierResponder handles the response to the DeleteDomainOwnershipIdentifier request. The method always
@@ -3938,7 +4018,9 @@ func (client AppsClient) DeleteDomainOwnershipIdentifierSlotPreparer(resourceGro
 // DeleteDomainOwnershipIdentifierSlotSender sends the DeleteDomainOwnershipIdentifierSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteDomainOwnershipIdentifierSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteDomainOwnershipIdentifierSlotResponder handles the response to the DeleteDomainOwnershipIdentifierSlot request. The method always
@@ -4012,7 +4094,9 @@ func (client AppsClient) DeleteFunctionPreparer(resourceGroupName string, name s
 // DeleteFunctionSender sends the DeleteFunction request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteFunctionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteFunctionResponder handles the response to the DeleteFunction request. The method always
@@ -4086,7 +4170,9 @@ func (client AppsClient) DeleteHostNameBindingPreparer(resourceGroupName string,
 // DeleteHostNameBindingSender sends the DeleteHostNameBinding request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteHostNameBindingSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteHostNameBindingResponder handles the response to the DeleteHostNameBinding request. The method always
@@ -4162,7 +4248,9 @@ func (client AppsClient) DeleteHostNameBindingSlotPreparer(resourceGroupName str
 // DeleteHostNameBindingSlotSender sends the DeleteHostNameBindingSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteHostNameBindingSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteHostNameBindingSlotResponder handles the response to the DeleteHostNameBindingSlot request. The method always
@@ -4237,7 +4325,9 @@ func (client AppsClient) DeleteHybridConnectionPreparer(resourceGroupName string
 // DeleteHybridConnectionSender sends the DeleteHybridConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteHybridConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteHybridConnectionResponder handles the response to the DeleteHybridConnection request. The method always
@@ -4314,7 +4404,9 @@ func (client AppsClient) DeleteHybridConnectionSlotPreparer(resourceGroupName st
 // DeleteHybridConnectionSlotSender sends the DeleteHybridConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteHybridConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteHybridConnectionSlotResponder handles the response to the DeleteHybridConnectionSlot request. The method always
@@ -4390,7 +4482,9 @@ func (client AppsClient) DeleteInstanceFunctionSlotPreparer(resourceGroupName st
 // DeleteInstanceFunctionSlotSender sends the DeleteInstanceFunctionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteInstanceFunctionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteInstanceFunctionSlotResponder handles the response to the DeleteInstanceFunctionSlot request. The method always
@@ -4467,7 +4561,9 @@ func (client AppsClient) DeleteInstanceProcessPreparer(resourceGroupName string,
 // DeleteInstanceProcessSender sends the DeleteInstanceProcess request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteInstanceProcessSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteInstanceProcessResponder handles the response to the DeleteInstanceProcess request. The method always
@@ -4546,7 +4642,9 @@ func (client AppsClient) DeleteInstanceProcessSlotPreparer(resourceGroupName str
 // DeleteInstanceProcessSlotSender sends the DeleteInstanceProcessSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteInstanceProcessSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteInstanceProcessSlotResponder handles the response to the DeleteInstanceProcessSlot request. The method always
@@ -4620,7 +4718,9 @@ func (client AppsClient) DeletePremierAddOnPreparer(resourceGroupName string, na
 // DeletePremierAddOnSender sends the DeletePremierAddOn request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeletePremierAddOnSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeletePremierAddOnResponder handles the response to the DeletePremierAddOn request. The method always
@@ -4696,7 +4796,9 @@ func (client AppsClient) DeletePremierAddOnSlotPreparer(resourceGroupName string
 // DeletePremierAddOnSlotSender sends the DeletePremierAddOnSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeletePremierAddOnSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeletePremierAddOnSlotResponder handles the response to the DeletePremierAddOnSlot request. The method always
@@ -4770,7 +4872,9 @@ func (client AppsClient) DeleteProcessPreparer(resourceGroupName string, name st
 // DeleteProcessSender sends the DeleteProcess request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteProcessSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteProcessResponder handles the response to the DeleteProcess request. The method always
@@ -4847,7 +4951,9 @@ func (client AppsClient) DeleteProcessSlotPreparer(resourceGroupName string, nam
 // DeleteProcessSlotSender sends the DeleteProcessSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteProcessSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteProcessSlotResponder handles the response to the DeleteProcessSlot request. The method always
@@ -4921,7 +5027,9 @@ func (client AppsClient) DeletePublicCertificatePreparer(resourceGroupName strin
 // DeletePublicCertificateSender sends the DeletePublicCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeletePublicCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeletePublicCertificateResponder handles the response to the DeletePublicCertificate request. The method always
@@ -4997,7 +5105,9 @@ func (client AppsClient) DeletePublicCertificateSlotPreparer(resourceGroupName s
 // DeletePublicCertificateSlotSender sends the DeletePublicCertificateSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeletePublicCertificateSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeletePublicCertificateSlotResponder handles the response to the DeletePublicCertificateSlot request. The method always
@@ -5071,7 +5181,9 @@ func (client AppsClient) DeleteRelayServiceConnectionPreparer(resourceGroupName 
 // DeleteRelayServiceConnectionSender sends the DeleteRelayServiceConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteRelayServiceConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteRelayServiceConnectionResponder handles the response to the DeleteRelayServiceConnection request. The method always
@@ -5147,7 +5259,9 @@ func (client AppsClient) DeleteRelayServiceConnectionSlotPreparer(resourceGroupN
 // DeleteRelayServiceConnectionSlotSender sends the DeleteRelayServiceConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteRelayServiceConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteRelayServiceConnectionSlotResponder handles the response to the DeleteRelayServiceConnectionSlot request. The method always
@@ -5166,7 +5280,7 @@ func (client AppsClient) DeleteRelayServiceConnectionSlotResponder(resp *http.Re
 //
 // resourceGroupName is name of the resource group to which the resource belongs. name is site name. siteExtensionID is
 // site extension name.
-func (client AppsClient) DeleteSiteExtension(resourceGroupName string, name string, siteExtensionID string, extensionName string) (result autorest.Response, err error) {
+func (client AppsClient) DeleteSiteExtension(resourceGroupName string, name string, siteExtensionID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5175,7 +5289,7 @@ func (client AppsClient) DeleteSiteExtension(resourceGroupName string, name stri
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteSiteExtension")
 	}
 
-	req, err := client.DeleteSiteExtensionPreparer(resourceGroupName, name, siteExtensionID, extensionName)
+	req, err := client.DeleteSiteExtensionPreparer(resourceGroupName, name, siteExtensionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSiteExtension", nil, "Failure preparing request")
 		return
@@ -5197,24 +5311,23 @@ func (client AppsClient) DeleteSiteExtension(resourceGroupName string, name stri
 }
 
 // DeleteSiteExtensionPreparer prepares the DeleteSiteExtension request.
-func (client AppsClient) DeleteSiteExtensionPreparer(resourceGroupName string, name string, siteExtensionID string, extensionName string) (*http.Request, error) {
+func (client AppsClient) DeleteSiteExtensionPreparer(resourceGroupName string, name string, siteExtensionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"extensionName":     autorest.Encode("path", extensionName),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"siteExtensionId":   autorest.Encode("path", siteExtensionID),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version":     APIVersion,
-		"siteExtensionId": autorest.Encode("query", siteExtensionID),
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions/{extensionName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions/{siteExtensionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -5222,7 +5335,9 @@ func (client AppsClient) DeleteSiteExtensionPreparer(resourceGroupName string, n
 // DeleteSiteExtensionSender sends the DeleteSiteExtension request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteSiteExtensionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteSiteExtensionResponder handles the response to the DeleteSiteExtension request. The method always
@@ -5242,7 +5357,7 @@ func (client AppsClient) DeleteSiteExtensionResponder(resp *http.Response) (resu
 // resourceGroupName is name of the resource group to which the resource belongs. name is site name. siteExtensionID is
 // site extension name. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment
 // for the production slot.
-func (client AppsClient) DeleteSiteExtensionSlot(resourceGroupName string, name string, siteExtensionID string, slot string, extensionName string) (result autorest.Response, err error) {
+func (client AppsClient) DeleteSiteExtensionSlot(resourceGroupName string, name string, siteExtensionID string, slot string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5251,7 +5366,7 @@ func (client AppsClient) DeleteSiteExtensionSlot(resourceGroupName string, name 
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteSiteExtensionSlot")
 	}
 
-	req, err := client.DeleteSiteExtensionSlotPreparer(resourceGroupName, name, siteExtensionID, slot, extensionName)
+	req, err := client.DeleteSiteExtensionSlotPreparer(resourceGroupName, name, siteExtensionID, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSiteExtensionSlot", nil, "Failure preparing request")
 		return
@@ -5273,25 +5388,24 @@ func (client AppsClient) DeleteSiteExtensionSlot(resourceGroupName string, name 
 }
 
 // DeleteSiteExtensionSlotPreparer prepares the DeleteSiteExtensionSlot request.
-func (client AppsClient) DeleteSiteExtensionSlotPreparer(resourceGroupName string, name string, siteExtensionID string, slot string, extensionName string) (*http.Request, error) {
+func (client AppsClient) DeleteSiteExtensionSlotPreparer(resourceGroupName string, name string, siteExtensionID string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"extensionName":     autorest.Encode("path", extensionName),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"siteExtensionId":   autorest.Encode("path", siteExtensionID),
 		"slot":              autorest.Encode("path", slot),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version":     APIVersion,
-		"siteExtensionId": autorest.Encode("query", siteExtensionID),
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions/{extensionName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions/{siteExtensionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -5299,7 +5413,9 @@ func (client AppsClient) DeleteSiteExtensionSlotPreparer(resourceGroupName strin
 // DeleteSiteExtensionSlotSender sends the DeleteSiteExtensionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteSiteExtensionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteSiteExtensionSlotResponder handles the response to the DeleteSiteExtensionSlot request. The method always
@@ -5385,7 +5501,9 @@ func (client AppsClient) DeleteSlotPreparer(resourceGroupName string, name strin
 // DeleteSlotSender sends the DeleteSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteSlotResponder handles the response to the DeleteSlot request. The method always
@@ -5394,7 +5512,7 @@ func (client AppsClient) DeleteSlotResponder(resp *http.Response) (result autore
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -5457,7 +5575,9 @@ func (client AppsClient) DeleteSourceControlPreparer(resourceGroupName string, n
 // DeleteSourceControlSender sends the DeleteSourceControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteSourceControlSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteSourceControlResponder handles the response to the DeleteSourceControl request. The method always
@@ -5532,7 +5652,9 @@ func (client AppsClient) DeleteSourceControlSlotPreparer(resourceGroupName strin
 // DeleteSourceControlSlotSender sends the DeleteSourceControlSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteSourceControlSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteSourceControlSlotResponder handles the response to the DeleteSourceControlSlot request. The method always
@@ -5549,9 +5671,9 @@ func (client AppsClient) DeleteSourceControlSlotResponder(resp *http.Response) (
 
 // DeleteTriggeredWebJob delete a triggered web job by its ID for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID.
-func (client AppsClient) DeleteTriggeredWebJob(resourceGroupName string, name string, webJobID string, webJobName string) (result autorest.Response, err error) {
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job.
+func (client AppsClient) DeleteTriggeredWebJob(resourceGroupName string, name string, webJobName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5560,7 +5682,7 @@ func (client AppsClient) DeleteTriggeredWebJob(resourceGroupName string, name st
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteTriggeredWebJob")
 	}
 
-	req, err := client.DeleteTriggeredWebJobPreparer(resourceGroupName, name, webJobID, webJobName)
+	req, err := client.DeleteTriggeredWebJobPreparer(resourceGroupName, name, webJobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteTriggeredWebJob", nil, "Failure preparing request")
 		return
@@ -5582,7 +5704,7 @@ func (client AppsClient) DeleteTriggeredWebJob(resourceGroupName string, name st
 }
 
 // DeleteTriggeredWebJobPreparer prepares the DeleteTriggeredWebJob request.
-func (client AppsClient) DeleteTriggeredWebJobPreparer(resourceGroupName string, name string, webJobID string, webJobName string) (*http.Request, error) {
+func (client AppsClient) DeleteTriggeredWebJobPreparer(resourceGroupName string, name string, webJobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -5593,7 +5715,6 @@ func (client AppsClient) DeleteTriggeredWebJobPreparer(resourceGroupName string,
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -5607,7 +5728,9 @@ func (client AppsClient) DeleteTriggeredWebJobPreparer(resourceGroupName string,
 // DeleteTriggeredWebJobSender sends the DeleteTriggeredWebJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteTriggeredWebJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteTriggeredWebJobResponder handles the response to the DeleteTriggeredWebJob request. The method always
@@ -5624,10 +5747,10 @@ func (client AppsClient) DeleteTriggeredWebJobResponder(resp *http.Response) (re
 
 // DeleteTriggeredWebJobSlot delete a triggered web job by its ID for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
 // production slot.
-func (client AppsClient) DeleteTriggeredWebJobSlot(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (result autorest.Response, err error) {
+func (client AppsClient) DeleteTriggeredWebJobSlot(resourceGroupName string, name string, webJobName string, slot string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5636,7 +5759,7 @@ func (client AppsClient) DeleteTriggeredWebJobSlot(resourceGroupName string, nam
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "DeleteTriggeredWebJobSlot")
 	}
 
-	req, err := client.DeleteTriggeredWebJobSlotPreparer(resourceGroupName, name, webJobID, slot, webJobName)
+	req, err := client.DeleteTriggeredWebJobSlotPreparer(resourceGroupName, name, webJobName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteTriggeredWebJobSlot", nil, "Failure preparing request")
 		return
@@ -5658,7 +5781,7 @@ func (client AppsClient) DeleteTriggeredWebJobSlot(resourceGroupName string, nam
 }
 
 // DeleteTriggeredWebJobSlotPreparer prepares the DeleteTriggeredWebJobSlot request.
-func (client AppsClient) DeleteTriggeredWebJobSlotPreparer(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (*http.Request, error) {
+func (client AppsClient) DeleteTriggeredWebJobSlotPreparer(resourceGroupName string, name string, webJobName string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -5670,7 +5793,6 @@ func (client AppsClient) DeleteTriggeredWebJobSlotPreparer(resourceGroupName str
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -5684,7 +5806,9 @@ func (client AppsClient) DeleteTriggeredWebJobSlotPreparer(resourceGroupName str
 // DeleteTriggeredWebJobSlotSender sends the DeleteTriggeredWebJobSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteTriggeredWebJobSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteTriggeredWebJobSlotResponder handles the response to the DeleteTriggeredWebJobSlot request. The method always
@@ -5758,7 +5882,9 @@ func (client AppsClient) DeleteVnetConnectionPreparer(resourceGroupName string, 
 // DeleteVnetConnectionSender sends the DeleteVnetConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteVnetConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteVnetConnectionResponder handles the response to the DeleteVnetConnection request. The method always
@@ -5834,7 +5960,9 @@ func (client AppsClient) DeleteVnetConnectionSlotPreparer(resourceGroupName stri
 // DeleteVnetConnectionSlotSender sends the DeleteVnetConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DeleteVnetConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteVnetConnectionSlotResponder handles the response to the DeleteVnetConnectionSlot request. The method always
@@ -5909,7 +6037,9 @@ func (client AppsClient) DiscoverRestorePreparer(resourceGroupName string, name 
 // DiscoverRestoreSender sends the DiscoverRestore request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DiscoverRestoreSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DiscoverRestoreResponder handles the response to the DiscoverRestore request. The method always
@@ -5987,7 +6117,9 @@ func (client AppsClient) DiscoverRestoreSlotPreparer(resourceGroupName string, n
 // DiscoverRestoreSlotSender sends the DiscoverRestoreSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) DiscoverRestoreSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DiscoverRestoreSlotResponder handles the response to the DiscoverRestoreSlot request. The method always
@@ -6060,7 +6192,9 @@ func (client AppsClient) GenerateNewSitePublishingPasswordPreparer(resourceGroup
 // GenerateNewSitePublishingPasswordSender sends the GenerateNewSitePublishingPassword request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GenerateNewSitePublishingPasswordSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GenerateNewSitePublishingPasswordResponder handles the response to the GenerateNewSitePublishingPassword request. The method always
@@ -6069,7 +6203,7 @@ func (client AppsClient) GenerateNewSitePublishingPasswordResponder(resp *http.R
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -6136,7 +6270,9 @@ func (client AppsClient) GenerateNewSitePublishingPasswordSlotPreparer(resourceG
 // GenerateNewSitePublishingPasswordSlotSender sends the GenerateNewSitePublishingPasswordSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GenerateNewSitePublishingPasswordSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GenerateNewSitePublishingPasswordSlotResponder handles the response to the GenerateNewSitePublishingPasswordSlot request. The method always
@@ -6145,7 +6281,7 @@ func (client AppsClient) GenerateNewSitePublishingPasswordSlotResponder(resp *ht
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -6208,7 +6344,9 @@ func (client AppsClient) GetPreparer(resourceGroupName string, name string) (*ht
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -6217,7 +6355,7 @@ func (client AppsClient) GetResponder(resp *http.Response) (result Site, err err
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -6281,7 +6419,9 @@ func (client AppsClient) GetAuthSettingsPreparer(resourceGroupName string, name 
 // GetAuthSettingsSender sends the GetAuthSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetAuthSettingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAuthSettingsResponder handles the response to the GetAuthSettings request. The method always
@@ -6356,7 +6496,9 @@ func (client AppsClient) GetAuthSettingsSlotPreparer(resourceGroupName string, n
 // GetAuthSettingsSlotSender sends the GetAuthSettingsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetAuthSettingsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAuthSettingsSlotResponder handles the response to the GetAuthSettingsSlot request. The method always
@@ -6429,7 +6571,9 @@ func (client AppsClient) GetBackupConfigurationPreparer(resourceGroupName string
 // GetBackupConfigurationSender sends the GetBackupConfiguration request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetBackupConfigurationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetBackupConfigurationResponder handles the response to the GetBackupConfiguration request. The method always
@@ -6505,7 +6649,9 @@ func (client AppsClient) GetBackupConfigurationSlotPreparer(resourceGroupName st
 // GetBackupConfigurationSlotSender sends the GetBackupConfigurationSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetBackupConfigurationSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetBackupConfigurationSlotResponder handles the response to the GetBackupConfigurationSlot request. The method always
@@ -6580,7 +6726,9 @@ func (client AppsClient) GetBackupStatusPreparer(resourceGroupName string, name 
 // GetBackupStatusSender sends the GetBackupStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetBackupStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetBackupStatusResponder handles the response to the GetBackupStatus request. The method always
@@ -6657,7 +6805,9 @@ func (client AppsClient) GetBackupStatusSlotPreparer(resourceGroupName string, n
 // GetBackupStatusSlotSender sends the GetBackupStatusSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetBackupStatusSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetBackupStatusSlotResponder handles the response to the GetBackupStatusSlot request. The method always
@@ -6731,7 +6881,9 @@ func (client AppsClient) GetConfigurationPreparer(resourceGroupName string, name
 // GetConfigurationSender sends the GetConfiguration request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetConfigurationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetConfigurationResponder handles the response to the GetConfiguration request. The method always
@@ -6807,7 +6959,9 @@ func (client AppsClient) GetConfigurationSlotPreparer(resourceGroupName string, 
 // GetConfigurationSlotSender sends the GetConfigurationSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetConfigurationSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetConfigurationSlotResponder handles the response to the GetConfigurationSlot request. The method always
@@ -6882,7 +7036,9 @@ func (client AppsClient) GetConfigurationSnapshotPreparer(resourceGroupName stri
 // GetConfigurationSnapshotSender sends the GetConfigurationSnapshot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetConfigurationSnapshotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetConfigurationSnapshotResponder handles the response to the GetConfigurationSnapshot request. The method always
@@ -6959,7 +7115,9 @@ func (client AppsClient) GetConfigurationSnapshotSlotPreparer(resourceGroupName 
 // GetConfigurationSnapshotSlotSender sends the GetConfigurationSnapshotSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetConfigurationSnapshotSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetConfigurationSnapshotSlotResponder handles the response to the GetConfigurationSnapshotSlot request. The method always
@@ -6975,11 +7133,161 @@ func (client AppsClient) GetConfigurationSnapshotSlotResponder(resp *http.Respon
 	return
 }
 
+// GetContainerLogsZip gets the ZIP archived docker log files for the given site
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is name of web app.
+func (client AppsClient) GetContainerLogsZip(resourceGroupName string, name string) (result ReadCloser, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetContainerLogsZip")
+	}
+
+	req, err := client.GetContainerLogsZipPreparer(resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetContainerLogsZip", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetContainerLogsZipSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetContainerLogsZip", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetContainerLogsZipResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetContainerLogsZip", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetContainerLogsZipPreparer prepares the GetContainerLogsZip request.
+func (client AppsClient) GetContainerLogsZipPreparer(resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/containerlogs/zip/download", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetContainerLogsZipSender sends the GetContainerLogsZip request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetContainerLogsZipSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetContainerLogsZipResponder handles the response to the GetContainerLogsZip request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetContainerLogsZipResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK))
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetContainerLogsZipSlot gets the ZIP archived docker log files for the given site
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is name of web app. slot is name
+// of web app slot. If not specified then will default to production slot.
+func (client AppsClient) GetContainerLogsZipSlot(resourceGroupName string, name string, slot string) (result ReadCloser, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetContainerLogsZipSlot")
+	}
+
+	req, err := client.GetContainerLogsZipSlotPreparer(resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetContainerLogsZipSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetContainerLogsZipSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetContainerLogsZipSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetContainerLogsZipSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetContainerLogsZipSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetContainerLogsZipSlotPreparer prepares the GetContainerLogsZipSlot request.
+func (client AppsClient) GetContainerLogsZipSlotPreparer(resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/containerlogs/zip/download", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetContainerLogsZipSlotSender sends the GetContainerLogsZipSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetContainerLogsZipSlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetContainerLogsZipSlotResponder handles the response to the GetContainerLogsZipSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetContainerLogsZipSlotResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK))
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetContinuousWebJob gets a continuous web job by its ID for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID.
-func (client AppsClient) GetContinuousWebJob(resourceGroupName string, name string, webJobID string, webJobName string) (result ContinuousWebJob, err error) {
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job.
+func (client AppsClient) GetContinuousWebJob(resourceGroupName string, name string, webJobName string) (result ContinuousWebJob, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -6988,7 +7296,7 @@ func (client AppsClient) GetContinuousWebJob(resourceGroupName string, name stri
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetContinuousWebJob")
 	}
 
-	req, err := client.GetContinuousWebJobPreparer(resourceGroupName, name, webJobID, webJobName)
+	req, err := client.GetContinuousWebJobPreparer(resourceGroupName, name, webJobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetContinuousWebJob", nil, "Failure preparing request")
 		return
@@ -7010,7 +7318,7 @@ func (client AppsClient) GetContinuousWebJob(resourceGroupName string, name stri
 }
 
 // GetContinuousWebJobPreparer prepares the GetContinuousWebJob request.
-func (client AppsClient) GetContinuousWebJobPreparer(resourceGroupName string, name string, webJobID string, webJobName string) (*http.Request, error) {
+func (client AppsClient) GetContinuousWebJobPreparer(resourceGroupName string, name string, webJobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -7021,7 +7329,6 @@ func (client AppsClient) GetContinuousWebJobPreparer(resourceGroupName string, n
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -7035,7 +7342,9 @@ func (client AppsClient) GetContinuousWebJobPreparer(resourceGroupName string, n
 // GetContinuousWebJobSender sends the GetContinuousWebJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetContinuousWebJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetContinuousWebJobResponder handles the response to the GetContinuousWebJob request. The method always
@@ -7053,10 +7362,10 @@ func (client AppsClient) GetContinuousWebJobResponder(resp *http.Response) (resu
 
 // GetContinuousWebJobSlot gets a continuous web job by its ID for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
 // production slot.
-func (client AppsClient) GetContinuousWebJobSlot(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (result ContinuousWebJob, err error) {
+func (client AppsClient) GetContinuousWebJobSlot(resourceGroupName string, name string, webJobName string, slot string) (result ContinuousWebJob, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -7065,7 +7374,7 @@ func (client AppsClient) GetContinuousWebJobSlot(resourceGroupName string, name 
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetContinuousWebJobSlot")
 	}
 
-	req, err := client.GetContinuousWebJobSlotPreparer(resourceGroupName, name, webJobID, slot, webJobName)
+	req, err := client.GetContinuousWebJobSlotPreparer(resourceGroupName, name, webJobName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetContinuousWebJobSlot", nil, "Failure preparing request")
 		return
@@ -7087,7 +7396,7 @@ func (client AppsClient) GetContinuousWebJobSlot(resourceGroupName string, name 
 }
 
 // GetContinuousWebJobSlotPreparer prepares the GetContinuousWebJobSlot request.
-func (client AppsClient) GetContinuousWebJobSlotPreparer(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (*http.Request, error) {
+func (client AppsClient) GetContinuousWebJobSlotPreparer(resourceGroupName string, name string, webJobName string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -7099,7 +7408,6 @@ func (client AppsClient) GetContinuousWebJobSlotPreparer(resourceGroupName strin
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -7113,7 +7421,9 @@ func (client AppsClient) GetContinuousWebJobSlotPreparer(resourceGroupName strin
 // GetContinuousWebJobSlotSender sends the GetContinuousWebJobSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetContinuousWebJobSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetContinuousWebJobSlotResponder handles the response to the GetContinuousWebJobSlot request. The method always
@@ -7188,7 +7498,9 @@ func (client AppsClient) GetDeploymentPreparer(resourceGroupName string, name st
 // GetDeploymentSender sends the GetDeployment request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetDeploymentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDeploymentResponder handles the response to the GetDeployment request. The method always
@@ -7265,7 +7577,9 @@ func (client AppsClient) GetDeploymentSlotPreparer(resourceGroupName string, nam
 // GetDeploymentSlotSender sends the GetDeploymentSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetDeploymentSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDeploymentSlotResponder handles the response to the GetDeploymentSlot request. The method always
@@ -7338,7 +7652,9 @@ func (client AppsClient) GetDiagnosticLogsConfigurationPreparer(resourceGroupNam
 // GetDiagnosticLogsConfigurationSender sends the GetDiagnosticLogsConfiguration request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetDiagnosticLogsConfigurationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDiagnosticLogsConfigurationResponder handles the response to the GetDiagnosticLogsConfiguration request. The method always
@@ -7414,7 +7730,9 @@ func (client AppsClient) GetDiagnosticLogsConfigurationSlotPreparer(resourceGrou
 // GetDiagnosticLogsConfigurationSlotSender sends the GetDiagnosticLogsConfigurationSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetDiagnosticLogsConfigurationSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDiagnosticLogsConfigurationSlotResponder handles the response to the GetDiagnosticLogsConfigurationSlot request. The method always
@@ -7489,7 +7807,9 @@ func (client AppsClient) GetDomainOwnershipIdentifierPreparer(resourceGroupName 
 // GetDomainOwnershipIdentifierSender sends the GetDomainOwnershipIdentifier request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetDomainOwnershipIdentifierSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDomainOwnershipIdentifierResponder handles the response to the GetDomainOwnershipIdentifier request. The method always
@@ -7566,7 +7886,9 @@ func (client AppsClient) GetDomainOwnershipIdentifierSlotPreparer(resourceGroupN
 // GetDomainOwnershipIdentifierSlotSender sends the GetDomainOwnershipIdentifierSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetDomainOwnershipIdentifierSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDomainOwnershipIdentifierSlotResponder handles the response to the GetDomainOwnershipIdentifierSlot request. The method always
@@ -7641,7 +7963,9 @@ func (client AppsClient) GetFunctionPreparer(resourceGroupName string, name stri
 // GetFunctionSender sends the GetFunction request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetFunctionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetFunctionResponder handles the response to the GetFunction request. The method always
@@ -7714,7 +8038,9 @@ func (client AppsClient) GetFunctionsAdminTokenPreparer(resourceGroupName string
 // GetFunctionsAdminTokenSender sends the GetFunctionsAdminToken request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetFunctionsAdminTokenSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetFunctionsAdminTokenResponder handles the response to the GetFunctionsAdminToken request. The method always
@@ -7789,7 +8115,9 @@ func (client AppsClient) GetFunctionsAdminTokenSlotPreparer(resourceGroupName st
 // GetFunctionsAdminTokenSlotSender sends the GetFunctionsAdminTokenSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetFunctionsAdminTokenSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetFunctionsAdminTokenSlotResponder handles the response to the GetFunctionsAdminTokenSlot request. The method always
@@ -7864,7 +8192,9 @@ func (client AppsClient) GetHostNameBindingPreparer(resourceGroupName string, na
 // GetHostNameBindingSender sends the GetHostNameBinding request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetHostNameBindingSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostNameBindingResponder handles the response to the GetHostNameBinding request. The method always
@@ -7941,7 +8271,9 @@ func (client AppsClient) GetHostNameBindingSlotPreparer(resourceGroupName string
 // GetHostNameBindingSlotSender sends the GetHostNameBindingSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetHostNameBindingSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHostNameBindingSlotResponder handles the response to the GetHostNameBindingSlot request. The method always
@@ -8017,7 +8349,9 @@ func (client AppsClient) GetHybridConnectionPreparer(resourceGroupName string, n
 // GetHybridConnectionSender sends the GetHybridConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetHybridConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHybridConnectionResponder handles the response to the GetHybridConnection request. The method always
@@ -8095,7 +8429,9 @@ func (client AppsClient) GetHybridConnectionSlotPreparer(resourceGroupName strin
 // GetHybridConnectionSlotSender sends the GetHybridConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetHybridConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetHybridConnectionSlotResponder handles the response to the GetHybridConnectionSlot request. The method always
@@ -8172,7 +8508,9 @@ func (client AppsClient) GetInstanceFunctionSlotPreparer(resourceGroupName strin
 // GetInstanceFunctionSlotSender sends the GetInstanceFunctionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceFunctionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceFunctionSlotResponder handles the response to the GetInstanceFunctionSlot request. The method always
@@ -8247,7 +8585,9 @@ func (client AppsClient) GetInstanceMSDeployLogPreparer(resourceGroupName string
 // GetInstanceMSDeployLogSender sends the GetInstanceMSDeployLog request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceMSDeployLogSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceMSDeployLogResponder handles the response to the GetInstanceMSDeployLog request. The method always
@@ -8323,7 +8663,9 @@ func (client AppsClient) GetInstanceMSDeployLogSlotPreparer(resourceGroupName st
 // GetInstanceMSDeployLogSlotSender sends the GetInstanceMSDeployLogSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceMSDeployLogSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceMSDeployLogSlotResponder handles the response to the GetInstanceMSDeployLogSlot request. The method always
@@ -8398,7 +8740,9 @@ func (client AppsClient) GetInstanceMsDeployStatusPreparer(resourceGroupName str
 // GetInstanceMsDeployStatusSender sends the GetInstanceMsDeployStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceMsDeployStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceMsDeployStatusResponder handles the response to the GetInstanceMsDeployStatus request. The method always
@@ -8474,7 +8818,9 @@ func (client AppsClient) GetInstanceMsDeployStatusSlotPreparer(resourceGroupName
 // GetInstanceMsDeployStatusSlotSender sends the GetInstanceMsDeployStatusSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceMsDeployStatusSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceMsDeployStatusSlotResponder handles the response to the GetInstanceMsDeployStatusSlot request. The method always
@@ -8551,7 +8897,9 @@ func (client AppsClient) GetInstanceProcessPreparer(resourceGroupName string, na
 // GetInstanceProcessSender sends the GetInstanceProcess request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceProcessSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceProcessResponder handles the response to the GetInstanceProcess request. The method always
@@ -8572,7 +8920,7 @@ func (client AppsClient) GetInstanceProcessResponder(resp *http.Response) (resul
 // resourceGroupName is name of the resource group to which the resource belongs. name is site name. processID is pID.
 // instanceID is ID of a specific scaled-out instance. This is the value of the name property in the JSON response from
 // "GET api/sites/{siteName}/instances".
-func (client AppsClient) GetInstanceProcessDump(resourceGroupName string, name string, processID string, instanceID string) (result SetObject, err error) {
+func (client AppsClient) GetInstanceProcessDump(resourceGroupName string, name string, processID string, instanceID string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -8628,18 +8976,19 @@ func (client AppsClient) GetInstanceProcessDumpPreparer(resourceGroupName string
 // GetInstanceProcessDumpSender sends the GetInstanceProcessDump request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceProcessDumpSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceProcessDumpResponder handles the response to the GetInstanceProcessDump request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetInstanceProcessDumpResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) GetInstanceProcessDumpResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound))
 	result.Response = autorest.Response{Response: resp}
 	return
 }
@@ -8651,7 +9000,7 @@ func (client AppsClient) GetInstanceProcessDumpResponder(resp *http.Response) (r
 // slot is name of the deployment slot. If a slot is not specified, the API returns deployments for the production
 // slot. instanceID is ID of a specific scaled-out instance. This is the value of the name property in the JSON
 // response from "GET api/sites/{siteName}/instances".
-func (client AppsClient) GetInstanceProcessDumpSlot(resourceGroupName string, name string, processID string, slot string, instanceID string) (result SetObject, err error) {
+func (client AppsClient) GetInstanceProcessDumpSlot(resourceGroupName string, name string, processID string, slot string, instanceID string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -8708,18 +9057,19 @@ func (client AppsClient) GetInstanceProcessDumpSlotPreparer(resourceGroupName st
 // GetInstanceProcessDumpSlotSender sends the GetInstanceProcessDumpSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceProcessDumpSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceProcessDumpSlotResponder handles the response to the GetInstanceProcessDumpSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetInstanceProcessDumpSlotResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) GetInstanceProcessDumpSlotResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound))
 	result.Response = autorest.Response{Response: resp}
 	return
 }
@@ -8729,7 +9079,7 @@ func (client AppsClient) GetInstanceProcessDumpSlotResponder(resp *http.Response
 // resourceGroupName is name of the resource group to which the resource belongs. name is site name. processID is pID.
 // baseAddress is module base address. instanceID is ID of a specific scaled-out instance. This is the value of the
 // name property in the JSON response from "GET api/sites/{siteName}/instances".
-func (client AppsClient) GetInstanceProcessModule(resourceGroupName string, name string, processID string, baseAddress string, instanceID string, baseAddress1 string) (result ProcessModuleInfo, err error) {
+func (client AppsClient) GetInstanceProcessModule(resourceGroupName string, name string, processID string, baseAddress string, instanceID string) (result ProcessModuleInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -8738,7 +9088,7 @@ func (client AppsClient) GetInstanceProcessModule(resourceGroupName string, name
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetInstanceProcessModule")
 	}
 
-	req, err := client.GetInstanceProcessModulePreparer(resourceGroupName, name, processID, baseAddress, instanceID, baseAddress1)
+	req, err := client.GetInstanceProcessModulePreparer(resourceGroupName, name, processID, baseAddress, instanceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceProcessModule", nil, "Failure preparing request")
 		return
@@ -8760,9 +9110,9 @@ func (client AppsClient) GetInstanceProcessModule(resourceGroupName string, name
 }
 
 // GetInstanceProcessModulePreparer prepares the GetInstanceProcessModule request.
-func (client AppsClient) GetInstanceProcessModulePreparer(resourceGroupName string, name string, processID string, baseAddress string, instanceID string, baseAddress1 string) (*http.Request, error) {
+func (client AppsClient) GetInstanceProcessModulePreparer(resourceGroupName string, name string, processID string, baseAddress string, instanceID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"base_address":      autorest.Encode("path", baseAddress1),
+		"baseAddress":       autorest.Encode("path", baseAddress),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"processId":         autorest.Encode("path", processID),
@@ -8773,13 +9123,12 @@ func (client AppsClient) GetInstanceProcessModulePreparer(resourceGroupName stri
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"baseAddress": autorest.Encode("query", baseAddress),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}/modules/{base_address}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}/modules/{baseAddress}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -8787,7 +9136,9 @@ func (client AppsClient) GetInstanceProcessModulePreparer(resourceGroupName stri
 // GetInstanceProcessModuleSender sends the GetInstanceProcessModule request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceProcessModuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceProcessModuleResponder handles the response to the GetInstanceProcessModule request. The method always
@@ -8809,7 +9160,7 @@ func (client AppsClient) GetInstanceProcessModuleResponder(resp *http.Response) 
 // baseAddress is module base address. slot is name of the deployment slot. If a slot is not specified, the API returns
 // deployments for the production slot. instanceID is ID of a specific scaled-out instance. This is the value of the
 // name property in the JSON response from "GET api/sites/{siteName}/instances".
-func (client AppsClient) GetInstanceProcessModuleSlot(resourceGroupName string, name string, processID string, baseAddress string, slot string, instanceID string, baseAddress1 string) (result ProcessModuleInfo, err error) {
+func (client AppsClient) GetInstanceProcessModuleSlot(resourceGroupName string, name string, processID string, baseAddress string, slot string, instanceID string) (result ProcessModuleInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -8818,7 +9169,7 @@ func (client AppsClient) GetInstanceProcessModuleSlot(resourceGroupName string, 
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetInstanceProcessModuleSlot")
 	}
 
-	req, err := client.GetInstanceProcessModuleSlotPreparer(resourceGroupName, name, processID, baseAddress, slot, instanceID, baseAddress1)
+	req, err := client.GetInstanceProcessModuleSlotPreparer(resourceGroupName, name, processID, baseAddress, slot, instanceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceProcessModuleSlot", nil, "Failure preparing request")
 		return
@@ -8840,9 +9191,9 @@ func (client AppsClient) GetInstanceProcessModuleSlot(resourceGroupName string, 
 }
 
 // GetInstanceProcessModuleSlotPreparer prepares the GetInstanceProcessModuleSlot request.
-func (client AppsClient) GetInstanceProcessModuleSlotPreparer(resourceGroupName string, name string, processID string, baseAddress string, slot string, instanceID string, baseAddress1 string) (*http.Request, error) {
+func (client AppsClient) GetInstanceProcessModuleSlotPreparer(resourceGroupName string, name string, processID string, baseAddress string, slot string, instanceID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"base_address":      autorest.Encode("path", baseAddress1),
+		"baseAddress":       autorest.Encode("path", baseAddress),
 		"instanceId":        autorest.Encode("path", instanceID),
 		"name":              autorest.Encode("path", name),
 		"processId":         autorest.Encode("path", processID),
@@ -8854,13 +9205,12 @@ func (client AppsClient) GetInstanceProcessModuleSlotPreparer(resourceGroupName 
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"baseAddress": autorest.Encode("query", baseAddress),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}/modules/{base_address}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}/modules/{baseAddress}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -8868,7 +9218,9 @@ func (client AppsClient) GetInstanceProcessModuleSlotPreparer(resourceGroupName 
 // GetInstanceProcessModuleSlotSender sends the GetInstanceProcessModuleSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceProcessModuleSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceProcessModuleSlotResponder handles the response to the GetInstanceProcessModuleSlot request. The method always
@@ -8947,7 +9299,9 @@ func (client AppsClient) GetInstanceProcessSlotPreparer(resourceGroupName string
 // GetInstanceProcessSlotSender sends the GetInstanceProcessSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceProcessSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceProcessSlotResponder handles the response to the GetInstanceProcessSlot request. The method always
@@ -9026,7 +9380,9 @@ func (client AppsClient) GetInstanceProcessThreadPreparer(resourceGroupName stri
 // GetInstanceProcessThreadSender sends the GetInstanceProcessThread request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceProcessThreadSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceProcessThreadResponder handles the response to the GetInstanceProcessThread request. The method always
@@ -9107,7 +9463,9 @@ func (client AppsClient) GetInstanceProcessThreadSlotPreparer(resourceGroupName 
 // GetInstanceProcessThreadSlotSender sends the GetInstanceProcessThreadSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetInstanceProcessThreadSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetInstanceProcessThreadSlotResponder handles the response to the GetInstanceProcessThreadSlot request. The method always
@@ -9181,7 +9539,9 @@ func (client AppsClient) GetMigrateMySQLStatusPreparer(resourceGroupName string,
 // GetMigrateMySQLStatusSender sends the GetMigrateMySQLStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetMigrateMySQLStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMigrateMySQLStatusResponder handles the response to the GetMigrateMySQLStatus request. The method always
@@ -9257,7 +9617,9 @@ func (client AppsClient) GetMigrateMySQLStatusSlotPreparer(resourceGroupName str
 // GetMigrateMySQLStatusSlotSender sends the GetMigrateMySQLStatusSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetMigrateMySQLStatusSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMigrateMySQLStatusSlotResponder handles the response to the GetMigrateMySQLStatusSlot request. The method always
@@ -9330,7 +9692,9 @@ func (client AppsClient) GetMSDeployLogPreparer(resourceGroupName string, name s
 // GetMSDeployLogSender sends the GetMSDeployLog request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetMSDeployLogSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMSDeployLogResponder handles the response to the GetMSDeployLog request. The method always
@@ -9405,7 +9769,9 @@ func (client AppsClient) GetMSDeployLogSlotPreparer(resourceGroupName string, na
 // GetMSDeployLogSlotSender sends the GetMSDeployLogSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetMSDeployLogSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMSDeployLogSlotResponder handles the response to the GetMSDeployLogSlot request. The method always
@@ -9478,7 +9844,9 @@ func (client AppsClient) GetMSDeployStatusPreparer(resourceGroupName string, nam
 // GetMSDeployStatusSender sends the GetMSDeployStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetMSDeployStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMSDeployStatusResponder handles the response to the GetMSDeployStatus request. The method always
@@ -9553,7 +9921,9 @@ func (client AppsClient) GetMSDeployStatusSlotPreparer(resourceGroupName string,
 // GetMSDeployStatusSlotSender sends the GetMSDeployStatusSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetMSDeployStatusSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMSDeployStatusSlotResponder handles the response to the GetMSDeployStatusSlot request. The method always
@@ -9628,7 +9998,9 @@ func (client AppsClient) GetPremierAddOnPreparer(resourceGroupName string, name 
 // GetPremierAddOnSender sends the GetPremierAddOn request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetPremierAddOnSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetPremierAddOnResponder handles the response to the GetPremierAddOn request. The method always
@@ -9705,7 +10077,9 @@ func (client AppsClient) GetPremierAddOnSlotPreparer(resourceGroupName string, n
 // GetPremierAddOnSlotSender sends the GetPremierAddOnSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetPremierAddOnSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetPremierAddOnSlotResponder handles the response to the GetPremierAddOnSlot request. The method always
@@ -9779,7 +10153,9 @@ func (client AppsClient) GetProcessPreparer(resourceGroupName string, name strin
 // GetProcessSender sends the GetProcess request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetProcessSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetProcessResponder handles the response to the GetProcess request. The method always
@@ -9798,7 +10174,7 @@ func (client AppsClient) GetProcessResponder(resp *http.Response) (result Proces
 // GetProcessDump get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 //
 // resourceGroupName is name of the resource group to which the resource belongs. name is site name. processID is pID.
-func (client AppsClient) GetProcessDump(resourceGroupName string, name string, processID string) (result SetObject, err error) {
+func (client AppsClient) GetProcessDump(resourceGroupName string, name string, processID string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -9853,18 +10229,19 @@ func (client AppsClient) GetProcessDumpPreparer(resourceGroupName string, name s
 // GetProcessDumpSender sends the GetProcessDump request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetProcessDumpSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetProcessDumpResponder handles the response to the GetProcessDump request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetProcessDumpResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) GetProcessDumpResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound))
 	result.Response = autorest.Response{Response: resp}
 	return
 }
@@ -9874,7 +10251,7 @@ func (client AppsClient) GetProcessDumpResponder(resp *http.Response) (result Se
 // resourceGroupName is name of the resource group to which the resource belongs. name is site name. processID is pID.
 // slot is name of the deployment slot. If a slot is not specified, the API returns deployments for the production
 // slot.
-func (client AppsClient) GetProcessDumpSlot(resourceGroupName string, name string, processID string, slot string) (result SetObject, err error) {
+func (client AppsClient) GetProcessDumpSlot(resourceGroupName string, name string, processID string, slot string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -9930,18 +10307,19 @@ func (client AppsClient) GetProcessDumpSlotPreparer(resourceGroupName string, na
 // GetProcessDumpSlotSender sends the GetProcessDumpSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetProcessDumpSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetProcessDumpSlotResponder handles the response to the GetProcessDumpSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) GetProcessDumpSlotResponder(resp *http.Response) (result SetObject, err error) {
+func (client AppsClient) GetProcessDumpSlotResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound))
 	result.Response = autorest.Response{Response: resp}
 	return
 }
@@ -9950,7 +10328,7 @@ func (client AppsClient) GetProcessDumpSlotResponder(resp *http.Response) (resul
 //
 // resourceGroupName is name of the resource group to which the resource belongs. name is site name. processID is pID.
 // baseAddress is module base address.
-func (client AppsClient) GetProcessModule(resourceGroupName string, name string, processID string, baseAddress string, baseAddress1 string) (result ProcessModuleInfo, err error) {
+func (client AppsClient) GetProcessModule(resourceGroupName string, name string, processID string, baseAddress string) (result ProcessModuleInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -9959,7 +10337,7 @@ func (client AppsClient) GetProcessModule(resourceGroupName string, name string,
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetProcessModule")
 	}
 
-	req, err := client.GetProcessModulePreparer(resourceGroupName, name, processID, baseAddress, baseAddress1)
+	req, err := client.GetProcessModulePreparer(resourceGroupName, name, processID, baseAddress)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetProcessModule", nil, "Failure preparing request")
 		return
@@ -9981,9 +10359,9 @@ func (client AppsClient) GetProcessModule(resourceGroupName string, name string,
 }
 
 // GetProcessModulePreparer prepares the GetProcessModule request.
-func (client AppsClient) GetProcessModulePreparer(resourceGroupName string, name string, processID string, baseAddress string, baseAddress1 string) (*http.Request, error) {
+func (client AppsClient) GetProcessModulePreparer(resourceGroupName string, name string, processID string, baseAddress string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"base_address":      autorest.Encode("path", baseAddress1),
+		"baseAddress":       autorest.Encode("path", baseAddress),
 		"name":              autorest.Encode("path", name),
 		"processId":         autorest.Encode("path", processID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -9993,13 +10371,12 @@ func (client AppsClient) GetProcessModulePreparer(resourceGroupName string, name
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"baseAddress": autorest.Encode("query", baseAddress),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}/modules/{base_address}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}/modules/{baseAddress}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -10007,7 +10384,9 @@ func (client AppsClient) GetProcessModulePreparer(resourceGroupName string, name
 // GetProcessModuleSender sends the GetProcessModule request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetProcessModuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetProcessModuleResponder handles the response to the GetProcessModule request. The method always
@@ -10028,7 +10407,7 @@ func (client AppsClient) GetProcessModuleResponder(resp *http.Response) (result 
 // resourceGroupName is name of the resource group to which the resource belongs. name is site name. processID is pID.
 // baseAddress is module base address. slot is name of the deployment slot. If a slot is not specified, the API returns
 // deployments for the production slot.
-func (client AppsClient) GetProcessModuleSlot(resourceGroupName string, name string, processID string, baseAddress string, slot string, baseAddress1 string) (result ProcessModuleInfo, err error) {
+func (client AppsClient) GetProcessModuleSlot(resourceGroupName string, name string, processID string, baseAddress string, slot string) (result ProcessModuleInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -10037,7 +10416,7 @@ func (client AppsClient) GetProcessModuleSlot(resourceGroupName string, name str
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetProcessModuleSlot")
 	}
 
-	req, err := client.GetProcessModuleSlotPreparer(resourceGroupName, name, processID, baseAddress, slot, baseAddress1)
+	req, err := client.GetProcessModuleSlotPreparer(resourceGroupName, name, processID, baseAddress, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetProcessModuleSlot", nil, "Failure preparing request")
 		return
@@ -10059,9 +10438,9 @@ func (client AppsClient) GetProcessModuleSlot(resourceGroupName string, name str
 }
 
 // GetProcessModuleSlotPreparer prepares the GetProcessModuleSlot request.
-func (client AppsClient) GetProcessModuleSlotPreparer(resourceGroupName string, name string, processID string, baseAddress string, slot string, baseAddress1 string) (*http.Request, error) {
+func (client AppsClient) GetProcessModuleSlotPreparer(resourceGroupName string, name string, processID string, baseAddress string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"base_address":      autorest.Encode("path", baseAddress1),
+		"baseAddress":       autorest.Encode("path", baseAddress),
 		"name":              autorest.Encode("path", name),
 		"processId":         autorest.Encode("path", processID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -10072,13 +10451,12 @@ func (client AppsClient) GetProcessModuleSlotPreparer(resourceGroupName string, 
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"baseAddress": autorest.Encode("query", baseAddress),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}/modules/{base_address}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}/modules/{baseAddress}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -10086,7 +10464,9 @@ func (client AppsClient) GetProcessModuleSlotPreparer(resourceGroupName string, 
 // GetProcessModuleSlotSender sends the GetProcessModuleSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetProcessModuleSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetProcessModuleSlotResponder handles the response to the GetProcessModuleSlot request. The method always
@@ -10163,7 +10543,9 @@ func (client AppsClient) GetProcessSlotPreparer(resourceGroupName string, name s
 // GetProcessSlotSender sends the GetProcessSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetProcessSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetProcessSlotResponder handles the response to the GetProcessSlot request. The method always
@@ -10240,7 +10622,9 @@ func (client AppsClient) GetProcessThreadPreparer(resourceGroupName string, name
 // GetProcessThreadSender sends the GetProcessThread request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetProcessThreadSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetProcessThreadResponder handles the response to the GetProcessThread request. The method always
@@ -10319,7 +10703,9 @@ func (client AppsClient) GetProcessThreadSlotPreparer(resourceGroupName string, 
 // GetProcessThreadSlotSender sends the GetProcessThreadSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetProcessThreadSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetProcessThreadSlotResponder handles the response to the GetProcessThreadSlot request. The method always
@@ -10394,7 +10780,9 @@ func (client AppsClient) GetPublicCertificatePreparer(resourceGroupName string, 
 // GetPublicCertificateSender sends the GetPublicCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetPublicCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetPublicCertificateResponder handles the response to the GetPublicCertificate request. The method always
@@ -10471,7 +10859,9 @@ func (client AppsClient) GetPublicCertificateSlotPreparer(resourceGroupName stri
 // GetPublicCertificateSlotSender sends the GetPublicCertificateSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetPublicCertificateSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetPublicCertificateSlotResponder handles the response to the GetPublicCertificateSlot request. The method always
@@ -10546,7 +10936,9 @@ func (client AppsClient) GetRelayServiceConnectionPreparer(resourceGroupName str
 // GetRelayServiceConnectionSender sends the GetRelayServiceConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetRelayServiceConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetRelayServiceConnectionResponder handles the response to the GetRelayServiceConnection request. The method always
@@ -10623,7 +11015,9 @@ func (client AppsClient) GetRelayServiceConnectionSlotPreparer(resourceGroupName
 // GetRelayServiceConnectionSlotSender sends the GetRelayServiceConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetRelayServiceConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetRelayServiceConnectionSlotResponder handles the response to the GetRelayServiceConnectionSlot request. The method always
@@ -10643,7 +11037,7 @@ func (client AppsClient) GetRelayServiceConnectionSlotResponder(resp *http.Respo
 //
 // resourceGroupName is name of the resource group to which the resource belongs. name is site name. siteExtensionID is
 // site extension name.
-func (client AppsClient) GetSiteExtension(resourceGroupName string, name string, siteExtensionID string, extensionName string) (result SiteExtensionInfo, err error) {
+func (client AppsClient) GetSiteExtension(resourceGroupName string, name string, siteExtensionID string) (result SiteExtensionInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -10652,7 +11046,7 @@ func (client AppsClient) GetSiteExtension(resourceGroupName string, name string,
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetSiteExtension")
 	}
 
-	req, err := client.GetSiteExtensionPreparer(resourceGroupName, name, siteExtensionID, extensionName)
+	req, err := client.GetSiteExtensionPreparer(resourceGroupName, name, siteExtensionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSiteExtension", nil, "Failure preparing request")
 		return
@@ -10674,24 +11068,23 @@ func (client AppsClient) GetSiteExtension(resourceGroupName string, name string,
 }
 
 // GetSiteExtensionPreparer prepares the GetSiteExtension request.
-func (client AppsClient) GetSiteExtensionPreparer(resourceGroupName string, name string, siteExtensionID string, extensionName string) (*http.Request, error) {
+func (client AppsClient) GetSiteExtensionPreparer(resourceGroupName string, name string, siteExtensionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"extensionName":     autorest.Encode("path", extensionName),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"siteExtensionId":   autorest.Encode("path", siteExtensionID),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version":     APIVersion,
-		"siteExtensionId": autorest.Encode("query", siteExtensionID),
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions/{extensionName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions/{siteExtensionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -10699,7 +11092,9 @@ func (client AppsClient) GetSiteExtensionPreparer(resourceGroupName string, name
 // GetSiteExtensionSender sends the GetSiteExtension request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetSiteExtensionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetSiteExtensionResponder handles the response to the GetSiteExtension request. The method always
@@ -10720,7 +11115,7 @@ func (client AppsClient) GetSiteExtensionResponder(resp *http.Response) (result 
 // resourceGroupName is name of the resource group to which the resource belongs. name is site name. siteExtensionID is
 // site extension name. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment
 // for the production slot.
-func (client AppsClient) GetSiteExtensionSlot(resourceGroupName string, name string, siteExtensionID string, slot string, extensionName string) (result SiteExtensionInfo, err error) {
+func (client AppsClient) GetSiteExtensionSlot(resourceGroupName string, name string, siteExtensionID string, slot string) (result SiteExtensionInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -10729,7 +11124,7 @@ func (client AppsClient) GetSiteExtensionSlot(resourceGroupName string, name str
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetSiteExtensionSlot")
 	}
 
-	req, err := client.GetSiteExtensionSlotPreparer(resourceGroupName, name, siteExtensionID, slot, extensionName)
+	req, err := client.GetSiteExtensionSlotPreparer(resourceGroupName, name, siteExtensionID, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetSiteExtensionSlot", nil, "Failure preparing request")
 		return
@@ -10751,25 +11146,24 @@ func (client AppsClient) GetSiteExtensionSlot(resourceGroupName string, name str
 }
 
 // GetSiteExtensionSlotPreparer prepares the GetSiteExtensionSlot request.
-func (client AppsClient) GetSiteExtensionSlotPreparer(resourceGroupName string, name string, siteExtensionID string, slot string, extensionName string) (*http.Request, error) {
+func (client AppsClient) GetSiteExtensionSlotPreparer(resourceGroupName string, name string, siteExtensionID string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"extensionName":     autorest.Encode("path", extensionName),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"siteExtensionId":   autorest.Encode("path", siteExtensionID),
 		"slot":              autorest.Encode("path", slot),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version":     APIVersion,
-		"siteExtensionId": autorest.Encode("query", siteExtensionID),
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions/{extensionName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions/{siteExtensionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{})
 }
@@ -10777,7 +11171,9 @@ func (client AppsClient) GetSiteExtensionSlotPreparer(resourceGroupName string, 
 // GetSiteExtensionSlotSender sends the GetSiteExtensionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetSiteExtensionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetSiteExtensionSlotResponder handles the response to the GetSiteExtensionSlot request. The method always
@@ -10850,7 +11246,9 @@ func (client AppsClient) GetSitePhpErrorLogFlagPreparer(resourceGroupName string
 // GetSitePhpErrorLogFlagSender sends the GetSitePhpErrorLogFlag request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetSitePhpErrorLogFlagSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetSitePhpErrorLogFlagResponder handles the response to the GetSitePhpErrorLogFlag request. The method always
@@ -10925,7 +11323,9 @@ func (client AppsClient) GetSitePhpErrorLogFlagSlotPreparer(resourceGroupName st
 // GetSitePhpErrorLogFlagSlotSender sends the GetSitePhpErrorLogFlagSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetSitePhpErrorLogFlagSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetSitePhpErrorLogFlagSlotResponder handles the response to the GetSitePhpErrorLogFlagSlot request. The method always
@@ -11000,7 +11400,9 @@ func (client AppsClient) GetSlotPreparer(resourceGroupName string, name string, 
 // GetSlotSender sends the GetSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetSlotResponder handles the response to the GetSlot request. The method always
@@ -11009,7 +11411,7 @@ func (client AppsClient) GetSlotResponder(resp *http.Response) (result Site, err
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -11073,7 +11475,9 @@ func (client AppsClient) GetSourceControlPreparer(resourceGroupName string, name
 // GetSourceControlSender sends the GetSourceControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetSourceControlSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetSourceControlResponder handles the response to the GetSourceControl request. The method always
@@ -11149,7 +11553,9 @@ func (client AppsClient) GetSourceControlSlotPreparer(resourceGroupName string, 
 // GetSourceControlSlotSender sends the GetSourceControlSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetSourceControlSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetSourceControlSlotResponder handles the response to the GetSourceControlSlot request. The method always
@@ -11167,9 +11573,9 @@ func (client AppsClient) GetSourceControlSlotResponder(resp *http.Response) (res
 
 // GetTriggeredWebJob gets a triggered web job by its ID for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID.
-func (client AppsClient) GetTriggeredWebJob(resourceGroupName string, name string, webJobID string, webJobName string) (result TriggeredWebJob, err error) {
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job.
+func (client AppsClient) GetTriggeredWebJob(resourceGroupName string, name string, webJobName string) (result TriggeredWebJob, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -11178,7 +11584,7 @@ func (client AppsClient) GetTriggeredWebJob(resourceGroupName string, name strin
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetTriggeredWebJob")
 	}
 
-	req, err := client.GetTriggeredWebJobPreparer(resourceGroupName, name, webJobID, webJobName)
+	req, err := client.GetTriggeredWebJobPreparer(resourceGroupName, name, webJobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetTriggeredWebJob", nil, "Failure preparing request")
 		return
@@ -11200,7 +11606,7 @@ func (client AppsClient) GetTriggeredWebJob(resourceGroupName string, name strin
 }
 
 // GetTriggeredWebJobPreparer prepares the GetTriggeredWebJob request.
-func (client AppsClient) GetTriggeredWebJobPreparer(resourceGroupName string, name string, webJobID string, webJobName string) (*http.Request, error) {
+func (client AppsClient) GetTriggeredWebJobPreparer(resourceGroupName string, name string, webJobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -11211,7 +11617,6 @@ func (client AppsClient) GetTriggeredWebJobPreparer(resourceGroupName string, na
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -11225,7 +11630,9 @@ func (client AppsClient) GetTriggeredWebJobPreparer(resourceGroupName string, na
 // GetTriggeredWebJobSender sends the GetTriggeredWebJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetTriggeredWebJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetTriggeredWebJobResponder handles the response to the GetTriggeredWebJob request. The method always
@@ -11243,9 +11650,9 @@ func (client AppsClient) GetTriggeredWebJobResponder(resp *http.Response) (resul
 
 // GetTriggeredWebJobHistory gets a triggered web job's history by its ID for an app, , or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID. ID is history ID.
-func (client AppsClient) GetTriggeredWebJobHistory(resourceGroupName string, name string, webJobID string, ID string, webJobName string) (result TriggeredJobHistory, err error) {
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job. ID is history ID.
+func (client AppsClient) GetTriggeredWebJobHistory(resourceGroupName string, name string, webJobName string, ID string) (result TriggeredJobHistory, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -11254,7 +11661,7 @@ func (client AppsClient) GetTriggeredWebJobHistory(resourceGroupName string, nam
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetTriggeredWebJobHistory")
 	}
 
-	req, err := client.GetTriggeredWebJobHistoryPreparer(resourceGroupName, name, webJobID, ID, webJobName)
+	req, err := client.GetTriggeredWebJobHistoryPreparer(resourceGroupName, name, webJobName, ID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetTriggeredWebJobHistory", nil, "Failure preparing request")
 		return
@@ -11276,7 +11683,7 @@ func (client AppsClient) GetTriggeredWebJobHistory(resourceGroupName string, nam
 }
 
 // GetTriggeredWebJobHistoryPreparer prepares the GetTriggeredWebJobHistory request.
-func (client AppsClient) GetTriggeredWebJobHistoryPreparer(resourceGroupName string, name string, webJobID string, ID string, webJobName string) (*http.Request, error) {
+func (client AppsClient) GetTriggeredWebJobHistoryPreparer(resourceGroupName string, name string, webJobName string, ID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
@@ -11288,7 +11695,6 @@ func (client AppsClient) GetTriggeredWebJobHistoryPreparer(resourceGroupName str
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -11302,7 +11708,9 @@ func (client AppsClient) GetTriggeredWebJobHistoryPreparer(resourceGroupName str
 // GetTriggeredWebJobHistorySender sends the GetTriggeredWebJobHistory request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetTriggeredWebJobHistorySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetTriggeredWebJobHistoryResponder handles the response to the GetTriggeredWebJobHistory request. The method always
@@ -11320,10 +11728,10 @@ func (client AppsClient) GetTriggeredWebJobHistoryResponder(resp *http.Response)
 
 // GetTriggeredWebJobHistorySlot gets a triggered web job's history by its ID for an app, , or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID. ID is history ID. slot is name of the deployment slot. If a slot is not specified, the API deletes a
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job. ID is history ID. slot is name of the deployment slot. If a slot is not specified, the API deletes a
 // deployment for the production slot.
-func (client AppsClient) GetTriggeredWebJobHistorySlot(resourceGroupName string, name string, webJobID string, ID string, slot string, webJobName string) (result TriggeredJobHistory, err error) {
+func (client AppsClient) GetTriggeredWebJobHistorySlot(resourceGroupName string, name string, webJobName string, ID string, slot string) (result TriggeredJobHistory, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -11332,7 +11740,7 @@ func (client AppsClient) GetTriggeredWebJobHistorySlot(resourceGroupName string,
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetTriggeredWebJobHistorySlot")
 	}
 
-	req, err := client.GetTriggeredWebJobHistorySlotPreparer(resourceGroupName, name, webJobID, ID, slot, webJobName)
+	req, err := client.GetTriggeredWebJobHistorySlotPreparer(resourceGroupName, name, webJobName, ID, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetTriggeredWebJobHistorySlot", nil, "Failure preparing request")
 		return
@@ -11354,7 +11762,7 @@ func (client AppsClient) GetTriggeredWebJobHistorySlot(resourceGroupName string,
 }
 
 // GetTriggeredWebJobHistorySlotPreparer prepares the GetTriggeredWebJobHistorySlot request.
-func (client AppsClient) GetTriggeredWebJobHistorySlotPreparer(resourceGroupName string, name string, webJobID string, ID string, slot string, webJobName string) (*http.Request, error) {
+func (client AppsClient) GetTriggeredWebJobHistorySlotPreparer(resourceGroupName string, name string, webJobName string, ID string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"id":                autorest.Encode("path", ID),
 		"name":              autorest.Encode("path", name),
@@ -11367,7 +11775,6 @@ func (client AppsClient) GetTriggeredWebJobHistorySlotPreparer(resourceGroupName
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -11381,7 +11788,9 @@ func (client AppsClient) GetTriggeredWebJobHistorySlotPreparer(resourceGroupName
 // GetTriggeredWebJobHistorySlotSender sends the GetTriggeredWebJobHistorySlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetTriggeredWebJobHistorySlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetTriggeredWebJobHistorySlotResponder handles the response to the GetTriggeredWebJobHistorySlot request. The method always
@@ -11399,10 +11808,10 @@ func (client AppsClient) GetTriggeredWebJobHistorySlotResponder(resp *http.Respo
 
 // GetTriggeredWebJobSlot gets a triggered web job by its ID for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
 // production slot.
-func (client AppsClient) GetTriggeredWebJobSlot(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (result TriggeredWebJob, err error) {
+func (client AppsClient) GetTriggeredWebJobSlot(resourceGroupName string, name string, webJobName string, slot string) (result TriggeredWebJob, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -11411,7 +11820,7 @@ func (client AppsClient) GetTriggeredWebJobSlot(resourceGroupName string, name s
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetTriggeredWebJobSlot")
 	}
 
-	req, err := client.GetTriggeredWebJobSlotPreparer(resourceGroupName, name, webJobID, slot, webJobName)
+	req, err := client.GetTriggeredWebJobSlotPreparer(resourceGroupName, name, webJobName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetTriggeredWebJobSlot", nil, "Failure preparing request")
 		return
@@ -11433,7 +11842,7 @@ func (client AppsClient) GetTriggeredWebJobSlot(resourceGroupName string, name s
 }
 
 // GetTriggeredWebJobSlotPreparer prepares the GetTriggeredWebJobSlot request.
-func (client AppsClient) GetTriggeredWebJobSlotPreparer(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (*http.Request, error) {
+func (client AppsClient) GetTriggeredWebJobSlotPreparer(resourceGroupName string, name string, webJobName string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -11445,7 +11854,6 @@ func (client AppsClient) GetTriggeredWebJobSlotPreparer(resourceGroupName string
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -11459,7 +11867,9 @@ func (client AppsClient) GetTriggeredWebJobSlotPreparer(resourceGroupName string
 // GetTriggeredWebJobSlotSender sends the GetTriggeredWebJobSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetTriggeredWebJobSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetTriggeredWebJobSlotResponder handles the response to the GetTriggeredWebJobSlot request. The method always
@@ -11534,7 +11944,9 @@ func (client AppsClient) GetVnetConnectionPreparer(resourceGroupName string, nam
 // GetVnetConnectionSender sends the GetVnetConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetVnetConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetVnetConnectionResponder handles the response to the GetVnetConnection request. The method always
@@ -11610,7 +12022,9 @@ func (client AppsClient) GetVnetConnectionGatewayPreparer(resourceGroupName stri
 // GetVnetConnectionGatewaySender sends the GetVnetConnectionGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetVnetConnectionGatewaySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetVnetConnectionGatewayResponder handles the response to the GetVnetConnectionGateway request. The method always
@@ -11689,7 +12103,9 @@ func (client AppsClient) GetVnetConnectionGatewaySlotPreparer(resourceGroupName 
 // GetVnetConnectionGatewaySlotSender sends the GetVnetConnectionGatewaySlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetVnetConnectionGatewaySlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetVnetConnectionGatewaySlotResponder handles the response to the GetVnetConnectionGatewaySlot request. The method always
@@ -11766,7 +12182,9 @@ func (client AppsClient) GetVnetConnectionSlotPreparer(resourceGroupName string,
 // GetVnetConnectionSlotSender sends the GetVnetConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetVnetConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetVnetConnectionSlotResponder handles the response to the GetVnetConnectionSlot request. The method always
@@ -11841,7 +12259,9 @@ func (client AppsClient) GetWebJobPreparer(resourceGroupName string, name string
 // GetWebJobSender sends the GetWebJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetWebJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetWebJobResponder handles the response to the GetWebJob request. The method always
@@ -11918,7 +12338,9 @@ func (client AppsClient) GetWebJobSlotPreparer(resourceGroupName string, name st
 // GetWebJobSlotSender sends the GetWebJobSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) GetWebJobSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetWebJobSlotResponder handles the response to the GetWebJobSlot request. The method always
@@ -11934,13 +12356,163 @@ func (client AppsClient) GetWebJobSlotResponder(resp *http.Response) (result Job
 	return
 }
 
+// GetWebSiteContainerLogs gets the last lines of docker logs for the given site
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is name of web app.
+func (client AppsClient) GetWebSiteContainerLogs(resourceGroupName string, name string) (result ReadCloser, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetWebSiteContainerLogs")
+	}
+
+	req, err := client.GetWebSiteContainerLogsPreparer(resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetWebSiteContainerLogs", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetWebSiteContainerLogsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetWebSiteContainerLogs", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetWebSiteContainerLogsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetWebSiteContainerLogs", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetWebSiteContainerLogsPreparer prepares the GetWebSiteContainerLogs request.
+func (client AppsClient) GetWebSiteContainerLogsPreparer(resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/containerlogs", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetWebSiteContainerLogsSender sends the GetWebSiteContainerLogs request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetWebSiteContainerLogsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetWebSiteContainerLogsResponder handles the response to the GetWebSiteContainerLogs request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetWebSiteContainerLogsResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK))
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetWebSiteContainerLogsSlot gets the last lines of docker logs for the given site
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is name of web app. slot is name
+// of web app slot. If not specified then will default to production slot.
+func (client AppsClient) GetWebSiteContainerLogsSlot(resourceGroupName string, name string, slot string) (result ReadCloser, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "GetWebSiteContainerLogsSlot")
+	}
+
+	req, err := client.GetWebSiteContainerLogsSlotPreparer(resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetWebSiteContainerLogsSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetWebSiteContainerLogsSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetWebSiteContainerLogsSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetWebSiteContainerLogsSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetWebSiteContainerLogsSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetWebSiteContainerLogsSlotPreparer prepares the GetWebSiteContainerLogsSlot request.
+func (client AppsClient) GetWebSiteContainerLogsSlotPreparer(resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/containerlogs", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// GetWebSiteContainerLogsSlotSender sends the GetWebSiteContainerLogsSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetWebSiteContainerLogsSlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetWebSiteContainerLogsSlotResponder handles the response to the GetWebSiteContainerLogsSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetWebSiteContainerLogsSlotResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusNoContent, http.StatusOK))
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // InstallSiteExtension install site extension on a web site, or a deployment slot. This method may poll for
 // completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel
 // polling and any outstanding HTTP requests.
 //
 // resourceGroupName is name of the resource group to which the resource belongs. name is site name. siteExtensionID is
 // site extension name.
-func (client AppsClient) InstallSiteExtension(resourceGroupName string, name string, siteExtensionID string, extensionName string, cancel <-chan struct{}) (<-chan SiteExtensionInfo, <-chan error) {
+func (client AppsClient) InstallSiteExtension(resourceGroupName string, name string, siteExtensionID string, cancel <-chan struct{}) (<-chan SiteExtensionInfo, <-chan error) {
 	resultChan := make(chan SiteExtensionInfo, 1)
 	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
@@ -11965,7 +12537,7 @@ func (client AppsClient) InstallSiteExtension(resourceGroupName string, name str
 			close(resultChan)
 			close(errChan)
 		}()
-		req, err := client.InstallSiteExtensionPreparer(resourceGroupName, name, siteExtensionID, extensionName, cancel)
+		req, err := client.InstallSiteExtensionPreparer(resourceGroupName, name, siteExtensionID, cancel)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "web.AppsClient", "InstallSiteExtension", nil, "Failure preparing request")
 			return
@@ -11987,24 +12559,23 @@ func (client AppsClient) InstallSiteExtension(resourceGroupName string, name str
 }
 
 // InstallSiteExtensionPreparer prepares the InstallSiteExtension request.
-func (client AppsClient) InstallSiteExtensionPreparer(resourceGroupName string, name string, siteExtensionID string, extensionName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client AppsClient) InstallSiteExtensionPreparer(resourceGroupName string, name string, siteExtensionID string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"extensionName":     autorest.Encode("path", extensionName),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"siteExtensionId":   autorest.Encode("path", siteExtensionID),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version":     APIVersion,
-		"siteExtensionId": autorest.Encode("query", siteExtensionID),
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions/{extensionName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions/{siteExtensionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{Cancel: cancel})
 }
@@ -12014,6 +12585,7 @@ func (client AppsClient) InstallSiteExtensionPreparer(resourceGroupName string, 
 func (client AppsClient) InstallSiteExtensionSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -12037,7 +12609,7 @@ func (client AppsClient) InstallSiteExtensionResponder(resp *http.Response) (res
 // resourceGroupName is name of the resource group to which the resource belongs. name is site name. siteExtensionID is
 // site extension name. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment
 // for the production slot.
-func (client AppsClient) InstallSiteExtensionSlot(resourceGroupName string, name string, siteExtensionID string, slot string, extensionName string, cancel <-chan struct{}) (<-chan SiteExtensionInfo, <-chan error) {
+func (client AppsClient) InstallSiteExtensionSlot(resourceGroupName string, name string, siteExtensionID string, slot string, cancel <-chan struct{}) (<-chan SiteExtensionInfo, <-chan error) {
 	resultChan := make(chan SiteExtensionInfo, 1)
 	errChan := make(chan error, 1)
 	if err := validation.Validate([]validation.Validation{
@@ -12062,7 +12634,7 @@ func (client AppsClient) InstallSiteExtensionSlot(resourceGroupName string, name
 			close(resultChan)
 			close(errChan)
 		}()
-		req, err := client.InstallSiteExtensionSlotPreparer(resourceGroupName, name, siteExtensionID, slot, extensionName, cancel)
+		req, err := client.InstallSiteExtensionSlotPreparer(resourceGroupName, name, siteExtensionID, slot, cancel)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "web.AppsClient", "InstallSiteExtensionSlot", nil, "Failure preparing request")
 			return
@@ -12084,25 +12656,24 @@ func (client AppsClient) InstallSiteExtensionSlot(resourceGroupName string, name
 }
 
 // InstallSiteExtensionSlotPreparer prepares the InstallSiteExtensionSlot request.
-func (client AppsClient) InstallSiteExtensionSlotPreparer(resourceGroupName string, name string, siteExtensionID string, slot string, extensionName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client AppsClient) InstallSiteExtensionSlotPreparer(resourceGroupName string, name string, siteExtensionID string, slot string, cancel <-chan struct{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"extensionName":     autorest.Encode("path", extensionName),
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"siteExtensionId":   autorest.Encode("path", siteExtensionID),
 		"slot":              autorest.Encode("path", slot),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
-		"api-version":     APIVersion,
-		"siteExtensionId": autorest.Encode("query", siteExtensionID),
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions/{extensionName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions/{siteExtensionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare(&http.Request{Cancel: cancel})
 }
@@ -12112,6 +12683,7 @@ func (client AppsClient) InstallSiteExtensionSlotPreparer(resourceGroupName stri
 func (client AppsClient) InstallSiteExtensionSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -12185,7 +12757,9 @@ func (client AppsClient) IsCloneablePreparer(resourceGroupName string, name stri
 // IsCloneableSender sends the IsCloneable request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) IsCloneableSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // IsCloneableResponder handles the response to the IsCloneable request. The method always
@@ -12260,7 +12834,9 @@ func (client AppsClient) IsCloneableSlotPreparer(resourceGroupName string, name 
 // IsCloneableSlotSender sends the IsCloneableSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) IsCloneableSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // IsCloneableSlotResponder handles the response to the IsCloneableSlot request. The method always
@@ -12321,7 +12897,9 @@ func (client AppsClient) ListPreparer() (*http.Request, error) {
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -12463,7 +13041,9 @@ func (client AppsClient) ListApplicationSettingsPreparer(resourceGroupName strin
 // ListApplicationSettingsSender sends the ListApplicationSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListApplicationSettingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListApplicationSettingsResponder handles the response to the ListApplicationSettings request. The method always
@@ -12539,7 +13119,9 @@ func (client AppsClient) ListApplicationSettingsSlotPreparer(resourceGroupName s
 // ListApplicationSettingsSlotSender sends the ListApplicationSettingsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListApplicationSettingsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListApplicationSettingsSlotResponder handles the response to the ListApplicationSettingsSlot request. The method always
@@ -12612,7 +13194,9 @@ func (client AppsClient) ListBackupsPreparer(resourceGroupName string, name stri
 // ListBackupsSender sends the ListBackups request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListBackupsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBackupsResponder handles the response to the ListBackups request. The method always
@@ -12756,7 +13340,9 @@ func (client AppsClient) ListBackupsSlotPreparer(resourceGroupName string, name 
 // ListBackupsSlotSender sends the ListBackupsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListBackupsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBackupsSlotResponder handles the response to the ListBackupsSlot request. The method always
@@ -12912,7 +13498,9 @@ func (client AppsClient) ListBackupStatusSecretsPreparer(resourceGroupName strin
 // ListBackupStatusSecretsSender sends the ListBackupStatusSecrets request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListBackupStatusSecretsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBackupStatusSecretsResponder handles the response to the ListBackupStatusSecrets request. The method always
@@ -13001,7 +13589,9 @@ func (client AppsClient) ListBackupStatusSecretsSlotPreparer(resourceGroupName s
 // ListBackupStatusSecretsSlotSender sends the ListBackupStatusSecretsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListBackupStatusSecretsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBackupStatusSecretsSlotResponder handles the response to the ListBackupStatusSecretsSlot request. The method always
@@ -13078,7 +13668,9 @@ func (client AppsClient) ListByResourceGroupPreparer(resourceGroupName string, i
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -13220,7 +13812,9 @@ func (client AppsClient) ListConfigurationsPreparer(resourceGroupName string, na
 // ListConfigurationsSender sends the ListConfigurations request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListConfigurationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConfigurationsResponder handles the response to the ListConfigurations request. The method always
@@ -13309,7 +13903,7 @@ func (client AppsClient) ListConfigurationsComplete(resourceGroupName string, na
 // contains a timestamp and the ID of the snapshot.
 //
 // resourceGroupName is name of the resource group to which the resource belongs. name is name of the app.
-func (client AppsClient) ListConfigurationSnapshotInfo(resourceGroupName string, name string) (result ListSiteConfigurationSnapshotInfo, err error) {
+func (client AppsClient) ListConfigurationSnapshotInfo(resourceGroupName string, name string) (result SiteConfigurationSnapshotInfoCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -13363,20 +13957,91 @@ func (client AppsClient) ListConfigurationSnapshotInfoPreparer(resourceGroupName
 // ListConfigurationSnapshotInfoSender sends the ListConfigurationSnapshotInfo request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListConfigurationSnapshotInfoSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConfigurationSnapshotInfoResponder handles the response to the ListConfigurationSnapshotInfo request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ListConfigurationSnapshotInfoResponder(resp *http.Response) (result ListSiteConfigurationSnapshotInfo, err error) {
+func (client AppsClient) ListConfigurationSnapshotInfoResponder(resp *http.Response) (result SiteConfigurationSnapshotInfoCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
+}
+
+// ListConfigurationSnapshotInfoNextResults retrieves the next set of results, if any.
+func (client AppsClient) ListConfigurationSnapshotInfoNextResults(lastResults SiteConfigurationSnapshotInfoCollection) (result SiteConfigurationSnapshotInfoCollection, err error) {
+	req, err := lastResults.SiteConfigurationSnapshotInfoCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfo", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListConfigurationSnapshotInfoSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfo", resp, "Failure sending next results request")
+	}
+
+	result, err = client.ListConfigurationSnapshotInfoResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfo", resp, "Failure responding to next results request")
+	}
+
+	return
+}
+
+// ListConfigurationSnapshotInfoComplete gets all elements from the list without paging.
+func (client AppsClient) ListConfigurationSnapshotInfoComplete(resourceGroupName string, name string, cancel <-chan struct{}) (<-chan SiteConfigurationSnapshotInfo, <-chan error) {
+	resultChan := make(chan SiteConfigurationSnapshotInfo)
+	errChan := make(chan error, 1)
+	go func() {
+		defer func() {
+			close(resultChan)
+			close(errChan)
+		}()
+		list, err := client.ListConfigurationSnapshotInfo(resourceGroupName, name)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		if list.Value != nil {
+			for _, item := range *list.Value {
+				select {
+				case <-cancel:
+					return
+				case resultChan <- item:
+					// Intentionally left blank
+				}
+			}
+		}
+		for list.NextLink != nil {
+			list, err = client.ListConfigurationSnapshotInfoNextResults(list)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			if list.Value != nil {
+				for _, item := range *list.Value {
+					select {
+					case <-cancel:
+						return
+					case resultChan <- item:
+						// Intentionally left blank
+					}
+				}
+			}
+		}
+	}()
+	return resultChan, errChan
 }
 
 // ListConfigurationSnapshotInfoSlot gets a list of web app configuration snapshots identifiers. Each element of the
@@ -13384,7 +14049,7 @@ func (client AppsClient) ListConfigurationSnapshotInfoResponder(resp *http.Respo
 //
 // resourceGroupName is name of the resource group to which the resource belongs. name is name of the app. slot is name
 // of the deployment slot. If a slot is not specified, the API will return configuration for the production slot.
-func (client AppsClient) ListConfigurationSnapshotInfoSlot(resourceGroupName string, name string, slot string) (result ListSiteConfigurationSnapshotInfo, err error) {
+func (client AppsClient) ListConfigurationSnapshotInfoSlot(resourceGroupName string, name string, slot string) (result SiteConfigurationSnapshotInfoCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -13439,20 +14104,91 @@ func (client AppsClient) ListConfigurationSnapshotInfoSlotPreparer(resourceGroup
 // ListConfigurationSnapshotInfoSlotSender sends the ListConfigurationSnapshotInfoSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListConfigurationSnapshotInfoSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConfigurationSnapshotInfoSlotResponder handles the response to the ListConfigurationSnapshotInfoSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) ListConfigurationSnapshotInfoSlotResponder(resp *http.Response) (result ListSiteConfigurationSnapshotInfo, err error) {
+func (client AppsClient) ListConfigurationSnapshotInfoSlotResponder(resp *http.Response) (result SiteConfigurationSnapshotInfoCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
+}
+
+// ListConfigurationSnapshotInfoSlotNextResults retrieves the next set of results, if any.
+func (client AppsClient) ListConfigurationSnapshotInfoSlotNextResults(lastResults SiteConfigurationSnapshotInfoCollection) (result SiteConfigurationSnapshotInfoCollection, err error) {
+	req, err := lastResults.SiteConfigurationSnapshotInfoCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfoSlot", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+
+	resp, err := client.ListConfigurationSnapshotInfoSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfoSlot", resp, "Failure sending next results request")
+	}
+
+	result, err = client.ListConfigurationSnapshotInfoSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfoSlot", resp, "Failure responding to next results request")
+	}
+
+	return
+}
+
+// ListConfigurationSnapshotInfoSlotComplete gets all elements from the list without paging.
+func (client AppsClient) ListConfigurationSnapshotInfoSlotComplete(resourceGroupName string, name string, slot string, cancel <-chan struct{}) (<-chan SiteConfigurationSnapshotInfo, <-chan error) {
+	resultChan := make(chan SiteConfigurationSnapshotInfo)
+	errChan := make(chan error, 1)
+	go func() {
+		defer func() {
+			close(resultChan)
+			close(errChan)
+		}()
+		list, err := client.ListConfigurationSnapshotInfoSlot(resourceGroupName, name, slot)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		if list.Value != nil {
+			for _, item := range *list.Value {
+				select {
+				case <-cancel:
+					return
+				case resultChan <- item:
+					// Intentionally left blank
+				}
+			}
+		}
+		for list.NextLink != nil {
+			list, err = client.ListConfigurationSnapshotInfoSlotNextResults(list)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			if list.Value != nil {
+				for _, item := range *list.Value {
+					select {
+					case <-cancel:
+						return
+					case resultChan <- item:
+						// Intentionally left blank
+					}
+				}
+			}
+		}
+	}()
+	return resultChan, errChan
 }
 
 // ListConfigurationsSlot list the configurations of an app
@@ -13514,7 +14250,9 @@ func (client AppsClient) ListConfigurationsSlotPreparer(resourceGroupName string
 // ListConfigurationsSlotSender sends the ListConfigurationsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListConfigurationsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConfigurationsSlotResponder handles the response to the ListConfigurationsSlot request. The method always
@@ -13656,7 +14394,9 @@ func (client AppsClient) ListConnectionStringsPreparer(resourceGroupName string,
 // ListConnectionStringsSender sends the ListConnectionStrings request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListConnectionStringsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConnectionStringsResponder handles the response to the ListConnectionStrings request. The method always
@@ -13732,7 +14472,9 @@ func (client AppsClient) ListConnectionStringsSlotPreparer(resourceGroupName str
 // ListConnectionStringsSlotSender sends the ListConnectionStringsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListConnectionStringsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConnectionStringsSlotResponder handles the response to the ListConnectionStringsSlot request. The method always
@@ -13805,7 +14547,9 @@ func (client AppsClient) ListContinuousWebJobsPreparer(resourceGroupName string,
 // ListContinuousWebJobsSender sends the ListContinuousWebJobs request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListContinuousWebJobsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListContinuousWebJobsResponder handles the response to the ListContinuousWebJobs request. The method always
@@ -13949,7 +14693,9 @@ func (client AppsClient) ListContinuousWebJobsSlotPreparer(resourceGroupName str
 // ListContinuousWebJobsSlotSender sends the ListContinuousWebJobsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListContinuousWebJobsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListContinuousWebJobsSlotResponder handles the response to the ListContinuousWebJobsSlot request. The method always
@@ -14094,7 +14840,9 @@ func (client AppsClient) ListDeploymentLogPreparer(resourceGroupName string, nam
 // ListDeploymentLogSender sends the ListDeploymentLog request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListDeploymentLogSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListDeploymentLogResponder handles the response to the ListDeploymentLog request. The method always
@@ -14172,7 +14920,9 @@ func (client AppsClient) ListDeploymentLogSlotPreparer(resourceGroupName string,
 // ListDeploymentLogSlotSender sends the ListDeploymentLogSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListDeploymentLogSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListDeploymentLogSlotResponder handles the response to the ListDeploymentLogSlot request. The method always
@@ -14245,7 +14995,9 @@ func (client AppsClient) ListDeploymentsPreparer(resourceGroupName string, name 
 // ListDeploymentsSender sends the ListDeployments request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListDeploymentsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListDeploymentsResponder handles the response to the ListDeployments request. The method always
@@ -14389,7 +15141,9 @@ func (client AppsClient) ListDeploymentsSlotPreparer(resourceGroupName string, n
 // ListDeploymentsSlotSender sends the ListDeploymentsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListDeploymentsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListDeploymentsSlotResponder handles the response to the ListDeploymentsSlot request. The method always
@@ -14531,7 +15285,9 @@ func (client AppsClient) ListDomainOwnershipIdentifiersPreparer(resourceGroupNam
 // ListDomainOwnershipIdentifiersSender sends the ListDomainOwnershipIdentifiers request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListDomainOwnershipIdentifiersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListDomainOwnershipIdentifiersResponder handles the response to the ListDomainOwnershipIdentifiers request. The method always
@@ -14675,7 +15431,9 @@ func (client AppsClient) ListDomainOwnershipIdentifiersSlotPreparer(resourceGrou
 // ListDomainOwnershipIdentifiersSlotSender sends the ListDomainOwnershipIdentifiersSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListDomainOwnershipIdentifiersSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListDomainOwnershipIdentifiersSlotResponder handles the response to the ListDomainOwnershipIdentifiersSlot request. The method always
@@ -14817,7 +15575,9 @@ func (client AppsClient) ListFunctionsPreparer(resourceGroupName string, name st
 // ListFunctionsSender sends the ListFunctions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListFunctionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListFunctionsResponder handles the response to the ListFunctions request. The method always
@@ -14961,7 +15721,9 @@ func (client AppsClient) ListFunctionSecretsPreparer(resourceGroupName string, n
 // ListFunctionSecretsSender sends the ListFunctionSecrets request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListFunctionSecretsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListFunctionSecretsResponder handles the response to the ListFunctionSecrets request. The method always
@@ -15038,7 +15800,9 @@ func (client AppsClient) ListFunctionSecretsSlotPreparer(resourceGroupName strin
 // ListFunctionSecretsSlotSender sends the ListFunctionSecretsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListFunctionSecretsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListFunctionSecretsSlotResponder handles the response to the ListFunctionSecretsSlot request. The method always
@@ -15111,7 +15875,9 @@ func (client AppsClient) ListHostNameBindingsPreparer(resourceGroupName string, 
 // ListHostNameBindingsSender sends the ListHostNameBindings request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListHostNameBindingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListHostNameBindingsResponder handles the response to the ListHostNameBindings request. The method always
@@ -15255,7 +16021,9 @@ func (client AppsClient) ListHostNameBindingsSlotPreparer(resourceGroupName stri
 // ListHostNameBindingsSlotSender sends the ListHostNameBindingsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListHostNameBindingsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListHostNameBindingsSlotResponder handles the response to the ListHostNameBindingsSlot request. The method always
@@ -15400,7 +16168,9 @@ func (client AppsClient) ListHybridConnectionKeysPreparer(resourceGroupName stri
 // ListHybridConnectionKeysSender sends the ListHybridConnectionKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListHybridConnectionKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListHybridConnectionKeysResponder handles the response to the ListHybridConnectionKeys request. The method always
@@ -15478,7 +16248,9 @@ func (client AppsClient) ListHybridConnectionKeysSlotPreparer(resourceGroupName 
 // ListHybridConnectionKeysSlotSender sends the ListHybridConnectionKeysSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListHybridConnectionKeysSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListHybridConnectionKeysSlotResponder handles the response to the ListHybridConnectionKeysSlot request. The method always
@@ -15551,7 +16323,9 @@ func (client AppsClient) ListHybridConnectionsPreparer(resourceGroupName string,
 // ListHybridConnectionsSender sends the ListHybridConnections request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListHybridConnectionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListHybridConnectionsResponder handles the response to the ListHybridConnections request. The method always
@@ -15626,7 +16400,9 @@ func (client AppsClient) ListHybridConnectionsSlotPreparer(resourceGroupName str
 // ListHybridConnectionsSlotSender sends the ListHybridConnectionsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListHybridConnectionsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListHybridConnectionsSlotResponder handles the response to the ListHybridConnectionsSlot request. The method always
@@ -15701,7 +16477,9 @@ func (client AppsClient) ListInstanceFunctionsSlotPreparer(resourceGroupName str
 // ListInstanceFunctionsSlotSender sends the ListInstanceFunctionsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListInstanceFunctionsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListInstanceFunctionsSlotResponder handles the response to the ListInstanceFunctionsSlot request. The method always
@@ -15843,7 +16621,9 @@ func (client AppsClient) ListInstanceIdentifiersPreparer(resourceGroupName strin
 // ListInstanceIdentifiersSender sends the ListInstanceIdentifiers request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListInstanceIdentifiersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListInstanceIdentifiersResponder handles the response to the ListInstanceIdentifiers request. The method always
@@ -15987,7 +16767,9 @@ func (client AppsClient) ListInstanceIdentifiersSlotPreparer(resourceGroupName s
 // ListInstanceIdentifiersSlotSender sends the ListInstanceIdentifiersSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListInstanceIdentifiersSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListInstanceIdentifiersSlotResponder handles the response to the ListInstanceIdentifiersSlot request. The method always
@@ -16133,7 +16915,9 @@ func (client AppsClient) ListInstanceProcessesPreparer(resourceGroupName string,
 // ListInstanceProcessesSender sends the ListInstanceProcesses request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListInstanceProcessesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListInstanceProcessesResponder handles the response to the ListInstanceProcesses request. The method always
@@ -16281,7 +17065,9 @@ func (client AppsClient) ListInstanceProcessesSlotPreparer(resourceGroupName str
 // ListInstanceProcessesSlotSender sends the ListInstanceProcessesSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListInstanceProcessesSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListInstanceProcessesSlotResponder handles the response to the ListInstanceProcessesSlot request. The method always
@@ -16428,7 +17214,9 @@ func (client AppsClient) ListInstanceProcessModulesPreparer(resourceGroupName st
 // ListInstanceProcessModulesSender sends the ListInstanceProcessModules request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListInstanceProcessModulesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListInstanceProcessModulesResponder handles the response to the ListInstanceProcessModules request. The method always
@@ -16577,7 +17365,9 @@ func (client AppsClient) ListInstanceProcessModulesSlotPreparer(resourceGroupNam
 // ListInstanceProcessModulesSlotSender sends the ListInstanceProcessModulesSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListInstanceProcessModulesSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListInstanceProcessModulesSlotResponder handles the response to the ListInstanceProcessModulesSlot request. The method always
@@ -16723,7 +17513,9 @@ func (client AppsClient) ListInstanceProcessThreadsPreparer(resourceGroupName st
 // ListInstanceProcessThreadsSender sends the ListInstanceProcessThreads request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListInstanceProcessThreadsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListInstanceProcessThreadsResponder handles the response to the ListInstanceProcessThreads request. The method always
@@ -16872,7 +17664,9 @@ func (client AppsClient) ListInstanceProcessThreadsSlotPreparer(resourceGroupNam
 // ListInstanceProcessThreadsSlotSender sends the ListInstanceProcessThreadsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListInstanceProcessThreadsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListInstanceProcessThreadsSlotResponder handles the response to the ListInstanceProcessThreadsSlot request. The method always
@@ -17014,7 +17808,9 @@ func (client AppsClient) ListMetadataPreparer(resourceGroupName string, name str
 // ListMetadataSender sends the ListMetadata request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListMetadataSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetadataResponder handles the response to the ListMetadata request. The method always
@@ -17089,7 +17885,9 @@ func (client AppsClient) ListMetadataSlotPreparer(resourceGroupName string, name
 // ListMetadataSlotSender sends the ListMetadataSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListMetadataSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetadataSlotResponder handles the response to the ListMetadataSlot request. The method always
@@ -17162,7 +17960,9 @@ func (client AppsClient) ListMetricDefinitionsPreparer(resourceGroupName string,
 // ListMetricDefinitionsSender sends the ListMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricDefinitionsResponder handles the response to the ListMetricDefinitions request. The method always
@@ -17306,7 +18106,9 @@ func (client AppsClient) ListMetricDefinitionsSlotPreparer(resourceGroupName str
 // ListMetricDefinitionsSlotSender sends the ListMetricDefinitionsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListMetricDefinitionsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricDefinitionsSlotResponder handles the response to the ListMetricDefinitionsSlot request. The method always
@@ -17458,7 +18260,9 @@ func (client AppsClient) ListMetricsPreparer(resourceGroupName string, name stri
 // ListMetricsSender sends the ListMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricsResponder handles the response to the ListMetrics request. The method always
@@ -17612,7 +18416,9 @@ func (client AppsClient) ListMetricsSlotPreparer(resourceGroupName string, name 
 // ListMetricsSlotSender sends the ListMetricsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListMetricsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricsSlotResponder handles the response to the ListMetricsSlot request. The method always
@@ -17756,7 +18562,9 @@ func (client AppsClient) ListNetworkFeaturesPreparer(resourceGroupName string, n
 // ListNetworkFeaturesSender sends the ListNetworkFeatures request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListNetworkFeaturesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListNetworkFeaturesResponder handles the response to the ListNetworkFeatures request. The method always
@@ -17833,7 +18641,9 @@ func (client AppsClient) ListNetworkFeaturesSlotPreparer(resourceGroupName strin
 // ListNetworkFeaturesSlotSender sends the ListNetworkFeaturesSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListNetworkFeaturesSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListNetworkFeaturesSlotResponder handles the response to the ListNetworkFeaturesSlot request. The method always
@@ -17911,7 +18721,9 @@ func (client AppsClient) ListPerfMonCountersPreparer(resourceGroupName string, n
 // ListPerfMonCountersSender sends the ListPerfMonCounters request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListPerfMonCountersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListPerfMonCountersResponder handles the response to the ListPerfMonCounters request. The method always
@@ -18060,7 +18872,9 @@ func (client AppsClient) ListPerfMonCountersSlotPreparer(resourceGroupName strin
 // ListPerfMonCountersSlotSender sends the ListPerfMonCountersSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListPerfMonCountersSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListPerfMonCountersSlotResponder handles the response to the ListPerfMonCountersSlot request. The method always
@@ -18202,7 +19016,9 @@ func (client AppsClient) ListPremierAddOnsPreparer(resourceGroupName string, nam
 // ListPremierAddOnsSender sends the ListPremierAddOns request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListPremierAddOnsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListPremierAddOnsResponder handles the response to the ListPremierAddOns request. The method always
@@ -18277,7 +19093,9 @@ func (client AppsClient) ListPremierAddOnsSlotPreparer(resourceGroupName string,
 // ListPremierAddOnsSlotSender sends the ListPremierAddOnsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListPremierAddOnsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListPremierAddOnsSlotResponder handles the response to the ListPremierAddOnsSlot request. The method always
@@ -18351,7 +19169,9 @@ func (client AppsClient) ListProcessesPreparer(resourceGroupName string, name st
 // ListProcessesSender sends the ListProcesses request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListProcessesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListProcessesResponder handles the response to the ListProcesses request. The method always
@@ -18496,7 +19316,9 @@ func (client AppsClient) ListProcessesSlotPreparer(resourceGroupName string, nam
 // ListProcessesSlotSender sends the ListProcessesSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListProcessesSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListProcessesSlotResponder handles the response to the ListProcessesSlot request. The method always
@@ -18639,7 +19461,9 @@ func (client AppsClient) ListProcessModulesPreparer(resourceGroupName string, na
 // ListProcessModulesSender sends the ListProcessModules request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListProcessModulesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListProcessModulesResponder handles the response to the ListProcessModules request. The method always
@@ -18786,7 +19610,9 @@ func (client AppsClient) ListProcessModulesSlotPreparer(resourceGroupName string
 // ListProcessModulesSlotSender sends the ListProcessModulesSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListProcessModulesSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListProcessModulesSlotResponder handles the response to the ListProcessModulesSlot request. The method always
@@ -18929,7 +19755,9 @@ func (client AppsClient) ListProcessThreadsPreparer(resourceGroupName string, na
 // ListProcessThreadsSender sends the ListProcessThreads request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListProcessThreadsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListProcessThreadsResponder handles the response to the ListProcessThreads request. The method always
@@ -19075,7 +19903,9 @@ func (client AppsClient) ListProcessThreadsSlotPreparer(resourceGroupName string
 // ListProcessThreadsSlotSender sends the ListProcessThreadsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListProcessThreadsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListProcessThreadsSlotResponder handles the response to the ListProcessThreadsSlot request. The method always
@@ -19217,7 +20047,9 @@ func (client AppsClient) ListPublicCertificatesPreparer(resourceGroupName string
 // ListPublicCertificatesSender sends the ListPublicCertificates request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListPublicCertificatesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListPublicCertificatesResponder handles the response to the ListPublicCertificates request. The method always
@@ -19361,7 +20193,9 @@ func (client AppsClient) ListPublicCertificatesSlotPreparer(resourceGroupName st
 // ListPublicCertificatesSlotSender sends the ListPublicCertificatesSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListPublicCertificatesSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListPublicCertificatesSlotResponder handles the response to the ListPublicCertificatesSlot request. The method always
@@ -19523,6 +20357,7 @@ func (client AppsClient) ListPublishingCredentialsPreparer(resourceGroupName str
 func (client AppsClient) ListPublishingCredentialsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -19619,6 +20454,7 @@ func (client AppsClient) ListPublishingCredentialsSlotPreparer(resourceGroupName
 func (client AppsClient) ListPublishingCredentialsSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -19696,7 +20532,9 @@ func (client AppsClient) ListPublishingProfileXMLWithSecretsPreparer(resourceGro
 // ListPublishingProfileXMLWithSecretsSender sends the ListPublishingProfileXMLWithSecrets request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListPublishingProfileXMLWithSecretsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListPublishingProfileXMLWithSecretsResponder handles the response to the ListPublishingProfileXMLWithSecrets request. The method always
@@ -19774,7 +20612,9 @@ func (client AppsClient) ListPublishingProfileXMLWithSecretsSlotPreparer(resourc
 // ListPublishingProfileXMLWithSecretsSlotSender sends the ListPublishingProfileXMLWithSecretsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListPublishingProfileXMLWithSecretsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListPublishingProfileXMLWithSecretsSlotResponder handles the response to the ListPublishingProfileXMLWithSecretsSlot request. The method always
@@ -19846,7 +20686,9 @@ func (client AppsClient) ListRelayServiceConnectionsPreparer(resourceGroupName s
 // ListRelayServiceConnectionsSender sends the ListRelayServiceConnections request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListRelayServiceConnectionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListRelayServiceConnectionsResponder handles the response to the ListRelayServiceConnections request. The method always
@@ -19921,7 +20763,9 @@ func (client AppsClient) ListRelayServiceConnectionsSlotPreparer(resourceGroupNa
 // ListRelayServiceConnectionsSlotSender sends the ListRelayServiceConnectionsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListRelayServiceConnectionsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListRelayServiceConnectionsSlotResponder handles the response to the ListRelayServiceConnectionsSlot request. The method always
@@ -19994,7 +20838,9 @@ func (client AppsClient) ListSiteExtensionsPreparer(resourceGroupName string, na
 // ListSiteExtensionsSender sends the ListSiteExtensions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSiteExtensionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSiteExtensionsResponder handles the response to the ListSiteExtensions request. The method always
@@ -20138,7 +20984,9 @@ func (client AppsClient) ListSiteExtensionsSlotPreparer(resourceGroupName string
 // ListSiteExtensionsSlotSender sends the ListSiteExtensionsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSiteExtensionsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSiteExtensionsSlotResponder handles the response to the ListSiteExtensionsSlot request. The method always
@@ -20280,7 +21128,9 @@ func (client AppsClient) ListSitePushSettingsPreparer(resourceGroupName string, 
 // ListSitePushSettingsSender sends the ListSitePushSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSitePushSettingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSitePushSettingsResponder handles the response to the ListSitePushSettings request. The method always
@@ -20355,7 +21205,9 @@ func (client AppsClient) ListSitePushSettingsSlotPreparer(resourceGroupName stri
 // ListSitePushSettingsSlotSender sends the ListSitePushSettingsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSitePushSettingsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSitePushSettingsSlotResponder handles the response to the ListSitePushSettingsSlot request. The method always
@@ -20429,7 +21281,9 @@ func (client AppsClient) ListSlotConfigurationNamesPreparer(resourceGroupName st
 // ListSlotConfigurationNamesSender sends the ListSlotConfigurationNames request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSlotConfigurationNamesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSlotConfigurationNamesResponder handles the response to the ListSlotConfigurationNames request. The method always
@@ -20508,7 +21362,9 @@ func (client AppsClient) ListSlotDifferencesFromProductionPreparer(resourceGroup
 // ListSlotDifferencesFromProductionSender sends the ListSlotDifferencesFromProduction request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSlotDifferencesFromProductionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSlotDifferencesFromProductionResponder handles the response to the ListSlotDifferencesFromProduction request. The method always
@@ -20658,7 +21514,9 @@ func (client AppsClient) ListSlotDifferencesSlotPreparer(resourceGroupName strin
 // ListSlotDifferencesSlotSender sends the ListSlotDifferencesSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSlotDifferencesSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSlotDifferencesSlotResponder handles the response to the ListSlotDifferencesSlot request. The method always
@@ -20800,7 +21658,9 @@ func (client AppsClient) ListSlotsPreparer(resourceGroupName string, name string
 // ListSlotsSender sends the ListSlots request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSlotsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSlotsResponder handles the response to the ListSlots request. The method always
@@ -20942,7 +21802,9 @@ func (client AppsClient) ListSnapshotsPreparer(resourceGroupName string, name st
 // ListSnapshotsSender sends the ListSnapshots request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSnapshotsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSnapshotsResponder handles the response to the ListSnapshots request. The method always
@@ -21086,7 +21948,9 @@ func (client AppsClient) ListSnapshotsSlotPreparer(resourceGroupName string, nam
 // ListSnapshotsSlotSender sends the ListSnapshotsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSnapshotsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSnapshotsSlotResponder handles the response to the ListSnapshotsSlot request. The method always
@@ -21228,7 +22092,9 @@ func (client AppsClient) ListSyncFunctionTriggersPreparer(resourceGroupName stri
 // ListSyncFunctionTriggersSender sends the ListSyncFunctionTriggers request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSyncFunctionTriggersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSyncFunctionTriggersResponder handles the response to the ListSyncFunctionTriggers request. The method always
@@ -21303,7 +22169,9 @@ func (client AppsClient) ListSyncFunctionTriggersSlotPreparer(resourceGroupName 
 // ListSyncFunctionTriggersSlotSender sends the ListSyncFunctionTriggersSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListSyncFunctionTriggersSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSyncFunctionTriggersSlotResponder handles the response to the ListSyncFunctionTriggersSlot request. The method always
@@ -21321,9 +22189,9 @@ func (client AppsClient) ListSyncFunctionTriggersSlotResponder(resp *http.Respon
 
 // ListTriggeredWebJobHistory list a triggered web job's history for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID.
-func (client AppsClient) ListTriggeredWebJobHistory(resourceGroupName string, name string, webJobID string, webJobName string) (result TriggeredJobHistoryCollection, err error) {
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job.
+func (client AppsClient) ListTriggeredWebJobHistory(resourceGroupName string, name string, webJobName string) (result TriggeredJobHistoryCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -21332,7 +22200,7 @@ func (client AppsClient) ListTriggeredWebJobHistory(resourceGroupName string, na
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "ListTriggeredWebJobHistory")
 	}
 
-	req, err := client.ListTriggeredWebJobHistoryPreparer(resourceGroupName, name, webJobID, webJobName)
+	req, err := client.ListTriggeredWebJobHistoryPreparer(resourceGroupName, name, webJobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListTriggeredWebJobHistory", nil, "Failure preparing request")
 		return
@@ -21354,7 +22222,7 @@ func (client AppsClient) ListTriggeredWebJobHistory(resourceGroupName string, na
 }
 
 // ListTriggeredWebJobHistoryPreparer prepares the ListTriggeredWebJobHistory request.
-func (client AppsClient) ListTriggeredWebJobHistoryPreparer(resourceGroupName string, name string, webJobID string, webJobName string) (*http.Request, error) {
+func (client AppsClient) ListTriggeredWebJobHistoryPreparer(resourceGroupName string, name string, webJobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -21365,7 +22233,6 @@ func (client AppsClient) ListTriggeredWebJobHistoryPreparer(resourceGroupName st
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -21379,7 +22246,9 @@ func (client AppsClient) ListTriggeredWebJobHistoryPreparer(resourceGroupName st
 // ListTriggeredWebJobHistorySender sends the ListTriggeredWebJobHistory request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListTriggeredWebJobHistorySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListTriggeredWebJobHistoryResponder handles the response to the ListTriggeredWebJobHistory request. The method always
@@ -21420,7 +22289,7 @@ func (client AppsClient) ListTriggeredWebJobHistoryNextResults(lastResults Trigg
 }
 
 // ListTriggeredWebJobHistoryComplete gets all elements from the list without paging.
-func (client AppsClient) ListTriggeredWebJobHistoryComplete(resourceGroupName string, name string, webJobID string, webJobName string, cancel <-chan struct{}) (<-chan TriggeredJobHistory, <-chan error) {
+func (client AppsClient) ListTriggeredWebJobHistoryComplete(resourceGroupName string, name string, webJobName string, cancel <-chan struct{}) (<-chan TriggeredJobHistory, <-chan error) {
 	resultChan := make(chan TriggeredJobHistory)
 	errChan := make(chan error, 1)
 	go func() {
@@ -21428,7 +22297,7 @@ func (client AppsClient) ListTriggeredWebJobHistoryComplete(resourceGroupName st
 			close(resultChan)
 			close(errChan)
 		}()
-		list, err := client.ListTriggeredWebJobHistory(resourceGroupName, name, webJobID, webJobName)
+		list, err := client.ListTriggeredWebJobHistory(resourceGroupName, name, webJobName)
 		if err != nil {
 			errChan <- err
 			return
@@ -21466,10 +22335,10 @@ func (client AppsClient) ListTriggeredWebJobHistoryComplete(resourceGroupName st
 
 // ListTriggeredWebJobHistorySlot list a triggered web job's history for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
 // production slot.
-func (client AppsClient) ListTriggeredWebJobHistorySlot(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (result TriggeredJobHistoryCollection, err error) {
+func (client AppsClient) ListTriggeredWebJobHistorySlot(resourceGroupName string, name string, webJobName string, slot string) (result TriggeredJobHistoryCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -21478,7 +22347,7 @@ func (client AppsClient) ListTriggeredWebJobHistorySlot(resourceGroupName string
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "ListTriggeredWebJobHistorySlot")
 	}
 
-	req, err := client.ListTriggeredWebJobHistorySlotPreparer(resourceGroupName, name, webJobID, slot, webJobName)
+	req, err := client.ListTriggeredWebJobHistorySlotPreparer(resourceGroupName, name, webJobName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListTriggeredWebJobHistorySlot", nil, "Failure preparing request")
 		return
@@ -21500,7 +22369,7 @@ func (client AppsClient) ListTriggeredWebJobHistorySlot(resourceGroupName string
 }
 
 // ListTriggeredWebJobHistorySlotPreparer prepares the ListTriggeredWebJobHistorySlot request.
-func (client AppsClient) ListTriggeredWebJobHistorySlotPreparer(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (*http.Request, error) {
+func (client AppsClient) ListTriggeredWebJobHistorySlotPreparer(resourceGroupName string, name string, webJobName string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -21512,7 +22381,6 @@ func (client AppsClient) ListTriggeredWebJobHistorySlotPreparer(resourceGroupNam
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -21526,7 +22394,9 @@ func (client AppsClient) ListTriggeredWebJobHistorySlotPreparer(resourceGroupNam
 // ListTriggeredWebJobHistorySlotSender sends the ListTriggeredWebJobHistorySlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListTriggeredWebJobHistorySlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListTriggeredWebJobHistorySlotResponder handles the response to the ListTriggeredWebJobHistorySlot request. The method always
@@ -21567,7 +22437,7 @@ func (client AppsClient) ListTriggeredWebJobHistorySlotNextResults(lastResults T
 }
 
 // ListTriggeredWebJobHistorySlotComplete gets all elements from the list without paging.
-func (client AppsClient) ListTriggeredWebJobHistorySlotComplete(resourceGroupName string, name string, webJobID string, slot string, webJobName string, cancel <-chan struct{}) (<-chan TriggeredJobHistory, <-chan error) {
+func (client AppsClient) ListTriggeredWebJobHistorySlotComplete(resourceGroupName string, name string, webJobName string, slot string, cancel <-chan struct{}) (<-chan TriggeredJobHistory, <-chan error) {
 	resultChan := make(chan TriggeredJobHistory)
 	errChan := make(chan error, 1)
 	go func() {
@@ -21575,7 +22445,7 @@ func (client AppsClient) ListTriggeredWebJobHistorySlotComplete(resourceGroupNam
 			close(resultChan)
 			close(errChan)
 		}()
-		list, err := client.ListTriggeredWebJobHistorySlot(resourceGroupName, name, webJobID, slot, webJobName)
+		list, err := client.ListTriggeredWebJobHistorySlot(resourceGroupName, name, webJobName, slot)
 		if err != nil {
 			errChan <- err
 			return
@@ -21668,7 +22538,9 @@ func (client AppsClient) ListTriggeredWebJobsPreparer(resourceGroupName string, 
 // ListTriggeredWebJobsSender sends the ListTriggeredWebJobs request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListTriggeredWebJobsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListTriggeredWebJobsResponder handles the response to the ListTriggeredWebJobs request. The method always
@@ -21812,7 +22684,9 @@ func (client AppsClient) ListTriggeredWebJobsSlotPreparer(resourceGroupName stri
 // ListTriggeredWebJobsSlotSender sends the ListTriggeredWebJobsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListTriggeredWebJobsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListTriggeredWebJobsSlotResponder handles the response to the ListTriggeredWebJobsSlot request. The method always
@@ -21960,7 +22834,9 @@ func (client AppsClient) ListUsagesPreparer(resourceGroupName string, name strin
 // ListUsagesSender sends the ListUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListUsagesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListUsagesResponder handles the response to the ListUsages request. The method always
@@ -22110,7 +22986,9 @@ func (client AppsClient) ListUsagesSlotPreparer(resourceGroupName string, name s
 // ListUsagesSlotSender sends the ListUsagesSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListUsagesSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListUsagesSlotResponder handles the response to the ListUsagesSlot request. The method always
@@ -22252,7 +23130,9 @@ func (client AppsClient) ListVnetConnectionsPreparer(resourceGroupName string, n
 // ListVnetConnectionsSender sends the ListVnetConnections request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListVnetConnectionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListVnetConnectionsResponder handles the response to the ListVnetConnections request. The method always
@@ -22328,7 +23208,9 @@ func (client AppsClient) ListVnetConnectionsSlotPreparer(resourceGroupName strin
 // ListVnetConnectionsSlotSender sends the ListVnetConnectionsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListVnetConnectionsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListVnetConnectionsSlotResponder handles the response to the ListVnetConnectionsSlot request. The method always
@@ -22401,7 +23283,9 @@ func (client AppsClient) ListWebJobsPreparer(resourceGroupName string, name stri
 // ListWebJobsSender sends the ListWebJobs request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListWebJobsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWebJobsResponder handles the response to the ListWebJobs request. The method always
@@ -22545,7 +23429,9 @@ func (client AppsClient) ListWebJobsSlotPreparer(resourceGroupName string, name 
 // ListWebJobsSlotSender sends the ListWebJobsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ListWebJobsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWebJobsSlotResponder handles the response to the ListWebJobsSlot request. The method always
@@ -22710,6 +23596,7 @@ func (client AppsClient) MigrateMySQLPreparer(resourceGroupName string, name str
 func (client AppsClient) MigrateMySQLSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -22806,6 +23693,7 @@ func (client AppsClient) MigrateStoragePreparer(subscriptionName string, resourc
 func (client AppsClient) MigrateStorageSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -22902,6 +23790,7 @@ func (client AppsClient) RecoverPreparer(resourceGroupName string, name string, 
 func (client AppsClient) RecoverSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -22976,7 +23865,9 @@ func (client AppsClient) RecoverSiteConfigurationSnapshotPreparer(resourceGroupN
 // RecoverSiteConfigurationSnapshotSender sends the RecoverSiteConfigurationSnapshot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) RecoverSiteConfigurationSnapshotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RecoverSiteConfigurationSnapshotResponder handles the response to the RecoverSiteConfigurationSnapshot request. The method always
@@ -23052,7 +23943,9 @@ func (client AppsClient) RecoverSiteConfigurationSnapshotSlotPreparer(resourceGr
 // RecoverSiteConfigurationSnapshotSlotSender sends the RecoverSiteConfigurationSnapshotSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) RecoverSiteConfigurationSnapshotSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RecoverSiteConfigurationSnapshotSlotResponder handles the response to the RecoverSiteConfigurationSnapshotSlot request. The method always
@@ -23150,6 +24043,7 @@ func (client AppsClient) RecoverSlotPreparer(resourceGroupName string, name stri
 func (client AppsClient) RecoverSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -23223,7 +24117,9 @@ func (client AppsClient) ResetProductionSlotConfigPreparer(resourceGroupName str
 // ResetProductionSlotConfigSender sends the ResetProductionSlotConfig request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ResetProductionSlotConfigSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ResetProductionSlotConfigResponder handles the response to the ResetProductionSlotConfig request. The method always
@@ -23298,7 +24194,9 @@ func (client AppsClient) ResetSlotConfigurationSlotPreparer(resourceGroupName st
 // ResetSlotConfigurationSlotSender sends the ResetSlotConfigurationSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) ResetSlotConfigurationSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ResetSlotConfigurationSlotResponder handles the response to the ResetSlotConfigurationSlot request. The method always
@@ -23379,7 +24277,9 @@ func (client AppsClient) RestartPreparer(resourceGroupName string, name string, 
 // RestartSender sends the Restart request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) RestartSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RestartResponder handles the response to the Restart request. The method always
@@ -23462,7 +24362,9 @@ func (client AppsClient) RestartSlotPreparer(resourceGroupName string, name stri
 // RestartSlotSender sends the RestartSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) RestartSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RestartSlotResponder handles the response to the RestartSlot request. The method always
@@ -23558,6 +24460,7 @@ func (client AppsClient) RestorePreparer(resourceGroupName string, name string, 
 func (client AppsClient) RestoreSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -23657,6 +24560,7 @@ func (client AppsClient) RestoreSlotPreparer(resourceGroupName string, name stri
 func (client AppsClient) RestoreSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -23675,9 +24579,9 @@ func (client AppsClient) RestoreSlotResponder(resp *http.Response) (result Resto
 
 // RunTriggeredWebJob run a triggered web job for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID.
-func (client AppsClient) RunTriggeredWebJob(resourceGroupName string, name string, webJobID string, webJobName string) (result autorest.Response, err error) {
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job.
+func (client AppsClient) RunTriggeredWebJob(resourceGroupName string, name string, webJobName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -23686,7 +24590,7 @@ func (client AppsClient) RunTriggeredWebJob(resourceGroupName string, name strin
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "RunTriggeredWebJob")
 	}
 
-	req, err := client.RunTriggeredWebJobPreparer(resourceGroupName, name, webJobID, webJobName)
+	req, err := client.RunTriggeredWebJobPreparer(resourceGroupName, name, webJobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "RunTriggeredWebJob", nil, "Failure preparing request")
 		return
@@ -23708,7 +24612,7 @@ func (client AppsClient) RunTriggeredWebJob(resourceGroupName string, name strin
 }
 
 // RunTriggeredWebJobPreparer prepares the RunTriggeredWebJob request.
-func (client AppsClient) RunTriggeredWebJobPreparer(resourceGroupName string, name string, webJobID string, webJobName string) (*http.Request, error) {
+func (client AppsClient) RunTriggeredWebJobPreparer(resourceGroupName string, name string, webJobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -23719,7 +24623,6 @@ func (client AppsClient) RunTriggeredWebJobPreparer(resourceGroupName string, na
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -23733,7 +24636,9 @@ func (client AppsClient) RunTriggeredWebJobPreparer(resourceGroupName string, na
 // RunTriggeredWebJobSender sends the RunTriggeredWebJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) RunTriggeredWebJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RunTriggeredWebJobResponder handles the response to the RunTriggeredWebJob request. The method always
@@ -23750,10 +24655,10 @@ func (client AppsClient) RunTriggeredWebJobResponder(resp *http.Response) (resul
 
 // RunTriggeredWebJobSlot run a triggered web job for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
 // production slot.
-func (client AppsClient) RunTriggeredWebJobSlot(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (result autorest.Response, err error) {
+func (client AppsClient) RunTriggeredWebJobSlot(resourceGroupName string, name string, webJobName string, slot string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -23762,7 +24667,7 @@ func (client AppsClient) RunTriggeredWebJobSlot(resourceGroupName string, name s
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "RunTriggeredWebJobSlot")
 	}
 
-	req, err := client.RunTriggeredWebJobSlotPreparer(resourceGroupName, name, webJobID, slot, webJobName)
+	req, err := client.RunTriggeredWebJobSlotPreparer(resourceGroupName, name, webJobName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "RunTriggeredWebJobSlot", nil, "Failure preparing request")
 		return
@@ -23784,7 +24689,7 @@ func (client AppsClient) RunTriggeredWebJobSlot(resourceGroupName string, name s
 }
 
 // RunTriggeredWebJobSlotPreparer prepares the RunTriggeredWebJobSlot request.
-func (client AppsClient) RunTriggeredWebJobSlotPreparer(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (*http.Request, error) {
+func (client AppsClient) RunTriggeredWebJobSlotPreparer(resourceGroupName string, name string, webJobName string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -23796,7 +24701,6 @@ func (client AppsClient) RunTriggeredWebJobSlotPreparer(resourceGroupName string
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -23810,7 +24714,9 @@ func (client AppsClient) RunTriggeredWebJobSlotPreparer(resourceGroupName string
 // RunTriggeredWebJobSlotSender sends the RunTriggeredWebJobSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) RunTriggeredWebJobSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RunTriggeredWebJobSlotResponder handles the response to the RunTriggeredWebJobSlot request. The method always
@@ -23882,7 +24788,9 @@ func (client AppsClient) StartPreparer(resourceGroupName string, name string) (*
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) StartSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // StartResponder handles the response to the Start request. The method always
@@ -23899,9 +24807,9 @@ func (client AppsClient) StartResponder(resp *http.Response) (result autorest.Re
 
 // StartContinuousWebJob start a continuous web job for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID.
-func (client AppsClient) StartContinuousWebJob(resourceGroupName string, name string, webJobID string, webJobName string) (result autorest.Response, err error) {
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job.
+func (client AppsClient) StartContinuousWebJob(resourceGroupName string, name string, webJobName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -23910,7 +24818,7 @@ func (client AppsClient) StartContinuousWebJob(resourceGroupName string, name st
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "StartContinuousWebJob")
 	}
 
-	req, err := client.StartContinuousWebJobPreparer(resourceGroupName, name, webJobID, webJobName)
+	req, err := client.StartContinuousWebJobPreparer(resourceGroupName, name, webJobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartContinuousWebJob", nil, "Failure preparing request")
 		return
@@ -23932,7 +24840,7 @@ func (client AppsClient) StartContinuousWebJob(resourceGroupName string, name st
 }
 
 // StartContinuousWebJobPreparer prepares the StartContinuousWebJob request.
-func (client AppsClient) StartContinuousWebJobPreparer(resourceGroupName string, name string, webJobID string, webJobName string) (*http.Request, error) {
+func (client AppsClient) StartContinuousWebJobPreparer(resourceGroupName string, name string, webJobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -23943,7 +24851,6 @@ func (client AppsClient) StartContinuousWebJobPreparer(resourceGroupName string,
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -23957,7 +24864,9 @@ func (client AppsClient) StartContinuousWebJobPreparer(resourceGroupName string,
 // StartContinuousWebJobSender sends the StartContinuousWebJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) StartContinuousWebJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // StartContinuousWebJobResponder handles the response to the StartContinuousWebJob request. The method always
@@ -23974,10 +24883,10 @@ func (client AppsClient) StartContinuousWebJobResponder(resp *http.Response) (re
 
 // StartContinuousWebJobSlot start a continuous web job for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
 // production slot.
-func (client AppsClient) StartContinuousWebJobSlot(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (result autorest.Response, err error) {
+func (client AppsClient) StartContinuousWebJobSlot(resourceGroupName string, name string, webJobName string, slot string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -23986,7 +24895,7 @@ func (client AppsClient) StartContinuousWebJobSlot(resourceGroupName string, nam
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "StartContinuousWebJobSlot")
 	}
 
-	req, err := client.StartContinuousWebJobSlotPreparer(resourceGroupName, name, webJobID, slot, webJobName)
+	req, err := client.StartContinuousWebJobSlotPreparer(resourceGroupName, name, webJobName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartContinuousWebJobSlot", nil, "Failure preparing request")
 		return
@@ -24008,7 +24917,7 @@ func (client AppsClient) StartContinuousWebJobSlot(resourceGroupName string, nam
 }
 
 // StartContinuousWebJobSlotPreparer prepares the StartContinuousWebJobSlot request.
-func (client AppsClient) StartContinuousWebJobSlotPreparer(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (*http.Request, error) {
+func (client AppsClient) StartContinuousWebJobSlotPreparer(resourceGroupName string, name string, webJobName string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -24020,7 +24929,6 @@ func (client AppsClient) StartContinuousWebJobSlotPreparer(resourceGroupName str
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -24034,7 +24942,9 @@ func (client AppsClient) StartContinuousWebJobSlotPreparer(resourceGroupName str
 // StartContinuousWebJobSlotSender sends the StartContinuousWebJobSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) StartContinuousWebJobSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // StartContinuousWebJobSlotResponder handles the response to the StartContinuousWebJobSlot request. The method always
@@ -24108,7 +25018,9 @@ func (client AppsClient) StartSlotPreparer(resourceGroupName string, name string
 // StartSlotSender sends the StartSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) StartSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // StartSlotResponder handles the response to the StartSlot request. The method always
@@ -24191,7 +25103,9 @@ func (client AppsClient) StartWebSiteNetworkTracePreparer(resourceGroupName stri
 // StartWebSiteNetworkTraceSender sends the StartWebSiteNetworkTrace request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) StartWebSiteNetworkTraceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // StartWebSiteNetworkTraceResponder handles the response to the StartWebSiteNetworkTrace request. The method always
@@ -24276,7 +25190,9 @@ func (client AppsClient) StartWebSiteNetworkTraceSlotPreparer(resourceGroupName 
 // StartWebSiteNetworkTraceSlotSender sends the StartWebSiteNetworkTraceSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) StartWebSiteNetworkTraceSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // StartWebSiteNetworkTraceSlotResponder handles the response to the StartWebSiteNetworkTraceSlot request. The method always
@@ -24349,7 +25265,9 @@ func (client AppsClient) StopPreparer(resourceGroupName string, name string) (*h
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) StopSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // StopResponder handles the response to the Stop request. The method always
@@ -24366,9 +25284,9 @@ func (client AppsClient) StopResponder(resp *http.Response) (result autorest.Res
 
 // StopContinuousWebJob stop a continuous web job for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID.
-func (client AppsClient) StopContinuousWebJob(resourceGroupName string, name string, webJobID string, webJobName string) (result autorest.Response, err error) {
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job.
+func (client AppsClient) StopContinuousWebJob(resourceGroupName string, name string, webJobName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -24377,7 +25295,7 @@ func (client AppsClient) StopContinuousWebJob(resourceGroupName string, name str
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "StopContinuousWebJob")
 	}
 
-	req, err := client.StopContinuousWebJobPreparer(resourceGroupName, name, webJobID, webJobName)
+	req, err := client.StopContinuousWebJobPreparer(resourceGroupName, name, webJobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopContinuousWebJob", nil, "Failure preparing request")
 		return
@@ -24399,7 +25317,7 @@ func (client AppsClient) StopContinuousWebJob(resourceGroupName string, name str
 }
 
 // StopContinuousWebJobPreparer prepares the StopContinuousWebJob request.
-func (client AppsClient) StopContinuousWebJobPreparer(resourceGroupName string, name string, webJobID string, webJobName string) (*http.Request, error) {
+func (client AppsClient) StopContinuousWebJobPreparer(resourceGroupName string, name string, webJobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -24410,7 +25328,6 @@ func (client AppsClient) StopContinuousWebJobPreparer(resourceGroupName string, 
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -24424,7 +25341,9 @@ func (client AppsClient) StopContinuousWebJobPreparer(resourceGroupName string, 
 // StopContinuousWebJobSender sends the StopContinuousWebJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) StopContinuousWebJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // StopContinuousWebJobResponder handles the response to the StopContinuousWebJob request. The method always
@@ -24441,10 +25360,10 @@ func (client AppsClient) StopContinuousWebJobResponder(resp *http.Response) (res
 
 // StopContinuousWebJobSlot stop a continuous web job for an app, or a deployment slot.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobID is web
-// job ID. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
+// resourceGroupName is name of the resource group to which the resource belongs. name is site name. webJobName is name
+// of Web Job. slot is name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
 // production slot.
-func (client AppsClient) StopContinuousWebJobSlot(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (result autorest.Response, err error) {
+func (client AppsClient) StopContinuousWebJobSlot(resourceGroupName string, name string, webJobName string, slot string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -24453,7 +25372,7 @@ func (client AppsClient) StopContinuousWebJobSlot(resourceGroupName string, name
 		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "StopContinuousWebJobSlot")
 	}
 
-	req, err := client.StopContinuousWebJobSlotPreparer(resourceGroupName, name, webJobID, slot, webJobName)
+	req, err := client.StopContinuousWebJobSlotPreparer(resourceGroupName, name, webJobName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "StopContinuousWebJobSlot", nil, "Failure preparing request")
 		return
@@ -24475,7 +25394,7 @@ func (client AppsClient) StopContinuousWebJobSlot(resourceGroupName string, name
 }
 
 // StopContinuousWebJobSlotPreparer prepares the StopContinuousWebJobSlot request.
-func (client AppsClient) StopContinuousWebJobSlotPreparer(resourceGroupName string, name string, webJobID string, slot string, webJobName string) (*http.Request, error) {
+func (client AppsClient) StopContinuousWebJobSlotPreparer(resourceGroupName string, name string, webJobName string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -24487,7 +25406,6 @@ func (client AppsClient) StopContinuousWebJobSlotPreparer(resourceGroupName stri
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"webJobId":    autorest.Encode("query", webJobID),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -24501,7 +25419,9 @@ func (client AppsClient) StopContinuousWebJobSlotPreparer(resourceGroupName stri
 // StopContinuousWebJobSlotSender sends the StopContinuousWebJobSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) StopContinuousWebJobSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // StopContinuousWebJobSlotResponder handles the response to the StopContinuousWebJobSlot request. The method always
@@ -24575,7 +25495,9 @@ func (client AppsClient) StopSlotPreparer(resourceGroupName string, name string,
 // StopSlotSender sends the StopSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) StopSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // StopSlotResponder handles the response to the StopSlot request. The method always
@@ -24647,7 +25569,9 @@ func (client AppsClient) StopWebSiteNetworkTracePreparer(resourceGroupName strin
 // StopWebSiteNetworkTraceSender sends the StopWebSiteNetworkTrace request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) StopWebSiteNetworkTraceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // StopWebSiteNetworkTraceResponder handles the response to the StopWebSiteNetworkTrace request. The method always
@@ -24722,7 +25646,9 @@ func (client AppsClient) StopWebSiteNetworkTraceSlotPreparer(resourceGroupName s
 // StopWebSiteNetworkTraceSlotSender sends the StopWebSiteNetworkTraceSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) StopWebSiteNetworkTraceSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // StopWebSiteNetworkTraceSlotResponder handles the response to the StopWebSiteNetworkTraceSlot request. The method always
@@ -24822,6 +25748,7 @@ func (client AppsClient) SwapSlotSlotPreparer(resourceGroupName string, name str
 func (client AppsClient) SwapSlotSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -24920,6 +25847,7 @@ func (client AppsClient) SwapSlotWithProductionPreparer(resourceGroupName string
 func (client AppsClient) SwapSlotWithProductionSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -24992,7 +25920,9 @@ func (client AppsClient) SyncFunctionTriggersPreparer(resourceGroupName string, 
 // SyncFunctionTriggersSender sends the SyncFunctionTriggers request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) SyncFunctionTriggersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // SyncFunctionTriggersResponder handles the response to the SyncFunctionTriggers request. The method always
@@ -25066,7 +25996,9 @@ func (client AppsClient) SyncFunctionTriggersSlotPreparer(resourceGroupName stri
 // SyncFunctionTriggersSlotSender sends the SyncFunctionTriggersSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) SyncFunctionTriggersSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // SyncFunctionTriggersSlotResponder handles the response to the SyncFunctionTriggersSlot request. The method always
@@ -25138,7 +26070,9 @@ func (client AppsClient) SyncRepositoryPreparer(resourceGroupName string, name s
 // SyncRepositorySender sends the SyncRepository request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) SyncRepositorySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // SyncRepositoryResponder handles the response to the SyncRepository request. The method always
@@ -25212,7 +26146,9 @@ func (client AppsClient) SyncRepositorySlotPreparer(resourceGroupName string, na
 // SyncRepositorySlotSender sends the SyncRepositorySlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) SyncRepositorySlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // SyncRepositorySlotResponder handles the response to the SyncRepositorySlot request. The method always
@@ -25224,6 +26160,101 @@ func (client AppsClient) SyncRepositorySlotResponder(resp *http.Response) (resul
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
+	return
+}
+
+// Update creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is unique name of the app to
+// create or update. To create or update a deployment slot, use the {slot} parameter. siteEnvelope is a JSON
+// representation of the app properties. See example. skipDNSRegistration is if true web app hostname is not registered
+// with DNS on creation. This parameter is
+// only used for app creation. skipCustomDomainVerification is if true, custom (non *.azurewebsites.net) domains
+// associated with web app are not verified. forceDNSRegistration is if true, web app hostname is force registered with
+// DNS. TTLInSeconds is time to live in seconds for web app's default domain name.
+func (client AppsClient) Update(resourceGroupName string, name string, siteEnvelope SitePatchResource, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string) (result Site, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "Update")
+	}
+
+	req, err := client.UpdatePreparer(resourceGroupName, name, siteEnvelope, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, TTLInSeconds)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client AppsClient) UpdatePreparer(resourceGroupName string, name string, siteEnvelope SitePatchResource, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if skipDNSRegistration != nil {
+		queryParameters["skipDnsRegistration"] = autorest.Encode("query", *skipDNSRegistration)
+	}
+	if skipCustomDomainVerification != nil {
+		queryParameters["skipCustomDomainVerification"] = autorest.Encode("query", *skipCustomDomainVerification)
+	}
+	if forceDNSRegistration != nil {
+		queryParameters["forceDnsRegistration"] = autorest.Encode("query", *forceDNSRegistration)
+	}
+	if len(TTLInSeconds) > 0 {
+		queryParameters["ttlInSeconds"] = autorest.Encode("query", TTLInSeconds)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}", pathParameters),
+		autorest.WithJSON(siteEnvelope),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client AppsClient) UpdateResponder(resp *http.Response) (result Site, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -25287,7 +26318,9 @@ func (client AppsClient) UpdateApplicationSettingsPreparer(resourceGroupName str
 // UpdateApplicationSettingsSender sends the UpdateApplicationSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateApplicationSettingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateApplicationSettingsResponder handles the response to the UpdateApplicationSettings request. The method always
@@ -25365,7 +26398,9 @@ func (client AppsClient) UpdateApplicationSettingsSlotPreparer(resourceGroupName
 // UpdateApplicationSettingsSlotSender sends the UpdateApplicationSettingsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateApplicationSettingsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateApplicationSettingsSlotResponder handles the response to the UpdateApplicationSettingsSlot request. The method always
@@ -25441,7 +26476,9 @@ func (client AppsClient) UpdateAuthSettingsPreparer(resourceGroupName string, na
 // UpdateAuthSettingsSender sends the UpdateAuthSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateAuthSettingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateAuthSettingsResponder handles the response to the UpdateAuthSettings request. The method always
@@ -25519,7 +26556,9 @@ func (client AppsClient) UpdateAuthSettingsSlotPreparer(resourceGroupName string
 // UpdateAuthSettingsSlotSender sends the UpdateAuthSettingsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateAuthSettingsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateAuthSettingsSlotResponder handles the response to the UpdateAuthSettingsSlot request. The method always
@@ -25603,7 +26642,9 @@ func (client AppsClient) UpdateBackupConfigurationPreparer(resourceGroupName str
 // UpdateBackupConfigurationSender sends the UpdateBackupConfiguration request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateBackupConfigurationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateBackupConfigurationResponder handles the response to the UpdateBackupConfiguration request. The method always
@@ -25689,7 +26730,9 @@ func (client AppsClient) UpdateBackupConfigurationSlotPreparer(resourceGroupName
 // UpdateBackupConfigurationSlotSender sends the UpdateBackupConfigurationSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateBackupConfigurationSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateBackupConfigurationSlotResponder handles the response to the UpdateBackupConfigurationSlot request. The method always
@@ -25765,7 +26808,9 @@ func (client AppsClient) UpdateConfigurationPreparer(resourceGroupName string, n
 // UpdateConfigurationSender sends the UpdateConfiguration request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateConfigurationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateConfigurationResponder handles the response to the UpdateConfiguration request. The method always
@@ -25843,7 +26888,9 @@ func (client AppsClient) UpdateConfigurationSlotPreparer(resourceGroupName strin
 // UpdateConfigurationSlotSender sends the UpdateConfigurationSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateConfigurationSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateConfigurationSlotResponder handles the response to the UpdateConfigurationSlot request. The method always
@@ -25919,7 +26966,9 @@ func (client AppsClient) UpdateConnectionStringsPreparer(resourceGroupName strin
 // UpdateConnectionStringsSender sends the UpdateConnectionStrings request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateConnectionStringsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateConnectionStringsResponder handles the response to the UpdateConnectionStrings request. The method always
@@ -25997,7 +27046,9 @@ func (client AppsClient) UpdateConnectionStringsSlotPreparer(resourceGroupName s
 // UpdateConnectionStringsSlotSender sends the UpdateConnectionStringsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateConnectionStringsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateConnectionStringsSlotResponder handles the response to the UpdateConnectionStringsSlot request. The method always
@@ -26089,7 +27140,9 @@ func (client AppsClient) UpdateDiagnosticLogsConfigPreparer(resourceGroupName st
 // UpdateDiagnosticLogsConfigSender sends the UpdateDiagnosticLogsConfig request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateDiagnosticLogsConfigSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateDiagnosticLogsConfigResponder handles the response to the UpdateDiagnosticLogsConfig request. The method always
@@ -26183,7 +27236,9 @@ func (client AppsClient) UpdateDiagnosticLogsConfigSlotPreparer(resourceGroupNam
 // UpdateDiagnosticLogsConfigSlotSender sends the UpdateDiagnosticLogsConfigSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateDiagnosticLogsConfigSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateDiagnosticLogsConfigSlotResponder handles the response to the UpdateDiagnosticLogsConfigSlot request. The method always
@@ -26262,7 +27317,9 @@ func (client AppsClient) UpdateDomainOwnershipIdentifierPreparer(resourceGroupNa
 // UpdateDomainOwnershipIdentifierSender sends the UpdateDomainOwnershipIdentifier request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateDomainOwnershipIdentifierSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateDomainOwnershipIdentifierResponder handles the response to the UpdateDomainOwnershipIdentifier request. The method always
@@ -26343,7 +27400,9 @@ func (client AppsClient) UpdateDomainOwnershipIdentifierSlotPreparer(resourceGro
 // UpdateDomainOwnershipIdentifierSlotSender sends the UpdateDomainOwnershipIdentifierSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateDomainOwnershipIdentifierSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateDomainOwnershipIdentifierSlotResponder handles the response to the UpdateDomainOwnershipIdentifierSlot request. The method always
@@ -26422,7 +27481,9 @@ func (client AppsClient) UpdateHybridConnectionPreparer(resourceGroupName string
 // UpdateHybridConnectionSender sends the UpdateHybridConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateHybridConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateHybridConnectionResponder handles the response to the UpdateHybridConnection request. The method always
@@ -26502,7 +27563,9 @@ func (client AppsClient) UpdateHybridConnectionSlotPreparer(resourceGroupName st
 // UpdateHybridConnectionSlotSender sends the UpdateHybridConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateHybridConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateHybridConnectionSlotResponder handles the response to the UpdateHybridConnectionSlot request. The method always
@@ -26578,7 +27641,9 @@ func (client AppsClient) UpdateMetadataPreparer(resourceGroupName string, name s
 // UpdateMetadataSender sends the UpdateMetadata request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateMetadataSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateMetadataResponder handles the response to the UpdateMetadata request. The method always
@@ -26656,7 +27721,9 @@ func (client AppsClient) UpdateMetadataSlotPreparer(resourceGroupName string, na
 // UpdateMetadataSlotSender sends the UpdateMetadataSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateMetadataSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateMetadataSlotResponder handles the response to the UpdateMetadataSlot request. The method always
@@ -26735,7 +27802,9 @@ func (client AppsClient) UpdateRelayServiceConnectionPreparer(resourceGroupName 
 // UpdateRelayServiceConnectionSender sends the UpdateRelayServiceConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateRelayServiceConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateRelayServiceConnectionResponder handles the response to the UpdateRelayServiceConnection request. The method always
@@ -26816,7 +27885,9 @@ func (client AppsClient) UpdateRelayServiceConnectionSlotPreparer(resourceGroupN
 // UpdateRelayServiceConnectionSlotSender sends the UpdateRelayServiceConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateRelayServiceConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateRelayServiceConnectionSlotResponder handles the response to the UpdateRelayServiceConnectionSlot request. The method always
@@ -26892,7 +27963,9 @@ func (client AppsClient) UpdateSitePushSettingsPreparer(resourceGroupName string
 // UpdateSitePushSettingsSender sends the UpdateSitePushSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateSitePushSettingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateSitePushSettingsResponder handles the response to the UpdateSitePushSettings request. The method always
@@ -26970,7 +28043,9 @@ func (client AppsClient) UpdateSitePushSettingsSlotPreparer(resourceGroupName st
 // UpdateSitePushSettingsSlotSender sends the UpdateSitePushSettingsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateSitePushSettingsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateSitePushSettingsSlotResponder handles the response to the UpdateSitePushSettingsSlot request. The method always
@@ -26980,6 +28055,103 @@ func (client AppsClient) UpdateSitePushSettingsSlotResponder(resp *http.Response
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateSlot creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is unique name of the app to
+// create or update. To create or update a deployment slot, use the {slot} parameter. siteEnvelope is a JSON
+// representation of the app properties. See example. slot is name of the deployment slot to create or update. By
+// default, this API attempts to create or modify the production slot. skipDNSRegistration is if true web app hostname
+// is not registered with DNS on creation. This parameter is
+// only used for app creation. skipCustomDomainVerification is if true, custom (non *.azurewebsites.net) domains
+// associated with web app are not verified. forceDNSRegistration is if true, web app hostname is force registered with
+// DNS. TTLInSeconds is time to live in seconds for web app's default domain name.
+func (client AppsClient) UpdateSlot(resourceGroupName string, name string, siteEnvelope SitePatchResource, slot string, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string) (result Site, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "UpdateSlot")
+	}
+
+	req, err := client.UpdateSlotPreparer(resourceGroupName, name, siteEnvelope, slot, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, TTLInSeconds)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateSlotPreparer prepares the UpdateSlot request.
+func (client AppsClient) UpdateSlotPreparer(resourceGroupName string, name string, siteEnvelope SitePatchResource, slot string, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if skipDNSRegistration != nil {
+		queryParameters["skipDnsRegistration"] = autorest.Encode("query", *skipDNSRegistration)
+	}
+	if skipCustomDomainVerification != nil {
+		queryParameters["skipCustomDomainVerification"] = autorest.Encode("query", *skipCustomDomainVerification)
+	}
+	if forceDNSRegistration != nil {
+		queryParameters["forceDnsRegistration"] = autorest.Encode("query", *forceDNSRegistration)
+	}
+	if len(TTLInSeconds) > 0 {
+		queryParameters["ttlInSeconds"] = autorest.Encode("query", TTLInSeconds)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}", pathParameters),
+		autorest.WithJSON(siteEnvelope),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// UpdateSlotSender sends the UpdateSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) UpdateSlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateSlotResponder handles the response to the UpdateSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) UpdateSlotResponder(resp *http.Response) (result Site, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -27047,7 +28219,9 @@ func (client AppsClient) UpdateSlotConfigurationNamesPreparer(resourceGroupName 
 // UpdateSlotConfigurationNamesSender sends the UpdateSlotConfigurationNames request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateSlotConfigurationNamesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateSlotConfigurationNamesResponder handles the response to the UpdateSlotConfigurationNames request. The method always
@@ -27057,6 +28231,164 @@ func (client AppsClient) UpdateSlotConfigurationNamesResponder(resp *http.Respon
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateSourceControl updates the source control configuration of an app.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is name of the app.
+// siteSourceControl is JSON representation of a SiteSourceControl object. See example.
+func (client AppsClient) UpdateSourceControl(resourceGroupName string, name string, siteSourceControl SiteSourceControl) (result SiteSourceControl, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "UpdateSourceControl")
+	}
+
+	req, err := client.UpdateSourceControlPreparer(resourceGroupName, name, siteSourceControl)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSourceControl", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSourceControlSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSourceControl", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateSourceControlResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSourceControl", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateSourceControlPreparer prepares the UpdateSourceControl request.
+func (client AppsClient) UpdateSourceControlPreparer(resourceGroupName string, name string, siteSourceControl SiteSourceControl) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web", pathParameters),
+		autorest.WithJSON(siteSourceControl),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// UpdateSourceControlSender sends the UpdateSourceControl request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) UpdateSourceControlSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateSourceControlResponder handles the response to the UpdateSourceControl request. The method always
+// closes the http.Response Body.
+func (client AppsClient) UpdateSourceControlResponder(resp *http.Response) (result SiteSourceControl, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateSourceControlSlot updates the source control configuration of an app.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is name of the app.
+// siteSourceControl is JSON representation of a SiteSourceControl object. See example. slot is name of the deployment
+// slot. If a slot is not specified, the API will update the source control configuration for the production slot.
+func (client AppsClient) UpdateSourceControlSlot(resourceGroupName string, name string, siteSourceControl SiteSourceControl, slot string) (result SiteSourceControl, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppsClient", "UpdateSourceControlSlot")
+	}
+
+	req, err := client.UpdateSourceControlSlotPreparer(resourceGroupName, name, siteSourceControl, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSourceControlSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSourceControlSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSourceControlSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateSourceControlSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateSourceControlSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateSourceControlSlotPreparer prepares the UpdateSourceControlSlot request.
+func (client AppsClient) UpdateSourceControlSlotPreparer(resourceGroupName string, name string, siteSourceControl SiteSourceControl, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web", pathParameters),
+		autorest.WithJSON(siteSourceControl),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// UpdateSourceControlSlotSender sends the UpdateSourceControlSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) UpdateSourceControlSlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateSourceControlSlotResponder handles the response to the UpdateSourceControlSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) UpdateSourceControlSlotResponder(resp *http.Response) (result SiteSourceControl, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -27126,7 +28458,9 @@ func (client AppsClient) UpdateVnetConnectionPreparer(resourceGroupName string, 
 // UpdateVnetConnectionSender sends the UpdateVnetConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateVnetConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateVnetConnectionResponder handles the response to the UpdateVnetConnection request. The method always
@@ -27205,7 +28539,9 @@ func (client AppsClient) UpdateVnetConnectionGatewayPreparer(resourceGroupName s
 // UpdateVnetConnectionGatewaySender sends the UpdateVnetConnectionGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateVnetConnectionGatewaySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateVnetConnectionGatewayResponder handles the response to the UpdateVnetConnectionGateway request. The method always
@@ -27286,7 +28622,9 @@ func (client AppsClient) UpdateVnetConnectionGatewaySlotPreparer(resourceGroupNa
 // UpdateVnetConnectionGatewaySlotSender sends the UpdateVnetConnectionGatewaySlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateVnetConnectionGatewaySlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateVnetConnectionGatewaySlotResponder handles the response to the UpdateVnetConnectionGatewaySlot request. The method always
@@ -27367,7 +28705,9 @@ func (client AppsClient) UpdateVnetConnectionSlotPreparer(resourceGroupName stri
 // UpdateVnetConnectionSlotSender sends the UpdateVnetConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateVnetConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateVnetConnectionSlotResponder handles the response to the UpdateVnetConnectionSlot request. The method always

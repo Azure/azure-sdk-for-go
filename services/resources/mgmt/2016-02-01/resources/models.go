@@ -63,7 +63,7 @@ type BasicDependency struct {
 
 // DebugSetting is
 type DebugSetting struct {
-	*string `json:"detailLevel,omitempty"`
+	DetailLevel *string `json:"detailLevel,omitempty"`
 }
 
 // Dependency is deployment dependency information.

@@ -112,6 +112,7 @@ func (client ElasticPoolsClient) CreateOrUpdatePreparer(resourceGroupName string
 func (client ElasticPoolsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -180,7 +181,9 @@ func (client ElasticPoolsClient) DeletePreparer(resourceGroupName string, server
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ElasticPoolsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -247,7 +250,9 @@ func (client ElasticPoolsClient) GetPreparer(resourceGroupName string, serverNam
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ElasticPoolsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -313,7 +318,9 @@ func (client ElasticPoolsClient) ListByServerPreparer(resourceGroupName string, 
 // ListByServerSender sends the ListByServer request. The method will close the
 // http.Response Body if it receives an error.
 func (client ElasticPoolsClient) ListByServerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByServerResponder handles the response to the ListByServer request. The method always
@@ -399,6 +406,7 @@ func (client ElasticPoolsClient) UpdatePreparer(resourceGroupName string, server
 func (client ElasticPoolsClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 

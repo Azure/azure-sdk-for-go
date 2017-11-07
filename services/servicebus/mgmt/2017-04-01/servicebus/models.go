@@ -186,13 +186,6 @@ type ArmDisasterRecovery struct {
 	*ArmDisasterRecoveryProperties `json:"properties,omitempty"`
 }
 
-// ArmDisasterRecoveryProperties is properties required to the Create Or Update Alias(Disaster Recovery configurations)
-type ArmDisasterRecoveryProperties struct {
-	ProvisioningState ProvisioningStateDR  `json:"provisioningState,omitempty"`
-	PartnerNamespace  *string              `json:"partnerNamespace,omitempty"`
-	Role              RoleDisasterRecovery `json:"role,omitempty"`
-}
-
 // ArmDisasterRecoveryListResult is the result of the List Alias(Disaster Recovery configuration) operation.
 type ArmDisasterRecoveryListResult struct {
 	autorest.Response `json:"-"`
@@ -210,6 +203,13 @@ func (client ArmDisasterRecoveryListResult) ArmDisasterRecoveryListResultPrepare
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// ArmDisasterRecoveryProperties is properties required to the Create Or Update Alias(Disaster Recovery configurations)
+type ArmDisasterRecoveryProperties struct {
+	ProvisioningState ProvisioningStateDR  `json:"provisioningState,omitempty"`
+	PartnerNamespace  *string              `json:"partnerNamespace,omitempty"`
+	Role              RoleDisasterRecovery `json:"role,omitempty"`
 }
 
 // AuthorizationRuleProperties is authorizationRule properties.
@@ -281,17 +281,6 @@ type Eventhub struct {
 	*EventhubProperties `json:"properties,omitempty"`
 }
 
-// EventhubProperties is properties supplied to the Create Or Update Event Hub operation.
-type EventhubProperties struct {
-	PartitionIds           *[]string           `json:"partitionIds,omitempty"`
-	CreatedAt              *date.Time          `json:"createdAt,omitempty"`
-	UpdatedAt              *date.Time          `json:"updatedAt,omitempty"`
-	MessageRetentionInDays *int64              `json:"messageRetentionInDays,omitempty"`
-	PartitionCount         *int64              `json:"partitionCount,omitempty"`
-	Status                 EntityStatus        `json:"status,omitempty"`
-	CaptureDescription     *CaptureDescription `json:"captureDescription,omitempty"`
-}
-
 // EventHubListResult is the result of the List EventHubs operation.
 type EventHubListResult struct {
 	autorest.Response `json:"-"`
@@ -309,6 +298,17 @@ func (client EventHubListResult) EventHubListResultPreparer() (*http.Request, er
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// EventhubProperties is properties supplied to the Create Or Update Event Hub operation.
+type EventhubProperties struct {
+	PartitionIds           *[]string           `json:"partitionIds,omitempty"`
+	CreatedAt              *date.Time          `json:"createdAt,omitempty"`
+	UpdatedAt              *date.Time          `json:"updatedAt,omitempty"`
+	MessageRetentionInDays *int64              `json:"messageRetentionInDays,omitempty"`
+	PartitionCount         *int64              `json:"partitionCount,omitempty"`
+	Status                 EntityStatus        `json:"status,omitempty"`
+	CaptureDescription     *CaptureDescription `json:"captureDescription,omitempty"`
 }
 
 // MessageCountDetails is message Count Details.
@@ -363,12 +363,6 @@ type PremiumMessagingRegions struct {
 	Properties *PremiumMessagingRegionsProperties `json:"properties,omitempty"`
 }
 
-// PremiumMessagingRegionsProperties is
-type PremiumMessagingRegionsProperties struct {
-	Code     *string `json:"code,omitempty"`
-	FullName *string `json:"fullName,omitempty"`
-}
-
 // PremiumMessagingRegionsListResult is the response of the List PremiumMessagingRegions operation.
 type PremiumMessagingRegionsListResult struct {
 	autorest.Response `json:"-"`
@@ -386,6 +380,12 @@ func (client PremiumMessagingRegionsListResult) PremiumMessagingRegionsListResul
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// PremiumMessagingRegionsProperties is
+type PremiumMessagingRegionsProperties struct {
+	Code     *string `json:"code,omitempty"`
+	FullName *string `json:"fullName,omitempty"`
 }
 
 // RegenerateAccessKeyParameters is parameters supplied to the Regenerate Authorization Rule operation, specifies which
@@ -456,11 +456,6 @@ type SBAuthorizationRule struct {
 	*SBAuthorizationRuleProperties `json:"properties,omitempty"`
 }
 
-// SBAuthorizationRuleProperties is authorizationRule properties.
-type SBAuthorizationRuleProperties struct {
-	Rights *[]AccessRights `json:"rights,omitempty"`
-}
-
 // SBAuthorizationRuleListResult is the response to the List Namespace operation.
 type SBAuthorizationRuleListResult struct {
 	autorest.Response `json:"-"`
@@ -478,6 +473,11 @@ func (client SBAuthorizationRuleListResult) SBAuthorizationRuleListResultPrepare
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// SBAuthorizationRuleProperties is authorizationRule properties.
+type SBAuthorizationRuleProperties struct {
+	Rights *[]AccessRights `json:"rights,omitempty"`
 }
 
 // SBNamespace is description of a namespace resource.

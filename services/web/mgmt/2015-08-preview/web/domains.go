@@ -90,7 +90,9 @@ func (client DomainsClient) CreateOrUpdateDomainPreparer(resourceGroupName strin
 // CreateOrUpdateDomainSender sends the CreateOrUpdateDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainsClient) CreateOrUpdateDomainSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateDomainResponder handles the response to the CreateOrUpdateDomain request. The method always
@@ -159,7 +161,9 @@ func (client DomainsClient) DeleteDomainPreparer(resourceGroupName string, domai
 // DeleteDomainSender sends the DeleteDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainsClient) DeleteDomainSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteDomainResponder handles the response to the DeleteDomain request. The method always
@@ -224,7 +228,9 @@ func (client DomainsClient) GetDomainPreparer(resourceGroupName string, domainNa
 // GetDomainSender sends the GetDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainsClient) GetDomainSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDomainResponder handles the response to the GetDomain request. The method always
@@ -291,7 +297,9 @@ func (client DomainsClient) GetDomainOperationPreparer(resourceGroupName string,
 // GetDomainOperationSender sends the GetDomainOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainsClient) GetDomainOperationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDomainOperationResponder handles the response to the GetDomainOperation request. The method always
@@ -355,7 +363,9 @@ func (client DomainsClient) GetDomainsPreparer(resourceGroupName string) (*http.
 // GetDomainsSender sends the GetDomains request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainsClient) GetDomainsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDomainsResponder handles the response to the GetDomains request. The method always
@@ -492,7 +502,9 @@ func (client DomainsClient) UpdateDomainPreparer(resourceGroupName string, domai
 // UpdateDomainSender sends the UpdateDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client DomainsClient) UpdateDomainSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateDomainResponder handles the response to the UpdateDomain request. The method always

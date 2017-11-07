@@ -126,7 +126,9 @@ func (client ProductSubscriptionsClient) ListByProductsPreparer(resourceGroupNam
 // ListByProductsSender sends the ListByProducts request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductSubscriptionsClient) ListByProductsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByProductsResponder handles the response to the ListByProducts request. The method always

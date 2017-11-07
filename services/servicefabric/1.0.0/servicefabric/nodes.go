@@ -90,7 +90,9 @@ func (client NodesClient) DisablePreparer(nodeName string, disableNode DisableNo
 // DisableSender sends the Disable request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodesClient) DisableSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DisableResponder handles the response to the Disable request. The method always
@@ -156,7 +158,9 @@ func (client NodesClient) EnablePreparer(nodeName string) (*http.Request, error)
 // EnableSender sends the Enable request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodesClient) EnableSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // EnableResponder handles the response to the Enable request. The method always
@@ -222,7 +226,9 @@ func (client NodesClient) GetPreparer(nodeName string) (*http.Request, error) {
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -287,7 +293,9 @@ func (client NodesClient) ListPreparer(continuationToken string) (*http.Request,
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always

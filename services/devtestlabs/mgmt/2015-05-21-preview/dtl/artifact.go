@@ -93,7 +93,9 @@ func (client ArtifactClient) GenerateArmTemplatePreparer(resourceGroupName strin
 // GenerateArmTemplateSender sends the GenerateArmTemplate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ArtifactClient) GenerateArmTemplateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GenerateArmTemplateResponder handles the response to the GenerateArmTemplate request. The method always
@@ -161,7 +163,9 @@ func (client ArtifactClient) GetResourcePreparer(resourceGroupName string, labNa
 // GetResourceSender sends the GetResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client ArtifactClient) GetResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResourceResponder handles the response to the GetResource request. The method always
@@ -237,7 +241,9 @@ func (client ArtifactClient) ListPreparer(resourceGroupName string, labName stri
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ArtifactClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

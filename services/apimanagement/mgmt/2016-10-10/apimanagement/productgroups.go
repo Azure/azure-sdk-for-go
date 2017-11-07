@@ -108,7 +108,9 @@ func (client ProductGroupsClient) CreatePreparer(resourceGroupName string, servi
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductGroupsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -192,7 +194,9 @@ func (client ProductGroupsClient) DeletePreparer(resourceGroupName string, servi
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductGroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -293,7 +297,9 @@ func (client ProductGroupsClient) ListByProductsPreparer(resourceGroupName strin
 // ListByProductsSender sends the ListByProducts request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductGroupsClient) ListByProductsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByProductsResponder handles the response to the ListByProducts request. The method always

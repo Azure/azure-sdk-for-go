@@ -19,7 +19,7 @@ package apimanagement
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v11.2.0-beta arm-apimanagement/2016-10-10"
+	return "Azure-SDK-For-Go/v11.2.0-beta services"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

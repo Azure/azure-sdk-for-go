@@ -108,6 +108,7 @@ func (client FormulaClient) CreateOrUpdateResourcePreparer(resourceGroupName str
 func (client FormulaClient) CreateOrUpdateResourceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -175,7 +176,9 @@ func (client FormulaClient) DeleteResourcePreparer(resourceGroupName string, lab
 // DeleteResourceSender sends the DeleteResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client FormulaClient) DeleteResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResourceResponder handles the response to the DeleteResource request. The method always
@@ -241,7 +244,9 @@ func (client FormulaClient) GetResourcePreparer(resourceGroupName string, labNam
 // GetResourceSender sends the GetResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client FormulaClient) GetResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResourceResponder handles the response to the GetResource request. The method always
@@ -316,7 +321,9 @@ func (client FormulaClient) ListPreparer(resourceGroupName string, labName strin
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client FormulaClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

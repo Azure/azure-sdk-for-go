@@ -88,7 +88,9 @@ func (client PartitionLoadsClient) ResetPreparer(partitionID string) (*http.Requ
 // ResetSender sends the Reset request. The method will close the
 // http.Response Body if it receives an error.
 func (client PartitionLoadsClient) ResetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ResetResponder handles the response to the Reset request. The method always

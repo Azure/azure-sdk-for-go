@@ -21,10 +21,11 @@ package keyvault
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
-	"net/http"
 )
 
 // ManagementClient is the base client for Keyvault.
@@ -95,7 +96,9 @@ func (client ManagementClient) BackupKeyPreparer(vaultBaseURL string, keyName st
 // BackupKeySender sends the BackupKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) BackupKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // BackupKeyResponder handles the response to the BackupKey request. The method always
@@ -179,7 +182,9 @@ func (client ManagementClient) CreateCertificatePreparer(vaultBaseURL string, ce
 // CreateCertificateSender sends the CreateCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) CreateCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateCertificateResponder handles the response to the CreateCertificate request. The method always
@@ -255,7 +260,9 @@ func (client ManagementClient) CreateKeyPreparer(vaultBaseURL string, keyName st
 // CreateKeySender sends the CreateKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) CreateKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateKeyResponder handles the response to the CreateKey request. The method always
@@ -332,7 +339,9 @@ func (client ManagementClient) DecryptPreparer(vaultBaseURL string, keyName stri
 // DecryptSender sends the Decrypt request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) DecryptSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DecryptResponder handles the response to the Decrypt request. The method always
@@ -400,7 +409,9 @@ func (client ManagementClient) DeleteCertificatePreparer(vaultBaseURL string, ce
 // DeleteCertificateSender sends the DeleteCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) DeleteCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCertificateResponder handles the response to the DeleteCertificate request. The method always
@@ -463,7 +474,9 @@ func (client ManagementClient) DeleteCertificateContactsPreparer(vaultBaseURL st
 // DeleteCertificateContactsSender sends the DeleteCertificateContacts request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) DeleteCertificateContactsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCertificateContactsResponder handles the response to the DeleteCertificateContacts request. The method always
@@ -530,7 +543,9 @@ func (client ManagementClient) DeleteCertificateIssuerPreparer(vaultBaseURL stri
 // DeleteCertificateIssuerSender sends the DeleteCertificateIssuer request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) DeleteCertificateIssuerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCertificateIssuerResponder handles the response to the DeleteCertificateIssuer request. The method always
@@ -597,7 +612,9 @@ func (client ManagementClient) DeleteCertificateOperationPreparer(vaultBaseURL s
 // DeleteCertificateOperationSender sends the DeleteCertificateOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) DeleteCertificateOperationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteCertificateOperationResponder handles the response to the DeleteCertificateOperation request. The method always
@@ -664,7 +681,9 @@ func (client ManagementClient) DeleteKeyPreparer(vaultBaseURL string, keyName st
 // DeleteKeySender sends the DeleteKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) DeleteKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteKeyResponder handles the response to the DeleteKey request. The method always
@@ -732,7 +751,9 @@ func (client ManagementClient) DeleteSecretPreparer(vaultBaseURL string, secretN
 // DeleteSecretSender sends the DeleteSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) DeleteSecretSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteSecretResponder handles the response to the DeleteSecret request. The method always
@@ -809,7 +830,9 @@ func (client ManagementClient) EncryptPreparer(vaultBaseURL string, keyName stri
 // EncryptSender sends the Encrypt request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) EncryptSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // EncryptResponder handles the response to the Encrypt request. The method always
@@ -878,7 +901,9 @@ func (client ManagementClient) GetCertificatePreparer(vaultBaseURL string, certi
 // GetCertificateSender sends the GetCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificateResponder handles the response to the GetCertificate request. The method always
@@ -941,7 +966,9 @@ func (client ManagementClient) GetCertificateContactsPreparer(vaultBaseURL strin
 // GetCertificateContactsSender sends the GetCertificateContacts request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetCertificateContactsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificateContactsResponder handles the response to the GetCertificateContacts request. The method always
@@ -1008,7 +1035,9 @@ func (client ManagementClient) GetCertificateIssuerPreparer(vaultBaseURL string,
 // GetCertificateIssuerSender sends the GetCertificateIssuer request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetCertificateIssuerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificateIssuerResponder handles the response to the GetCertificateIssuer request. The method always
@@ -1084,7 +1113,9 @@ func (client ManagementClient) GetCertificateIssuersPreparer(vaultBaseURL string
 // GetCertificateIssuersSender sends the GetCertificateIssuers request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetCertificateIssuersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificateIssuersResponder handles the response to the GetCertificateIssuers request. The method always
@@ -1220,7 +1251,9 @@ func (client ManagementClient) GetCertificateOperationPreparer(vaultBaseURL stri
 // GetCertificateOperationSender sends the GetCertificateOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetCertificateOperationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificateOperationResponder handles the response to the GetCertificateOperation request. The method always
@@ -1288,7 +1321,9 @@ func (client ManagementClient) GetCertificatePolicyPreparer(vaultBaseURL string,
 // GetCertificatePolicySender sends the GetCertificatePolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetCertificatePolicySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificatePolicyResponder handles the response to the GetCertificatePolicy request. The method always
@@ -1364,7 +1399,9 @@ func (client ManagementClient) GetCertificatesPreparer(vaultBaseURL string, maxr
 // GetCertificatesSender sends the GetCertificates request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetCertificatesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificatesResponder handles the response to the GetCertificates request. The method always
@@ -1514,7 +1551,9 @@ func (client ManagementClient) GetCertificateVersionsPreparer(vaultBaseURL strin
 // GetCertificateVersionsSender sends the GetCertificateVersions request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetCertificateVersionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetCertificateVersionsResponder handles the response to the GetCertificateVersions request. The method always
@@ -1652,7 +1691,9 @@ func (client ManagementClient) GetKeyPreparer(vaultBaseURL string, keyName strin
 // GetKeySender sends the GetKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetKeyResponder handles the response to the GetKey request. The method always
@@ -1728,7 +1769,9 @@ func (client ManagementClient) GetKeysPreparer(vaultBaseURL string, maxresults *
 // GetKeysSender sends the GetKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetKeysResponder handles the response to the GetKeys request. The method always
@@ -1877,7 +1920,9 @@ func (client ManagementClient) GetKeyVersionsPreparer(vaultBaseURL string, keyNa
 // GetKeyVersionsSender sends the GetKeyVersions request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetKeyVersionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetKeyVersionsResponder handles the response to the GetKeyVersions request. The method always
@@ -2015,7 +2060,9 @@ func (client ManagementClient) GetSecretPreparer(vaultBaseURL string, secretName
 // GetSecretSender sends the GetSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetSecretSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetSecretResponder handles the response to the GetSecret request. The method always
@@ -2091,7 +2138,9 @@ func (client ManagementClient) GetSecretsPreparer(vaultBaseURL string, maxresult
 // GetSecretsSender sends the GetSecrets request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetSecretsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetSecretsResponder handles the response to the GetSecrets request. The method always
@@ -2241,7 +2290,9 @@ func (client ManagementClient) GetSecretVersionsPreparer(vaultBaseURL string, se
 // GetSecretVersionsSender sends the GetSecretVersions request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) GetSecretVersionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetSecretVersionsResponder handles the response to the GetSecretVersions request. The method always
@@ -2394,7 +2445,9 @@ func (client ManagementClient) ImportCertificatePreparer(vaultBaseURL string, ce
 // ImportCertificateSender sends the ImportCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ImportCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ImportCertificateResponder handles the response to the ImportCertificate request. The method always
@@ -2472,7 +2525,9 @@ func (client ManagementClient) ImportKeyPreparer(vaultBaseURL string, keyName st
 // ImportKeySender sends the ImportKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) ImportKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ImportKeyResponder handles the response to the ImportKey request. The method always
@@ -2548,7 +2603,9 @@ func (client ManagementClient) MergeCertificatePreparer(vaultBaseURL string, cer
 // MergeCertificateSender sends the MergeCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) MergeCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // MergeCertificateResponder handles the response to the MergeCertificate request. The method always
@@ -2619,7 +2676,9 @@ func (client ManagementClient) RestoreKeyPreparer(vaultBaseURL string, parameter
 // RestoreKeySender sends the RestoreKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) RestoreKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RestoreKeyResponder handles the response to the RestoreKey request. The method always
@@ -2685,7 +2744,9 @@ func (client ManagementClient) SetCertificateContactsPreparer(vaultBaseURL strin
 // SetCertificateContactsSender sends the SetCertificateContacts request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) SetCertificateContactsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SetCertificateContactsResponder handles the response to the SetCertificateContacts request. The method always
@@ -2761,7 +2822,9 @@ func (client ManagementClient) SetCertificateIssuerPreparer(vaultBaseURL string,
 // SetCertificateIssuerSender sends the SetCertificateIssuer request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) SetCertificateIssuerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SetCertificateIssuerResponder handles the response to the SetCertificateIssuer request. The method always
@@ -2839,7 +2902,9 @@ func (client ManagementClient) SetSecretPreparer(vaultBaseURL string, secretName
 // SetSecretSender sends the SetSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) SetSecretSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SetSecretResponder handles the response to the SetSecret request. The method always
@@ -2916,7 +2981,9 @@ func (client ManagementClient) SignPreparer(vaultBaseURL string, keyName string,
 // SignSender sends the Sign request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) SignSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SignResponder handles the response to the Sign request. The method always
@@ -2994,7 +3061,9 @@ func (client ManagementClient) UnwrapKeyPreparer(vaultBaseURL string, keyName st
 // UnwrapKeySender sends the UnwrapKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) UnwrapKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UnwrapKeyResponder handles the response to the UnwrapKey request. The method always
@@ -3065,7 +3134,9 @@ func (client ManagementClient) UpdateCertificatePreparer(vaultBaseURL string, ce
 // UpdateCertificateSender sends the UpdateCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) UpdateCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateCertificateResponder handles the response to the UpdateCertificate request. The method always
@@ -3135,7 +3206,9 @@ func (client ManagementClient) UpdateCertificateIssuerPreparer(vaultBaseURL stri
 // UpdateCertificateIssuerSender sends the UpdateCertificateIssuer request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) UpdateCertificateIssuerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateCertificateIssuerResponder handles the response to the UpdateCertificateIssuer request. The method always
@@ -3205,7 +3278,9 @@ func (client ManagementClient) UpdateCertificateOperationPreparer(vaultBaseURL s
 // UpdateCertificateOperationSender sends the UpdateCertificateOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) UpdateCertificateOperationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateCertificateOperationResponder handles the response to the UpdateCertificateOperation request. The method always
@@ -3276,7 +3351,9 @@ func (client ManagementClient) UpdateCertificatePolicyPreparer(vaultBaseURL stri
 // UpdateCertificatePolicySender sends the UpdateCertificatePolicy request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) UpdateCertificatePolicySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateCertificatePolicyResponder handles the response to the UpdateCertificatePolicy request. The method always
@@ -3347,7 +3424,9 @@ func (client ManagementClient) UpdateKeyPreparer(vaultBaseURL string, keyName st
 // UpdateKeySender sends the UpdateKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) UpdateKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateKeyResponder handles the response to the UpdateKey request. The method always
@@ -3418,7 +3497,9 @@ func (client ManagementClient) UpdateSecretPreparer(vaultBaseURL string, secretN
 // UpdateSecretSender sends the UpdateSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) UpdateSecretSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateSecretResponder handles the response to the UpdateSecret request. The method always
@@ -3496,7 +3577,9 @@ func (client ManagementClient) VerifyPreparer(vaultBaseURL string, keyName strin
 // VerifySender sends the Verify request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) VerifySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // VerifyResponder handles the response to the Verify request. The method always
@@ -3573,7 +3656,9 @@ func (client ManagementClient) WrapKeyPreparer(vaultBaseURL string, keyName stri
 // WrapKeySender sends the WrapKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagementClient) WrapKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // WrapKeyResponder handles the response to the WrapKey request. The method always

@@ -89,7 +89,9 @@ func (client ConnectionsClient) ConfirmConsentCodePreparer(resourceGroupName str
 // ConfirmConsentCodeSender sends the ConfirmConsentCode request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) ConfirmConsentCodeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ConfirmConsentCodeResponder handles the response to the ConfirmConsentCode request. The method always
@@ -156,7 +158,9 @@ func (client ConnectionsClient) CreateOrUpdatePreparer(resourceGroupName string,
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -221,7 +225,9 @@ func (client ConnectionsClient) DeletePreparer(resourceGroupName string, connect
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -285,7 +291,9 @@ func (client ConnectionsClient) GetPreparer(resourceGroupName string, connection
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -356,7 +364,9 @@ func (client ConnectionsClient) ListPreparer(resourceGroupName string, top *int3
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -492,7 +502,9 @@ func (client ConnectionsClient) ListConnectionKeysPreparer(resourceGroupName str
 // ListConnectionKeysSender sends the ListConnectionKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) ListConnectionKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConnectionKeysResponder handles the response to the ListConnectionKeys request. The method always
@@ -559,7 +571,9 @@ func (client ConnectionsClient) ListConsentLinksPreparer(resourceGroupName strin
 // ListConsentLinksSender sends the ListConsentLinks request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) ListConsentLinksSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListConsentLinksResponder handles the response to the ListConsentLinks request. The method always

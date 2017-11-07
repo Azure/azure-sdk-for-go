@@ -860,14 +860,6 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
-// OperationDisplay is the object that describes the operation.
-type OperationDisplay struct {
-	Provider    *string `json:"provider,omitempty"`
-	Operation   *string `json:"operation,omitempty"`
-	Resource    *string `json:"resource,omitempty"`
-	Description *string `json:"description,omitempty"`
-}
-
 // OperationCollection is paged Operation list representation.
 type OperationCollection struct {
 	autorest.Response `json:"-"`
@@ -899,6 +891,14 @@ type OperationContract struct {
 	Name               *string              `json:"name,omitempty"`
 	Method             *string              `json:"method,omitempty"`
 	URLTemplate        *string              `json:"urlTemplate,omitempty"`
+}
+
+// OperationDisplay is the object that describes the operation.
+type OperationDisplay struct {
+	Provider    *string `json:"provider,omitempty"`
+	Operation   *string `json:"operation,omitempty"`
+	Resource    *string `json:"resource,omitempty"`
+	Description *string `json:"description,omitempty"`
 }
 
 // OperationEntityBaseContract is api Operation Entity Base Contract details.

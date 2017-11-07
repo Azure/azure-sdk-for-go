@@ -91,7 +91,9 @@ func (client NodeHealthsClient) GetPreparer(nodeName string, eventsHealthStateFi
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodeHealthsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -159,7 +161,9 @@ func (client NodeHealthsClient) SendPreparer(nodeName string, nodeHealthReport N
 // SendSender sends the Send request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodeHealthsClient) SendSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SendResponder handles the response to the Send request. The method always

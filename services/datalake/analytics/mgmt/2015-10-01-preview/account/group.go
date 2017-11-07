@@ -100,7 +100,9 @@ func (client GroupClient) AddDataLakeStoreAccountPreparer(resourceGroupName stri
 // AddDataLakeStoreAccountSender sends the AddDataLakeStoreAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) AddDataLakeStoreAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // AddDataLakeStoreAccountResponder handles the response to the AddDataLakeStoreAccount request. The method always
@@ -177,7 +179,9 @@ func (client GroupClient) AddStorageAccountPreparer(resourceGroupName string, ac
 // AddStorageAccountSender sends the AddStorageAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) AddStorageAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // AddStorageAccountResponder handles the response to the AddStorageAccount request. The method always
@@ -262,6 +266,7 @@ func (client GroupClient) CreatePreparer(resourceGroupName string, name string, 
 func (client GroupClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -345,6 +350,7 @@ func (client GroupClient) DeletePreparer(resourceGroupName string, accountName s
 func (client GroupClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -413,7 +419,9 @@ func (client GroupClient) DeleteDataLakeStoreAccountPreparer(resourceGroupName s
 // DeleteDataLakeStoreAccountSender sends the DeleteDataLakeStoreAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) DeleteDataLakeStoreAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteDataLakeStoreAccountResponder handles the response to the DeleteDataLakeStoreAccount request. The method always
@@ -480,7 +488,9 @@ func (client GroupClient) DeleteStorageAccountPreparer(resourceGroupName string,
 // DeleteStorageAccountSender sends the DeleteStorageAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) DeleteStorageAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteStorageAccountResponder handles the response to the DeleteStorageAccount request. The method always
@@ -545,7 +555,9 @@ func (client GroupClient) GetPreparer(resourceGroupName string, accountName stri
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -614,7 +626,9 @@ func (client GroupClient) GetDataLakeStoreAccountPreparer(resourceGroupName stri
 // GetDataLakeStoreAccountSender sends the GetDataLakeStoreAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetDataLakeStoreAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDataLakeStoreAccountResponder handles the response to the GetDataLakeStoreAccount request. The method always
@@ -682,7 +696,9 @@ func (client GroupClient) GetStorageAccountPreparer(resourceGroupName string, ac
 // GetStorageAccountSender sends the GetStorageAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetStorageAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetStorageAccountResponder handles the response to the GetStorageAccount request. The method always
@@ -753,7 +769,9 @@ func (client GroupClient) GetStorageContainerPreparer(resourceGroupName string, 
 // GetStorageContainerSender sends the GetStorageContainer request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetStorageContainerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetStorageContainerResponder handles the response to the GetStorageContainer request. The method always
@@ -855,7 +873,9 @@ func (client GroupClient) ListPreparer(filter string, top *int32, skip *int32, e
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -1028,7 +1048,9 @@ func (client GroupClient) ListByResourceGroupPreparer(resourceGroupName string, 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -1203,7 +1225,9 @@ func (client GroupClient) ListDataLakeStoreAccountsPreparer(resourceGroupName st
 // ListDataLakeStoreAccountsSender sends the ListDataLakeStoreAccounts request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListDataLakeStoreAccountsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListDataLakeStoreAccountsResponder handles the response to the ListDataLakeStoreAccounts request. The method always
@@ -1343,7 +1367,9 @@ func (client GroupClient) ListSasTokensPreparer(resourceGroupName string, accoun
 // ListSasTokensSender sends the ListSasTokens request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListSasTokensSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSasTokensResponder handles the response to the ListSasTokens request. The method always
@@ -1518,7 +1544,9 @@ func (client GroupClient) ListStorageAccountsPreparer(resourceGroupName string, 
 // ListStorageAccountsSender sends the ListStorageAccounts request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListStorageAccountsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListStorageAccountsResponder handles the response to the ListStorageAccounts request. The method always
@@ -1656,7 +1684,9 @@ func (client GroupClient) ListStorageContainersPreparer(resourceGroupName string
 // ListStorageContainersSender sends the ListStorageContainers request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListStorageContainersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListStorageContainersResponder handles the response to the ListStorageContainers request. The method always
@@ -1811,6 +1841,7 @@ func (client GroupClient) UpdatePreparer(resourceGroupName string, name string, 
 func (client GroupClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -1883,7 +1914,9 @@ func (client GroupClient) UpdateStorageAccountPreparer(resourceGroupName string,
 // UpdateStorageAccountSender sends the UpdateStorageAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) UpdateStorageAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateStorageAccountResponder handles the response to the UpdateStorageAccount request. The method always

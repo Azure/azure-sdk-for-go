@@ -87,7 +87,9 @@ func (client GlobalDomainRegistrationClient) CheckDomainAvailabilityPreparer(ide
 // CheckDomainAvailabilitySender sends the CheckDomainAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) CheckDomainAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CheckDomainAvailabilityResponder handles the response to the CheckDomainAvailability request. The method always
@@ -148,7 +150,9 @@ func (client GlobalDomainRegistrationClient) GetAllDomainsPreparer() (*http.Requ
 // GetAllDomainsSender sends the GetAllDomains request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) GetAllDomainsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAllDomainsResponder handles the response to the GetAllDomains request. The method always
@@ -278,7 +282,9 @@ func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestPre
 // GetDomainControlCenterSsoRequestSender sends the GetDomainControlCenterSsoRequest request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) GetDomainControlCenterSsoRequestSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDomainControlCenterSsoRequestResponder handles the response to the GetDomainControlCenterSsoRequest request. The method always
@@ -343,7 +349,9 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendationsPreparer(p
 // ListDomainRecommendationsSender sends the ListDomainRecommendations request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) ListDomainRecommendationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListDomainRecommendationsResponder handles the response to the ListDomainRecommendations request. The method always
@@ -477,7 +485,9 @@ func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationPr
 // ValidateDomainPurchaseInformationSender sends the ValidateDomainPurchaseInformation request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalDomainRegistrationClient) ValidateDomainPurchaseInformationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ValidateDomainPurchaseInformationResponder handles the response to the ValidateDomainPurchaseInformation request. The method always

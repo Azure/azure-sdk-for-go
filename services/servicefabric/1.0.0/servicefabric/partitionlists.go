@@ -88,7 +88,9 @@ func (client PartitionListsClient) RepairPreparer(serviceName string) (*http.Req
 // RepairSender sends the Repair request. The method will close the
 // http.Response Body if it receives an error.
 func (client PartitionListsClient) RepairSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RepairResponder handles the response to the Repair request. The method always

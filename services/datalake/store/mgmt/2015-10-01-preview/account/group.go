@@ -108,6 +108,7 @@ func (client GroupClient) CreatePreparer(resourceGroupName string, name string, 
 func (client GroupClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -178,7 +179,9 @@ func (client GroupClient) CreateOrUpdateFirewallRulePreparer(resourceGroupName s
 // CreateOrUpdateFirewallRuleSender sends the CreateOrUpdateFirewallRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) CreateOrUpdateFirewallRuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateFirewallRuleResponder handles the response to the CreateOrUpdateFirewallRule request. The method always
@@ -261,6 +264,7 @@ func (client GroupClient) DeletePreparer(resourceGroupName string, accountName s
 func (client GroupClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -328,7 +332,9 @@ func (client GroupClient) DeleteFirewallRulePreparer(resourceGroupName string, a
 // DeleteFirewallRuleSender sends the DeleteFirewallRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) DeleteFirewallRuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteFirewallRuleResponder handles the response to the DeleteFirewallRule request. The method always
@@ -393,7 +399,9 @@ func (client GroupClient) EnableKeyVaultPreparer(resourceGroupName string, accou
 // EnableKeyVaultSender sends the EnableKeyVault request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) EnableKeyVaultSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // EnableKeyVaultResponder handles the response to the EnableKeyVault request. The method always
@@ -458,7 +466,9 @@ func (client GroupClient) GetPreparer(resourceGroupName string, accountName stri
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -526,7 +536,9 @@ func (client GroupClient) GetFirewallRulePreparer(resourceGroupName string, acco
 // GetFirewallRuleSender sends the GetFirewallRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) GetFirewallRuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetFirewallRuleResponder handles the response to the GetFirewallRule request. The method always
@@ -628,7 +640,9 @@ func (client GroupClient) ListPreparer(filter string, top *int32, skip *int32, e
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -801,7 +815,9 @@ func (client GroupClient) ListByResourceGroupPreparer(resourceGroupName string, 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -936,7 +952,9 @@ func (client GroupClient) ListFirewallRulesPreparer(resourceGroupName string, ac
 // ListFirewallRulesSender sends the ListFirewallRules request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupClient) ListFirewallRulesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListFirewallRulesResponder handles the response to the ListFirewallRules request. The method always
@@ -1091,6 +1109,7 @@ func (client GroupClient) UpdatePreparer(resourceGroupName string, name string, 
 func (client GroupClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 

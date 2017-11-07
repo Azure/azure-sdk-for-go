@@ -19,7 +19,7 @@ package devices
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v11.2.0-beta arm-devices/2016-02-03"
+	return "Azure-SDK-For-Go/v11.2.0-beta services"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

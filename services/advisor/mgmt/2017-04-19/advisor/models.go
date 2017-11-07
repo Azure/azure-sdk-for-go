@@ -21,7 +21,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
-	uuid "github.com/satori/go.uuid"
+	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -62,6 +62,35 @@ const (
 	// Warning specifies the warning state for risk.
 	Warning Risk = "Warning"
 )
+
+// ARMErrorResponseBody is ARM error response body.
+type ARMErrorResponseBody struct {
+	autorest.Response `json:"-"`
+	Message           *string `json:"message,omitempty"`
+	Code              *string `json:"code,omitempty"`
+}
+
+// ConfigData is the Advisor configuration data structure.
+type ConfigData struct {
+	ID         *string               `json:"id,omitempty"`
+	Type       *string               `json:"type,omitempty"`
+	Name       *string               `json:"name,omitempty"`
+	Properties *ConfigDataProperties `json:"properties,omitempty"`
+}
+
+// ConfigDataProperties is the list of property name/value pairs.
+type ConfigDataProperties struct {
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
+	Exclude              *bool                               `json:"exclude,omitempty"`
+	LowCPUThreshold      *string                             `json:"low_cpu_threshold,omitempty"`
+}
+
+// ConfigurationListResult is the list of Advisor configurations.
+type ConfigurationListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]ConfigData `json:"value,omitempty"`
+	NextLink          *string       `json:"nextLink,omitempty"`
+}
 
 // OperationDisplayInfo is the operation supported by Advisor.
 type OperationDisplayInfo struct {

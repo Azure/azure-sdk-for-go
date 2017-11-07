@@ -23,7 +23,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
-	uuid "github.com/satori/go.uuid"
+	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -433,6 +433,16 @@ const (
 	Year RecurrenceFrequency = "Year"
 )
 
+// SalesforceSinkWriteBehavior enumerates the values for salesforce sink write behavior.
+type SalesforceSinkWriteBehavior string
+
+const (
+	// Insert specifies the insert state for salesforce sink write behavior.
+	Insert SalesforceSinkWriteBehavior = "Insert"
+	// Upsert specifies the upsert state for salesforce sink write behavior.
+	Upsert SalesforceSinkWriteBehavior = "Upsert"
+)
+
 // SapHanaAuthenticationType enumerates the values for sap hana authentication type.
 type SapHanaAuthenticationType string
 
@@ -558,10 +568,10 @@ const (
 type Type string
 
 const (
-	// TypeManaged specifies the type managed state for type.
-	TypeManaged Type = "Managed"
-	// TypeSelfHosted specifies the type self hosted state for type.
-	TypeSelfHosted Type = "SelfHosted"
+	// TypeAzureKeyVaultSecret specifies the type azure key vault secret state for type.
+	TypeAzureKeyVaultSecret Type = "AzureKeyVaultSecret"
+	// TypeSecureString specifies the type secure string state for type.
+	TypeSecureString Type = "SecureString"
 )
 
 // TypeActivity enumerates the values for type activity.
@@ -612,14 +622,6 @@ const (
 	TypeWebActivity TypeActivity = "WebActivity"
 )
 
-// TypeAzureKeyVaultReference enumerates the values for type azure key vault reference.
-type TypeAzureKeyVaultReference string
-
-const (
-	// TypeAzureKeyVaultSecret specifies the type azure key vault secret state for type azure key vault reference.
-	TypeAzureKeyVaultSecret TypeAzureKeyVaultReference = "AzureKeyVaultSecret"
-)
-
 // TypeCopySink enumerates the values for type copy sink.
 type TypeCopySink string
 
@@ -644,6 +646,8 @@ const (
 	TypeOdbcSink TypeCopySink = "OdbcSink"
 	// TypeOracleSink specifies the type oracle sink state for type copy sink.
 	TypeOracleSink TypeCopySink = "OracleSink"
+	// TypeSalesforceSink specifies the type salesforce sink state for type copy sink.
+	TypeSalesforceSink TypeCopySink = "SalesforceSink"
 	// TypeSQLDWSink specifies the type sqldw sink state for type copy sink.
 	TypeSQLDWSink TypeCopySink = "SqlDWSink"
 	// TypeSQLSink specifies the type sql sink state for type copy sink.
@@ -658,6 +662,8 @@ const (
 	TypeAmazonRedshiftSource TypeCopySource = "AmazonRedshiftSource"
 	// TypeAzureDataLakeStoreSource specifies the type azure data lake store source state for type copy source.
 	TypeAzureDataLakeStoreSource TypeCopySource = "AzureDataLakeStoreSource"
+	// TypeAzureMySQLSource specifies the type azure my sql source state for type copy source.
+	TypeAzureMySQLSource TypeCopySource = "AzureMySqlSource"
 	// TypeAzureTableSource specifies the type azure table source state for type copy source.
 	TypeAzureTableSource TypeCopySource = "AzureTableSource"
 	// TypeBlobSource specifies the type blob source state for type copy source.
@@ -680,6 +686,10 @@ const (
 	TypeOracleSource TypeCopySource = "OracleSource"
 	// TypeRelationalSource specifies the type relational source state for type copy source.
 	TypeRelationalSource TypeCopySource = "RelationalSource"
+	// TypeSalesforceSource specifies the type salesforce source state for type copy source.
+	TypeSalesforceSource TypeCopySource = "SalesforceSource"
+	// TypeSapCloudForCustomerSource specifies the type sap cloud for customer source state for type copy source.
+	TypeSapCloudForCustomerSource TypeCopySource = "SapCloudForCustomerSource"
 	// TypeSQLDWSource specifies the type sqldw source state for type copy source.
 	TypeSQLDWSource TypeCopySource = "SqlDWSource"
 	// TypeSQLSource specifies the type sql source state for type copy source.
@@ -706,6 +716,8 @@ const (
 	TypeAzureBlob TypeDataset = "AzureBlob"
 	// TypeAzureDataLakeStoreFile specifies the type azure data lake store file state for type dataset.
 	TypeAzureDataLakeStoreFile TypeDataset = "AzureDataLakeStoreFile"
+	// TypeAzureMySQLTable specifies the type azure my sql table state for type dataset.
+	TypeAzureMySQLTable TypeDataset = "AzureMySqlTable"
 	// TypeAzureSearchIndex specifies the type azure search index state for type dataset.
 	TypeAzureSearchIndex TypeDataset = "AzureSearchIndex"
 	// TypeAzureSQLDWTable specifies the type azure sqldw table state for type dataset.
@@ -734,6 +746,10 @@ const (
 	TypeOracleTable TypeDataset = "OracleTable"
 	// TypeRelationalTable specifies the type relational table state for type dataset.
 	TypeRelationalTable TypeDataset = "RelationalTable"
+	// TypeSalesforceObject specifies the type salesforce object state for type dataset.
+	TypeSalesforceObject TypeDataset = "SalesforceObject"
+	// TypeSapCloudForCustomerResource specifies the type sap cloud for customer resource state for type dataset.
+	TypeSapCloudForCustomerResource TypeDataset = "SapCloudForCustomerResource"
 	// TypeSQLServerTable specifies the type sql server table state for type dataset.
 	TypeSQLServerTable TypeDataset = "SqlServerTable"
 	// TypeWebTable specifies the type web table state for type dataset.
@@ -776,6 +792,28 @@ const (
 	TypeTextFormat TypeDatasetStorageFormat = "TextFormat"
 )
 
+// TypeIntegrationRuntime enumerates the values for type integration runtime.
+type TypeIntegrationRuntime string
+
+const (
+	// TypeManaged specifies the type managed state for type integration runtime.
+	TypeManaged TypeIntegrationRuntime = "Managed"
+	// TypeSelfHosted specifies the type self hosted state for type integration runtime.
+	TypeSelfHosted TypeIntegrationRuntime = "SelfHosted"
+)
+
+// TypeIntegrationRuntimeStatus enumerates the values for type integration runtime status.
+type TypeIntegrationRuntimeStatus string
+
+const (
+	// TypeIntegrationRuntimeStatusTypeManaged specifies the type integration runtime status type managed state for type
+	// integration runtime status.
+	TypeIntegrationRuntimeStatusTypeManaged TypeIntegrationRuntimeStatus = "Managed"
+	// TypeIntegrationRuntimeStatusTypeSelfHosted specifies the type integration runtime status type self hosted state for
+	// type integration runtime status.
+	TypeIntegrationRuntimeStatusTypeSelfHosted TypeIntegrationRuntimeStatus = "SelfHosted"
+)
+
 // TypeLinkedService enumerates the values for type linked service.
 type TypeLinkedService string
 
@@ -794,6 +832,8 @@ const (
 	TypeAzureKeyVault TypeLinkedService = "AzureKeyVault"
 	// TypeAzureML specifies the type azure ml state for type linked service.
 	TypeAzureML TypeLinkedService = "AzureML"
+	// TypeAzureMySQL specifies the type azure my sql state for type linked service.
+	TypeAzureMySQL TypeLinkedService = "AzureMySql"
 	// TypeAzureSearch specifies the type azure search state for type linked service.
 	TypeAzureSearch TypeLinkedService = "AzureSearch"
 	// TypeAzureSQLDatabase specifies the type azure sql database state for type linked service.
@@ -840,6 +880,8 @@ const (
 	TypeSalesforce TypeLinkedService = "Salesforce"
 	// TypeSapBW specifies the type sap bw state for type linked service.
 	TypeSapBW TypeLinkedService = "SapBW"
+	// TypeSapCloudForCustomer specifies the type sap cloud for customer state for type linked service.
+	TypeSapCloudForCustomer TypeLinkedService = "SapCloudForCustomer"
 	// TypeSapHana specifies the type sap hana state for type linked service.
 	TypeSapHana TypeLinkedService = "SapHana"
 	// TypeSftp specifies the type sftp state for type linked service.
@@ -1139,6 +1181,11 @@ func (arls AmazonRedshiftLinkedService) AsAmazonS3LinkedService() (*AmazonS3Link
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for AmazonRedshiftLinkedService.
+func (arls AmazonRedshiftLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for AmazonRedshiftLinkedService.
 func (arls AmazonRedshiftLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -1206,6 +1253,11 @@ func (arls AmazonRedshiftLinkedService) AsPostgreSQLLinkedService() (*PostgreSQL
 
 // AsMySQLLinkedService is the LinkedService implementation for AmazonRedshiftLinkedService.
 func (arls AmazonRedshiftLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for AmazonRedshiftLinkedService.
+func (arls AmazonRedshiftLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -1329,6 +1381,11 @@ func (ars AmazonRedshiftSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for AmazonRedshiftSource.
+func (ars AmazonRedshiftSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for AmazonRedshiftSource.
 func (ars AmazonRedshiftSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -1346,6 +1403,16 @@ func (ars AmazonRedshiftSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for AmazonRedshiftSource.
 func (ars AmazonRedshiftSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for AmazonRedshiftSource.
+func (ars AmazonRedshiftSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for AmazonRedshiftSource.
+func (ars AmazonRedshiftSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -1415,8 +1482,23 @@ func (asd AmazonS3Dataset) AsSQLServerTableDataset() (*SQLServerTableDataset, bo
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for AmazonS3Dataset.
+func (asd AmazonS3Dataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for AmazonS3Dataset.
+func (asd AmazonS3Dataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for AmazonS3Dataset.
 func (asd AmazonS3Dataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for AmazonS3Dataset.
+func (asd AmazonS3Dataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -1644,6 +1726,11 @@ func (asls AmazonS3LinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedServ
 	return &asls, true
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for AmazonS3LinkedService.
+func (asls AmazonS3LinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for AmazonS3LinkedService.
 func (asls AmazonS3LinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -1711,6 +1798,11 @@ func (asls AmazonS3LinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinked
 
 // AsMySQLLinkedService is the LinkedService implementation for AmazonS3LinkedService.
 func (asls AmazonS3LinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for AmazonS3LinkedService.
+func (asls AmazonS3LinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -1893,6 +1985,11 @@ func (abls AzureBatchLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedSe
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for AzureBatchLinkedService.
+func (abls AzureBatchLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for AzureBatchLinkedService.
 func (abls AzureBatchLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -1960,6 +2057,11 @@ func (abls AzureBatchLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLink
 
 // AsMySQLLinkedService is the LinkedService implementation for AzureBatchLinkedService.
 func (abls AzureBatchLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for AzureBatchLinkedService.
+func (abls AzureBatchLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -2069,8 +2171,23 @@ func (abd AzureBlobDataset) AsSQLServerTableDataset() (*SQLServerTableDataset, b
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for AzureBlobDataset.
+func (abd AzureBlobDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for AzureBlobDataset.
+func (abd AzureBlobDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for AzureBlobDataset.
 func (abd AzureBlobDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for AzureBlobDataset.
+func (abd AzureBlobDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -2287,6 +2404,11 @@ func (adlals AzureDataLakeAnalyticsLinkedService) AsAmazonS3LinkedService() (*Am
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for AzureDataLakeAnalyticsLinkedService.
+func (adlals AzureDataLakeAnalyticsLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for AzureDataLakeAnalyticsLinkedService.
 func (adlals AzureDataLakeAnalyticsLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -2354,6 +2476,11 @@ func (adlals AzureDataLakeAnalyticsLinkedService) AsPostgreSQLLinkedService() (*
 
 // AsMySQLLinkedService is the LinkedService implementation for AzureDataLakeAnalyticsLinkedService.
 func (adlals AzureDataLakeAnalyticsLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for AzureDataLakeAnalyticsLinkedService.
+func (adlals AzureDataLakeAnalyticsLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -2465,8 +2592,23 @@ func (adlsd AzureDataLakeStoreDataset) AsSQLServerTableDataset() (*SQLServerTabl
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for AzureDataLakeStoreDataset.
+func (adlsd AzureDataLakeStoreDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for AzureDataLakeStoreDataset.
+func (adlsd AzureDataLakeStoreDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for AzureDataLakeStoreDataset.
 func (adlsd AzureDataLakeStoreDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for AzureDataLakeStoreDataset.
+func (adlsd AzureDataLakeStoreDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -2683,6 +2825,11 @@ func (adlsls AzureDataLakeStoreLinkedService) AsAmazonS3LinkedService() (*Amazon
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for AzureDataLakeStoreLinkedService.
+func (adlsls AzureDataLakeStoreLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for AzureDataLakeStoreLinkedService.
 func (adlsls AzureDataLakeStoreLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -2750,6 +2897,11 @@ func (adlsls AzureDataLakeStoreLinkedService) AsPostgreSQLLinkedService() (*Post
 
 // AsMySQLLinkedService is the LinkedService implementation for AzureDataLakeStoreLinkedService.
 func (adlsls AzureDataLakeStoreLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for AzureDataLakeStoreLinkedService.
+func (adlsls AzureDataLakeStoreLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -2839,6 +2991,11 @@ func (adlss AzureDataLakeStoreSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(adlss),
 	})
+}
+
+// AsSalesforceSink is the CopySink implementation for AzureDataLakeStoreSink.
+func (adlss AzureDataLakeStoreSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return nil, false
 }
 
 // AsDynamicsSink is the CopySink implementation for AzureDataLakeStoreSink.
@@ -2955,6 +3112,11 @@ func (adlss AzureDataLakeStoreSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for AzureDataLakeStoreSource.
+func (adlss AzureDataLakeStoreSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for AzureDataLakeStoreSource.
 func (adlss AzureDataLakeStoreSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -2972,6 +3134,16 @@ func (adlss AzureDataLakeStoreSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for AzureDataLakeStoreSource.
 func (adlss AzureDataLakeStoreSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for AzureDataLakeStoreSource.
+func (adlss AzureDataLakeStoreSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for AzureDataLakeStoreSource.
+func (adlss AzureDataLakeStoreSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -3074,6 +3246,11 @@ func (akvls AzureKeyVaultLinkedService) AsAmazonS3LinkedService() (*AmazonS3Link
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for AzureKeyVaultLinkedService.
+func (akvls AzureKeyVaultLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for AzureKeyVaultLinkedService.
 func (akvls AzureKeyVaultLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -3144,6 +3321,11 @@ func (akvls AzureKeyVaultLinkedService) AsMySQLLinkedService() (*MySQLLinkedServ
 	return nil, false
 }
 
+// AsAzureMySQLLinkedService is the LinkedService implementation for AzureKeyVaultLinkedService.
+func (akvls AzureKeyVaultLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
+	return nil, false
+}
+
 // AsOracleLinkedService is the LinkedService implementation for AzureKeyVaultLinkedService.
 func (akvls AzureKeyVaultLinkedService) AsOracleLinkedService() (*OracleLinkedService, bool) {
 	return nil, false
@@ -3204,52 +3386,12 @@ type AzureKeyVaultLinkedServiceTypeProperties struct {
 	BaseURL *map[string]interface{} `json:"baseUrl,omitempty"`
 }
 
-// AzureKeyVaultReference is a reference to an object in Azure Key Vault.
-type AzureKeyVaultReference interface {
-	AsAzureKeyVaultSecretReference() (*AzureKeyVaultSecretReference, bool)
-}
-
-func unmarshalAzureKeyVaultReference(body []byte) (AzureKeyVaultReference, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["type"] {
-	case string(TypeAzureKeyVaultSecret):
-		var akvsr AzureKeyVaultSecretReference
-		err := json.Unmarshal(body, &akvsr)
-		return akvsr, err
-	default:
-		return nil, errors.New("Unsupported type")
-	}
-}
-func unmarshalAzureKeyVaultReferenceArray(body []byte) ([]AzureKeyVaultReference, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	akvrArray := make([]AzureKeyVaultReference, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		akvr, err := unmarshalAzureKeyVaultReference(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		akvrArray[index] = akvr
-	}
-	return akvrArray, nil
-}
-
-// AzureKeyVaultSecretReference is azure Key Vault Secret properties.
+// AzureKeyVaultSecretReference is azure Key Vault secret reference.
 type AzureKeyVaultSecretReference struct {
-	Store         *LinkedServiceReference    `json:"store,omitempty"`
-	Type          TypeAzureKeyVaultReference `json:"type,omitempty"`
-	SecretName    *map[string]interface{}    `json:"secretName,omitempty"`
-	SecretVersion *map[string]interface{}    `json:"secretVersion,omitempty"`
+	Type          Type                    `json:"type,omitempty"`
+	Store         *LinkedServiceReference `json:"store,omitempty"`
+	SecretName    *map[string]interface{} `json:"secretName,omitempty"`
+	SecretVersion *map[string]interface{} `json:"secretVersion,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AzureKeyVaultSecretReference.
@@ -3263,7 +3405,12 @@ func (akvsr AzureKeyVaultSecretReference) MarshalJSON() ([]byte, error) {
 	})
 }
 
-// AsAzureKeyVaultSecretReference is the AzureKeyVaultReference implementation for AzureKeyVaultSecretReference.
+// AsSecureString is the SecretBase implementation for AzureKeyVaultSecretReference.
+func (akvsr AzureKeyVaultSecretReference) AsSecureString() (*SecureString, bool) {
+	return nil, false
+}
+
+// AsAzureKeyVaultSecretReference is the SecretBase implementation for AzureKeyVaultSecretReference.
 func (akvsr AzureKeyVaultSecretReference) AsAzureKeyVaultSecretReference() (*AzureKeyVaultSecretReference, bool) {
 	return &akvsr, true
 }
@@ -3476,6 +3623,11 @@ func (amls AzureMLLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedServi
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for AzureMLLinkedService.
+func (amls AzureMLLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for AzureMLLinkedService.
 func (amls AzureMLLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -3543,6 +3695,11 @@ func (amls AzureMLLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedS
 
 // AsMySQLLinkedService is the LinkedService implementation for AzureMLLinkedService.
 func (amls AzureMLLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for AzureMLLinkedService.
+func (amls AzureMLLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -3752,6 +3909,471 @@ type AzureMLWebServiceFile struct {
 	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
 }
 
+// AzureMySQLLinkedService is azure MySQL database linked service.
+type AzureMySQLLinkedService struct {
+	ConnectVia                             *IntegrationRuntimeReference `json:"connectVia,omitempty"`
+	Description                            *string                      `json:"description,omitempty"`
+	Type                                   TypeLinkedService            `json:"type,omitempty"`
+	*AzureMySQLLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) MarshalJSON() ([]byte, error) {
+	amsls.Type = TypeAzureMySQL
+	type Alias AzureMySQLLinkedService
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(amsls),
+	})
+}
+
+// AsAzureDataLakeAnalyticsLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsAzureDataLakeAnalyticsLinkedService() (*AzureDataLakeAnalyticsLinkedService, bool) {
+	return nil, false
+}
+
+// AsHDInsightOnDemandLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsHDInsightOnDemandLinkedService() (*HDInsightOnDemandLinkedService, bool) {
+	return nil, false
+}
+
+// AsSapHanaLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsSapHanaLinkedService() (*SapHanaLinkedService, bool) {
+	return nil, false
+}
+
+// AsSapBWLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsSapBWLinkedService() (*SapBWLinkedService, bool) {
+	return nil, false
+}
+
+// AsSftpServerLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsSftpServerLinkedService() (*SftpServerLinkedService, bool) {
+	return nil, false
+}
+
+// AsFtpServerLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsFtpServerLinkedService() (*FtpServerLinkedService, bool) {
+	return nil, false
+}
+
+// AsHTTPLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsHTTPLinkedService() (*HTTPLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureSearchLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsAzureSearchLinkedService() (*AzureSearchLinkedService, bool) {
+	return nil, false
+}
+
+// AsCustomDataSourceLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsCustomDataSourceLinkedService() (*CustomDataSourceLinkedService, bool) {
+	return nil, false
+}
+
+// AsAmazonRedshiftLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsAmazonRedshiftLinkedService() (*AmazonRedshiftLinkedService, bool) {
+	return nil, false
+}
+
+// AsAmazonS3LinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
+// AsSalesforceLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsAzureDataLakeStoreLinkedService() (*AzureDataLakeStoreLinkedService, bool) {
+	return nil, false
+}
+
+// AsMongoDbLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsMongoDbLinkedService() (*MongoDbLinkedService, bool) {
+	return nil, false
+}
+
+// AsCassandraLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsCassandraLinkedService() (*CassandraLinkedService, bool) {
+	return nil, false
+}
+
+// AsWebLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsWebLinkedService() (*WebLinkedService, bool) {
+	return nil, false
+}
+
+// AsODataLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsODataLinkedService() (*ODataLinkedService, bool) {
+	return nil, false
+}
+
+// AsHdfsLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsHdfsLinkedService() (*HdfsLinkedService, bool) {
+	return nil, false
+}
+
+// AsOdbcLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsOdbcLinkedService() (*OdbcLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMLLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsAzureMLLinkedService() (*AzureMLLinkedService, bool) {
+	return nil, false
+}
+
+// AsTeradataLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsTeradataLinkedService() (*TeradataLinkedService, bool) {
+	return nil, false
+}
+
+// AsDb2LinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsDb2LinkedService() (*Db2LinkedService, bool) {
+	return nil, false
+}
+
+// AsSybaseLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsSybaseLinkedService() (*SybaseLinkedService, bool) {
+	return nil, false
+}
+
+// AsPostgreSQLLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsMySQLLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
+	return &amsls, true
+}
+
+// AsOracleLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsOracleLinkedService() (*OracleLinkedService, bool) {
+	return nil, false
+}
+
+// AsFileServerLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsFileServerLinkedService() (*FileServerLinkedService, bool) {
+	return nil, false
+}
+
+// AsHDInsightLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsHDInsightLinkedService() (*HDInsightLinkedService, bool) {
+	return nil, false
+}
+
+// AsDynamicsLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsDynamicsLinkedService() (*DynamicsLinkedService, bool) {
+	return nil, false
+}
+
+// AsCosmosDbLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsCosmosDbLinkedService() (*CosmosDbLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureKeyVaultLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsAzureKeyVaultLinkedService() (*AzureKeyVaultLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureBatchLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsAzureBatchLinkedService() (*AzureBatchLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureSQLDatabaseLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsAzureSQLDatabaseLinkedService() (*AzureSQLDatabaseLinkedService, bool) {
+	return nil, false
+}
+
+// AsSQLServerLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsSQLServerLinkedService() (*SQLServerLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureSQLDWLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsAzureSQLDWLinkedService() (*AzureSQLDWLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureStorageLinkedService is the LinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsAzureStorageLinkedService() (*AzureStorageLinkedService, bool) {
+	return nil, false
+}
+
+// AzureMySQLLinkedServiceTypeProperties is azure MySQL database linked service properties.
+type AzureMySQLLinkedServiceTypeProperties struct {
+	ConnectionString    *SecureString           `json:"connectionString,omitempty"`
+	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// AzureMySQLSource is a copy activity Azure MySQL source.
+type AzureMySQLSource struct {
+	SourceRetryCount *map[string]interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryWait  *map[string]interface{} `json:"sourceRetryWait,omitempty"`
+	Type             TypeCopySource          `json:"type,omitempty"`
+	Query            *map[string]interface{} `json:"query,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureMySQLSource.
+func (amss AzureMySQLSource) MarshalJSON() ([]byte, error) {
+	amss.Type = TypeAzureMySQLSource
+	type Alias AzureMySQLSource
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(amss),
+	})
+}
+
+// AsAmazonRedshiftSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsHTTPSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsHTTPSource() (*HTTPSource, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsAzureDataLakeStoreSource() (*AzureDataLakeStoreSource, bool) {
+	return nil, false
+}
+
+// AsMongoDbSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsMongoDbSource() (*MongoDbSource, bool) {
+	return nil, false
+}
+
+// AsCassandraSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsCassandraSource() (*CassandraSource, bool) {
+	return nil, false
+}
+
+// AsWebSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsWebSource() (*WebSource, bool) {
+	return nil, false
+}
+
+// AsOracleSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsOracleSource() (*OracleSource, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return &amss, true
+}
+
+// AsHdfsSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsHdfsSource() (*HdfsSource, bool) {
+	return nil, false
+}
+
+// AsFileSystemSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsFileSystemSource() (*FileSystemSource, bool) {
+	return nil, false
+}
+
+// AsSQLDWSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsSQLDWSource() (*SQLDWSource, bool) {
+	return nil, false
+}
+
+// AsSQLSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsSalesforceSource() (*SalesforceSource, bool) {
+	return nil, false
+}
+
+// AsRelationalSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsRelationalSource() (*RelationalSource, bool) {
+	return nil, false
+}
+
+// AsDynamicsSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsDynamicsSource() (*DynamicsSource, bool) {
+	return nil, false
+}
+
+// AsDocumentDbCollectionSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsDocumentDbCollectionSource() (*DocumentDbCollectionSource, bool) {
+	return nil, false
+}
+
+// AsBlobSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsBlobSource() (*BlobSource, bool) {
+	return nil, false
+}
+
+// AsAzureTableSource is the CopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsAzureTableSource() (*AzureTableSource, bool) {
+	return nil, false
+}
+
+// AzureMySQLTableDataset is the Azure MySQL database dataset.
+type AzureMySQLTableDataset struct {
+	Description                           *string                             `json:"description,omitempty"`
+	Structure                             *map[string]interface{}             `json:"structure,omitempty"`
+	LinkedServiceName                     *LinkedServiceReference             `json:"linkedServiceName,omitempty"`
+	Parameters                            *map[string]*ParameterSpecification `json:"parameters,omitempty"`
+	Type                                  TypeDataset                         `json:"type,omitempty"`
+	*AzureMySQLTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) MarshalJSON() ([]byte, error) {
+	amstd.Type = TypeAzureMySQLTable
+	type Alias AzureMySQLTableDataset
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(amstd),
+	})
+}
+
+// AsHTTPDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsHTTPDataset() (*HTTPDataset, bool) {
+	return nil, false
+}
+
+// AsAzureSearchIndexDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsAzureSearchIndexDataset() (*AzureSearchIndexDataset, bool) {
+	return nil, false
+}
+
+// AsWebTableDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsWebTableDataset() (*WebTableDataset, bool) {
+	return nil, false
+}
+
+// AsSQLServerTableDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsSQLServerTableDataset() (*SQLServerTableDataset, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
+// AsRelationalTableDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
+	return &amstd, true
+}
+
+// AsOracleTableDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsOracleTableDataset() (*OracleTableDataset, bool) {
+	return nil, false
+}
+
+// AsODataResourceDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsODataResourceDataset() (*ODataResourceDataset, bool) {
+	return nil, false
+}
+
+// AsMongoDbCollectionDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsMongoDbCollectionDataset() (*MongoDbCollectionDataset, bool) {
+	return nil, false
+}
+
+// AsFileShareDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsFileShareDataset() (*FileShareDataset, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsAzureDataLakeStoreDataset() (*AzureDataLakeStoreDataset, bool) {
+	return nil, false
+}
+
+// AsDynamicsEntityDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsDynamicsEntityDataset() (*DynamicsEntityDataset, bool) {
+	return nil, false
+}
+
+// AsDocumentDbCollectionDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsDocumentDbCollectionDataset() (*DocumentDbCollectionDataset, bool) {
+	return nil, false
+}
+
+// AsCustomDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsCustomDataset() (*CustomDataset, bool) {
+	return nil, false
+}
+
+// AsCassandraTableDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsCassandraTableDataset() (*CassandraTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureSQLDWTableDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsAzureSQLDWTableDataset() (*AzureSQLDWTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureSQLTableDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsAzureSQLTableDataset() (*AzureSQLTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureTableDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsAzureTableDataset() (*AzureTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureBlobDataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsAzureBlobDataset() (*AzureBlobDataset, bool) {
+	return nil, false
+}
+
+// AsAmazonS3Dataset is the Dataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsAmazonS3Dataset() (*AmazonS3Dataset, bool) {
+	return nil, false
+}
+
+// AzureMySQLTableDatasetTypeProperties is azure MySQL database dataset properties.
+type AzureMySQLTableDatasetTypeProperties struct {
+	TableName *map[string]interface{} `json:"tableName,omitempty"`
+}
+
 // AzureQueueSink is a copy activity Azure Queue sink.
 type AzureQueueSink struct {
 	WriteBatchSize    *map[string]interface{} `json:"writeBatchSize,omitempty"`
@@ -3770,6 +4392,11 @@ func (aqs AzureQueueSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(aqs),
 	})
+}
+
+// AsSalesforceSink is the CopySink implementation for AzureQueueSink.
+func (aqs AzureQueueSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return nil, false
 }
 
 // AsDynamicsSink is the CopySink implementation for AzureQueueSink.
@@ -3873,8 +4500,23 @@ func (asid AzureSearchIndexDataset) AsSQLServerTableDataset() (*SQLServerTableDa
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for AzureSearchIndexDataset.
+func (asid AzureSearchIndexDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for AzureSearchIndexDataset.
+func (asid AzureSearchIndexDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for AzureSearchIndexDataset.
 func (asid AzureSearchIndexDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for AzureSearchIndexDataset.
+func (asid AzureSearchIndexDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -3972,6 +4614,11 @@ func (asis AzureSearchIndexSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(asis),
 	})
+}
+
+// AsSalesforceSink is the CopySink implementation for AzureSearchIndexSink.
+func (asis AzureSearchIndexSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return nil, false
 }
 
 // AsDynamicsSink is the CopySink implementation for AzureSearchIndexSink.
@@ -4108,6 +4755,11 @@ func (asls AzureSearchLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedS
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for AzureSearchLinkedService.
+func (asls AzureSearchLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for AzureSearchLinkedService.
 func (asls AzureSearchLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -4175,6 +4827,11 @@ func (asls AzureSearchLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLin
 
 // AsMySQLLinkedService is the LinkedService implementation for AzureSearchLinkedService.
 func (asls AzureSearchLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for AzureSearchLinkedService.
+func (asls AzureSearchLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -4314,6 +4971,11 @@ func (asdls AzureSQLDatabaseLinkedService) AsAmazonS3LinkedService() (*AmazonS3L
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for AzureSQLDatabaseLinkedService.
+func (asdls AzureSQLDatabaseLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for AzureSQLDatabaseLinkedService.
 func (asdls AzureSQLDatabaseLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -4381,6 +5043,11 @@ func (asdls AzureSQLDatabaseLinkedService) AsPostgreSQLLinkedService() (*Postgre
 
 // AsMySQLLinkedService is the LinkedService implementation for AzureSQLDatabaseLinkedService.
 func (asdls AzureSQLDatabaseLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for AzureSQLDatabaseLinkedService.
+func (asdls AzureSQLDatabaseLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -4519,6 +5186,11 @@ func (asdls AzureSQLDWLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedS
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for AzureSQLDWLinkedService.
+func (asdls AzureSQLDWLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for AzureSQLDWLinkedService.
 func (asdls AzureSQLDWLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -4586,6 +5258,11 @@ func (asdls AzureSQLDWLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLin
 
 // AsMySQLLinkedService is the LinkedService implementation for AzureSQLDWLinkedService.
 func (asdls AzureSQLDWLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for AzureSQLDWLinkedService.
+func (asdls AzureSQLDWLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -4691,8 +5368,23 @@ func (asdtd AzureSQLDWTableDataset) AsSQLServerTableDataset() (*SQLServerTableDa
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for AzureSQLDWTableDataset.
+func (asdtd AzureSQLDWTableDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for AzureSQLDWTableDataset.
+func (asdtd AzureSQLDWTableDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for AzureSQLDWTableDataset.
 func (asdtd AzureSQLDWTableDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for AzureSQLDWTableDataset.
+func (asdtd AzureSQLDWTableDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -4812,8 +5504,23 @@ func (astd AzureSQLTableDataset) AsSQLServerTableDataset() (*SQLServerTableDatas
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for AzureSQLTableDataset.
+func (astd AzureSQLTableDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for AzureSQLTableDataset.
+func (astd AzureSQLTableDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for AzureSQLTableDataset.
 func (astd AzureSQLTableDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for AzureSQLTableDataset.
+func (astd AzureSQLTableDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -4966,6 +5673,11 @@ func (asls AzureStorageLinkedService) AsAmazonS3LinkedService() (*AmazonS3Linked
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for AzureStorageLinkedService.
+func (asls AzureStorageLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for AzureStorageLinkedService.
 func (asls AzureStorageLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -5033,6 +5745,11 @@ func (asls AzureStorageLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLi
 
 // AsMySQLLinkedService is the LinkedService implementation for AzureStorageLinkedService.
 func (asls AzureStorageLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for AzureStorageLinkedService.
+func (asls AzureStorageLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -5139,8 +5856,23 @@ func (atd AzureTableDataset) AsSQLServerTableDataset() (*SQLServerTableDataset, 
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for AzureTableDataset.
+func (atd AzureTableDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for AzureTableDataset.
+func (atd AzureTableDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for AzureTableDataset.
 func (atd AzureTableDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for AzureTableDataset.
+func (atd AzureTableDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -5241,6 +5973,11 @@ func (ats AzureTableSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(ats),
 	})
+}
+
+// AsSalesforceSink is the CopySink implementation for AzureTableSink.
+func (ats AzureTableSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return nil, false
 }
 
 // AsDynamicsSink is the CopySink implementation for AzureTableSink.
@@ -5358,6 +6095,11 @@ func (ats AzureTableSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for AzureTableSource.
+func (ats AzureTableSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for AzureTableSource.
 func (ats AzureTableSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -5375,6 +6117,16 @@ func (ats AzureTableSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for AzureTableSource.
 func (ats AzureTableSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for AzureTableSource.
+func (ats AzureTableSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for AzureTableSource.
+func (ats AzureTableSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -5425,6 +6177,11 @@ func (bs BlobSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(bs),
 	})
+}
+
+// AsSalesforceSink is the CopySink implementation for BlobSink.
+func (bs BlobSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return nil, false
 }
 
 // AsDynamicsSink is the CopySink implementation for BlobSink.
@@ -5543,6 +6300,11 @@ func (bs BlobSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for BlobSource.
+func (bs BlobSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for BlobSource.
 func (bs BlobSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -5560,6 +6322,16 @@ func (bs BlobSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for BlobSource.
 func (bs BlobSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for BlobSource.
+func (bs BlobSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for BlobSource.
+func (bs BlobSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -5699,6 +6471,11 @@ func (cls CassandraLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedServ
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for CassandraLinkedService.
+func (cls CassandraLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for CassandraLinkedService.
 func (cls CassandraLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -5766,6 +6543,11 @@ func (cls CassandraLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinked
 
 // AsMySQLLinkedService is the LinkedService implementation for CassandraLinkedService.
 func (cls CassandraLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for CassandraLinkedService.
+func (cls CassandraLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -5889,6 +6671,11 @@ func (cs CassandraSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for CassandraSource.
+func (cs CassandraSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for CassandraSource.
 func (cs CassandraSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -5906,6 +6693,16 @@ func (cs CassandraSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for CassandraSource.
 func (cs CassandraSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for CassandraSource.
+func (cs CassandraSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for CassandraSource.
+func (cs CassandraSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -5975,8 +6772,23 @@ func (ctd CassandraTableDataset) AsSQLServerTableDataset() (*SQLServerTableDatas
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for CassandraTableDataset.
+func (ctd CassandraTableDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for CassandraTableDataset.
+func (ctd CassandraTableDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for CassandraTableDataset.
 func (ctd CassandraTableDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for CassandraTableDataset.
+func (ctd CassandraTableDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -6423,6 +7235,7 @@ func (catp *CopyActivityTypeProperties) UnmarshalJSON(body []byte) error {
 
 // CopySink is a copy activity sink.
 type CopySink interface {
+	AsSalesforceSink() (*SalesforceSink, bool)
 	AsDynamicsSink() (*DynamicsSink, bool)
 	AsOdbcSink() (*OdbcSink, bool)
 	AsAzureSearchIndexSink() (*AzureSearchIndexSink, bool)
@@ -6445,6 +7258,10 @@ func unmarshalCopySink(body []byte) (CopySink, error) {
 	}
 
 	switch m["type"] {
+	case string(TypeSalesforceSink):
+		var ss SalesforceSink
+		err := json.Unmarshal(body, &ss)
+		return ss, err
 	case string(TypeDynamicsSink):
 		var ds DynamicsSink
 		err := json.Unmarshal(body, &ds)
@@ -6525,10 +7342,13 @@ type CopySource interface {
 	AsCassandraSource() (*CassandraSource, bool)
 	AsWebSource() (*WebSource, bool)
 	AsOracleSource() (*OracleSource, bool)
+	AsAzureMySQLSource() (*AzureMySQLSource, bool)
 	AsHdfsSource() (*HdfsSource, bool)
 	AsFileSystemSource() (*FileSystemSource, bool)
 	AsSQLDWSource() (*SQLDWSource, bool)
 	AsSQLSource() (*SQLSource, bool)
+	AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool)
+	AsSalesforceSource() (*SalesforceSource, bool)
 	AsRelationalSource() (*RelationalSource, bool)
 	AsDynamicsSource() (*DynamicsSource, bool)
 	AsDocumentDbCollectionSource() (*DocumentDbCollectionSource, bool)
@@ -6572,6 +7392,10 @@ func unmarshalCopySource(body []byte) (CopySource, error) {
 		var osVar OracleSource
 		err := json.Unmarshal(body, &osVar)
 		return osVar, err
+	case string(TypeAzureMySQLSource):
+		var amss AzureMySQLSource
+		err := json.Unmarshal(body, &amss)
+		return amss, err
 	case string(TypeHdfsSource):
 		var hs HdfsSource
 		err := json.Unmarshal(body, &hs)
@@ -6586,6 +7410,14 @@ func unmarshalCopySource(body []byte) (CopySource, error) {
 		return sds, err
 	case string(TypeSQLSource):
 		var ss SQLSource
+		err := json.Unmarshal(body, &ss)
+		return ss, err
+	case string(TypeSapCloudForCustomerSource):
+		var scfcs SapCloudForCustomerSource
+		err := json.Unmarshal(body, &scfcs)
+		return scfcs, err
+	case string(TypeSalesforceSource):
+		var ss SalesforceSource
 		err := json.Unmarshal(body, &ss)
 		return ss, err
 	case string(TypeRelationalSource):
@@ -6745,6 +7577,11 @@ func (cdls CosmosDbLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedServ
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for CosmosDbLinkedService.
+func (cdls CosmosDbLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for CosmosDbLinkedService.
 func (cdls CosmosDbLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -6812,6 +7649,11 @@ func (cdls CosmosDbLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinked
 
 // AsMySQLLinkedService is the LinkedService implementation for CosmosDbLinkedService.
 func (cdls CosmosDbLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for CosmosDbLinkedService.
+func (cdls CosmosDbLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -7065,8 +7907,23 @@ func (cd CustomDataset) AsSQLServerTableDataset() (*SQLServerTableDataset, bool)
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for CustomDataset.
+func (cd CustomDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for CustomDataset.
+func (cd CustomDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for CustomDataset.
 func (cd CustomDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for CustomDataset.
+func (cd CustomDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -7214,6 +8071,11 @@ func (cdsls CustomDataSourceLinkedService) AsAmazonS3LinkedService() (*AmazonS3L
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for CustomDataSourceLinkedService.
+func (cdsls CustomDataSourceLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for CustomDataSourceLinkedService.
 func (cdsls CustomDataSourceLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -7281,6 +8143,11 @@ func (cdsls CustomDataSourceLinkedService) AsPostgreSQLLinkedService() (*Postgre
 
 // AsMySQLLinkedService is the LinkedService implementation for CustomDataSourceLinkedService.
 func (cdsls CustomDataSourceLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for CustomDataSourceLinkedService.
+func (cdsls CustomDataSourceLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -7484,7 +8351,10 @@ type Dataset interface {
 	AsAzureSearchIndexDataset() (*AzureSearchIndexDataset, bool)
 	AsWebTableDataset() (*WebTableDataset, bool)
 	AsSQLServerTableDataset() (*SQLServerTableDataset, bool)
+	AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool)
+	AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool)
 	AsRelationalTableDataset() (*RelationalTableDataset, bool)
+	AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool)
 	AsOracleTableDataset() (*OracleTableDataset, bool)
 	AsODataResourceDataset() (*ODataResourceDataset, bool)
 	AsMongoDbCollectionDataset() (*MongoDbCollectionDataset, bool)
@@ -7525,10 +8395,22 @@ func unmarshalDataset(body []byte) (Dataset, error) {
 		var sstd SQLServerTableDataset
 		err := json.Unmarshal(body, &sstd)
 		return sstd, err
+	case string(TypeSapCloudForCustomerResource):
+		var scfcrd SapCloudForCustomerResourceDataset
+		err := json.Unmarshal(body, &scfcrd)
+		return scfcrd, err
+	case string(TypeSalesforceObject):
+		var sod SalesforceObjectDataset
+		err := json.Unmarshal(body, &sod)
+		return sod, err
 	case string(TypeRelationalTable):
 		var rtd RelationalTableDataset
 		err := json.Unmarshal(body, &rtd)
 		return rtd, err
+	case string(TypeAzureMySQLTable):
+		var amstd AzureMySQLTableDataset
+		err := json.Unmarshal(body, &amstd)
+		return amstd, err
 	case string(TypeOracleTable):
 		var otd OracleTableDataset
 		err := json.Unmarshal(body, &otd)
@@ -8084,6 +8966,11 @@ func (d2ls Db2LinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService, 
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for Db2LinkedService.
+func (d2ls Db2LinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for Db2LinkedService.
 func (d2ls Db2LinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -8151,6 +9038,11 @@ func (d2ls Db2LinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedServi
 
 // AsMySQLLinkedService is the LinkedService implementation for Db2LinkedService.
 func (d2ls Db2LinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for Db2LinkedService.
+func (d2ls Db2LinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -8268,8 +9160,23 @@ func (ddcd DocumentDbCollectionDataset) AsSQLServerTableDataset() (*SQLServerTab
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for DocumentDbCollectionDataset.
+func (ddcd DocumentDbCollectionDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for DocumentDbCollectionDataset.
+func (ddcd DocumentDbCollectionDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for DocumentDbCollectionDataset.
 func (ddcd DocumentDbCollectionDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for DocumentDbCollectionDataset.
+func (ddcd DocumentDbCollectionDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -8367,6 +9274,11 @@ func (ddcs DocumentDbCollectionSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(ddcs),
 	})
+}
+
+// AsSalesforceSink is the CopySink implementation for DocumentDbCollectionSink.
+func (ddcs DocumentDbCollectionSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return nil, false
 }
 
 // AsDynamicsSink is the CopySink implementation for DocumentDbCollectionSink.
@@ -8484,6 +9396,11 @@ func (ddcs DocumentDbCollectionSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for DocumentDbCollectionSource.
+func (ddcs DocumentDbCollectionSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for DocumentDbCollectionSource.
 func (ddcs DocumentDbCollectionSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -8501,6 +9418,16 @@ func (ddcs DocumentDbCollectionSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for DocumentDbCollectionSource.
 func (ddcs DocumentDbCollectionSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for DocumentDbCollectionSource.
+func (ddcs DocumentDbCollectionSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for DocumentDbCollectionSource.
+func (ddcs DocumentDbCollectionSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -8570,8 +9497,23 @@ func (ded DynamicsEntityDataset) AsSQLServerTableDataset() (*SQLServerTableDatas
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for DynamicsEntityDataset.
+func (ded DynamicsEntityDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for DynamicsEntityDataset.
+func (ded DynamicsEntityDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for DynamicsEntityDataset.
 func (ded DynamicsEntityDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for DynamicsEntityDataset.
+func (ded DynamicsEntityDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -8724,6 +9666,11 @@ func (dls DynamicsLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedServi
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for DynamicsLinkedService.
+func (dls DynamicsLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for DynamicsLinkedService.
 func (dls DynamicsLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -8791,6 +9738,11 @@ func (dls DynamicsLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedS
 
 // AsMySQLLinkedService is the LinkedService implementation for DynamicsLinkedService.
 func (dls DynamicsLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for DynamicsLinkedService.
+func (dls DynamicsLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -8880,6 +9832,11 @@ func (ds DynamicsSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(ds),
 	})
+}
+
+// AsSalesforceSink is the CopySink implementation for DynamicsSink.
+func (ds DynamicsSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return nil, false
 }
 
 // AsDynamicsSink is the CopySink implementation for DynamicsSink.
@@ -8996,6 +9953,11 @@ func (ds DynamicsSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for DynamicsSource.
+func (ds DynamicsSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for DynamicsSource.
 func (ds DynamicsSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -9013,6 +9975,16 @@ func (ds DynamicsSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for DynamicsSource.
 func (ds DynamicsSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for DynamicsSource.
+func (ds DynamicsSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for DynamicsSource.
+func (ds DynamicsSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -9438,6 +10410,11 @@ func (fsls FileServerLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedSe
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for FileServerLinkedService.
+func (fsls FileServerLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for FileServerLinkedService.
 func (fsls FileServerLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -9505,6 +10482,11 @@ func (fsls FileServerLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLink
 
 // AsMySQLLinkedService is the LinkedService implementation for FileServerLinkedService.
 func (fsls FileServerLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for FileServerLinkedService.
+func (fsls FileServerLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -9612,8 +10594,23 @@ func (fsd FileShareDataset) AsSQLServerTableDataset() (*SQLServerTableDataset, b
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for FileShareDataset.
+func (fsd FileShareDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for FileShareDataset.
+func (fsd FileShareDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for FileShareDataset.
 func (fsd FileShareDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for FileShareDataset.
+func (fsd FileShareDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -9777,6 +10774,11 @@ func (fss FileSystemSink) MarshalJSON() ([]byte, error) {
 	})
 }
 
+// AsSalesforceSink is the CopySink implementation for FileSystemSink.
+func (fss FileSystemSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return nil, false
+}
+
 // AsDynamicsSink is the CopySink implementation for FileSystemSink.
 func (fss FileSystemSink) AsDynamicsSink() (*DynamicsSink, bool) {
 	return nil, false
@@ -9891,6 +10893,11 @@ func (fss FileSystemSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for FileSystemSource.
+func (fss FileSystemSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for FileSystemSource.
 func (fss FileSystemSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -9908,6 +10915,16 @@ func (fss FileSystemSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for FileSystemSource.
 func (fss FileSystemSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for FileSystemSource.
+func (fss FileSystemSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for FileSystemSource.
+func (fss FileSystemSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -10183,6 +11200,11 @@ func (fsls FtpServerLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedSer
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for FtpServerLinkedService.
+func (fsls FtpServerLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for FtpServerLinkedService.
 func (fsls FtpServerLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -10250,6 +11272,11 @@ func (fsls FtpServerLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinke
 
 // AsMySQLLinkedService is the LinkedService implementation for FtpServerLinkedService.
 func (fsls FtpServerLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for FtpServerLinkedService.
+func (fsls FtpServerLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -10527,6 +11554,11 @@ func (hls HdfsLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService, 
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for HdfsLinkedService.
+func (hls HdfsLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for HdfsLinkedService.
 func (hls HdfsLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -10597,6 +11629,11 @@ func (hls HdfsLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) 
 	return nil, false
 }
 
+// AsAzureMySQLLinkedService is the LinkedService implementation for HdfsLinkedService.
+func (hls HdfsLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
+	return nil, false
+}
+
 // AsOracleLinkedService is the LinkedService implementation for HdfsLinkedService.
 func (hls HdfsLinkedService) AsOracleLinkedService() (*OracleLinkedService, bool) {
 	return nil, false
@@ -10661,7 +11698,7 @@ type HdfsLinkedServiceTypeProperties struct {
 	Password            *SecureString           `json:"password,omitempty"`
 }
 
-// HdfsSource is a copy activity source for HDFS source.
+// HdfsSource is a copy activity HDFS source.
 type HdfsSource struct {
 	SourceRetryCount *map[string]interface{} `json:"sourceRetryCount,omitempty"`
 	SourceRetryWait  *map[string]interface{} `json:"sourceRetryWait,omitempty"`
@@ -10716,6 +11753,11 @@ func (hs HdfsSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for HdfsSource.
+func (hs HdfsSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for HdfsSource.
 func (hs HdfsSource) AsHdfsSource() (*HdfsSource, bool) {
 	return &hs, true
@@ -10733,6 +11775,16 @@ func (hs HdfsSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for HdfsSource.
 func (hs HdfsSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for HdfsSource.
+func (hs HdfsSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for HdfsSource.
+func (hs HdfsSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -10972,6 +12024,11 @@ func (hils HDInsightLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedSer
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for HDInsightLinkedService.
+func (hils HDInsightLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for HDInsightLinkedService.
 func (hils HDInsightLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -11039,6 +12096,11 @@ func (hils HDInsightLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinke
 
 // AsMySQLLinkedService is the LinkedService implementation for HDInsightLinkedService.
 func (hils HDInsightLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for HDInsightLinkedService.
+func (hils HDInsightLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -11320,6 +12382,11 @@ func (hiodls HDInsightOnDemandLinkedService) AsAmazonS3LinkedService() (*AmazonS
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for HDInsightOnDemandLinkedService.
+func (hiodls HDInsightOnDemandLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for HDInsightOnDemandLinkedService.
 func (hiodls HDInsightOnDemandLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -11387,6 +12454,11 @@ func (hiodls HDInsightOnDemandLinkedService) AsPostgreSQLLinkedService() (*Postg
 
 // AsMySQLLinkedService is the LinkedService implementation for HDInsightOnDemandLinkedService.
 func (hiodls HDInsightOnDemandLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for HDInsightOnDemandLinkedService.
+func (hiodls HDInsightOnDemandLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -11936,8 +13008,23 @@ func (hd HTTPDataset) AsSQLServerTableDataset() (*SQLServerTableDataset, bool) {
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for HTTPDataset.
+func (hd HTTPDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for HTTPDataset.
+func (hd HTTPDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for HTTPDataset.
 func (hd HTTPDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for HTTPDataset.
+func (hd HTTPDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -12176,6 +13263,11 @@ func (hls HTTPLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService, 
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for HTTPLinkedService.
+func (hls HTTPLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for HTTPLinkedService.
 func (hls HTTPLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -12243,6 +13335,11 @@ func (hls HTTPLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedServi
 
 // AsMySQLLinkedService is the LinkedService implementation for HTTPLinkedService.
 func (hls HTTPLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for HTTPLinkedService.
+func (hls HTTPLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -12367,6 +13464,11 @@ func (hs HTTPSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for HTTPSource.
+func (hs HTTPSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for HTTPSource.
 func (hs HTTPSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -12384,6 +13486,16 @@ func (hs HTTPSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for HTTPSource.
 func (hs HTTPSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for HTTPSource.
+func (hs HTTPSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for HTTPSource.
+func (hs HTTPSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -12810,11 +13922,11 @@ func unmarshalIntegrationRuntimeStatus(body []byte) (IntegrationRuntimeStatus, e
 	}
 
 	switch m["type"] {
-	case string(TypeSelfHosted):
+	case string(TypeIntegrationRuntimeStatusTypeSelfHosted):
 		var shirs SelfHostedIntegrationRuntimeStatus
 		err := json.Unmarshal(body, &shirs)
 		return shirs, err
-	case string(TypeManaged):
+	case string(TypeIntegrationRuntimeStatusTypeManaged):
 		var mirs ManagedIntegrationRuntimeStatus
 		err := json.Unmarshal(body, &mirs)
 		return mirs, err
@@ -12893,12 +14005,14 @@ type IntegrationRuntimeVNetProperties struct {
 
 // JSONFormat is the data stored in JSON format.
 type JSONFormat struct {
-	Serializer       *map[string]interface{}  `json:"serializer,omitempty"`
-	Deserializer     *map[string]interface{}  `json:"deserializer,omitempty"`
-	Type             TypeDatasetStorageFormat `json:"type,omitempty"`
-	FilePattern      JSONFormatFilePattern    `json:"filePattern,omitempty"`
-	NestingSeparator *map[string]interface{}  `json:"nestingSeparator,omitempty"`
-	EncodingName     *map[string]interface{}  `json:"encodingName,omitempty"`
+	Serializer         *map[string]interface{}  `json:"serializer,omitempty"`
+	Deserializer       *map[string]interface{}  `json:"deserializer,omitempty"`
+	Type               TypeDatasetStorageFormat `json:"type,omitempty"`
+	FilePattern        JSONFormatFilePattern    `json:"filePattern,omitempty"`
+	NestingSeparator   *map[string]interface{}  `json:"nestingSeparator,omitempty"`
+	EncodingName       *map[string]interface{}  `json:"encodingName,omitempty"`
+	JSONNodeReference  *map[string]interface{}  `json:"jsonNodeReference,omitempty"`
+	JSONPathDefinition *map[string]interface{}  `json:"jsonPathDefinition,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for JSONFormat.
@@ -12951,6 +14065,7 @@ type LinkedService interface {
 	AsCustomDataSourceLinkedService() (*CustomDataSourceLinkedService, bool)
 	AsAmazonRedshiftLinkedService() (*AmazonRedshiftLinkedService, bool)
 	AsAmazonS3LinkedService() (*AmazonS3LinkedService, bool)
+	AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool)
 	AsSalesforceLinkedService() (*SalesforceLinkedService, bool)
 	AsAzureDataLakeStoreLinkedService() (*AzureDataLakeStoreLinkedService, bool)
 	AsMongoDbLinkedService() (*MongoDbLinkedService, bool)
@@ -12965,6 +14080,7 @@ type LinkedService interface {
 	AsSybaseLinkedService() (*SybaseLinkedService, bool)
 	AsPostgreSQLLinkedService() (*PostgreSQLLinkedService, bool)
 	AsMySQLLinkedService() (*MySQLLinkedService, bool)
+	AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool)
 	AsOracleLinkedService() (*OracleLinkedService, bool)
 	AsFileServerLinkedService() (*FileServerLinkedService, bool)
 	AsHDInsightLinkedService() (*HDInsightLinkedService, bool)
@@ -13030,6 +14146,10 @@ func unmarshalLinkedService(body []byte) (LinkedService, error) {
 		var asls AmazonS3LinkedService
 		err := json.Unmarshal(body, &asls)
 		return asls, err
+	case string(TypeSapCloudForCustomer):
+		var scfcls SapCloudForCustomerLinkedService
+		err := json.Unmarshal(body, &scfcls)
+		return scfcls, err
 	case string(TypeSalesforce):
 		var sls SalesforceLinkedService
 		err := json.Unmarshal(body, &sls)
@@ -13086,6 +14206,10 @@ func unmarshalLinkedService(body []byte) (LinkedService, error) {
 		var msls MySQLLinkedService
 		err := json.Unmarshal(body, &msls)
 		return msls, err
+	case string(TypeAzureMySQL):
+		var amsls AzureMySQLLinkedService
+		err := json.Unmarshal(body, &amsls)
+		return amsls, err
 	case string(TypeOracle):
 		var ols OracleLinkedService
 		err := json.Unmarshal(body, &ols)
@@ -13428,7 +14552,7 @@ func (latp *LookupActivityTypeProperties) UnmarshalJSON(body []byte) error {
 // integration runtimes.
 type ManagedIntegrationRuntime struct {
 	Description                              *string                 `json:"description,omitempty"`
-	Type                                     Type                    `json:"type,omitempty"`
+	Type                                     TypeIntegrationRuntime  `json:"type,omitempty"`
 	State                                    IntegrationRuntimeState `json:"state,omitempty"`
 	*ManagedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
 }
@@ -13480,14 +14604,14 @@ type ManagedIntegrationRuntimeOperationResult struct {
 
 // ManagedIntegrationRuntimeStatus is managed integration runtime status.
 type ManagedIntegrationRuntimeStatus struct {
-	State                                          IntegrationRuntimeState `json:"state,omitempty"`
-	Type                                           Type                    `json:"type,omitempty"`
+	State                                          IntegrationRuntimeState      `json:"state,omitempty"`
+	Type                                           TypeIntegrationRuntimeStatus `json:"type,omitempty"`
 	*ManagedIntegrationRuntimeStatusTypeProperties `json:"typeProperties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedIntegrationRuntimeStatus.
 func (mirs ManagedIntegrationRuntimeStatus) MarshalJSON() ([]byte, error) {
-	mirs.Type = TypeManaged
+	mirs.Type = TypeIntegrationRuntimeStatusTypeManaged
 	type Alias ManagedIntegrationRuntimeStatus
 	return json.Marshal(&struct {
 		Alias
@@ -13561,8 +14685,23 @@ func (mdcd MongoDbCollectionDataset) AsSQLServerTableDataset() (*SQLServerTableD
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for MongoDbCollectionDataset.
+func (mdcd MongoDbCollectionDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for MongoDbCollectionDataset.
+func (mdcd MongoDbCollectionDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for MongoDbCollectionDataset.
 func (mdcd MongoDbCollectionDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for MongoDbCollectionDataset.
+func (mdcd MongoDbCollectionDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -13715,6 +14854,11 @@ func (mdls MongoDbLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedServi
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for MongoDbLinkedService.
+func (mdls MongoDbLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for MongoDbLinkedService.
 func (mdls MongoDbLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -13782,6 +14926,11 @@ func (mdls MongoDbLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedS
 
 // AsMySQLLinkedService is the LinkedService implementation for MongoDbLinkedService.
 func (mdls MongoDbLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for MongoDbLinkedService.
+func (mdls MongoDbLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -13906,6 +15055,11 @@ func (mds MongoDbSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for MongoDbSource.
+func (mds MongoDbSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for MongoDbSource.
 func (mds MongoDbSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -13923,6 +15077,16 @@ func (mds MongoDbSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for MongoDbSource.
 func (mds MongoDbSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for MongoDbSource.
+func (mds MongoDbSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for MongoDbSource.
+func (mds MongoDbSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -14025,6 +15189,11 @@ func (msls MySQLLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for MySQLLinkedService.
+func (msls MySQLLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for MySQLLinkedService.
 func (msls MySQLLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -14093,6 +15262,11 @@ func (msls MySQLLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedSer
 // AsMySQLLinkedService is the LinkedService implementation for MySQLLinkedService.
 func (msls MySQLLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
 	return &msls, true
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for MySQLLinkedService.
+func (msls MySQLLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
+	return nil, false
 }
 
 // AsOracleLinkedService is the LinkedService implementation for MySQLLinkedService.
@@ -14234,6 +15408,11 @@ func (odls ODataLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for ODataLinkedService.
+func (odls ODataLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for ODataLinkedService.
 func (odls ODataLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -14301,6 +15480,11 @@ func (odls ODataLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedSer
 
 // AsMySQLLinkedService is the LinkedService implementation for ODataLinkedService.
 func (odls ODataLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for ODataLinkedService.
+func (odls ODataLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -14409,8 +15593,23 @@ func (odrd ODataResourceDataset) AsSQLServerTableDataset() (*SQLServerTableDatas
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for ODataResourceDataset.
+func (odrd ODataResourceDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for ODataResourceDataset.
+func (odrd ODataResourceDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for ODataResourceDataset.
 func (odrd ODataResourceDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for ODataResourceDataset.
+func (odrd ODataResourceDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -14563,6 +15762,11 @@ func (ols OdbcLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService, 
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for OdbcLinkedService.
+func (ols OdbcLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for OdbcLinkedService.
 func (ols OdbcLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -14630,6 +15834,11 @@ func (ols OdbcLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedServi
 
 // AsMySQLLinkedService is the LinkedService implementation for OdbcLinkedService.
 func (ols OdbcLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for OdbcLinkedService.
+func (ols OdbcLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -14717,6 +15926,11 @@ func (osVar OdbcSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(osVar),
 	})
+}
+
+// AsSalesforceSink is the CopySink implementation for OdbcSink.
+func (osVar OdbcSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return nil, false
 }
 
 // AsDynamicsSink is the CopySink implementation for OdbcSink.
@@ -14913,6 +16127,11 @@ func (ols OracleLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for OracleLinkedService.
+func (ols OracleLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for OracleLinkedService.
 func (ols OracleLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -14980,6 +16199,11 @@ func (ols OracleLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedSer
 
 // AsMySQLLinkedService is the LinkedService implementation for OracleLinkedService.
 func (ols OracleLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for OracleLinkedService.
+func (ols OracleLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -15063,6 +16287,11 @@ func (osVar OracleSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(osVar),
 	})
+}
+
+// AsSalesforceSink is the CopySink implementation for OracleSink.
+func (osVar OracleSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return nil, false
 }
 
 // AsDynamicsSink is the CopySink implementation for OracleSink.
@@ -15180,6 +16409,11 @@ func (osVar OracleSource) AsOracleSource() (*OracleSource, bool) {
 	return &osVar, true
 }
 
+// AsAzureMySQLSource is the CopySource implementation for OracleSource.
+func (osVar OracleSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for OracleSource.
 func (osVar OracleSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -15197,6 +16431,16 @@ func (osVar OracleSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for OracleSource.
 func (osVar OracleSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for OracleSource.
+func (osVar OracleSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for OracleSource.
+func (osVar OracleSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -15266,8 +16510,23 @@ func (otd OracleTableDataset) AsSQLServerTableDataset() (*SQLServerTableDataset,
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for OracleTableDataset.
+func (otd OracleTableDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for OracleTableDataset.
+func (otd OracleTableDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for OracleTableDataset.
 func (otd OracleTableDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for OracleTableDataset.
+func (otd OracleTableDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -15665,6 +16924,11 @@ func (psls PostgreSQLLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedSe
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for PostgreSQLLinkedService.
+func (psls PostgreSQLLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for PostgreSQLLinkedService.
 func (psls PostgreSQLLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -15732,6 +16996,11 @@ func (psls PostgreSQLLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLink
 
 // AsMySQLLinkedService is the LinkedService implementation for PostgreSQLLinkedService.
 func (psls PostgreSQLLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for PostgreSQLLinkedService.
+func (psls PostgreSQLLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -15883,6 +17152,11 @@ func (rs RelationalSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for RelationalSource.
+func (rs RelationalSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for RelationalSource.
 func (rs RelationalSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -15900,6 +17174,16 @@ func (rs RelationalSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for RelationalSource.
 func (rs RelationalSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for RelationalSource.
+func (rs RelationalSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for RelationalSource.
+func (rs RelationalSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -15969,9 +17253,24 @@ func (rtd RelationalTableDataset) AsSQLServerTableDataset() (*SQLServerTableData
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for RelationalTableDataset.
+func (rtd RelationalTableDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for RelationalTableDataset.
+func (rtd RelationalTableDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for RelationalTableDataset.
 func (rtd RelationalTableDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
 	return &rtd, true
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for RelationalTableDataset.
+func (rtd RelationalTableDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
+	return nil, false
 }
 
 // AsOracleTableDataset is the Dataset implementation for RelationalTableDataset.
@@ -16132,6 +17431,11 @@ func (sls SalesforceLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedSer
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for SalesforceLinkedService.
+func (sls SalesforceLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for SalesforceLinkedService.
 func (sls SalesforceLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return &sls, true
@@ -16202,6 +17506,11 @@ func (sls SalesforceLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, 
 	return nil, false
 }
 
+// AsAzureMySQLLinkedService is the LinkedService implementation for SalesforceLinkedService.
+func (sls SalesforceLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
+	return nil, false
+}
+
 // AsOracleLinkedService is the LinkedService implementation for SalesforceLinkedService.
 func (sls SalesforceLinkedService) AsOracleLinkedService() (*OracleLinkedService, bool) {
 	return nil, false
@@ -16261,9 +17570,407 @@ func (sls SalesforceLinkedService) AsAzureStorageLinkedService() (*AzureStorageL
 type SalesforceLinkedServiceTypeProperties struct {
 	EnvironmentURL      *map[string]interface{} `json:"environmentUrl,omitempty"`
 	Username            *map[string]interface{} `json:"username,omitempty"`
-	Password            *SecureString           `json:"password,omitempty"`
-	SecurityToken       *SecureString           `json:"securityToken,omitempty"`
+	Password            SecretBase              `json:"password,omitempty"`
+	SecurityToken       SecretBase              `json:"securityToken,omitempty"`
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SalesforceLinkedServiceTypeProperties struct.
+func (slstp *SalesforceLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["environmentUrl"]
+	if v != nil {
+		var environmentURL map[string]interface{}
+		err = json.Unmarshal(*m["environmentUrl"], &environmentURL)
+		if err != nil {
+			return err
+		}
+		slstp.EnvironmentURL = &environmentURL
+	}
+
+	v = m["username"]
+	if v != nil {
+		var username map[string]interface{}
+		err = json.Unmarshal(*m["username"], &username)
+		if err != nil {
+			return err
+		}
+		slstp.Username = &username
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		slstp.Password = password
+	}
+
+	v = m["securityToken"]
+	if v != nil {
+		securityToken, err := unmarshalSecretBase(*m["securityToken"])
+		if err != nil {
+			return err
+		}
+		slstp.SecurityToken = securityToken
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		slstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
+}
+
+// SalesforceObjectDataset is the Salesforce object dataset.
+type SalesforceObjectDataset struct {
+	Description                            *string                             `json:"description,omitempty"`
+	Structure                              *map[string]interface{}             `json:"structure,omitempty"`
+	LinkedServiceName                      *LinkedServiceReference             `json:"linkedServiceName,omitempty"`
+	Parameters                             *map[string]*ParameterSpecification `json:"parameters,omitempty"`
+	Type                                   TypeDataset                         `json:"type,omitempty"`
+	*SalesforceObjectDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) MarshalJSON() ([]byte, error) {
+	sod.Type = TypeSalesforceObject
+	type Alias SalesforceObjectDataset
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(sod),
+	})
+}
+
+// AsHTTPDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsHTTPDataset() (*HTTPDataset, bool) {
+	return nil, false
+}
+
+// AsAzureSearchIndexDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsAzureSearchIndexDataset() (*AzureSearchIndexDataset, bool) {
+	return nil, false
+}
+
+// AsWebTableDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsWebTableDataset() (*WebTableDataset, bool) {
+	return nil, false
+}
+
+// AsSQLServerTableDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsSQLServerTableDataset() (*SQLServerTableDataset, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return &sod, true
+}
+
+// AsRelationalTableDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
+	return nil, false
+}
+
+// AsOracleTableDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsOracleTableDataset() (*OracleTableDataset, bool) {
+	return nil, false
+}
+
+// AsODataResourceDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsODataResourceDataset() (*ODataResourceDataset, bool) {
+	return nil, false
+}
+
+// AsMongoDbCollectionDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsMongoDbCollectionDataset() (*MongoDbCollectionDataset, bool) {
+	return nil, false
+}
+
+// AsFileShareDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsFileShareDataset() (*FileShareDataset, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsAzureDataLakeStoreDataset() (*AzureDataLakeStoreDataset, bool) {
+	return nil, false
+}
+
+// AsDynamicsEntityDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsDynamicsEntityDataset() (*DynamicsEntityDataset, bool) {
+	return nil, false
+}
+
+// AsDocumentDbCollectionDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsDocumentDbCollectionDataset() (*DocumentDbCollectionDataset, bool) {
+	return nil, false
+}
+
+// AsCustomDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsCustomDataset() (*CustomDataset, bool) {
+	return nil, false
+}
+
+// AsCassandraTableDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsCassandraTableDataset() (*CassandraTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureSQLDWTableDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsAzureSQLDWTableDataset() (*AzureSQLDWTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureSQLTableDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsAzureSQLTableDataset() (*AzureSQLTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureTableDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsAzureTableDataset() (*AzureTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureBlobDataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsAzureBlobDataset() (*AzureBlobDataset, bool) {
+	return nil, false
+}
+
+// AsAmazonS3Dataset is the Dataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsAmazonS3Dataset() (*AmazonS3Dataset, bool) {
+	return nil, false
+}
+
+// SalesforceObjectDatasetTypeProperties is salesforce object dataset properties.
+type SalesforceObjectDatasetTypeProperties struct {
+	ObjectAPIName *map[string]interface{} `json:"objectApiName,omitempty"`
+}
+
+// SalesforceSink is a copy activity Salesforce sink.
+type SalesforceSink struct {
+	WriteBatchSize      *map[string]interface{}     `json:"writeBatchSize,omitempty"`
+	WriteBatchTimeout   *map[string]interface{}     `json:"writeBatchTimeout,omitempty"`
+	SinkRetryCount      *map[string]interface{}     `json:"sinkRetryCount,omitempty"`
+	SinkRetryWait       *map[string]interface{}     `json:"sinkRetryWait,omitempty"`
+	Type                TypeCopySink                `json:"type,omitempty"`
+	WriteBehavior       SalesforceSinkWriteBehavior `json:"writeBehavior,omitempty"`
+	ExternalIDFieldName *map[string]interface{}     `json:"externalIdFieldName,omitempty"`
+	IgnoreNullValues    *map[string]interface{}     `json:"ignoreNullValues,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SalesforceSink.
+func (ss SalesforceSink) MarshalJSON() ([]byte, error) {
+	ss.Type = TypeSalesforceSink
+	type Alias SalesforceSink
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(ss),
+	})
+}
+
+// AsSalesforceSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return &ss, true
+}
+
+// AsDynamicsSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsDynamicsSink() (*DynamicsSink, bool) {
+	return nil, false
+}
+
+// AsOdbcSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsOdbcSink() (*OdbcSink, bool) {
+	return nil, false
+}
+
+// AsAzureSearchIndexSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsAzureSearchIndexSink() (*AzureSearchIndexSink, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsAzureDataLakeStoreSink() (*AzureDataLakeStoreSink, bool) {
+	return nil, false
+}
+
+// AsOracleSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsOracleSink() (*OracleSink, bool) {
+	return nil, false
+}
+
+// AsSQLDWSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsSQLDWSink() (*SQLDWSink, bool) {
+	return nil, false
+}
+
+// AsSQLSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsSQLSink() (*SQLSink, bool) {
+	return nil, false
+}
+
+// AsDocumentDbCollectionSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsDocumentDbCollectionSink() (*DocumentDbCollectionSink, bool) {
+	return nil, false
+}
+
+// AsFileSystemSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsFileSystemSink() (*FileSystemSink, bool) {
+	return nil, false
+}
+
+// AsBlobSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsBlobSink() (*BlobSink, bool) {
+	return nil, false
+}
+
+// AsAzureTableSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsAzureTableSink() (*AzureTableSink, bool) {
+	return nil, false
+}
+
+// AsAzureQueueSink is the CopySink implementation for SalesforceSink.
+func (ss SalesforceSink) AsAzureQueueSink() (*AzureQueueSink, bool) {
+	return nil, false
+}
+
+// SalesforceSource is a copy activity Salesforce source.
+type SalesforceSource struct {
+	SourceRetryCount *map[string]interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryWait  *map[string]interface{} `json:"sourceRetryWait,omitempty"`
+	Type             TypeCopySource          `json:"type,omitempty"`
+	Query            *map[string]interface{} `json:"query,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SalesforceSource.
+func (ss SalesforceSource) MarshalJSON() ([]byte, error) {
+	ss.Type = TypeSalesforceSource
+	type Alias SalesforceSource
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(ss),
+	})
+}
+
+// AsAmazonRedshiftSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsHTTPSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsHTTPSource() (*HTTPSource, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsAzureDataLakeStoreSource() (*AzureDataLakeStoreSource, bool) {
+	return nil, false
+}
+
+// AsMongoDbSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsMongoDbSource() (*MongoDbSource, bool) {
+	return nil, false
+}
+
+// AsCassandraSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsCassandraSource() (*CassandraSource, bool) {
+	return nil, false
+}
+
+// AsWebSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsWebSource() (*WebSource, bool) {
+	return nil, false
+}
+
+// AsOracleSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsOracleSource() (*OracleSource, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
+// AsHdfsSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsHdfsSource() (*HdfsSource, bool) {
+	return nil, false
+}
+
+// AsFileSystemSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsFileSystemSource() (*FileSystemSource, bool) {
+	return nil, false
+}
+
+// AsSQLDWSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsSQLDWSource() (*SQLDWSource, bool) {
+	return nil, false
+}
+
+// AsSQLSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsSalesforceSource() (*SalesforceSource, bool) {
+	return &ss, true
+}
+
+// AsRelationalSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsRelationalSource() (*RelationalSource, bool) {
+	return nil, false
+}
+
+// AsDynamicsSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsDynamicsSource() (*DynamicsSource, bool) {
+	return nil, false
+}
+
+// AsDocumentDbCollectionSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsDocumentDbCollectionSource() (*DocumentDbCollectionSource, bool) {
+	return nil, false
+}
+
+// AsBlobSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsBlobSource() (*BlobSource, bool) {
+	return nil, false
+}
+
+// AsAzureTableSource is the CopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsAzureTableSource() (*AzureTableSource, bool) {
+	return nil, false
 }
 
 // SapBWLinkedService is SAP Business Warehouse Linked Service.
@@ -16340,6 +18047,11 @@ func (sbls SapBWLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for SapBWLinkedService.
+func (sbls SapBWLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for SapBWLinkedService.
 func (sbls SapBWLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -16410,6 +18122,11 @@ func (sbls SapBWLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool
 	return nil, false
 }
 
+// AsAzureMySQLLinkedService is the LinkedService implementation for SapBWLinkedService.
+func (sbls SapBWLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
+	return nil, false
+}
+
 // AsOracleLinkedService is the LinkedService implementation for SapBWLinkedService.
 func (sbls SapBWLinkedService) AsOracleLinkedService() (*OracleLinkedService, bool) {
 	return nil, false
@@ -16473,6 +18190,473 @@ type SapBWLinkedServiceTypeProperties struct {
 	UserName            *map[string]interface{} `json:"userName,omitempty"`
 	Password            *SecureString           `json:"password,omitempty"`
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// SapCloudForCustomerLinkedService is linked service for SAP Cloud for Customer.
+type SapCloudForCustomerLinkedService struct {
+	ConnectVia                                      *IntegrationRuntimeReference `json:"connectVia,omitempty"`
+	Description                                     *string                      `json:"description,omitempty"`
+	Type                                            TypeLinkedService            `json:"type,omitempty"`
+	*SapCloudForCustomerLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) MarshalJSON() ([]byte, error) {
+	scfcls.Type = TypeSapCloudForCustomer
+	type Alias SapCloudForCustomerLinkedService
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(scfcls),
+	})
+}
+
+// AsAzureDataLakeAnalyticsLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsAzureDataLakeAnalyticsLinkedService() (*AzureDataLakeAnalyticsLinkedService, bool) {
+	return nil, false
+}
+
+// AsHDInsightOnDemandLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsHDInsightOnDemandLinkedService() (*HDInsightOnDemandLinkedService, bool) {
+	return nil, false
+}
+
+// AsSapHanaLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsSapHanaLinkedService() (*SapHanaLinkedService, bool) {
+	return nil, false
+}
+
+// AsSapBWLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsSapBWLinkedService() (*SapBWLinkedService, bool) {
+	return nil, false
+}
+
+// AsSftpServerLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsSftpServerLinkedService() (*SftpServerLinkedService, bool) {
+	return nil, false
+}
+
+// AsFtpServerLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsFtpServerLinkedService() (*FtpServerLinkedService, bool) {
+	return nil, false
+}
+
+// AsHTTPLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsHTTPLinkedService() (*HTTPLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureSearchLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsAzureSearchLinkedService() (*AzureSearchLinkedService, bool) {
+	return nil, false
+}
+
+// AsCustomDataSourceLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsCustomDataSourceLinkedService() (*CustomDataSourceLinkedService, bool) {
+	return nil, false
+}
+
+// AsAmazonRedshiftLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsAmazonRedshiftLinkedService() (*AmazonRedshiftLinkedService, bool) {
+	return nil, false
+}
+
+// AsAmazonS3LinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return &scfcls, true
+}
+
+// AsSalesforceLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsAzureDataLakeStoreLinkedService() (*AzureDataLakeStoreLinkedService, bool) {
+	return nil, false
+}
+
+// AsMongoDbLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsMongoDbLinkedService() (*MongoDbLinkedService, bool) {
+	return nil, false
+}
+
+// AsCassandraLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsCassandraLinkedService() (*CassandraLinkedService, bool) {
+	return nil, false
+}
+
+// AsWebLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsWebLinkedService() (*WebLinkedService, bool) {
+	return nil, false
+}
+
+// AsODataLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsODataLinkedService() (*ODataLinkedService, bool) {
+	return nil, false
+}
+
+// AsHdfsLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsHdfsLinkedService() (*HdfsLinkedService, bool) {
+	return nil, false
+}
+
+// AsOdbcLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsOdbcLinkedService() (*OdbcLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMLLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsAzureMLLinkedService() (*AzureMLLinkedService, bool) {
+	return nil, false
+}
+
+// AsTeradataLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsTeradataLinkedService() (*TeradataLinkedService, bool) {
+	return nil, false
+}
+
+// AsDb2LinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsDb2LinkedService() (*Db2LinkedService, bool) {
+	return nil, false
+}
+
+// AsSybaseLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsSybaseLinkedService() (*SybaseLinkedService, bool) {
+	return nil, false
+}
+
+// AsPostgreSQLLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsMySQLLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsOracleLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsOracleLinkedService() (*OracleLinkedService, bool) {
+	return nil, false
+}
+
+// AsFileServerLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsFileServerLinkedService() (*FileServerLinkedService, bool) {
+	return nil, false
+}
+
+// AsHDInsightLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsHDInsightLinkedService() (*HDInsightLinkedService, bool) {
+	return nil, false
+}
+
+// AsDynamicsLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsDynamicsLinkedService() (*DynamicsLinkedService, bool) {
+	return nil, false
+}
+
+// AsCosmosDbLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsCosmosDbLinkedService() (*CosmosDbLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureKeyVaultLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsAzureKeyVaultLinkedService() (*AzureKeyVaultLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureBatchLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsAzureBatchLinkedService() (*AzureBatchLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureSQLDatabaseLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsAzureSQLDatabaseLinkedService() (*AzureSQLDatabaseLinkedService, bool) {
+	return nil, false
+}
+
+// AsSQLServerLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsSQLServerLinkedService() (*SQLServerLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureSQLDWLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsAzureSQLDWLinkedService() (*AzureSQLDWLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureStorageLinkedService is the LinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsAzureStorageLinkedService() (*AzureStorageLinkedService, bool) {
+	return nil, false
+}
+
+// SapCloudForCustomerLinkedServiceTypeProperties is SAP Cloud for Customer linked service properties.
+type SapCloudForCustomerLinkedServiceTypeProperties struct {
+	URL                 *map[string]interface{} `json:"url,omitempty"`
+	Username            *map[string]interface{} `json:"username,omitempty"`
+	Password            *SecureString           `json:"password,omitempty"`
+	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// SapCloudForCustomerResourceDataset is the path of the SAP Cloud for Customer OData entity.
+type SapCloudForCustomerResourceDataset struct {
+	Description                                       *string                             `json:"description,omitempty"`
+	Structure                                         *map[string]interface{}             `json:"structure,omitempty"`
+	LinkedServiceName                                 *LinkedServiceReference             `json:"linkedServiceName,omitempty"`
+	Parameters                                        *map[string]*ParameterSpecification `json:"parameters,omitempty"`
+	Type                                              TypeDataset                         `json:"type,omitempty"`
+	*SapCloudForCustomerResourceDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) MarshalJSON() ([]byte, error) {
+	scfcrd.Type = TypeSapCloudForCustomerResource
+	type Alias SapCloudForCustomerResourceDataset
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(scfcrd),
+	})
+}
+
+// AsHTTPDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsHTTPDataset() (*HTTPDataset, bool) {
+	return nil, false
+}
+
+// AsAzureSearchIndexDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsAzureSearchIndexDataset() (*AzureSearchIndexDataset, bool) {
+	return nil, false
+}
+
+// AsWebTableDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsWebTableDataset() (*WebTableDataset, bool) {
+	return nil, false
+}
+
+// AsSQLServerTableDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsSQLServerTableDataset() (*SQLServerTableDataset, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return &scfcrd, true
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
+// AsRelationalTableDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
+	return nil, false
+}
+
+// AsOracleTableDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsOracleTableDataset() (*OracleTableDataset, bool) {
+	return nil, false
+}
+
+// AsODataResourceDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsODataResourceDataset() (*ODataResourceDataset, bool) {
+	return nil, false
+}
+
+// AsMongoDbCollectionDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsMongoDbCollectionDataset() (*MongoDbCollectionDataset, bool) {
+	return nil, false
+}
+
+// AsFileShareDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsFileShareDataset() (*FileShareDataset, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsAzureDataLakeStoreDataset() (*AzureDataLakeStoreDataset, bool) {
+	return nil, false
+}
+
+// AsDynamicsEntityDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsDynamicsEntityDataset() (*DynamicsEntityDataset, bool) {
+	return nil, false
+}
+
+// AsDocumentDbCollectionDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsDocumentDbCollectionDataset() (*DocumentDbCollectionDataset, bool) {
+	return nil, false
+}
+
+// AsCustomDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsCustomDataset() (*CustomDataset, bool) {
+	return nil, false
+}
+
+// AsCassandraTableDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsCassandraTableDataset() (*CassandraTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureSQLDWTableDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsAzureSQLDWTableDataset() (*AzureSQLDWTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureSQLTableDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsAzureSQLTableDataset() (*AzureSQLTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureTableDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsAzureTableDataset() (*AzureTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureBlobDataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsAzureBlobDataset() (*AzureBlobDataset, bool) {
+	return nil, false
+}
+
+// AsAmazonS3Dataset is the Dataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsAmazonS3Dataset() (*AmazonS3Dataset, bool) {
+	return nil, false
+}
+
+// SapCloudForCustomerResourceDatasetTypeProperties is sap Cloud For Customer OData resource dataset properties.
+type SapCloudForCustomerResourceDatasetTypeProperties struct {
+	Path *map[string]interface{} `json:"path,omitempty"`
+}
+
+// SapCloudForCustomerSource is a copy activity source for SAP Cloud for Customer source.
+type SapCloudForCustomerSource struct {
+	SourceRetryCount *map[string]interface{} `json:"sourceRetryCount,omitempty"`
+	SourceRetryWait  *map[string]interface{} `json:"sourceRetryWait,omitempty"`
+	Type             TypeCopySource          `json:"type,omitempty"`
+	Query            *map[string]interface{} `json:"query,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) MarshalJSON() ([]byte, error) {
+	scfcs.Type = TypeSapCloudForCustomerSource
+	type Alias SapCloudForCustomerSource
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(scfcs),
+	})
+}
+
+// AsAmazonRedshiftSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsHTTPSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsHTTPSource() (*HTTPSource, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsAzureDataLakeStoreSource() (*AzureDataLakeStoreSource, bool) {
+	return nil, false
+}
+
+// AsMongoDbSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsMongoDbSource() (*MongoDbSource, bool) {
+	return nil, false
+}
+
+// AsCassandraSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsCassandraSource() (*CassandraSource, bool) {
+	return nil, false
+}
+
+// AsWebSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsWebSource() (*WebSource, bool) {
+	return nil, false
+}
+
+// AsOracleSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsOracleSource() (*OracleSource, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
+// AsHdfsSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsHdfsSource() (*HdfsSource, bool) {
+	return nil, false
+}
+
+// AsFileSystemSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsFileSystemSource() (*FileSystemSource, bool) {
+	return nil, false
+}
+
+// AsSQLDWSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsSQLDWSource() (*SQLDWSource, bool) {
+	return nil, false
+}
+
+// AsSQLSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return &scfcs, true
+}
+
+// AsSalesforceSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsSalesforceSource() (*SalesforceSource, bool) {
+	return nil, false
+}
+
+// AsRelationalSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsRelationalSource() (*RelationalSource, bool) {
+	return nil, false
+}
+
+// AsDynamicsSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsDynamicsSource() (*DynamicsSource, bool) {
+	return nil, false
+}
+
+// AsDocumentDbCollectionSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsDocumentDbCollectionSource() (*DocumentDbCollectionSource, bool) {
+	return nil, false
+}
+
+// AsBlobSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsBlobSource() (*BlobSource, bool) {
+	return nil, false
+}
+
+// AsAzureTableSource is the CopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsAzureTableSource() (*AzureTableSource, bool) {
+	return nil, false
 }
 
 // SapHanaLinkedService is SAP HANA Linked Service.
@@ -16549,6 +18733,11 @@ func (shls SapHanaLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedServi
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for SapHanaLinkedService.
+func (shls SapHanaLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for SapHanaLinkedService.
 func (shls SapHanaLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -16616,6 +18805,11 @@ func (shls SapHanaLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedS
 
 // AsMySQLLinkedService is the LinkedService implementation for SapHanaLinkedService.
 func (shls SapHanaLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for SapHanaLinkedService.
+func (shls SapHanaLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -16713,11 +18907,6 @@ func (st ScheduleTrigger) AsScheduleTrigger() (*ScheduleTrigger, bool) {
 	return &st, true
 }
 
-// ScheduleTriggerTypeProperties is schedule Trigger properties.
-type ScheduleTriggerTypeProperties struct {
-	Recurrence *ScheduleTriggerRecurrence `json:"recurrence,omitempty"`
-}
-
 // ScheduleTriggerRecurrence is the workflow trigger recurrence.
 type ScheduleTriggerRecurrence struct {
 	Frequency RecurrenceFrequency `json:"frequency,omitempty"`
@@ -16728,17 +18917,88 @@ type ScheduleTriggerRecurrence struct {
 	Schedule  *RecurrenceSchedule `json:"schedule,omitempty"`
 }
 
+// ScheduleTriggerTypeProperties is schedule Trigger properties.
+type ScheduleTriggerTypeProperties struct {
+	Recurrence *ScheduleTriggerRecurrence `json:"recurrence,omitempty"`
+}
+
+// SecretBase is the base definition of a secret type.
+type SecretBase interface {
+	AsSecureString() (*SecureString, bool)
+	AsAzureKeyVaultSecretReference() (*AzureKeyVaultSecretReference, bool)
+}
+
+func unmarshalSecretBase(body []byte) (SecretBase, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeSecureString):
+		var ss SecureString
+		err := json.Unmarshal(body, &ss)
+		return ss, err
+	case string(TypeAzureKeyVaultSecret):
+		var akvsr AzureKeyVaultSecretReference
+		err := json.Unmarshal(body, &akvsr)
+		return akvsr, err
+	default:
+		return nil, errors.New("Unsupported type")
+	}
+}
+func unmarshalSecretBaseArray(body []byte) ([]SecretBase, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	sbArray := make([]SecretBase, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		sb, err := unmarshalSecretBase(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		sbArray[index] = sb
+	}
+	return sbArray, nil
+}
+
 // SecureString is azure Data Factory secure string definition. The string value will be masked with asterisks '*'
 // during Get or List API calls.
 type SecureString struct {
-	Type  *string `json:"type,omitempty"`
+	Type  Type    `json:"type,omitempty"`
 	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SecureString.
+func (ss SecureString) MarshalJSON() ([]byte, error) {
+	ss.Type = TypeSecureString
+	type Alias SecureString
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(ss),
+	})
+}
+
+// AsSecureString is the SecretBase implementation for SecureString.
+func (ss SecureString) AsSecureString() (*SecureString, bool) {
+	return &ss, true
+}
+
+// AsAzureKeyVaultSecretReference is the SecretBase implementation for SecureString.
+func (ss SecureString) AsAzureKeyVaultSecretReference() (*AzureKeyVaultSecretReference, bool) {
+	return nil, false
 }
 
 // SelfHostedIntegrationRuntime is self-hosted integration runtime.
 type SelfHostedIntegrationRuntime struct {
-	Description *string `json:"description,omitempty"`
-	Type        Type    `json:"type,omitempty"`
+	Description *string                `json:"description,omitempty"`
+	Type        TypeIntegrationRuntime `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntime.
@@ -16786,14 +19046,14 @@ type SelfHostedIntegrationRuntimeNode struct {
 
 // SelfHostedIntegrationRuntimeStatus is self-hosted integration runtime status.
 type SelfHostedIntegrationRuntimeStatus struct {
-	State                                             IntegrationRuntimeState `json:"state,omitempty"`
-	Type                                              Type                    `json:"type,omitempty"`
+	State                                             IntegrationRuntimeState      `json:"state,omitempty"`
+	Type                                              TypeIntegrationRuntimeStatus `json:"type,omitempty"`
 	*SelfHostedIntegrationRuntimeStatusTypeProperties `json:"typeProperties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntimeStatus.
 func (shirs SelfHostedIntegrationRuntimeStatus) MarshalJSON() ([]byte, error) {
-	shirs.Type = TypeSelfHosted
+	shirs.Type = TypeIntegrationRuntimeStatusTypeSelfHosted
 	type Alias SelfHostedIntegrationRuntimeStatus
 	return json.Marshal(&struct {
 		Alias
@@ -16901,6 +19161,11 @@ func (ssls SftpServerLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedSe
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for SftpServerLinkedService.
+func (ssls SftpServerLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for SftpServerLinkedService.
 func (ssls SftpServerLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -16968,6 +19233,11 @@ func (ssls SftpServerLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLink
 
 // AsMySQLLinkedService is the LinkedService implementation for SftpServerLinkedService.
 func (ssls SftpServerLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for SftpServerLinkedService.
+func (ssls SftpServerLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -17062,6 +19332,11 @@ func (sds SQLDWSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(sds),
 	})
+}
+
+// AsSalesforceSink is the CopySink implementation for SQLDWSink.
+func (sds SQLDWSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return nil, false
 }
 
 // AsDynamicsSink is the CopySink implementation for SQLDWSink.
@@ -17180,6 +19455,11 @@ func (sds SQLDWSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for SQLDWSource.
+func (sds SQLDWSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for SQLDWSource.
 func (sds SQLDWSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -17197,6 +19477,16 @@ func (sds SQLDWSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for SQLDWSource.
 func (sds SQLDWSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for SQLDWSource.
+func (sds SQLDWSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for SQLDWSource.
+func (sds SQLDWSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -17299,6 +19589,11 @@ func (ssls SQLServerLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedSer
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for SQLServerLinkedService.
+func (ssls SQLServerLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for SQLServerLinkedService.
 func (ssls SQLServerLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -17366,6 +19661,11 @@ func (ssls SQLServerLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinke
 
 // AsMySQLLinkedService is the LinkedService implementation for SQLServerLinkedService.
 func (ssls SQLServerLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for SQLServerLinkedService.
+func (ssls SQLServerLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -17606,8 +19906,23 @@ func (sstd SQLServerTableDataset) AsSQLServerTableDataset() (*SQLServerTableData
 	return &sstd, true
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for SQLServerTableDataset.
+func (sstd SQLServerTableDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for SQLServerTableDataset.
+func (sstd SQLServerTableDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for SQLServerTableDataset.
 func (sstd SQLServerTableDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for SQLServerTableDataset.
+func (sstd SQLServerTableDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 
@@ -17708,6 +20023,11 @@ func (ss SQLSink) MarshalJSON() ([]byte, error) {
 	}{
 		Alias: (Alias)(ss),
 	})
+}
+
+// AsSalesforceSink is the CopySink implementation for SQLSink.
+func (ss SQLSink) AsSalesforceSink() (*SalesforceSink, bool) {
+	return nil, false
 }
 
 // AsDynamicsSink is the CopySink implementation for SQLSink.
@@ -17826,6 +20146,11 @@ func (ss SQLSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for SQLSource.
+func (ss SQLSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for SQLSource.
 func (ss SQLSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -17844,6 +20169,16 @@ func (ss SQLSource) AsSQLDWSource() (*SQLDWSource, bool) {
 // AsSQLSource is the CopySource implementation for SQLSource.
 func (ss SQLSource) AsSQLSource() (*SQLSource, bool) {
 	return &ss, true
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for SQLSource.
+func (ss SQLSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for SQLSource.
+func (ss SQLSource) AsSalesforceSource() (*SalesforceSource, bool) {
+	return nil, false
 }
 
 // AsRelationalSource is the CopySource implementation for SQLSource.
@@ -17966,6 +20301,11 @@ func (sls SybaseLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for SybaseLinkedService.
+func (sls SybaseLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for SybaseLinkedService.
 func (sls SybaseLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -18033,6 +20373,11 @@ func (sls SybaseLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedSer
 
 // AsMySQLLinkedService is the LinkedService implementation for SybaseLinkedService.
 func (sls SybaseLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for SybaseLinkedService.
+func (sls SybaseLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -18198,6 +20543,11 @@ func (TLSVar TeradataLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedSe
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for TeradataLinkedService.
+func (TLSVar TeradataLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for TeradataLinkedService.
 func (TLSVar TeradataLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -18265,6 +20615,11 @@ func (TLSVar TeradataLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLink
 
 // AsMySQLLinkedService is the LinkedService implementation for TeradataLinkedService.
 func (TLSVar TeradataLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for TeradataLinkedService.
+func (TLSVar TeradataLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -19184,6 +21539,11 @@ func (wls WebLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService, b
 	return nil, false
 }
 
+// AsSapCloudForCustomerLinkedService is the LinkedService implementation for WebLinkedService.
+func (wls WebLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
 // AsSalesforceLinkedService is the LinkedService implementation for WebLinkedService.
 func (wls WebLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
 	return nil, false
@@ -19251,6 +21611,11 @@ func (wls WebLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedServic
 
 // AsMySQLLinkedService is the LinkedService implementation for WebLinkedService.
 func (wls WebLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the LinkedService implementation for WebLinkedService.
+func (wls WebLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
 	return nil, false
 }
 
@@ -19464,6 +21829,11 @@ func (ws WebSource) AsOracleSource() (*OracleSource, bool) {
 	return nil, false
 }
 
+// AsAzureMySQLSource is the CopySource implementation for WebSource.
+func (ws WebSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
 // AsHdfsSource is the CopySource implementation for WebSource.
 func (ws WebSource) AsHdfsSource() (*HdfsSource, bool) {
 	return nil, false
@@ -19481,6 +21851,16 @@ func (ws WebSource) AsSQLDWSource() (*SQLDWSource, bool) {
 
 // AsSQLSource is the CopySource implementation for WebSource.
 func (ws WebSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the CopySource implementation for WebSource.
+func (ws WebSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the CopySource implementation for WebSource.
+func (ws WebSource) AsSalesforceSource() (*SalesforceSource, bool) {
 	return nil, false
 }
 
@@ -19550,8 +21930,23 @@ func (wtd WebTableDataset) AsSQLServerTableDataset() (*SQLServerTableDataset, bo
 	return nil, false
 }
 
+// AsSapCloudForCustomerResourceDataset is the Dataset implementation for WebTableDataset.
+func (wtd WebTableDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the Dataset implementation for WebTableDataset.
+func (wtd WebTableDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
 // AsRelationalTableDataset is the Dataset implementation for WebTableDataset.
 func (wtd WebTableDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the Dataset implementation for WebTableDataset.
+func (wtd WebTableDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
 	return nil, false
 }
 

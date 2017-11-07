@@ -91,7 +91,9 @@ func (client WorkflowAccessKeysClient) CreateOrUpdatePreparer(resourceGroupName 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowAccessKeysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -158,7 +160,9 @@ func (client WorkflowAccessKeysClient) DeletePreparer(resourceGroupName string, 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowAccessKeysClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -224,7 +228,9 @@ func (client WorkflowAccessKeysClient) GetPreparer(resourceGroupName string, wor
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowAccessKeysClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -293,7 +299,9 @@ func (client WorkflowAccessKeysClient) ListPreparer(resourceGroupName string, wo
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowAccessKeysClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -429,7 +437,9 @@ func (client WorkflowAccessKeysClient) ListSecretKeysPreparer(resourceGroupName 
 // ListSecretKeysSender sends the ListSecretKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowAccessKeysClient) ListSecretKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSecretKeysResponder handles the response to the ListSecretKeys request. The method always
@@ -498,7 +508,9 @@ func (client WorkflowAccessKeysClient) RegenerateSecretKeyPreparer(resourceGroup
 // RegenerateSecretKeySender sends the RegenerateSecretKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowAccessKeysClient) RegenerateSecretKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RegenerateSecretKeyResponder handles the response to the RegenerateSecretKey request. The method always

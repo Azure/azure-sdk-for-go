@@ -87,7 +87,9 @@ func (client GlobalResourceGroupsClient) MoveResourcesPreparer(resourceGroupName
 // MoveResourcesSender sends the MoveResources request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalResourceGroupsClient) MoveResourcesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // MoveResourcesResponder handles the response to the MoveResources request. The method always

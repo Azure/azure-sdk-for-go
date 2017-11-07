@@ -126,6 +126,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdatePreparer(resourceGroupN
 func (client AppServiceEnvironmentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -222,6 +223,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(r
 func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -319,6 +321,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(reso
 func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -416,6 +419,7 @@ func (client AppServiceEnvironmentsClient) DeletePreparer(resourceGroupName stri
 func (client AppServiceEnvironmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -489,7 +493,9 @@ func (client AppServiceEnvironmentsClient) GetPreparer(resourceGroupName string,
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -564,7 +570,9 @@ func (client AppServiceEnvironmentsClient) GetDiagnosticsItemPreparer(resourceGr
 // GetDiagnosticsItemSender sends the GetDiagnosticsItem request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) GetDiagnosticsItemSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDiagnosticsItemResponder handles the response to the GetDiagnosticsItem request. The method always
@@ -638,7 +646,9 @@ func (client AppServiceEnvironmentsClient) GetMultiRolePoolPreparer(resourceGrou
 // GetMultiRolePoolSender sends the GetMultiRolePool request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) GetMultiRolePoolSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMultiRolePoolResponder handles the response to the GetMultiRolePool request. The method always
@@ -713,7 +723,9 @@ func (client AppServiceEnvironmentsClient) GetWorkerPoolPreparer(resourceGroupNa
 // GetWorkerPoolSender sends the GetWorkerPool request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) GetWorkerPoolSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetWorkerPoolResponder handles the response to the GetWorkerPool request. The method always
@@ -774,7 +786,9 @@ func (client AppServiceEnvironmentsClient) ListPreparer() (*http.Request, error)
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -815,8 +829,8 @@ func (client AppServiceEnvironmentsClient) ListNextResults(lastResults AppServic
 }
 
 // ListComplete gets all elements from the list without paging.
-func (client AppServiceEnvironmentsClient) ListComplete(cancel <-chan struct{}) (<-chan AppServiceEnvironment, <-chan error) {
-	resultChan := make(chan AppServiceEnvironment)
+func (client AppServiceEnvironmentsClient) ListComplete(cancel <-chan struct{}) (<-chan AppServiceEnvironmentResource, <-chan error) {
+	resultChan := make(chan AppServiceEnvironmentResource)
 	errChan := make(chan error, 1)
 	go func() {
 		defer func() {
@@ -917,7 +931,9 @@ func (client AppServiceEnvironmentsClient) ListAppServicePlansPreparer(resourceG
 // ListAppServicePlansSender sends the ListAppServicePlans request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListAppServicePlansSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListAppServicePlansResponder handles the response to the ListAppServicePlans request. The method always
@@ -1058,7 +1074,9 @@ func (client AppServiceEnvironmentsClient) ListByResourceGroupPreparer(resourceG
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -1099,8 +1117,8 @@ func (client AppServiceEnvironmentsClient) ListByResourceGroupNextResults(lastRe
 }
 
 // ListByResourceGroupComplete gets all elements from the list without paging.
-func (client AppServiceEnvironmentsClient) ListByResourceGroupComplete(resourceGroupName string, cancel <-chan struct{}) (<-chan AppServiceEnvironment, <-chan error) {
-	resultChan := make(chan AppServiceEnvironment)
+func (client AppServiceEnvironmentsClient) ListByResourceGroupComplete(resourceGroupName string, cancel <-chan struct{}) (<-chan AppServiceEnvironmentResource, <-chan error) {
+	resultChan := make(chan AppServiceEnvironmentResource)
 	errChan := make(chan error, 1)
 	go func() {
 		defer func() {
@@ -1201,7 +1219,9 @@ func (client AppServiceEnvironmentsClient) ListCapacitiesPreparer(resourceGroupN
 // ListCapacitiesSender sends the ListCapacities request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListCapacitiesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListCapacitiesResponder handles the response to the ListCapacities request. The method always
@@ -1344,7 +1364,9 @@ func (client AppServiceEnvironmentsClient) ListDiagnosticsPreparer(resourceGroup
 // ListDiagnosticsSender sends the ListDiagnostics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListDiagnosticsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListDiagnosticsResponder handles the response to the ListDiagnostics request. The method always
@@ -1418,7 +1440,9 @@ func (client AppServiceEnvironmentsClient) ListMetricDefinitionsPreparer(resourc
 // ListMetricDefinitionsSender sends the ListMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricDefinitionsResponder handles the response to the ListMetricDefinitions request. The method always
@@ -1501,7 +1525,9 @@ func (client AppServiceEnvironmentsClient) ListMetricsPreparer(resourceGroupName
 // ListMetricsSender sends the ListMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricsResponder handles the response to the ListMetrics request. The method always
@@ -1644,7 +1670,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitionsPrepare
 // ListMultiRoleMetricDefinitionsSender sends the ListMultiRoleMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMultiRoleMetricDefinitionsResponder handles the response to the ListMultiRoleMetricDefinitions request. The method always
@@ -1806,7 +1834,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetricsPreparer(resource
 // ListMultiRoleMetricsSender sends the ListMultiRoleMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRoleMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMultiRoleMetricsResponder handles the response to the ListMultiRoleMetrics request. The method always
@@ -1951,7 +1981,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefini
 // ListMultiRolePoolInstanceMetricDefinitionsSender sends the ListMultiRolePoolInstanceMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMultiRolePoolInstanceMetricDefinitionsResponder handles the response to the ListMultiRolePoolInstanceMetricDefinitions request. The method always
@@ -2100,7 +2132,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricsPrepa
 // ListMultiRolePoolInstanceMetricsSender sends the ListMultiRolePoolInstanceMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMultiRolePoolInstanceMetricsResponder handles the response to the ListMultiRolePoolInstanceMetrics request. The method always
@@ -2243,7 +2277,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolsPreparer(resourceGr
 // ListMultiRolePoolsSender sends the ListMultiRolePools request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRolePoolsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMultiRolePoolsResponder handles the response to the ListMultiRolePools request. The method always
@@ -2386,7 +2422,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolSkusPreparer(resourc
 // ListMultiRolePoolSkusSender sends the ListMultiRolePoolSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRolePoolSkusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMultiRolePoolSkusResponder handles the response to the ListMultiRolePoolSkus request. The method always
@@ -2529,7 +2567,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleUsagesPreparer(resourceG
 // ListMultiRoleUsagesSender sends the ListMultiRoleUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRoleUsagesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMultiRoleUsagesResponder handles the response to the ListMultiRoleUsages request. The method always
@@ -2672,7 +2712,9 @@ func (client AppServiceEnvironmentsClient) ListOperationsPreparer(resourceGroupN
 // ListOperationsSender sends the ListOperations request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListOperationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListOperationsResponder handles the response to the ListOperations request. The method always
@@ -2751,7 +2793,9 @@ func (client AppServiceEnvironmentsClient) ListUsagesPreparer(resourceGroupName 
 // ListUsagesSender sends the ListUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListUsagesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListUsagesResponder handles the response to the ListUsages request. The method always
@@ -2894,7 +2938,9 @@ func (client AppServiceEnvironmentsClient) ListVipsPreparer(resourceGroupName st
 // ListVipsSender sends the ListVips request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListVipsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListVipsResponder handles the response to the ListVips request. The method always
@@ -2971,7 +3017,9 @@ func (client AppServiceEnvironmentsClient) ListWebAppsPreparer(resourceGroupName
 // ListWebAppsSender sends the ListWebApps request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWebAppsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWebAppsResponder handles the response to the ListWebApps request. The method always
@@ -3115,7 +3163,9 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitionsPrepare
 // ListWebWorkerMetricDefinitionsSender sends the ListWebWorkerMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWebWorkerMetricDefinitionsResponder handles the response to the ListWebWorkerMetricDefinitions request. The method always
@@ -3268,7 +3318,9 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetricsPreparer(resource
 // ListWebWorkerMetricsSender sends the ListWebWorkerMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWebWorkerMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWebWorkerMetricsResponder handles the response to the ListWebWorkerMetrics request. The method always
@@ -3412,7 +3464,9 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerUsagesPreparer(resourceG
 // ListWebWorkerUsagesSender sends the ListWebWorkerUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWebWorkerUsagesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWebWorkerUsagesResponder handles the response to the ListWebWorkerUsages request. The method always
@@ -3558,7 +3612,9 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitio
 // ListWorkerPoolInstanceMetricDefinitionsSender sends the ListWorkerPoolInstanceMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWorkerPoolInstanceMetricDefinitionsResponder handles the response to the ListWorkerPoolInstanceMetricDefinitions request. The method always
@@ -3713,7 +3769,9 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricsPreparer
 // ListWorkerPoolInstanceMetricsSender sends the ListWorkerPoolInstanceMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWorkerPoolInstanceMetricsResponder handles the response to the ListWorkerPoolInstanceMetrics request. The method always
@@ -3856,7 +3914,9 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolsPreparer(resourceGroup
 // ListWorkerPoolsSender sends the ListWorkerPools request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWorkerPoolsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWorkerPoolsResponder handles the response to the ListWorkerPools request. The method always
@@ -4000,7 +4060,9 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolSkusPreparer(resourceGr
 // ListWorkerPoolSkusSender sends the ListWorkerPoolSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWorkerPoolSkusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListWorkerPoolSkusResponder handles the response to the ListWorkerPoolSkus request. The method always
@@ -4143,7 +4205,9 @@ func (client AppServiceEnvironmentsClient) RebootPreparer(resourceGroupName stri
 // RebootSender sends the Reboot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) RebootSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // RebootResponder handles the response to the Reboot request. The method always
@@ -4219,6 +4283,7 @@ func (client AppServiceEnvironmentsClient) ResumePreparer(resourceGroupName stri
 func (client AppServiceEnvironmentsClient) ResumeSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -4365,6 +4430,7 @@ func (client AppServiceEnvironmentsClient) SuspendPreparer(resourceGroupName str
 func (client AppServiceEnvironmentsClient) SuspendSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client,
 		req,
+		azure.DoRetryWithRegistration(client.Client),
 		azure.DoPollForAsynchronous(client.PollingDelay))
 }
 
@@ -4448,4 +4514,239 @@ func (client AppServiceEnvironmentsClient) SuspendComplete(resourceGroupName str
 		}
 	}()
 	return resultChan, errChan
+}
+
+// Update create or update an App Service Environment.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is name of the App Service
+// Environment. hostingEnvironmentEnvelope is configuration details of the App Service Environment.
+func (client AppServiceEnvironmentsClient) Update(resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentPatchResource) (result AppServiceEnvironmentResource, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppServiceEnvironmentsClient", "Update")
+	}
+
+	req, err := client.UpdatePreparer(resourceGroupName, name, hostingEnvironmentEnvelope)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client AppServiceEnvironmentsClient) UpdatePreparer(resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentPatchResource) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}", pathParameters),
+		autorest.WithJSON(hostingEnvironmentEnvelope),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppServiceEnvironmentsClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client AppServiceEnvironmentsClient) UpdateResponder(resp *http.Response) (result AppServiceEnvironmentResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateMultiRolePool create or update a multi-role pool.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is name of the App Service
+// Environment. multiRolePoolEnvelope is properties of the multi-role pool.
+func (client AppServiceEnvironmentsClient) UpdateMultiRolePool(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource) (result WorkerPoolResource, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppServiceEnvironmentsClient", "UpdateMultiRolePool")
+	}
+
+	req, err := client.UpdateMultiRolePoolPreparer(resourceGroupName, name, multiRolePoolEnvelope)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "UpdateMultiRolePool", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateMultiRolePoolSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "UpdateMultiRolePool", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateMultiRolePoolResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "UpdateMultiRolePool", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateMultiRolePoolPreparer prepares the UpdateMultiRolePool request.
+func (client AppServiceEnvironmentsClient) UpdateMultiRolePoolPreparer(resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default", pathParameters),
+		autorest.WithJSON(multiRolePoolEnvelope),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// UpdateMultiRolePoolSender sends the UpdateMultiRolePool request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppServiceEnvironmentsClient) UpdateMultiRolePoolSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateMultiRolePoolResponder handles the response to the UpdateMultiRolePool request. The method always
+// closes the http.Response Body.
+func (client AppServiceEnvironmentsClient) UpdateMultiRolePoolResponder(resp *http.Response) (result WorkerPoolResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateWorkerPool create or update a worker pool.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. name is name of the App Service
+// Environment. workerPoolName is name of the worker pool. workerPoolEnvelope is properties of the worker pool.
+func (client AppServiceEnvironmentsClient) UpdateWorkerPool(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource) (result WorkerPoolResource, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "web.AppServiceEnvironmentsClient", "UpdateWorkerPool")
+	}
+
+	req, err := client.UpdateWorkerPoolPreparer(resourceGroupName, name, workerPoolName, workerPoolEnvelope)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "UpdateWorkerPool", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateWorkerPoolSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "UpdateWorkerPool", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateWorkerPoolResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "UpdateWorkerPool", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateWorkerPoolPreparer prepares the UpdateWorkerPool request.
+func (client AppServiceEnvironmentsClient) UpdateWorkerPoolPreparer(resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workerPoolName":    autorest.Encode("path", workerPoolName),
+	}
+
+	const APIVersion = "2016-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}", pathParameters),
+		autorest.WithJSON(workerPoolEnvelope),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare(&http.Request{})
+}
+
+// UpdateWorkerPoolSender sends the UpdateWorkerPool request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppServiceEnvironmentsClient) UpdateWorkerPoolSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateWorkerPoolResponder handles the response to the UpdateWorkerPool request. The method always
+// closes the http.Response Body.
+func (client AppServiceEnvironmentsClient) UpdateWorkerPoolResponder(resp *http.Response) (result WorkerPoolResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

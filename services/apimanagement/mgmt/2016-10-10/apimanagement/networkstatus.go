@@ -97,7 +97,9 @@ func (client NetworkStatusClient) GetByServicePreparer(resourceGroupName string,
 // GetByServiceSender sends the GetByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkStatusClient) GetByServiceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetByServiceResponder handles the response to the GetByService request. The method always

@@ -778,24 +778,6 @@ type BackupItem struct {
 	*BackupItemProperties `json:"properties,omitempty"`
 }
 
-// BackupItemProperties is
-type BackupItemProperties struct {
-	ID                   *int32                   `json:"id,omitempty"`
-	StorageAccountURL    *string                  `json:"storageAccountUrl,omitempty"`
-	BlobName             *string                  `json:"blobName,omitempty"`
-	Name                 *string                  `json:"name,omitempty"`
-	Status               BackupItemStatus         `json:"status,omitempty"`
-	SizeInBytes          *int64                   `json:"sizeInBytes,omitempty"`
-	Created              *date.Time               `json:"created,omitempty"`
-	Log                  *string                  `json:"log,omitempty"`
-	Databases            *[]DatabaseBackupSetting `json:"databases,omitempty"`
-	Scheduled            *bool                    `json:"scheduled,omitempty"`
-	LastRestoreTimeStamp *date.Time               `json:"lastRestoreTimeStamp,omitempty"`
-	FinishedTimeStamp    *date.Time               `json:"finishedTimeStamp,omitempty"`
-	CorrelationID        *string                  `json:"correlationId,omitempty"`
-	WebsiteSizeInBytes   *int64                   `json:"websiteSizeInBytes,omitempty"`
-}
-
 // BackupItemCollection is collection of Backup Items
 type BackupItemCollection struct {
 	autorest.Response `json:"-"`
@@ -813,6 +795,24 @@ func (client BackupItemCollection) BackupItemCollectionPreparer() (*http.Request
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// BackupItemProperties is
+type BackupItemProperties struct {
+	ID                   *int32                   `json:"id,omitempty"`
+	StorageAccountURL    *string                  `json:"storageAccountUrl,omitempty"`
+	BlobName             *string                  `json:"blobName,omitempty"`
+	Name                 *string                  `json:"name,omitempty"`
+	Status               BackupItemStatus         `json:"status,omitempty"`
+	SizeInBytes          *int64                   `json:"sizeInBytes,omitempty"`
+	Created              *date.Time               `json:"created,omitempty"`
+	Log                  *string                  `json:"log,omitempty"`
+	Databases            *[]DatabaseBackupSetting `json:"databases,omitempty"`
+	Scheduled            *bool                    `json:"scheduled,omitempty"`
+	LastRestoreTimeStamp *date.Time               `json:"lastRestoreTimeStamp,omitempty"`
+	FinishedTimeStamp    *date.Time               `json:"finishedTimeStamp,omitempty"`
+	CorrelationID        *string                  `json:"correlationId,omitempty"`
+	WebsiteSizeInBytes   *int64                   `json:"websiteSizeInBytes,omitempty"`
 }
 
 // BackupRequest is description of a backup which will be performed
@@ -858,25 +858,6 @@ type Certificate struct {
 	Type                   *string             `json:"type,omitempty"`
 	Tags                   *map[string]*string `json:"tags,omitempty"`
 	*CertificateProperties `json:"properties,omitempty"`
-}
-
-// CertificateProperties is
-type CertificateProperties struct {
-	FriendlyName              *string                    `json:"friendlyName,omitempty"`
-	SubjectName               *string                    `json:"subjectName,omitempty"`
-	HostNames                 *[]string                  `json:"hostNames,omitempty"`
-	PfxBlob                   *string                    `json:"pfxBlob,omitempty"`
-	SiteName                  *string                    `json:"siteName,omitempty"`
-	SelfLink                  *string                    `json:"selfLink,omitempty"`
-	Issuer                    *string                    `json:"issuer,omitempty"`
-	IssueDate                 *date.Time                 `json:"issueDate,omitempty"`
-	ExpirationDate            *date.Time                 `json:"expirationDate,omitempty"`
-	Password                  *string                    `json:"password,omitempty"`
-	Thumbprint                *string                    `json:"thumbprint,omitempty"`
-	Valid                     *bool                      `json:"valid,omitempty"`
-	CerBlob                   *string                    `json:"cerBlob,omitempty"`
-	PublicKeyHash             *string                    `json:"publicKeyHash,omitempty"`
-	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
 }
 
 // CertificateCollection is collection of certificates
@@ -951,26 +932,6 @@ type CertificateOrder struct {
 	*CertificateOrderProperties `json:"properties,omitempty"`
 }
 
-// CertificateOrderProperties is
-type CertificateOrderProperties struct {
-	Certificates                *map[string]*CertificateOrderCertificate `json:"certificates,omitempty"`
-	DistinguishedName           *string                                  `json:"distinguishedName,omitempty"`
-	DomainVerificationToken     *string                                  `json:"domainVerificationToken,omitempty"`
-	ValidityInYears             *int32                                   `json:"validityInYears,omitempty"`
-	KeySize                     *int32                                   `json:"keySize,omitempty"`
-	ProductType                 CertificateProductType                   `json:"productType,omitempty"`
-	AutoRenew                   *bool                                    `json:"autoRenew,omitempty"`
-	ProvisioningState           ProvisioningState                        `json:"provisioningState,omitempty"`
-	Status                      CertificateOrderStatus                   `json:"status,omitempty"`
-	SignedCertificate           *CertificateDetails                      `json:"signedCertificate,omitempty"`
-	Csr                         *string                                  `json:"csr,omitempty"`
-	Intermediate                *CertificateDetails                      `json:"intermediate,omitempty"`
-	Root                        *CertificateDetails                      `json:"root,omitempty"`
-	SerialNumber                *string                                  `json:"serialNumber,omitempty"`
-	LastCertificateIssuanceTime *date.Time                               `json:"lastCertificateIssuanceTime,omitempty"`
-	ExpirationTime              *date.Time                               `json:"expirationTime,omitempty"`
-}
-
 // CertificateOrderAction is represents a certificate action
 type CertificateOrderAction struct {
 	ID                                *string             `json:"id,omitempty"`
@@ -1000,13 +961,6 @@ type CertificateOrderCertificate struct {
 	*CertificateOrderCertificateProperties `json:"properties,omitempty"`
 }
 
-// CertificateOrderCertificateProperties is
-type CertificateOrderCertificateProperties struct {
-	KeyVaultID         *string              `json:"keyVaultId,omitempty"`
-	KeyVaultSecretName *string              `json:"keyVaultSecretName,omitempty"`
-	ProvisioningState  KeyVaultSecretStatus `json:"provisioningState,omitempty"`
-}
-
 // CertificateOrderCertificateCollection is collection of ceritificateorder certificates
 type CertificateOrderCertificateCollection struct {
 	autorest.Response `json:"-"`
@@ -1024,6 +978,13 @@ func (client CertificateOrderCertificateCollection) CertificateOrderCertificateC
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// CertificateOrderCertificateProperties is
+type CertificateOrderCertificateProperties struct {
+	KeyVaultID         *string              `json:"keyVaultId,omitempty"`
+	KeyVaultSecretName *string              `json:"keyVaultSecretName,omitempty"`
+	ProvisioningState  KeyVaultSecretStatus `json:"provisioningState,omitempty"`
 }
 
 // CertificateOrderCollection is collection of ceritificate orders
@@ -1045,6 +1006,45 @@ func (client CertificateOrderCollection) CertificateOrderCollectionPreparer() (*
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
+// CertificateOrderProperties is
+type CertificateOrderProperties struct {
+	Certificates                *map[string]*CertificateOrderCertificate `json:"certificates,omitempty"`
+	DistinguishedName           *string                                  `json:"distinguishedName,omitempty"`
+	DomainVerificationToken     *string                                  `json:"domainVerificationToken,omitempty"`
+	ValidityInYears             *int32                                   `json:"validityInYears,omitempty"`
+	KeySize                     *int32                                   `json:"keySize,omitempty"`
+	ProductType                 CertificateProductType                   `json:"productType,omitempty"`
+	AutoRenew                   *bool                                    `json:"autoRenew,omitempty"`
+	ProvisioningState           ProvisioningState                        `json:"provisioningState,omitempty"`
+	Status                      CertificateOrderStatus                   `json:"status,omitempty"`
+	SignedCertificate           *CertificateDetails                      `json:"signedCertificate,omitempty"`
+	Csr                         *string                                  `json:"csr,omitempty"`
+	Intermediate                *CertificateDetails                      `json:"intermediate,omitempty"`
+	Root                        *CertificateDetails                      `json:"root,omitempty"`
+	SerialNumber                *string                                  `json:"serialNumber,omitempty"`
+	LastCertificateIssuanceTime *date.Time                               `json:"lastCertificateIssuanceTime,omitempty"`
+	ExpirationTime              *date.Time                               `json:"expirationTime,omitempty"`
+}
+
+// CertificateProperties is
+type CertificateProperties struct {
+	FriendlyName              *string                    `json:"friendlyName,omitempty"`
+	SubjectName               *string                    `json:"subjectName,omitempty"`
+	HostNames                 *[]string                  `json:"hostNames,omitempty"`
+	PfxBlob                   *string                    `json:"pfxBlob,omitempty"`
+	SiteName                  *string                    `json:"siteName,omitempty"`
+	SelfLink                  *string                    `json:"selfLink,omitempty"`
+	Issuer                    *string                    `json:"issuer,omitempty"`
+	IssueDate                 *date.Time                 `json:"issueDate,omitempty"`
+	ExpirationDate            *date.Time                 `json:"expirationDate,omitempty"`
+	Password                  *string                    `json:"password,omitempty"`
+	Thumbprint                *string                    `json:"thumbprint,omitempty"`
+	Valid                     *bool                      `json:"valid,omitempty"`
+	CerBlob                   *string                    `json:"cerBlob,omitempty"`
+	PublicKeyHash             *string                    `json:"publicKeyHash,omitempty"`
+	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
+}
+
 // ClassicMobileService is a mobile service
 type ClassicMobileService struct {
 	autorest.Response               `json:"-"`
@@ -1055,11 +1055,6 @@ type ClassicMobileService struct {
 	Type                            *string             `json:"type,omitempty"`
 	Tags                            *map[string]*string `json:"tags,omitempty"`
 	*ClassicMobileServiceProperties `json:"properties,omitempty"`
-}
-
-// ClassicMobileServiceProperties is
-type ClassicMobileServiceProperties struct {
-	Name *string `json:"name,omitempty"`
 }
 
 // ClassicMobileServiceCollection is collection of Classic Mobile Services
@@ -1079,6 +1074,11 @@ func (client ClassicMobileServiceCollection) ClassicMobileServiceCollectionPrepa
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// ClassicMobileServiceProperties is
+type ClassicMobileServiceProperties struct {
+	Name *string `json:"name,omitempty"`
 }
 
 // CloningInfo is represents information needed for cloning operation
@@ -1126,23 +1126,6 @@ type Connection struct {
 	*ConnectionProperties `json:"properties,omitempty"`
 }
 
-// ConnectionProperties is
-type ConnectionProperties struct {
-	Name                     *string                                        `json:"name,omitempty"`
-	DisplayName              *string                                        `json:"displayName,omitempty"`
-	Statuses                 *[]ConnectionStatus                            `json:"statuses,omitempty"`
-	CustomParameterValues    *map[string]*ParameterCustomLoginSettingValues `json:"customParameterValues,omitempty"`
-	TenantID                 *string                                        `json:"tenantId,omitempty"`
-	ParameterValues          *map[string]*map[string]interface{}            `json:"parameterValues,omitempty"`
-	NonSecretParameterValues *map[string]*map[string]interface{}            `json:"nonSecretParameterValues,omitempty"`
-	Metadata                 *map[string]interface{}                        `json:"metadata,omitempty"`
-	FirstExpirationTime      *date.Time                                     `json:"firstExpirationTime,omitempty"`
-	Keywords                 *[]string                                      `json:"keywords,omitempty"`
-	CreatedTime              *date.Time                                     `json:"createdTime,omitempty"`
-	ChangedTime              *date.Time                                     `json:"changedTime,omitempty"`
-	API                      *ExpandedParentAPIEntity                       `json:"api,omitempty"`
-}
-
 // ConnectionCollection is collection of conenctions
 type ConnectionCollection struct {
 	autorest.Response `json:"-"`
@@ -1185,6 +1168,23 @@ type ConnectionParameter struct {
 	DefaultValue  *map[string]interface{} `json:"defaultValue,omitempty"`
 	OAuthSettings *APIOAuthSettings       `json:"oAuthSettings,omitempty"`
 	UIDefinition  *map[string]interface{} `json:"uiDefinition,omitempty"`
+}
+
+// ConnectionProperties is
+type ConnectionProperties struct {
+	Name                     *string                                        `json:"name,omitempty"`
+	DisplayName              *string                                        `json:"displayName,omitempty"`
+	Statuses                 *[]ConnectionStatus                            `json:"statuses,omitempty"`
+	CustomParameterValues    *map[string]*ParameterCustomLoginSettingValues `json:"customParameterValues,omitempty"`
+	TenantID                 *string                                        `json:"tenantId,omitempty"`
+	ParameterValues          *map[string]*map[string]interface{}            `json:"parameterValues,omitempty"`
+	NonSecretParameterValues *map[string]*map[string]interface{}            `json:"nonSecretParameterValues,omitempty"`
+	Metadata                 *map[string]interface{}                        `json:"metadata,omitempty"`
+	FirstExpirationTime      *date.Time                                     `json:"firstExpirationTime,omitempty"`
+	Keywords                 *[]string                                      `json:"keywords,omitempty"`
+	CreatedTime              *date.Time                                     `json:"createdTime,omitempty"`
+	ChangedTime              *date.Time                                     `json:"changedTime,omitempty"`
+	API                      *ExpandedParentAPIEntity                       `json:"api,omitempty"`
 }
 
 // ConnectionSecrets is
@@ -1256,11 +1256,6 @@ type ConsentLinkInput struct {
 	*ConsentLinkInputProperties `json:"properties,omitempty"`
 }
 
-// ConsentLinkInputProperties is
-type ConsentLinkInputProperties struct {
-	Parameters *[]ConsentLinkInputParameter `json:"parameters,omitempty"`
-}
-
 // ConsentLinkInputParameter is
 type ConsentLinkInputParameter struct {
 	PrincipalType PrincipalType `json:"principalType,omitempty"`
@@ -1268,6 +1263,11 @@ type ConsentLinkInputParameter struct {
 	ObjectID      *string       `json:"objectId,omitempty"`
 	ParameterName *string       `json:"parameterName,omitempty"`
 	RedirectURL   *string       `json:"redirectUrl,omitempty"`
+}
+
+// ConsentLinkInputProperties is
+type ConsentLinkInputProperties struct {
+	Parameters *[]ConsentLinkInputParameter `json:"parameters,omitempty"`
 }
 
 // ConsentLinkPayload is collection of consent links
@@ -1409,6 +1409,25 @@ type DeletedSite struct {
 	*DeletedSiteProperties `json:"properties,omitempty"`
 }
 
+// DeletedSiteCollection is collection of deleted sites
+type DeletedSiteCollection struct {
+	autorest.Response `json:"-"`
+	Value             *[]DeletedSite `json:"value,omitempty"`
+	NextLink          *string        `json:"nextLink,omitempty"`
+}
+
+// DeletedSiteCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client DeletedSiteCollection) DeletedSiteCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
 // DeletedSiteProperties is
 type DeletedSiteProperties struct {
 	DeletedTimestamp          *date.Time                 `json:"deletedTimestamp,omitempty"`
@@ -1443,25 +1462,6 @@ type DeletedSiteProperties struct {
 	DefaultHostName           *string                    `json:"defaultHostName,omitempty"`
 }
 
-// DeletedSiteCollection is collection of deleted sites
-type DeletedSiteCollection struct {
-	autorest.Response `json:"-"`
-	Value             *[]DeletedSite `json:"value,omitempty"`
-	NextLink          *string        `json:"nextLink,omitempty"`
-}
-
-// DeletedSiteCollectionPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client DeletedSiteCollection) DeletedSiteCollectionPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
-}
-
 // Deployment is represents user crendentials used for publishing activity
 type Deployment struct {
 	autorest.Response     `json:"-"`
@@ -1472,20 +1472,6 @@ type Deployment struct {
 	Type                  *string             `json:"type,omitempty"`
 	Tags                  *map[string]*string `json:"tags,omitempty"`
 	*DeploymentProperties `json:"properties,omitempty"`
-}
-
-// DeploymentProperties is
-type DeploymentProperties struct {
-	ID          *string    `json:"id,omitempty"`
-	Status      *int32     `json:"status,omitempty"`
-	Message     *string    `json:"message,omitempty"`
-	Author      *string    `json:"author,omitempty"`
-	Deployer    *string    `json:"deployer,omitempty"`
-	AuthorEmail *string    `json:"author_email,omitempty"`
-	StartTime   *date.Time `json:"start_time,omitempty"`
-	EndTime     *date.Time `json:"end_time,omitempty"`
-	Active      *bool      `json:"active,omitempty"`
-	Details     *string    `json:"details,omitempty"`
 }
 
 // DeploymentCollection is collection of app deployments
@@ -1507,6 +1493,20 @@ func (client DeploymentCollection) DeploymentCollectionPreparer() (*http.Request
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
+// DeploymentProperties is
+type DeploymentProperties struct {
+	ID          *string    `json:"id,omitempty"`
+	Status      *int32     `json:"status,omitempty"`
+	Message     *string    `json:"message,omitempty"`
+	Author      *string    `json:"author,omitempty"`
+	Deployer    *string    `json:"deployer,omitempty"`
+	AuthorEmail *string    `json:"author_email,omitempty"`
+	StartTime   *date.Time `json:"start_time,omitempty"`
+	EndTime     *date.Time `json:"end_time,omitempty"`
+	Active      *bool      `json:"active,omitempty"`
+	Details     *string    `json:"details,omitempty"`
+}
+
 // Domain is represents a domain
 type Domain struct {
 	autorest.Response `json:"-"`
@@ -1517,26 +1517,6 @@ type Domain struct {
 	Type              *string             `json:"type,omitempty"`
 	Tags              *map[string]*string `json:"tags,omitempty"`
 	*DomainProperties `json:"properties,omitempty"`
-}
-
-// DomainProperties is
-type DomainProperties struct {
-	ContactAdmin                *Contact               `json:"contactAdmin,omitempty"`
-	ContactBilling              *Contact               `json:"contactBilling,omitempty"`
-	ContactRegistrant           *Contact               `json:"contactRegistrant,omitempty"`
-	ContactTech                 *Contact               `json:"contactTech,omitempty"`
-	RegistrationStatus          DomainStatus           `json:"registrationStatus,omitempty"`
-	ProvisioningState           ProvisioningState      `json:"provisioningState,omitempty"`
-	NameServers                 *[]string              `json:"nameServers,omitempty"`
-	Privacy                     *bool                  `json:"privacy,omitempty"`
-	CreatedTime                 *date.Time             `json:"createdTime,omitempty"`
-	ExpirationTime              *date.Time             `json:"expirationTime,omitempty"`
-	LastRenewedTime             *date.Time             `json:"lastRenewedTime,omitempty"`
-	AutoRenew                   *bool                  `json:"autoRenew,omitempty"`
-	ReadyForDNSRecordManagement *bool                  `json:"readyForDnsRecordManagement,omitempty"`
-	ManagedHostNames            *[]HostName            `json:"managedHostNames,omitempty"`
-	Consent                     *DomainPurchaseConsent `json:"consent,omitempty"`
-	DomainNotRenewableReasons   *[]string              `json:"domainNotRenewableReasons,omitempty"`
 }
 
 // DomainAvailablilityCheckResult is domain availablility check result
@@ -1572,6 +1552,26 @@ type DomainControlCenterSsoRequest struct {
 	URL                *string `json:"url,omitempty"`
 	PostParameterKey   *string `json:"postParameterKey,omitempty"`
 	PostParameterValue *string `json:"postParameterValue,omitempty"`
+}
+
+// DomainProperties is
+type DomainProperties struct {
+	ContactAdmin                *Contact               `json:"contactAdmin,omitempty"`
+	ContactBilling              *Contact               `json:"contactBilling,omitempty"`
+	ContactRegistrant           *Contact               `json:"contactRegistrant,omitempty"`
+	ContactTech                 *Contact               `json:"contactTech,omitempty"`
+	RegistrationStatus          DomainStatus           `json:"registrationStatus,omitempty"`
+	ProvisioningState           ProvisioningState      `json:"provisioningState,omitempty"`
+	NameServers                 *[]string              `json:"nameServers,omitempty"`
+	Privacy                     *bool                  `json:"privacy,omitempty"`
+	CreatedTime                 *date.Time             `json:"createdTime,omitempty"`
+	ExpirationTime              *date.Time             `json:"expirationTime,omitempty"`
+	LastRenewedTime             *date.Time             `json:"lastRenewedTime,omitempty"`
+	AutoRenew                   *bool                  `json:"autoRenew,omitempty"`
+	ReadyForDNSRecordManagement *bool                  `json:"readyForDnsRecordManagement,omitempty"`
+	ManagedHostNames            *[]HostName            `json:"managedHostNames,omitempty"`
+	Consent                     *DomainPurchaseConsent `json:"consent,omitempty"`
+	DomainNotRenewableReasons   *[]string              `json:"domainNotRenewableReasons,omitempty"`
 }
 
 // DomainPurchaseConsent is domain purchase consent object representing acceptance of applicable legal agreements
@@ -1690,13 +1690,6 @@ type GeoRegion struct {
 	*GeoRegionProperties `json:"properties,omitempty"`
 }
 
-// GeoRegionProperties is
-type GeoRegionProperties struct {
-	Name        *string `json:"name,omitempty"`
-	Description *string `json:"description,omitempty"`
-	DisplayName *string `json:"displayName,omitempty"`
-}
-
 // GeoRegionCollection is collection of geo regions
 type GeoRegionCollection struct {
 	autorest.Response `json:"-"`
@@ -1714,6 +1707,13 @@ func (client GeoRegionCollection) GeoRegionCollectionPreparer() (*http.Request, 
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// GeoRegionProperties is
+type GeoRegionProperties struct {
+	Name        *string `json:"name,omitempty"`
+	Description *string `json:"description,omitempty"`
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 // HandlerMapping is the IIS handler mappings used to define which handler processes HTTP requests with certain
@@ -1735,6 +1735,40 @@ type HostingEnvironment struct {
 	Type                          *string             `json:"type,omitempty"`
 	Tags                          *map[string]*string `json:"tags,omitempty"`
 	*HostingEnvironmentProperties `json:"properties,omitempty"`
+}
+
+// HostingEnvironmentCollection is collection of hosting environments (App Service Environments)
+type HostingEnvironmentCollection struct {
+	autorest.Response `json:"-"`
+	Value             *[]HostingEnvironment `json:"value,omitempty"`
+	NextLink          *string               `json:"nextLink,omitempty"`
+}
+
+// HostingEnvironmentCollectionPreparer prepares a request to retrieve the next set of results. It returns
+// nil if no more results exist.
+func (client HostingEnvironmentCollection) HostingEnvironmentCollectionPreparer() (*http.Request, error) {
+	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// HostingEnvironmentDiagnostics is diagnostics for a hosting environment (App Service Environment)
+type HostingEnvironmentDiagnostics struct {
+	autorest.Response `json:"-"`
+	Name              *string `json:"name,omitempty"`
+	DiagnosicsOutput  *string `json:"diagnosicsOutput,omitempty"`
+}
+
+// HostingEnvironmentProfile is specification for a hostingEnvironment (App Service Environment) to use for this
+// resource
+type HostingEnvironmentProfile struct {
+	ID   *string `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Type *string `json:"type,omitempty"`
 }
 
 // HostingEnvironmentProperties is
@@ -1773,40 +1807,6 @@ type HostingEnvironmentProperties struct {
 	ClusterSettings           *[]NameValuePair             `json:"clusterSettings,omitempty"`
 }
 
-// HostingEnvironmentCollection is collection of hosting environments (App Service Environments)
-type HostingEnvironmentCollection struct {
-	autorest.Response `json:"-"`
-	Value             *[]HostingEnvironment `json:"value,omitempty"`
-	NextLink          *string               `json:"nextLink,omitempty"`
-}
-
-// HostingEnvironmentCollectionPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client HostingEnvironmentCollection) HostingEnvironmentCollectionPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
-}
-
-// HostingEnvironmentDiagnostics is diagnostics for a hosting environment (App Service Environment)
-type HostingEnvironmentDiagnostics struct {
-	autorest.Response `json:"-"`
-	Name              *string `json:"name,omitempty"`
-	DiagnosicsOutput  *string `json:"diagnosicsOutput,omitempty"`
-}
-
-// HostingEnvironmentProfile is specification for a hostingEnvironment (App Service Environment) to use for this
-// resource
-type HostingEnvironmentProfile struct {
-	ID   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Type *string `json:"type,omitempty"`
-}
-
 // HostingEnvironmentServiceDescriptions is back end service per ASE
 type HostingEnvironmentServiceDescriptions struct {
 	HostingEnvironmentID *string `json:"hostingEnvironmentId,omitempty"`
@@ -1837,17 +1837,6 @@ type HostNameBinding struct {
 	*HostNameBindingProperties `json:"properties,omitempty"`
 }
 
-// HostNameBindingProperties is
-type HostNameBindingProperties struct {
-	Name                        *string                     `json:"name,omitempty"`
-	SiteName                    *string                     `json:"siteName,omitempty"`
-	DomainID                    *string                     `json:"domainId,omitempty"`
-	AzureResourceName           *string                     `json:"azureResourceName,omitempty"`
-	AzureResourceType           AzureResourceType           `json:"azureResourceType,omitempty"`
-	CustomHostNameDNSRecordType CustomHostNameDNSRecordType `json:"customHostNameDnsRecordType,omitempty"`
-	HostNameType                HostNameType                `json:"hostNameType,omitempty"`
-}
-
 // HostNameBindingCollection is collection of host name bindings
 type HostNameBindingCollection struct {
 	autorest.Response `json:"-"`
@@ -1865,6 +1854,17 @@ func (client HostNameBindingCollection) HostNameBindingCollectionPreparer() (*ht
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// HostNameBindingProperties is
+type HostNameBindingProperties struct {
+	Name                        *string                     `json:"name,omitempty"`
+	SiteName                    *string                     `json:"siteName,omitempty"`
+	DomainID                    *string                     `json:"domainId,omitempty"`
+	AzureResourceName           *string                     `json:"azureResourceName,omitempty"`
+	AzureResourceType           AzureResourceType           `json:"azureResourceType,omitempty"`
+	CustomHostNameDNSRecordType CustomHostNameDNSRecordType `json:"customHostNameDnsRecordType,omitempty"`
+	HostNameType                HostNameType                `json:"hostNameType,omitempty"`
 }
 
 // HostNameSslState is object that represents a SSL-enabled host name.
@@ -1970,22 +1970,6 @@ type ManagedHostingEnvironment struct {
 	*ManagedHostingEnvironmentProperties `json:"properties,omitempty"`
 }
 
-// ManagedHostingEnvironmentProperties is
-type ManagedHostingEnvironmentProperties struct {
-	Name                 *string                         `json:"name,omitempty"`
-	Location             *string                         `json:"location,omitempty"`
-	Status               ManagedHostingEnvironmentStatus `json:"status,omitempty"`
-	VirtualNetwork       *VirtualNetworkProfile          `json:"virtualNetwork,omitempty"`
-	IpsslAddressCount    *int32                          `json:"ipsslAddressCount,omitempty"`
-	DNSSuffix            *string                         `json:"dnsSuffix,omitempty"`
-	SubscriptionID       *string                         `json:"subscriptionId,omitempty"`
-	ResourceGroup        *string                         `json:"resourceGroup,omitempty"`
-	EnvironmentIsHealthy *bool                           `json:"environmentIsHealthy,omitempty"`
-	EnvironmentStatus    *string                         `json:"environmentStatus,omitempty"`
-	Suspended            *bool                           `json:"suspended,omitempty"`
-	APIManagementAccount *string                         `json:"apiManagementAccount,omitempty"`
-}
-
 // ManagedHostingEnvironmentCollection is collection of managed hosting environments
 type ManagedHostingEnvironmentCollection struct {
 	autorest.Response `json:"-"`
@@ -2003,6 +1987,22 @@ func (client ManagedHostingEnvironmentCollection) ManagedHostingEnvironmentColle
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// ManagedHostingEnvironmentProperties is
+type ManagedHostingEnvironmentProperties struct {
+	Name                 *string                         `json:"name,omitempty"`
+	Location             *string                         `json:"location,omitempty"`
+	Status               ManagedHostingEnvironmentStatus `json:"status,omitempty"`
+	VirtualNetwork       *VirtualNetworkProfile          `json:"virtualNetwork,omitempty"`
+	IpsslAddressCount    *int32                          `json:"ipsslAddressCount,omitempty"`
+	DNSSuffix            *string                         `json:"dnsSuffix,omitempty"`
+	SubscriptionID       *string                         `json:"subscriptionId,omitempty"`
+	ResourceGroup        *string                         `json:"resourceGroup,omitempty"`
+	EnvironmentIsHealthy *bool                           `json:"environmentIsHealthy,omitempty"`
+	EnvironmentStatus    *string                         `json:"environmentStatus,omitempty"`
+	Suspended            *bool                           `json:"suspended,omitempty"`
+	APIManagementAccount *string                         `json:"apiManagementAccount,omitempty"`
 }
 
 // MetricAvailabilily is class repesenting metrics availability and retention
@@ -2023,15 +2023,6 @@ type MetricDefinition struct {
 	*MetricDefinitionProperties `json:"properties,omitempty"`
 }
 
-// MetricDefinitionProperties is
-type MetricDefinitionProperties struct {
-	Name                   *string               `json:"name,omitempty"`
-	Unit                   *string               `json:"unit,omitempty"`
-	PrimaryAggregationType *string               `json:"primaryAggregationType,omitempty"`
-	MetricAvailabilities   *[]MetricAvailabilily `json:"metricAvailabilities,omitempty"`
-	DisplayName            *string               `json:"displayName,omitempty"`
-}
-
 // MetricDefinitionCollection is collection of metric defintions
 type MetricDefinitionCollection struct {
 	autorest.Response `json:"-"`
@@ -2049,6 +2040,15 @@ func (client MetricDefinitionCollection) MetricDefinitionCollectionPreparer() (*
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// MetricDefinitionProperties is
+type MetricDefinitionProperties struct {
+	Name                   *string               `json:"name,omitempty"`
+	Unit                   *string               `json:"unit,omitempty"`
+	PrimaryAggregationType *string               `json:"primaryAggregationType,omitempty"`
+	MetricAvailabilities   *[]MetricAvailabilily `json:"metricAvailabilities,omitempty"`
+	DisplayName            *string               `json:"displayName,omitempty"`
 }
 
 // NameIdentifier is identifies an object
@@ -2451,39 +2451,6 @@ type Site struct {
 	*SiteProperties   `json:"properties,omitempty"`
 }
 
-// SiteProperties is
-type SiteProperties struct {
-	Name                      *string                    `json:"name,omitempty"`
-	State                     *string                    `json:"state,omitempty"`
-	HostNames                 *[]string                  `json:"hostNames,omitempty"`
-	RepositorySiteName        *string                    `json:"repositorySiteName,omitempty"`
-	UsageState                UsageState                 `json:"usageState,omitempty"`
-	Enabled                   *bool                      `json:"enabled,omitempty"`
-	EnabledHostNames          *[]string                  `json:"enabledHostNames,omitempty"`
-	AvailabilityState         SiteAvailabilityState      `json:"availabilityState,omitempty"`
-	HostNameSslStates         *[]HostNameSslState        `json:"hostNameSslStates,omitempty"`
-	ServerFarmID              *string                    `json:"serverFarmId,omitempty"`
-	LastModifiedTimeUtc       *date.Time                 `json:"lastModifiedTimeUtc,omitempty"`
-	SiteConfig                *SiteConfig                `json:"siteConfig,omitempty"`
-	TrafficManagerHostNames   *[]string                  `json:"trafficManagerHostNames,omitempty"`
-	PremiumAppDeployed        *bool                      `json:"premiumAppDeployed,omitempty"`
-	ScmSiteAlsoStopped        *bool                      `json:"scmSiteAlsoStopped,omitempty"`
-	TargetSwapSlot            *string                    `json:"targetSwapSlot,omitempty"`
-	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
-	MicroService              *string                    `json:"microService,omitempty"`
-	GatewaySiteName           *string                    `json:"gatewaySiteName,omitempty"`
-	ClientAffinityEnabled     *bool                      `json:"clientAffinityEnabled,omitempty"`
-	ClientCertEnabled         *bool                      `json:"clientCertEnabled,omitempty"`
-	HostNamesDisabled         *bool                      `json:"hostNamesDisabled,omitempty"`
-	OutboundIPAddresses       *string                    `json:"outboundIpAddresses,omitempty"`
-	ContainerSize             *int32                     `json:"containerSize,omitempty"`
-	MaxNumberOfWorkers        *int32                     `json:"maxNumberOfWorkers,omitempty"`
-	CloningInfo               *CloningInfo               `json:"cloningInfo,omitempty"`
-	ResourceGroup             *string                    `json:"resourceGroup,omitempty"`
-	IsDefaultContainer        *bool                      `json:"isDefaultContainer,omitempty"`
-	DefaultHostName           *string                    `json:"defaultHostName,omitempty"`
-}
-
 // SiteAuthSettings is configuration settings for the Azure App Service Authentication / Authorization feature.
 type SiteAuthSettings struct {
 	autorest.Response            `json:"-"`
@@ -2617,11 +2584,6 @@ type SiteInstance struct {
 	*SiteInstanceProperties `json:"properties,omitempty"`
 }
 
-// SiteInstanceProperties is
-type SiteInstanceProperties struct {
-	Name *string `json:"name,omitempty"`
-}
-
 // SiteInstanceCollection is collection of site instances
 type SiteInstanceCollection struct {
 	autorest.Response `json:"-"`
@@ -2639,6 +2601,11 @@ func (client SiteInstanceCollection) SiteInstanceCollectionPreparer() (*http.Req
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// SiteInstanceProperties is
+type SiteInstanceProperties struct {
+	Name *string `json:"name,omitempty"`
 }
 
 // SiteLimits is represents metric limits set on a web app.
@@ -2666,6 +2633,39 @@ type SiteLogsConfigProperties struct {
 	HTTPLogs              *HTTPLogsConfig        `json:"httpLogs,omitempty"`
 	FailedRequestsTracing *EnabledConfig         `json:"failedRequestsTracing,omitempty"`
 	DetailedErrorMessages *EnabledConfig         `json:"detailedErrorMessages,omitempty"`
+}
+
+// SiteProperties is
+type SiteProperties struct {
+	Name                      *string                    `json:"name,omitempty"`
+	State                     *string                    `json:"state,omitempty"`
+	HostNames                 *[]string                  `json:"hostNames,omitempty"`
+	RepositorySiteName        *string                    `json:"repositorySiteName,omitempty"`
+	UsageState                UsageState                 `json:"usageState,omitempty"`
+	Enabled                   *bool                      `json:"enabled,omitempty"`
+	EnabledHostNames          *[]string                  `json:"enabledHostNames,omitempty"`
+	AvailabilityState         SiteAvailabilityState      `json:"availabilityState,omitempty"`
+	HostNameSslStates         *[]HostNameSslState        `json:"hostNameSslStates,omitempty"`
+	ServerFarmID              *string                    `json:"serverFarmId,omitempty"`
+	LastModifiedTimeUtc       *date.Time                 `json:"lastModifiedTimeUtc,omitempty"`
+	SiteConfig                *SiteConfig                `json:"siteConfig,omitempty"`
+	TrafficManagerHostNames   *[]string                  `json:"trafficManagerHostNames,omitempty"`
+	PremiumAppDeployed        *bool                      `json:"premiumAppDeployed,omitempty"`
+	ScmSiteAlsoStopped        *bool                      `json:"scmSiteAlsoStopped,omitempty"`
+	TargetSwapSlot            *string                    `json:"targetSwapSlot,omitempty"`
+	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
+	MicroService              *string                    `json:"microService,omitempty"`
+	GatewaySiteName           *string                    `json:"gatewaySiteName,omitempty"`
+	ClientAffinityEnabled     *bool                      `json:"clientAffinityEnabled,omitempty"`
+	ClientCertEnabled         *bool                      `json:"clientCertEnabled,omitempty"`
+	HostNamesDisabled         *bool                      `json:"hostNamesDisabled,omitempty"`
+	OutboundIPAddresses       *string                    `json:"outboundIpAddresses,omitempty"`
+	ContainerSize             *int32                     `json:"containerSize,omitempty"`
+	MaxNumberOfWorkers        *int32                     `json:"maxNumberOfWorkers,omitempty"`
+	CloningInfo               *CloningInfo               `json:"cloningInfo,omitempty"`
+	ResourceGroup             *string                    `json:"resourceGroup,omitempty"`
+	IsDefaultContainer        *bool                      `json:"isDefaultContainer,omitempty"`
+	DefaultHostName           *string                    `json:"defaultHostName,omitempty"`
 }
 
 // SitePropertiesModel is
@@ -2777,17 +2777,6 @@ type SlotDifference struct {
 	*SlotDifferenceProperties `json:"properties,omitempty"`
 }
 
-// SlotDifferenceProperties is
-type SlotDifferenceProperties struct {
-	Type               *string `json:"type,omitempty"`
-	SettingType        *string `json:"settingType,omitempty"`
-	DiffRule           *string `json:"diffRule,omitempty"`
-	SettingName        *string `json:"settingName,omitempty"`
-	ValueInCurrentSlot *string `json:"valueInCurrentSlot,omitempty"`
-	ValueInTargetSlot  *string `json:"valueInTargetSlot,omitempty"`
-	Description        *string `json:"description,omitempty"`
-}
-
 // SlotDifferenceCollection is collection of Slot Differences
 type SlotDifferenceCollection struct {
 	autorest.Response `json:"-"`
@@ -2805,6 +2794,17 @@ func (client SlotDifferenceCollection) SlotDifferenceCollectionPreparer() (*http
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// SlotDifferenceProperties is
+type SlotDifferenceProperties struct {
+	Type               *string `json:"type,omitempty"`
+	SettingType        *string `json:"settingType,omitempty"`
+	DiffRule           *string `json:"diffRule,omitempty"`
+	SettingName        *string `json:"settingName,omitempty"`
+	ValueInCurrentSlot *string `json:"valueInCurrentSlot,omitempty"`
+	ValueInTargetSlot  *string `json:"valueInTargetSlot,omitempty"`
+	Description        *string `json:"description,omitempty"`
 }
 
 // SlowRequestsBasedTrigger is slowRequestsBasedTrigger
@@ -2826,15 +2826,6 @@ type SourceControl struct {
 	*SourceControlProperties `json:"properties,omitempty"`
 }
 
-// SourceControlProperties is
-type SourceControlProperties struct {
-	Name           *string    `json:"name,omitempty"`
-	Token          *string    `json:"token,omitempty"`
-	TokenSecret    *string    `json:"tokenSecret,omitempty"`
-	RefreshToken   *string    `json:"refreshToken,omitempty"`
-	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
-}
-
 // SourceControlCollection is collection of soure controls
 type SourceControlCollection struct {
 	autorest.Response `json:"-"`
@@ -2852,6 +2843,15 @@ func (client SourceControlCollection) SourceControlCollectionPreparer() (*http.R
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// SourceControlProperties is
+type SourceControlProperties struct {
+	Name           *string    `json:"name,omitempty"`
+	Token          *string    `json:"token,omitempty"`
+	TokenSecret    *string    `json:"tokenSecret,omitempty"`
+	RefreshToken   *string    `json:"refreshToken,omitempty"`
+	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
 }
 
 // StampCapacity is class containing stamp capacity information
@@ -2947,12 +2947,6 @@ type TopLevelDomain struct {
 	*TopLevelDomainProperties `json:"properties,omitempty"`
 }
 
-// TopLevelDomainProperties is
-type TopLevelDomainProperties struct {
-	Name    *string `json:"name,omitempty"`
-	Privacy *bool   `json:"privacy,omitempty"`
-}
-
 // TopLevelDomainAgreementOption is options for retrieving the list of top level domain legal agreements
 type TopLevelDomainAgreementOption struct {
 	IncludePrivacy *bool `json:"includePrivacy,omitempty"`
@@ -2977,6 +2971,12 @@ func (client TopLevelDomainCollection) TopLevelDomainCollectionPreparer() (*http
 		autorest.WithBaseURL(to.String(client.NextLink)))
 }
 
+// TopLevelDomainProperties is
+type TopLevelDomainProperties struct {
+	Name    *string `json:"name,omitempty"`
+	Privacy *bool   `json:"privacy,omitempty"`
+}
+
 // Usage is class that represents usage of the quota resource.
 type Usage struct {
 	ID               *string             `json:"id,omitempty"`
@@ -2986,19 +2986,6 @@ type Usage struct {
 	Type             *string             `json:"type,omitempty"`
 	Tags             *map[string]*string `json:"tags,omitempty"`
 	*UsageProperties `json:"properties,omitempty"`
-}
-
-// UsageProperties is
-type UsageProperties struct {
-	DisplayName   *string            `json:"displayName,omitempty"`
-	Name          *string            `json:"name,omitempty"`
-	ResourceName  *string            `json:"resourceName,omitempty"`
-	Unit          *string            `json:"unit,omitempty"`
-	CurrentValue  *int64             `json:"currentValue,omitempty"`
-	Limit         *int64             `json:"limit,omitempty"`
-	NextResetTime *date.Time         `json:"nextResetTime,omitempty"`
-	ComputeMode   ComputeModeOptions `json:"computeMode,omitempty"`
-	SiteMode      *string            `json:"siteMode,omitempty"`
 }
 
 // UsageCollection is collection of usages
@@ -3018,6 +3005,19 @@ func (client UsageCollection) UsageCollectionPreparer() (*http.Request, error) {
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// UsageProperties is
+type UsageProperties struct {
+	DisplayName   *string            `json:"displayName,omitempty"`
+	Name          *string            `json:"name,omitempty"`
+	ResourceName  *string            `json:"resourceName,omitempty"`
+	Unit          *string            `json:"unit,omitempty"`
+	CurrentValue  *int64             `json:"currentValue,omitempty"`
+	Limit         *int64             `json:"limit,omitempty"`
+	NextResetTime *date.Time         `json:"nextResetTime,omitempty"`
+	ComputeMode   ComputeModeOptions `json:"computeMode,omitempty"`
+	SiteMode      *string            `json:"siteMode,omitempty"`
 }
 
 // User is represents user crendentials used for publishing activity
@@ -3143,15 +3143,6 @@ type WorkerPool struct {
 	Sku                   *SkuDescription `json:"sku,omitempty"`
 }
 
-// WorkerPoolProperties is
-type WorkerPoolProperties struct {
-	WorkerSizeID  *int32             `json:"workerSizeId,omitempty"`
-	ComputeMode   ComputeModeOptions `json:"computeMode,omitempty"`
-	WorkerSize    *string            `json:"workerSize,omitempty"`
-	WorkerCount   *int32             `json:"workerCount,omitempty"`
-	InstanceNames *[]string          `json:"instanceNames,omitempty"`
-}
-
 // WorkerPoolCollection is collection of worker pools
 type WorkerPoolCollection struct {
 	autorest.Response `json:"-"`
@@ -3169,4 +3160,13 @@ func (client WorkerPoolCollection) WorkerPoolCollectionPreparer() (*http.Request
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(client.NextLink)))
+}
+
+// WorkerPoolProperties is
+type WorkerPoolProperties struct {
+	WorkerSizeID  *int32             `json:"workerSizeId,omitempty"`
+	ComputeMode   ComputeModeOptions `json:"computeMode,omitempty"`
+	WorkerSize    *string            `json:"workerSize,omitempty"`
+	WorkerCount   *int32             `json:"workerCount,omitempty"`
+	InstanceNames *[]string          `json:"instanceNames,omitempty"`
 }

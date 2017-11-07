@@ -90,7 +90,9 @@ func (client UsageClient) GetUsagePreparer(resourceGroupName string, environment
 // GetUsageSender sends the GetUsage request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsageClient) GetUsageSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetUsageResponder handles the response to the GetUsage request. The method always

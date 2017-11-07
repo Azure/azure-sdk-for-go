@@ -91,7 +91,9 @@ func (client APIKeysClient) CreatePreparer(resourceGroupName string, resourceNam
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIKeysClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -158,7 +160,9 @@ func (client APIKeysClient) DeletePreparer(resourceGroupName string, resourceNam
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIKeysClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -225,7 +229,9 @@ func (client APIKeysClient) GetPreparer(resourceGroupName string, resourceName s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIKeysClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -291,7 +297,9 @@ func (client APIKeysClient) ListPreparer(resourceGroupName string, resourceName 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIKeysClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req)
+	return autorest.SendWithSender(client,
+		req,
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always

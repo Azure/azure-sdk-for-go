@@ -33,17 +33,17 @@ type DefinitionsClient = original.DefinitionsClient
 type Mode = original.Mode
 
 const (
-	All		Mode	= original.All
-	Indexed		Mode	= original.Indexed
-	NotSpecified	Mode	= original.NotSpecified
+	All          Mode = original.All
+	Indexed      Mode = original.Indexed
+	NotSpecified Mode = original.NotSpecified
 )
 
 type Type = original.Type
 
 const (
-	TypeBuiltIn		Type	= original.TypeBuiltIn
-	TypeCustom		Type	= original.TypeCustom
-	TypeNotSpecified	Type	= original.TypeNotSpecified
+	TypeBuiltIn      Type = original.TypeBuiltIn
+	TypeCustom       Type = original.TypeCustom
+	TypeNotSpecified Type = original.TypeNotSpecified
 )
 
 type Assignment = original.Assignment
@@ -53,18 +53,6 @@ type Definition = original.Definition
 type DefinitionListResult = original.DefinitionListResult
 type DefinitionProperties = original.DefinitionProperties
 
-func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClient(subscriptionID)
-}
-func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
 	return original.NewDefinitionsClient(subscriptionID)
 }
@@ -76,4 +64,16 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClient(subscriptionID)
+}
+func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

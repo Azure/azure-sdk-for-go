@@ -31,9 +31,9 @@ type ManagementLocksClient = original.ManagementLocksClient
 type LockLevel = original.LockLevel
 
 const (
-	CanNotDelete	LockLevel	= original.CanNotDelete
-	NotSpecified	LockLevel	= original.NotSpecified
-	ReadOnly	LockLevel	= original.ReadOnly
+	CanNotDelete LockLevel = original.CanNotDelete
+	NotSpecified LockLevel = original.NotSpecified
+	ReadOnly     LockLevel = original.ReadOnly
 )
 
 type ManagementLockListResult = original.ManagementLockListResult
@@ -41,12 +41,6 @@ type ManagementLockObject = original.ManagementLockObject
 type ManagementLockOwner = original.ManagementLockOwner
 type ManagementLockProperties = original.ManagementLockProperties
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)
 }
@@ -58,4 +52,10 @@ func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
 }
 func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) ManagementLocksClient {
 	return original.NewManagementLocksClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }

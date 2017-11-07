@@ -26,15 +26,15 @@ type DomainServicesClient = original.DomainServicesClient
 type ExternalAccess = original.ExternalAccess
 
 const (
-	Disabled	ExternalAccess	= original.Disabled
-	Enabled		ExternalAccess	= original.Enabled
+	Disabled ExternalAccess = original.Disabled
+	Enabled  ExternalAccess = original.Enabled
 )
 
 type Ldaps = original.Ldaps
 
 const (
-	LdapsDisabled	Ldaps	= original.LdapsDisabled
-	LdapsEnabled	Ldaps	= original.LdapsEnabled
+	LdapsDisabled Ldaps = original.LdapsDisabled
+	LdapsEnabled  Ldaps = original.LdapsEnabled
 )
 
 type DomainService = original.DomainService
@@ -54,12 +54,6 @@ const (
 type ManagementClient = original.ManagementClient
 type DomainServiceOperationsClient = original.DomainServiceOperationsClient
 
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperationsClient {
 	return original.NewDomainServiceOperationsClient(subscriptionID)
 }
@@ -77,4 +71,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,17 +22,25 @@ package storageimportexport
 
 import original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport"
 
+type BitLockerKeysClient = original.BitLockerKeysClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+type JobsClient = original.JobsClient
 type LocationsClient = original.LocationsClient
 type DriveState = original.DriveState
 
 const (
-	Completed		DriveState	= original.Completed
-	CompletedMoreInfo	DriveState	= original.CompletedMoreInfo
-	NeverReceived		DriveState	= original.NeverReceived
-	Received		DriveState	= original.Received
-	ShippedBack		DriveState	= original.ShippedBack
-	Specified		DriveState	= original.Specified
-	Transferring		DriveState	= original.Transferring
+	Completed         DriveState = original.Completed
+	CompletedMoreInfo DriveState = original.CompletedMoreInfo
+	NeverReceived     DriveState = original.NeverReceived
+	Received          DriveState = original.Received
+	ShippedBack       DriveState = original.ShippedBack
+	Specified         DriveState = original.Specified
+	Transferring      DriveState = original.Transferring
 )
 
 type DriveBitLockerKey = original.DriveBitLockerKey
@@ -60,15 +68,13 @@ type ShippingInformation = original.ShippingInformation
 type UpdateJobParameters = original.UpdateJobParameters
 type UpdateJobParametersProperties = original.UpdateJobParametersProperties
 type OperationsClient = original.OperationsClient
-type BitLockerKeysClient = original.BitLockerKeysClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-type JobsClient = original.JobsClient
-
+func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, acceptLanguage)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
@@ -98,10 +104,4 @@ func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsC
 }
 func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) LocationsClient {
 	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, acceptLanguage)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }

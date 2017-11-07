@@ -22,35 +22,22 @@ package hdinsight
 
 import original "github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2015-03-01-preview/hdinsight"
 
-type ApplicationsClient = original.ApplicationsClient
-type ClustersClient = original.ClustersClient
-type ConfigurationsClient = original.ConfigurationsClient
-type ExtensionClient = original.ExtensionClient
-type OperationsClient = original.OperationsClient
-type ScriptActionsClient = original.ScriptActionsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-type LocationClient = original.LocationClient
 type AsyncOperationState = original.AsyncOperationState
 
 const (
-	Failed		AsyncOperationState	= original.Failed
-	InProgress	AsyncOperationState	= original.InProgress
-	Succeeded	AsyncOperationState	= original.Succeeded
+	Failed     AsyncOperationState = original.Failed
+	InProgress AsyncOperationState = original.InProgress
+	Succeeded  AsyncOperationState = original.Succeeded
 )
 
 type ClusterProvisioningState = original.ClusterProvisioningState
 
 const (
-	ClusterProvisioningStateCanceled	ClusterProvisioningState	= original.ClusterProvisioningStateCanceled
-	ClusterProvisioningStateDeleting	ClusterProvisioningState	= original.ClusterProvisioningStateDeleting
-	ClusterProvisioningStateFailed		ClusterProvisioningState	= original.ClusterProvisioningStateFailed
-	ClusterProvisioningStateInProgress	ClusterProvisioningState	= original.ClusterProvisioningStateInProgress
-	ClusterProvisioningStateSucceeded	ClusterProvisioningState	= original.ClusterProvisioningStateSucceeded
+	ClusterProvisioningStateCanceled   ClusterProvisioningState = original.ClusterProvisioningStateCanceled
+	ClusterProvisioningStateDeleting   ClusterProvisioningState = original.ClusterProvisioningStateDeleting
+	ClusterProvisioningStateFailed     ClusterProvisioningState = original.ClusterProvisioningStateFailed
+	ClusterProvisioningStateInProgress ClusterProvisioningState = original.ClusterProvisioningStateInProgress
+	ClusterProvisioningStateSucceeded  ClusterProvisioningState = original.ClusterProvisioningStateSucceeded
 )
 
 type DirectoryType = original.DirectoryType
@@ -62,22 +49,22 @@ const (
 type EnabledCredential = original.EnabledCredential
 
 const (
-	False	EnabledCredential	= original.False
-	True	EnabledCredential	= original.True
+	False EnabledCredential = original.False
+	True  EnabledCredential = original.True
 )
 
 type OSType = original.OSType
 
 const (
-	Linux	OSType	= original.Linux
-	Windows	OSType	= original.Windows
+	Linux   OSType = original.Linux
+	Windows OSType = original.Windows
 )
 
 type Tier = original.Tier
 
 const (
-	Premium		Tier	= original.Premium
-	Standard	Tier	= original.Standard
+	Premium  Tier = original.Premium
+	Standard Tier = original.Standard
 )
 
 type Application = original.Application
@@ -139,24 +126,31 @@ type VirtualNetworkProfile = original.VirtualNetworkProfile
 type VMSizeCompatibilityFilter = original.VMSizeCompatibilityFilter
 type VMSizesCapability = original.VMSizesCapability
 type ScriptExecutionHistoryClient = original.ScriptExecutionHistoryClient
+type ApplicationsClient = original.ApplicationsClient
 
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewLocationClient(subscriptionID string) LocationClient {
-	return original.NewLocationClient(subscriptionID)
-}
-func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) LocationClient {
-	return original.NewLocationClientWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+type ExtensionClient = original.ExtensionClient
+type OperationsClient = original.OperationsClient
+type ScriptActionsClient = original.ScriptActionsClient
+type ClustersClient = original.ClustersClient
+type ConfigurationsClient = original.ConfigurationsClient
+type LocationClient = original.LocationClient
+
 func NewScriptExecutionHistoryClient(subscriptionID string) ScriptExecutionHistoryClient {
 	return original.NewScriptExecutionHistoryClient(subscriptionID)
 }
 func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID string) ScriptExecutionHistoryClient {
 	return original.NewScriptExecutionHistoryClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }
 func NewApplicationsClient(subscriptionID string) ApplicationsClient {
 	return original.NewApplicationsClient(subscriptionID)
@@ -164,17 +158,11 @@ func NewApplicationsClient(subscriptionID string) ApplicationsClient {
 func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationsClient {
 	return original.NewApplicationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewClustersClient(subscriptionID string) ClustersClient {
-	return original.NewClustersClient(subscriptionID)
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
 }
-func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
-	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
-	return original.NewConfigurationsClient(subscriptionID)
-}
-func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
-	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewExtensionClient(subscriptionID string) ExtensionClient {
 	return original.NewExtensionClient(subscriptionID)
@@ -194,9 +182,21 @@ func NewScriptActionsClient(subscriptionID string) ScriptActionsClient {
 func NewScriptActionsClientWithBaseURI(baseURI string, subscriptionID string) ScriptActionsClient {
 	return original.NewScriptActionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewClustersClient(subscriptionID string) ClustersClient {
+	return original.NewClustersClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
+	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
+	return original.NewConfigurationsClient(subscriptionID)
+}
+func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
+	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLocationClient(subscriptionID string) LocationClient {
+	return original.NewLocationClient(subscriptionID)
+}
+func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) LocationClient {
+	return original.NewLocationClientWithBaseURI(baseURI, subscriptionID)
 }

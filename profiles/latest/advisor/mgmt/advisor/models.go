@@ -35,26 +35,26 @@ type ConfigurationsClient = original.ConfigurationsClient
 type Category = original.Category
 
 const (
-	Cost			Category	= original.Cost
-	HighAvailability	Category	= original.HighAvailability
-	Performance		Category	= original.Performance
-	Security		Category	= original.Security
+	Cost             Category = original.Cost
+	HighAvailability Category = original.HighAvailability
+	Performance      Category = original.Performance
+	Security         Category = original.Security
 )
 
 type Impact = original.Impact
 
 const (
-	High	Impact	= original.High
-	Low	Impact	= original.Low
-	Medium	Impact	= original.Medium
+	High   Impact = original.High
+	Low    Impact = original.Low
+	Medium Impact = original.Medium
 )
 
 type Risk = original.Risk
 
 const (
-	Error	Risk	= original.Error
-	None	Risk	= original.None
-	Warning	Risk	= original.Warning
+	Error   Risk = original.Error
+	None    Risk = original.None
+	Warning Risk = original.Warning
 )
 
 type ARMErrorResponseBody = original.ARMErrorResponseBody
@@ -73,6 +73,18 @@ type SuppressionContract = original.SuppressionContract
 type SuppressionContractListResult = original.SuppressionContractListResult
 type SuppressionProperties = original.SuppressionProperties
 
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
+	return original.NewConfigurationsClient(subscriptionID)
+}
+func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
+	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -96,16 +108,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
-	return original.NewConfigurationsClient(subscriptionID)
-}
-func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
-	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }

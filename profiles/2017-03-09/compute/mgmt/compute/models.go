@@ -28,9 +28,9 @@ type VirtualMachineScaleSetVMsClient = original.VirtualMachineScaleSetVMsClient
 type CachingTypes = original.CachingTypes
 
 const (
-	None		CachingTypes	= original.None
-	ReadOnly	CachingTypes	= original.ReadOnly
-	ReadWrite	CachingTypes	= original.ReadWrite
+	None      CachingTypes = original.None
+	ReadOnly  CachingTypes = original.ReadOnly
+	ReadWrite CachingTypes = original.ReadWrite
 )
 
 type ComponentNames = original.ComponentNames
@@ -42,9 +42,9 @@ const (
 type DiskCreateOptionTypes = original.DiskCreateOptionTypes
 
 const (
-	Attach		DiskCreateOptionTypes	= original.Attach
-	Empty		DiskCreateOptionTypes	= original.Empty
-	FromImage	DiskCreateOptionTypes	= original.FromImage
+	Attach    DiskCreateOptionTypes = original.Attach
+	Empty     DiskCreateOptionTypes = original.Empty
+	FromImage DiskCreateOptionTypes = original.FromImage
 )
 
 type InstanceViewTypes = original.InstanceViewTypes
@@ -56,8 +56,8 @@ const (
 type OperatingSystemTypes = original.OperatingSystemTypes
 
 const (
-	Linux	OperatingSystemTypes	= original.Linux
-	Windows	OperatingSystemTypes	= original.Windows
+	Linux   OperatingSystemTypes = original.Linux
+	Windows OperatingSystemTypes = original.Windows
 )
 
 type PassNames = original.PassNames
@@ -69,8 +69,8 @@ const (
 type ProtocolTypes = original.ProtocolTypes
 
 const (
-	HTTP	ProtocolTypes	= original.HTTP
-	HTTPS	ProtocolTypes	= original.HTTPS
+	HTTP  ProtocolTypes = original.HTTP
+	HTTPS ProtocolTypes = original.HTTPS
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -82,98 +82,98 @@ const (
 type SettingNames = original.SettingNames
 
 const (
-	AutoLogon		SettingNames	= original.AutoLogon
-	FirstLogonCommands	SettingNames	= original.FirstLogonCommands
+	AutoLogon          SettingNames = original.AutoLogon
+	FirstLogonCommands SettingNames = original.FirstLogonCommands
 )
 
 type StatusLevelTypes = original.StatusLevelTypes
 
 const (
-	Error	StatusLevelTypes	= original.Error
-	Info	StatusLevelTypes	= original.Info
-	Warning	StatusLevelTypes	= original.Warning
+	Error   StatusLevelTypes = original.Error
+	Info    StatusLevelTypes = original.Info
+	Warning StatusLevelTypes = original.Warning
 )
 
 type UpgradeMode = original.UpgradeMode
 
 const (
-	Automatic	UpgradeMode	= original.Automatic
-	Manual		UpgradeMode	= original.Manual
+	Automatic UpgradeMode = original.Automatic
+	Manual    UpgradeMode = original.Manual
 )
 
 type VirtualMachineScaleSetSkuScaleType = original.VirtualMachineScaleSetSkuScaleType
 
 const (
-	VirtualMachineScaleSetSkuScaleTypeAutomatic	VirtualMachineScaleSetSkuScaleType	= original.VirtualMachineScaleSetSkuScaleTypeAutomatic
-	VirtualMachineScaleSetSkuScaleTypeNone		VirtualMachineScaleSetSkuScaleType	= original.VirtualMachineScaleSetSkuScaleTypeNone
+	VirtualMachineScaleSetSkuScaleTypeAutomatic VirtualMachineScaleSetSkuScaleType = original.VirtualMachineScaleSetSkuScaleTypeAutomatic
+	VirtualMachineScaleSetSkuScaleTypeNone      VirtualMachineScaleSetSkuScaleType = original.VirtualMachineScaleSetSkuScaleTypeNone
 )
 
 type VirtualMachineSizeTypes = original.VirtualMachineSizeTypes
 
 const (
-	BasicA0		VirtualMachineSizeTypes	= original.BasicA0
-	BasicA1		VirtualMachineSizeTypes	= original.BasicA1
-	BasicA2		VirtualMachineSizeTypes	= original.BasicA2
-	BasicA3		VirtualMachineSizeTypes	= original.BasicA3
-	BasicA4		VirtualMachineSizeTypes	= original.BasicA4
-	StandardA0	VirtualMachineSizeTypes	= original.StandardA0
-	StandardA1	VirtualMachineSizeTypes	= original.StandardA1
-	StandardA10	VirtualMachineSizeTypes	= original.StandardA10
-	StandardA11	VirtualMachineSizeTypes	= original.StandardA11
-	StandardA2	VirtualMachineSizeTypes	= original.StandardA2
-	StandardA3	VirtualMachineSizeTypes	= original.StandardA3
-	StandardA4	VirtualMachineSizeTypes	= original.StandardA4
-	StandardA5	VirtualMachineSizeTypes	= original.StandardA5
-	StandardA6	VirtualMachineSizeTypes	= original.StandardA6
-	StandardA7	VirtualMachineSizeTypes	= original.StandardA7
-	StandardA8	VirtualMachineSizeTypes	= original.StandardA8
-	StandardA9	VirtualMachineSizeTypes	= original.StandardA9
-	StandardD1	VirtualMachineSizeTypes	= original.StandardD1
-	StandardD11	VirtualMachineSizeTypes	= original.StandardD11
-	StandardD11V2	VirtualMachineSizeTypes	= original.StandardD11V2
-	StandardD12	VirtualMachineSizeTypes	= original.StandardD12
-	StandardD12V2	VirtualMachineSizeTypes	= original.StandardD12V2
-	StandardD13	VirtualMachineSizeTypes	= original.StandardD13
-	StandardD13V2	VirtualMachineSizeTypes	= original.StandardD13V2
-	StandardD14	VirtualMachineSizeTypes	= original.StandardD14
-	StandardD14V2	VirtualMachineSizeTypes	= original.StandardD14V2
-	StandardD15V2	VirtualMachineSizeTypes	= original.StandardD15V2
-	StandardD1V2	VirtualMachineSizeTypes	= original.StandardD1V2
-	StandardD2	VirtualMachineSizeTypes	= original.StandardD2
-	StandardD2V2	VirtualMachineSizeTypes	= original.StandardD2V2
-	StandardD3	VirtualMachineSizeTypes	= original.StandardD3
-	StandardD3V2	VirtualMachineSizeTypes	= original.StandardD3V2
-	StandardD4	VirtualMachineSizeTypes	= original.StandardD4
-	StandardD4V2	VirtualMachineSizeTypes	= original.StandardD4V2
-	StandardD5V2	VirtualMachineSizeTypes	= original.StandardD5V2
-	StandardDS1	VirtualMachineSizeTypes	= original.StandardDS1
-	StandardDS11	VirtualMachineSizeTypes	= original.StandardDS11
-	StandardDS11V2	VirtualMachineSizeTypes	= original.StandardDS11V2
-	StandardDS12	VirtualMachineSizeTypes	= original.StandardDS12
-	StandardDS12V2	VirtualMachineSizeTypes	= original.StandardDS12V2
-	StandardDS13	VirtualMachineSizeTypes	= original.StandardDS13
-	StandardDS13V2	VirtualMachineSizeTypes	= original.StandardDS13V2
-	StandardDS14	VirtualMachineSizeTypes	= original.StandardDS14
-	StandardDS14V2	VirtualMachineSizeTypes	= original.StandardDS14V2
-	StandardDS15V2	VirtualMachineSizeTypes	= original.StandardDS15V2
-	StandardDS1V2	VirtualMachineSizeTypes	= original.StandardDS1V2
-	StandardDS2	VirtualMachineSizeTypes	= original.StandardDS2
-	StandardDS2V2	VirtualMachineSizeTypes	= original.StandardDS2V2
-	StandardDS3	VirtualMachineSizeTypes	= original.StandardDS3
-	StandardDS3V2	VirtualMachineSizeTypes	= original.StandardDS3V2
-	StandardDS4	VirtualMachineSizeTypes	= original.StandardDS4
-	StandardDS4V2	VirtualMachineSizeTypes	= original.StandardDS4V2
-	StandardDS5V2	VirtualMachineSizeTypes	= original.StandardDS5V2
-	StandardG1	VirtualMachineSizeTypes	= original.StandardG1
-	StandardG2	VirtualMachineSizeTypes	= original.StandardG2
-	StandardG3	VirtualMachineSizeTypes	= original.StandardG3
-	StandardG4	VirtualMachineSizeTypes	= original.StandardG4
-	StandardG5	VirtualMachineSizeTypes	= original.StandardG5
-	StandardGS1	VirtualMachineSizeTypes	= original.StandardGS1
-	StandardGS2	VirtualMachineSizeTypes	= original.StandardGS2
-	StandardGS3	VirtualMachineSizeTypes	= original.StandardGS3
-	StandardGS4	VirtualMachineSizeTypes	= original.StandardGS4
-	StandardGS5	VirtualMachineSizeTypes	= original.StandardGS5
+	BasicA0        VirtualMachineSizeTypes = original.BasicA0
+	BasicA1        VirtualMachineSizeTypes = original.BasicA1
+	BasicA2        VirtualMachineSizeTypes = original.BasicA2
+	BasicA3        VirtualMachineSizeTypes = original.BasicA3
+	BasicA4        VirtualMachineSizeTypes = original.BasicA4
+	StandardA0     VirtualMachineSizeTypes = original.StandardA0
+	StandardA1     VirtualMachineSizeTypes = original.StandardA1
+	StandardA10    VirtualMachineSizeTypes = original.StandardA10
+	StandardA11    VirtualMachineSizeTypes = original.StandardA11
+	StandardA2     VirtualMachineSizeTypes = original.StandardA2
+	StandardA3     VirtualMachineSizeTypes = original.StandardA3
+	StandardA4     VirtualMachineSizeTypes = original.StandardA4
+	StandardA5     VirtualMachineSizeTypes = original.StandardA5
+	StandardA6     VirtualMachineSizeTypes = original.StandardA6
+	StandardA7     VirtualMachineSizeTypes = original.StandardA7
+	StandardA8     VirtualMachineSizeTypes = original.StandardA8
+	StandardA9     VirtualMachineSizeTypes = original.StandardA9
+	StandardD1     VirtualMachineSizeTypes = original.StandardD1
+	StandardD11    VirtualMachineSizeTypes = original.StandardD11
+	StandardD11V2  VirtualMachineSizeTypes = original.StandardD11V2
+	StandardD12    VirtualMachineSizeTypes = original.StandardD12
+	StandardD12V2  VirtualMachineSizeTypes = original.StandardD12V2
+	StandardD13    VirtualMachineSizeTypes = original.StandardD13
+	StandardD13V2  VirtualMachineSizeTypes = original.StandardD13V2
+	StandardD14    VirtualMachineSizeTypes = original.StandardD14
+	StandardD14V2  VirtualMachineSizeTypes = original.StandardD14V2
+	StandardD15V2  VirtualMachineSizeTypes = original.StandardD15V2
+	StandardD1V2   VirtualMachineSizeTypes = original.StandardD1V2
+	StandardD2     VirtualMachineSizeTypes = original.StandardD2
+	StandardD2V2   VirtualMachineSizeTypes = original.StandardD2V2
+	StandardD3     VirtualMachineSizeTypes = original.StandardD3
+	StandardD3V2   VirtualMachineSizeTypes = original.StandardD3V2
+	StandardD4     VirtualMachineSizeTypes = original.StandardD4
+	StandardD4V2   VirtualMachineSizeTypes = original.StandardD4V2
+	StandardD5V2   VirtualMachineSizeTypes = original.StandardD5V2
+	StandardDS1    VirtualMachineSizeTypes = original.StandardDS1
+	StandardDS11   VirtualMachineSizeTypes = original.StandardDS11
+	StandardDS11V2 VirtualMachineSizeTypes = original.StandardDS11V2
+	StandardDS12   VirtualMachineSizeTypes = original.StandardDS12
+	StandardDS12V2 VirtualMachineSizeTypes = original.StandardDS12V2
+	StandardDS13   VirtualMachineSizeTypes = original.StandardDS13
+	StandardDS13V2 VirtualMachineSizeTypes = original.StandardDS13V2
+	StandardDS14   VirtualMachineSizeTypes = original.StandardDS14
+	StandardDS14V2 VirtualMachineSizeTypes = original.StandardDS14V2
+	StandardDS15V2 VirtualMachineSizeTypes = original.StandardDS15V2
+	StandardDS1V2  VirtualMachineSizeTypes = original.StandardDS1V2
+	StandardDS2    VirtualMachineSizeTypes = original.StandardDS2
+	StandardDS2V2  VirtualMachineSizeTypes = original.StandardDS2V2
+	StandardDS3    VirtualMachineSizeTypes = original.StandardDS3
+	StandardDS3V2  VirtualMachineSizeTypes = original.StandardDS3V2
+	StandardDS4    VirtualMachineSizeTypes = original.StandardDS4
+	StandardDS4V2  VirtualMachineSizeTypes = original.StandardDS4V2
+	StandardDS5V2  VirtualMachineSizeTypes = original.StandardDS5V2
+	StandardG1     VirtualMachineSizeTypes = original.StandardG1
+	StandardG2     VirtualMachineSizeTypes = original.StandardG2
+	StandardG3     VirtualMachineSizeTypes = original.StandardG3
+	StandardG4     VirtualMachineSizeTypes = original.StandardG4
+	StandardG5     VirtualMachineSizeTypes = original.StandardG5
+	StandardGS1    VirtualMachineSizeTypes = original.StandardGS1
+	StandardGS2    VirtualMachineSizeTypes = original.StandardGS2
+	StandardGS3    VirtualMachineSizeTypes = original.StandardGS3
+	StandardGS4    VirtualMachineSizeTypes = original.StandardGS4
+	StandardGS5    VirtualMachineSizeTypes = original.StandardGS5
 )
 
 type AdditionalUnattendContent = original.AdditionalUnattendContent

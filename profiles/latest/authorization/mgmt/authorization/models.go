@@ -22,7 +22,6 @@ package authorization
 
 import original "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 
-type RoleDefinitionsClient = original.RoleDefinitionsClient
 type ClassicAdministratorsClient = original.ClassicAdministratorsClient
 
 const (
@@ -52,7 +51,26 @@ type RoleDefinitionProperties = original.RoleDefinitionProperties
 type PermissionsClient = original.PermissionsClient
 type ProviderOperationsMetadataClient = original.ProviderOperationsMetadataClient
 type RoleAssignmentsClient = original.RoleAssignmentsClient
+type RoleDefinitionsClient = original.RoleDefinitionsClient
 
+func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClient(subscriptionID)
+}
+func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClient(subscriptionID)
+}
+func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
 func NewClassicAdministratorsClient(subscriptionID string) ClassicAdministratorsClient {
 	return original.NewClassicAdministratorsClient(subscriptionID)
 }
@@ -76,22 +94,4 @@ func NewProviderOperationsMetadataClient(subscriptionID string) ProviderOperatio
 }
 func NewProviderOperationsMetadataClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsMetadataClient {
 	return original.NewProviderOperationsMetadataClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
-	return original.NewRoleAssignmentsClient(subscriptionID)
-}
-func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
-	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
-	return original.NewRoleDefinitionsClient(subscriptionID)
-}
-func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
-	return original.NewRoleDefinitionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
 }

@@ -31,19 +31,19 @@ type GroupClient = original.GroupClient
 type SpendingLimit = original.SpendingLimit
 
 const (
-	CurrentPeriodOff	SpendingLimit	= original.CurrentPeriodOff
-	Off			SpendingLimit	= original.Off
-	On			SpendingLimit	= original.On
+	CurrentPeriodOff SpendingLimit = original.CurrentPeriodOff
+	Off              SpendingLimit = original.Off
+	On               SpendingLimit = original.On
 )
 
 type State = original.State
 
 const (
-	Deleted		State	= original.Deleted
-	Disabled	State	= original.Disabled
-	Enabled		State	= original.Enabled
-	PastDue		State	= original.PastDue
-	Warned		State	= original.Warned
+	Deleted  State = original.Deleted
+	Disabled State = original.Disabled
+	Enabled  State = original.Enabled
+	PastDue  State = original.PastDue
+	Warned   State = original.Warned
 )
 
 type ListResult = original.ListResult
@@ -55,18 +55,6 @@ type TenantIDDescription = original.TenantIDDescription
 type TenantListResult = original.TenantListResult
 type TenantsClient = original.TenantsClient
 
-func New() ManagementClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) ManagementClient {
-	return original.NewWithBaseURI(baseURI)
-}
-func NewGroupClient() GroupClient {
-	return original.NewGroupClient()
-}
-func NewGroupClientWithBaseURI(baseURI string) GroupClient {
-	return original.NewGroupClientWithBaseURI(baseURI)
-}
 func NewTenantsClient() TenantsClient {
 	return original.NewTenantsClient()
 }
@@ -78,4 +66,16 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New() ManagementClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) ManagementClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func NewGroupClient() GroupClient {
+	return original.NewGroupClient()
+}
+func NewGroupClientWithBaseURI(baseURI string) GroupClient {
+	return original.NewGroupClientWithBaseURI(baseURI)
 }

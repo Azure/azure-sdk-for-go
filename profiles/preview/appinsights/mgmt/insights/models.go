@@ -22,13 +22,24 @@ package insights
 
 import original "github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2015-05-01/insights"
 
+type APIKeysClient = original.APIKeysClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+type ComponentsClient = original.ComponentsClient
+type OperationsClient = original.OperationsClient
+type WebTestsClient = original.WebTestsClient
 type ComponentCurrentBillingFeaturesClient = original.ComponentCurrentBillingFeaturesClient
+type ComponentQuotaStatusClient = original.ComponentQuotaStatusClient
 type ExportConfigurationsClient = original.ExportConfigurationsClient
 type ApplicationType = original.ApplicationType
 
 const (
-	Other	ApplicationType	= original.Other
-	Web	ApplicationType	= original.Web
+	Other ApplicationType = original.Other
+	Web   ApplicationType = original.Web
 )
 
 type FlowType = original.FlowType
@@ -46,8 +57,8 @@ const (
 type WebTestKind = original.WebTestKind
 
 const (
-	Multistep	WebTestKind	= original.Multistep
-	Ping		WebTestKind	= original.Ping
+	Multistep WebTestKind = original.Multistep
+	Ping      WebTestKind = original.Ping
 )
 
 type APIKeyRequest = original.APIKeyRequest
@@ -73,35 +84,24 @@ type WebTestGeolocation = original.WebTestGeolocation
 type WebTestListResult = original.WebTestListResult
 type WebTestProperties = original.WebTestProperties
 type WebTestPropertiesConfiguration = original.WebTestPropertiesConfiguration
-type OperationsClient = original.OperationsClient
-type WebTestsClient = original.WebTestsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-type ComponentQuotaStatusClient = original.ComponentQuotaStatusClient
-type ComponentsClient = original.ComponentsClient
-type APIKeysClient = original.APIKeysClient
-
+func NewAPIKeysClient(subscriptionID string) APIKeysClient {
+	return original.NewAPIKeysClient(subscriptionID)
+}
+func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string) APIKeysClient {
+	return original.NewAPIKeysClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewComponentCurrentBillingFeaturesClient(subscriptionID string) ComponentCurrentBillingFeaturesClient {
-	return original.NewComponentCurrentBillingFeaturesClient(subscriptionID)
+func NewComponentsClient(subscriptionID string) ComponentsClient {
+	return original.NewComponentsClient(subscriptionID)
 }
-func NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentCurrentBillingFeaturesClient {
-	return original.NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewExportConfigurationsClient(subscriptionID string) ExportConfigurationsClient {
-	return original.NewExportConfigurationsClient(subscriptionID)
-}
-func NewExportConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ExportConfigurationsClient {
-	return original.NewExportConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+func NewComponentsClientWithBaseURI(baseURI string, subscriptionID string) ComponentsClient {
+	return original.NewComponentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -109,23 +109,17 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func NewWebTestsClient(subscriptionID string) WebTestsClient {
 	return original.NewWebTestsClient(subscriptionID)
 }
 func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string) WebTestsClient {
 	return original.NewWebTestsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAPIKeysClient(subscriptionID string) APIKeysClient {
-	return original.NewAPIKeysClient(subscriptionID)
+func NewComponentCurrentBillingFeaturesClient(subscriptionID string) ComponentCurrentBillingFeaturesClient {
+	return original.NewComponentCurrentBillingFeaturesClient(subscriptionID)
 }
-func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string) APIKeysClient {
-	return original.NewAPIKeysClientWithBaseURI(baseURI, subscriptionID)
+func NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentCurrentBillingFeaturesClient {
+	return original.NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewComponentQuotaStatusClient(subscriptionID string) ComponentQuotaStatusClient {
 	return original.NewComponentQuotaStatusClient(subscriptionID)
@@ -133,9 +127,15 @@ func NewComponentQuotaStatusClient(subscriptionID string) ComponentQuotaStatusCl
 func NewComponentQuotaStatusClientWithBaseURI(baseURI string, subscriptionID string) ComponentQuotaStatusClient {
 	return original.NewComponentQuotaStatusClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewComponentsClient(subscriptionID string) ComponentsClient {
-	return original.NewComponentsClient(subscriptionID)
+func NewExportConfigurationsClient(subscriptionID string) ExportConfigurationsClient {
+	return original.NewExportConfigurationsClient(subscriptionID)
 }
-func NewComponentsClientWithBaseURI(baseURI string, subscriptionID string) ComponentsClient {
-	return original.NewComponentsClientWithBaseURI(baseURI, subscriptionID)
+func NewExportConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ExportConfigurationsClient {
+	return original.NewExportConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

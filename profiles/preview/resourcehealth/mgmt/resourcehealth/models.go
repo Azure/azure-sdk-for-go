@@ -22,26 +22,19 @@ package resourcehealth
 
 import original "github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2017-07-01/resourcehealth"
 
-type AvailabilityStatusesClient = original.AvailabilityStatusesClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
 type AvailabilityStateValues = original.AvailabilityStateValues
 
 const (
-	Available	AvailabilityStateValues	= original.Available
-	Unavailable	AvailabilityStateValues	= original.Unavailable
-	Unknown		AvailabilityStateValues	= original.Unknown
+	Available   AvailabilityStateValues = original.Available
+	Unavailable AvailabilityStateValues = original.Unavailable
+	Unknown     AvailabilityStateValues = original.Unknown
 )
 
 type ReasonChronicityTypes = original.ReasonChronicityTypes
 
 const (
-	Persistent	ReasonChronicityTypes	= original.Persistent
-	Transient	ReasonChronicityTypes	= original.Transient
+	Persistent ReasonChronicityTypes = original.Persistent
+	Transient  ReasonChronicityTypes = original.Transient
 )
 
 type AvailabilityStatus = original.AvailabilityStatus
@@ -57,7 +50,20 @@ type ServiceImpactingEvent = original.ServiceImpactingEvent
 type ServiceImpactingEventIncidentProperties = original.ServiceImpactingEventIncidentProperties
 type ServiceImpactingEventStatus = original.ServiceImpactingEventStatus
 type OperationsClient = original.OperationsClient
+type AvailabilityStatusesClient = original.AvailabilityStatusesClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -75,10 +81,4 @@ func New(subscriptionID string) ManagementClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

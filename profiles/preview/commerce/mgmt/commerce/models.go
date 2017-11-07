@@ -30,16 +30,16 @@ type ManagementClient = original.ManagementClient
 type AggregationGranularity = original.AggregationGranularity
 
 const (
-	Daily	AggregationGranularity	= original.Daily
-	Hourly	AggregationGranularity	= original.Hourly
+	Daily  AggregationGranularity = original.Daily
+	Hourly AggregationGranularity = original.Hourly
 )
 
 type Name = original.Name
 
 const (
-	NameMonetaryCommitment	Name	= original.NameMonetaryCommitment
-	NameMonetaryCredit	Name	= original.NameMonetaryCredit
-	NameRecurringCharge	Name	= original.NameRecurringCharge
+	NameMonetaryCommitment Name = original.NameMonetaryCommitment
+	NameMonetaryCredit     Name = original.NameMonetaryCredit
+	NameRecurringCharge    Name = original.NameRecurringCharge
 )
 
 type ErrorResponse = original.ErrorResponse
@@ -57,6 +57,12 @@ type UsageSample = original.UsageSample
 type RateCardClient = original.RateCardClient
 type UsageAggregatesClient = original.UsageAggregatesClient
 
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func NewRateCardClient(subscriptionID string) RateCardClient {
 	return original.NewRateCardClient(subscriptionID)
 }
@@ -74,10 +80,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,150 +22,156 @@ package servicefabric
 
 import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2017-07-01-preview/servicefabric"
 
-type ClusterVersionsClient = original.ClusterVersionsClient
 type ServiceClient = original.ServiceClient
-type ApplicationClient = original.ApplicationClient
-type ClustersClient = original.ClustersClient
+type VersionClient = original.VersionClient
+type ApplicationTypeClient = original.ApplicationTypeClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+type ClusterVersionsClient = original.ClusterVersionsClient
 type ClusterState = original.ClusterState
 
 const (
-	AutoScale			ClusterState	= original.AutoScale
-	BaselineUpgrade			ClusterState	= original.BaselineUpgrade
-	Deploying			ClusterState	= original.Deploying
-	EnforcingClusterVersion		ClusterState	= original.EnforcingClusterVersion
-	Ready				ClusterState	= original.Ready
-	UpdatingInfrastructure		ClusterState	= original.UpdatingInfrastructure
-	UpdatingUserCertificate		ClusterState	= original.UpdatingUserCertificate
-	UpdatingUserConfiguration	ClusterState	= original.UpdatingUserConfiguration
-	UpgradeServiceUnreachable	ClusterState	= original.UpgradeServiceUnreachable
-	WaitingForNodes			ClusterState	= original.WaitingForNodes
+	AutoScale                 ClusterState = original.AutoScale
+	BaselineUpgrade           ClusterState = original.BaselineUpgrade
+	Deploying                 ClusterState = original.Deploying
+	EnforcingClusterVersion   ClusterState = original.EnforcingClusterVersion
+	Ready                     ClusterState = original.Ready
+	UpdatingInfrastructure    ClusterState = original.UpdatingInfrastructure
+	UpdatingUserCertificate   ClusterState = original.UpdatingUserCertificate
+	UpdatingUserConfiguration ClusterState = original.UpdatingUserConfiguration
+	UpgradeServiceUnreachable ClusterState = original.UpgradeServiceUnreachable
+	WaitingForNodes           ClusterState = original.WaitingForNodes
 )
 
 type DefaultMoveCost = original.DefaultMoveCost
 
 const (
-	High	DefaultMoveCost	= original.High
-	Low	DefaultMoveCost	= original.Low
-	Medium	DefaultMoveCost	= original.Medium
-	Zero	DefaultMoveCost	= original.Zero
+	High   DefaultMoveCost = original.High
+	Low    DefaultMoveCost = original.Low
+	Medium DefaultMoveCost = original.Medium
+	Zero   DefaultMoveCost = original.Zero
 )
 
 type DurabilityLevel = original.DurabilityLevel
 
 const (
-	Bronze	DurabilityLevel	= original.Bronze
-	Gold	DurabilityLevel	= original.Gold
-	Silver	DurabilityLevel	= original.Silver
+	Bronze DurabilityLevel = original.Bronze
+	Gold   DurabilityLevel = original.Gold
+	Silver DurabilityLevel = original.Silver
 )
 
 type Environment = original.Environment
 
 const (
-	Linux	Environment	= original.Linux
-	Windows	Environment	= original.Windows
+	Linux   Environment = original.Linux
+	Windows Environment = original.Windows
 )
 
 type PartitionScheme = original.PartitionScheme
 
 const (
-	PartitionSchemeNamed			PartitionScheme	= original.PartitionSchemeNamed
-	PartitionSchemeSingleton		PartitionScheme	= original.PartitionSchemeSingleton
-	PartitionSchemeUniformInt64Range	PartitionScheme	= original.PartitionSchemeUniformInt64Range
+	PartitionSchemeNamed             PartitionScheme = original.PartitionSchemeNamed
+	PartitionSchemeSingleton         PartitionScheme = original.PartitionSchemeSingleton
+	PartitionSchemeUniformInt64Range PartitionScheme = original.PartitionSchemeUniformInt64Range
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled	ProvisioningState	= original.Canceled
-	Failed		ProvisioningState	= original.Failed
-	Succeeded	ProvisioningState	= original.Succeeded
-	Updating	ProvisioningState	= original.Updating
+	Canceled  ProvisioningState = original.Canceled
+	Failed    ProvisioningState = original.Failed
+	Succeeded ProvisioningState = original.Succeeded
+	Updating  ProvisioningState = original.Updating
 )
 
 type ReliabilityLevel = original.ReliabilityLevel
 
 const (
-	ReliabilityLevelBronze		ReliabilityLevel	= original.ReliabilityLevelBronze
-	ReliabilityLevelGold		ReliabilityLevel	= original.ReliabilityLevelGold
-	ReliabilityLevelNone		ReliabilityLevel	= original.ReliabilityLevelNone
-	ReliabilityLevelPlatinum	ReliabilityLevel	= original.ReliabilityLevelPlatinum
-	ReliabilityLevelSilver		ReliabilityLevel	= original.ReliabilityLevelSilver
+	ReliabilityLevelBronze   ReliabilityLevel = original.ReliabilityLevelBronze
+	ReliabilityLevelGold     ReliabilityLevel = original.ReliabilityLevelGold
+	ReliabilityLevelNone     ReliabilityLevel = original.ReliabilityLevelNone
+	ReliabilityLevelPlatinum ReliabilityLevel = original.ReliabilityLevelPlatinum
+	ReliabilityLevelSilver   ReliabilityLevel = original.ReliabilityLevelSilver
 )
 
 type ReliabilityLevel1 = original.ReliabilityLevel1
 
 const (
-	ReliabilityLevel1Bronze	ReliabilityLevel1	= original.ReliabilityLevel1Bronze
-	ReliabilityLevel1Gold	ReliabilityLevel1	= original.ReliabilityLevel1Gold
-	ReliabilityLevel1Silver	ReliabilityLevel1	= original.ReliabilityLevel1Silver
+	ReliabilityLevel1Bronze ReliabilityLevel1 = original.ReliabilityLevel1Bronze
+	ReliabilityLevel1Gold   ReliabilityLevel1 = original.ReliabilityLevel1Gold
+	ReliabilityLevel1Silver ReliabilityLevel1 = original.ReliabilityLevel1Silver
 )
 
 type Scheme = original.Scheme
 
 const (
-	Affinity		Scheme	= original.Affinity
-	AlignedAffinity		Scheme	= original.AlignedAffinity
-	Invalid			Scheme	= original.Invalid
-	NonAlignedAffinity	Scheme	= original.NonAlignedAffinity
+	Affinity           Scheme = original.Affinity
+	AlignedAffinity    Scheme = original.AlignedAffinity
+	Invalid            Scheme = original.Invalid
+	NonAlignedAffinity Scheme = original.NonAlignedAffinity
 )
 
 type ServiceKind = original.ServiceKind
 
 const (
-	ServiceKindInvalid	ServiceKind	= original.ServiceKindInvalid
-	ServiceKindStateful	ServiceKind	= original.ServiceKindStateful
-	ServiceKindStateless	ServiceKind	= original.ServiceKindStateless
+	ServiceKindInvalid   ServiceKind = original.ServiceKindInvalid
+	ServiceKindStateful  ServiceKind = original.ServiceKindStateful
+	ServiceKindStateless ServiceKind = original.ServiceKindStateless
 )
 
 type ServiceResourceType = original.ServiceResourceType
 
 const (
-	ServiceResourceTypeStatefulService	ServiceResourceType	= original.ServiceResourceTypeStatefulService
-	ServiceResourceTypeStatelessService	ServiceResourceType	= original.ServiceResourceTypeStatelessService
+	ServiceResourceTypeStatefulService  ServiceResourceType = original.ServiceResourceTypeStatefulService
+	ServiceResourceTypeStatelessService ServiceResourceType = original.ServiceResourceTypeStatelessService
 )
 
 type ServiceResourceTypeServiceUpdateProperties = original.ServiceResourceTypeServiceUpdateProperties
 
 const (
-	ServiceResourceTypeStatefulServiceUpdate	ServiceResourceTypeServiceUpdateProperties	= original.ServiceResourceTypeStatefulServiceUpdate
-	ServiceResourceTypeStatelessServiceUpdate	ServiceResourceTypeServiceUpdateProperties	= original.ServiceResourceTypeStatelessServiceUpdate
+	ServiceResourceTypeStatefulServiceUpdate  ServiceResourceTypeServiceUpdateProperties = original.ServiceResourceTypeStatefulServiceUpdate
+	ServiceResourceTypeStatelessServiceUpdate ServiceResourceTypeServiceUpdateProperties = original.ServiceResourceTypeStatelessServiceUpdate
 )
 
 type Type = original.Type
 type UpgradeMode = original.UpgradeMode
 
 const (
-	Automatic	UpgradeMode	= original.Automatic
-	Manual		UpgradeMode	= original.Manual
+	Automatic UpgradeMode = original.Automatic
+	Manual    UpgradeMode = original.Manual
 )
 
 type UpgradeMode1 = original.UpgradeMode1
 
 const (
-	UpgradeMode1Automatic	UpgradeMode1	= original.UpgradeMode1Automatic
-	UpgradeMode1Manual	UpgradeMode1	= original.UpgradeMode1Manual
+	UpgradeMode1Automatic UpgradeMode1 = original.UpgradeMode1Automatic
+	UpgradeMode1Manual    UpgradeMode1 = original.UpgradeMode1Manual
 )
 
 type Weight = original.Weight
 
 const (
-	WeightHigh	Weight	= original.WeightHigh
-	WeightLow	Weight	= original.WeightLow
-	WeightMedium	Weight	= original.WeightMedium
-	WeightZero	Weight	= original.WeightZero
+	WeightHigh   Weight = original.WeightHigh
+	WeightLow    Weight = original.WeightLow
+	WeightMedium Weight = original.WeightMedium
+	WeightZero   Weight = original.WeightZero
 )
 
 type X509StoreName = original.X509StoreName
 
 const (
-	AddressBook		X509StoreName	= original.AddressBook
-	AuthRoot		X509StoreName	= original.AuthRoot
-	CertificateAuthority	X509StoreName	= original.CertificateAuthority
-	Disallowed		X509StoreName	= original.Disallowed
-	My			X509StoreName	= original.My
-	Root			X509StoreName	= original.Root
-	TrustedPeople		X509StoreName	= original.TrustedPeople
-	TrustedPublisher	X509StoreName	= original.TrustedPublisher
+	AddressBook          X509StoreName = original.AddressBook
+	AuthRoot             X509StoreName = original.AuthRoot
+	CertificateAuthority X509StoreName = original.CertificateAuthority
+	Disallowed           X509StoreName = original.Disallowed
+	My                   X509StoreName = original.My
+	Root                 X509StoreName = original.Root
+	TrustedPeople        X509StoreName = original.TrustedPeople
+	TrustedPublisher     X509StoreName = original.TrustedPublisher
 )
 
 type ApplicationHealthPolicy = original.ApplicationHealthPolicy
@@ -230,27 +236,27 @@ type UniformInt64RangePartitionSchemeDescription = original.UniformInt64RangePar
 type VersionProperties = original.VersionProperties
 type VersionResource = original.VersionResource
 type VersionResourceList = original.VersionResourceList
+type ApplicationClient = original.ApplicationClient
+type ClustersClient = original.ClustersClient
 type OperationsClient = original.OperationsClient
-type VersionClient = original.VersionClient
-type ApplicationTypeClient = original.ApplicationTypeClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-
-func NewApplicationClient(subscriptionID string) ApplicationClient {
-	return original.NewApplicationClient(subscriptionID)
+func NewVersionClient(subscriptionID string) VersionClient {
+	return original.NewVersionClient(subscriptionID)
 }
-func NewApplicationClientWithBaseURI(baseURI string, subscriptionID string) ApplicationClient {
-	return original.NewApplicationClientWithBaseURI(baseURI, subscriptionID)
+func NewVersionClientWithBaseURI(baseURI string, subscriptionID string) VersionClient {
+	return original.NewVersionClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewClustersClient(subscriptionID string) ClustersClient {
-	return original.NewClustersClient(subscriptionID)
+func NewApplicationTypeClient(subscriptionID string) ApplicationTypeClient {
+	return original.NewApplicationTypeClient(subscriptionID)
 }
-func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
-	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
+func NewApplicationTypeClientWithBaseURI(baseURI string, subscriptionID string) ApplicationTypeClient {
+	return original.NewApplicationTypeClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewClusterVersionsClient(subscriptionID string) ClusterVersionsClient {
 	return original.NewClusterVersionsClient(subscriptionID)
@@ -270,27 +276,21 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-func NewApplicationTypeClient(subscriptionID string) ApplicationTypeClient {
-	return original.NewApplicationTypeClient(subscriptionID)
+func NewApplicationClient(subscriptionID string) ApplicationClient {
+	return original.NewApplicationClient(subscriptionID)
 }
-func NewApplicationTypeClientWithBaseURI(baseURI string, subscriptionID string) ApplicationTypeClient {
-	return original.NewApplicationTypeClientWithBaseURI(baseURI, subscriptionID)
+func NewApplicationClientWithBaseURI(baseURI string, subscriptionID string) ApplicationClient {
+	return original.NewApplicationClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
+func NewClustersClient(subscriptionID string) ClustersClient {
+	return original.NewClustersClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
+	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVersionClient(subscriptionID string) VersionClient {
-	return original.NewVersionClient(subscriptionID)
-}
-func NewVersionClientWithBaseURI(baseURI string, subscriptionID string) VersionClient {
-	return original.NewVersionClientWithBaseURI(baseURI, subscriptionID)
 }

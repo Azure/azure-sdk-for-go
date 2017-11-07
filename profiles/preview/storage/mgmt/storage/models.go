@@ -22,6 +22,8 @@ package storage
 
 import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2017-06-01/storage"
 
+type AccountsClient = original.AccountsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -30,15 +32,15 @@ type ManagementClient = original.ManagementClient
 type AccessTier = original.AccessTier
 
 const (
-	Cool	AccessTier	= original.Cool
-	Hot	AccessTier	= original.Hot
+	Cool AccessTier = original.Cool
+	Hot  AccessTier = original.Hot
 )
 
 type AccountStatus = original.AccountStatus
 
 const (
-	Available	AccountStatus	= original.Available
-	Unavailable	AccountStatus	= original.Unavailable
+	Available   AccountStatus = original.Available
+	Unavailable AccountStatus = original.Unavailable
 )
 
 type Action = original.Action
@@ -50,144 +52,144 @@ const (
 type Bypass = original.Bypass
 
 const (
-	AzureServices	Bypass	= original.AzureServices
-	Logging		Bypass	= original.Logging
-	Metrics		Bypass	= original.Metrics
-	None		Bypass	= original.None
+	AzureServices Bypass = original.AzureServices
+	Logging       Bypass = original.Logging
+	Metrics       Bypass = original.Metrics
+	None          Bypass = original.None
 )
 
 type DefaultAction = original.DefaultAction
 
 const (
-	DefaultActionAllow	DefaultAction	= original.DefaultActionAllow
-	DefaultActionDeny	DefaultAction	= original.DefaultActionDeny
+	DefaultActionAllow DefaultAction = original.DefaultActionAllow
+	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
 )
 
 type HTTPProtocol = original.HTTPProtocol
 
 const (
-	HTTPS		HTTPProtocol	= original.HTTPS
-	Httpshttp	HTTPProtocol	= original.Httpshttp
+	HTTPS     HTTPProtocol = original.HTTPS
+	Httpshttp HTTPProtocol = original.Httpshttp
 )
 
 type KeyPermission = original.KeyPermission
 
 const (
-	Full	KeyPermission	= original.Full
-	Read	KeyPermission	= original.Read
+	Full KeyPermission = original.Full
+	Read KeyPermission = original.Read
 )
 
 type KeySource = original.KeySource
 
 const (
-	MicrosoftKeyvault	KeySource	= original.MicrosoftKeyvault
-	MicrosoftStorage	KeySource	= original.MicrosoftStorage
+	MicrosoftKeyvault KeySource = original.MicrosoftKeyvault
+	MicrosoftStorage  KeySource = original.MicrosoftStorage
 )
 
 type Kind = original.Kind
 
 const (
-	BlobStorage	Kind	= original.BlobStorage
-	Storage		Kind	= original.Storage
+	BlobStorage Kind = original.BlobStorage
+	Storage     Kind = original.Storage
 )
 
 type Permissions = original.Permissions
 
 const (
-	A	Permissions	= original.A
-	C	Permissions	= original.C
-	D	Permissions	= original.D
-	L	Permissions	= original.L
-	P	Permissions	= original.P
-	R	Permissions	= original.R
-	U	Permissions	= original.U
-	W	Permissions	= original.W
+	A Permissions = original.A
+	C Permissions = original.C
+	D Permissions = original.D
+	L Permissions = original.L
+	P Permissions = original.P
+	R Permissions = original.R
+	U Permissions = original.U
+	W Permissions = original.W
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Creating	ProvisioningState	= original.Creating
-	ResolvingDNS	ProvisioningState	= original.ResolvingDNS
-	Succeeded	ProvisioningState	= original.Succeeded
+	Creating     ProvisioningState = original.Creating
+	ResolvingDNS ProvisioningState = original.ResolvingDNS
+	Succeeded    ProvisioningState = original.Succeeded
 )
 
 type Reason = original.Reason
 
 const (
-	AccountNameInvalid	Reason	= original.AccountNameInvalid
-	AlreadyExists		Reason	= original.AlreadyExists
+	AccountNameInvalid Reason = original.AccountNameInvalid
+	AlreadyExists      Reason = original.AlreadyExists
 )
 
 type ReasonCode = original.ReasonCode
 
 const (
-	NotAvailableForSubscription	ReasonCode	= original.NotAvailableForSubscription
-	QuotaID				ReasonCode	= original.QuotaID
+	NotAvailableForSubscription ReasonCode = original.NotAvailableForSubscription
+	QuotaID                     ReasonCode = original.QuotaID
 )
 
 type Services = original.Services
 
 const (
-	B	Services	= original.B
-	F	Services	= original.F
-	Q	Services	= original.Q
-	T	Services	= original.T
+	B Services = original.B
+	F Services = original.F
+	Q Services = original.Q
+	T Services = original.T
 )
 
 type SignedResource = original.SignedResource
 
 const (
-	SignedResourceB	SignedResource	= original.SignedResourceB
-	SignedResourceC	SignedResource	= original.SignedResourceC
-	SignedResourceF	SignedResource	= original.SignedResourceF
-	SignedResourceS	SignedResource	= original.SignedResourceS
+	SignedResourceB SignedResource = original.SignedResourceB
+	SignedResourceC SignedResource = original.SignedResourceC
+	SignedResourceF SignedResource = original.SignedResourceF
+	SignedResourceS SignedResource = original.SignedResourceS
 )
 
 type SignedResourceTypes = original.SignedResourceTypes
 
 const (
-	SignedResourceTypesC	SignedResourceTypes	= original.SignedResourceTypesC
-	SignedResourceTypesO	SignedResourceTypes	= original.SignedResourceTypesO
-	SignedResourceTypesS	SignedResourceTypes	= original.SignedResourceTypesS
+	SignedResourceTypesC SignedResourceTypes = original.SignedResourceTypesC
+	SignedResourceTypesO SignedResourceTypes = original.SignedResourceTypesO
+	SignedResourceTypesS SignedResourceTypes = original.SignedResourceTypesS
 )
 
 type SkuName = original.SkuName
 
 const (
-	PremiumLRS	SkuName	= original.PremiumLRS
-	StandardGRS	SkuName	= original.StandardGRS
-	StandardLRS	SkuName	= original.StandardLRS
-	StandardRAGRS	SkuName	= original.StandardRAGRS
-	StandardZRS	SkuName	= original.StandardZRS
+	PremiumLRS    SkuName = original.PremiumLRS
+	StandardGRS   SkuName = original.StandardGRS
+	StandardLRS   SkuName = original.StandardLRS
+	StandardRAGRS SkuName = original.StandardRAGRS
+	StandardZRS   SkuName = original.StandardZRS
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	Premium		SkuTier	= original.Premium
-	Standard	SkuTier	= original.Standard
+	Premium  SkuTier = original.Premium
+	Standard SkuTier = original.Standard
 )
 
 type State = original.State
 
 const (
-	StateDeprovisioning		State	= original.StateDeprovisioning
-	StateFailed			State	= original.StateFailed
-	StateNetworkSourceDeleted	State	= original.StateNetworkSourceDeleted
-	StateProvisioning		State	= original.StateProvisioning
-	StateSucceeded			State	= original.StateSucceeded
+	StateDeprovisioning       State = original.StateDeprovisioning
+	StateFailed               State = original.StateFailed
+	StateNetworkSourceDeleted State = original.StateNetworkSourceDeleted
+	StateProvisioning         State = original.StateProvisioning
+	StateSucceeded            State = original.StateSucceeded
 )
 
 type UsageUnit = original.UsageUnit
 
 const (
-	Bytes		UsageUnit	= original.Bytes
-	BytesPerSecond	UsageUnit	= original.BytesPerSecond
-	Count		UsageUnit	= original.Count
-	CountsPerSecond	UsageUnit	= original.CountsPerSecond
-	Percent		UsageUnit	= original.Percent
-	Seconds		UsageUnit	= original.Seconds
+	Bytes           UsageUnit = original.Bytes
+	BytesPerSecond  UsageUnit = original.BytesPerSecond
+	Count           UsageUnit = original.Count
+	CountsPerSecond UsageUnit = original.CountsPerSecond
+	Percent         UsageUnit = original.Percent
+	Seconds         UsageUnit = original.Seconds
 )
 
 type Account = original.Account
@@ -234,26 +236,7 @@ type VirtualNetworkRule = original.VirtualNetworkRule
 type OperationsClient = original.OperationsClient
 type SkusClient = original.SkusClient
 type UsageClient = original.UsageClient
-type AccountsClient = original.AccountsClient
 
-func NewSkusClient(subscriptionID string) SkusClient {
-	return original.NewSkusClient(subscriptionID)
-}
-func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
-	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUsageClient(subscriptionID string) UsageClient {
-	return original.NewUsageClient(subscriptionID)
-}
-func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
-	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)
 }
@@ -271,4 +254,22 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSkusClient(subscriptionID string) SkusClient {
+	return original.NewSkusClient(subscriptionID)
+}
+func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
+	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageClient(subscriptionID string) UsageClient {
+	return original.NewUsageClient(subscriptionID)
+}
+func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
+	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

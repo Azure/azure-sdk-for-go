@@ -22,21 +22,26 @@ package policy
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-06-01-preview/policy"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
 type DefinitionsClient = original.DefinitionsClient
 type Mode = original.Mode
 
 const (
-	All		Mode	= original.All
-	Indexed		Mode	= original.Indexed
-	NotSpecified	Mode	= original.NotSpecified
+	All          Mode = original.All
+	Indexed      Mode = original.Indexed
+	NotSpecified Mode = original.NotSpecified
 )
 
 type Type = original.Type
 
 const (
-	TypeBuiltIn		Type	= original.TypeBuiltIn
-	TypeCustom		Type	= original.TypeCustom
-	TypeNotSpecified	Type	= original.TypeNotSpecified
+	TypeBuiltIn      Type = original.TypeBuiltIn
+	TypeCustom       Type = original.TypeCustom
+	TypeNotSpecified Type = original.TypeNotSpecified
 )
 
 type Assignment = original.Assignment
@@ -54,24 +59,6 @@ type Sku = original.Sku
 type SetDefinitionsClient = original.SetDefinitionsClient
 type AssignmentsClient = original.AssignmentsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClient(subscriptionID)
-}
-func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
-}
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)
 }
@@ -89,4 +76,16 @@ func NewSetDefinitionsClient(subscriptionID string) SetDefinitionsClient {
 }
 func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) SetDefinitionsClient {
 	return original.NewSetDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClient(subscriptionID)
+}
+func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }

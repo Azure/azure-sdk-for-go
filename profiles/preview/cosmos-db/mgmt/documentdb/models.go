@@ -22,13 +22,18 @@ package documentdb
 
 import original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2015-04-08/documentdb"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
 type DatabaseAccountsClient = original.DatabaseAccountsClient
 type DatabaseAccountKind = original.DatabaseAccountKind
 
 const (
-	GlobalDocumentDB	DatabaseAccountKind	= original.GlobalDocumentDB
-	MongoDB			DatabaseAccountKind	= original.MongoDB
-	Parse			DatabaseAccountKind	= original.Parse
+	GlobalDocumentDB DatabaseAccountKind = original.GlobalDocumentDB
+	MongoDB          DatabaseAccountKind = original.MongoDB
+	Parse            DatabaseAccountKind = original.Parse
 )
 
 type DatabaseAccountOfferType = original.DatabaseAccountOfferType
@@ -40,20 +45,20 @@ const (
 type DefaultConsistencyLevel = original.DefaultConsistencyLevel
 
 const (
-	BoundedStaleness	DefaultConsistencyLevel	= original.BoundedStaleness
-	ConsistentPrefix	DefaultConsistencyLevel	= original.ConsistentPrefix
-	Eventual		DefaultConsistencyLevel	= original.Eventual
-	Session			DefaultConsistencyLevel	= original.Session
-	Strong			DefaultConsistencyLevel	= original.Strong
+	BoundedStaleness DefaultConsistencyLevel = original.BoundedStaleness
+	ConsistentPrefix DefaultConsistencyLevel = original.ConsistentPrefix
+	Eventual         DefaultConsistencyLevel = original.Eventual
+	Session          DefaultConsistencyLevel = original.Session
+	Strong           DefaultConsistencyLevel = original.Strong
 )
 
 type KeyKind = original.KeyKind
 
 const (
-	Primary			KeyKind	= original.Primary
-	PrimaryReadonly		KeyKind	= original.PrimaryReadonly
-	Secondary		KeyKind	= original.Secondary
-	SecondaryReadonly	KeyKind	= original.SecondaryReadonly
+	Primary           KeyKind = original.Primary
+	PrimaryReadonly   KeyKind = original.PrimaryReadonly
+	Secondary         KeyKind = original.Secondary
+	SecondaryReadonly KeyKind = original.SecondaryReadonly
 )
 
 type ConsistencyPolicy = original.ConsistencyPolicy
@@ -76,12 +81,6 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type Resource = original.Resource
 type OperationsClient = original.OperationsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
 
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)

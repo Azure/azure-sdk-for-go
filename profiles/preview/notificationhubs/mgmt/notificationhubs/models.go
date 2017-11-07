@@ -26,24 +26,24 @@ type HubsClient = original.HubsClient
 type AccessRights = original.AccessRights
 
 const (
-	Listen	AccessRights	= original.Listen
-	Manage	AccessRights	= original.Manage
-	Send	AccessRights	= original.Send
+	Listen AccessRights = original.Listen
+	Manage AccessRights = original.Manage
+	Send   AccessRights = original.Send
 )
 
 type NamespaceType = original.NamespaceType
 
 const (
-	Messaging	NamespaceType	= original.Messaging
-	NotificationHub	NamespaceType	= original.NotificationHub
+	Messaging       NamespaceType = original.Messaging
+	NotificationHub NamespaceType = original.NotificationHub
 )
 
 type SkuName = original.SkuName
 
 const (
-	Basic		SkuName	= original.Basic
-	Free		SkuName	= original.Free
-	Standard	SkuName	= original.Standard
+	Basic    SkuName = original.Basic
+	Free     SkuName = original.Free
+	Standard SkuName = original.Standard
 )
 
 type AdmCredential = original.AdmCredential

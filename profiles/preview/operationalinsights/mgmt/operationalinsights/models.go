@@ -22,6 +22,8 @@ package operationalinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-11-01-preview/operationalinsights"
 
+type WorkspacesClient = original.WorkspacesClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -32,57 +34,57 @@ type LinkedServicesClient = original.LinkedServicesClient
 type DataSourceKind = original.DataSourceKind
 
 const (
-	AzureActivityLog		DataSourceKind	= original.AzureActivityLog
-	ChangeTrackingCustomRegistry	DataSourceKind	= original.ChangeTrackingCustomRegistry
-	ChangeTrackingDefaultPath	DataSourceKind	= original.ChangeTrackingDefaultPath
-	ChangeTrackingDefaultRegistry	DataSourceKind	= original.ChangeTrackingDefaultRegistry
-	ChangeTrackingPath		DataSourceKind	= original.ChangeTrackingPath
-	CustomLog			DataSourceKind	= original.CustomLog
-	CustomLogCollection		DataSourceKind	= original.CustomLogCollection
-	GenericDataSource		DataSourceKind	= original.GenericDataSource
-	IISLogs				DataSourceKind	= original.IISLogs
-	LinuxPerformanceCollection	DataSourceKind	= original.LinuxPerformanceCollection
-	LinuxPerformanceObject		DataSourceKind	= original.LinuxPerformanceObject
-	LinuxSyslog			DataSourceKind	= original.LinuxSyslog
-	LinuxSyslogCollection		DataSourceKind	= original.LinuxSyslogCollection
-	WindowsEvent			DataSourceKind	= original.WindowsEvent
-	WindowsPerformanceCounter	DataSourceKind	= original.WindowsPerformanceCounter
+	AzureActivityLog              DataSourceKind = original.AzureActivityLog
+	ChangeTrackingCustomRegistry  DataSourceKind = original.ChangeTrackingCustomRegistry
+	ChangeTrackingDefaultPath     DataSourceKind = original.ChangeTrackingDefaultPath
+	ChangeTrackingDefaultRegistry DataSourceKind = original.ChangeTrackingDefaultRegistry
+	ChangeTrackingPath            DataSourceKind = original.ChangeTrackingPath
+	CustomLog                     DataSourceKind = original.CustomLog
+	CustomLogCollection           DataSourceKind = original.CustomLogCollection
+	GenericDataSource             DataSourceKind = original.GenericDataSource
+	IISLogs                       DataSourceKind = original.IISLogs
+	LinuxPerformanceCollection    DataSourceKind = original.LinuxPerformanceCollection
+	LinuxPerformanceObject        DataSourceKind = original.LinuxPerformanceObject
+	LinuxSyslog                   DataSourceKind = original.LinuxSyslog
+	LinuxSyslogCollection         DataSourceKind = original.LinuxSyslogCollection
+	WindowsEvent                  DataSourceKind = original.WindowsEvent
+	WindowsPerformanceCounter     DataSourceKind = original.WindowsPerformanceCounter
 )
 
 type EntityStatus = original.EntityStatus
 
 const (
-	Canceled		EntityStatus	= original.Canceled
-	Creating		EntityStatus	= original.Creating
-	Deleting		EntityStatus	= original.Deleting
-	Failed			EntityStatus	= original.Failed
-	ProvisioningAccount	EntityStatus	= original.ProvisioningAccount
-	Succeeded		EntityStatus	= original.Succeeded
+	Canceled            EntityStatus = original.Canceled
+	Creating            EntityStatus = original.Creating
+	Deleting            EntityStatus = original.Deleting
+	Failed              EntityStatus = original.Failed
+	ProvisioningAccount EntityStatus = original.ProvisioningAccount
+	Succeeded           EntityStatus = original.Succeeded
 )
 
 type SearchSortEnum = original.SearchSortEnum
 
 const (
-	Asc	SearchSortEnum	= original.Asc
-	Desc	SearchSortEnum	= original.Desc
+	Asc  SearchSortEnum = original.Asc
+	Desc SearchSortEnum = original.Desc
 )
 
 type SkuNameEnum = original.SkuNameEnum
 
 const (
-	Free		SkuNameEnum	= original.Free
-	PerNode		SkuNameEnum	= original.PerNode
-	Premium		SkuNameEnum	= original.Premium
-	Standalone	SkuNameEnum	= original.Standalone
-	Standard	SkuNameEnum	= original.Standard
-	Unlimited	SkuNameEnum	= original.Unlimited
+	Free       SkuNameEnum = original.Free
+	PerNode    SkuNameEnum = original.PerNode
+	Premium    SkuNameEnum = original.Premium
+	Standalone SkuNameEnum = original.Standalone
+	Standard   SkuNameEnum = original.Standard
+	Unlimited  SkuNameEnum = original.Unlimited
 )
 
 type StorageInsightState = original.StorageInsightState
 
 const (
-	ERROR	StorageInsightState	= original.ERROR
-	OK	StorageInsightState	= original.OK
+	ERROR StorageInsightState = original.ERROR
+	OK    StorageInsightState = original.OK
 )
 
 type CoreSummary = original.CoreSummary
@@ -129,8 +131,19 @@ type WorkspaceListUsagesResult = original.WorkspaceListUsagesResult
 type WorkspaceProperties = original.WorkspaceProperties
 type SavedSearchesClient = original.SavedSearchesClient
 type StorageInsightsClient = original.StorageInsightsClient
-type WorkspacesClient = original.WorkspacesClient
 
+func NewSavedSearchesClient(subscriptionID string) SavedSearchesClient {
+	return original.NewSavedSearchesClient(subscriptionID)
+}
+func NewSavedSearchesClientWithBaseURI(baseURI string, subscriptionID string) SavedSearchesClient {
+	return original.NewSavedSearchesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewStorageInsightsClient(subscriptionID string) StorageInsightsClient {
+	return original.NewStorageInsightsClient(subscriptionID)
+}
+func NewStorageInsightsClientWithBaseURI(baseURI string, subscriptionID string) StorageInsightsClient {
+	return original.NewStorageInsightsClientWithBaseURI(baseURI, subscriptionID)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -160,16 +173,4 @@ func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
 }
 func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
 	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSavedSearchesClient(subscriptionID string) SavedSearchesClient {
-	return original.NewSavedSearchesClient(subscriptionID)
-}
-func NewSavedSearchesClientWithBaseURI(baseURI string, subscriptionID string) SavedSearchesClient {
-	return original.NewSavedSearchesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewStorageInsightsClient(subscriptionID string) StorageInsightsClient {
-	return original.NewStorageInsightsClient(subscriptionID)
-}
-func NewStorageInsightsClientWithBaseURI(baseURI string, subscriptionID string) StorageInsightsClient {
-	return original.NewStorageInsightsClientWithBaseURI(baseURI, subscriptionID)
 }

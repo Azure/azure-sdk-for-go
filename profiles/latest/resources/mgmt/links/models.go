@@ -39,6 +39,12 @@ type ResourceLinkProperties = original.ResourceLinkProperties
 type ResourceLinkResult = original.ResourceLinkResult
 type ResourceLinksClient = original.ResourceLinksClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)
 }
@@ -50,10 +56,4 @@ func NewResourceLinksClient(subscriptionID string) ResourceLinksClient {
 }
 func NewResourceLinksClientWithBaseURI(baseURI string, subscriptionID string) ResourceLinksClient {
 	return original.NewResourceLinksClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
 }

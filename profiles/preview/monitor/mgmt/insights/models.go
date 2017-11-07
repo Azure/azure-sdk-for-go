@@ -22,133 +22,120 @@ package insights
 
 import original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2017-05-01-preview/insights"
 
-type ActivityLogAlertsClient = original.ActivityLogAlertsClient
-type AlertRuleIncidentsClient = original.AlertRuleIncidentsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-type DiagnosticSettingsClient = original.DiagnosticSettingsClient
 type LogProfilesClient = original.LogProfilesClient
-type ActionGroupsClient = original.ActionGroupsClient
-type AlertRulesClient = original.AlertRulesClient
-type AutoscaleSettingsClient = original.AutoscaleSettingsClient
-type DiagnosticSettingsCategoryClient = original.DiagnosticSettingsCategoryClient
 type CategoryType = original.CategoryType
 
 const (
-	Logs	CategoryType	= original.Logs
-	Metrics	CategoryType	= original.Metrics
+	Logs    CategoryType = original.Logs
+	Metrics CategoryType = original.Metrics
 )
 
 type ComparisonOperationType = original.ComparisonOperationType
 
 const (
-	Equals			ComparisonOperationType	= original.Equals
-	GreaterThan		ComparisonOperationType	= original.GreaterThan
-	GreaterThanOrEqual	ComparisonOperationType	= original.GreaterThanOrEqual
-	LessThan		ComparisonOperationType	= original.LessThan
-	LessThanOrEqual		ComparisonOperationType	= original.LessThanOrEqual
-	NotEquals		ComparisonOperationType	= original.NotEquals
+	Equals             ComparisonOperationType = original.Equals
+	GreaterThan        ComparisonOperationType = original.GreaterThan
+	GreaterThanOrEqual ComparisonOperationType = original.GreaterThanOrEqual
+	LessThan           ComparisonOperationType = original.LessThan
+	LessThanOrEqual    ComparisonOperationType = original.LessThanOrEqual
+	NotEquals          ComparisonOperationType = original.NotEquals
 )
 
 type ConditionOperator = original.ConditionOperator
 
 const (
-	ConditionOperatorGreaterThan		ConditionOperator	= original.ConditionOperatorGreaterThan
-	ConditionOperatorGreaterThanOrEqual	ConditionOperator	= original.ConditionOperatorGreaterThanOrEqual
-	ConditionOperatorLessThan		ConditionOperator	= original.ConditionOperatorLessThan
-	ConditionOperatorLessThanOrEqual	ConditionOperator	= original.ConditionOperatorLessThanOrEqual
+	ConditionOperatorGreaterThan        ConditionOperator = original.ConditionOperatorGreaterThan
+	ConditionOperatorGreaterThanOrEqual ConditionOperator = original.ConditionOperatorGreaterThanOrEqual
+	ConditionOperatorLessThan           ConditionOperator = original.ConditionOperatorLessThan
+	ConditionOperatorLessThanOrEqual    ConditionOperator = original.ConditionOperatorLessThanOrEqual
 )
 
 type MetricStatisticType = original.MetricStatisticType
 
 const (
-	Average	MetricStatisticType	= original.Average
-	Max	MetricStatisticType	= original.Max
-	Min	MetricStatisticType	= original.Min
-	Sum	MetricStatisticType	= original.Sum
+	Average MetricStatisticType = original.Average
+	Max     MetricStatisticType = original.Max
+	Min     MetricStatisticType = original.Min
+	Sum     MetricStatisticType = original.Sum
 )
 
 type OdataType = original.OdataType
 
 const (
-	OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource	OdataType	= original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource
-	OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource		OdataType	= original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource
+	OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource OdataType = original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource
+	OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource          OdataType = original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource
 )
 
 type OdataType1 = original.OdataType1
 
 const (
-	OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition	OdataType1	= original.OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition
-	OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition	OdataType1	= original.OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition
-	OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition		OdataType1	= original.OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition
+	OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition OdataType1 = original.OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition
+	OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition   OdataType1 = original.OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition
+	OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition         OdataType1 = original.OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition
 )
 
 type OdataType2 = original.OdataType2
 
 const (
-	OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction		OdataType2	= original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction
-	OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction	OdataType2	= original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction
+	OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction   OdataType2 = original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction
+	OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction OdataType2 = original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction
 )
 
 type ReceiverStatus = original.ReceiverStatus
 
 const (
-	Disabled	ReceiverStatus	= original.Disabled
-	Enabled		ReceiverStatus	= original.Enabled
-	NotSpecified	ReceiverStatus	= original.NotSpecified
+	Disabled     ReceiverStatus = original.Disabled
+	Enabled      ReceiverStatus = original.Enabled
+	NotSpecified ReceiverStatus = original.NotSpecified
 )
 
 type RecurrenceFrequency = original.RecurrenceFrequency
 
 const (
-	Day	RecurrenceFrequency	= original.Day
-	Hour	RecurrenceFrequency	= original.Hour
-	Minute	RecurrenceFrequency	= original.Minute
-	Month	RecurrenceFrequency	= original.Month
-	None	RecurrenceFrequency	= original.None
-	Second	RecurrenceFrequency	= original.Second
-	Week	RecurrenceFrequency	= original.Week
-	Year	RecurrenceFrequency	= original.Year
+	Day    RecurrenceFrequency = original.Day
+	Hour   RecurrenceFrequency = original.Hour
+	Minute RecurrenceFrequency = original.Minute
+	Month  RecurrenceFrequency = original.Month
+	None   RecurrenceFrequency = original.None
+	Second RecurrenceFrequency = original.Second
+	Week   RecurrenceFrequency = original.Week
+	Year   RecurrenceFrequency = original.Year
 )
 
 type ScaleDirection = original.ScaleDirection
 
 const (
-	ScaleDirectionDecrease	ScaleDirection	= original.ScaleDirectionDecrease
-	ScaleDirectionIncrease	ScaleDirection	= original.ScaleDirectionIncrease
-	ScaleDirectionNone	ScaleDirection	= original.ScaleDirectionNone
+	ScaleDirectionDecrease ScaleDirection = original.ScaleDirectionDecrease
+	ScaleDirectionIncrease ScaleDirection = original.ScaleDirectionIncrease
+	ScaleDirectionNone     ScaleDirection = original.ScaleDirectionNone
 )
 
 type ScaleType = original.ScaleType
 
 const (
-	ChangeCount		ScaleType	= original.ChangeCount
-	ExactCount		ScaleType	= original.ExactCount
-	PercentChangeCount	ScaleType	= original.PercentChangeCount
+	ChangeCount        ScaleType = original.ChangeCount
+	ExactCount         ScaleType = original.ExactCount
+	PercentChangeCount ScaleType = original.PercentChangeCount
 )
 
 type TimeAggregationOperator = original.TimeAggregationOperator
 
 const (
-	TimeAggregationOperatorAverage	TimeAggregationOperator	= original.TimeAggregationOperatorAverage
-	TimeAggregationOperatorLast	TimeAggregationOperator	= original.TimeAggregationOperatorLast
-	TimeAggregationOperatorMaximum	TimeAggregationOperator	= original.TimeAggregationOperatorMaximum
-	TimeAggregationOperatorMinimum	TimeAggregationOperator	= original.TimeAggregationOperatorMinimum
-	TimeAggregationOperatorTotal	TimeAggregationOperator	= original.TimeAggregationOperatorTotal
+	TimeAggregationOperatorAverage TimeAggregationOperator = original.TimeAggregationOperatorAverage
+	TimeAggregationOperatorLast    TimeAggregationOperator = original.TimeAggregationOperatorLast
+	TimeAggregationOperatorMaximum TimeAggregationOperator = original.TimeAggregationOperatorMaximum
+	TimeAggregationOperatorMinimum TimeAggregationOperator = original.TimeAggregationOperatorMinimum
+	TimeAggregationOperatorTotal   TimeAggregationOperator = original.TimeAggregationOperatorTotal
 )
 
 type TimeAggregationType = original.TimeAggregationType
 
 const (
-	TimeAggregationTypeAverage	TimeAggregationType	= original.TimeAggregationTypeAverage
-	TimeAggregationTypeCount	TimeAggregationType	= original.TimeAggregationTypeCount
-	TimeAggregationTypeMaximum	TimeAggregationType	= original.TimeAggregationTypeMaximum
-	TimeAggregationTypeMinimum	TimeAggregationType	= original.TimeAggregationTypeMinimum
-	TimeAggregationTypeTotal	TimeAggregationType	= original.TimeAggregationTypeTotal
+	TimeAggregationTypeAverage TimeAggregationType = original.TimeAggregationTypeAverage
+	TimeAggregationTypeCount   TimeAggregationType = original.TimeAggregationTypeCount
+	TimeAggregationTypeMaximum TimeAggregationType = original.TimeAggregationTypeMaximum
+	TimeAggregationTypeMinimum TimeAggregationType = original.TimeAggregationTypeMinimum
+	TimeAggregationTypeTotal   TimeAggregationType = original.TimeAggregationTypeTotal
 )
 
 type ActionGroup = original.ActionGroup
@@ -219,19 +206,32 @@ type ThresholdRuleCondition = original.ThresholdRuleCondition
 type TimeWindow = original.TimeWindow
 type WebhookNotification = original.WebhookNotification
 type WebhookReceiver = original.WebhookReceiver
-type OperationsClient = original.OperationsClient
+type ActivityLogAlertsClient = original.ActivityLogAlertsClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+type DiagnosticSettingsCategoryClient = original.DiagnosticSettingsCategoryClient
+type AutoscaleSettingsClient = original.AutoscaleSettingsClient
+type DiagnosticSettingsClient = original.DiagnosticSettingsClient
+type OperationsClient = original.OperationsClient
+type ActionGroupsClient = original.ActionGroupsClient
+type AlertRuleIncidentsClient = original.AlertRuleIncidentsClient
+type AlertRulesClient = original.AlertRulesClient
+
+func NewLogProfilesClient(subscriptionID string) LogProfilesClient {
+	return original.NewLogProfilesClient(subscriptionID)
+}
+func NewLogProfilesClientWithBaseURI(baseURI string, subscriptionID string) LogProfilesClient {
+	return original.NewLogProfilesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewActivityLogAlertsClient(subscriptionID string) ActivityLogAlertsClient {
 	return original.NewActivityLogAlertsClient(subscriptionID)
 }
 func NewActivityLogAlertsClientWithBaseURI(baseURI string, subscriptionID string) ActivityLogAlertsClient {
 	return original.NewActivityLogAlertsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAlertRuleIncidentsClient(subscriptionID string) AlertRuleIncidentsClient {
-	return original.NewAlertRuleIncidentsClient(subscriptionID)
-}
-func NewAlertRuleIncidentsClientWithBaseURI(baseURI string, subscriptionID string) AlertRuleIncidentsClient {
-	return original.NewAlertRuleIncidentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)
@@ -239,29 +239,11 @@ func New(subscriptionID string) ManagementClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewDiagnosticSettingsClient(subscriptionID string) DiagnosticSettingsClient {
-	return original.NewDiagnosticSettingsClient(subscriptionID)
+func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
+	return original.NewDiagnosticSettingsCategoryClient(subscriptionID)
 }
-func NewDiagnosticSettingsClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsClient {
-	return original.NewDiagnosticSettingsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewLogProfilesClient(subscriptionID string) LogProfilesClient {
-	return original.NewLogProfilesClient(subscriptionID)
-}
-func NewLogProfilesClientWithBaseURI(baseURI string, subscriptionID string) LogProfilesClient {
-	return original.NewLogProfilesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewActionGroupsClient(subscriptionID string) ActionGroupsClient {
-	return original.NewActionGroupsClient(subscriptionID)
-}
-func NewActionGroupsClientWithBaseURI(baseURI string, subscriptionID string) ActionGroupsClient {
-	return original.NewActionGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
-	return original.NewAlertRulesClient(subscriptionID)
-}
-func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) AlertRulesClient {
-	return original.NewAlertRulesClientWithBaseURI(baseURI, subscriptionID)
+func NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsCategoryClient {
+	return original.NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAutoscaleSettingsClient(subscriptionID string) AutoscaleSettingsClient {
 	return original.NewAutoscaleSettingsClient(subscriptionID)
@@ -269,11 +251,11 @@ func NewAutoscaleSettingsClient(subscriptionID string) AutoscaleSettingsClient {
 func NewAutoscaleSettingsClientWithBaseURI(baseURI string, subscriptionID string) AutoscaleSettingsClient {
 	return original.NewAutoscaleSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
-	return original.NewDiagnosticSettingsCategoryClient(subscriptionID)
+func NewDiagnosticSettingsClient(subscriptionID string) DiagnosticSettingsClient {
+	return original.NewDiagnosticSettingsClient(subscriptionID)
 }
-func NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsCategoryClient {
-	return original.NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI, subscriptionID)
+func NewDiagnosticSettingsClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsClient {
+	return original.NewDiagnosticSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -286,4 +268,22 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewActionGroupsClient(subscriptionID string) ActionGroupsClient {
+	return original.NewActionGroupsClient(subscriptionID)
+}
+func NewActionGroupsClientWithBaseURI(baseURI string, subscriptionID string) ActionGroupsClient {
+	return original.NewActionGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAlertRuleIncidentsClient(subscriptionID string) AlertRuleIncidentsClient {
+	return original.NewAlertRuleIncidentsClient(subscriptionID)
+}
+func NewAlertRuleIncidentsClientWithBaseURI(baseURI string, subscriptionID string) AlertRuleIncidentsClient {
+	return original.NewAlertRuleIncidentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
+	return original.NewAlertRulesClient(subscriptionID)
+}
+func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) AlertRulesClient {
+	return original.NewAlertRulesClientWithBaseURI(baseURI, subscriptionID)
 }

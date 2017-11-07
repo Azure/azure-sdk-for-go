@@ -23,155 +23,165 @@ package batch
 import original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2017-09-01/batch"
 
 type ApplicationClient = original.ApplicationClient
+type ApplicationPackageClient = original.ApplicationPackageClient
+type CertificateClient = original.CertificateClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+type LocationClient = original.LocationClient
+type AccountClient = original.AccountClient
 type AccountKeyType = original.AccountKeyType
 
 const (
-	Primary		AccountKeyType	= original.Primary
-	Secondary	AccountKeyType	= original.Secondary
+	Primary   AccountKeyType = original.Primary
+	Secondary AccountKeyType = original.Secondary
 )
 
 type AllocationState = original.AllocationState
 
 const (
-	Resizing	AllocationState	= original.Resizing
-	Steady		AllocationState	= original.Steady
-	Stopping	AllocationState	= original.Stopping
+	Resizing AllocationState = original.Resizing
+	Steady   AllocationState = original.Steady
+	Stopping AllocationState = original.Stopping
 )
 
 type AutoUserScope = original.AutoUserScope
 
 const (
-	AutoUserScopePool	AutoUserScope	= original.AutoUserScopePool
-	AutoUserScopeTask	AutoUserScope	= original.AutoUserScopeTask
+	AutoUserScopePool AutoUserScope = original.AutoUserScopePool
+	AutoUserScopeTask AutoUserScope = original.AutoUserScopeTask
 )
 
 type CachingType = original.CachingType
 
 const (
-	None		CachingType	= original.None
-	ReadOnly	CachingType	= original.ReadOnly
-	ReadWrite	CachingType	= original.ReadWrite
+	None      CachingType = original.None
+	ReadOnly  CachingType = original.ReadOnly
+	ReadWrite CachingType = original.ReadWrite
 )
 
 type CertificateFormat = original.CertificateFormat
 
 const (
-	Cer	CertificateFormat	= original.Cer
-	Pfx	CertificateFormat	= original.Pfx
+	Cer CertificateFormat = original.Cer
+	Pfx CertificateFormat = original.Pfx
 )
 
 type CertificateProvisioningState = original.CertificateProvisioningState
 
 const (
-	Deleting	CertificateProvisioningState	= original.Deleting
-	Failed		CertificateProvisioningState	= original.Failed
-	Succeeded	CertificateProvisioningState	= original.Succeeded
+	Deleting  CertificateProvisioningState = original.Deleting
+	Failed    CertificateProvisioningState = original.Failed
+	Succeeded CertificateProvisioningState = original.Succeeded
 )
 
 type CertificateStoreLocation = original.CertificateStoreLocation
 
 const (
-	CurrentUser	CertificateStoreLocation	= original.CurrentUser
-	LocalMachine	CertificateStoreLocation	= original.LocalMachine
+	CurrentUser  CertificateStoreLocation = original.CurrentUser
+	LocalMachine CertificateStoreLocation = original.LocalMachine
 )
 
 type CertificateVisibility = original.CertificateVisibility
 
 const (
-	CertificateVisibilityRemoteUser	CertificateVisibility	= original.CertificateVisibilityRemoteUser
-	CertificateVisibilityStartTask	CertificateVisibility	= original.CertificateVisibilityStartTask
-	CertificateVisibilityTask	CertificateVisibility	= original.CertificateVisibilityTask
+	CertificateVisibilityRemoteUser CertificateVisibility = original.CertificateVisibilityRemoteUser
+	CertificateVisibilityStartTask  CertificateVisibility = original.CertificateVisibilityStartTask
+	CertificateVisibilityTask       CertificateVisibility = original.CertificateVisibilityTask
 )
 
 type ComputeNodeDeallocationOption = original.ComputeNodeDeallocationOption
 
 const (
-	Requeue		ComputeNodeDeallocationOption	= original.Requeue
-	RetainedData	ComputeNodeDeallocationOption	= original.RetainedData
-	TaskCompletion	ComputeNodeDeallocationOption	= original.TaskCompletion
-	Terminate	ComputeNodeDeallocationOption	= original.Terminate
+	Requeue        ComputeNodeDeallocationOption = original.Requeue
+	RetainedData   ComputeNodeDeallocationOption = original.RetainedData
+	TaskCompletion ComputeNodeDeallocationOption = original.TaskCompletion
+	Terminate      ComputeNodeDeallocationOption = original.Terminate
 )
 
 type ComputeNodeFillType = original.ComputeNodeFillType
 
 const (
-	Pack	ComputeNodeFillType	= original.Pack
-	Spread	ComputeNodeFillType	= original.Spread
+	Pack   ComputeNodeFillType = original.Pack
+	Spread ComputeNodeFillType = original.Spread
 )
 
 type ElevationLevel = original.ElevationLevel
 
 const (
-	Admin		ElevationLevel	= original.Admin
-	NonAdmin	ElevationLevel	= original.NonAdmin
+	Admin    ElevationLevel = original.Admin
+	NonAdmin ElevationLevel = original.NonAdmin
 )
 
 type InboundEndpointProtocol = original.InboundEndpointProtocol
 
 const (
-	TCP	InboundEndpointProtocol	= original.TCP
-	UDP	InboundEndpointProtocol	= original.UDP
+	TCP InboundEndpointProtocol = original.TCP
+	UDP InboundEndpointProtocol = original.UDP
 )
 
 type InterNodeCommunicationState = original.InterNodeCommunicationState
 
 const (
-	Disabled	InterNodeCommunicationState	= original.Disabled
-	Enabled		InterNodeCommunicationState	= original.Enabled
+	Disabled InterNodeCommunicationState = original.Disabled
+	Enabled  InterNodeCommunicationState = original.Enabled
 )
 
 type NameAvailabilityReason = original.NameAvailabilityReason
 
 const (
-	AlreadyExists	NameAvailabilityReason	= original.AlreadyExists
-	Invalid		NameAvailabilityReason	= original.Invalid
+	AlreadyExists NameAvailabilityReason = original.AlreadyExists
+	Invalid       NameAvailabilityReason = original.Invalid
 )
 
 type NetworkSecurityGroupRuleAccess = original.NetworkSecurityGroupRuleAccess
 
 const (
-	Allow	NetworkSecurityGroupRuleAccess	= original.Allow
-	Deny	NetworkSecurityGroupRuleAccess	= original.Deny
+	Allow NetworkSecurityGroupRuleAccess = original.Allow
+	Deny  NetworkSecurityGroupRuleAccess = original.Deny
 )
 
 type PackageState = original.PackageState
 
 const (
-	Active		PackageState	= original.Active
-	Pending		PackageState	= original.Pending
-	Unmapped	PackageState	= original.Unmapped
+	Active   PackageState = original.Active
+	Pending  PackageState = original.Pending
+	Unmapped PackageState = original.Unmapped
 )
 
 type PoolAllocationMode = original.PoolAllocationMode
 
 const (
-	BatchService		PoolAllocationMode	= original.BatchService
-	UserSubscription	PoolAllocationMode	= original.UserSubscription
+	BatchService     PoolAllocationMode = original.BatchService
+	UserSubscription PoolAllocationMode = original.UserSubscription
 )
 
 type PoolProvisioningState = original.PoolProvisioningState
 
 const (
-	PoolProvisioningStateDeleting	PoolProvisioningState	= original.PoolProvisioningStateDeleting
-	PoolProvisioningStateSucceeded	PoolProvisioningState	= original.PoolProvisioningStateSucceeded
+	PoolProvisioningStateDeleting  PoolProvisioningState = original.PoolProvisioningStateDeleting
+	PoolProvisioningStateSucceeded PoolProvisioningState = original.PoolProvisioningStateSucceeded
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	ProvisioningStateCancelled	ProvisioningState	= original.ProvisioningStateCancelled
-	ProvisioningStateCreating	ProvisioningState	= original.ProvisioningStateCreating
-	ProvisioningStateDeleting	ProvisioningState	= original.ProvisioningStateDeleting
-	ProvisioningStateFailed		ProvisioningState	= original.ProvisioningStateFailed
-	ProvisioningStateInvalid	ProvisioningState	= original.ProvisioningStateInvalid
-	ProvisioningStateSucceeded	ProvisioningState	= original.ProvisioningStateSucceeded
+	ProvisioningStateCancelled ProvisioningState = original.ProvisioningStateCancelled
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateInvalid   ProvisioningState = original.ProvisioningStateInvalid
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
 )
 
 type StorageAccountType = original.StorageAccountType
 
 const (
-	PremiumLRS	StorageAccountType	= original.PremiumLRS
-	StandardLRS	StorageAccountType	= original.StandardLRS
+	PremiumLRS  StorageAccountType = original.PremiumLRS
+	StandardLRS StorageAccountType = original.StandardLRS
 )
 
 type Account = original.Account
@@ -243,35 +253,7 @@ type VirtualMachineConfiguration = original.VirtualMachineConfiguration
 type WindowsConfiguration = original.WindowsConfiguration
 type OperationsClient = original.OperationsClient
 type PoolClient = original.PoolClient
-type AccountClient = original.AccountClient
-type ApplicationPackageClient = original.ApplicationPackageClient
-type CertificateClient = original.CertificateClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-type LocationClient = original.LocationClient
-
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPoolClient(subscriptionID string) PoolClient {
-	return original.NewPoolClient(subscriptionID)
-}
-func NewPoolClientWithBaseURI(baseURI string, subscriptionID string) PoolClient {
-	return original.NewPoolClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewApplicationClient(subscriptionID string) ApplicationClient {
-	return original.NewApplicationClient(subscriptionID)
-}
-func NewApplicationClientWithBaseURI(baseURI string, subscriptionID string) ApplicationClient {
-	return original.NewApplicationClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewApplicationPackageClient(subscriptionID string) ApplicationPackageClient {
 	return original.NewApplicationPackageClient(subscriptionID)
 }
@@ -295,6 +277,24 @@ func NewLocationClient(subscriptionID string) LocationClient {
 }
 func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) LocationClient {
 	return original.NewLocationClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewApplicationClient(subscriptionID string) ApplicationClient {
+	return original.NewApplicationClient(subscriptionID)
+}
+func NewApplicationClientWithBaseURI(baseURI string, subscriptionID string) ApplicationClient {
+	return original.NewApplicationClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPoolClient(subscriptionID string) PoolClient {
+	return original.NewPoolClient(subscriptionID)
+}
+func NewPoolClientWithBaseURI(baseURI string, subscriptionID string) PoolClient {
+	return original.NewPoolClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

@@ -25,13 +25,13 @@ import original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/
 type DriveState = original.DriveState
 
 const (
-	Completed		DriveState	= original.Completed
-	CompletedMoreInfo	DriveState	= original.CompletedMoreInfo
-	NeverReceived		DriveState	= original.NeverReceived
-	Received		DriveState	= original.Received
-	ShippedBack		DriveState	= original.ShippedBack
-	Specified		DriveState	= original.Specified
-	Transferring		DriveState	= original.Transferring
+	Completed         DriveState = original.Completed
+	CompletedMoreInfo DriveState = original.CompletedMoreInfo
+	NeverReceived     DriveState = original.NeverReceived
+	Received          DriveState = original.Received
+	ShippedBack       DriveState = original.ShippedBack
+	Specified         DriveState = original.Specified
+	Transferring      DriveState = original.Transferring
 )
 
 type DriveBitLockerKey = original.DriveBitLockerKey
@@ -69,6 +69,12 @@ type ManagementClient = original.ManagementClient
 type JobsClient = original.JobsClient
 type LocationsClient = original.LocationsClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func NewBitLockerKeysClient(subscriptionID string, acceptLanguage string) BitLockerKeysClient {
 	return original.NewBitLockerKeysClient(subscriptionID, acceptLanguage)
 }
@@ -98,10 +104,4 @@ func NewOperationsClient(subscriptionID string, acceptLanguage string) Operation
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

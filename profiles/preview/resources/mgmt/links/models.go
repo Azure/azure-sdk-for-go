@@ -22,6 +22,11 @@ package links
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
 type Filter = original.Filter
 
 const (
@@ -33,12 +38,6 @@ type ResourceLinkFilter = original.ResourceLinkFilter
 type ResourceLinkProperties = original.ResourceLinkProperties
 type ResourceLinkResult = original.ResourceLinkResult
 type ResourceLinksClient = original.ResourceLinksClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
 
 func NewResourceLinksClient(subscriptionID string) ResourceLinksClient {
 	return original.NewResourceLinksClient(subscriptionID)

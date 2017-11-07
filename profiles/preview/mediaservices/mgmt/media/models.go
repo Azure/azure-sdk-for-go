@@ -30,16 +30,16 @@ type ManagementClient = original.ManagementClient
 type EntityNameUnavailabilityReason = original.EntityNameUnavailabilityReason
 
 const (
-	AlreadyExists	EntityNameUnavailabilityReason	= original.AlreadyExists
-	Invalid		EntityNameUnavailabilityReason	= original.Invalid
-	None		EntityNameUnavailabilityReason	= original.None
+	AlreadyExists EntityNameUnavailabilityReason = original.AlreadyExists
+	Invalid       EntityNameUnavailabilityReason = original.Invalid
+	None          EntityNameUnavailabilityReason = original.None
 )
 
 type KeyType = original.KeyType
 
 const (
-	Primary		KeyType	= original.Primary
-	Secondary	KeyType	= original.Secondary
+	Primary   KeyType = original.Primary
+	Secondary KeyType = original.Secondary
 )
 
 type ResourceType = original.ResourceType
@@ -67,12 +67,6 @@ type SyncStorageKeysInput = original.SyncStorageKeysInput
 type OperationsClient = original.OperationsClient
 type ServiceClient = original.ServiceClient
 
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -90,4 +84,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

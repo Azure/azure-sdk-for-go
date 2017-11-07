@@ -22,9 +22,6 @@ package billing
 
 import original "github.com/Azure/azure-sdk-for-go/services/billing/mgmt/2017-04-24-preview/billing"
 
-type OperationsClient = original.OperationsClient
-type PeriodsClient = original.PeriodsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -44,7 +41,15 @@ type Period = original.Period
 type PeriodProperties = original.PeriodProperties
 type PeriodsListResult = original.PeriodsListResult
 type Resource = original.Resource
+type OperationsClient = original.OperationsClient
+type PeriodsClient = original.PeriodsClient
 
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewPeriodsClient(subscriptionID string) PeriodsClient {
 	return original.NewPeriodsClient(subscriptionID)
 }
@@ -68,10 +73,4 @@ func NewInvoicesClient(subscriptionID string) InvoicesClient {
 }
 func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
 	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

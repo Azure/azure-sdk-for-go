@@ -22,14 +22,6 @@ package commitmentplans
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2016-05-01-preview/commitmentplans"
 
-type UsageHistoryClient = original.UsageHistoryClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ManagementClient = original.ManagementClient
-type CommitmentAssociationsClient = original.CommitmentAssociationsClient
 type GroupClient = original.GroupClient
 type CommitmentAssociation = original.CommitmentAssociation
 type CommitmentAssociationListResult = original.CommitmentAssociationListResult
@@ -44,7 +36,27 @@ type PlanUsageHistoryListResult = original.PlanUsageHistoryListResult
 type Properties = original.Properties
 type Resource = original.Resource
 type ResourceSku = original.ResourceSku
+type UsageHistoryClient = original.UsageHistoryClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ManagementClient = original.ManagementClient
+type CommitmentAssociationsClient = original.CommitmentAssociationsClient
+
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociationsClient {
+	return original.NewCommitmentAssociationsClient(subscriptionID)
+}
+func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID string) CommitmentAssociationsClient {
+	return original.NewCommitmentAssociationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewGroupClient(subscriptionID string) GroupClient {
 	return original.NewGroupClient(subscriptionID)
 }
@@ -62,16 +74,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociationsClient {
-	return original.NewCommitmentAssociationsClient(subscriptionID)
-}
-func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID string) CommitmentAssociationsClient {
-	return original.NewCommitmentAssociationsClientWithBaseURI(baseURI, subscriptionID)
 }

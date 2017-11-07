@@ -32,51 +32,51 @@ type ManagementClient = original.ManagementClient
 type AdminKeyKind = original.AdminKeyKind
 
 const (
-	Primary		AdminKeyKind	= original.Primary
-	Secondary	AdminKeyKind	= original.Secondary
+	Primary   AdminKeyKind = original.Primary
+	Secondary AdminKeyKind = original.Secondary
 )
 
 type HostingMode = original.HostingMode
 
 const (
-	Default		HostingMode	= original.Default
-	HighDensity	HostingMode	= original.HighDensity
+	Default     HostingMode = original.Default
+	HighDensity HostingMode = original.HighDensity
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Failed		ProvisioningState	= original.Failed
-	Provisioning	ProvisioningState	= original.Provisioning
-	Succeeded	ProvisioningState	= original.Succeeded
+	Failed       ProvisioningState = original.Failed
+	Provisioning ProvisioningState = original.Provisioning
+	Succeeded    ProvisioningState = original.Succeeded
 )
 
 type ServiceStatus = original.ServiceStatus
 
 const (
-	ServiceStatusDegraded		ServiceStatus	= original.ServiceStatusDegraded
-	ServiceStatusDeleting		ServiceStatus	= original.ServiceStatusDeleting
-	ServiceStatusDisabled		ServiceStatus	= original.ServiceStatusDisabled
-	ServiceStatusError		ServiceStatus	= original.ServiceStatusError
-	ServiceStatusProvisioning	ServiceStatus	= original.ServiceStatusProvisioning
-	ServiceStatusRunning		ServiceStatus	= original.ServiceStatusRunning
+	ServiceStatusDegraded     ServiceStatus = original.ServiceStatusDegraded
+	ServiceStatusDeleting     ServiceStatus = original.ServiceStatusDeleting
+	ServiceStatusDisabled     ServiceStatus = original.ServiceStatusDisabled
+	ServiceStatusError        ServiceStatus = original.ServiceStatusError
+	ServiceStatusProvisioning ServiceStatus = original.ServiceStatusProvisioning
+	ServiceStatusRunning      ServiceStatus = original.ServiceStatusRunning
 )
 
 type SkuName = original.SkuName
 
 const (
-	Basic		SkuName	= original.Basic
-	Free		SkuName	= original.Free
-	Standard	SkuName	= original.Standard
-	Standard2	SkuName	= original.Standard2
-	Standard3	SkuName	= original.Standard3
+	Basic     SkuName = original.Basic
+	Free      SkuName = original.Free
+	Standard  SkuName = original.Standard
+	Standard2 SkuName = original.Standard2
+	Standard3 SkuName = original.Standard3
 )
 
 type UnavailableNameReason = original.UnavailableNameReason
 
 const (
-	AlreadyExists	UnavailableNameReason	= original.AlreadyExists
-	Invalid		UnavailableNameReason	= original.Invalid
+	AlreadyExists UnavailableNameReason = original.AlreadyExists
+	Invalid       UnavailableNameReason = original.Invalid
 )
 
 type AdminKeyResult = original.AdminKeyResult
@@ -94,18 +94,6 @@ type Sku = original.Sku
 type QueryKeysClient = original.QueryKeysClient
 type ServicesClient = original.ServicesClient
 
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewQueryKeysClient(subscriptionID string) QueryKeysClient {
-	return original.NewQueryKeysClient(subscriptionID)
-}
-func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryKeysClient {
-	return original.NewQueryKeysClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewServicesClient(subscriptionID string) ServicesClient {
 	return original.NewServicesClient(subscriptionID)
 }
@@ -123,4 +111,16 @@ func NewAdminKeysClient(subscriptionID string) AdminKeysClient {
 }
 func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminKeysClient {
 	return original.NewAdminKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewQueryKeysClient(subscriptionID string) QueryKeysClient {
+	return original.NewQueryKeysClient(subscriptionID)
+}
+func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryKeysClient {
+	return original.NewQueryKeysClientWithBaseURI(baseURI, subscriptionID)
 }

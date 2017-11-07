@@ -31,34 +31,34 @@ type HybridConnectionsClient = original.HybridConnectionsClient
 type AccessRights = original.AccessRights
 
 const (
-	Listen	AccessRights	= original.Listen
-	Manage	AccessRights	= original.Manage
-	Send	AccessRights	= original.Send
+	Listen AccessRights = original.Listen
+	Manage AccessRights = original.Manage
+	Send   AccessRights = original.Send
 )
 
 type KeyType = original.KeyType
 
 const (
-	PrimaryKey	KeyType	= original.PrimaryKey
-	SecondaryKey	KeyType	= original.SecondaryKey
+	PrimaryKey   KeyType = original.PrimaryKey
+	SecondaryKey KeyType = original.SecondaryKey
 )
 
 type ProvisioningStateEnum = original.ProvisioningStateEnum
 
 const (
-	Created		ProvisioningStateEnum	= original.Created
-	Deleted		ProvisioningStateEnum	= original.Deleted
-	Failed		ProvisioningStateEnum	= original.Failed
-	Succeeded	ProvisioningStateEnum	= original.Succeeded
-	Unknown		ProvisioningStateEnum	= original.Unknown
-	Updating	ProvisioningStateEnum	= original.Updating
+	Created   ProvisioningStateEnum = original.Created
+	Deleted   ProvisioningStateEnum = original.Deleted
+	Failed    ProvisioningStateEnum = original.Failed
+	Succeeded ProvisioningStateEnum = original.Succeeded
+	Unknown   ProvisioningStateEnum = original.Unknown
+	Updating  ProvisioningStateEnum = original.Updating
 )
 
 type RelaytypeEnum = original.RelaytypeEnum
 
 const (
-	HTTP	RelaytypeEnum	= original.HTTP
-	NetTCP	RelaytypeEnum	= original.NetTCP
+	HTTP   RelaytypeEnum = original.HTTP
+	NetTCP RelaytypeEnum = original.NetTCP
 )
 
 type SkuTier = original.SkuTier
@@ -70,12 +70,12 @@ const (
 type UnavailableReason = original.UnavailableReason
 
 const (
-	InvalidName				UnavailableReason	= original.InvalidName
-	NameInLockdown				UnavailableReason	= original.NameInLockdown
-	NameInUse				UnavailableReason	= original.NameInUse
-	None					UnavailableReason	= original.None
-	SubscriptionIsDisabled			UnavailableReason	= original.SubscriptionIsDisabled
-	TooManyNamespaceInCurrentSubscription	UnavailableReason	= original.TooManyNamespaceInCurrentSubscription
+	InvalidName                           UnavailableReason = original.InvalidName
+	NameInLockdown                        UnavailableReason = original.NameInLockdown
+	NameInUse                             UnavailableReason = original.NameInUse
+	None                                  UnavailableReason = original.None
+	SubscriptionIsDisabled                UnavailableReason = original.SubscriptionIsDisabled
+	TooManyNamespaceInCurrentSubscription UnavailableReason = original.TooManyNamespaceInCurrentSubscription
 )
 
 type AccessKeys = original.AccessKeys
@@ -107,18 +107,6 @@ type NamespacesClient = original.NamespacesClient
 type OperationsClient = original.OperationsClient
 type WCFRelaysClient = original.WCFRelaysClient
 
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
-}
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -142,4 +130,16 @@ func NewHybridConnectionsClient(subscriptionID string) HybridConnectionsClient {
 }
 func NewHybridConnectionsClientWithBaseURI(baseURI string, subscriptionID string) HybridConnectionsClient {
 	return original.NewHybridConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
+}
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

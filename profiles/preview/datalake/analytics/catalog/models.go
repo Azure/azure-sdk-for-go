@@ -31,9 +31,9 @@ type GroupClient = original.GroupClient
 type FileType = original.FileType
 
 const (
-	Assembly	FileType	= original.Assembly
-	Nodeploy	FileType	= original.Nodeploy
-	Resource	FileType	= original.Resource
+	Assembly FileType = original.Assembly
+	Nodeploy FileType = original.Nodeploy
+	Resource FileType = original.Resource
 )
 
 type DataLakeAnalyticsCatalogCredentialCreateParameters = original.DataLakeAnalyticsCatalogCredentialCreateParameters
@@ -83,12 +83,6 @@ type USQLTypeList = original.USQLTypeList
 type USQLView = original.USQLView
 type USQLViewList = original.USQLViewList
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func New() ManagementClient {
 	return original.New()
 }
@@ -97,4 +91,10 @@ func NewWithoutDefaults(adlaCatalogDNSSuffix string) ManagementClient {
 }
 func NewGroupClient() GroupClient {
 	return original.NewGroupClient()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

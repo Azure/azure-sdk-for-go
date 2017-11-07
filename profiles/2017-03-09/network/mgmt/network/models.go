@@ -44,39 +44,39 @@ type LoadBalancersClient = original.LoadBalancersClient
 type ApplicationGatewayCookieBasedAffinity = original.ApplicationGatewayCookieBasedAffinity
 
 const (
-	Disabled	ApplicationGatewayCookieBasedAffinity	= original.Disabled
-	Enabled		ApplicationGatewayCookieBasedAffinity	= original.Enabled
+	Disabled ApplicationGatewayCookieBasedAffinity = original.Disabled
+	Enabled  ApplicationGatewayCookieBasedAffinity = original.Enabled
 )
 
 type ApplicationGatewayOperationalState = original.ApplicationGatewayOperationalState
 
 const (
-	Running		ApplicationGatewayOperationalState	= original.Running
-	Starting	ApplicationGatewayOperationalState	= original.Starting
-	Stopped		ApplicationGatewayOperationalState	= original.Stopped
-	Stopping	ApplicationGatewayOperationalState	= original.Stopping
+	Running  ApplicationGatewayOperationalState = original.Running
+	Starting ApplicationGatewayOperationalState = original.Starting
+	Stopped  ApplicationGatewayOperationalState = original.Stopped
+	Stopping ApplicationGatewayOperationalState = original.Stopping
 )
 
 type ApplicationGatewayProtocol = original.ApplicationGatewayProtocol
 
 const (
-	HTTP	ApplicationGatewayProtocol	= original.HTTP
-	HTTPS	ApplicationGatewayProtocol	= original.HTTPS
+	HTTP  ApplicationGatewayProtocol = original.HTTP
+	HTTPS ApplicationGatewayProtocol = original.HTTPS
 )
 
 type ApplicationGatewayRequestRoutingRuleType = original.ApplicationGatewayRequestRoutingRuleType
 
 const (
-	Basic			ApplicationGatewayRequestRoutingRuleType	= original.Basic
-	PathBasedRouting	ApplicationGatewayRequestRoutingRuleType	= original.PathBasedRouting
+	Basic            ApplicationGatewayRequestRoutingRuleType = original.Basic
+	PathBasedRouting ApplicationGatewayRequestRoutingRuleType = original.PathBasedRouting
 )
 
 type ApplicationGatewaySkuName = original.ApplicationGatewaySkuName
 
 const (
-	StandardLarge	ApplicationGatewaySkuName	= original.StandardLarge
-	StandardMedium	ApplicationGatewaySkuName	= original.StandardMedium
-	StandardSmall	ApplicationGatewaySkuName	= original.StandardSmall
+	StandardLarge  ApplicationGatewaySkuName = original.StandardLarge
+	StandardMedium ApplicationGatewaySkuName = original.StandardMedium
+	StandardSmall  ApplicationGatewaySkuName = original.StandardSmall
 )
 
 type ApplicationGatewayTier = original.ApplicationGatewayTier
@@ -88,179 +88,179 @@ const (
 type AuthorizationUseStatus = original.AuthorizationUseStatus
 
 const (
-	Available	AuthorizationUseStatus	= original.Available
-	InUse		AuthorizationUseStatus	= original.InUse
+	Available AuthorizationUseStatus = original.Available
+	InUse     AuthorizationUseStatus = original.InUse
 )
 
 type ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = original.ExpressRouteCircuitPeeringAdvertisedPublicPrefixState
 
 const (
-	Configured		ExpressRouteCircuitPeeringAdvertisedPublicPrefixState	= original.Configured
-	Configuring		ExpressRouteCircuitPeeringAdvertisedPublicPrefixState	= original.Configuring
-	NotConfigured		ExpressRouteCircuitPeeringAdvertisedPublicPrefixState	= original.NotConfigured
-	ValidationNeeded	ExpressRouteCircuitPeeringAdvertisedPublicPrefixState	= original.ValidationNeeded
+	Configured       ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = original.Configured
+	Configuring      ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = original.Configuring
+	NotConfigured    ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = original.NotConfigured
+	ValidationNeeded ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = original.ValidationNeeded
 )
 
 type ExpressRouteCircuitPeeringState = original.ExpressRouteCircuitPeeringState
 
 const (
-	ExpressRouteCircuitPeeringStateDisabled	ExpressRouteCircuitPeeringState	= original.ExpressRouteCircuitPeeringStateDisabled
-	ExpressRouteCircuitPeeringStateEnabled	ExpressRouteCircuitPeeringState	= original.ExpressRouteCircuitPeeringStateEnabled
+	ExpressRouteCircuitPeeringStateDisabled ExpressRouteCircuitPeeringState = original.ExpressRouteCircuitPeeringStateDisabled
+	ExpressRouteCircuitPeeringStateEnabled  ExpressRouteCircuitPeeringState = original.ExpressRouteCircuitPeeringStateEnabled
 )
 
 type ExpressRouteCircuitPeeringType = original.ExpressRouteCircuitPeeringType
 
 const (
-	AzurePrivatePeering	ExpressRouteCircuitPeeringType	= original.AzurePrivatePeering
-	AzurePublicPeering	ExpressRouteCircuitPeeringType	= original.AzurePublicPeering
-	MicrosoftPeering	ExpressRouteCircuitPeeringType	= original.MicrosoftPeering
+	AzurePrivatePeering ExpressRouteCircuitPeeringType = original.AzurePrivatePeering
+	AzurePublicPeering  ExpressRouteCircuitPeeringType = original.AzurePublicPeering
+	MicrosoftPeering    ExpressRouteCircuitPeeringType = original.MicrosoftPeering
 )
 
 type ExpressRouteCircuitSkuFamily = original.ExpressRouteCircuitSkuFamily
 
 const (
-	MeteredData	ExpressRouteCircuitSkuFamily	= original.MeteredData
-	UnlimitedData	ExpressRouteCircuitSkuFamily	= original.UnlimitedData
+	MeteredData   ExpressRouteCircuitSkuFamily = original.MeteredData
+	UnlimitedData ExpressRouteCircuitSkuFamily = original.UnlimitedData
 )
 
 type ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTier
 
 const (
-	ExpressRouteCircuitSkuTierPremium	ExpressRouteCircuitSkuTier	= original.ExpressRouteCircuitSkuTierPremium
-	ExpressRouteCircuitSkuTierStandard	ExpressRouteCircuitSkuTier	= original.ExpressRouteCircuitSkuTierStandard
+	ExpressRouteCircuitSkuTierPremium  ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierPremium
+	ExpressRouteCircuitSkuTierStandard ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierStandard
 )
 
 type IPAllocationMethod = original.IPAllocationMethod
 
 const (
-	Dynamic	IPAllocationMethod	= original.Dynamic
-	Static	IPAllocationMethod	= original.Static
+	Dynamic IPAllocationMethod = original.Dynamic
+	Static  IPAllocationMethod = original.Static
 )
 
 type LoadDistribution = original.LoadDistribution
 
 const (
-	Default			LoadDistribution	= original.Default
-	SourceIP		LoadDistribution	= original.SourceIP
-	SourceIPProtocol	LoadDistribution	= original.SourceIPProtocol
+	Default          LoadDistribution = original.Default
+	SourceIP         LoadDistribution = original.SourceIP
+	SourceIPProtocol LoadDistribution = original.SourceIPProtocol
 )
 
 type OperationStatus = original.OperationStatus
 
 const (
-	Failed		OperationStatus	= original.Failed
-	InProgress	OperationStatus	= original.InProgress
-	Succeeded	OperationStatus	= original.Succeeded
+	Failed     OperationStatus = original.Failed
+	InProgress OperationStatus = original.InProgress
+	Succeeded  OperationStatus = original.Succeeded
 )
 
 type ProbeProtocol = original.ProbeProtocol
 
 const (
-	ProbeProtocolHTTP	ProbeProtocol	= original.ProbeProtocolHTTP
-	ProbeProtocolTCP	ProbeProtocol	= original.ProbeProtocolTCP
+	ProbeProtocolHTTP ProbeProtocol = original.ProbeProtocolHTTP
+	ProbeProtocolTCP  ProbeProtocol = original.ProbeProtocolTCP
 )
 
 type ProcessorArchitecture = original.ProcessorArchitecture
 
 const (
-	Amd64	ProcessorArchitecture	= original.Amd64
-	X86	ProcessorArchitecture	= original.X86
+	Amd64 ProcessorArchitecture = original.Amd64
+	X86   ProcessorArchitecture = original.X86
 )
 
 type RouteNextHopType = original.RouteNextHopType
 
 const (
-	RouteNextHopTypeInternet		RouteNextHopType	= original.RouteNextHopTypeInternet
-	RouteNextHopTypeNone			RouteNextHopType	= original.RouteNextHopTypeNone
-	RouteNextHopTypeVirtualAppliance	RouteNextHopType	= original.RouteNextHopTypeVirtualAppliance
-	RouteNextHopTypeVirtualNetworkGateway	RouteNextHopType	= original.RouteNextHopTypeVirtualNetworkGateway
-	RouteNextHopTypeVnetLocal		RouteNextHopType	= original.RouteNextHopTypeVnetLocal
+	RouteNextHopTypeInternet              RouteNextHopType = original.RouteNextHopTypeInternet
+	RouteNextHopTypeNone                  RouteNextHopType = original.RouteNextHopTypeNone
+	RouteNextHopTypeVirtualAppliance      RouteNextHopType = original.RouteNextHopTypeVirtualAppliance
+	RouteNextHopTypeVirtualNetworkGateway RouteNextHopType = original.RouteNextHopTypeVirtualNetworkGateway
+	RouteNextHopTypeVnetLocal             RouteNextHopType = original.RouteNextHopTypeVnetLocal
 )
 
 type SecurityRuleAccess = original.SecurityRuleAccess
 
 const (
-	Allow	SecurityRuleAccess	= original.Allow
-	Deny	SecurityRuleAccess	= original.Deny
+	Allow SecurityRuleAccess = original.Allow
+	Deny  SecurityRuleAccess = original.Deny
 )
 
 type SecurityRuleDirection = original.SecurityRuleDirection
 
 const (
-	Inbound		SecurityRuleDirection	= original.Inbound
-	Outbound	SecurityRuleDirection	= original.Outbound
+	Inbound  SecurityRuleDirection = original.Inbound
+	Outbound SecurityRuleDirection = original.Outbound
 )
 
 type SecurityRuleProtocol = original.SecurityRuleProtocol
 
 const (
-	Asterisk	SecurityRuleProtocol	= original.Asterisk
-	TCP		SecurityRuleProtocol	= original.TCP
-	UDP		SecurityRuleProtocol	= original.UDP
+	Asterisk SecurityRuleProtocol = original.Asterisk
+	TCP      SecurityRuleProtocol = original.TCP
+	UDP      SecurityRuleProtocol = original.UDP
 )
 
 type ServiceProviderProvisioningState = original.ServiceProviderProvisioningState
 
 const (
-	Deprovisioning	ServiceProviderProvisioningState	= original.Deprovisioning
-	NotProvisioned	ServiceProviderProvisioningState	= original.NotProvisioned
-	Provisioned	ServiceProviderProvisioningState	= original.Provisioned
-	Provisioning	ServiceProviderProvisioningState	= original.Provisioning
+	Deprovisioning ServiceProviderProvisioningState = original.Deprovisioning
+	NotProvisioned ServiceProviderProvisioningState = original.NotProvisioned
+	Provisioned    ServiceProviderProvisioningState = original.Provisioned
+	Provisioning   ServiceProviderProvisioningState = original.Provisioning
 )
 
 type TransportProtocol = original.TransportProtocol
 
 const (
-	TransportProtocolTCP	TransportProtocol	= original.TransportProtocolTCP
-	TransportProtocolUDP	TransportProtocol	= original.TransportProtocolUDP
+	TransportProtocolTCP TransportProtocol = original.TransportProtocolTCP
+	TransportProtocolUDP TransportProtocol = original.TransportProtocolUDP
 )
 
 type VirtualNetworkGatewayConnectionStatus = original.VirtualNetworkGatewayConnectionStatus
 
 const (
-	Connected	VirtualNetworkGatewayConnectionStatus	= original.Connected
-	Connecting	VirtualNetworkGatewayConnectionStatus	= original.Connecting
-	NotConnected	VirtualNetworkGatewayConnectionStatus	= original.NotConnected
-	Unknown		VirtualNetworkGatewayConnectionStatus	= original.Unknown
+	Connected    VirtualNetworkGatewayConnectionStatus = original.Connected
+	Connecting   VirtualNetworkGatewayConnectionStatus = original.Connecting
+	NotConnected VirtualNetworkGatewayConnectionStatus = original.NotConnected
+	Unknown      VirtualNetworkGatewayConnectionStatus = original.Unknown
 )
 
 type VirtualNetworkGatewayConnectionType = original.VirtualNetworkGatewayConnectionType
 
 const (
-	ExpressRoute	VirtualNetworkGatewayConnectionType	= original.ExpressRoute
-	IPsec		VirtualNetworkGatewayConnectionType	= original.IPsec
-	Vnet2Vnet	VirtualNetworkGatewayConnectionType	= original.Vnet2Vnet
-	VPNClient	VirtualNetworkGatewayConnectionType	= original.VPNClient
+	ExpressRoute VirtualNetworkGatewayConnectionType = original.ExpressRoute
+	IPsec        VirtualNetworkGatewayConnectionType = original.IPsec
+	Vnet2Vnet    VirtualNetworkGatewayConnectionType = original.Vnet2Vnet
+	VPNClient    VirtualNetworkGatewayConnectionType = original.VPNClient
 )
 
 type VirtualNetworkGatewaySkuName = original.VirtualNetworkGatewaySkuName
 
 const (
-	VirtualNetworkGatewaySkuNameBasic		VirtualNetworkGatewaySkuName	= original.VirtualNetworkGatewaySkuNameBasic
-	VirtualNetworkGatewaySkuNameHighPerformance	VirtualNetworkGatewaySkuName	= original.VirtualNetworkGatewaySkuNameHighPerformance
-	VirtualNetworkGatewaySkuNameStandard		VirtualNetworkGatewaySkuName	= original.VirtualNetworkGatewaySkuNameStandard
+	VirtualNetworkGatewaySkuNameBasic           VirtualNetworkGatewaySkuName = original.VirtualNetworkGatewaySkuNameBasic
+	VirtualNetworkGatewaySkuNameHighPerformance VirtualNetworkGatewaySkuName = original.VirtualNetworkGatewaySkuNameHighPerformance
+	VirtualNetworkGatewaySkuNameStandard        VirtualNetworkGatewaySkuName = original.VirtualNetworkGatewaySkuNameStandard
 )
 
 type VirtualNetworkGatewaySkuTier = original.VirtualNetworkGatewaySkuTier
 
 const (
-	VirtualNetworkGatewaySkuTierBasic		VirtualNetworkGatewaySkuTier	= original.VirtualNetworkGatewaySkuTierBasic
-	VirtualNetworkGatewaySkuTierHighPerformance	VirtualNetworkGatewaySkuTier	= original.VirtualNetworkGatewaySkuTierHighPerformance
-	VirtualNetworkGatewaySkuTierStandard		VirtualNetworkGatewaySkuTier	= original.VirtualNetworkGatewaySkuTierStandard
+	VirtualNetworkGatewaySkuTierBasic           VirtualNetworkGatewaySkuTier = original.VirtualNetworkGatewaySkuTierBasic
+	VirtualNetworkGatewaySkuTierHighPerformance VirtualNetworkGatewaySkuTier = original.VirtualNetworkGatewaySkuTierHighPerformance
+	VirtualNetworkGatewaySkuTierStandard        VirtualNetworkGatewaySkuTier = original.VirtualNetworkGatewaySkuTierStandard
 )
 
 type VirtualNetworkGatewayType = original.VirtualNetworkGatewayType
 
 const (
-	VirtualNetworkGatewayTypeExpressRoute	VirtualNetworkGatewayType	= original.VirtualNetworkGatewayTypeExpressRoute
-	VirtualNetworkGatewayTypeVpn		VirtualNetworkGatewayType	= original.VirtualNetworkGatewayTypeVpn
+	VirtualNetworkGatewayTypeExpressRoute VirtualNetworkGatewayType = original.VirtualNetworkGatewayTypeExpressRoute
+	VirtualNetworkGatewayTypeVpn          VirtualNetworkGatewayType = original.VirtualNetworkGatewayTypeVpn
 )
 
 type VpnType = original.VpnType
 
 const (
-	PolicyBased	VpnType	= original.PolicyBased
-	RouteBased	VpnType	= original.RouteBased
+	PolicyBased VpnType = original.PolicyBased
+	RouteBased  VpnType = original.RouteBased
 )
 
 type AddressSpace = original.AddressSpace

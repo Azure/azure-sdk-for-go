@@ -22,9 +22,6 @@ package containerregistry
 
 import original "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2017-10-01/containerregistry"
 
-type ReplicationsClient = original.ReplicationsClient
-type WebhooksClient = original.WebhooksClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -33,58 +30,58 @@ type ManagementClient = original.ManagementClient
 type PasswordName = original.PasswordName
 
 const (
-	Password	PasswordName	= original.Password
-	Password2	PasswordName	= original.Password2
+	Password  PasswordName = original.Password
+	Password2 PasswordName = original.Password2
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled	ProvisioningState	= original.Canceled
-	Creating	ProvisioningState	= original.Creating
-	Deleting	ProvisioningState	= original.Deleting
-	Failed		ProvisioningState	= original.Failed
-	Succeeded	ProvisioningState	= original.Succeeded
-	Updating	ProvisioningState	= original.Updating
+	Canceled  ProvisioningState = original.Canceled
+	Creating  ProvisioningState = original.Creating
+	Deleting  ProvisioningState = original.Deleting
+	Failed    ProvisioningState = original.Failed
+	Succeeded ProvisioningState = original.Succeeded
+	Updating  ProvisioningState = original.Updating
 )
 
 type RegistryUsageUnit = original.RegistryUsageUnit
 
 const (
-	Bytes	RegistryUsageUnit	= original.Bytes
-	Count	RegistryUsageUnit	= original.Count
+	Bytes RegistryUsageUnit = original.Bytes
+	Count RegistryUsageUnit = original.Count
 )
 
 type SkuName = original.SkuName
 
 const (
-	Basic		SkuName	= original.Basic
-	Classic		SkuName	= original.Classic
-	Premium		SkuName	= original.Premium
-	Standard	SkuName	= original.Standard
+	Basic    SkuName = original.Basic
+	Classic  SkuName = original.Classic
+	Premium  SkuName = original.Premium
+	Standard SkuName = original.Standard
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	SkuTierBasic	SkuTier	= original.SkuTierBasic
-	SkuTierClassic	SkuTier	= original.SkuTierClassic
-	SkuTierPremium	SkuTier	= original.SkuTierPremium
-	SkuTierStandard	SkuTier	= original.SkuTierStandard
+	SkuTierBasic    SkuTier = original.SkuTierBasic
+	SkuTierClassic  SkuTier = original.SkuTierClassic
+	SkuTierPremium  SkuTier = original.SkuTierPremium
+	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
 type WebhookAction = original.WebhookAction
 
 const (
-	Delete	WebhookAction	= original.Delete
-	Push	WebhookAction	= original.Push
+	Delete WebhookAction = original.Delete
+	Push   WebhookAction = original.Push
 )
 
 type WebhookStatus = original.WebhookStatus
 
 const (
-	Disabled	WebhookStatus	= original.Disabled
-	Enabled		WebhookStatus	= original.Enabled
+	Disabled WebhookStatus = original.Disabled
+	Enabled  WebhookStatus = original.Enabled
 )
 
 type Actor = original.Actor
@@ -130,7 +127,21 @@ type WebhookPropertiesUpdateParameters = original.WebhookPropertiesUpdateParamet
 type WebhookUpdateParameters = original.WebhookUpdateParameters
 type OperationsClient = original.OperationsClient
 type RegistriesClient = original.RegistriesClient
+type ReplicationsClient = original.ReplicationsClient
+type WebhooksClient = original.WebhooksClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
+func NewWebhooksClient(subscriptionID string) WebhooksClient {
+	return original.NewWebhooksClient(subscriptionID)
+}
+func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) WebhooksClient {
+	return original.NewWebhooksClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)
 }
@@ -154,16 +165,4 @@ func NewReplicationsClient(subscriptionID string) ReplicationsClient {
 }
 func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) ReplicationsClient {
 	return original.NewReplicationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
-func NewWebhooksClient(subscriptionID string) WebhooksClient {
-	return original.NewWebhooksClient(subscriptionID)
-}
-func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) WebhooksClient {
-	return original.NewWebhooksClientWithBaseURI(baseURI, subscriptionID)
 }

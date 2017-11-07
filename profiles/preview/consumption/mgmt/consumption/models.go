@@ -22,6 +22,9 @@ package consumption
 
 import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2017-04-24-preview/consumption"
 
+type OperationsClient = original.OperationsClient
+type UsageDetailsClient = original.UsageDetailsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -37,15 +40,7 @@ type Resource = original.Resource
 type UsageDetail = original.UsageDetail
 type UsageDetailProperties = original.UsageDetailProperties
 type UsageDetailsListResult = original.UsageDetailsListResult
-type OperationsClient = original.OperationsClient
-type UsageDetailsClient = original.UsageDetailsClient
 
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -63,4 +58,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

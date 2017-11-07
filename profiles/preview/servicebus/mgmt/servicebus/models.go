@@ -22,96 +22,106 @@ package servicebus
 
 import original "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 
+type OperationsClient = original.OperationsClient
+type PremiumMessagingRegionsClient = original.PremiumMessagingRegionsClient
+type RegionsClient = original.RegionsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type ManagementClient = original.ManagementClient
+type EventHubsClient = original.EventHubsClient
+type NamespacesClient = original.NamespacesClient
+type QueuesClient = original.QueuesClient
+type RulesClient = original.RulesClient
+type SubscriptionsClient = original.SubscriptionsClient
+type TopicsClient = original.TopicsClient
 type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
 type AccessRights = original.AccessRights
 
 const (
-	Listen	AccessRights	= original.Listen
-	Manage	AccessRights	= original.Manage
-	Send	AccessRights	= original.Send
+	Listen AccessRights = original.Listen
+	Manage AccessRights = original.Manage
+	Send   AccessRights = original.Send
 )
 
 type EncodingCaptureDescription = original.EncodingCaptureDescription
 
 const (
-	Avro		EncodingCaptureDescription	= original.Avro
-	AvroDeflate	EncodingCaptureDescription	= original.AvroDeflate
+	Avro        EncodingCaptureDescription = original.Avro
+	AvroDeflate EncodingCaptureDescription = original.AvroDeflate
 )
 
 type EntityStatus = original.EntityStatus
 
 const (
-	Active		EntityStatus	= original.Active
-	Creating	EntityStatus	= original.Creating
-	Deleting	EntityStatus	= original.Deleting
-	Disabled	EntityStatus	= original.Disabled
-	ReceiveDisabled	EntityStatus	= original.ReceiveDisabled
-	Renaming	EntityStatus	= original.Renaming
-	Restoring	EntityStatus	= original.Restoring
-	SendDisabled	EntityStatus	= original.SendDisabled
-	Unknown		EntityStatus	= original.Unknown
+	Active          EntityStatus = original.Active
+	Creating        EntityStatus = original.Creating
+	Deleting        EntityStatus = original.Deleting
+	Disabled        EntityStatus = original.Disabled
+	ReceiveDisabled EntityStatus = original.ReceiveDisabled
+	Renaming        EntityStatus = original.Renaming
+	Restoring       EntityStatus = original.Restoring
+	SendDisabled    EntityStatus = original.SendDisabled
+	Unknown         EntityStatus = original.Unknown
 )
 
 type FilterType = original.FilterType
 
 const (
-	FilterTypeCorrelationFilter	FilterType	= original.FilterTypeCorrelationFilter
-	FilterTypeSQLFilter		FilterType	= original.FilterTypeSQLFilter
+	FilterTypeCorrelationFilter FilterType = original.FilterTypeCorrelationFilter
+	FilterTypeSQLFilter         FilterType = original.FilterTypeSQLFilter
 )
 
 type KeyType = original.KeyType
 
 const (
-	PrimaryKey	KeyType	= original.PrimaryKey
-	SecondaryKey	KeyType	= original.SecondaryKey
+	PrimaryKey   KeyType = original.PrimaryKey
+	SecondaryKey KeyType = original.SecondaryKey
 )
 
 type ProvisioningStateDR = original.ProvisioningStateDR
 
 const (
-	Accepted	ProvisioningStateDR	= original.Accepted
-	Failed		ProvisioningStateDR	= original.Failed
-	Succeeded	ProvisioningStateDR	= original.Succeeded
+	Accepted  ProvisioningStateDR = original.Accepted
+	Failed    ProvisioningStateDR = original.Failed
+	Succeeded ProvisioningStateDR = original.Succeeded
 )
 
 type RoleDisasterRecovery = original.RoleDisasterRecovery
 
 const (
-	Primary			RoleDisasterRecovery	= original.Primary
-	PrimaryNotReplicating	RoleDisasterRecovery	= original.PrimaryNotReplicating
-	Secondary		RoleDisasterRecovery	= original.Secondary
+	Primary               RoleDisasterRecovery = original.Primary
+	PrimaryNotReplicating RoleDisasterRecovery = original.PrimaryNotReplicating
+	Secondary             RoleDisasterRecovery = original.Secondary
 )
 
 type SkuName = original.SkuName
 
 const (
-	Basic		SkuName	= original.Basic
-	Premium		SkuName	= original.Premium
-	Standard	SkuName	= original.Standard
+	Basic    SkuName = original.Basic
+	Premium  SkuName = original.Premium
+	Standard SkuName = original.Standard
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	SkuTierBasic	SkuTier	= original.SkuTierBasic
-	SkuTierPremium	SkuTier	= original.SkuTierPremium
-	SkuTierStandard	SkuTier	= original.SkuTierStandard
+	SkuTierBasic    SkuTier = original.SkuTierBasic
+	SkuTierPremium  SkuTier = original.SkuTierPremium
+	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
 type UnavailableReason = original.UnavailableReason
 
 const (
-	InvalidName				UnavailableReason	= original.InvalidName
-	NameInLockdown				UnavailableReason	= original.NameInLockdown
-	NameInUse				UnavailableReason	= original.NameInUse
-	None					UnavailableReason	= original.None
-	SubscriptionIsDisabled			UnavailableReason	= original.SubscriptionIsDisabled
-	TooManyNamespaceInCurrentSubscription	UnavailableReason	= original.TooManyNamespaceInCurrentSubscription
+	InvalidName                           UnavailableReason = original.InvalidName
+	NameInLockdown                        UnavailableReason = original.NameInLockdown
+	NameInUse                             UnavailableReason = original.NameInUse
+	None                                  UnavailableReason = original.None
+	SubscriptionIsDisabled                UnavailableReason = original.SubscriptionIsDisabled
+	TooManyNamespaceInCurrentSubscription UnavailableReason = original.TooManyNamespaceInCurrentSubscription
 )
 
 type AccessKeys = original.AccessKeys
@@ -163,27 +173,48 @@ type SBTopicProperties = original.SBTopicProperties
 type SQLFilter = original.SQLFilter
 type SQLRuleAction = original.SQLRuleAction
 type TrackedResource = original.TrackedResource
-type OperationsClient = original.OperationsClient
-type PremiumMessagingRegionsClient = original.PremiumMessagingRegionsClient
-type RulesClient = original.RulesClient
-type TopicsClient = original.TopicsClient
-type EventHubsClient = original.EventHubsClient
-type NamespacesClient = original.NamespacesClient
-type QueuesClient = original.QueuesClient
-type RegionsClient = original.RegionsClient
-type SubscriptionsClient = original.SubscriptionsClient
 
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewQueuesClient(subscriptionID string) QueuesClient {
+	return original.NewQueuesClient(subscriptionID)
+}
+func NewQueuesClientWithBaseURI(baseURI string, subscriptionID string) QueuesClient {
+	return original.NewQueuesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRulesClient(subscriptionID string) RulesClient {
+	return original.NewRulesClient(subscriptionID)
+}
+func NewRulesClientWithBaseURI(baseURI string, subscriptionID string) RulesClient {
+	return original.NewRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
+	return original.NewSubscriptionsClient(subscriptionID)
+}
+func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTopicsClient(subscriptionID string) TopicsClient {
+	return original.NewTopicsClient(subscriptionID)
+}
+func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsClient {
+	return original.NewTopicsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDisasterRecoveryConfigsClient(subscriptionID string) DisasterRecoveryConfigsClient {
 	return original.NewDisasterRecoveryConfigsClient(subscriptionID)
 }
 func NewDisasterRecoveryConfigsClientWithBaseURI(baseURI string, subscriptionID string) DisasterRecoveryConfigsClient {
 	return original.NewDisasterRecoveryConfigsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewEventHubsClient(subscriptionID string) EventHubsClient {
+	return original.NewEventHubsClient(subscriptionID)
+}
+func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
+	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -197,51 +228,21 @@ func NewPremiumMessagingRegionsClient(subscriptionID string) PremiumMessagingReg
 func NewPremiumMessagingRegionsClientWithBaseURI(baseURI string, subscriptionID string) PremiumMessagingRegionsClient {
 	return original.NewPremiumMessagingRegionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewRulesClient(subscriptionID string) RulesClient {
-	return original.NewRulesClient(subscriptionID)
-}
-func NewRulesClientWithBaseURI(baseURI string, subscriptionID string) RulesClient {
-	return original.NewRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTopicsClient(subscriptionID string) TopicsClient {
-	return original.NewTopicsClient(subscriptionID)
-}
-func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsClient {
-	return original.NewTopicsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewEventHubsClient(subscriptionID string) EventHubsClient {
-	return original.NewEventHubsClient(subscriptionID)
-}
-func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
-	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
-}
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewQueuesClient(subscriptionID string) QueuesClient {
-	return original.NewQueuesClient(subscriptionID)
-}
-func NewQueuesClientWithBaseURI(baseURI string, subscriptionID string) QueuesClient {
-	return original.NewQueuesClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewRegionsClient(subscriptionID string) RegionsClient {
 	return original.NewRegionsClient(subscriptionID)
 }
 func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsClient {
 	return original.NewRegionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
-	return original.NewSubscriptionsClient(subscriptionID)
-}
-func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
-	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

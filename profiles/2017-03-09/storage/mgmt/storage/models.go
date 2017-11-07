@@ -32,72 +32,72 @@ type ManagementClient = original.ManagementClient
 type AccessTier = original.AccessTier
 
 const (
-	Cool	AccessTier	= original.Cool
-	Hot	AccessTier	= original.Hot
+	Cool AccessTier = original.Cool
+	Hot  AccessTier = original.Hot
 )
 
 type AccountStatus = original.AccountStatus
 
 const (
-	Available	AccountStatus	= original.Available
-	Unavailable	AccountStatus	= original.Unavailable
+	Available   AccountStatus = original.Available
+	Unavailable AccountStatus = original.Unavailable
 )
 
 type KeyPermission = original.KeyPermission
 
 const (
-	FULL	KeyPermission	= original.FULL
-	READ	KeyPermission	= original.READ
+	FULL KeyPermission = original.FULL
+	READ KeyPermission = original.READ
 )
 
 type Kind = original.Kind
 
 const (
-	BlobStorage	Kind	= original.BlobStorage
-	Storage		Kind	= original.Storage
+	BlobStorage Kind = original.BlobStorage
+	Storage     Kind = original.Storage
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Creating	ProvisioningState	= original.Creating
-	ResolvingDNS	ProvisioningState	= original.ResolvingDNS
-	Succeeded	ProvisioningState	= original.Succeeded
+	Creating     ProvisioningState = original.Creating
+	ResolvingDNS ProvisioningState = original.ResolvingDNS
+	Succeeded    ProvisioningState = original.Succeeded
 )
 
 type Reason = original.Reason
 
 const (
-	AccountNameInvalid	Reason	= original.AccountNameInvalid
-	AlreadyExists		Reason	= original.AlreadyExists
+	AccountNameInvalid Reason = original.AccountNameInvalid
+	AlreadyExists      Reason = original.AlreadyExists
 )
 
 type SkuName = original.SkuName
 
 const (
-	PremiumLRS	SkuName	= original.PremiumLRS
-	StandardGRS	SkuName	= original.StandardGRS
-	StandardLRS	SkuName	= original.StandardLRS
-	StandardRAGRS	SkuName	= original.StandardRAGRS
-	StandardZRS	SkuName	= original.StandardZRS
+	PremiumLRS    SkuName = original.PremiumLRS
+	StandardGRS   SkuName = original.StandardGRS
+	StandardLRS   SkuName = original.StandardLRS
+	StandardRAGRS SkuName = original.StandardRAGRS
+	StandardZRS   SkuName = original.StandardZRS
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	Premium		SkuTier	= original.Premium
-	Standard	SkuTier	= original.Standard
+	Premium  SkuTier = original.Premium
+	Standard SkuTier = original.Standard
 )
 
 type UsageUnit = original.UsageUnit
 
 const (
-	Bytes		UsageUnit	= original.Bytes
-	BytesPerSecond	UsageUnit	= original.BytesPerSecond
-	Count		UsageUnit	= original.Count
-	CountsPerSecond	UsageUnit	= original.CountsPerSecond
-	Percent		UsageUnit	= original.Percent
-	Seconds		UsageUnit	= original.Seconds
+	Bytes           UsageUnit = original.Bytes
+	BytesPerSecond  UsageUnit = original.BytesPerSecond
+	Count           UsageUnit = original.Count
+	CountsPerSecond UsageUnit = original.CountsPerSecond
+	Percent         UsageUnit = original.Percent
+	Seconds         UsageUnit = original.Seconds
 )
 
 type Account = original.Account

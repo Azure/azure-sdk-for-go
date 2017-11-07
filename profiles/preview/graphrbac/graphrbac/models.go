@@ -22,10 +22,7 @@ package graphrbac
 
 import original "github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
 
-type DomainsClient = original.DomainsClient
-type GroupsClient = original.GroupsClient
-type ObjectsClient = original.ObjectsClient
-type ServicePrincipalsClient = original.ServicePrincipalsClient
+type UsersClient = original.UsersClient
 type ApplicationsClient = original.ApplicationsClient
 
 const (
@@ -33,11 +30,15 @@ const (
 )
 
 type ManagementClient = original.ManagementClient
+type ServicePrincipalsClient = original.ServicePrincipalsClient
+type ObjectsClient = original.ObjectsClient
+type DomainsClient = original.DomainsClient
+type GroupsClient = original.GroupsClient
 type UserType = original.UserType
 
 const (
-	Guest	UserType	= original.Guest
-	Member	UserType	= original.Member
+	Guest  UserType = original.Guest
+	Member UserType = original.Member
 )
 
 type AADObject = original.AADObject
@@ -80,38 +81,7 @@ type UserGetMemberGroupsParameters = original.UserGetMemberGroupsParameters
 type UserGetMemberGroupsResult = original.UserGetMemberGroupsResult
 type UserListResult = original.UserListResult
 type UserUpdateParameters = original.UserUpdateParameters
-type UsersClient = original.UsersClient
 
-func NewUsersClient(tenantID string) UsersClient {
-	return original.NewUsersClient(tenantID)
-}
-func NewUsersClientWithBaseURI(baseURI string, tenantID string) UsersClient {
-	return original.NewUsersClientWithBaseURI(baseURI, tenantID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewApplicationsClient(tenantID string) ApplicationsClient {
-	return original.NewApplicationsClient(tenantID)
-}
-func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) ApplicationsClient {
-	return original.NewApplicationsClientWithBaseURI(baseURI, tenantID)
-}
-func New(tenantID string) ManagementClient {
-	return original.New(tenantID)
-}
-func NewWithBaseURI(baseURI string, tenantID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, tenantID)
-}
-func NewDomainsClient(tenantID string) DomainsClient {
-	return original.NewDomainsClient(tenantID)
-}
-func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient {
-	return original.NewDomainsClientWithBaseURI(baseURI, tenantID)
-}
 func NewGroupsClient(tenantID string) GroupsClient {
 	return original.NewGroupsClient(tenantID)
 }
@@ -124,9 +94,39 @@ func NewObjectsClient(tenantID string) ObjectsClient {
 func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient {
 	return original.NewObjectsClientWithBaseURI(baseURI, tenantID)
 }
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewDomainsClient(tenantID string) DomainsClient {
+	return original.NewDomainsClient(tenantID)
+}
+func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient {
+	return original.NewDomainsClientWithBaseURI(baseURI, tenantID)
+}
+func New(tenantID string) ManagementClient {
+	return original.New(tenantID)
+}
+func NewWithBaseURI(baseURI string, tenantID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, tenantID)
+}
 func NewServicePrincipalsClient(tenantID string) ServicePrincipalsClient {
 	return original.NewServicePrincipalsClient(tenantID)
 }
 func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) ServicePrincipalsClient {
 	return original.NewServicePrincipalsClientWithBaseURI(baseURI, tenantID)
+}
+func NewUsersClient(tenantID string) UsersClient {
+	return original.NewUsersClient(tenantID)
+}
+func NewUsersClientWithBaseURI(baseURI string, tenantID string) UsersClient {
+	return original.NewUsersClientWithBaseURI(baseURI, tenantID)
+}
+func NewApplicationsClient(tenantID string) ApplicationsClient {
+	return original.NewApplicationsClient(tenantID)
+}
+func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) ApplicationsClient {
+	return original.NewApplicationsClientWithBaseURI(baseURI, tenantID)
 }

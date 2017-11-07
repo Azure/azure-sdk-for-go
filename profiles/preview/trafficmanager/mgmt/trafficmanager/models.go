@@ -22,6 +22,8 @@ package trafficmanager
 
 import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2017-09-01-preview/trafficmanager"
 
+type UserMetricsKeysClient = original.UserMetricsKeysClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -33,53 +35,53 @@ type HeatMapClient = original.HeatMapClient
 type EndpointMonitorStatus = original.EndpointMonitorStatus
 
 const (
-	CheckingEndpoint	EndpointMonitorStatus	= original.CheckingEndpoint
-	Degraded		EndpointMonitorStatus	= original.Degraded
-	Disabled		EndpointMonitorStatus	= original.Disabled
-	Inactive		EndpointMonitorStatus	= original.Inactive
-	Online			EndpointMonitorStatus	= original.Online
-	Stopped			EndpointMonitorStatus	= original.Stopped
+	CheckingEndpoint EndpointMonitorStatus = original.CheckingEndpoint
+	Degraded         EndpointMonitorStatus = original.Degraded
+	Disabled         EndpointMonitorStatus = original.Disabled
+	Inactive         EndpointMonitorStatus = original.Inactive
+	Online           EndpointMonitorStatus = original.Online
+	Stopped          EndpointMonitorStatus = original.Stopped
 )
 
 type EndpointStatus = original.EndpointStatus
 
 const (
-	EndpointStatusDisabled	EndpointStatus	= original.EndpointStatusDisabled
-	EndpointStatusEnabled	EndpointStatus	= original.EndpointStatusEnabled
+	EndpointStatusDisabled EndpointStatus = original.EndpointStatusDisabled
+	EndpointStatusEnabled  EndpointStatus = original.EndpointStatusEnabled
 )
 
 type MonitorProtocol = original.MonitorProtocol
 
 const (
-	HTTP	MonitorProtocol	= original.HTTP
-	HTTPS	MonitorProtocol	= original.HTTPS
-	TCP	MonitorProtocol	= original.TCP
+	HTTP  MonitorProtocol = original.HTTP
+	HTTPS MonitorProtocol = original.HTTPS
+	TCP   MonitorProtocol = original.TCP
 )
 
 type ProfileMonitorStatus = original.ProfileMonitorStatus
 
 const (
-	ProfileMonitorStatusCheckingEndpoints	ProfileMonitorStatus	= original.ProfileMonitorStatusCheckingEndpoints
-	ProfileMonitorStatusDegraded		ProfileMonitorStatus	= original.ProfileMonitorStatusDegraded
-	ProfileMonitorStatusDisabled		ProfileMonitorStatus	= original.ProfileMonitorStatusDisabled
-	ProfileMonitorStatusInactive		ProfileMonitorStatus	= original.ProfileMonitorStatusInactive
-	ProfileMonitorStatusOnline		ProfileMonitorStatus	= original.ProfileMonitorStatusOnline
+	ProfileMonitorStatusCheckingEndpoints ProfileMonitorStatus = original.ProfileMonitorStatusCheckingEndpoints
+	ProfileMonitorStatusDegraded          ProfileMonitorStatus = original.ProfileMonitorStatusDegraded
+	ProfileMonitorStatusDisabled          ProfileMonitorStatus = original.ProfileMonitorStatusDisabled
+	ProfileMonitorStatusInactive          ProfileMonitorStatus = original.ProfileMonitorStatusInactive
+	ProfileMonitorStatusOnline            ProfileMonitorStatus = original.ProfileMonitorStatusOnline
 )
 
 type ProfileStatus = original.ProfileStatus
 
 const (
-	ProfileStatusDisabled	ProfileStatus	= original.ProfileStatusDisabled
-	ProfileStatusEnabled	ProfileStatus	= original.ProfileStatusEnabled
+	ProfileStatusDisabled ProfileStatus = original.ProfileStatusDisabled
+	ProfileStatusEnabled  ProfileStatus = original.ProfileStatusEnabled
 )
 
 type TrafficRoutingMethod = original.TrafficRoutingMethod
 
 const (
-	Geographic	TrafficRoutingMethod	= original.Geographic
-	Performance	TrafficRoutingMethod	= original.Performance
-	Priority	TrafficRoutingMethod	= original.Priority
-	Weighted	TrafficRoutingMethod	= original.Weighted
+	Geographic  TrafficRoutingMethod = original.Geographic
+	Performance TrafficRoutingMethod = original.Performance
+	Priority    TrafficRoutingMethod = original.Priority
+	Weighted    TrafficRoutingMethod = original.Weighted
 )
 
 type CheckTrafficManagerRelativeDNSNameAvailabilityParameters = original.CheckTrafficManagerRelativeDNSNameAvailabilityParameters
@@ -107,14 +109,7 @@ type TrackedResource = original.TrackedResource
 type TrafficFlow = original.TrafficFlow
 type UserMetricsKeyModel = original.UserMetricsKeyModel
 type ProfilesClient = original.ProfilesClient
-type UserMetricsKeysClient = original.UserMetricsKeysClient
 
-func NewHeatMapClient(subscriptionID string) HeatMapClient {
-	return original.NewHeatMapClient(subscriptionID)
-}
-func NewHeatMapClientWithBaseURI(baseURI string, subscriptionID string) HeatMapClient {
-	return original.NewHeatMapClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewProfilesClient(subscriptionID string) ProfilesClient {
 	return original.NewProfilesClient(subscriptionID)
 }
@@ -150,4 +145,10 @@ func NewGeographicHierarchiesClient(subscriptionID string) GeographicHierarchies
 }
 func NewGeographicHierarchiesClientWithBaseURI(baseURI string, subscriptionID string) GeographicHierarchiesClient {
 	return original.NewGeographicHierarchiesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewHeatMapClient(subscriptionID string) HeatMapClient {
+	return original.NewHeatMapClient(subscriptionID)
+}
+func NewHeatMapClientWithBaseURI(baseURI string, subscriptionID string) HeatMapClient {
+	return original.NewHeatMapClientWithBaseURI(baseURI, subscriptionID)
 }

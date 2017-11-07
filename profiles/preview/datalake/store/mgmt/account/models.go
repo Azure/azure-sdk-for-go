@@ -36,96 +36,96 @@ type LocationsClient = original.LocationsClient
 type DataLakeStoreAccountState = original.DataLakeStoreAccountState
 
 const (
-	Active		DataLakeStoreAccountState	= original.Active
-	Suspended	DataLakeStoreAccountState	= original.Suspended
+	Active    DataLakeStoreAccountState = original.Active
+	Suspended DataLakeStoreAccountState = original.Suspended
 )
 
 type DataLakeStoreAccountStatus = original.DataLakeStoreAccountStatus
 
 const (
-	Canceled	DataLakeStoreAccountStatus	= original.Canceled
-	Creating	DataLakeStoreAccountStatus	= original.Creating
-	Deleted		DataLakeStoreAccountStatus	= original.Deleted
-	Deleting	DataLakeStoreAccountStatus	= original.Deleting
-	Failed		DataLakeStoreAccountStatus	= original.Failed
-	Patching	DataLakeStoreAccountStatus	= original.Patching
-	Resuming	DataLakeStoreAccountStatus	= original.Resuming
-	Running		DataLakeStoreAccountStatus	= original.Running
-	Succeeded	DataLakeStoreAccountStatus	= original.Succeeded
-	Suspending	DataLakeStoreAccountStatus	= original.Suspending
-	Undeleting	DataLakeStoreAccountStatus	= original.Undeleting
+	Canceled   DataLakeStoreAccountStatus = original.Canceled
+	Creating   DataLakeStoreAccountStatus = original.Creating
+	Deleted    DataLakeStoreAccountStatus = original.Deleted
+	Deleting   DataLakeStoreAccountStatus = original.Deleting
+	Failed     DataLakeStoreAccountStatus = original.Failed
+	Patching   DataLakeStoreAccountStatus = original.Patching
+	Resuming   DataLakeStoreAccountStatus = original.Resuming
+	Running    DataLakeStoreAccountStatus = original.Running
+	Succeeded  DataLakeStoreAccountStatus = original.Succeeded
+	Suspending DataLakeStoreAccountStatus = original.Suspending
+	Undeleting DataLakeStoreAccountStatus = original.Undeleting
 )
 
 type EncryptionConfigType = original.EncryptionConfigType
 
 const (
-	ServiceManaged	EncryptionConfigType	= original.ServiceManaged
-	UserManaged	EncryptionConfigType	= original.UserManaged
+	ServiceManaged EncryptionConfigType = original.ServiceManaged
+	UserManaged    EncryptionConfigType = original.UserManaged
 )
 
 type EncryptionProvisioningState = original.EncryptionProvisioningState
 
 const (
-	EncryptionProvisioningStateCreating	EncryptionProvisioningState	= original.EncryptionProvisioningStateCreating
-	EncryptionProvisioningStateSucceeded	EncryptionProvisioningState	= original.EncryptionProvisioningStateSucceeded
+	EncryptionProvisioningStateCreating  EncryptionProvisioningState = original.EncryptionProvisioningStateCreating
+	EncryptionProvisioningStateSucceeded EncryptionProvisioningState = original.EncryptionProvisioningStateSucceeded
 )
 
 type EncryptionState = original.EncryptionState
 
 const (
-	Disabled	EncryptionState	= original.Disabled
-	Enabled		EncryptionState	= original.Enabled
+	Disabled EncryptionState = original.Disabled
+	Enabled  EncryptionState = original.Enabled
 )
 
 type FirewallAllowAzureIpsState = original.FirewallAllowAzureIpsState
 
 const (
-	FirewallAllowAzureIpsStateDisabled	FirewallAllowAzureIpsState	= original.FirewallAllowAzureIpsStateDisabled
-	FirewallAllowAzureIpsStateEnabled	FirewallAllowAzureIpsState	= original.FirewallAllowAzureIpsStateEnabled
+	FirewallAllowAzureIpsStateDisabled FirewallAllowAzureIpsState = original.FirewallAllowAzureIpsStateDisabled
+	FirewallAllowAzureIpsStateEnabled  FirewallAllowAzureIpsState = original.FirewallAllowAzureIpsStateEnabled
 )
 
 type FirewallState = original.FirewallState
 
 const (
-	FirewallStateDisabled	FirewallState	= original.FirewallStateDisabled
-	FirewallStateEnabled	FirewallState	= original.FirewallStateEnabled
+	FirewallStateDisabled FirewallState = original.FirewallStateDisabled
+	FirewallStateEnabled  FirewallState = original.FirewallStateEnabled
 )
 
 type OperationOrigin = original.OperationOrigin
 
 const (
-	System		OperationOrigin	= original.System
-	User		OperationOrigin	= original.User
-	Usersystem	OperationOrigin	= original.Usersystem
+	System     OperationOrigin = original.System
+	User       OperationOrigin = original.User
+	Usersystem OperationOrigin = original.Usersystem
 )
 
 type SubscriptionState = original.SubscriptionState
 
 const (
-	SubscriptionStateDeleted	SubscriptionState	= original.SubscriptionStateDeleted
-	SubscriptionStateRegistered	SubscriptionState	= original.SubscriptionStateRegistered
-	SubscriptionStateSuspended	SubscriptionState	= original.SubscriptionStateSuspended
-	SubscriptionStateUnregistered	SubscriptionState	= original.SubscriptionStateUnregistered
-	SubscriptionStateWarned		SubscriptionState	= original.SubscriptionStateWarned
+	SubscriptionStateDeleted      SubscriptionState = original.SubscriptionStateDeleted
+	SubscriptionStateRegistered   SubscriptionState = original.SubscriptionStateRegistered
+	SubscriptionStateSuspended    SubscriptionState = original.SubscriptionStateSuspended
+	SubscriptionStateUnregistered SubscriptionState = original.SubscriptionStateUnregistered
+	SubscriptionStateWarned       SubscriptionState = original.SubscriptionStateWarned
 )
 
 type TierType = original.TierType
 
 const (
-	Commitment100TB	TierType	= original.Commitment100TB
-	Commitment10TB	TierType	= original.Commitment10TB
-	Commitment1PB	TierType	= original.Commitment1PB
-	Commitment1TB	TierType	= original.Commitment1TB
-	Commitment500TB	TierType	= original.Commitment500TB
-	Commitment5PB	TierType	= original.Commitment5PB
-	Consumption	TierType	= original.Consumption
+	Commitment100TB TierType = original.Commitment100TB
+	Commitment10TB  TierType = original.Commitment10TB
+	Commitment1PB   TierType = original.Commitment1PB
+	Commitment1TB   TierType = original.Commitment1TB
+	Commitment500TB TierType = original.Commitment500TB
+	Commitment5PB   TierType = original.Commitment5PB
+	Consumption     TierType = original.Consumption
 )
 
 type TrustedIDProviderState = original.TrustedIDProviderState
 
 const (
-	TrustedIDProviderStateDisabled	TrustedIDProviderState	= original.TrustedIDProviderStateDisabled
-	TrustedIDProviderStateEnabled	TrustedIDProviderState	= original.TrustedIDProviderStateEnabled
+	TrustedIDProviderStateDisabled TrustedIDProviderState = original.TrustedIDProviderStateDisabled
+	TrustedIDProviderStateEnabled  TrustedIDProviderState = original.TrustedIDProviderStateEnabled
 )
 
 type CapabilityInformation = original.CapabilityInformation
@@ -160,24 +160,6 @@ type UpdateKeyVaultMetaInfo = original.UpdateKeyVaultMetaInfo
 type UpdateTrustedIDProviderParameters = original.UpdateTrustedIDProviderParameters
 type UpdateTrustedIDProviderProperties = original.UpdateTrustedIDProviderProperties
 
-func NewTrustedIDProvidersClient(subscriptionID string) TrustedIDProvidersClient {
-	return original.NewTrustedIDProvidersClient(subscriptionID)
-}
-func NewTrustedIDProvidersClientWithBaseURI(baseURI string, subscriptionID string) TrustedIDProvidersClient {
-	return original.NewTrustedIDProvidersClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func New(subscriptionID string) ManagementClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
 	return original.NewFirewallRulesClient(subscriptionID)
 }
@@ -201,4 +183,22 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTrustedIDProvidersClient(subscriptionID string) TrustedIDProvidersClient {
+	return original.NewTrustedIDProvidersClient(subscriptionID)
+}
+func NewTrustedIDProvidersClientWithBaseURI(baseURI string, subscriptionID string) TrustedIDProvidersClient {
+	return original.NewTrustedIDProvidersClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func New(subscriptionID string) ManagementClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

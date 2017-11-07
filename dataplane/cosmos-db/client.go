@@ -24,12 +24,12 @@ import (
 	cosmosdb "github.com/Azure/azure-sdk-for-go/arm/cosmos-db"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/adal"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"gopkg.in/mgo.v2"
 )
 
 const (
 	cosmosDbConnectionPort = 10255
-	managementResource     = "https://management.azure.com/"
 )
 
 // NewMongoDBClientWithConnectionString returns a MongoDb session to communicate with CosmosDB using a connection string.
@@ -74,8 +74,6 @@ func NewMongoDBClientWithSPToken(spToken *adal.ServicePrincipalToken, subscripti
 
 	connectionStrings := *result.ConnectionStrings
 
-	fmt.Println(fmt.Sprintf("this isthe conn string: %s", *(connectionStrings[0].ConnectionString)))
-
 	for _, connectionString := range connectionStrings {
 		session, err := NewMongoDBClientWithConnectionString(*connectionString.ConnectionString)
 
@@ -88,12 +86,10 @@ func NewMongoDBClientWithSPToken(spToken *adal.ServicePrincipalToken, subscripti
 }
 
 // NewMongoDBClientWithMSI returns a MongoDB session to communicate with CosmosDB using MSI.
-func NewMongoDBClientWithMSI(subscriptionID, resourceGroup, account string) (*mgo.Session, error) {
+func NewMongoDBClientWithMSI(subscriptionID, resourceGroup, account string, environment azure.Environment) (*mgo.Session, error) {
 
 	msiEndpoint, err := adal.GetMSIVMEndpoint()
-	fmt.Println(msiEndpoint)
-
-	spToken, err := adal.NewServicePrincipalTokenFromMSI(msiEndpoint, managementResource)
+	spToken, err := adal.NewServicePrincipalTokenFromMSI(msiEndpoint, environment.ResourceManagerEndpoint)
 
 	if err != nil {
 		return nil, err

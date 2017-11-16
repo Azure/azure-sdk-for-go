@@ -1,5 +1,5 @@
-// Package cosmosdb provides clients for Microsoft Azure CosmosDb Services.
-package cosmosdb
+// Package mongodb provides Mongo DB dataplane clients for Microsoft Azure CosmosDb Services.
+package mongodb
 
 // Copyright 2017 Microsoft Corporation
 //
@@ -21,10 +21,10 @@ import (
 	"net"
 	"strings"
 
-	cosmosdb "github.com/Azure/azure-sdk-for-go/arm/cosmos-db"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2015-04-08/documentdb"
 	"gopkg.in/mgo.v2"
 )
 
@@ -63,7 +63,7 @@ func NewMongoDBClientWithSPToken(spToken *adal.ServicePrincipalToken, subscripti
 
 	authorizer := autorest.NewBearerAuthorizer(spToken)
 
-	cosmosDbClient := cosmosdb.NewDatabaseAccountsClient(subscriptionID)
+	cosmosDbClient := documentdb.NewDatabaseAccountsClient(subscriptionID)
 	cosmosDbClient.Authorizer = authorizer
 
 	result, err := cosmosDbClient.ListConnectionStrings(resourceGroup, account)

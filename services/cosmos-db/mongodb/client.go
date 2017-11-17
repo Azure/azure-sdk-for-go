@@ -21,10 +21,10 @@ import (
 	"net"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2015-04-08/documentdb"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2015-04-08/documentdb"
 	"gopkg.in/mgo.v2"
 )
 
@@ -65,6 +65,7 @@ func NewMongoDBClientWithSPToken(spToken *adal.ServicePrincipalToken, subscripti
 
 	cosmosDbClient := documentdb.NewDatabaseAccountsClient(subscriptionID)
 	cosmosDbClient.Authorizer = authorizer
+	cosmosDbClient.AddToUserAgent("dataplane mongodb")
 
 	result, err := cosmosDbClient.ListConnectionStrings(resourceGroup, account)
 

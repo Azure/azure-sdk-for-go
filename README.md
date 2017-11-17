@@ -58,11 +58,51 @@ running Go 1.9 or higher.
 
 - [Getting Started with Azure Blob Service in Go](https://github.com/Azure-Samples/storage-blob-go-getting-started)
 
-# Generating the SDK
+# Generate code
 
-## Generate a SDK
+## Generate the SDK
 
 1. [Install AutoRest](https://github.com/Azure/autorest#installing-autorest).
+
+### The easy way
+
+This repo contains a tool to generate the SDK, which depends on the golang tags from the readme files in the Azure REST API specs repo. The tool assumes you have an [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) clone. This will generate a single service, including all its API versions.
+
+1. `tools/generator`
+
+1. `go install`
+
+1. Add `GOPATH/bin` to your `PATH`, in case it was not already there.
+
+1. Call the generator tool like this...
+
+``` cmd
+generator –r –v –l=logs/output/folder –version=version path/to/your/swagger/repo/clone/specification/service
+```
+
+ For example
+
+``` cmd
+generator –r –v –l=temp –version=v11.2.0-beta C:/azure-rest-api-specs/specification/network
+```
+
+### Generate the complete SDK
+
+All services, all API versions.
+
+1. Call the generator tool like this...
+
+``` cmd
+generator –r –v –l=logs/output/folder –version=version path/to/your/swagger/repo/clone
+```
+
+ For example
+
+``` cmd
+generator –r –v –l=temp –version=v11.2.0-beta C:/azure-rest-api-specs
+```
+
+### Generate using AutoRest directly
 
 1. Call autorest with the following arguments...
 
@@ -93,30 +133,6 @@ autorest https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current/sp
 1. Run `go fmt` on the generated package folder.
 
 1. To make sure the SDK has been generated correctly, also run `golint`, `go build` and `go vet`.
-
-## Generate the complete SDK
-
-All services, all API versions. This repo contains a tool to generate the SDK, which depends on the golang tags from the readme files in the Azure REST API specs repo.
-
-1. Clone the [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) repo.
-
-1. `cd %GOPATH%/src/github.com/Azure/azure-sdk-for-go/tools/generator`
-
-1. `go install`
-
-1. Add `GOPATH/bin` to your `PATH`.
-
-1. Call the generator tool like this...
-
-``` cmd
-generator –r –v –l=logs/output/folder –version=version path/to/your/swagger/repo/clone
-```
-
- For example
-
-``` cmd
-generator –r –v –l=temp –version=v11.2.0-beta C:/azure-rest-api-specs
-```
 
 ## Include a new package in the SDK
 

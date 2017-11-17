@@ -59,11 +59,11 @@ func NewMongoDBClientWithCredentials(username, password, host string) (*mgo.Sess
 }
 
 // NewMongoDBClientWithSPToken returns a  session to communicate with CosmosDB using an auth token.
-func NewMongoDBClientWithSPToken(spToken *adal.ServicePrincipalToken, subscriptionID, resourceGroup, account string) (*mgo.Session, error) {
+func NewMongoDBClientWithSPToken(spToken *adal.ServicePrincipalToken, subscriptionID, resourceGroup, account string, environment azure.Environment) (*mgo.Session, error) {
 
 	authorizer := autorest.NewBearerAuthorizer(spToken)
 
-	cosmosDbClient := documentdb.NewDatabaseAccountsClient(subscriptionID)
+	cosmosDbClient := documentdb.NewDatabaseAccountsClientWithBaseURI(subscriptionID, environment.ResourceManagerEndpoint)
 	cosmosDbClient.Authorizer = authorizer
 	cosmosDbClient.AddToUserAgent("dataplane mongodb")
 
@@ -96,7 +96,7 @@ func NewMongoDBClientWithMSI(subscriptionID, resourceGroup, account string, envi
 		return nil, err
 	}
 
-	return NewMongoDBClientWithSPToken(spToken, subscriptionID, resourceGroup, account)
+	return NewMongoDBClientWithSPToken(spToken, subscriptionID, resourceGroup, account, environment)
 }
 
 // NewMongoDBClient returns a MongoDB session to communicate with CosmosDB.

@@ -11,3 +11,4 @@ import:
   subpackages:
   - /pkcs12
 - package: gopkg.in/check.v1
+- package: gopkg.in/mgo.v2

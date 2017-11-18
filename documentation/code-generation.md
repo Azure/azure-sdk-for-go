@@ -1,48 +1,10 @@
 # Generate code
 
-## Generate the SDK
+## Generate SDK packages
+
+### Generate an Azure-SDK-for-Go service package
 
 1. [Install AutoRest](https://github.com/Azure/autorest#installing-autorest).
-
-### The easy way
-
-This repo contains a tool to generate the SDK, which depends on the golang tags from the readme files in the Azure REST API specs repo. The tool assumes you have an [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) clone. This will generate a single service, including all its API versions.
-
-1. `tools/generator`
-
-1. `go install`
-
-1. Add `GOPATH/bin` to your `PATH`, in case it was not already there.
-
-1. Call the generator tool like this...
-
-``` cmd
-generator –r –v –l=logs/output/folder –version=version path/to/your/swagger/repo/clone/specification/service
-```
-
- For example
-
-``` cmd
-generator –r –v –l=temp –version=v11.2.0-beta C:/azure-rest-api-specs/specification/network
-```
-
-### Generate the complete SDK
-
-All services, all API versions.
-
-1. Call the generator tool like this...
-
-``` cmd
-generator –r –v –l=logs/output/folder –version=version path/to/your/swagger/repo/clone
-```
-
- For example
-
-``` cmd
-generator –r –v –l=temp –version=v11.2.0-beta C:/azure-rest-api-specs
-```
-
-### Generate using AutoRest directly
 
 1. Call autorest with the following arguments...
 
@@ -64,7 +26,7 @@ autorest C:/azure-rest-api-specs/specification/advisor/resource-manager/readme.m
 autorest path/to/readme/file --go --license-header=MICROSOFT_APACHE_NO_VERSION --namespace=packageName --output-folder=your/gopath/src/github.com/Azure/azure-sdk-for-go/services/serviceName/mgmt/APIversion/packageName --package-version=version --user-agent='Azure-SDK-For-Go/version services' --clear-output-folder --can-clear-output-folder --tag=choose/a/tag/in/the/readme/file
 ```
 
-For example
+For example...
 
 ``` cmd
 autorest https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current/specification/network/resource-manager/readme.md --go --license-header=MICROSOFT_APACHE_NO_VERSION --namespace=network --output-folder=C:/goWorkspace/src/github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-09-01/network --package-version=v11.2.0-beta --clear-output-folder --can-clear-output-folder --tag=package-2017-09
@@ -73,6 +35,48 @@ autorest https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current/sp
 1. Run `go fmt` on the generated package folder.
 
 1. To make sure the SDK has been generated correctly, also run `golint`, `go build` and `go vet`.
+
+### Generate Azure SDK for Go service packages in bulk
+
+All services, all API versions.
+
+1. [Install AutoRest](https://github.com/Azure/autorest#installing-autorest).
+
+This repo contains a tool to generate the SDK, which depends on the golang tags from the readme files in the Azure REST API specs repo. The tool assumes you have an [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) clone.
+
+1. `cd tools/generator`
+
+1. `go install`
+
+1. Add `GOPATH/bin` to your `PATH`, in case it was not already there.
+
+1. Call the generator tool like this...
+
+``` cmd
+generator –r –v –l=logs/output/folder –version=version path/to/your/swagger/repo/clone
+```
+
+For example...
+
+``` cmd
+generator –r –v –l=temp –version=v11.2.0-beta C:/azure-rest-api-specs
+```
+
+The generator tool already runs `go fmt`, `golint`, `go build` and `go vet`; so running them is not necessary.
+
+#### Use the generator tool to generate a single package
+
+1. Just call the generator tool specifying in the service to be generated in the input folder.
+
+``` cmd
+generator –r –v –l=logs/output/folder –version=version path/to/your/swagger/repo/clone/specification/service
+```
+
+For example...
+
+``` cmd
+generator –r –v –l=temp –version=v11.2.0-beta C:/azure-rest-api-specs/specification/network
+```
 
 ## Include a new package in the SDK
 
@@ -86,7 +90,7 @@ autorest https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current/sp
 
 1. Submit a pull request to this repo, and we will review it.
 
-## Generate a profile
+## Generate Azure SDK for Go profiles
 
 Take a look into the [profile generator documentation](tools/profileBuilder)
 

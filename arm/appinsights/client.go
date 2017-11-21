@@ -1,6 +1,8 @@
 // Package appinsights implements the Azure ARM Appinsights service API version 2015-05-01.
 //
 // Composite Swagger for Application Insights Management Client
+//
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package appinsights
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

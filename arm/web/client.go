@@ -1,6 +1,8 @@
 // Package web implements the Azure ARM Web service API version .
 //
 // WebSite Management Client
+//
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package web
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

@@ -2,6 +2,8 @@
 // 2015-04-08.
 //
 // Azure DocumentDB Database Service Resource Provider REST API
+//
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package documentdb
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

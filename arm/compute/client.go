@@ -1,6 +1,8 @@
 // Package compute implements the Azure ARM Compute service API version .
 //
 // Compute Client
+//
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package compute
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

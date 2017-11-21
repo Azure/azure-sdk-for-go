@@ -1,6 +1,8 @@
 // Package advisor implements the Azure ARM Advisor service API version 2017-04-19.
 //
 // REST APIs for Azure Advisor
+//
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package advisor
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

@@ -1,3 +1,4 @@
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package deployment
 
 // Copyright 2017 Microsoft Corporation

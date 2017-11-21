@@ -1,6 +1,6 @@
 // Package trafficmanager implements the Azure ARM Trafficmanager service API version .
 //
-//
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package trafficmanager
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

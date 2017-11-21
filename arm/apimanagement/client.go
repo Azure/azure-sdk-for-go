@@ -2,6 +2,8 @@
 // version .
 //
 // Composite Swagger for ApiManagement Client
+//
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package apimanagement
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

@@ -1,6 +1,8 @@
 // Package network implements the Azure ARM Network service API version .
 //
 // Network Client
+//
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package network
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

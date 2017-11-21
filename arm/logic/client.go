@@ -1,6 +1,8 @@
 // Package logic implements the Azure ARM Logic service API version 2016-06-01.
 //
 // REST API for Azure Logic Apps.
+//
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package logic
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

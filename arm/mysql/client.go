@@ -2,6 +2,8 @@
 //
 // The Microsoft Azure management API provides create, read, update, and delete functionality for Azure MySQL resources
 // including servers, databases, firewall rules, log files and configurations.
+//
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package mysql
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

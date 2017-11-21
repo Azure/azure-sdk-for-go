@@ -1,6 +1,8 @@
 // Package managedapplications implements the Azure ARM Managedapplications service API version 2016-09-01-preview.
 //
 // ARM managed applications (appliances)
+//
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package managedapplications
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

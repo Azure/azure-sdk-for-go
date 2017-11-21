@@ -1,6 +1,8 @@
 // Package operationsmanagement implements the Azure ARM Operationsmanagement service API version 2015-11-01-preview.
 //
 // Operations Management Client
+//
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
 package operationsmanagement
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

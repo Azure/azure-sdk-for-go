@@ -9,20 +9,20 @@
 1. Call autorest with the following arguments...
 
 ``` cmd
-autorest path/to/readme/file --go --go-sdk-folder='your/gopath/src/github.com/Azure/azure-sdk-for-go' --tag=choose/a/tag/in/the/readme/file --package-version='version' --user-agent='Azure-SDK-For-Go/version services'
+autorest path/to/readme/file --go --go-sdk-folder=<your/gopath/src/github.com/Azure/azure-sdk-for-go> --package-version=<version> --user-agent=<Azure-SDK-For-Go/version services> [--tag=choose/a/tag/in/the/readme/file]
 ```
 
 For example...
 
 ``` cmd
-autorest C:/azure-rest-api-specs/specification/advisor/resource-manager/readme.md --go --go-sdk-folder='C:/goWorkspace/src/github.com/Azure/azure-sdk-for-go' --tag=package-2016-07-preview --package-version='v11.2.0-beta' --user-agent='Azure-SDK-For-Go/v11.2.0-beta services'"
+autorest C:/azure-rest-api-specs/specification/advisor/resource-manager/readme.md --go --go-sdk-folder=C:/goWorkspace/src/github.com/Azure/azure-sdk-for-go --tag=package-2016-07-preview --package-version=v11.2.0-beta --user-agent='Azure-SDK-For-Go/v11.2.0-beta services'
 ```
 
 - If you are looking to generate code based on a specific swagger file, you can replace `path/to/readme/file` with `--input-file=path/to/swagger/file`.
 - If the readme file you want to use as input does not have golang tags yet, you can call autorest like this...
 
 ``` cmd
-autorest path/to/readme/file --go --license-header=MICROSOFT_APACHE_NO_VERSION --namespace=packageName --output-folder=your/gopath/src/github.com/Azure/azure-sdk-for-go/services/serviceName/mgmt/APIversion/packageName --package-version=version --user-agent='Azure-SDK-For-Go/version services' --clear-output-folder --can-clear-output-folder --tag=choose/a/tag/in/the/readme/file
+autorest path/to/readme/file --go --license-header=<MICROSOFT_APACHE_NO_VERSION> --namespace=<packageName> --output-folder=<your/gopath/src/github.com/Azure/azure-sdk-for-go/services/serviceName/mgmt/APIversion/packageName> --package-version=<version> --user-agent=<Azure-SDK-For-Go/version services> --clear-output-folder --can-clear-output-folder --tag=<choose/a/tag/in/the/readme/file>
 ```
 
 For example...
@@ -41,7 +41,7 @@ All services, all API versions.
 
 1. [Install AutoRest](https://github.com/Azure/autorest#installing-autorest).
 
-This repo contains a tool to generate the SDK, which depends on the golang tags from the readme files in the Azure REST API specs repo. The tool assumes you have an [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) clone.
+This repo contains a tool to generate the SDK, which depends on the golang tags from the readme files in the Azure REST API specs repo. The tool assumes you have an [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) clone, and [golint](https://github.com/golang/lint) is installed.
 
 1. `cd tools/generator`
 
@@ -52,7 +52,7 @@ This repo contains a tool to generate the SDK, which depends on the golang tags 
 1. Call the generator tool like this...
 
 ``` cmd
-generator –r –v –l=logs/output/folder –version=version path/to/your/swagger/repo/clone
+generator –r [–v] [–l=logs/output/folder] –version=<version> path/to/your/swagger/repo/clone
 ```
 
 For example...
@@ -68,7 +68,7 @@ The generator tool already runs `go fmt`, `golint`, `go build` and `go vet`; so 
 1. Just call the generator tool specifying the service to be generated in the input folder.
 
 ``` cmd
-generator –r –v –l=logs/output/folder –version=version path/to/your/swagger/repo/clone/specification/service
+generator –r [–v] [–l=logs/output/folder] –version=<version> path/to/your/swagger/repo/clone/specification/service
 ```
 
 For example...
@@ -84,6 +84,8 @@ generator –r –v –l=temp –version=v11.2.0-beta C:/azure-rest-api-specs/sp
 1. Once the tags are available in the Azure REST API specs repo, generate the SDK.
 
 1. In the changelog file, document the new generated SDK. Include the [autorest.go extension](https://github.com/Azure/autorest.go) version used, and the Azure REST API specs repo commit from where the SDK was generated.
+
+1. Install [glide](https://github.com/Masterminds/glide/).
 
 1. Run `glide up`.
 

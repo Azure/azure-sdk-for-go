@@ -85,9 +85,9 @@ generator –r –v –l=temp –version=v11.2.0-beta C:/azure-rest-api-specs/sp
 
 1. In the changelog file, document the new generated SDK. Include the [autorest.go extension](https://github.com/Azure/autorest.go) version used, and the Azure REST API specs repo commit from where the SDK was generated.
 
-1. Install [glide](https://github.com/Masterminds/glide/).
+1. Install [dep](https://github.com/golang/dep).
 
-1. Run `glide up`.
+1. Run `dep ensure`.
 
 1. Submit a pull request to this repo, and we will review it.
 

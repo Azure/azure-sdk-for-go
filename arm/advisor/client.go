@@ -2,7 +2,7 @@
 //
 // REST APIs for Azure Advisor
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-04-19/advisor
 package advisor
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

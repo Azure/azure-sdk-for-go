@@ -4,7 +4,7 @@
 // subscription types which were not purchased directly through the Azure web portal are not supported through this
 // preview API.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2017-04-24-preview/consumption
 package consumption
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

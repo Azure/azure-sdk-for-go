@@ -3,7 +3,7 @@
 // The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL
 // resources including servers, databases, firewall rules, log files and configurations.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2017-04-30-preview/postgresql
 package postgresql
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

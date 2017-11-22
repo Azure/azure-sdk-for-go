@@ -2,7 +2,7 @@
 //
 // The Microsoft Azure Storage Import/Export Resource Provider API.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport
 package storageimportexport
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

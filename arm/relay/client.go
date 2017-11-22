@@ -2,7 +2,7 @@
 //
 // Use these API to manage Azure Relay resources through Azure Resource Manager.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay
 package relay
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

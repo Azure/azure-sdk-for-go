@@ -2,7 +2,7 @@
 //
 // Azure EventGrid Management Client
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2017-09-15-preview/eventgrid
 package eventgrid
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

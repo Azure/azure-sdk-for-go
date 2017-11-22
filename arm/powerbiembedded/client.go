@@ -2,7 +2,7 @@
 //
 // Client to manage your Power BI Embedded workspace collections and retrieve workspaces.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/powerbiembedded/mgmt/2016-01-29/powerbiembedded
 package powerbiembedded
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

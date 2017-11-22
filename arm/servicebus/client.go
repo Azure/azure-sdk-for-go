@@ -2,7 +2,7 @@
 //
 // Azure Service Bus client
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus
 package servicebus
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

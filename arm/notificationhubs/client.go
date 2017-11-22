@@ -2,7 +2,7 @@
 //
 // Azure NotificationHub client
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs
 package notificationhubs
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

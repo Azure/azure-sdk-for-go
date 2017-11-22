@@ -2,7 +2,7 @@
 //
 // The Graph RBAC Management Client
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac
 package graphrbac
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

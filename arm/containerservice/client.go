@@ -1,6 +1,6 @@
 // Package containerservice implements the Azure ARM Containerservice service API version 2017-01-31.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-01-31/containerservice
 package containerservice
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

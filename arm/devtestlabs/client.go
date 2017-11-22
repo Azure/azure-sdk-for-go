@@ -2,7 +2,7 @@
 //
 // The DevTest Labs Client.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2016-05-15/dtl
 package devtestlabs
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

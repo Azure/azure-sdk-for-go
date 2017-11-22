@@ -2,7 +2,7 @@
 //
 // Azure Cosmos DB Database Service Resource Provider REST API
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2015-04-08/documentdb
 package cosmosdb
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

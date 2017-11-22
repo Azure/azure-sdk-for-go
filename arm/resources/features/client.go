@@ -5,7 +5,7 @@
 // making them generally available. Users need to explicitly register for AFEC features to get access to such
 // functionality.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-12-01/features
 package features
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

@@ -4,7 +4,7 @@
 // Insights service to manage your resources. The API has entities that capture the relationship between an end user
 // and the Azure Customer Insights service.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/customerinsights/mgmt/2017-04-26/customerinsights
 package customerinsights
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

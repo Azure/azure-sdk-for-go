@@ -2,7 +2,7 @@
 //
 // REST API for Azure Redis Cache Service.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2016-04-01/redis
 package redis
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

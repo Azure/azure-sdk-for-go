@@ -2,7 +2,7 @@
 //
 // Network Client
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-09-01/network
 package network
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

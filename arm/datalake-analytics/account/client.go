@@ -2,7 +2,7 @@
 //
 // Creates an Azure Data Lake Analytics account management client.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/datalake/analytics/mgmt/2016-11-01/account
 package account
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

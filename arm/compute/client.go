@@ -2,7 +2,7 @@
 //
 // Compute Client
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-03-30/compute
 package compute
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

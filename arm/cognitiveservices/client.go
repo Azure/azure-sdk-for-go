@@ -2,7 +2,7 @@
 //
 // Cognitive Services Management Client
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/cognitiveservices/2017-04-18/cognitiveservices
 package cognitiveservices
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

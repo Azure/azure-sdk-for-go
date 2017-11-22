@@ -4,7 +4,7 @@
 // subscriptions and tenants. A tenant is a dedicated instance of Azure Active Directory (Azure AD) for your
 // organization.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-06-01/subscriptions
 package subscriptions
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

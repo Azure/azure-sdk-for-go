@@ -2,7 +2,7 @@
 //
 // Automation Client
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/automation/mgmt/2015-10-31/automation
 package automation
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

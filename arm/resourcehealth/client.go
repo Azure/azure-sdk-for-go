@@ -2,7 +2,7 @@
 //
 // The Resource Health Client.
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2017-07-01/resourcehealth
 package resourcehealth
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

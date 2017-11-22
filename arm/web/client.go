@@ -2,7 +2,7 @@
 //
 // WebSite Management Client
 //
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services
+// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/web/mgmt/2016-09-01/web
 package web
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

@@ -1,3 +1,5 @@
+package deployment
+
 // Copyright 2017 Microsoft Corporation
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +14,11 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-// Package deployment aids in the creation of ARM Templates (i.e. `resources.Deployment`).
-//
-// Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/resources/
-package deployment
-
 import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/Azure/azure-sdk-for-go/arm/resources/resources"
+	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources"
 )
 
 // Build is a helper that creates a resources.Deployment, which can

@@ -1,5 +1,5 @@
 // Package deployment
-// 
+//
 // Deprecated: Please instead use github.com/Azure/azure-sdk-for-go/services/resources/
 package deployment
 

@@ -656,82 +656,145 @@ func (c Client) exec(verb, uri string, headers map[string]string, body io.Reader
 		parsed_params := parsed_url.Query()
 		parsed_params = mergeParams(parsed_params, c.accountSASToken)
 		parsed_url.RawQuery = parsed_params.Encode()
-	} else {
-		headers, err := c.addAuthorizationHeader(verb, uri, headers, auth)
-			if err != nil {
-				return nil, err
-			}
-	}
-	req, err := http.NewRequest(verb, uri, body)
-	if err != nil {
-		return nil, errors.New("azure/storage: error creating request: " + err.Error())
-	}
-	// question - since we are now doing the 'header'
-	// initialization only for non - sas clients where 
-	// will the 'header' below come from ? 
+		// where do we use this parsed_url ?
 
-	// http.NewRequest() will automatically set req.ContentLength for a handful of types
-	// otherwise we will handle here.
-	if req.ContentLength < 1 {
-		if clstr, ok := headers["Content-Length"]; ok {
-			if cl, err := strconv.ParseInt(clstr, 10, 64); err == nil {
-				req.ContentLength = cl
+		req, err := http.NewRequest(verb, parsed_url.String(), body)
+		if err != nil {
+			return nil, errors.New("azure/storage: error creating request: " + err.Error())
+		}
+		// http.NewRequest() will automatically set req.ContentLength for a handful of types
+		// otherwise we will handle here.
+		if req.ContentLength < 1 {
+			if clstr, ok := headers["Content-Length"]; ok {
+				if cl, err := strconv.ParseInt(clstr, 10, 64); err == nil {
+					req.ContentLength = cl
+				}
 			}
 		}
-	}
 
-	for k, v := range headers {
-		req.Header[k] = append(req.Header[k], v) // Must bypass case munging present in `Add` by using map functions directly. See https://github.com/Azure/azure-sdk-for-go/issues/645
-	}
+		for k, v := range headers {
+			req.Header[k] = append(req.Header[k], v) // Must bypass case munging present in `Add` by using map functions directly. See https://github.com/Azure/azure-sdk-for-go/issues/645
+		}
 
-	resp, err := c.Sender.Send(&c, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if resp.StatusCode >= 400 && resp.StatusCode <= 505 {
-		var respBody []byte
-		respBody, err = readAndCloseBody(resp.Body)
+		resp, err := c.Sender.Send(&c, req)
 		if err != nil {
 			return nil, err
 		}
 
-		requestID, date, version := getDebugHeaders(resp.Header)
-		if len(respBody) == 0 {
-			// no error in response body, might happen in HEAD requests
-			err = serviceErrFromStatusCode(resp.StatusCode, resp.Status, requestID, date, version)
-		} else {
-			storageErr := AzureStorageServiceError{
-				StatusCode: resp.StatusCode,
-				RequestID:  requestID,
-				Date:       date,
-				APIVersion: version,
+		if resp.StatusCode >= 400 && resp.StatusCode <= 505 {
+			var respBody []byte
+			respBody, err = readAndCloseBody(resp.Body)
+			if err != nil {
+				return nil, err
 			}
-			// response contains storage service error object, unmarshal
-			if resp.Header.Get("Content-Type") == "application/xml" {
-				errIn := serviceErrFromXML(respBody, &storageErr)
-				if err != nil { // error unmarshaling the error response
-					err = errIn
-				}
+
+			requestID, date, version := getDebugHeaders(resp.Header)
+			if len(respBody) == 0 {
+				// no error in response body, might happen in HEAD requests
+				err = serviceErrFromStatusCode(resp.StatusCode, resp.Status, requestID, date, version)
 			} else {
-				errIn := serviceErrFromJSON(respBody, &storageErr)
-				if err != nil { // error unmarshaling the error response
-					err = errIn
+				storageErr := AzureStorageServiceError{
+					StatusCode: resp.StatusCode,
+					RequestID:  requestID,
+					Date:       date,
+					APIVersion: version,
 				}
+				// response contains storage service error object, unmarshal
+				if resp.Header.Get("Content-Type") == "application/xml" {
+					errIn := serviceErrFromXML(respBody, &storageErr)
+					if err != nil { // error unmarshaling the error response
+						err = errIn
+					}
+				} else {
+					errIn := serviceErrFromJSON(respBody, &storageErr)
+					if err != nil { // error unmarshaling the error response
+						err = errIn
+					}
+				}
+				err = storageErr
 			}
-			err = storageErr
+			return &storageResponse{
+				statusCode: resp.StatusCode,
+				headers:    resp.Header,
+				body:       ioutil.NopCloser(bytes.NewReader(respBody)), /* restore the body */
+			}, err
 		}
 		return &storageResponse{
 			statusCode: resp.StatusCode,
 			headers:    resp.Header,
-			body:       ioutil.NopCloser(bytes.NewReader(respBody)), /* restore the body */
-		}, err
-	}
+			body:       resp.Body}, nil		
+	} else {
+		headers, err := c.addAuthorizationHeader(verb, uri, headers, auth)
+		if err != nil {
+			return nil, err
+		}
+		req, err := http.NewRequest(verb, uri, body)
+		if err != nil {
+			return nil, errors.New("azure/storage: error creating request: " + err.Error())
+		}
+		// http.NewRequest() will automatically set req.ContentLength for a handful of types
+		// otherwise we will handle here.
+		if req.ContentLength < 1 {
+			if clstr, ok := headers["Content-Length"]; ok {
+				if cl, err := strconv.ParseInt(clstr, 10, 64); err == nil {
+					req.ContentLength = cl
+				}
+			}
+		}
 
-	return &storageResponse{
-		statusCode: resp.StatusCode,
-		headers:    resp.Header,
-		body:       resp.Body}, nil
+		for k, v := range headers {
+			req.Header[k] = append(req.Header[k], v) // Must bypass case munging present in `Add` by using map functions directly. See https://github.com/Azure/azure-sdk-for-go/issues/645
+		}
+
+		resp, err := c.Sender.Send(&c, req)
+		if err != nil {
+			return nil, err
+		}
+
+		if resp.StatusCode >= 400 && resp.StatusCode <= 505 {
+			var respBody []byte
+			respBody, err = readAndCloseBody(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+
+			requestID, date, version := getDebugHeaders(resp.Header)
+			if len(respBody) == 0 {
+				// no error in response body, might happen in HEAD requests
+				err = serviceErrFromStatusCode(resp.StatusCode, resp.Status, requestID, date, version)
+			} else {
+				storageErr := AzureStorageServiceError{
+					StatusCode: resp.StatusCode,
+					RequestID:  requestID,
+					Date:       date,
+					APIVersion: version,
+				}
+				// response contains storage service error object, unmarshal
+				if resp.Header.Get("Content-Type") == "application/xml" {
+					errIn := serviceErrFromXML(respBody, &storageErr)
+					if err != nil { // error unmarshaling the error response
+						err = errIn
+					}
+				} else {
+					errIn := serviceErrFromJSON(respBody, &storageErr)
+					if err != nil { // error unmarshaling the error response
+						err = errIn
+					}
+				}
+				err = storageErr
+			}
+			return &storageResponse{
+				statusCode: resp.StatusCode,
+				headers:    resp.Header,
+				body:       ioutil.NopCloser(bytes.NewReader(respBody)), /* restore the body */
+			}, err
+		}
+
+		return &storageResponse{
+			statusCode: resp.StatusCode,
+			headers:    resp.Header,
+			body:       resp.Body}, nil		
+	}	
 }
 
 func (c Client) execInternalJSONCommon(verb, url string, headers map[string]string, body io.Reader, auth authentication) (*odataResponse, *http.Request, *http.Response, error) {

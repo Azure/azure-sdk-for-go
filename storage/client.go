@@ -648,15 +648,16 @@ func (c Client) getStandardHeaders() map[string]string {
 }
 
 func (c Client) exec(verb, uri string, headers map[string]string, body io.Reader, auth authentication) (*storageResponse, error) {
-	parsed_url, headers, err := nil
 	if (c.isAccountSASClient()) {
-		parsed_url = url.Parse(uri)
-		parsed_params = parsed_url.Query()
-		// maynot have a reference to container 
-		parsed_params = mergeParams(parsed_params, get_SAS_uri_from_containter_or_elsewhere)
-		uri.RawQuery = parsed_params.Encode()
+		parsed_url, err := url.Parse(uri)
+		if err != nil {
+				return nil, err
+		}
+		parsed_params := parsed_url.Query()
+		parsed_params = mergeParams(parsed_params, c.accountSASToken)
+		parsed_url.RawQuery = parsed_params.Encode()
 	} else {
-		headers, err = c.addAuthorizationHeader(verb, uri, headers, auth)
+		headers, err := c.addAuthorizationHeader(verb, uri, headers, auth)
 			if err != nil {
 				return nil, err
 			}

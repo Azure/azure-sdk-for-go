@@ -657,7 +657,6 @@ func (c Client) exec(verb, uri string, headers map[string]string, body io.Reader
 		parsed_params = mergeParams(parsed_params, c.accountSASToken)
 		parsed_url.RawQuery = parsed_params.Encode()
 		fmt.Printf("Parsed url: %s", parsed_url.String())
-		return nil, errors.New(parsed_url.String())
 		req, err := http.NewRequest(verb, parsed_url.String(), body)
 		if err != nil {
 			return nil, errors.New("azure/storage: error creating request: " + err.Error())

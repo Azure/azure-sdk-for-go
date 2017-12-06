@@ -178,7 +178,6 @@ func (b *Blob) GetPageRanges(options *GetPageRangesOptions) (GetPageRangesRespon
 //
 // See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Put-Blob
 func (b *Blob) PutPageBlob(options *PutBlobOptions) error {
-	fmt.Println("Hello\n")
 	if b.Properties.ContentLength%512 != 0 {
 		return errors.New("Content length must be aligned to a 512-byte boundary")
 	}
@@ -196,8 +195,7 @@ func (b *Blob) PutPageBlob(options *PutBlobOptions) error {
 		headers = mergeHeaders(headers, headersFromStruct(*options))
 	}
 	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
-	fmt.Printf("From blob.go; blob URI is: %s ", uri)
-
+	fmt.Printf("Blob URI is: %s ", uri)
 	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, nil, b.Container.bsc.auth)
 	if err != nil {
 		return err

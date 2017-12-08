@@ -195,7 +195,6 @@ func (b *Blob) PutPageBlob(options *PutBlobOptions) error {
 		headers = mergeHeaders(headers, headersFromStruct(*options))
 	}
 	uri := b.Container.bsc.client.getEndpoint(blobServiceName, b.buildPath(), params)
-	fmt.Printf("Blob URI is: %s ", uri)
 	resp, err := b.Container.bsc.client.exec(http.MethodPut, uri, headers, nil, b.Container.bsc.auth)
 	if err != nil {
 		return err

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v11.3.0-beta`
+
+### ARM
+
+- Added storage API version 2017-10-01.
+
 ## `v11.2.2-beta`
 
 ### Bug Fixes

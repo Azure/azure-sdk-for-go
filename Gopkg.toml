@@ -46,10 +46,6 @@
   version = "1.1.0"
 
 [[constraint]]
-  name = "github.com/satori/uuid"
-  version = "1.1.0"
-
-[[constraint]]
   branch = "master"
   name = "github.com/shopspring/decimal"
 

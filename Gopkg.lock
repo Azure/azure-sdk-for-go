@@ -98,12 +98,6 @@
   version = "v1.1.0"
 
 [[projects]]
-  name = "github.com/satori/uuid"
-  packages = ["."]
-  revision = "879c5887cd475cd7864858769793b2ceb0d44feb"
-  version = "v1.1.0"
-
-[[projects]]
   branch = "master"
   name = "github.com/shopspring/decimal"
   packages = ["."]
@@ -148,6 +142,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6c4027893b9b8add1a99986265a11dc54f498195ddd767a950bd1949630a1210"
+  inputs-digest = "4a6be56c3e036d5374ae49828a00069623e9308c98157caf3e6788b1162cf88b"
   solver-name = "gps-cdcl"
   solver-version = 1

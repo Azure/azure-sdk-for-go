@@ -248,7 +248,7 @@ func (e *Entity) MarshalJSON() ([]byte, error) {
 		switch t := v.(type) {
 		case []byte:
 			completeMap[typeKey] = OdataBinary
-			completeMap[k] = base64.StdEncoding.EncodeToString(t)
+			completeMap[k] = t
 		case time.Time:
 			completeMap[typeKey] = OdataDateTime
 			completeMap[k] = t.Format(time.RFC3339Nano)

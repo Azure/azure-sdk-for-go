@@ -58,9 +58,5 @@
   name = "gopkg.in/check.v1"
 
 [[constraint]]
-  name = "gopkg.in/godo.v2"
-  version = "2.0.9"
-
-[[constraint]]
   branch = "v2"
   name = "gopkg.in/mgo.v2"

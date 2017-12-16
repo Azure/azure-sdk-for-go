@@ -43,7 +43,7 @@ import (
 )
 
 const (
-	defaultGenVer = "@microsoft.azure/autorest.go@v2.0.41"
+	defaultGenVer = "@microsoft.azure/autorest.go@v2.1.62"
 )
 
 var (

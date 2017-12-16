@@ -18,6 +18,7 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
@@ -26,7 +27,7 @@ import (
 
 // TestJobsClient is the automation Client
 type TestJobsClient struct {
-	ManagementClient
+	BaseClient
 }
 
 // NewTestJobsClient creates an instance of the TestJobsClient client.
@@ -44,7 +45,7 @@ func NewTestJobsClientWithBaseURI(baseURI string, subscriptionID string) TestJob
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName is
 // the parameters supplied to the create test job operation. parameters is the parameters supplied to the create test
 // job operation.
-func (client TestJobsClient) Create(resourceGroupName string, automationAccountName string, runbookName string, parameters TestJobCreateParameters) (result TestJob, err error) {
+func (client TestJobsClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters TestJobCreateParameters) (result TestJob, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
@@ -53,7 +54,7 @@ func (client TestJobsClient) Create(resourceGroupName string, automationAccountN
 		return result, validation.NewErrorWithValidationError(err, "automation.TestJobsClient", "Create")
 	}
 
-	req, err := client.CreatePreparer(resourceGroupName, automationAccountName, runbookName, parameters)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, automationAccountName, runbookName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.TestJobsClient", "Create", nil, "Failure preparing request")
 		return
@@ -75,7 +76,7 @@ func (client TestJobsClient) Create(resourceGroupName string, automationAccountN
 }
 
 // CreatePreparer prepares the Create request.
-func (client TestJobsClient) CreatePreparer(resourceGroupName string, automationAccountName string, runbookName string, parameters TestJobCreateParameters) (*http.Request, error) {
+func (client TestJobsClient) CreatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, parameters TestJobCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
@@ -95,14 +96,13 @@ func (client TestJobsClient) CreatePreparer(resourceGroupName string, automation
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client TestJobsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -123,14 +123,14 @@ func (client TestJobsClient) CreateResponder(resp *http.Response) (result TestJo
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName is
 // the runbook name.
-func (client TestJobsClient) Get(resourceGroupName string, automationAccountName string, runbookName string) (result TestJob, err error) {
+func (client TestJobsClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (result TestJob, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "automation.TestJobsClient", "Get")
 	}
 
-	req, err := client.GetPreparer(resourceGroupName, automationAccountName, runbookName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, automationAccountName, runbookName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.TestJobsClient", "Get", nil, "Failure preparing request")
 		return
@@ -152,7 +152,7 @@ func (client TestJobsClient) Get(resourceGroupName string, automationAccountName
 }
 
 // GetPreparer prepares the Get request.
-func (client TestJobsClient) GetPreparer(resourceGroupName string, automationAccountName string, runbookName string) (*http.Request, error) {
+func (client TestJobsClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
@@ -170,14 +170,13 @@ func (client TestJobsClient) GetPreparer(resourceGroupName string, automationAcc
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TestJobsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -198,14 +197,14 @@ func (client TestJobsClient) GetResponder(resp *http.Response) (result TestJob, 
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName is
 // the runbook name.
-func (client TestJobsClient) Resume(resourceGroupName string, automationAccountName string, runbookName string) (result autorest.Response, err error) {
+func (client TestJobsClient) Resume(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "automation.TestJobsClient", "Resume")
 	}
 
-	req, err := client.ResumePreparer(resourceGroupName, automationAccountName, runbookName)
+	req, err := client.ResumePreparer(ctx, resourceGroupName, automationAccountName, runbookName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.TestJobsClient", "Resume", nil, "Failure preparing request")
 		return
@@ -227,7 +226,7 @@ func (client TestJobsClient) Resume(resourceGroupName string, automationAccountN
 }
 
 // ResumePreparer prepares the Resume request.
-func (client TestJobsClient) ResumePreparer(resourceGroupName string, automationAccountName string, runbookName string) (*http.Request, error) {
+func (client TestJobsClient) ResumePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
@@ -245,14 +244,13 @@ func (client TestJobsClient) ResumePreparer(resourceGroupName string, automation
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/resume", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ResumeSender sends the Resume request. The method will close the
 // http.Response Body if it receives an error.
 func (client TestJobsClient) ResumeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -272,14 +270,14 @@ func (client TestJobsClient) ResumeResponder(resp *http.Response) (result autore
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName is
 // the runbook name.
-func (client TestJobsClient) Stop(resourceGroupName string, automationAccountName string, runbookName string) (result autorest.Response, err error) {
+func (client TestJobsClient) Stop(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "automation.TestJobsClient", "Stop")
 	}
 
-	req, err := client.StopPreparer(resourceGroupName, automationAccountName, runbookName)
+	req, err := client.StopPreparer(ctx, resourceGroupName, automationAccountName, runbookName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.TestJobsClient", "Stop", nil, "Failure preparing request")
 		return
@@ -301,7 +299,7 @@ func (client TestJobsClient) Stop(resourceGroupName string, automationAccountNam
 }
 
 // StopPreparer prepares the Stop request.
-func (client TestJobsClient) StopPreparer(resourceGroupName string, automationAccountName string, runbookName string) (*http.Request, error) {
+func (client TestJobsClient) StopPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
@@ -319,14 +317,13 @@ func (client TestJobsClient) StopPreparer(resourceGroupName string, automationAc
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/stop", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
 func (client TestJobsClient) StopSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -346,14 +343,14 @@ func (client TestJobsClient) StopResponder(resp *http.Response) (result autorest
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName is
 // the runbook name.
-func (client TestJobsClient) Suspend(resourceGroupName string, automationAccountName string, runbookName string) (result autorest.Response, err error) {
+func (client TestJobsClient) Suspend(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "automation.TestJobsClient", "Suspend")
 	}
 
-	req, err := client.SuspendPreparer(resourceGroupName, automationAccountName, runbookName)
+	req, err := client.SuspendPreparer(ctx, resourceGroupName, automationAccountName, runbookName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.TestJobsClient", "Suspend", nil, "Failure preparing request")
 		return
@@ -375,7 +372,7 @@ func (client TestJobsClient) Suspend(resourceGroupName string, automationAccount
 }
 
 // SuspendPreparer prepares the Suspend request.
-func (client TestJobsClient) SuspendPreparer(resourceGroupName string, automationAccountName string, runbookName string) (*http.Request, error) {
+func (client TestJobsClient) SuspendPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
@@ -393,14 +390,13 @@ func (client TestJobsClient) SuspendPreparer(resourceGroupName string, automatio
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/suspend", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // SuspendSender sends the Suspend request. The method will close the
 // http.Response Body if it receives an error.
 func (client TestJobsClient) SuspendSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 

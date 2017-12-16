@@ -16,6 +16,7 @@ package mongodb
 //  limitations under the License.
 
 import (
+	"context"
 	"crypto/tls"
 	"fmt"
 	"net"
@@ -63,11 +64,11 @@ func NewMongoDBClientWithSPToken(spToken *adal.ServicePrincipalToken, subscripti
 
 	authorizer := autorest.NewBearerAuthorizer(spToken)
 
-	cosmosDbClient := documentdb.NewDatabaseAccountsClientWithBaseURI(subscriptionID, environment.ResourceManagerEndpoint)
+	cosmosDbClient := documentdb.NewDatabaseAccountsClientWithBaseURI(subscriptionID, environment.ResourceManagerEndpoint, "", "", "", "", "")
 	cosmosDbClient.Authorizer = authorizer
 	cosmosDbClient.AddToUserAgent("dataplane mongodb")
 
-	result, err := cosmosDbClient.ListConnectionStrings(resourceGroup, account)
+	result, err := cosmosDbClient.ListConnectionStrings(context.Background(), resourceGroup, account)
 
 	if err != nil {
 		return nil, err

@@ -18,6 +18,7 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
@@ -26,7 +27,7 @@ import (
 
 // ActivityClient is the automation Client
 type ActivityClient struct {
-	ManagementClient
+	BaseClient
 }
 
 // NewActivityClient creates an instance of the ActivityClient client.
@@ -43,14 +44,14 @@ func NewActivityClientWithBaseURI(baseURI string, subscriptionID string) Activit
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. moduleName is
 // the name of module. activityName is the name of activity.
-func (client ActivityClient) Get(resourceGroupName string, automationAccountName string, moduleName string, activityName string) (result Activity, err error) {
+func (client ActivityClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, activityName string) (result Activity, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "automation.ActivityClient", "Get")
 	}
 
-	req, err := client.GetPreparer(resourceGroupName, automationAccountName, moduleName, activityName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, automationAccountName, moduleName, activityName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "Get", nil, "Failure preparing request")
 		return
@@ -72,7 +73,7 @@ func (client ActivityClient) Get(resourceGroupName string, automationAccountName
 }
 
 // GetPreparer prepares the Get request.
-func (client ActivityClient) GetPreparer(resourceGroupName string, automationAccountName string, moduleName string, activityName string) (*http.Request, error) {
+func (client ActivityClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, activityName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"activityName":          autorest.Encode("path", activityName),
 		"automationAccountName": autorest.Encode("path", automationAccountName),
@@ -91,14 +92,13 @@ func (client ActivityClient) GetPreparer(resourceGroupName string, automationAcc
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/activities/{activityName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ActivityClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -119,14 +119,15 @@ func (client ActivityClient) GetResponder(resp *http.Response) (result Activity,
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. moduleName is
 // the name of module.
-func (client ActivityClient) ListByModule(resourceGroupName string, automationAccountName string, moduleName string) (result ActivityListResult, err error) {
+func (client ActivityClient) ListByModule(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string) (result ActivityListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "automation.ActivityClient", "ListByModule")
 	}
 
-	req, err := client.ListByModulePreparer(resourceGroupName, automationAccountName, moduleName)
+	result.fn = client.listByModuleNextResults
+	req, err := client.ListByModulePreparer(ctx, resourceGroupName, automationAccountName, moduleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "ListByModule", nil, "Failure preparing request")
 		return
@@ -134,12 +135,12 @@ func (client ActivityClient) ListByModule(resourceGroupName string, automationAc
 
 	resp, err := client.ListByModuleSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.alr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "ListByModule", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByModuleResponder(resp)
+	result.alr, err = client.ListByModuleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "ListByModule", resp, "Failure responding to request")
 	}
@@ -148,7 +149,7 @@ func (client ActivityClient) ListByModule(resourceGroupName string, automationAc
 }
 
 // ListByModulePreparer prepares the ListByModule request.
-func (client ActivityClient) ListByModulePreparer(resourceGroupName string, automationAccountName string, moduleName string) (*http.Request, error) {
+func (client ActivityClient) ListByModulePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"moduleName":            autorest.Encode("path", moduleName),
@@ -166,14 +167,13 @@ func (client ActivityClient) ListByModulePreparer(resourceGroupName string, auto
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/activities", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByModuleSender sends the ListByModule request. The method will close the
 // http.Response Body if it receives an error.
 func (client ActivityClient) ListByModuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -190,71 +190,29 @@ func (client ActivityClient) ListByModuleResponder(resp *http.Response) (result 
 	return
 }
 
-// ListByModuleNextResults retrieves the next set of results, if any.
-func (client ActivityClient) ListByModuleNextResults(lastResults ActivityListResult) (result ActivityListResult, err error) {
-	req, err := lastResults.ActivityListResultPreparer()
+// listByModuleNextResults retrieves the next set of results, if any.
+func (client ActivityClient) listByModuleNextResults(lastResults ActivityListResult) (result ActivityListResult, err error) {
+	req, err := lastResults.activityListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "automation.ActivityClient", "ListByModule", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "automation.ActivityClient", "listByModuleNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-
 	resp, err := client.ListByModuleSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "automation.ActivityClient", "ListByModule", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "automation.ActivityClient", "listByModuleNextResults", resp, "Failure sending next results request")
 	}
-
 	result, err = client.ListByModuleResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "ListByModule", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "listByModuleNextResults", resp, "Failure responding to next results request")
 	}
-
 	return
 }
 
-// ListByModuleComplete gets all elements from the list without paging.
-func (client ActivityClient) ListByModuleComplete(resourceGroupName string, automationAccountName string, moduleName string, cancel <-chan struct{}) (<-chan Activity, <-chan error) {
-	resultChan := make(chan Activity)
-	errChan := make(chan error, 1)
-	go func() {
-		defer func() {
-			close(resultChan)
-			close(errChan)
-		}()
-		list, err := client.ListByModule(resourceGroupName, automationAccountName, moduleName)
-		if err != nil {
-			errChan <- err
-			return
-		}
-		if list.Value != nil {
-			for _, item := range *list.Value {
-				select {
-				case <-cancel:
-					return
-				case resultChan <- item:
-					// Intentionally left blank
-				}
-			}
-		}
-		for list.NextLink != nil {
-			list, err = client.ListByModuleNextResults(list)
-			if err != nil {
-				errChan <- err
-				return
-			}
-			if list.Value != nil {
-				for _, item := range *list.Value {
-					select {
-					case <-cancel:
-						return
-					case resultChan <- item:
-						// Intentionally left blank
-					}
-				}
-			}
-		}
-	}()
-	return resultChan, errChan
+// ListByModuleComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ActivityClient) ListByModuleComplete(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string) (result ActivityListResultIterator, err error) {
+	result.page, err = client.ListByModule(ctx, resourceGroupName, automationAccountName, moduleName)
+	return
 }

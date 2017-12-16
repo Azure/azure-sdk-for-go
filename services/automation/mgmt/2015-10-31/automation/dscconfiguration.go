@@ -18,6 +18,7 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
@@ -26,7 +27,7 @@ import (
 
 // DscConfigurationClient is the automation Client
 type DscConfigurationClient struct {
-	ManagementClient
+	BaseClient
 }
 
 // NewDscConfigurationClient creates an instance of the DscConfigurationClient client.
@@ -44,7 +45,7 @@ func NewDscConfigurationClientWithBaseURI(baseURI string, subscriptionID string)
 // resourceGroupName is the resource group name. automationAccountName is the automation account name.
 // configurationName is the create or update parameters for configuration. parameters is the create or update
 // parameters for configuration.
-func (client DscConfigurationClient) CreateOrUpdate(resourceGroupName string, automationAccountName string, configurationName string, parameters DscConfigurationCreateOrUpdateParameters) (result DscConfiguration, err error) {
+func (client DscConfigurationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters DscConfigurationCreateOrUpdateParameters) (result DscConfiguration, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
@@ -60,7 +61,7 @@ func (client DscConfigurationClient) CreateOrUpdate(resourceGroupName string, au
 		return result, validation.NewErrorWithValidationError(err, "automation.DscConfigurationClient", "CreateOrUpdate")
 	}
 
-	req, err := client.CreateOrUpdatePreparer(resourceGroupName, automationAccountName, configurationName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, automationAccountName, configurationName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -82,7 +83,7 @@ func (client DscConfigurationClient) CreateOrUpdate(resourceGroupName string, au
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DscConfigurationClient) CreateOrUpdatePreparer(resourceGroupName string, automationAccountName string, configurationName string, parameters DscConfigurationCreateOrUpdateParameters) (*http.Request, error) {
+func (client DscConfigurationClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters DscConfigurationCreateOrUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"configurationName":     autorest.Encode("path", configurationName),
@@ -102,14 +103,13 @@ func (client DscConfigurationClient) CreateOrUpdatePreparer(resourceGroupName st
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DscConfigurationClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -130,14 +130,14 @@ func (client DscConfigurationClient) CreateOrUpdateResponder(resp *http.Response
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name.
 // configurationName is the configuration name.
-func (client DscConfigurationClient) Delete(resourceGroupName string, automationAccountName string, configurationName string) (result autorest.Response, err error) {
+func (client DscConfigurationClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "automation.DscConfigurationClient", "Delete")
 	}
 
-	req, err := client.DeletePreparer(resourceGroupName, automationAccountName, configurationName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, automationAccountName, configurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "Delete", nil, "Failure preparing request")
 		return
@@ -159,7 +159,7 @@ func (client DscConfigurationClient) Delete(resourceGroupName string, automation
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DscConfigurationClient) DeletePreparer(resourceGroupName string, automationAccountName string, configurationName string) (*http.Request, error) {
+func (client DscConfigurationClient) DeletePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"configurationName":     autorest.Encode("path", configurationName),
@@ -177,14 +177,13 @@ func (client DscConfigurationClient) DeletePreparer(resourceGroupName string, au
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DscConfigurationClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -204,14 +203,14 @@ func (client DscConfigurationClient) DeleteResponder(resp *http.Response) (resul
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name.
 // configurationName is the configuration name.
-func (client DscConfigurationClient) Get(resourceGroupName string, automationAccountName string, configurationName string) (result DscConfiguration, err error) {
+func (client DscConfigurationClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string) (result DscConfiguration, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "automation.DscConfigurationClient", "Get")
 	}
 
-	req, err := client.GetPreparer(resourceGroupName, automationAccountName, configurationName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, automationAccountName, configurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "Get", nil, "Failure preparing request")
 		return
@@ -233,7 +232,7 @@ func (client DscConfigurationClient) Get(resourceGroupName string, automationAcc
 }
 
 // GetPreparer prepares the Get request.
-func (client DscConfigurationClient) GetPreparer(resourceGroupName string, automationAccountName string, configurationName string) (*http.Request, error) {
+func (client DscConfigurationClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"configurationName":     autorest.Encode("path", configurationName),
@@ -251,14 +250,13 @@ func (client DscConfigurationClient) GetPreparer(resourceGroupName string, autom
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DscConfigurationClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -279,14 +277,14 @@ func (client DscConfigurationClient) GetResponder(resp *http.Response) (result D
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name.
 // configurationName is the configuration name.
-func (client DscConfigurationClient) GetContent(resourceGroupName string, automationAccountName string, configurationName string) (result ReadCloser, err error) {
+func (client DscConfigurationClient) GetContent(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "automation.DscConfigurationClient", "GetContent")
 	}
 
-	req, err := client.GetContentPreparer(resourceGroupName, automationAccountName, configurationName)
+	req, err := client.GetContentPreparer(ctx, resourceGroupName, automationAccountName, configurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "GetContent", nil, "Failure preparing request")
 		return
@@ -308,7 +306,7 @@ func (client DscConfigurationClient) GetContent(resourceGroupName string, automa
 }
 
 // GetContentPreparer prepares the GetContent request.
-func (client DscConfigurationClient) GetContentPreparer(resourceGroupName string, automationAccountName string, configurationName string) (*http.Request, error) {
+func (client DscConfigurationClient) GetContentPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"configurationName":     autorest.Encode("path", configurationName),
@@ -326,14 +324,13 @@ func (client DscConfigurationClient) GetContentPreparer(resourceGroupName string
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}/content", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetContentSender sends the GetContent request. The method will close the
 // http.Response Body if it receives an error.
 func (client DscConfigurationClient) GetContentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -352,14 +349,15 @@ func (client DscConfigurationClient) GetContentResponder(resp *http.Response) (r
 // ListByAutomationAccount retrieve a list of configurations.
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name.
-func (client DscConfigurationClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string) (result DscConfigurationListResult, err error) {
+func (client DscConfigurationClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result DscConfigurationListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "automation.DscConfigurationClient", "ListByAutomationAccount")
 	}
 
-	req, err := client.ListByAutomationAccountPreparer(resourceGroupName, automationAccountName)
+	result.fn = client.listByAutomationAccountNextResults
+	req, err := client.ListByAutomationAccountPreparer(ctx, resourceGroupName, automationAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "ListByAutomationAccount", nil, "Failure preparing request")
 		return
@@ -367,12 +365,12 @@ func (client DscConfigurationClient) ListByAutomationAccount(resourceGroupName s
 
 	resp, err := client.ListByAutomationAccountSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.dclr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "ListByAutomationAccount", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByAutomationAccountResponder(resp)
+	result.dclr, err = client.ListByAutomationAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "ListByAutomationAccount", resp, "Failure responding to request")
 	}
@@ -381,7 +379,7 @@ func (client DscConfigurationClient) ListByAutomationAccount(resourceGroupName s
 }
 
 // ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
-func (client DscConfigurationClient) ListByAutomationAccountPreparer(resourceGroupName string, automationAccountName string) (*http.Request, error) {
+func (client DscConfigurationClient) ListByAutomationAccountPreparer(ctx context.Context, resourceGroupName string, automationAccountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
@@ -398,14 +396,13 @@ func (client DscConfigurationClient) ListByAutomationAccountPreparer(resourceGro
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByAutomationAccountSender sends the ListByAutomationAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client DscConfigurationClient) ListByAutomationAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -422,71 +419,29 @@ func (client DscConfigurationClient) ListByAutomationAccountResponder(resp *http
 	return
 }
 
-// ListByAutomationAccountNextResults retrieves the next set of results, if any.
-func (client DscConfigurationClient) ListByAutomationAccountNextResults(lastResults DscConfigurationListResult) (result DscConfigurationListResult, err error) {
-	req, err := lastResults.DscConfigurationListResultPreparer()
+// listByAutomationAccountNextResults retrieves the next set of results, if any.
+func (client DscConfigurationClient) listByAutomationAccountNextResults(lastResults DscConfigurationListResult) (result DscConfigurationListResult, err error) {
+	req, err := lastResults.dscConfigurationListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "ListByAutomationAccount", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "listByAutomationAccountNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-
 	resp, err := client.ListByAutomationAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "ListByAutomationAccount", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "listByAutomationAccountNextResults", resp, "Failure sending next results request")
 	}
-
 	result, err = client.ListByAutomationAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "ListByAutomationAccount", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "listByAutomationAccountNextResults", resp, "Failure responding to next results request")
 	}
-
 	return
 }
 
-// ListByAutomationAccountComplete gets all elements from the list without paging.
-func (client DscConfigurationClient) ListByAutomationAccountComplete(resourceGroupName string, automationAccountName string, cancel <-chan struct{}) (<-chan DscConfiguration, <-chan error) {
-	resultChan := make(chan DscConfiguration)
-	errChan := make(chan error, 1)
-	go func() {
-		defer func() {
-			close(resultChan)
-			close(errChan)
-		}()
-		list, err := client.ListByAutomationAccount(resourceGroupName, automationAccountName)
-		if err != nil {
-			errChan <- err
-			return
-		}
-		if list.Value != nil {
-			for _, item := range *list.Value {
-				select {
-				case <-cancel:
-					return
-				case resultChan <- item:
-					// Intentionally left blank
-				}
-			}
-		}
-		for list.NextLink != nil {
-			list, err = client.ListByAutomationAccountNextResults(list)
-			if err != nil {
-				errChan <- err
-				return
-			}
-			if list.Value != nil {
-				for _, item := range *list.Value {
-					select {
-					case <-cancel:
-						return
-					case resultChan <- item:
-						// Intentionally left blank
-					}
-				}
-			}
-		}
-	}()
-	return resultChan, errChan
+// ListByAutomationAccountComplete enumerates all values, automatically crossing page boundaries as required.
+func (client DscConfigurationClient) ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string) (result DscConfigurationListResultIterator, err error) {
+	result.page, err = client.ListByAutomationAccount(ctx, resourceGroupName, automationAccountName)
+	return
 }

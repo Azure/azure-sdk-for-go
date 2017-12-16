@@ -18,6 +18,7 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
@@ -26,7 +27,7 @@ import (
 
 // ObjectDataTypesClient is the automation Client
 type ObjectDataTypesClient struct {
-	ManagementClient
+	BaseClient
 }
 
 // NewObjectDataTypesClient creates an instance of the ObjectDataTypesClient client.
@@ -43,14 +44,14 @@ func NewObjectDataTypesClientWithBaseURI(baseURI string, subscriptionID string) 
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. moduleName is
 // the name of module. typeName is the name of type.
-func (client ObjectDataTypesClient) ListFieldsByModuleAndType(resourceGroupName string, automationAccountName string, moduleName string, typeName string) (result TypeFieldListResult, err error) {
+func (client ObjectDataTypesClient) ListFieldsByModuleAndType(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string) (result TypeFieldListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "automation.ObjectDataTypesClient", "ListFieldsByModuleAndType")
 	}
 
-	req, err := client.ListFieldsByModuleAndTypePreparer(resourceGroupName, automationAccountName, moduleName, typeName)
+	req, err := client.ListFieldsByModuleAndTypePreparer(ctx, resourceGroupName, automationAccountName, moduleName, typeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.ObjectDataTypesClient", "ListFieldsByModuleAndType", nil, "Failure preparing request")
 		return
@@ -72,7 +73,7 @@ func (client ObjectDataTypesClient) ListFieldsByModuleAndType(resourceGroupName 
 }
 
 // ListFieldsByModuleAndTypePreparer prepares the ListFieldsByModuleAndType request.
-func (client ObjectDataTypesClient) ListFieldsByModuleAndTypePreparer(resourceGroupName string, automationAccountName string, moduleName string, typeName string) (*http.Request, error) {
+func (client ObjectDataTypesClient) ListFieldsByModuleAndTypePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"moduleName":            autorest.Encode("path", moduleName),
@@ -91,14 +92,13 @@ func (client ObjectDataTypesClient) ListFieldsByModuleAndTypePreparer(resourceGr
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/objectDataTypes/{typeName}/fields", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListFieldsByModuleAndTypeSender sends the ListFieldsByModuleAndType request. The method will close the
 // http.Response Body if it receives an error.
 func (client ObjectDataTypesClient) ListFieldsByModuleAndTypeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -119,14 +119,14 @@ func (client ObjectDataTypesClient) ListFieldsByModuleAndTypeResponder(resp *htt
 //
 // resourceGroupName is the resource group name. automationAccountName is the automation account name. typeName is the
 // name of type.
-func (client ObjectDataTypesClient) ListFieldsByType(resourceGroupName string, automationAccountName string, typeName string) (result TypeFieldListResult, err error) {
+func (client ObjectDataTypesClient) ListFieldsByType(ctx context.Context, resourceGroupName string, automationAccountName string, typeName string) (result TypeFieldListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "automation.ObjectDataTypesClient", "ListFieldsByType")
 	}
 
-	req, err := client.ListFieldsByTypePreparer(resourceGroupName, automationAccountName, typeName)
+	req, err := client.ListFieldsByTypePreparer(ctx, resourceGroupName, automationAccountName, typeName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.ObjectDataTypesClient", "ListFieldsByType", nil, "Failure preparing request")
 		return
@@ -148,7 +148,7 @@ func (client ObjectDataTypesClient) ListFieldsByType(resourceGroupName string, a
 }
 
 // ListFieldsByTypePreparer prepares the ListFieldsByType request.
-func (client ObjectDataTypesClient) ListFieldsByTypePreparer(resourceGroupName string, automationAccountName string, typeName string) (*http.Request, error) {
+func (client ObjectDataTypesClient) ListFieldsByTypePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, typeName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
@@ -166,14 +166,13 @@ func (client ObjectDataTypesClient) ListFieldsByTypePreparer(resourceGroupName s
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/objectDataTypes/{typeName}/fields", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListFieldsByTypeSender sends the ListFieldsByType request. The method will close the
 // http.Response Body if it receives an error.
 func (client ObjectDataTypesClient) ListFieldsByTypeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 

@@ -19,6 +19,7 @@ package containerservice
 
 import (
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
 )
@@ -27,13 +28,13 @@ import (
 type OrchestratorTypes string
 
 const (
-	// Custom specifies the custom state for orchestrator types.
+	// Custom ...
 	Custom OrchestratorTypes = "Custom"
-	// DCOS specifies the dcos state for orchestrator types.
+	// DCOS ...
 	DCOS OrchestratorTypes = "DCOS"
-	// Kubernetes specifies the kubernetes state for orchestrator types.
+	// Kubernetes ...
 	Kubernetes OrchestratorTypes = "Kubernetes"
-	// Swarm specifies the swarm state for orchestrator types.
+	// Swarm ...
 	Swarm OrchestratorTypes = "Swarm"
 )
 
@@ -41,216 +42,402 @@ const (
 type VMSizeTypes string
 
 const (
-	// StandardA0 specifies the standard a0 state for vm size types.
+	// StandardA0 ...
 	StandardA0 VMSizeTypes = "Standard_A0"
-	// StandardA1 specifies the standard a1 state for vm size types.
+	// StandardA1 ...
 	StandardA1 VMSizeTypes = "Standard_A1"
-	// StandardA10 specifies the standard a10 state for vm size types.
+	// StandardA10 ...
 	StandardA10 VMSizeTypes = "Standard_A10"
-	// StandardA11 specifies the standard a11 state for vm size types.
+	// StandardA11 ...
 	StandardA11 VMSizeTypes = "Standard_A11"
-	// StandardA2 specifies the standard a2 state for vm size types.
+	// StandardA2 ...
 	StandardA2 VMSizeTypes = "Standard_A2"
-	// StandardA3 specifies the standard a3 state for vm size types.
+	// StandardA3 ...
 	StandardA3 VMSizeTypes = "Standard_A3"
-	// StandardA4 specifies the standard a4 state for vm size types.
+	// StandardA4 ...
 	StandardA4 VMSizeTypes = "Standard_A4"
-	// StandardA5 specifies the standard a5 state for vm size types.
+	// StandardA5 ...
 	StandardA5 VMSizeTypes = "Standard_A5"
-	// StandardA6 specifies the standard a6 state for vm size types.
+	// StandardA6 ...
 	StandardA6 VMSizeTypes = "Standard_A6"
-	// StandardA7 specifies the standard a7 state for vm size types.
+	// StandardA7 ...
 	StandardA7 VMSizeTypes = "Standard_A7"
-	// StandardA8 specifies the standard a8 state for vm size types.
+	// StandardA8 ...
 	StandardA8 VMSizeTypes = "Standard_A8"
-	// StandardA9 specifies the standard a9 state for vm size types.
+	// StandardA9 ...
 	StandardA9 VMSizeTypes = "Standard_A9"
-	// StandardD1 specifies the standard d1 state for vm size types.
+	// StandardD1 ...
 	StandardD1 VMSizeTypes = "Standard_D1"
-	// StandardD11 specifies the standard d11 state for vm size types.
+	// StandardD11 ...
 	StandardD11 VMSizeTypes = "Standard_D11"
-	// StandardD11V2 specifies the standard d11v2 state for vm size types.
+	// StandardD11V2 ...
 	StandardD11V2 VMSizeTypes = "Standard_D11_v2"
-	// StandardD12 specifies the standard d12 state for vm size types.
+	// StandardD12 ...
 	StandardD12 VMSizeTypes = "Standard_D12"
-	// StandardD12V2 specifies the standard d12v2 state for vm size types.
+	// StandardD12V2 ...
 	StandardD12V2 VMSizeTypes = "Standard_D12_v2"
-	// StandardD13 specifies the standard d13 state for vm size types.
+	// StandardD13 ...
 	StandardD13 VMSizeTypes = "Standard_D13"
-	// StandardD13V2 specifies the standard d13v2 state for vm size types.
+	// StandardD13V2 ...
 	StandardD13V2 VMSizeTypes = "Standard_D13_v2"
-	// StandardD14 specifies the standard d14 state for vm size types.
+	// StandardD14 ...
 	StandardD14 VMSizeTypes = "Standard_D14"
-	// StandardD14V2 specifies the standard d14v2 state for vm size types.
+	// StandardD14V2 ...
 	StandardD14V2 VMSizeTypes = "Standard_D14_v2"
-	// StandardD1V2 specifies the standard d1v2 state for vm size types.
+	// StandardD1V2 ...
 	StandardD1V2 VMSizeTypes = "Standard_D1_v2"
-	// StandardD2 specifies the standard d2 state for vm size types.
+	// StandardD2 ...
 	StandardD2 VMSizeTypes = "Standard_D2"
-	// StandardD2V2 specifies the standard d2v2 state for vm size types.
+	// StandardD2V2 ...
 	StandardD2V2 VMSizeTypes = "Standard_D2_v2"
-	// StandardD3 specifies the standard d3 state for vm size types.
+	// StandardD3 ...
 	StandardD3 VMSizeTypes = "Standard_D3"
-	// StandardD3V2 specifies the standard d3v2 state for vm size types.
+	// StandardD3V2 ...
 	StandardD3V2 VMSizeTypes = "Standard_D3_v2"
-	// StandardD4 specifies the standard d4 state for vm size types.
+	// StandardD4 ...
 	StandardD4 VMSizeTypes = "Standard_D4"
-	// StandardD4V2 specifies the standard d4v2 state for vm size types.
+	// StandardD4V2 ...
 	StandardD4V2 VMSizeTypes = "Standard_D4_v2"
-	// StandardD5V2 specifies the standard d5v2 state for vm size types.
+	// StandardD5V2 ...
 	StandardD5V2 VMSizeTypes = "Standard_D5_v2"
-	// StandardDS1 specifies the standard ds1 state for vm size types.
+	// StandardDS1 ...
 	StandardDS1 VMSizeTypes = "Standard_DS1"
-	// StandardDS11 specifies the standard ds11 state for vm size types.
+	// StandardDS11 ...
 	StandardDS11 VMSizeTypes = "Standard_DS11"
-	// StandardDS12 specifies the standard ds12 state for vm size types.
+	// StandardDS12 ...
 	StandardDS12 VMSizeTypes = "Standard_DS12"
-	// StandardDS13 specifies the standard ds13 state for vm size types.
+	// StandardDS13 ...
 	StandardDS13 VMSizeTypes = "Standard_DS13"
-	// StandardDS14 specifies the standard ds14 state for vm size types.
+	// StandardDS14 ...
 	StandardDS14 VMSizeTypes = "Standard_DS14"
-	// StandardDS2 specifies the standard ds2 state for vm size types.
+	// StandardDS2 ...
 	StandardDS2 VMSizeTypes = "Standard_DS2"
-	// StandardDS3 specifies the standard ds3 state for vm size types.
+	// StandardDS3 ...
 	StandardDS3 VMSizeTypes = "Standard_DS3"
-	// StandardDS4 specifies the standard ds4 state for vm size types.
+	// StandardDS4 ...
 	StandardDS4 VMSizeTypes = "Standard_DS4"
-	// StandardG1 specifies the standard g1 state for vm size types.
+	// StandardG1 ...
 	StandardG1 VMSizeTypes = "Standard_G1"
-	// StandardG2 specifies the standard g2 state for vm size types.
+	// StandardG2 ...
 	StandardG2 VMSizeTypes = "Standard_G2"
-	// StandardG3 specifies the standard g3 state for vm size types.
+	// StandardG3 ...
 	StandardG3 VMSizeTypes = "Standard_G3"
-	// StandardG4 specifies the standard g4 state for vm size types.
+	// StandardG4 ...
 	StandardG4 VMSizeTypes = "Standard_G4"
-	// StandardG5 specifies the standard g5 state for vm size types.
+	// StandardG5 ...
 	StandardG5 VMSizeTypes = "Standard_G5"
-	// StandardGS1 specifies the standard gs1 state for vm size types.
+	// StandardGS1 ...
 	StandardGS1 VMSizeTypes = "Standard_GS1"
-	// StandardGS2 specifies the standard gs2 state for vm size types.
+	// StandardGS2 ...
 	StandardGS2 VMSizeTypes = "Standard_GS2"
-	// StandardGS3 specifies the standard gs3 state for vm size types.
+	// StandardGS3 ...
 	StandardGS3 VMSizeTypes = "Standard_GS3"
-	// StandardGS4 specifies the standard gs4 state for vm size types.
+	// StandardGS4 ...
 	StandardGS4 VMSizeTypes = "Standard_GS4"
-	// StandardGS5 specifies the standard gs5 state for vm size types.
+	// StandardGS5 ...
 	StandardGS5 VMSizeTypes = "Standard_GS5"
 )
 
-// AgentPoolProfile is profile for the container service agent pool.
+// AgentPoolProfile profile for the container service agent pool.
 type AgentPoolProfile struct {
-	Name      *string     `json:"name,omitempty"`
-	Count     *int32      `json:"count,omitempty"`
-	VMSize    VMSizeTypes `json:"vmSize,omitempty"`
-	DNSPrefix *string     `json:"dnsPrefix,omitempty"`
-	Fqdn      *string     `json:"fqdn,omitempty"`
+	// Name - Unique name of the agent pool profile in the context of the subscription and resource group.
+	Name *string `json:"name,omitempty"`
+	// Count - Number of agents (VMs) to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
+	Count *int32 `json:"count,omitempty"`
+	// VMSize - Size of agent VMs. Possible values include: 'StandardA0', 'StandardA1', 'StandardA2', 'StandardA3', 'StandardA4', 'StandardA5', 'StandardA6', 'StandardA7', 'StandardA8', 'StandardA9', 'StandardA10', 'StandardA11', 'StandardD1', 'StandardD2', 'StandardD3', 'StandardD4', 'StandardD11', 'StandardD12', 'StandardD13', 'StandardD14', 'StandardD1V2', 'StandardD2V2', 'StandardD3V2', 'StandardD4V2', 'StandardD5V2', 'StandardD11V2', 'StandardD12V2', 'StandardD13V2', 'StandardD14V2', 'StandardG1', 'StandardG2', 'StandardG3', 'StandardG4', 'StandardG5', 'StandardDS1', 'StandardDS2', 'StandardDS3', 'StandardDS4', 'StandardDS11', 'StandardDS12', 'StandardDS13', 'StandardDS14', 'StandardGS1', 'StandardGS2', 'StandardGS3', 'StandardGS4', 'StandardGS5'
+	VMSize VMSizeTypes `json:"vmSize,omitempty"`
+	// DNSPrefix - DNS prefix to be used to create the FQDN for the agent pool.
+	DNSPrefix *string `json:"dnsPrefix,omitempty"`
+	// Fqdn - FDQN for the agent pool.
+	Fqdn *string `json:"fqdn,omitempty"`
 }
 
-// ContainerService is container service.
+// ContainerService container service.
 type ContainerService struct {
 	autorest.Response `json:"-"`
-	ID                *string             `json:"id,omitempty"`
-	Name              *string             `json:"name,omitempty"`
-	Type              *string             `json:"type,omitempty"`
-	Location          *string             `json:"location,omitempty"`
-	Tags              *map[string]*string `json:"tags,omitempty"`
-	*Properties       `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags        *map[string]*string `json:"tags,omitempty"`
+	*Properties `json:"properties,omitempty"`
 }
 
-// CustomProfile is properties to configure a custom container service cluster.
+// ContainerServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ContainerServicesCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ContainerServicesCreateOrUpdateFuture) Result(client ContainerServicesClient) (cs ContainerService, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		return
+	}
+	if !done {
+		return cs, autorest.NewError("containerservice.ContainerServicesCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		cs, err = client.CreateOrUpdateResponder(future.Response())
+		return
+	}
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	cs, err = client.CreateOrUpdateResponder(resp)
+	return
+}
+
+// ContainerServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ContainerServicesDeleteFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ContainerServicesDeleteFuture) Result(client ContainerServicesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		return
+	}
+	if !done {
+		return ar, autorest.NewError("containerservice.ContainerServicesDeleteFuture", "Result", "asynchronous operation has not completed")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.DeleteResponder(future.Response())
+		return
+	}
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	ar, err = client.DeleteResponder(resp)
+	return
+}
+
+// CustomProfile properties to configure a custom container service cluster.
 type CustomProfile struct {
+	// Orchestrator - The name of the custom orchestrator to use.
 	Orchestrator *string `json:"orchestrator,omitempty"`
 }
 
-// DiagnosticsProfile is
+// DiagnosticsProfile ...
 type DiagnosticsProfile struct {
+	// VMDiagnostics - Profile for the container service VM diagnostic agent.
 	VMDiagnostics *VMDiagnostics `json:"vmDiagnostics,omitempty"`
 }
 
-// LinuxProfile is profile for Linux VMs in the container service cluster.
+// LinuxProfile profile for Linux VMs in the container service cluster.
 type LinuxProfile struct {
-	AdminUsername *string           `json:"adminUsername,omitempty"`
-	SSH           *SSHConfiguration `json:"ssh,omitempty"`
+	// AdminUsername - The administrator username to use for Linux VMs.
+	AdminUsername *string `json:"adminUsername,omitempty"`
+	// SSH - The ssh key configuration for Linux VMs.
+	SSH *SSHConfiguration `json:"ssh,omitempty"`
 }
 
-// ListResult is the response from the List Container Services operation.
+// ListResult the response from the List Container Services operation.
 type ListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]ContainerService `json:"value,omitempty"`
-	NextLink          *string             `json:"nextLink,omitempty"`
+	// Value - the list of container services.
+	Value *[]ContainerService `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of container service results.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ListResultPreparer prepares a request to retrieve the next set of results. It returns
-// nil if no more results exist.
-func (client ListResult) ListResultPreparer() (*http.Request, error) {
-	if client.NextLink == nil || len(to.String(client.NextLink)) <= 0 {
+// ListResultIterator provides access to a complete listing of ContainerService values.
+type ListResultIterator struct {
+	i    int
+	page ListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ListResultIterator) Response() ListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ListResultIterator) Value() ContainerService {
+	if !iter.page.NotDone() {
+		return ContainerService{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (lr ListResult) IsEmpty() bool {
+	return lr.Value == nil || len(*lr.Value) == 0
+}
+
+// listResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (lr ListResult) listResultPreparer() (*http.Request, error) {
+	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
 		return nil, nil
 	}
 	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(client.NextLink)))
+		autorest.WithBaseURL(to.String(lr.NextLink)))
 }
 
-// MasterProfile is profile for the container service master.
+// ListResultPage contains a page of ContainerService values.
+type ListResultPage struct {
+	fn func(ListResult) (ListResult, error)
+	lr ListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ListResultPage) Next() error {
+	next, err := page.fn(page.lr)
+	if err != nil {
+		return err
+	}
+	page.lr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ListResultPage) NotDone() bool {
+	return !page.lr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ListResultPage) Response() ListResult {
+	return page.lr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ListResultPage) Values() []ContainerService {
+	if page.lr.IsEmpty() {
+		return nil
+	}
+	return *page.lr.Value
+}
+
+// MasterProfile profile for the container service master.
 type MasterProfile struct {
-	Count     *int32  `json:"count,omitempty"`
+	// Count - Number of masters (VMs) in the container service cluster. Allowed values are 1, 3, and 5. The default value is 1.
+	Count *int32 `json:"count,omitempty"`
+	// DNSPrefix - DNS prefix to be used to create the FQDN for master.
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	Fqdn      *string `json:"fqdn,omitempty"`
+	// Fqdn - FDQN for the master.
+	Fqdn *string `json:"fqdn,omitempty"`
 }
 
-// OrchestratorProfile is profile for the container service orchestrator.
+// OrchestratorProfile profile for the container service orchestrator.
 type OrchestratorProfile struct {
+	// OrchestratorType - The orchestrator to use to manage container service cluster resources. Valid values are Swarm, DCOS, and Custom. Possible values include: 'Swarm', 'DCOS', 'Custom', 'Kubernetes'
 	OrchestratorType OrchestratorTypes `json:"orchestratorType,omitempty"`
 }
 
-// Properties is properties of the container service.
+// Properties properties of the container service.
 type Properties struct {
-	ProvisioningState       *string                  `json:"provisioningState,omitempty"`
-	OrchestratorProfile     *OrchestratorProfile     `json:"orchestratorProfile,omitempty"`
-	CustomProfile           *CustomProfile           `json:"customProfile,omitempty"`
+	// ProvisioningState - the current deployment or provisioning state, which only appears in the response.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// OrchestratorProfile - Properties of the orchestrator.
+	OrchestratorProfile *OrchestratorProfile `json:"orchestratorProfile,omitempty"`
+	// CustomProfile - Properties for custom clusters.
+	CustomProfile *CustomProfile `json:"customProfile,omitempty"`
+	// ServicePrincipalProfile - Properties for cluster service principals.
 	ServicePrincipalProfile *ServicePrincipalProfile `json:"servicePrincipalProfile,omitempty"`
-	MasterProfile           *MasterProfile           `json:"masterProfile,omitempty"`
-	AgentPoolProfiles       *[]AgentPoolProfile      `json:"agentPoolProfiles,omitempty"`
-	WindowsProfile          *WindowsProfile          `json:"windowsProfile,omitempty"`
-	LinuxProfile            *LinuxProfile            `json:"linuxProfile,omitempty"`
-	DiagnosticsProfile      *DiagnosticsProfile      `json:"diagnosticsProfile,omitempty"`
+	// MasterProfile - Properties of master agents.
+	MasterProfile *MasterProfile `json:"masterProfile,omitempty"`
+	// AgentPoolProfiles - Properties of the agent pool.
+	AgentPoolProfiles *[]AgentPoolProfile `json:"agentPoolProfiles,omitempty"`
+	// WindowsProfile - Properties of Windows VMs.
+	WindowsProfile *WindowsProfile `json:"windowsProfile,omitempty"`
+	// LinuxProfile - Properties of Linux VMs.
+	LinuxProfile *LinuxProfile `json:"linuxProfile,omitempty"`
+	// DiagnosticsProfile - Properties of the diagnostic agent.
+	DiagnosticsProfile *DiagnosticsProfile `json:"diagnosticsProfile,omitempty"`
 }
 
-// Resource is the Resource model definition.
+// Resource the Resource model definition.
 type Resource struct {
-	ID       *string             `json:"id,omitempty"`
-	Name     *string             `json:"name,omitempty"`
-	Type     *string             `json:"type,omitempty"`
-	Location *string             `json:"location,omitempty"`
-	Tags     *map[string]*string `json:"tags,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
-// ServicePrincipalProfile is information about a service principal identity for the cluster to use for manipulating
-// Azure APIs.
+// ServicePrincipalProfile information about a service principal identity for the cluster to use for manipulating Azure
+// APIs.
 type ServicePrincipalProfile struct {
+	// ClientID - The ID for the service principal.
 	ClientID *string `json:"clientId,omitempty"`
-	Secret   *string `json:"secret,omitempty"`
+	// Secret - The secret password associated with the service principal.
+	Secret *string `json:"secret,omitempty"`
 }
 
-// SSHConfiguration is SSH configuration for Linux-based VMs running on Azure.
+// SSHConfiguration SSH configuration for Linux-based VMs running on Azure.
 type SSHConfiguration struct {
+	// PublicKeys - the list of SSH public keys used to authenticate with Linux-based VMs.
 	PublicKeys *[]SSHPublicKey `json:"publicKeys,omitempty"`
 }
 
-// SSHPublicKey is contains information about SSH certificate public key data.
+// SSHPublicKey contains information about SSH certificate public key data.
 type SSHPublicKey struct {
+	// KeyData - Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with or without headers.
 	KeyData *string `json:"keyData,omitempty"`
 }
 
-// VMDiagnostics is profile for diagnostics on the container service VMs.
+// VMDiagnostics profile for diagnostics on the container service VMs.
 type VMDiagnostics struct {
-	Enabled    *bool   `json:"enabled,omitempty"`
+	// Enabled - Whether the VM diagnostic agent is provisioned on the VM.
+	Enabled *bool `json:"enabled,omitempty"`
+	// StorageURI - The URI of the storage account where diagnostics are stored.
 	StorageURI *string `json:"storageUri,omitempty"`
 }
 
-// WindowsProfile is profile for Windows VMs in the container service cluster.
+// WindowsProfile profile for Windows VMs in the container service cluster.
 type WindowsProfile struct {
+	// AdminUsername - The administrator username to use for Windows VMs.
 	AdminUsername *string `json:"adminUsername,omitempty"`
+	// AdminPassword - The administrator password to use for Windows VMs.
 	AdminPassword *string `json:"adminPassword,omitempty"`
 }

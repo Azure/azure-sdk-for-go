@@ -1,0 +1,12 @@
+Executing Command: "autorest D:/git/Azure/azure-rest-api-specs/specification/cognitiveservices/data-plane/ImageSearch/readme.md --go --go-sdk-folder='d:/work/src/github.com/Azure/azure-sdk-for-go' --verbose --tag=release_1_0 --use=@microsoft.azure/autorest.go@v2.1.62 --package-version='v12.0.0-beta' --user-agent='Azure-SDK-For-Go/v12.0.0-beta services'"
+AutoRest code generation utility [version: 2.0.4204]
+(C) 2017 Microsoft Corporation.
+https://aka.ms/autorest
+
+There is a new version of AutoRest available (2.0.4215).
+ > You can install the newer version with with npm install -g autorest@latest
+
+ERROR: Syntax Error Encountered: Syntax error: can not read a block mapping entry; a multiline key may not be an implicit key
+    - file:///D:/git/Azure/azure-rest-api-specs/specification/cognitiveservices/data-plane/ImageSearch/readme.md:73:2
+[OperationAbortedException] Error occurred. Exiting.
+Autorest Exectution Error:  exit status 1

@@ -1,0 +1,25 @@
+Executing Command: "autorest D:/git/Azure/azure-rest-api-specs/specification/apimanagement/resource-manager/readme.md --go --go-sdk-folder='d:/work/src/github.com/Azure/azure-sdk-for-go' --verbose --tag=package-2017-03 --use=@microsoft.azure/autorest.go@v2.1.62 --package-version='v12.0.0-beta' --user-agent='Azure-SDK-For-Go/v12.0.0-beta services'"
+AutoRest code generation utility [version: 2.0.4204]
+(C) 2017 Microsoft Corporation.
+https://aka.ms/autorest
+
+There is a new version of AutoRest available (2.0.4215).
+ > You can install the newer version with with npm install -g autorest@latest
+
+   Loading AutoRest extension '@microsoft.azure/autorest.go' (v2.1.62)
+   Loading AutoRest extension '@microsoft.azure/autorest.modeler' (2.3.38)
+FATAL: System.InvalidOperationException: method RegionsClient.ListByService contains a null nextLinkName so it shouldn't be treated as a pageable operation
+   at AutoRest.Go.Model.PageTypeGo..ctor(MethodGo method) in C:\Users\ci\AppData\Local\Temp\PUBLISHu1dw1\66_20171214T181347\autorest.go\src\Model\PageTypeGo.cs:line 41
+   at AutoRest.Go.Model.CodeModelGo.CreatePageableTypeForMethod(MethodGo method) in C:\Users\ci\AppData\Local\Temp\PUBLISHu1dw1\66_20171214T181347\autorest.go\src\Model\CodeModelGo.cs:line 298
+   at AutoRest.Go.TransformerGo.TransformMethods(CodeModelGo cmg) in C:\Users\ci\AppData\Local\Temp\PUBLISHu1dw1\66_20171214T181347\autorest.go\src\TransformerGo.cs:line 272
+   at AutoRest.Go.TransformerGo.TransformCodeModel(CodeModel cm) in C:\Users\ci\AppData\Local\Temp\PUBLISHu1dw1\66_20171214T181347\autorest.go\src\TransformerGo.cs:line 32
+   at AutoRest.Go.Program.<ProcessInternal>d__3.MoveNext() in C:\Users\ci\AppData\Local\Temp\PUBLISHu1dw1\66_20171214T181347\autorest.go\src\Program.cs:line 100
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at NewPlugin.<Process>d__15.MoveNext()
+FATAL: go/generate - FAILED
+FATAL: Error: Plugin go reported failure.
+Process() Cancelled due to exception : Plugin go reported failure.
+  Error: Plugin go reported failure.
+Autorest Exectution Error:  exit status 1

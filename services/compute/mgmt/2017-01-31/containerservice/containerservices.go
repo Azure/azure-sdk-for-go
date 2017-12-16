@@ -18,6 +18,7 @@ package containerservice
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
@@ -26,7 +27,7 @@ import (
 
 // ContainerServicesClient is the compute Client
 type ContainerServicesClient struct {
-	ManagementClient
+	BaseClient
 }
 
 // NewContainerServicesClient creates an instance of the ContainerServicesClient client.
@@ -40,15 +41,12 @@ func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string
 }
 
 // CreateOrUpdate creates or updates a container service with the specified configuration of orchestrator, masters, and
-// agents. This method may poll for completion. Polling can be canceled by passing the cancel channel argument. The
-// channel will be used to cancel polling and any outstanding HTTP requests.
+// agents.
 //
 // resourceGroupName is the name of the resource group. containerServiceName is the name of the container service in
 // the specified subscription and resource group. parameters is parameters supplied to the Create or Update a Container
 // Service operation.
-func (client ContainerServicesClient) CreateOrUpdate(resourceGroupName string, containerServiceName string, parameters ContainerService, cancel <-chan struct{}) (<-chan ContainerService, <-chan error) {
-	resultChan := make(chan ContainerService, 1)
-	errChan := make(chan error, 1)
+func (client ContainerServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService) (result ContainerServicesCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: false,
@@ -78,46 +76,26 @@ func (client ContainerServicesClient) CreateOrUpdate(resourceGroupName string, c
 							Chain: []validation.Constraint{{Target: "parameters.Properties.DiagnosticsProfile.VMDiagnostics.Enabled", Name: validation.Null, Rule: true, Chain: nil}}},
 						}},
 				}}}}}); err != nil {
-		errChan <- validation.NewErrorWithValidationError(err, "containerservice.ContainerServicesClient", "CreateOrUpdate")
-		close(errChan)
-		close(resultChan)
-		return resultChan, errChan
+		return result, validation.NewErrorWithValidationError(err, "containerservice.ContainerServicesClient", "CreateOrUpdate")
 	}
 
-	go func() {
-		var err error
-		var result ContainerService
-		defer func() {
-			if err != nil {
-				errChan <- err
-			}
-			resultChan <- result
-			close(resultChan)
-			close(errChan)
-		}()
-		req, err := client.CreateOrUpdatePreparer(resourceGroupName, containerServiceName, parameters, cancel)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
-			return
-		}
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, containerServiceName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
 
-		resp, err := client.CreateOrUpdateSender(req)
-		if err != nil {
-			result.Response = autorest.Response{Response: resp}
-			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "CreateOrUpdate", resp, "Failure sending request")
-			return
-		}
+	result, err = client.CreateOrUpdateSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		return
+	}
 
-		result, err = client.CreateOrUpdateResponder(resp)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "CreateOrUpdate", resp, "Failure responding to request")
-		}
-	}()
-	return resultChan, errChan
+	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ContainerServicesClient) CreateOrUpdatePreparer(resourceGroupName string, containerServiceName string, parameters ContainerService, cancel <-chan struct{}) (*http.Request, error) {
+func (client ContainerServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"containerServiceName": autorest.Encode("path", containerServiceName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
@@ -136,16 +114,22 @@ func (client ContainerServicesClient) CreateOrUpdatePreparer(resourceGroupName s
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{Cancel: cancel})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ContainerServicesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
-		azure.DoRetryWithRegistration(client.Client),
-		azure.DoPollForAsynchronous(client.PollingDelay))
+func (client ContainerServicesClient) CreateOrUpdateSender(req *http.Request) (future ContainerServicesCreateOrUpdateFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted))
+	return
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -164,48 +148,28 @@ func (client ContainerServicesClient) CreateOrUpdateResponder(resp *http.Respons
 // Delete deletes the specified container service in the specified subscription and resource group. The operation does
 // not delete other resources created as part of creating a container service, including storage accounts, VMs, and
 // availability sets. All the other resources created with the container service are part of the same resource group
-// and can be deleted individually. This method may poll for completion. Polling can be canceled by passing the cancel
-// channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
+// and can be deleted individually.
 //
 // resourceGroupName is the name of the resource group. containerServiceName is the name of the container service in
 // the specified subscription and resource group.
-func (client ContainerServicesClient) Delete(resourceGroupName string, containerServiceName string, cancel <-chan struct{}) (<-chan autorest.Response, <-chan error) {
-	resultChan := make(chan autorest.Response, 1)
-	errChan := make(chan error, 1)
-	go func() {
-		var err error
-		var result autorest.Response
-		defer func() {
-			if err != nil {
-				errChan <- err
-			}
-			resultChan <- result
-			close(resultChan)
-			close(errChan)
-		}()
-		req, err := client.DeletePreparer(resourceGroupName, containerServiceName, cancel)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "Delete", nil, "Failure preparing request")
-			return
-		}
+func (client ContainerServicesClient) Delete(ctx context.Context, resourceGroupName string, containerServiceName string) (result ContainerServicesDeleteFuture, err error) {
+	req, err := client.DeletePreparer(ctx, resourceGroupName, containerServiceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "Delete", nil, "Failure preparing request")
+		return
+	}
 
-		resp, err := client.DeleteSender(req)
-		if err != nil {
-			result.Response = resp
-			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "Delete", resp, "Failure sending request")
-			return
-		}
+	result, err = client.DeleteSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "Delete", result.Response(), "Failure sending request")
+		return
+	}
 
-		result, err = client.DeleteResponder(resp)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "Delete", resp, "Failure responding to request")
-		}
-	}()
-	return resultChan, errChan
+	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ContainerServicesClient) DeletePreparer(resourceGroupName string, containerServiceName string, cancel <-chan struct{}) (*http.Request, error) {
+func (client ContainerServicesClient) DeletePreparer(ctx context.Context, resourceGroupName string, containerServiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"containerServiceName": autorest.Encode("path", containerServiceName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
@@ -222,16 +186,22 @@ func (client ContainerServicesClient) DeletePreparer(resourceGroupName string, c
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{Cancel: cancel})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ContainerServicesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
-		azure.DoRetryWithRegistration(client.Client),
-		azure.DoPollForAsynchronous(client.PollingDelay))
+func (client ContainerServicesClient) DeleteSender(req *http.Request) (future ContainerServicesDeleteFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -252,8 +222,8 @@ func (client ContainerServicesClient) DeleteResponder(resp *http.Response) (resu
 //
 // resourceGroupName is the name of the resource group. containerServiceName is the name of the container service in
 // the specified subscription and resource group.
-func (client ContainerServicesClient) Get(resourceGroupName string, containerServiceName string) (result ContainerService, err error) {
-	req, err := client.GetPreparer(resourceGroupName, containerServiceName)
+func (client ContainerServicesClient) Get(ctx context.Context, resourceGroupName string, containerServiceName string) (result ContainerService, err error) {
+	req, err := client.GetPreparer(ctx, resourceGroupName, containerServiceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "Get", nil, "Failure preparing request")
 		return
@@ -275,7 +245,7 @@ func (client ContainerServicesClient) Get(resourceGroupName string, containerSer
 }
 
 // GetPreparer prepares the Get request.
-func (client ContainerServicesClient) GetPreparer(resourceGroupName string, containerServiceName string) (*http.Request, error) {
+func (client ContainerServicesClient) GetPreparer(ctx context.Context, resourceGroupName string, containerServiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"containerServiceName": autorest.Encode("path", containerServiceName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
@@ -292,14 +262,13 @@ func (client ContainerServicesClient) GetPreparer(resourceGroupName string, cont
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerServicesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -318,8 +287,9 @@ func (client ContainerServicesClient) GetResponder(resp *http.Response) (result 
 
 // List gets a list of container services in the specified subscription. The operation returns properties of each
 // container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-func (client ContainerServicesClient) List() (result ListResult, err error) {
-	req, err := client.ListPreparer()
+func (client ContainerServicesClient) List(ctx context.Context) (result ListResultPage, err error) {
+	result.fn = client.listNextResults
+	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "List", nil, "Failure preparing request")
 		return
@@ -327,12 +297,12 @@ func (client ContainerServicesClient) List() (result ListResult, err error) {
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.lr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.lr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "List", resp, "Failure responding to request")
 	}
@@ -341,7 +311,7 @@ func (client ContainerServicesClient) List() (result ListResult, err error) {
 }
 
 // ListPreparer prepares the List request.
-func (client ContainerServicesClient) ListPreparer() (*http.Request, error) {
+func (client ContainerServicesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -356,14 +326,13 @@ func (client ContainerServicesClient) ListPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/containerServices", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerServicesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -380,73 +349,31 @@ func (client ContainerServicesClient) ListResponder(resp *http.Response) (result
 	return
 }
 
-// ListNextResults retrieves the next set of results, if any.
-func (client ContainerServicesClient) ListNextResults(lastResults ListResult) (result ListResult, err error) {
-	req, err := lastResults.ListResultPreparer()
+// listNextResults retrieves the next set of results, if any.
+func (client ContainerServicesClient) listNextResults(lastResults ListResult) (result ListResult, err error) {
+	req, err := lastResults.listResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "List", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "List", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "listNextResults", resp, "Failure sending next results request")
 	}
-
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "List", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "listNextResults", resp, "Failure responding to next results request")
 	}
-
 	return
 }
 
-// ListComplete gets all elements from the list without paging.
-func (client ContainerServicesClient) ListComplete(cancel <-chan struct{}) (<-chan ContainerService, <-chan error) {
-	resultChan := make(chan ContainerService)
-	errChan := make(chan error, 1)
-	go func() {
-		defer func() {
-			close(resultChan)
-			close(errChan)
-		}()
-		list, err := client.List()
-		if err != nil {
-			errChan <- err
-			return
-		}
-		if list.Value != nil {
-			for _, item := range *list.Value {
-				select {
-				case <-cancel:
-					return
-				case resultChan <- item:
-					// Intentionally left blank
-				}
-			}
-		}
-		for list.NextLink != nil {
-			list, err = client.ListNextResults(list)
-			if err != nil {
-				errChan <- err
-				return
-			}
-			if list.Value != nil {
-				for _, item := range *list.Value {
-					select {
-					case <-cancel:
-						return
-					case resultChan <- item:
-						// Intentionally left blank
-					}
-				}
-			}
-		}
-	}()
-	return resultChan, errChan
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ContainerServicesClient) ListComplete(ctx context.Context) (result ListResultIterator, err error) {
+	result.page, err = client.List(ctx)
+	return
 }
 
 // ListByResourceGroup gets a list of container services in the specified subscription and resource group. The
@@ -454,8 +381,9 @@ func (client ContainerServicesClient) ListComplete(cancel <-chan struct{}) (<-ch
 // and FQDNs of masters and agents.
 //
 // resourceGroupName is the name of the resource group.
-func (client ContainerServicesClient) ListByResourceGroup(resourceGroupName string) (result ListResult, err error) {
-	req, err := client.ListByResourceGroupPreparer(resourceGroupName)
+func (client ContainerServicesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ListResultPage, err error) {
+	result.fn = client.listByResourceGroupNextResults
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -463,12 +391,12 @@ func (client ContainerServicesClient) ListByResourceGroup(resourceGroupName stri
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.lr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByResourceGroupResponder(resp)
+	result.lr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
@@ -477,7 +405,7 @@ func (client ContainerServicesClient) ListByResourceGroup(resourceGroupName stri
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client ContainerServicesClient) ListByResourceGroupPreparer(resourceGroupName string) (*http.Request, error) {
+func (client ContainerServicesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -493,14 +421,13 @@ func (client ContainerServicesClient) ListByResourceGroupPreparer(resourceGroupN
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare(&http.Request{})
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerServicesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client,
-		req,
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
@@ -517,71 +444,29 @@ func (client ContainerServicesClient) ListByResourceGroupResponder(resp *http.Re
 	return
 }
 
-// ListByResourceGroupNextResults retrieves the next set of results, if any.
-func (client ContainerServicesClient) ListByResourceGroupNextResults(lastResults ListResult) (result ListResult, err error) {
-	req, err := lastResults.ListResultPreparer()
+// listByResourceGroupNextResults retrieves the next set of results, if any.
+func (client ContainerServicesClient) listByResourceGroupNextResults(lastResults ListResult) (result ListResult, err error) {
+	req, err := lastResults.listResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "ListByResourceGroup", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "ListByResourceGroup", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
 	}
-
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "ListByResourceGroup", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
 	}
-
 	return
 }
 
-// ListByResourceGroupComplete gets all elements from the list without paging.
-func (client ContainerServicesClient) ListByResourceGroupComplete(resourceGroupName string, cancel <-chan struct{}) (<-chan ContainerService, <-chan error) {
-	resultChan := make(chan ContainerService)
-	errChan := make(chan error, 1)
-	go func() {
-		defer func() {
-			close(resultChan)
-			close(errChan)
-		}()
-		list, err := client.ListByResourceGroup(resourceGroupName)
-		if err != nil {
-			errChan <- err
-			return
-		}
-		if list.Value != nil {
-			for _, item := range *list.Value {
-				select {
-				case <-cancel:
-					return
-				case resultChan <- item:
-					// Intentionally left blank
-				}
-			}
-		}
-		for list.NextLink != nil {
-			list, err = client.ListByResourceGroupNextResults(list)
-			if err != nil {
-				errChan <- err
-				return
-			}
-			if list.Value != nil {
-				for _, item := range *list.Value {
-					select {
-					case <-cancel:
-						return
-					case resultChan <- item:
-						// Intentionally left blank
-					}
-				}
-			}
-		}
-	}()
-	return resultChan, errChan
+// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ContainerServicesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ListResultIterator, err error) {
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+	return
 }

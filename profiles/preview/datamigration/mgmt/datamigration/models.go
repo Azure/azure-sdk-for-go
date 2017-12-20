@@ -22,6 +22,7 @@ package datamigration
 
 import original "github.com/Azure/azure-sdk-for-go/services/datamigration/mgmt/2017-11-15-preview/datamigration"
 
+type ServicesClient = original.ServicesClient
 type TasksClient = original.TasksClient
 type UsagesClient = original.UsagesClient
 
@@ -392,29 +393,10 @@ type TaskOutput = original.TaskOutput
 type TrackedResource = original.TrackedResource
 type ValidationError = original.ValidationError
 type WaitStatistics = original.WaitStatistics
-type OperationsClient = original.OperationsClient
 type ProjectsClient = original.ProjectsClient
 type ResourceSkusClient = original.ResourceSkusClient
-type ServicesClient = original.ServicesClient
+type OperationsClient = original.OperationsClient
 
-func NewServicesClient(subscriptionID string) ServicesClient {
-	return original.NewServicesClient(subscriptionID)
-}
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
-	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewProjectsClient(subscriptionID string) ProjectsClient {
 	return original.NewProjectsClient(subscriptionID)
 }
@@ -426,6 +408,12 @@ func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
 }
 func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
 	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServicesClient(subscriptionID string) ServicesClient {
+	return original.NewServicesClient(subscriptionID)
+}
+func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
+	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTasksClient(subscriptionID string) TasksClient {
 	return original.NewTasksClient(subscriptionID)
@@ -439,9 +427,21 @@ func NewUsagesClient(subscriptionID string) UsagesClient {
 func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
 	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

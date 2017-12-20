@@ -71,18 +71,6 @@ type UpdateJobParameters = original.UpdateJobParameters
 type UpdateJobParametersProperties = original.UpdateJobParametersProperties
 type OperationsClient = original.OperationsClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
-func NewBitLockerKeysClient(subscriptionID string, acceptLanguage string) BitLockerKeysClient {
-	return original.NewBitLockerKeysClient(subscriptionID, acceptLanguage)
-}
-func NewBitLockerKeysClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BitLockerKeysClient {
-	return original.NewBitLockerKeysClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
 func New(subscriptionID string, acceptLanguage string) BaseClient {
 	return original.New(subscriptionID, acceptLanguage)
 }
@@ -106,4 +94,16 @@ func NewOperationsClient(subscriptionID string, acceptLanguage string) Operation
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
+func NewBitLockerKeysClient(subscriptionID string, acceptLanguage string) BitLockerKeysClient {
+	return original.NewBitLockerKeysClient(subscriptionID, acceptLanguage)
+}
+func NewBitLockerKeysClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BitLockerKeysClient {
+	return original.NewBitLockerKeysClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }

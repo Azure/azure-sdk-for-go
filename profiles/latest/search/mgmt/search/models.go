@@ -22,7 +22,6 @@ package search
 
 import original "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2015-08-19/search"
 
-type QueryKeysClient = original.QueryKeysClient
 type ServicesClient = original.ServicesClient
 type AdminKeysClient = original.AdminKeysClient
 
@@ -94,6 +93,7 @@ type ServiceListResult = original.ServiceListResult
 type ServiceProperties = original.ServiceProperties
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type Sku = original.Sku
+type QueryKeysClient = original.QueryKeysClient
 
 func NewQueryKeysClient(subscriptionID string) QueryKeysClient {
 	return original.NewQueryKeysClient(subscriptionID)

@@ -22,25 +22,27 @@ package fabric
 
 import original "github.com/Azure/azure-sdk-for-go/services/azsadmin/mgmt/2016-05-01/fabric"
 
-type ScaleUnitsClient = original.ScaleUnitsClient
-type EdgeGatewayPoolsClient = original.EdgeGatewayPoolsClient
-type IPPoolsClient = original.IPPoolsClient
-type LocationsClient = original.LocationsClient
-type LogicalSubnetsClient = original.LogicalSubnetsClient
-type MacAddressPoolsClient = original.MacAddressPoolsClient
-type NetworkFabricOperationsClient = original.NetworkFabricOperationsClient
-type ScaleUnitNodesClient = original.ScaleUnitNodesClient
-type StorageSystemsClient = original.StorageSystemsClient
-type ComputeFabricOperationsClient = original.ComputeFabricOperationsClient
 type EdgeGatewaysClient = original.EdgeGatewaysClient
-type FileSharesClient = original.FileSharesClient
+type SlbMuxInstancesClient = original.SlbMuxInstancesClient
+type StorageSystemsClient = original.StorageSystemsClient
 type VolumesClient = original.VolumesClient
+type LogicalNetworksClient = original.LogicalNetworksClient
+type LogicalSubnetsClient = original.LogicalSubnetsClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
+type ComputeFabricOperationsClient = original.ComputeFabricOperationsClient
+type EdgeGatewayPoolsClient = original.EdgeGatewayPoolsClient
+type InfraRolesClient = original.InfraRolesClient
+type IPPoolsClient = original.IPPoolsClient
+type LocationsClient = original.LocationsClient
+type FileSharesClient = original.FileSharesClient
+type MacAddressPoolsClient = original.MacAddressPoolsClient
+type NetworkFabricOperationsClient = original.NetworkFabricOperationsClient
+type ScaleUnitsClient = original.ScaleUnitsClient
 type InfraRoleInstancesClient = original.InfraRoleInstancesClient
 type InfraRoleInstanceState = original.InfraRoleInstanceState
 
@@ -179,34 +181,26 @@ type VolumeList = original.VolumeList
 type VolumeListIterator = original.VolumeListIterator
 type VolumeListPage = original.VolumeListPage
 type VolumeModel = original.VolumeModel
+type ScaleUnitNodesClient = original.ScaleUnitNodesClient
 type StoragePoolsClient = original.StoragePoolsClient
-type InfraRolesClient = original.InfraRolesClient
-type LogicalNetworksClient = original.LogicalNetworksClient
-type SlbMuxInstancesClient = original.SlbMuxInstancesClient
 
-func NewComputeFabricOperationsClient(subscriptionID string) ComputeFabricOperationsClient {
-	return original.NewComputeFabricOperationsClient(subscriptionID)
-}
-func NewComputeFabricOperationsClientWithBaseURI(baseURI string, subscriptionID string) ComputeFabricOperationsClient {
-	return original.NewComputeFabricOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewEdgeGatewaysClient(subscriptionID string) EdgeGatewaysClient {
 	return original.NewEdgeGatewaysClient(subscriptionID)
 }
 func NewEdgeGatewaysClientWithBaseURI(baseURI string, subscriptionID string) EdgeGatewaysClient {
 	return original.NewEdgeGatewaysClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewFileSharesClient(subscriptionID string) FileSharesClient {
-	return original.NewFileSharesClient(subscriptionID)
+func NewSlbMuxInstancesClient(subscriptionID string) SlbMuxInstancesClient {
+	return original.NewSlbMuxInstancesClient(subscriptionID)
 }
-func NewFileSharesClientWithBaseURI(baseURI string, subscriptionID string) FileSharesClient {
-	return original.NewFileSharesClientWithBaseURI(baseURI, subscriptionID)
+func NewSlbMuxInstancesClientWithBaseURI(baseURI string, subscriptionID string) SlbMuxInstancesClient {
+	return original.NewSlbMuxInstancesClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewStorageSystemsClient(subscriptionID string) StorageSystemsClient {
+	return original.NewStorageSystemsClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewStorageSystemsClientWithBaseURI(baseURI string, subscriptionID string) StorageSystemsClient {
+	return original.NewStorageSystemsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVolumesClient(subscriptionID string) VolumesClient {
 	return original.NewVolumesClient(subscriptionID)
@@ -220,59 +214,23 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewInfraRoleInstancesClient(subscriptionID string) InfraRoleInstancesClient {
-	return original.NewInfraRoleInstancesClient(subscriptionID)
+func NewComputeFabricOperationsClient(subscriptionID string) ComputeFabricOperationsClient {
+	return original.NewComputeFabricOperationsClient(subscriptionID)
 }
-func NewInfraRoleInstancesClientWithBaseURI(baseURI string, subscriptionID string) InfraRoleInstancesClient {
-	return original.NewInfraRoleInstancesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewStoragePoolsClient(subscriptionID string) StoragePoolsClient {
-	return original.NewStoragePoolsClient(subscriptionID)
-}
-func NewStoragePoolsClientWithBaseURI(baseURI string, subscriptionID string) StoragePoolsClient {
-	return original.NewStoragePoolsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInfraRolesClient(subscriptionID string) InfraRolesClient {
-	return original.NewInfraRolesClient(subscriptionID)
-}
-func NewInfraRolesClientWithBaseURI(baseURI string, subscriptionID string) InfraRolesClient {
-	return original.NewInfraRolesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewLogicalNetworksClient(subscriptionID string) LogicalNetworksClient {
-	return original.NewLogicalNetworksClient(subscriptionID)
-}
-func NewLogicalNetworksClientWithBaseURI(baseURI string, subscriptionID string) LogicalNetworksClient {
-	return original.NewLogicalNetworksClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSlbMuxInstancesClient(subscriptionID string) SlbMuxInstancesClient {
-	return original.NewSlbMuxInstancesClient(subscriptionID)
-}
-func NewSlbMuxInstancesClientWithBaseURI(baseURI string, subscriptionID string) SlbMuxInstancesClient {
-	return original.NewSlbMuxInstancesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewNetworkFabricOperationsClient(subscriptionID string) NetworkFabricOperationsClient {
-	return original.NewNetworkFabricOperationsClient(subscriptionID)
-}
-func NewNetworkFabricOperationsClientWithBaseURI(baseURI string, subscriptionID string) NetworkFabricOperationsClient {
-	return original.NewNetworkFabricOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewScaleUnitNodesClient(subscriptionID string) ScaleUnitNodesClient {
-	return original.NewScaleUnitNodesClient(subscriptionID)
-}
-func NewScaleUnitNodesClientWithBaseURI(baseURI string, subscriptionID string) ScaleUnitNodesClient {
-	return original.NewScaleUnitNodesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewScaleUnitsClient(subscriptionID string) ScaleUnitsClient {
-	return original.NewScaleUnitsClient(subscriptionID)
-}
-func NewScaleUnitsClientWithBaseURI(baseURI string, subscriptionID string) ScaleUnitsClient {
-	return original.NewScaleUnitsClientWithBaseURI(baseURI, subscriptionID)
+func NewComputeFabricOperationsClientWithBaseURI(baseURI string, subscriptionID string) ComputeFabricOperationsClient {
+	return original.NewComputeFabricOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewEdgeGatewayPoolsClient(subscriptionID string) EdgeGatewayPoolsClient {
 	return original.NewEdgeGatewayPoolsClient(subscriptionID)
 }
 func NewEdgeGatewayPoolsClientWithBaseURI(baseURI string, subscriptionID string) EdgeGatewayPoolsClient {
 	return original.NewEdgeGatewayPoolsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInfraRolesClient(subscriptionID string) InfraRolesClient {
+	return original.NewInfraRolesClient(subscriptionID)
+}
+func NewInfraRolesClientWithBaseURI(baseURI string, subscriptionID string) InfraRolesClient {
+	return original.NewInfraRolesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewIPPoolsClient(subscriptionID string) IPPoolsClient {
 	return original.NewIPPoolsClient(subscriptionID)
@@ -286,11 +244,29 @@ func NewLocationsClient(subscriptionID string) LocationsClient {
 func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
 	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewLogicalNetworksClient(subscriptionID string) LogicalNetworksClient {
+	return original.NewLogicalNetworksClient(subscriptionID)
+}
+func NewLogicalNetworksClientWithBaseURI(baseURI string, subscriptionID string) LogicalNetworksClient {
+	return original.NewLogicalNetworksClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewLogicalSubnetsClient(subscriptionID string) LogicalSubnetsClient {
 	return original.NewLogicalSubnetsClient(subscriptionID)
 }
 func NewLogicalSubnetsClientWithBaseURI(baseURI string, subscriptionID string) LogicalSubnetsClient {
 	return original.NewLogicalSubnetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewFileSharesClient(subscriptionID string) FileSharesClient {
+	return original.NewFileSharesClient(subscriptionID)
+}
+func NewFileSharesClientWithBaseURI(baseURI string, subscriptionID string) FileSharesClient {
+	return original.NewFileSharesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewMacAddressPoolsClient(subscriptionID string) MacAddressPoolsClient {
 	return original.NewMacAddressPoolsClient(subscriptionID)
@@ -298,9 +274,33 @@ func NewMacAddressPoolsClient(subscriptionID string) MacAddressPoolsClient {
 func NewMacAddressPoolsClientWithBaseURI(baseURI string, subscriptionID string) MacAddressPoolsClient {
 	return original.NewMacAddressPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewStorageSystemsClient(subscriptionID string) StorageSystemsClient {
-	return original.NewStorageSystemsClient(subscriptionID)
+func NewNetworkFabricOperationsClient(subscriptionID string) NetworkFabricOperationsClient {
+	return original.NewNetworkFabricOperationsClient(subscriptionID)
 }
-func NewStorageSystemsClientWithBaseURI(baseURI string, subscriptionID string) StorageSystemsClient {
-	return original.NewStorageSystemsClientWithBaseURI(baseURI, subscriptionID)
+func NewNetworkFabricOperationsClientWithBaseURI(baseURI string, subscriptionID string) NetworkFabricOperationsClient {
+	return original.NewNetworkFabricOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewScaleUnitsClient(subscriptionID string) ScaleUnitsClient {
+	return original.NewScaleUnitsClient(subscriptionID)
+}
+func NewScaleUnitsClientWithBaseURI(baseURI string, subscriptionID string) ScaleUnitsClient {
+	return original.NewScaleUnitsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInfraRoleInstancesClient(subscriptionID string) InfraRoleInstancesClient {
+	return original.NewInfraRoleInstancesClient(subscriptionID)
+}
+func NewInfraRoleInstancesClientWithBaseURI(baseURI string, subscriptionID string) InfraRoleInstancesClient {
+	return original.NewInfraRoleInstancesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewScaleUnitNodesClient(subscriptionID string) ScaleUnitNodesClient {
+	return original.NewScaleUnitNodesClient(subscriptionID)
+}
+func NewScaleUnitNodesClientWithBaseURI(baseURI string, subscriptionID string) ScaleUnitNodesClient {
+	return original.NewScaleUnitNodesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewStoragePoolsClient(subscriptionID string) StoragePoolsClient {
+	return original.NewStoragePoolsClient(subscriptionID)
+}
+func NewStoragePoolsClientWithBaseURI(baseURI string, subscriptionID string) StoragePoolsClient {
+	return original.NewStoragePoolsClientWithBaseURI(baseURI, subscriptionID)
 }

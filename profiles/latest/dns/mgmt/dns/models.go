@@ -22,11 +22,6 @@ package dns
 
 import original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2016-04-01/dns"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type HTTPStatusCode = original.HTTPStatusCode
 
 const (
@@ -129,6 +124,12 @@ type ZoneProperties = original.ZoneProperties
 type ZonesDeleteFuture = original.ZonesDeleteFuture
 type RecordSetsClient = original.RecordSetsClient
 type ZonesClient = original.ZonesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

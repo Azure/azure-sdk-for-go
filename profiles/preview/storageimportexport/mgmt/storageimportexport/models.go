@@ -22,7 +22,6 @@ package storageimportexport
 
 import original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport"
 
-type OperationsClient = original.OperationsClient
 type BitLockerKeysClient = original.BitLockerKeysClient
 
 const (
@@ -70,13 +69,8 @@ type ReturnShipping = original.ReturnShipping
 type ShippingInformation = original.ShippingInformation
 type UpdateJobParameters = original.UpdateJobParameters
 type UpdateJobParametersProperties = original.UpdateJobParametersProperties
+type OperationsClient = original.OperationsClient
 
-func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsClient {
-	return original.NewLocationsClient(subscriptionID, acceptLanguage)
-}
-func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) LocationsClient {
-	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
 func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, acceptLanguage)
 }
@@ -106,4 +100,10 @@ func NewJobsClient(subscriptionID string, acceptLanguage string) JobsClient {
 }
 func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) JobsClient {
 	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsClient {
+	return original.NewLocationsClient(subscriptionID, acceptLanguage)
+}
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) LocationsClient {
+	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }

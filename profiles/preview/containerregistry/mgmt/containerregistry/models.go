@@ -150,18 +150,6 @@ type OperationsClient = original.OperationsClient
 type RegistriesClient = original.RegistriesClient
 type ReplicationsClient = original.ReplicationsClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewWebhooksClient(subscriptionID string) WebhooksClient {
-	return original.NewWebhooksClient(subscriptionID)
-}
-func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) WebhooksClient {
-	return original.NewWebhooksClientWithBaseURI(baseURI, subscriptionID)
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -185,4 +173,16 @@ func NewReplicationsClient(subscriptionID string) ReplicationsClient {
 }
 func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) ReplicationsClient {
 	return original.NewReplicationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewWebhooksClient(subscriptionID string) WebhooksClient {
+	return original.NewWebhooksClient(subscriptionID)
+}
+func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) WebhooksClient {
+	return original.NewWebhooksClientWithBaseURI(baseURI, subscriptionID)
 }

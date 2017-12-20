@@ -22,8 +22,6 @@ package scheduler
 
 import original "github.com/Azure/azure-sdk-for-go/services/scheduler/mgmt/2016-03-01/scheduler"
 
-type JobCollectionsClient = original.JobCollectionsClient
-type JobsClient = original.JobsClient
 type DayOfWeek = original.DayOfWeek
 
 const (
@@ -189,6 +187,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type JobCollectionsClient = original.JobCollectionsClient
+type JobsClient = original.JobsClient
 
 func NewJobCollectionsClient(subscriptionID string) JobCollectionsClient {
 	return original.NewJobCollectionsClient(subscriptionID)

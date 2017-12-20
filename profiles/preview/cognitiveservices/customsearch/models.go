@@ -109,6 +109,12 @@ type WebMetaTag = original.WebMetaTag
 type WebPage = original.WebPage
 type WebWebAnswer = original.WebWebAnswer
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
 func NewCustomInstanceClient() CustomInstanceClient {
 	return original.NewCustomInstanceClient()
 }
@@ -120,10 +126,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
 }

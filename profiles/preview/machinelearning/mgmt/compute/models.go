@@ -164,6 +164,12 @@ type SystemService = original.SystemService
 type UpdateSystemServicesResponse = original.UpdateSystemServicesResponse
 type OperationalizationClustersClient = original.OperationalizationClustersClient
 
+func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
+	return original.NewMachineLearningComputeClient(subscriptionID)
+}
+func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
+	return original.NewMachineLearningComputeClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationalizationClustersClient(subscriptionID string) OperationalizationClustersClient {
 	return original.NewOperationalizationClustersClient(subscriptionID)
 }
@@ -181,10 +187,4 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
-	return original.NewMachineLearningComputeClient(subscriptionID)
-}
-func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
-	return original.NewMachineLearningComputeClientWithBaseURI(baseURI, subscriptionID)
 }

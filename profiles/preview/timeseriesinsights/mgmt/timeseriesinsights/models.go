@@ -22,7 +22,6 @@ package timeseriesinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2017-11-15/timeseriesinsights"
 
-type EventSourcesClient = original.EventSourcesClient
 type AccessPolicyRole = original.AccessPolicyRole
 
 const (
@@ -158,7 +157,14 @@ const (
 
 type BaseClient = original.BaseClient
 type EnvironmentsClient = original.EnvironmentsClient
+type EventSourcesClient = original.EventSourcesClient
 
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewReferenceDataSetsClient(subscriptionID string) ReferenceDataSetsClient {
 	return original.NewReferenceDataSetsClient(subscriptionID)
 }
@@ -194,10 +200,4 @@ func NewEventSourcesClient(subscriptionID string) EventSourcesClient {
 }
 func NewEventSourcesClientWithBaseURI(baseURI string, subscriptionID string) EventSourcesClient {
 	return original.NewEventSourcesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

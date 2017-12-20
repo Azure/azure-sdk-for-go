@@ -22,7 +22,6 @@ package containerservice
 
 import original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2017-09-30/containerservice"
 
-type ContainerServicesClient = original.ContainerServicesClient
 type ManagedClustersClient = original.ManagedClustersClient
 type OrchestratorTypes = original.OrchestratorTypes
 
@@ -225,13 +224,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type ContainerServicesClient = original.ContainerServicesClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -249,4 +243,10 @@ func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
 }
 func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
 	return original.NewManagedClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }

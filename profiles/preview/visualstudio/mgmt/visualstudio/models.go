@@ -22,6 +22,7 @@ package visualstudio
 
 import original "github.com/Azure/azure-sdk-for-go/services/visualstudio/mgmt/2014-04-01-preview/visualstudio"
 
+type ExtensionsClient = original.ExtensionsClient
 type AccountResource = original.AccountResource
 type AccountResourceListResult = original.AccountResourceListResult
 type AccountResourceRequest = original.AccountResourceRequest
@@ -47,7 +48,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type ExtensionsClient = original.ExtensionsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

@@ -22,6 +22,13 @@ package videosearch
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/videosearch"
 
+type VideosClient = original.VideosClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type ErrorCode = original.ErrorCode
 
 const (
@@ -162,14 +169,13 @@ type VideoDetails = original.VideoDetails
 type VideoObject = original.VideoObject
 type Videos = original.Videos
 type VideosModule = original.VideosModule
-type VideosClient = original.VideosClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
@@ -181,10 +187,4 @@ func NewVideosClient() VideosClient {
 }
 func NewVideosClientWithBaseURI(baseURI string) VideosClient {
 	return original.NewVideosClientWithBaseURI(baseURI)
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
 }

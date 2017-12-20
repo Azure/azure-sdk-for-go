@@ -22,6 +22,8 @@ package keyvault
 
 import original "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2016-10-01/keyvault"
 
+type VaultsClient = original.VaultsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -128,7 +130,6 @@ type VaultListResultIterator = original.VaultListResultIterator
 type VaultListResultPage = original.VaultListResultPage
 type VaultProperties = original.VaultProperties
 type VaultsPurgeDeletedFuture = original.VaultsPurgeDeletedFuture
-type VaultsClient = original.VaultsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

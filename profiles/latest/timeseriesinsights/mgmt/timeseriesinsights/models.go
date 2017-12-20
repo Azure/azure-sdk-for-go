@@ -22,6 +22,13 @@ package timeseriesinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2017-11-15/timeseriesinsights"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type EnvironmentsClient = original.EnvironmentsClient
+type EventSourcesClient = original.EventSourcesClient
 type AccessPolicyRole = original.AccessPolicyRole
 
 const (
@@ -151,14 +158,12 @@ type OperationsClient = original.OperationsClient
 type ReferenceDataSetsClient = original.ReferenceDataSetsClient
 type AccessPoliciesClient = original.AccessPoliciesClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type EnvironmentsClient = original.EnvironmentsClient
-type EventSourcesClient = original.EventSourcesClient
-
+func NewEnvironmentsClient(subscriptionID string) EnvironmentsClient {
+	return original.NewEnvironmentsClient(subscriptionID)
+}
+func NewEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) EnvironmentsClient {
+	return original.NewEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewEventSourcesClient(subscriptionID string) EventSourcesClient {
 	return original.NewEventSourcesClient(subscriptionID)
 }
@@ -194,10 +199,4 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewEnvironmentsClient(subscriptionID string) EnvironmentsClient {
-	return original.NewEnvironmentsClient(subscriptionID)
-}
-func NewEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) EnvironmentsClient {
-	return original.NewEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
 }

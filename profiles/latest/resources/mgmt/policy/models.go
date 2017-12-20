@@ -22,14 +22,6 @@ package policy
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-12-01/policy"
 
-type AssignmentsClient = original.AssignmentsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type DefinitionsClient = original.DefinitionsClient
 type Mode = original.Mode
 
 const (
@@ -56,6 +48,14 @@ type DefinitionListResult = original.DefinitionListResult
 type DefinitionListResultIterator = original.DefinitionListResultIterator
 type DefinitionListResultPage = original.DefinitionListResultPage
 type DefinitionProperties = original.DefinitionProperties
+type AssignmentsClient = original.AssignmentsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type DefinitionsClient = original.DefinitionsClient
 
 func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
 	return original.NewAssignmentsClient(subscriptionID)

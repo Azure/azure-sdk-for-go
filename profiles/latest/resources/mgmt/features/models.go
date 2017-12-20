@@ -34,12 +34,6 @@ type OperationsListResultPage = original.OperationsListResultPage
 type Properties = original.Properties
 type Result = original.Result
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewClient(subscriptionID string) Client {
 	return original.NewClient(subscriptionID)
 }
@@ -51,4 +45,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

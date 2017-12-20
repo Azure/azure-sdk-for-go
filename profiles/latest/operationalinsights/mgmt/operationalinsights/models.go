@@ -72,12 +72,6 @@ type Tag = original.Tag
 type WorkspacesGetSearchResultsFuture = original.WorkspacesGetSearchResultsFuture
 type SavedSearchesClient = original.SavedSearchesClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewSavedSearchesClient(subscriptionID string) SavedSearchesClient {
 	return original.NewSavedSearchesClient(subscriptionID)
 }
@@ -101,4 +95,10 @@ func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 }
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

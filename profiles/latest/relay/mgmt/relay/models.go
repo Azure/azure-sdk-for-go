@@ -119,6 +119,18 @@ type NamespacesClient = original.NamespacesClient
 type OperationsClient = original.OperationsClient
 type WCFRelaysClient = original.WCFRelaysClient
 
+func NewHybridConnectionsClient(subscriptionID string) HybridConnectionsClient {
+	return original.NewHybridConnectionsClient(subscriptionID)
+}
+func NewHybridConnectionsClientWithBaseURI(baseURI string, subscriptionID string) HybridConnectionsClient {
+	return original.NewHybridConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
+}
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -142,16 +154,4 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewHybridConnectionsClient(subscriptionID string) HybridConnectionsClient {
-	return original.NewHybridConnectionsClient(subscriptionID)
-}
-func NewHybridConnectionsClientWithBaseURI(baseURI string, subscriptionID string) HybridConnectionsClient {
-	return original.NewHybridConnectionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
-}
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
 }

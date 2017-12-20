@@ -22,16 +22,17 @@ package commerce
 
 import original "github.com/Azure/azure-sdk-for-go/services/azsadmin/mgmt/2015-06-01-preview/commerce"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type Resource = original.Resource
 type UsageAggregate = original.UsageAggregate
 type UsageAggregateModel = original.UsageAggregateModel
 type UsageAggregatePage = original.UsageAggregatePage
 type SubscriberUsageAggregatesClient = original.SubscriberUsageAggregatesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 
 func NewSubscriberUsageAggregatesClient(subscriptionID string) SubscriberUsageAggregatesClient {
 	return original.NewSubscriberUsageAggregatesClient(subscriptionID)

@@ -48,12 +48,6 @@ type UserAssignedIdentitiesListResultPage = original.UserAssignedIdentitiesListR
 type OperationsClient = original.OperationsClient
 type UserAssignedIdentitiesClient = original.UserAssignedIdentitiesClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewUserAssignedIdentitiesClient(subscriptionID string) UserAssignedIdentitiesClient {
 	return original.NewUserAssignedIdentitiesClient(subscriptionID)
 }
@@ -71,4 +65,10 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

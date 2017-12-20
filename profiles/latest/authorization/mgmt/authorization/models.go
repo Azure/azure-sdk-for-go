@@ -22,6 +22,11 @@ package authorization
 
 import original "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type ClassicAdministrator = original.ClassicAdministrator
 type ClassicAdministratorListResult = original.ClassicAdministratorListResult
 type ClassicAdministratorListResultIterator = original.ClassicAdministratorListResultIterator
@@ -57,18 +62,6 @@ type RoleAssignmentsClient = original.RoleAssignmentsClient
 type RoleDefinitionsClient = original.RoleDefinitionsClient
 type ClassicAdministratorsClient = original.ClassicAdministratorsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func NewClassicAdministratorsClient(subscriptionID string) ClassicAdministratorsClient {
-	return original.NewClassicAdministratorsClient(subscriptionID)
-}
-func NewClassicAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ClassicAdministratorsClient {
-	return original.NewClassicAdministratorsClientWithBaseURI(baseURI, subscriptionID)
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -104,4 +97,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewClassicAdministratorsClient(subscriptionID string) ClassicAdministratorsClient {
+	return original.NewClassicAdministratorsClient(subscriptionID)
+}
+func NewClassicAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ClassicAdministratorsClient {
+	return original.NewClassicAdministratorsClientWithBaseURI(baseURI, subscriptionID)
 }

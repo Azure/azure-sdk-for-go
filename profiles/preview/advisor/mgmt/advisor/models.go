@@ -79,24 +79,6 @@ type OperationsClient = original.OperationsClient
 type RecommendationsClient = original.RecommendationsClient
 type SuppressionsClient = original.SuppressionsClient
 
-func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
-	return original.NewRecommendationsClient(subscriptionID)
-}
-func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) RecommendationsClient {
-	return original.NewRecommendationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSuppressionsClient(subscriptionID string) SuppressionsClient {
-	return original.NewSuppressionsClient(subscriptionID)
-}
-func NewSuppressionsClientWithBaseURI(baseURI string, subscriptionID string) SuppressionsClient {
-	return original.NewSuppressionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -114,4 +96,22 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
+	return original.NewRecommendationsClient(subscriptionID)
+}
+func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) RecommendationsClient {
+	return original.NewRecommendationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSuppressionsClient(subscriptionID string) SuppressionsClient {
+	return original.NewSuppressionsClient(subscriptionID)
+}
+func NewSuppressionsClientWithBaseURI(baseURI string, subscriptionID string) SuppressionsClient {
+	return original.NewSuppressionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

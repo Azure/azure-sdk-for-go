@@ -22,11 +22,6 @@ package analysisservices
 
 import original "github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2017-08-01-beta/analysisservices"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type ConnectionMode = original.ConnectionMode
 
 const (
@@ -115,6 +110,12 @@ type SkuEnumerationForExistingResourceResult = original.SkuEnumerationForExistin
 type SkuEnumerationForNewResourceResult = original.SkuEnumerationForNewResourceResult
 type OperationsClient = original.OperationsClient
 type ServersClient = original.ServersClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

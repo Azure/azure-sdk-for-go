@@ -22,6 +22,7 @@ package search
 
 import original "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2015-08-19/search"
 
+type ServicesClient = original.ServicesClient
 type AdminKeysClient = original.AdminKeysClient
 
 const (
@@ -93,14 +94,7 @@ type ServiceProperties = original.ServiceProperties
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type Sku = original.Sku
 type QueryKeysClient = original.QueryKeysClient
-type ServicesClient = original.ServicesClient
 
-func NewServicesClient(subscriptionID string) ServicesClient {
-	return original.NewServicesClient(subscriptionID)
-}
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
-	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -124,4 +118,10 @@ func NewQueryKeysClient(subscriptionID string) QueryKeysClient {
 }
 func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryKeysClient {
 	return original.NewQueryKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServicesClient(subscriptionID string) ServicesClient {
+	return original.NewServicesClient(subscriptionID)
+}
+func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
+	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
 }

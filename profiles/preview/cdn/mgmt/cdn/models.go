@@ -30,11 +30,11 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type EndpointsClient = original.EndpointsClient
-type OriginsClient = original.OriginsClient
-type OperationsClient = original.OperationsClient
-type CustomDomainsClient = original.CustomDomainsClient
 type EdgeNodesClient = original.EdgeNodesClient
+type OperationsClient = original.OperationsClient
+type OriginsClient = original.OriginsClient
+type CustomDomainsClient = original.CustomDomainsClient
+type EndpointsClient = original.EndpointsClient
 type CustomDomainResourceState = original.CustomDomainResourceState
 
 const (
@@ -213,17 +213,11 @@ type ValidateCustomDomainOutput = original.ValidateCustomDomainOutput
 type ValidateProbeInput = original.ValidateProbeInput
 type ValidateProbeOutput = original.ValidateProbeOutput
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewEndpointsClient(subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
 	return original.NewCustomDomainsClient(subscriptionID)
@@ -237,6 +231,18 @@ func NewEdgeNodesClient(subscriptionID string) EdgeNodesClient {
 func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string) EdgeNodesClient {
 	return original.NewEdgeNodesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOriginsClient(subscriptionID string) OriginsClient {
+	return original.NewOriginsClient(subscriptionID)
+}
+func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsClient {
+	return original.NewOriginsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewProfilesClient(subscriptionID string) ProfilesClient {
 	return original.NewProfilesClient(subscriptionID)
 }
@@ -249,21 +255,15 @@ func NewResourceUsageClient(subscriptionID string) ResourceUsageClient {
 func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string) ResourceUsageClient {
 	return original.NewResourceUsageClientWithBaseURI(baseURI, subscriptionID)
 }
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewEndpointsClient(subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClient(subscriptionID)
-}
-func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOriginsClient(subscriptionID string) OriginsClient {
-	return original.NewOriginsClient(subscriptionID)
-}
-func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsClient {
-	return original.NewOriginsClientWithBaseURI(baseURI, subscriptionID)
 }

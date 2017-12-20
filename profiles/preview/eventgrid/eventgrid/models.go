@@ -25,15 +25,15 @@ import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01
 type BaseClient = original.BaseClient
 type Event = original.Event
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func New() BaseClient {
 	return original.New()
 }
 func NewWithoutDefaults() BaseClient {
 	return original.NewWithoutDefaults()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

@@ -153,6 +153,12 @@ type USQLJobProperties = original.USQLJobProperties
 type PipelineClient = original.PipelineClient
 type RecurrenceClient = original.RecurrenceClient
 
+func NewPipelineClient() PipelineClient {
+	return original.NewPipelineClient()
+}
+func NewRecurrenceClient() RecurrenceClient {
+	return original.NewRecurrenceClient()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -167,10 +173,4 @@ func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
 }
 func NewClient() Client {
 	return original.NewClient()
-}
-func NewPipelineClient() PipelineClient {
-	return original.NewPipelineClient()
-}
-func NewRecurrenceClient() RecurrenceClient {
-	return original.NewRecurrenceClient()
 }

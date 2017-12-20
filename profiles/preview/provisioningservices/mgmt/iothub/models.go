@@ -125,12 +125,6 @@ type VerificationCodeResponse = original.VerificationCodeResponse
 type VerificationCodeResponseProperties = original.VerificationCodeResponseProperties
 type OperationsClient = original.OperationsClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewDpsCertificateClient(subscriptionID string) DpsCertificateClient {
 	return original.NewDpsCertificateClient(subscriptionID)
 }
@@ -160,4 +154,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,6 +22,12 @@ package iothub
 
 import original "github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2017-11-15/iothub"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type DpsCertificateClient = original.DpsCertificateClient
 type DpsCertificatesClient = original.DpsCertificatesClient
 type IotDpsResourceClient = original.IotDpsResourceClient
 type AccessRightsDescription = original.AccessRightsDescription
@@ -119,31 +125,6 @@ type VerificationCodeResponse = original.VerificationCodeResponse
 type VerificationCodeResponseProperties = original.VerificationCodeResponseProperties
 type OperationsClient = original.OperationsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type DpsCertificateClient = original.DpsCertificateClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewDpsCertificateClient(subscriptionID string) DpsCertificateClient {
-	return original.NewDpsCertificateClient(subscriptionID)
-}
-func NewDpsCertificateClientWithBaseURI(baseURI string, subscriptionID string) DpsCertificateClient {
-	return original.NewDpsCertificateClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDpsCertificatesClient(subscriptionID string) DpsCertificatesClient {
-	return original.NewDpsCertificatesClient(subscriptionID)
-}
-func NewDpsCertificatesClientWithBaseURI(baseURI string, subscriptionID string) DpsCertificatesClient {
-	return original.NewDpsCertificatesClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewIotDpsResourceClient(subscriptionID string) IotDpsResourceClient {
 	return original.NewIotDpsResourceClient(subscriptionID)
 }
@@ -161,4 +142,22 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewDpsCertificateClient(subscriptionID string) DpsCertificateClient {
+	return original.NewDpsCertificateClient(subscriptionID)
+}
+func NewDpsCertificateClientWithBaseURI(baseURI string, subscriptionID string) DpsCertificateClient {
+	return original.NewDpsCertificateClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDpsCertificatesClient(subscriptionID string) DpsCertificatesClient {
+	return original.NewDpsCertificatesClient(subscriptionID)
+}
+func NewDpsCertificatesClientWithBaseURI(baseURI string, subscriptionID string) DpsCertificatesClient {
+	return original.NewDpsCertificatesClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,17 +22,22 @@ package sql
 
 import original "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2017-03-01-preview/sql"
 
-type TransparentDataEncryptionActivitiesClient = original.TransparentDataEncryptionActivitiesClient
-type ElasticPoolActivitiesClient = original.ElasticPoolActivitiesClient
-type ElasticPoolDatabaseActivitiesClient = original.ElasticPoolDatabaseActivitiesClient
+type RestorableDroppedDatabasesClient = original.RestorableDroppedDatabasesClient
+type ServerCommunicationLinksClient = original.ServerCommunicationLinksClient
 type ServerDNSAliasesClient = original.ServerDNSAliasesClient
-type ServerKeysClient = original.ServerKeysClient
-type SubscriptionUsagesClient = original.SubscriptionUsagesClient
+type ServersClient = original.ServersClient
 type SyncGroupsClient = original.SyncGroupsClient
-type VirtualNetworkRulesClient = original.VirtualNetworkRulesClient
-type DataMaskingPoliciesClient = original.DataMaskingPoliciesClient
-type FailoverGroupsClient = original.FailoverGroupsClient
-type FirewallRulesClient = original.FirewallRulesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type DataMaskingRulesClient = original.DataMaskingRulesClient
+type ElasticPoolsClient = original.ElasticPoolsClient
+type RecommendedElasticPoolsClient = original.RecommendedElasticPoolsClient
+type ServerKeysClient = original.ServerKeysClient
+type ElasticPoolActivitiesClient = original.ElasticPoolActivitiesClient
 type AuthenticationType = original.AuthenticationType
 
 const (
@@ -763,136 +768,53 @@ type VirtualNetworkRuleListResultPage = original.VirtualNetworkRuleListResultPag
 type VirtualNetworkRuleProperties = original.VirtualNetworkRuleProperties
 type VirtualNetworkRulesCreateOrUpdateFuture = original.VirtualNetworkRulesCreateOrUpdateFuture
 type VirtualNetworkRulesDeleteFuture = original.VirtualNetworkRulesDeleteFuture
+type BackupLongTermRetentionPoliciesClient = original.BackupLongTermRetentionPoliciesClient
+type RecoverableDatabasesClient = original.RecoverableDatabasesClient
 type RestorePointsClient = original.RestorePointsClient
-type ServiceTierAdvisorsClient = original.ServiceTierAdvisorsClient
+type ServerUsagesClient = original.ServerUsagesClient
 type DatabaseOperationsClient = original.DatabaseOperationsClient
 type DatabaseThreatDetectionPoliciesClient = original.DatabaseThreatDetectionPoliciesClient
 type DatabaseUsagesClient = original.DatabaseUsagesClient
-type OperationsClient = original.OperationsClient
-type RestorableDroppedDatabasesClient = original.RestorableDroppedDatabasesClient
-type CapabilitiesClient = original.CapabilitiesClient
-type DataMaskingRulesClient = original.DataMaskingRulesClient
-type RecommendedElasticPoolsClient = original.RecommendedElasticPoolsClient
-type SyncMembersClient = original.SyncMembersClient
-type BackupLongTermRetentionVaultsClient = original.BackupLongTermRetentionVaultsClient
-type GeoBackupPoliciesClient = original.GeoBackupPoliciesClient
-type ReplicationLinksClient = original.ReplicationLinksClient
-type ServerCommunicationLinksClient = original.ServerCommunicationLinksClient
-type ElasticPoolsClient = original.ElasticPoolsClient
-type ServerAzureADAdministratorsClient = original.ServerAzureADAdministratorsClient
-type ServerConnectionPoliciesClient = original.ServerConnectionPoliciesClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type DatabasesClient = original.DatabasesClient
-type RecoverableDatabasesClient = original.RecoverableDatabasesClient
-type ServiceObjectivesClient = original.ServiceObjectivesClient
-type TransparentDataEncryptionsClient = original.TransparentDataEncryptionsClient
-type BackupLongTermRetentionPoliciesClient = original.BackupLongTermRetentionPoliciesClient
-type DatabaseBlobAuditingPoliciesClient = original.DatabaseBlobAuditingPoliciesClient
 type EncryptionProtectorsClient = original.EncryptionProtectorsClient
-type ServersClient = original.ServersClient
-type ServerUsagesClient = original.ServerUsagesClient
+type FailoverGroupsClient = original.FailoverGroupsClient
+type GeoBackupPoliciesClient = original.GeoBackupPoliciesClient
+type OperationsClient = original.OperationsClient
 type SyncAgentsClient = original.SyncAgentsClient
+type SyncMembersClient = original.SyncMembersClient
+type DataMaskingPoliciesClient = original.DataMaskingPoliciesClient
+type ServerAzureADAdministratorsClient = original.ServerAzureADAdministratorsClient
+type TransparentDataEncryptionsClient = original.TransparentDataEncryptionsClient
+type BackupLongTermRetentionVaultsClient = original.BackupLongTermRetentionVaultsClient
+type DatabasesClient = original.DatabasesClient
+type ElasticPoolDatabaseActivitiesClient = original.ElasticPoolDatabaseActivitiesClient
+type ReplicationLinksClient = original.ReplicationLinksClient
+type ServerConnectionPoliciesClient = original.ServerConnectionPoliciesClient
+type ServiceObjectivesClient = original.ServiceObjectivesClient
+type TransparentDataEncryptionActivitiesClient = original.TransparentDataEncryptionActivitiesClient
+type CapabilitiesClient = original.CapabilitiesClient
+type DatabaseBlobAuditingPoliciesClient = original.DatabaseBlobAuditingPoliciesClient
+type FirewallRulesClient = original.FirewallRulesClient
+type ServiceTierAdvisorsClient = original.ServiceTierAdvisorsClient
+type SubscriptionUsagesClient = original.SubscriptionUsagesClient
+type VirtualNetworkRulesClient = original.VirtualNetworkRulesClient
 
-func NewBackupLongTermRetentionPoliciesClient(subscriptionID string) BackupLongTermRetentionPoliciesClient {
-	return original.NewBackupLongTermRetentionPoliciesClient(subscriptionID)
-}
-func NewBackupLongTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupLongTermRetentionPoliciesClient {
-	return original.NewBackupLongTermRetentionPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDatabaseBlobAuditingPoliciesClient(subscriptionID string) DatabaseBlobAuditingPoliciesClient {
-	return original.NewDatabaseBlobAuditingPoliciesClient(subscriptionID)
-}
-func NewDatabaseBlobAuditingPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DatabaseBlobAuditingPoliciesClient {
-	return original.NewDatabaseBlobAuditingPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewEncryptionProtectorsClient(subscriptionID string) EncryptionProtectorsClient {
-	return original.NewEncryptionProtectorsClient(subscriptionID)
-}
-func NewEncryptionProtectorsClientWithBaseURI(baseURI string, subscriptionID string) EncryptionProtectorsClient {
-	return original.NewEncryptionProtectorsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServersClient(subscriptionID string) ServersClient {
-	return original.NewServersClient(subscriptionID)
-}
-func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
-	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServerUsagesClient(subscriptionID string) ServerUsagesClient {
-	return original.NewServerUsagesClient(subscriptionID)
-}
-func NewServerUsagesClientWithBaseURI(baseURI string, subscriptionID string) ServerUsagesClient {
-	return original.NewServerUsagesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSyncAgentsClient(subscriptionID string) SyncAgentsClient {
-	return original.NewSyncAgentsClient(subscriptionID)
-}
-func NewSyncAgentsClientWithBaseURI(baseURI string, subscriptionID string) SyncAgentsClient {
-	return original.NewSyncAgentsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewElasticPoolActivitiesClient(subscriptionID string) ElasticPoolActivitiesClient {
 	return original.NewElasticPoolActivitiesClient(subscriptionID)
 }
 func NewElasticPoolActivitiesClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolActivitiesClient {
 	return original.NewElasticPoolActivitiesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewElasticPoolDatabaseActivitiesClient(subscriptionID string) ElasticPoolDatabaseActivitiesClient {
-	return original.NewElasticPoolDatabaseActivitiesClient(subscriptionID)
+func NewBackupLongTermRetentionPoliciesClient(subscriptionID string) BackupLongTermRetentionPoliciesClient {
+	return original.NewBackupLongTermRetentionPoliciesClient(subscriptionID)
 }
-func NewElasticPoolDatabaseActivitiesClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolDatabaseActivitiesClient {
-	return original.NewElasticPoolDatabaseActivitiesClientWithBaseURI(baseURI, subscriptionID)
+func NewBackupLongTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupLongTermRetentionPoliciesClient {
+	return original.NewBackupLongTermRetentionPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewServerDNSAliasesClient(subscriptionID string) ServerDNSAliasesClient {
-	return original.NewServerDNSAliasesClient(subscriptionID)
+func NewRecoverableDatabasesClient(subscriptionID string) RecoverableDatabasesClient {
+	return original.NewRecoverableDatabasesClient(subscriptionID)
 }
-func NewServerDNSAliasesClientWithBaseURI(baseURI string, subscriptionID string) ServerDNSAliasesClient {
-	return original.NewServerDNSAliasesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServerKeysClient(subscriptionID string) ServerKeysClient {
-	return original.NewServerKeysClient(subscriptionID)
-}
-func NewServerKeysClientWithBaseURI(baseURI string, subscriptionID string) ServerKeysClient {
-	return original.NewServerKeysClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSubscriptionUsagesClient(subscriptionID string) SubscriptionUsagesClient {
-	return original.NewSubscriptionUsagesClient(subscriptionID)
-}
-func NewSubscriptionUsagesClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionUsagesClient {
-	return original.NewSubscriptionUsagesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSyncGroupsClient(subscriptionID string) SyncGroupsClient {
-	return original.NewSyncGroupsClient(subscriptionID)
-}
-func NewSyncGroupsClientWithBaseURI(baseURI string, subscriptionID string) SyncGroupsClient {
-	return original.NewSyncGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTransparentDataEncryptionActivitiesClient(subscriptionID string) TransparentDataEncryptionActivitiesClient {
-	return original.NewTransparentDataEncryptionActivitiesClient(subscriptionID)
-}
-func NewTransparentDataEncryptionActivitiesClientWithBaseURI(baseURI string, subscriptionID string) TransparentDataEncryptionActivitiesClient {
-	return original.NewTransparentDataEncryptionActivitiesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDataMaskingPoliciesClient(subscriptionID string) DataMaskingPoliciesClient {
-	return original.NewDataMaskingPoliciesClient(subscriptionID)
-}
-func NewDataMaskingPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DataMaskingPoliciesClient {
-	return original.NewDataMaskingPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewFailoverGroupsClient(subscriptionID string) FailoverGroupsClient {
-	return original.NewFailoverGroupsClient(subscriptionID)
-}
-func NewFailoverGroupsClientWithBaseURI(baseURI string, subscriptionID string) FailoverGroupsClient {
-	return original.NewFailoverGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClient(subscriptionID)
-}
-func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
+func NewRecoverableDatabasesClientWithBaseURI(baseURI string, subscriptionID string) RecoverableDatabasesClient {
+	return original.NewRecoverableDatabasesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRestorePointsClient(subscriptionID string) RestorePointsClient {
 	return original.NewRestorePointsClient(subscriptionID)
@@ -900,17 +822,29 @@ func NewRestorePointsClient(subscriptionID string) RestorePointsClient {
 func NewRestorePointsClientWithBaseURI(baseURI string, subscriptionID string) RestorePointsClient {
 	return original.NewRestorePointsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewServiceTierAdvisorsClient(subscriptionID string) ServiceTierAdvisorsClient {
-	return original.NewServiceTierAdvisorsClient(subscriptionID)
+func NewServerUsagesClient(subscriptionID string) ServerUsagesClient {
+	return original.NewServerUsagesClient(subscriptionID)
 }
-func NewServiceTierAdvisorsClientWithBaseURI(baseURI string, subscriptionID string) ServiceTierAdvisorsClient {
-	return original.NewServiceTierAdvisorsClientWithBaseURI(baseURI, subscriptionID)
+func NewServerUsagesClientWithBaseURI(baseURI string, subscriptionID string) ServerUsagesClient {
+	return original.NewServerUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewVirtualNetworkRulesClient(subscriptionID string) VirtualNetworkRulesClient {
-	return original.NewVirtualNetworkRulesClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewVirtualNetworkRulesClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkRulesClient {
-	return original.NewVirtualNetworkRulesClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSyncAgentsClient(subscriptionID string) SyncAgentsClient {
+	return original.NewSyncAgentsClient(subscriptionID)
+}
+func NewSyncAgentsClientWithBaseURI(baseURI string, subscriptionID string) SyncAgentsClient {
+	return original.NewSyncAgentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDatabaseOperationsClient(subscriptionID string) DatabaseOperationsClient {
 	return original.NewDatabaseOperationsClient(subscriptionID)
@@ -930,47 +864,17 @@ func NewDatabaseUsagesClient(subscriptionID string) DatabaseUsagesClient {
 func NewDatabaseUsagesClientWithBaseURI(baseURI string, subscriptionID string) DatabaseUsagesClient {
 	return original.NewDatabaseUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewEncryptionProtectorsClient(subscriptionID string) EncryptionProtectorsClient {
+	return original.NewEncryptionProtectorsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewEncryptionProtectorsClientWithBaseURI(baseURI string, subscriptionID string) EncryptionProtectorsClient {
+	return original.NewEncryptionProtectorsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewRestorableDroppedDatabasesClient(subscriptionID string) RestorableDroppedDatabasesClient {
-	return original.NewRestorableDroppedDatabasesClient(subscriptionID)
+func NewFailoverGroupsClient(subscriptionID string) FailoverGroupsClient {
+	return original.NewFailoverGroupsClient(subscriptionID)
 }
-func NewRestorableDroppedDatabasesClientWithBaseURI(baseURI string, subscriptionID string) RestorableDroppedDatabasesClient {
-	return original.NewRestorableDroppedDatabasesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewCapabilitiesClient(subscriptionID string) CapabilitiesClient {
-	return original.NewCapabilitiesClient(subscriptionID)
-}
-func NewCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string) CapabilitiesClient {
-	return original.NewCapabilitiesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDataMaskingRulesClient(subscriptionID string) DataMaskingRulesClient {
-	return original.NewDataMaskingRulesClient(subscriptionID)
-}
-func NewDataMaskingRulesClientWithBaseURI(baseURI string, subscriptionID string) DataMaskingRulesClient {
-	return original.NewDataMaskingRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRecommendedElasticPoolsClient(subscriptionID string) RecommendedElasticPoolsClient {
-	return original.NewRecommendedElasticPoolsClient(subscriptionID)
-}
-func NewRecommendedElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) RecommendedElasticPoolsClient {
-	return original.NewRecommendedElasticPoolsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSyncMembersClient(subscriptionID string) SyncMembersClient {
-	return original.NewSyncMembersClient(subscriptionID)
-}
-func NewSyncMembersClientWithBaseURI(baseURI string, subscriptionID string) SyncMembersClient {
-	return original.NewSyncMembersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewBackupLongTermRetentionVaultsClient(subscriptionID string) BackupLongTermRetentionVaultsClient {
-	return original.NewBackupLongTermRetentionVaultsClient(subscriptionID)
-}
-func NewBackupLongTermRetentionVaultsClientWithBaseURI(baseURI string, subscriptionID string) BackupLongTermRetentionVaultsClient {
-	return original.NewBackupLongTermRetentionVaultsClientWithBaseURI(baseURI, subscriptionID)
+func NewFailoverGroupsClientWithBaseURI(baseURI string, subscriptionID string) FailoverGroupsClient {
+	return original.NewFailoverGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewGeoBackupPoliciesClient(subscriptionID string) GeoBackupPoliciesClient {
 	return original.NewGeoBackupPoliciesClient(subscriptionID)
@@ -978,23 +882,17 @@ func NewGeoBackupPoliciesClient(subscriptionID string) GeoBackupPoliciesClient {
 func NewGeoBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) GeoBackupPoliciesClient {
 	return original.NewGeoBackupPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReplicationLinksClient(subscriptionID string) ReplicationLinksClient {
-	return original.NewReplicationLinksClient(subscriptionID)
+func NewSyncMembersClient(subscriptionID string) SyncMembersClient {
+	return original.NewSyncMembersClient(subscriptionID)
 }
-func NewReplicationLinksClientWithBaseURI(baseURI string, subscriptionID string) ReplicationLinksClient {
-	return original.NewReplicationLinksClientWithBaseURI(baseURI, subscriptionID)
+func NewSyncMembersClientWithBaseURI(baseURI string, subscriptionID string) SyncMembersClient {
+	return original.NewSyncMembersClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewServerCommunicationLinksClient(subscriptionID string) ServerCommunicationLinksClient {
-	return original.NewServerCommunicationLinksClient(subscriptionID)
+func NewDataMaskingPoliciesClient(subscriptionID string) DataMaskingPoliciesClient {
+	return original.NewDataMaskingPoliciesClient(subscriptionID)
 }
-func NewServerCommunicationLinksClientWithBaseURI(baseURI string, subscriptionID string) ServerCommunicationLinksClient {
-	return original.NewServerCommunicationLinksClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewElasticPoolsClient(subscriptionID string) ElasticPoolsClient {
-	return original.NewElasticPoolsClient(subscriptionID)
-}
-func NewElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolsClient {
-	return original.NewElasticPoolsClientWithBaseURI(baseURI, subscriptionID)
+func NewDataMaskingPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DataMaskingPoliciesClient {
+	return original.NewDataMaskingPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServerAzureADAdministratorsClient(subscriptionID string) ServerAzureADAdministratorsClient {
 	return original.NewServerAzureADAdministratorsClient(subscriptionID)
@@ -1002,17 +900,23 @@ func NewServerAzureADAdministratorsClient(subscriptionID string) ServerAzureADAd
 func NewServerAzureADAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ServerAzureADAdministratorsClient {
 	return original.NewServerAzureADAdministratorsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewServerConnectionPoliciesClient(subscriptionID string) ServerConnectionPoliciesClient {
-	return original.NewServerConnectionPoliciesClient(subscriptionID)
+func NewTransparentDataEncryptionsClient(subscriptionID string) TransparentDataEncryptionsClient {
+	return original.NewTransparentDataEncryptionsClient(subscriptionID)
 }
-func NewServerConnectionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ServerConnectionPoliciesClient {
-	return original.NewServerConnectionPoliciesClientWithBaseURI(baseURI, subscriptionID)
+func NewTransparentDataEncryptionsClientWithBaseURI(baseURI string, subscriptionID string) TransparentDataEncryptionsClient {
+	return original.NewTransparentDataEncryptionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewTransparentDataEncryptionActivitiesClient(subscriptionID string) TransparentDataEncryptionActivitiesClient {
+	return original.NewTransparentDataEncryptionActivitiesClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewTransparentDataEncryptionActivitiesClientWithBaseURI(baseURI string, subscriptionID string) TransparentDataEncryptionActivitiesClient {
+	return original.NewTransparentDataEncryptionActivitiesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBackupLongTermRetentionVaultsClient(subscriptionID string) BackupLongTermRetentionVaultsClient {
+	return original.NewBackupLongTermRetentionVaultsClient(subscriptionID)
+}
+func NewBackupLongTermRetentionVaultsClientWithBaseURI(baseURI string, subscriptionID string) BackupLongTermRetentionVaultsClient {
+	return original.NewBackupLongTermRetentionVaultsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDatabasesClient(subscriptionID string) DatabasesClient {
 	return original.NewDatabasesClient(subscriptionID)
@@ -1020,11 +924,23 @@ func NewDatabasesClient(subscriptionID string) DatabasesClient {
 func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
 	return original.NewDatabasesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewRecoverableDatabasesClient(subscriptionID string) RecoverableDatabasesClient {
-	return original.NewRecoverableDatabasesClient(subscriptionID)
+func NewElasticPoolDatabaseActivitiesClient(subscriptionID string) ElasticPoolDatabaseActivitiesClient {
+	return original.NewElasticPoolDatabaseActivitiesClient(subscriptionID)
 }
-func NewRecoverableDatabasesClientWithBaseURI(baseURI string, subscriptionID string) RecoverableDatabasesClient {
-	return original.NewRecoverableDatabasesClientWithBaseURI(baseURI, subscriptionID)
+func NewElasticPoolDatabaseActivitiesClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolDatabaseActivitiesClient {
+	return original.NewElasticPoolDatabaseActivitiesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewReplicationLinksClient(subscriptionID string) ReplicationLinksClient {
+	return original.NewReplicationLinksClient(subscriptionID)
+}
+func NewReplicationLinksClientWithBaseURI(baseURI string, subscriptionID string) ReplicationLinksClient {
+	return original.NewReplicationLinksClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerConnectionPoliciesClient(subscriptionID string) ServerConnectionPoliciesClient {
+	return original.NewServerConnectionPoliciesClient(subscriptionID)
+}
+func NewServerConnectionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ServerConnectionPoliciesClient {
+	return original.NewServerConnectionPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServiceObjectivesClient(subscriptionID string) ServiceObjectivesClient {
 	return original.NewServiceObjectivesClient(subscriptionID)
@@ -1032,15 +948,99 @@ func NewServiceObjectivesClient(subscriptionID string) ServiceObjectivesClient {
 func NewServiceObjectivesClientWithBaseURI(baseURI string, subscriptionID string) ServiceObjectivesClient {
 	return original.NewServiceObjectivesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTransparentDataEncryptionsClient(subscriptionID string) TransparentDataEncryptionsClient {
-	return original.NewTransparentDataEncryptionsClient(subscriptionID)
+func NewCapabilitiesClient(subscriptionID string) CapabilitiesClient {
+	return original.NewCapabilitiesClient(subscriptionID)
 }
-func NewTransparentDataEncryptionsClientWithBaseURI(baseURI string, subscriptionID string) TransparentDataEncryptionsClient {
-	return original.NewTransparentDataEncryptionsClientWithBaseURI(baseURI, subscriptionID)
+func NewCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string) CapabilitiesClient {
+	return original.NewCapabilitiesClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewDatabaseBlobAuditingPoliciesClient(subscriptionID string) DatabaseBlobAuditingPoliciesClient {
+	return original.NewDatabaseBlobAuditingPoliciesClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewDatabaseBlobAuditingPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DatabaseBlobAuditingPoliciesClient {
+	return original.NewDatabaseBlobAuditingPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClient(subscriptionID)
+}
+func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceTierAdvisorsClient(subscriptionID string) ServiceTierAdvisorsClient {
+	return original.NewServiceTierAdvisorsClient(subscriptionID)
+}
+func NewServiceTierAdvisorsClientWithBaseURI(baseURI string, subscriptionID string) ServiceTierAdvisorsClient {
+	return original.NewServiceTierAdvisorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubscriptionUsagesClient(subscriptionID string) SubscriptionUsagesClient {
+	return original.NewSubscriptionUsagesClient(subscriptionID)
+}
+func NewSubscriptionUsagesClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionUsagesClient {
+	return original.NewSubscriptionUsagesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualNetworkRulesClient(subscriptionID string) VirtualNetworkRulesClient {
+	return original.NewVirtualNetworkRulesClient(subscriptionID)
+}
+func NewVirtualNetworkRulesClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkRulesClient {
+	return original.NewVirtualNetworkRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableDroppedDatabasesClient(subscriptionID string) RestorableDroppedDatabasesClient {
+	return original.NewRestorableDroppedDatabasesClient(subscriptionID)
+}
+func NewRestorableDroppedDatabasesClientWithBaseURI(baseURI string, subscriptionID string) RestorableDroppedDatabasesClient {
+	return original.NewRestorableDroppedDatabasesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerCommunicationLinksClient(subscriptionID string) ServerCommunicationLinksClient {
+	return original.NewServerCommunicationLinksClient(subscriptionID)
+}
+func NewServerCommunicationLinksClientWithBaseURI(baseURI string, subscriptionID string) ServerCommunicationLinksClient {
+	return original.NewServerCommunicationLinksClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerDNSAliasesClient(subscriptionID string) ServerDNSAliasesClient {
+	return original.NewServerDNSAliasesClient(subscriptionID)
+}
+func NewServerDNSAliasesClientWithBaseURI(baseURI string, subscriptionID string) ServerDNSAliasesClient {
+	return original.NewServerDNSAliasesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServersClient(subscriptionID string) ServersClient {
+	return original.NewServersClient(subscriptionID)
+}
+func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
+	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSyncGroupsClient(subscriptionID string) SyncGroupsClient {
+	return original.NewSyncGroupsClient(subscriptionID)
+}
+func NewSyncGroupsClientWithBaseURI(baseURI string, subscriptionID string) SyncGroupsClient {
+	return original.NewSyncGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewDataMaskingRulesClient(subscriptionID string) DataMaskingRulesClient {
+	return original.NewDataMaskingRulesClient(subscriptionID)
+}
+func NewDataMaskingRulesClientWithBaseURI(baseURI string, subscriptionID string) DataMaskingRulesClient {
+	return original.NewDataMaskingRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewElasticPoolsClient(subscriptionID string) ElasticPoolsClient {
+	return original.NewElasticPoolsClient(subscriptionID)
+}
+func NewElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolsClient {
+	return original.NewElasticPoolsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRecommendedElasticPoolsClient(subscriptionID string) RecommendedElasticPoolsClient {
+	return original.NewRecommendedElasticPoolsClient(subscriptionID)
+}
+func NewRecommendedElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) RecommendedElasticPoolsClient {
+	return original.NewRecommendedElasticPoolsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerKeysClient(subscriptionID string) ServerKeysClient {
+	return original.NewServerKeysClient(subscriptionID)
+}
+func NewServerKeysClientWithBaseURI(baseURI string, subscriptionID string) ServerKeysClient {
+	return original.NewServerKeysClientWithBaseURI(baseURI, subscriptionID)
 }

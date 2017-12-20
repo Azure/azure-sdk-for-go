@@ -176,6 +176,12 @@ const (
 
 type BaseClient = original.BaseClient
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
@@ -187,10 +193,4 @@ func NewWebClient() WebClient {
 }
 func NewWebClientWithBaseURI(baseURI string) WebClient {
 	return original.NewWebClientWithBaseURI(baseURI)
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
 }

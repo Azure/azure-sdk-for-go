@@ -22,6 +22,12 @@ package search
 
 import original "github.com/Azure/azure-sdk-for-go/services/search/2016-09-01/search"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type DataSourcesClient = original.DataSourcesClient
 type DocumentsProxyClient = original.DocumentsProxyClient
 type IndexersClient = original.IndexersClient
 type IndexesClient = original.IndexesClient
@@ -550,19 +556,6 @@ type UaxURLEmailTokenizer = original.UaxURLEmailTokenizer
 type UniqueTokenFilter = original.UniqueTokenFilter
 type WordDelimiterTokenFilter = original.WordDelimiterTokenFilter
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type DataSourcesClient = original.DataSourcesClient
-
-func NewIndexesClient() IndexesClient {
-	return original.NewIndexesClient()
-}
-func NewIndexesClientWithBaseURI(baseURI string) IndexesClient {
-	return original.NewIndexesClientWithBaseURI(baseURI)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
@@ -592,4 +585,10 @@ func NewIndexersClient() IndexersClient {
 }
 func NewIndexersClientWithBaseURI(baseURI string) IndexersClient {
 	return original.NewIndexersClientWithBaseURI(baseURI)
+}
+func NewIndexesClient() IndexesClient {
+	return original.NewIndexesClient()
+}
+func NewIndexesClientWithBaseURI(baseURI string) IndexesClient {
+	return original.NewIndexesClientWithBaseURI(baseURI)
 }

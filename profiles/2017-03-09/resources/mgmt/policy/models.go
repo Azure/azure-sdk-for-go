@@ -49,6 +49,12 @@ type DefinitionListResultIterator = original.DefinitionListResultIterator
 type DefinitionListResultPage = original.DefinitionListResultPage
 type DefinitionProperties = original.DefinitionProperties
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/2017-03-09"
+}
+func Version() string {
+	return original.Version()
+}
 func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
 	return original.NewAssignmentsClient(subscriptionID)
 }
@@ -66,10 +72,4 @@ func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
 }
 func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) DefinitionsClient {
 	return original.NewDefinitionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/2017-03-09"
-}
-func Version() string {
-	return original.Version()
 }

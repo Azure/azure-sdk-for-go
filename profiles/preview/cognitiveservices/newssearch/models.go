@@ -129,12 +129,6 @@ type TrendingTopics = original.TrendingTopics
 type VideoObject = original.VideoObject
 type NewsClient = original.NewsClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func New() BaseClient {
 	return original.New()
 }
@@ -146,4 +140,10 @@ func NewNewsClient() NewsClient {
 }
 func NewNewsClientWithBaseURI(baseURI string) NewsClient {
 	return original.NewNewsClientWithBaseURI(baseURI)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

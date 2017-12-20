@@ -63,24 +63,6 @@ type ProviderOperationsMetadataClient = original.ProviderOperationsMetadataClien
 type RoleAssignmentsClient = original.RoleAssignmentsClient
 type RoleDefinitionsClient = original.RoleDefinitionsClient
 
-func NewPermissionsClient(subscriptionID string) PermissionsClient {
-	return original.NewPermissionsClient(subscriptionID)
-}
-func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) PermissionsClient {
-	return original.NewPermissionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProviderOperationsMetadataClient(subscriptionID string) ProviderOperationsMetadataClient {
-	return original.NewProviderOperationsMetadataClient(subscriptionID)
-}
-func NewProviderOperationsMetadataClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsMetadataClient {
-	return original.NewProviderOperationsMetadataClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
-	return original.NewRoleAssignmentsClient(subscriptionID)
-}
-func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
-	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
 	return original.NewRoleDefinitionsClient(subscriptionID)
 }
@@ -104,4 +86,22 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewPermissionsClient(subscriptionID string) PermissionsClient {
+	return original.NewPermissionsClient(subscriptionID)
+}
+func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) PermissionsClient {
+	return original.NewPermissionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProviderOperationsMetadataClient(subscriptionID string) ProviderOperationsMetadataClient {
+	return original.NewProviderOperationsMetadataClient(subscriptionID)
+}
+func NewProviderOperationsMetadataClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsMetadataClient {
+	return original.NewProviderOperationsMetadataClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClient(subscriptionID)
+}
+func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }

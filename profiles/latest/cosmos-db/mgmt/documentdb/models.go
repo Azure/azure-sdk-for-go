@@ -22,9 +22,11 @@ package documentdb
 
 import original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2015-04-08/documentdb"
 
-type CollectionRegionClient = original.CollectionRegionClient
-type DatabaseClient = original.DatabaseClient
+type DatabaseAccountRegionClient = original.DatabaseAccountRegionClient
 type DatabaseAccountsClient = original.DatabaseAccountsClient
+type DatabaseClient = original.DatabaseClient
+type CollectionClient = original.CollectionClient
+type CollectionRegionClient = original.CollectionRegionClient
 type DatabaseAccountKind = original.DatabaseAccountKind
 
 const (
@@ -123,20 +125,18 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type CollectionClient = original.CollectionClient
-type DatabaseAccountRegionClient = original.DatabaseAccountRegionClient
 
-func NewCollectionRegionClient(subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) CollectionRegionClient {
-	return original.NewCollectionRegionClient(subscriptionID, filter, filter1, databaseRid, collectionRid, region)
-}
-func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) CollectionRegionClient {
-	return original.NewCollectionRegionClientWithBaseURI(baseURI, subscriptionID, filter, filter1, databaseRid, collectionRid, region)
-}
 func NewDatabaseClient(subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) DatabaseClient {
 	return original.NewDatabaseClient(subscriptionID, filter, filter1, databaseRid, collectionRid, region)
 }
 func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) DatabaseClient {
 	return original.NewDatabaseClientWithBaseURI(baseURI, subscriptionID, filter, filter1, databaseRid, collectionRid, region)
+}
+func NewDatabaseAccountRegionClient(subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) DatabaseAccountRegionClient {
+	return original.NewDatabaseAccountRegionClient(subscriptionID, filter, filter1, databaseRid, collectionRid, region)
+}
+func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) DatabaseAccountRegionClient {
+	return original.NewDatabaseAccountRegionClientWithBaseURI(baseURI, subscriptionID, filter, filter1, databaseRid, collectionRid, region)
 }
 func NewDatabaseAccountsClient(subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) DatabaseAccountsClient {
 	return original.NewDatabaseAccountsClient(subscriptionID, filter, filter1, databaseRid, collectionRid, region)
@@ -144,17 +144,17 @@ func NewDatabaseAccountsClient(subscriptionID string, filter string, filter1 str
 func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) DatabaseAccountsClient {
 	return original.NewDatabaseAccountsClientWithBaseURI(baseURI, subscriptionID, filter, filter1, databaseRid, collectionRid, region)
 }
-func NewOperationsClient(subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, filter, filter1, databaseRid, collectionRid, region)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, filter, filter1, databaseRid, collectionRid, region)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+func NewOperationsClient(subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, filter, filter1, databaseRid, collectionRid, region)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, filter, filter1, databaseRid, collectionRid, region)
 }
 func New(subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) BaseClient {
 	return original.New(subscriptionID, filter, filter1, databaseRid, collectionRid, region)
@@ -168,9 +168,9 @@ func NewCollectionClient(subscriptionID string, filter string, filter1 string, d
 func NewCollectionClientWithBaseURI(baseURI string, subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) CollectionClient {
 	return original.NewCollectionClientWithBaseURI(baseURI, subscriptionID, filter, filter1, databaseRid, collectionRid, region)
 }
-func NewDatabaseAccountRegionClient(subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) DatabaseAccountRegionClient {
-	return original.NewDatabaseAccountRegionClient(subscriptionID, filter, filter1, databaseRid, collectionRid, region)
+func NewCollectionRegionClient(subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) CollectionRegionClient {
+	return original.NewCollectionRegionClient(subscriptionID, filter, filter1, databaseRid, collectionRid, region)
 }
-func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) DatabaseAccountRegionClient {
-	return original.NewDatabaseAccountRegionClientWithBaseURI(baseURI, subscriptionID, filter, filter1, databaseRid, collectionRid, region)
+func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) CollectionRegionClient {
+	return original.NewCollectionRegionClientWithBaseURI(baseURI, subscriptionID, filter, filter1, databaseRid, collectionRid, region)
 }

@@ -22,8 +22,6 @@ package notificationhubs
 
 import original "github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs"
 
-type Client = original.Client
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -98,13 +96,8 @@ type WnsCredential = original.WnsCredential
 type WnsCredentialProperties = original.WnsCredentialProperties
 type NameClient = original.NameClient
 type NamespacesClient = original.NamespacesClient
+type Client = original.Client
 
-func NewNameClient(subscriptionID string) NameClient {
-	return original.NewNameClient(subscriptionID)
-}
-func NewNameClientWithBaseURI(baseURI string, subscriptionID string) NameClient {
-	return original.NewNameClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewNamespacesClient(subscriptionID string) NamespacesClient {
 	return original.NewNamespacesClient(subscriptionID)
 }
@@ -134,4 +127,10 @@ func NewHubsClient(subscriptionID string) HubsClient {
 }
 func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient {
 	return original.NewHubsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNameClient(subscriptionID string) NameClient {
+	return original.NewNameClient(subscriptionID)
+}
+func NewNameClientWithBaseURI(baseURI string, subscriptionID string) NameClient {
+	return original.NewNameClientWithBaseURI(baseURI, subscriptionID)
 }

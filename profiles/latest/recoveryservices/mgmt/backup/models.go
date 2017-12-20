@@ -22,10 +22,12 @@ package backup
 
 import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2017-07-01/backup"
 
-type ProtectionPolicyOperationResultsClient = original.ProtectionPolicyOperationResultsClient
+type ResourceStorageConfigsClient = original.ResourceStorageConfigsClient
+type SecurityPINsClient = original.SecurityPINsClient
+type UsageSummariesClient = original.UsageSummariesClient
+type ProtectionContainerOperationResultsClient = original.ProtectionContainerOperationResultsClient
 type ProtectionPolicyOperationStatusesClient = original.ProtectionPolicyOperationStatusesClient
-type ProtectionContainersClient = original.ProtectionContainersClient
-type JobsGroupClient = original.JobsGroupClient
+type JobOperationResultsClient = original.JobOperationResultsClient
 type BackupEngineType = original.BackupEngineType
 
 const (
@@ -682,219 +684,43 @@ type WorkloadProtectableItemResourceList = original.WorkloadProtectableItemResou
 type WorkloadProtectableItemResourceListIterator = original.WorkloadProtectableItemResourceListIterator
 type WorkloadProtectableItemResourceListPage = original.WorkloadProtectableItemResourceListPage
 type YearlyRetentionSchedule = original.YearlyRetentionSchedule
-type OperationResultsClient = original.OperationResultsClient
-type ProtectionContainerOperationResultsClient = original.ProtectionContainerOperationResultsClient
-type RecoveryPointsClient = original.RecoveryPointsClient
-type SecurityPINsClient = original.SecurityPINsClient
-type JobDetailsClient = original.JobDetailsClient
+type ProtectedItemsClient = original.ProtectedItemsClient
+type BackupsClient = original.BackupsClient
 type ExportJobsOperationResultsClient = original.ExportJobsOperationResultsClient
-type RestoresClient = original.RestoresClient
+type ProtectionContainersGroupClient = original.ProtectionContainersGroupClient
+type ProtectionPoliciesClient = original.ProtectionPoliciesClient
+type ResourceVaultConfigsClient = original.ResourceVaultConfigsClient
+type OperationResultsClient = original.OperationResultsClient
+type OperationStatusesClient = original.OperationStatusesClient
+type OperationsClient = original.OperationsClient
+type ProtectedItemOperationStatusesClient = original.ProtectedItemOperationStatusesClient
+type ProtectionContainersClient = original.ProtectionContainersClient
+type EnginesClient = original.EnginesClient
+type ItemLevelRecoveryConnectionsClient = original.ItemLevelRecoveryConnectionsClient
+type RecoveryPointsClient = original.RecoveryPointsClient
+type PoliciesClient = original.PoliciesClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type ResourceVaultConfigsClient = original.ResourceVaultConfigsClient
-type OperationsClient = original.OperationsClient
-type JobsClient = original.JobsClient
-type OperationStatusesClient = original.OperationStatusesClient
-type ProtectedItemOperationResultsClient = original.ProtectedItemOperationResultsClient
 type JobCancellationsClient = original.JobCancellationsClient
-type JobOperationResultsClient = original.JobOperationResultsClient
-type PoliciesClient = original.PoliciesClient
 type ProtectableItemsClient = original.ProtectableItemsClient
-type ProtectedItemsGroupClient = original.ProtectedItemsGroupClient
+type ProtectedItemOperationResultsClient = original.ProtectedItemOperationResultsClient
 type ProtectionContainerRefreshOperationResultsClient = original.ProtectionContainerRefreshOperationResultsClient
-type EnginesClient = original.EnginesClient
-type ProtectedItemsClient = original.ProtectedItemsClient
-type ProtectionPoliciesClient = original.ProtectionPoliciesClient
-type BackupsClient = original.BackupsClient
-type ProtectedItemOperationStatusesClient = original.ProtectedItemOperationStatusesClient
-type ProtectionContainersGroupClient = original.ProtectionContainersGroupClient
-type ResourceStorageConfigsClient = original.ResourceStorageConfigsClient
-type UsageSummariesClient = original.UsageSummariesClient
-type ItemLevelRecoveryConnectionsClient = original.ItemLevelRecoveryConnectionsClient
+type JobDetailsClient = original.JobDetailsClient
+type JobsClient = original.JobsClient
+type ProtectionPolicyOperationResultsClient = original.ProtectionPolicyOperationResultsClient
+type RestoresClient = original.RestoresClient
+type JobsGroupClient = original.JobsGroupClient
+type ProtectedItemsGroupClient = original.ProtectedItemsGroupClient
 
-func NewOperationResultsClient(subscriptionID string) OperationResultsClient {
-	return original.NewOperationResultsClient(subscriptionID)
-}
-func NewOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) OperationResultsClient {
-	return original.NewOperationResultsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewProtectionContainerOperationResultsClient(subscriptionID string) ProtectionContainerOperationResultsClient {
 	return original.NewProtectionContainerOperationResultsClient(subscriptionID)
 }
 func NewProtectionContainerOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) ProtectionContainerOperationResultsClient {
 	return original.NewProtectionContainerOperationResultsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRecoveryPointsClient(subscriptionID string) RecoveryPointsClient {
-	return original.NewRecoveryPointsClient(subscriptionID)
-}
-func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string) RecoveryPointsClient {
-	return original.NewRecoveryPointsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSecurityPINsClient(subscriptionID string) SecurityPINsClient {
-	return original.NewSecurityPINsClient(subscriptionID)
-}
-func NewSecurityPINsClientWithBaseURI(baseURI string, subscriptionID string) SecurityPINsClient {
-	return original.NewSecurityPINsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewJobDetailsClient(subscriptionID string) JobDetailsClient {
-	return original.NewJobDetailsClient(subscriptionID)
-}
-func NewJobDetailsClientWithBaseURI(baseURI string, subscriptionID string) JobDetailsClient {
-	return original.NewJobDetailsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewJobsGroupClient(subscriptionID string) JobsGroupClient {
-	return original.NewJobsGroupClient(subscriptionID)
-}
-func NewJobsGroupClientWithBaseURI(baseURI string, subscriptionID string) JobsGroupClient {
-	return original.NewJobsGroupClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRestoresClient(subscriptionID string) RestoresClient {
-	return original.NewRestoresClient(subscriptionID)
-}
-func NewRestoresClientWithBaseURI(baseURI string, subscriptionID string) RestoresClient {
-	return original.NewRestoresClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewExportJobsOperationResultsClient(subscriptionID string) ExportJobsOperationResultsClient {
-	return original.NewExportJobsOperationResultsClient(subscriptionID)
-}
-func NewExportJobsOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) ExportJobsOperationResultsClient {
-	return original.NewExportJobsOperationResultsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewResourceVaultConfigsClient(subscriptionID string) ResourceVaultConfigsClient {
-	return original.NewResourceVaultConfigsClient(subscriptionID)
-}
-func NewResourceVaultConfigsClientWithBaseURI(baseURI string, subscriptionID string) ResourceVaultConfigsClient {
-	return original.NewResourceVaultConfigsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationStatusesClient(subscriptionID string) OperationStatusesClient {
-	return original.NewOperationStatusesClient(subscriptionID)
-}
-func NewOperationStatusesClientWithBaseURI(baseURI string, subscriptionID string) OperationStatusesClient {
-	return original.NewOperationStatusesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProtectedItemOperationResultsClient(subscriptionID string) ProtectedItemOperationResultsClient {
-	return original.NewProtectedItemOperationResultsClient(subscriptionID)
-}
-func NewProtectedItemOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) ProtectedItemOperationResultsClient {
-	return original.NewProtectedItemOperationResultsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewJobCancellationsClient(subscriptionID string) JobCancellationsClient {
-	return original.NewJobCancellationsClient(subscriptionID)
-}
-func NewJobCancellationsClientWithBaseURI(baseURI string, subscriptionID string) JobCancellationsClient {
-	return original.NewJobCancellationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewJobsClient(subscriptionID string) JobsClient {
-	return original.NewJobsClient(subscriptionID)
-}
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
-	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPoliciesClient(subscriptionID string) PoliciesClient {
-	return original.NewPoliciesClient(subscriptionID)
-}
-func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
-	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProtectableItemsClient(subscriptionID string) ProtectableItemsClient {
-	return original.NewProtectableItemsClient(subscriptionID)
-}
-func NewProtectableItemsClientWithBaseURI(baseURI string, subscriptionID string) ProtectableItemsClient {
-	return original.NewProtectableItemsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProtectedItemsGroupClient(subscriptionID string) ProtectedItemsGroupClient {
-	return original.NewProtectedItemsGroupClient(subscriptionID)
-}
-func NewProtectedItemsGroupClientWithBaseURI(baseURI string, subscriptionID string) ProtectedItemsGroupClient {
-	return original.NewProtectedItemsGroupClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProtectionContainerRefreshOperationResultsClient(subscriptionID string) ProtectionContainerRefreshOperationResultsClient {
-	return original.NewProtectionContainerRefreshOperationResultsClient(subscriptionID)
-}
-func NewProtectionContainerRefreshOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) ProtectionContainerRefreshOperationResultsClient {
-	return original.NewProtectionContainerRefreshOperationResultsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewEnginesClient(subscriptionID string) EnginesClient {
-	return original.NewEnginesClient(subscriptionID)
-}
-func NewEnginesClientWithBaseURI(baseURI string, subscriptionID string) EnginesClient {
-	return original.NewEnginesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewJobOperationResultsClient(subscriptionID string) JobOperationResultsClient {
-	return original.NewJobOperationResultsClient(subscriptionID)
-}
-func NewJobOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) JobOperationResultsClient {
-	return original.NewJobOperationResultsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProtectionPoliciesClient(subscriptionID string) ProtectionPoliciesClient {
-	return original.NewProtectionPoliciesClient(subscriptionID)
-}
-func NewProtectionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ProtectionPoliciesClient {
-	return original.NewProtectionPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewBackupsClient(subscriptionID string) BackupsClient {
-	return original.NewBackupsClient(subscriptionID)
-}
-func NewBackupsClientWithBaseURI(baseURI string, subscriptionID string) BackupsClient {
-	return original.NewBackupsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProtectedItemsClient(subscriptionID string) ProtectedItemsClient {
-	return original.NewProtectedItemsClient(subscriptionID)
-}
-func NewProtectedItemsClientWithBaseURI(baseURI string, subscriptionID string) ProtectedItemsClient {
-	return original.NewProtectedItemsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProtectionContainersGroupClient(subscriptionID string) ProtectionContainersGroupClient {
-	return original.NewProtectionContainersGroupClient(subscriptionID)
-}
-func NewProtectionContainersGroupClientWithBaseURI(baseURI string, subscriptionID string) ProtectionContainersGroupClient {
-	return original.NewProtectionContainersGroupClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewResourceStorageConfigsClient(subscriptionID string) ResourceStorageConfigsClient {
-	return original.NewResourceStorageConfigsClient(subscriptionID)
-}
-func NewResourceStorageConfigsClientWithBaseURI(baseURI string, subscriptionID string) ResourceStorageConfigsClient {
-	return original.NewResourceStorageConfigsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUsageSummariesClient(subscriptionID string) UsageSummariesClient {
-	return original.NewUsageSummariesClient(subscriptionID)
-}
-func NewUsageSummariesClientWithBaseURI(baseURI string, subscriptionID string) UsageSummariesClient {
-	return original.NewUsageSummariesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewItemLevelRecoveryConnectionsClient(subscriptionID string) ItemLevelRecoveryConnectionsClient {
-	return original.NewItemLevelRecoveryConnectionsClient(subscriptionID)
-}
-func NewItemLevelRecoveryConnectionsClientWithBaseURI(baseURI string, subscriptionID string) ItemLevelRecoveryConnectionsClient {
-	return original.NewItemLevelRecoveryConnectionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProtectedItemOperationStatusesClient(subscriptionID string) ProtectedItemOperationStatusesClient {
-	return original.NewProtectedItemOperationStatusesClient(subscriptionID)
-}
-func NewProtectedItemOperationStatusesClientWithBaseURI(baseURI string, subscriptionID string) ProtectedItemOperationStatusesClient {
-	return original.NewProtectedItemOperationStatusesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProtectionPolicyOperationStatusesClient(subscriptionID string) ProtectionPolicyOperationStatusesClient {
 	return original.NewProtectionPolicyOperationStatusesClient(subscriptionID)
@@ -902,15 +728,189 @@ func NewProtectionPolicyOperationStatusesClient(subscriptionID string) Protectio
 func NewProtectionPolicyOperationStatusesClientWithBaseURI(baseURI string, subscriptionID string) ProtectionPolicyOperationStatusesClient {
 	return original.NewProtectionPolicyOperationStatusesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewResourceStorageConfigsClient(subscriptionID string) ResourceStorageConfigsClient {
+	return original.NewResourceStorageConfigsClient(subscriptionID)
+}
+func NewResourceStorageConfigsClientWithBaseURI(baseURI string, subscriptionID string) ResourceStorageConfigsClient {
+	return original.NewResourceStorageConfigsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSecurityPINsClient(subscriptionID string) SecurityPINsClient {
+	return original.NewSecurityPINsClient(subscriptionID)
+}
+func NewSecurityPINsClientWithBaseURI(baseURI string, subscriptionID string) SecurityPINsClient {
+	return original.NewSecurityPINsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageSummariesClient(subscriptionID string) UsageSummariesClient {
+	return original.NewUsageSummariesClient(subscriptionID)
+}
+func NewUsageSummariesClientWithBaseURI(baseURI string, subscriptionID string) UsageSummariesClient {
+	return original.NewUsageSummariesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
+func NewBackupsClient(subscriptionID string) BackupsClient {
+	return original.NewBackupsClient(subscriptionID)
+}
+func NewBackupsClientWithBaseURI(baseURI string, subscriptionID string) BackupsClient {
+	return original.NewBackupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExportJobsOperationResultsClient(subscriptionID string) ExportJobsOperationResultsClient {
+	return original.NewExportJobsOperationResultsClient(subscriptionID)
+}
+func NewExportJobsOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) ExportJobsOperationResultsClient {
+	return original.NewExportJobsOperationResultsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobOperationResultsClient(subscriptionID string) JobOperationResultsClient {
+	return original.NewJobOperationResultsClient(subscriptionID)
+}
+func NewJobOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) JobOperationResultsClient {
+	return original.NewJobOperationResultsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProtectedItemsClient(subscriptionID string) ProtectedItemsClient {
+	return original.NewProtectedItemsClient(subscriptionID)
+}
+func NewProtectedItemsClientWithBaseURI(baseURI string, subscriptionID string) ProtectedItemsClient {
+	return original.NewProtectedItemsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationResultsClient(subscriptionID string) OperationResultsClient {
+	return original.NewOperationResultsClient(subscriptionID)
+}
+func NewOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) OperationResultsClient {
+	return original.NewOperationResultsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationStatusesClient(subscriptionID string) OperationStatusesClient {
+	return original.NewOperationStatusesClient(subscriptionID)
+}
+func NewOperationStatusesClientWithBaseURI(baseURI string, subscriptionID string) OperationStatusesClient {
+	return original.NewOperationStatusesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProtectionContainersGroupClient(subscriptionID string) ProtectionContainersGroupClient {
+	return original.NewProtectionContainersGroupClient(subscriptionID)
+}
+func NewProtectionContainersGroupClientWithBaseURI(baseURI string, subscriptionID string) ProtectionContainersGroupClient {
+	return original.NewProtectionContainersGroupClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProtectionPoliciesClient(subscriptionID string) ProtectionPoliciesClient {
+	return original.NewProtectionPoliciesClient(subscriptionID)
+}
+func NewProtectionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ProtectionPoliciesClient {
+	return original.NewProtectionPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceVaultConfigsClient(subscriptionID string) ResourceVaultConfigsClient {
+	return original.NewResourceVaultConfigsClient(subscriptionID)
+}
+func NewResourceVaultConfigsClientWithBaseURI(baseURI string, subscriptionID string) ResourceVaultConfigsClient {
+	return original.NewResourceVaultConfigsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewEnginesClient(subscriptionID string) EnginesClient {
+	return original.NewEnginesClient(subscriptionID)
+}
+func NewEnginesClientWithBaseURI(baseURI string, subscriptionID string) EnginesClient {
+	return original.NewEnginesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewItemLevelRecoveryConnectionsClient(subscriptionID string) ItemLevelRecoveryConnectionsClient {
+	return original.NewItemLevelRecoveryConnectionsClient(subscriptionID)
+}
+func NewItemLevelRecoveryConnectionsClientWithBaseURI(baseURI string, subscriptionID string) ItemLevelRecoveryConnectionsClient {
+	return original.NewItemLevelRecoveryConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProtectedItemOperationStatusesClient(subscriptionID string) ProtectedItemOperationStatusesClient {
+	return original.NewProtectedItemOperationStatusesClient(subscriptionID)
+}
+func NewProtectedItemOperationStatusesClientWithBaseURI(baseURI string, subscriptionID string) ProtectedItemOperationStatusesClient {
+	return original.NewProtectedItemOperationStatusesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewProtectionContainersClient(subscriptionID string) ProtectionContainersClient {
 	return original.NewProtectionContainersClient(subscriptionID)
 }
 func NewProtectionContainersClientWithBaseURI(baseURI string, subscriptionID string) ProtectionContainersClient {
 	return original.NewProtectionContainersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewRecoveryPointsClient(subscriptionID string) RecoveryPointsClient {
+	return original.NewRecoveryPointsClient(subscriptionID)
+}
+func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string) RecoveryPointsClient {
+	return original.NewRecoveryPointsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobCancellationsClient(subscriptionID string) JobCancellationsClient {
+	return original.NewJobCancellationsClient(subscriptionID)
+}
+func NewJobCancellationsClientWithBaseURI(baseURI string, subscriptionID string) JobCancellationsClient {
+	return original.NewJobCancellationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPoliciesClient(subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClient(subscriptionID)
+}
+func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobDetailsClient(subscriptionID string) JobDetailsClient {
+	return original.NewJobDetailsClient(subscriptionID)
+}
+func NewJobDetailsClientWithBaseURI(baseURI string, subscriptionID string) JobDetailsClient {
+	return original.NewJobDetailsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobsClient(subscriptionID string) JobsClient {
+	return original.NewJobsClient(subscriptionID)
+}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
+	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProtectableItemsClient(subscriptionID string) ProtectableItemsClient {
+	return original.NewProtectableItemsClient(subscriptionID)
+}
+func NewProtectableItemsClientWithBaseURI(baseURI string, subscriptionID string) ProtectableItemsClient {
+	return original.NewProtectableItemsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProtectedItemOperationResultsClient(subscriptionID string) ProtectedItemOperationResultsClient {
+	return original.NewProtectedItemOperationResultsClient(subscriptionID)
+}
+func NewProtectedItemOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) ProtectedItemOperationResultsClient {
+	return original.NewProtectedItemOperationResultsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProtectionContainerRefreshOperationResultsClient(subscriptionID string) ProtectionContainerRefreshOperationResultsClient {
+	return original.NewProtectionContainerRefreshOperationResultsClient(subscriptionID)
+}
+func NewProtectionContainerRefreshOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) ProtectionContainerRefreshOperationResultsClient {
+	return original.NewProtectionContainerRefreshOperationResultsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobsGroupClient(subscriptionID string) JobsGroupClient {
+	return original.NewJobsGroupClient(subscriptionID)
+}
+func NewJobsGroupClientWithBaseURI(baseURI string, subscriptionID string) JobsGroupClient {
+	return original.NewJobsGroupClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProtectedItemsGroupClient(subscriptionID string) ProtectedItemsGroupClient {
+	return original.NewProtectedItemsGroupClient(subscriptionID)
+}
+func NewProtectedItemsGroupClientWithBaseURI(baseURI string, subscriptionID string) ProtectedItemsGroupClient {
+	return original.NewProtectedItemsGroupClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewProtectionPolicyOperationResultsClient(subscriptionID string) ProtectionPolicyOperationResultsClient {
 	return original.NewProtectionPolicyOperationResultsClient(subscriptionID)
 }
 func NewProtectionPolicyOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) ProtectionPolicyOperationResultsClient {
 	return original.NewProtectionPolicyOperationResultsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestoresClient(subscriptionID string) RestoresClient {
+	return original.NewRestoresClient(subscriptionID)
+}
+func NewRestoresClientWithBaseURI(baseURI string, subscriptionID string) RestoresClient {
+	return original.NewRestoresClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,6 +22,9 @@ package experimentation
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-05-01-preview/experimentation"
 
+type OperationsClient = original.OperationsClient
+type ProjectsClient = original.ProjectsClient
+type WorkspacesClient = original.WorkspacesClient
 type AccountsClient = original.AccountsClient
 
 const (
@@ -66,9 +69,6 @@ type WorkspaceListResultPage = original.WorkspaceListResultPage
 type WorkspaceProperties = original.WorkspaceProperties
 type WorkspacePropertiesUpdateParameters = original.WorkspacePropertiesUpdateParameters
 type WorkspaceUpdateParameters = original.WorkspaceUpdateParameters
-type OperationsClient = original.OperationsClient
-type ProjectsClient = original.ProjectsClient
-type WorkspacesClient = original.WorkspacesClient
 
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)

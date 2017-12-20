@@ -22,13 +22,6 @@ package commitmentplans
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2016-05-01-preview/commitmentplans"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type CommitmentAssociationsClient = original.CommitmentAssociationsClient
-type Client = original.Client
 type CommitmentAssociation = original.CommitmentAssociation
 type CommitmentAssociationListResult = original.CommitmentAssociationListResult
 type CommitmentAssociationListResultIterator = original.CommitmentAssociationListResultIterator
@@ -50,12 +43,14 @@ type Resource = original.Resource
 type ResourceSku = original.ResourceSku
 type UsageHistoryClient = original.UsageHistoryClient
 
-func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociationsClient {
-	return original.NewCommitmentAssociationsClient(subscriptionID)
-}
-func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID string) CommitmentAssociationsClient {
-	return original.NewCommitmentAssociationsClientWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type CommitmentAssociationsClient = original.CommitmentAssociationsClient
+type Client = original.Client
+
 func NewClient(subscriptionID string) Client {
 	return original.NewClient(subscriptionID)
 }
@@ -79,4 +74,10 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociationsClient {
+	return original.NewCommitmentAssociationsClient(subscriptionID)
+}
+func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID string) CommitmentAssociationsClient {
+	return original.NewCommitmentAssociationsClientWithBaseURI(baseURI, subscriptionID)
 }

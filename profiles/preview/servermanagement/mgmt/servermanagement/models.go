@@ -22,6 +22,12 @@ package servermanagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/servermanagement/mgmt/2016-07-01-preview/servermanagement"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type GatewayClient = original.GatewayClient
 type CredentialDataFormat = original.CredentialDataFormat
 
 const (
@@ -114,13 +120,6 @@ type VersionServermanagement = original.VersionServermanagement
 type NodeClient = original.NodeClient
 type PowerShellClient = original.PowerShellClient
 type SessionClient = original.SessionClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type GatewayClient = original.GatewayClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

@@ -22,7 +22,6 @@ package subscription
 
 import original "github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2017-11-01-preview/subscription"
 
-type DefinitionsOperationMetadataClient = original.DefinitionsOperationMetadataClient
 type Definition = original.Definition
 type DefinitionList = original.DefinitionList
 type DefinitionListIterator = original.DefinitionListIterator
@@ -42,19 +41,8 @@ const (
 
 type BaseClient = original.BaseClient
 type DefinitionsClient = original.DefinitionsClient
+type DefinitionsOperationMetadataClient = original.DefinitionsOperationMetadataClient
 
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-func NewDefinitionsClient() DefinitionsClient {
-	return original.NewDefinitionsClient()
-}
-func NewDefinitionsClientWithBaseURI(baseURI string) DefinitionsClient {
-	return original.NewDefinitionsClientWithBaseURI(baseURI)
-}
 func NewDefinitionsOperationMetadataClient() DefinitionsOperationMetadataClient {
 	return original.NewDefinitionsOperationMetadataClient()
 }
@@ -66,4 +54,16 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func NewDefinitionsClient() DefinitionsClient {
+	return original.NewDefinitionsClient()
+}
+func NewDefinitionsClientWithBaseURI(baseURI string) DefinitionsClient {
+	return original.NewDefinitionsClientWithBaseURI(baseURI)
 }

@@ -18,6 +18,7 @@ package servermanagement
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -141,6 +142,48 @@ type GatewayParameters struct {
 	*GatewayParametersProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for GatewayParameters struct.
+func (gp *GatewayParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		gp.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]interface{}
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		gp.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties GatewayParametersProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		gp.GatewayParametersProperties = &properties
+	}
+
+	return nil
+}
+
 // GatewayParametersProperties ...
 type GatewayParametersProperties struct {
 	// AutoUpgrade - The autoUpgrade property gives the flexibility to gateway to auto upgrade itself. If properties value not specified, then we assume autoUpgrade = Off. Possible values include: 'On', 'Off'
@@ -218,6 +261,88 @@ type GatewayResource struct {
 	Tags                       *map[string]*string `json:"tags,omitempty"`
 	Etag                       *string             `json:"etag,omitempty"`
 	*GatewayResourceProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for GatewayResource struct.
+func (gr *GatewayResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties GatewayResourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		gr.GatewayResourceProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		gr.ID = &ID
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		gr.Type = &typeVar
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		gr.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		gr.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		gr.Tags = &tags
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		gr.Etag = &etag
+	}
+
+	return nil
 }
 
 // GatewayResourceProperties ...
@@ -470,6 +595,48 @@ type NodeParameters struct {
 	*NodeParametersProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for NodeParameters struct.
+func (np *NodeParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		np.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]interface{}
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		np.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties NodeParametersProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		np.NodeParametersProperties = &properties
+	}
+
+	return nil
+}
+
 // NodeParametersProperties ...
 type NodeParametersProperties struct {
 	// GatewayID - Gateway ID which will manage this node.
@@ -497,6 +664,88 @@ type NodeResource struct {
 	Tags                    *map[string]*string `json:"tags,omitempty"`
 	Etag                    *string             `json:"etag,omitempty"`
 	*NodeResourceProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for NodeResource struct.
+func (nr *NodeResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties NodeResourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		nr.NodeResourceProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		nr.ID = &ID
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		nr.Type = &typeVar
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		nr.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		nr.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		nr.Tags = &tags
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		nr.Etag = &etag
+	}
+
+	return nil
 }
 
 // NodeResourceProperties ...
@@ -680,6 +929,28 @@ type PowerShellCommandParameters struct {
 	*PowerShellCommandParametersProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for PowerShellCommandParameters struct.
+func (pscp *PowerShellCommandParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties PowerShellCommandParametersProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		pscp.PowerShellCommandParametersProperties = &properties
+	}
+
+	return nil
+}
+
 // PowerShellCommandParametersProperties ...
 type PowerShellCommandParametersProperties struct {
 	// Command - Script to execute.
@@ -734,6 +1005,88 @@ type PowerShellCommandStatus struct {
 	Tags                      *map[string]*string `json:"tags,omitempty"`
 	Etag                      *string             `json:"etag,omitempty"`
 	*PowerShellCommandResults `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for PowerShellCommandStatus struct.
+func (pscs *PowerShellCommandStatus) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties PowerShellCommandResults
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		pscs.PowerShellCommandResults = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		pscs.ID = &ID
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		pscs.Type = &typeVar
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		pscs.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		pscs.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		pscs.Tags = &tags
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		pscs.Etag = &etag
+	}
+
+	return nil
 }
 
 // PowerShellCreateSessionFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -813,6 +1166,88 @@ type PowerShellSessionResource struct {
 	Tags                                 *map[string]*string `json:"tags,omitempty"`
 	Etag                                 *string             `json:"etag,omitempty"`
 	*PowerShellSessionResourceProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for PowerShellSessionResource struct.
+func (pssr *PowerShellSessionResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties PowerShellSessionResourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		pssr.PowerShellSessionResourceProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		pssr.ID = &ID
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		pssr.Type = &typeVar
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		pssr.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		pssr.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		pssr.Tags = &tags
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		pssr.Etag = &etag
+	}
+
+	return nil
 }
 
 // PowerShellSessionResourceProperties ...
@@ -955,6 +1390,28 @@ type SessionParameters struct {
 	*SessionParametersProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for SessionParameters struct.
+func (sp *SessionParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties SessionParametersProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sp.SessionParametersProperties = &properties
+	}
+
+	return nil
+}
+
 // SessionParametersProperties ...
 type SessionParametersProperties struct {
 	// UserName - User name to be used to connect to node.
@@ -978,6 +1435,88 @@ type SessionResource struct {
 	Tags                       *map[string]*string `json:"tags,omitempty"`
 	Etag                       *string             `json:"etag,omitempty"`
 	*SessionResourceProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SessionResource struct.
+func (sr *SessionResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties SessionResourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sr.SessionResourceProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		sr.ID = &ID
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sr.Type = &typeVar
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		sr.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		sr.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		sr.Tags = &tags
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		sr.Etag = &etag
+	}
+
+	return nil
 }
 
 // SessionResourceProperties ...

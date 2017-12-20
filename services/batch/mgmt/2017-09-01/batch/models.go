@@ -18,6 +18,7 @@ package batch
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -264,6 +265,78 @@ type Account struct {
 	*AccountProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Account struct.
+func (a *Account) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AccountProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		a.AccountProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		a.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		a.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		a.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		a.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		a.Tags = &tags
+	}
+
+	return nil
+}
+
 // AccountCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountCreateFuture struct {
 	azure.Future
@@ -303,6 +376,48 @@ type AccountCreateParameters struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 	// AccountCreateProperties - The properties of the Batch account.
 	*AccountCreateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AccountCreateParameters struct.
+func (acp *AccountCreateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		acp.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		acp.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties AccountCreateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		acp.AccountCreateProperties = &properties
+	}
+
+	return nil
 }
 
 // AccountCreateProperties the properties of a Batch account.
@@ -489,6 +604,38 @@ type AccountUpdateParameters struct {
 	*AccountUpdateProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for AccountUpdateParameters struct.
+func (aup *AccountUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		aup.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties AccountUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		aup.AccountUpdateProperties = &properties
+	}
+
+	return nil
+}
+
 // AccountUpdateProperties the properties of a Batch account.
 type AccountUpdateProperties struct {
 	// AutoStorage - The properties related to the auto-storage account.
@@ -621,6 +768,68 @@ type Certificate struct {
 	*CertificateProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Certificate struct.
+func (c *Certificate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties CertificateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		c.CertificateProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		c.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		c.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		c.Type = &typeVar
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		c.Etag = &etag
+	}
+
+	return nil
+}
+
 // CertificateBaseProperties ...
 type CertificateBaseProperties struct {
 	// ThumbprintAlgorithm - This must match the first portion of the certificate name. Currently required to be 'SHA1'.
@@ -674,6 +883,68 @@ type CertificateCreateOrUpdateParameters struct {
 	Etag *string `json:"etag,omitempty"`
 	// CertificateCreateOrUpdateProperties - The properties associated with the certificate.
 	*CertificateCreateOrUpdateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for CertificateCreateOrUpdateParameters struct.
+func (ccoup *CertificateCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties CertificateCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ccoup.CertificateCreateOrUpdateProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ccoup.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ccoup.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ccoup.Type = &typeVar
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		ccoup.Etag = &etag
+	}
+
+	return nil
 }
 
 // CertificateCreateOrUpdateProperties certificate properties for create operations
@@ -850,7 +1121,7 @@ type EnvironmentSetting struct {
 
 // FixedScaleSettings ...
 type FixedScaleSettings struct {
-	// ResizeTimeout - The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+	// ResizeTimeout - The default value is 15 minutes. Timeout values use ISO 8601 format. For example, use PT10M for 10 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	ResizeTimeout *string `json:"resizeTimeout,omitempty"`
 	// TargetDedicatedNodes - At least one of targetDedicatedNodes, targetLowPriority nodes must be set.
 	TargetDedicatedNodes *int32 `json:"targetDedicatedNodes,omitempty"`
@@ -1382,6 +1653,68 @@ type Pool struct {
 	Etag *string `json:"etag,omitempty"`
 	// PoolProperties - The properties associated with the pool.
 	*PoolProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Pool struct.
+func (p *Pool) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties PoolProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		p.PoolProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		p.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		p.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		p.Type = &typeVar
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		p.Etag = &etag
+	}
+
+	return nil
 }
 
 // PoolCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.

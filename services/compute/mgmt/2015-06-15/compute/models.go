@@ -18,11 +18,13 @@ package compute
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
-	"net/http"
 )
 
 // CachingTypes enumerates the values for caching types.
@@ -312,6 +314,78 @@ type AvailabilitySet struct {
 	*AvailabilitySetProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for AvailabilitySet struct.
+func (as *AvailabilitySet) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AvailabilitySetProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		as.AvailabilitySetProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		as.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		as.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		as.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		as.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		as.Tags = &tags
+	}
+
+	return nil
+}
+
 // AvailabilitySetListResult the List Availability Set operation response.
 type AvailabilitySetListResult struct {
 	autorest.Response `json:"-"`
@@ -595,6 +669,38 @@ type NetworkInterfaceReference struct {
 	*NetworkInterfaceReferenceProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for NetworkInterfaceReference struct.
+func (nir *NetworkInterfaceReference) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties NetworkInterfaceReferenceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		nir.NetworkInterfaceReferenceProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		nir.ID = &ID
+	}
+
+	return nil
+}
+
 // NetworkInterfaceReferenceProperties describes a network interface reference properties.
 type NetworkInterfaceReferenceProperties struct {
 	// Primary - Specifies the primary network interface in case the virtual machine has more than 1 network interface.
@@ -817,6 +923,98 @@ type VirtualMachine struct {
 	Resources *[]VirtualMachineExtension `json:"resources,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for VirtualMachine struct.
+func (VM *VirtualMachine) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["plan"]
+	if v != nil {
+		var plan Plan
+		err = json.Unmarshal(*m["plan"], &plan)
+		if err != nil {
+			return err
+		}
+		VM.Plan = &plan
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualMachineProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		VM.VirtualMachineProperties = &properties
+	}
+
+	v = m["resources"]
+	if v != nil {
+		var resources []VirtualMachineExtension
+		err = json.Unmarshal(*m["resources"], &resources)
+		if err != nil {
+			return err
+		}
+		VM.Resources = &resources
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		VM.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		VM.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		VM.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		VM.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		VM.Tags = &tags
+	}
+
+	return nil
+}
+
 // VirtualMachineAgentInstanceView the instance view of the VM Agent running on the virtual machine.
 type VirtualMachineAgentInstanceView struct {
 	// VMAgentVersion - The VM Agent full version.
@@ -845,6 +1043,38 @@ type VirtualMachineCaptureResult struct {
 	*VirtualMachineCaptureResultProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineCaptureResult struct.
+func (vmcr *VirtualMachineCaptureResult) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualMachineCaptureResultProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vmcr.VirtualMachineCaptureResultProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vmcr.ID = &ID
+	}
+
+	return nil
+}
+
 // VirtualMachineCaptureResultProperties compute-specific operation properties, including output
 type VirtualMachineCaptureResultProperties struct {
 	// Output - Operation output data (raw JSON)
@@ -865,6 +1095,78 @@ type VirtualMachineExtension struct {
 	// Tags - Resource tags
 	Tags                               *map[string]*string `json:"tags,omitempty"`
 	*VirtualMachineExtensionProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineExtension struct.
+func (vme *VirtualMachineExtension) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualMachineExtensionProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vme.VirtualMachineExtensionProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vme.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vme.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		vme.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		vme.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		vme.Tags = &tags
+	}
+
+	return nil
 }
 
 // VirtualMachineExtensionHandlerInstanceView the instance view of a virtual machine extension handler.
@@ -891,6 +1193,78 @@ type VirtualMachineExtensionImage struct {
 	// Tags - Resource tags
 	Tags                                    *map[string]*string `json:"tags,omitempty"`
 	*VirtualMachineExtensionImageProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineExtensionImage struct.
+func (vmei *VirtualMachineExtensionImage) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualMachineExtensionImageProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vmei.VirtualMachineExtensionImageProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vmei.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vmei.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		vmei.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		vmei.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		vmei.Tags = &tags
+	}
+
+	return nil
 }
 
 // VirtualMachineExtensionImageProperties describes the properties of a Virtual Machine Extension Image.
@@ -1019,6 +1393,68 @@ type VirtualMachineImage struct {
 	// Tags - Specifies the tags that are assigned to the virtual machine. For more information about using tags, see [Using tags to organize your Azure resources](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md).
 	Tags                           *map[string]*string `json:"tags,omitempty"`
 	*VirtualMachineImageProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineImage struct.
+func (vmi *VirtualMachineImage) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualMachineImageProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vmi.VirtualMachineImageProperties = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vmi.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		vmi.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		vmi.Tags = &tags
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vmi.ID = &ID
+	}
+
+	return nil
 }
 
 // VirtualMachineImageProperties describes the properties of a Virtual Machine Image.
@@ -1202,6 +1638,88 @@ type VirtualMachineScaleSet struct {
 	*VirtualMachineScaleSetProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSet struct.
+func (vmss *VirtualMachineScaleSet) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["sku"]
+	if v != nil {
+		var sku Sku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		vmss.Sku = &sku
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualMachineScaleSetProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vmss.VirtualMachineScaleSetProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vmss.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vmss.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		vmss.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		vmss.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		vmss.Tags = &tags
+	}
+
+	return nil
+}
+
 // VirtualMachineScaleSetExtension describes a Virtual Machine Scale Set Extension.
 type VirtualMachineScaleSetExtension struct {
 	// ID - Resource Id
@@ -1209,6 +1727,48 @@ type VirtualMachineScaleSetExtension struct {
 	// Name - The name of the extension.
 	Name                                       *string `json:"name,omitempty"`
 	*VirtualMachineScaleSetExtensionProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetExtension struct.
+func (vmsse *VirtualMachineScaleSetExtension) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vmsse.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualMachineScaleSetExtensionProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vmsse.VirtualMachineScaleSetExtensionProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vmsse.ID = &ID
+	}
+
+	return nil
 }
 
 // VirtualMachineScaleSetExtensionProfile describes a virtual machine scale set extension profile.
@@ -1260,6 +1820,48 @@ type VirtualMachineScaleSetIPConfiguration struct {
 	// Name - The IP configuration name.
 	Name                                             *string `json:"name,omitempty"`
 	*VirtualMachineScaleSetIPConfigurationProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetIPConfiguration struct.
+func (vmssic *VirtualMachineScaleSetIPConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vmssic.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualMachineScaleSetIPConfigurationProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vmssic.VirtualMachineScaleSetIPConfigurationProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vmssic.ID = &ID
+	}
+
+	return nil
 }
 
 // VirtualMachineScaleSetIPConfigurationProperties describes a virtual machine scale set network profile's IP
@@ -1589,6 +2191,48 @@ type VirtualMachineScaleSetNetworkConfiguration struct {
 	// Name - The network configuration name.
 	Name                                                  *string `json:"name,omitempty"`
 	*VirtualMachineScaleSetNetworkConfigurationProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetNetworkConfiguration struct.
+func (vmssnc *VirtualMachineScaleSetNetworkConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vmssnc.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualMachineScaleSetNetworkConfigurationProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vmssnc.VirtualMachineScaleSetNetworkConfigurationProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vmssnc.ID = &ID
+	}
+
+	return nil
 }
 
 // VirtualMachineScaleSetNetworkConfigurationProperties describes a virtual machine scale set network profile's IP
@@ -1992,6 +2636,118 @@ type VirtualMachineScaleSetVM struct {
 	Plan *Plan `json:"plan,omitempty"`
 	// Resources - The virtual machine child extension resources.
 	Resources *[]VirtualMachineExtension `json:"resources,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetVM struct.
+func (vmssv *VirtualMachineScaleSetVM) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["instanceId"]
+	if v != nil {
+		var instanceID string
+		err = json.Unmarshal(*m["instanceId"], &instanceID)
+		if err != nil {
+			return err
+		}
+		vmssv.InstanceID = &instanceID
+	}
+
+	v = m["sku"]
+	if v != nil {
+		var sku Sku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		vmssv.Sku = &sku
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualMachineScaleSetVMProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vmssv.VirtualMachineScaleSetVMProperties = &properties
+	}
+
+	v = m["plan"]
+	if v != nil {
+		var plan Plan
+		err = json.Unmarshal(*m["plan"], &plan)
+		if err != nil {
+			return err
+		}
+		vmssv.Plan = &plan
+	}
+
+	v = m["resources"]
+	if v != nil {
+		var resources []VirtualMachineExtension
+		err = json.Unmarshal(*m["resources"], &resources)
+		if err != nil {
+			return err
+		}
+		vmssv.Resources = &resources
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vmssv.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vmssv.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		vmssv.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		vmssv.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		vmssv.Tags = &tags
+	}
+
+	return nil
 }
 
 // VirtualMachineScaleSetVMExtensionsSummary extensions summary for virtual machines of a virtual machine scale set.

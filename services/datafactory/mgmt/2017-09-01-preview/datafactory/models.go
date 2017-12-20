@@ -2082,6 +2082,58 @@ func (amls AmazonMWSLinkedService) AsBasicLinkedService() (BasicLinkedService, b
 	return &amls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AmazonMWSLinkedService struct.
+func (amls *AmazonMWSLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AmazonMWSLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		amls.AmazonMWSLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		amls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		amls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		amls.Type = typeVar
+	}
+
+	return nil
+}
+
 // AmazonMWSLinkedServiceTypeProperties amazon Marketplace Web Service linked service properties.
 type AmazonMWSLinkedServiceTypeProperties struct {
 	// Endpoint - The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com)
@@ -3108,6 +3160,58 @@ func (arls AmazonRedshiftLinkedService) AsBasicLinkedService() (BasicLinkedServi
 	return &arls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AmazonRedshiftLinkedService struct.
+func (arls *AmazonRedshiftLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AmazonRedshiftLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		arls.AmazonRedshiftLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		arls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		arls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		arls.Type = typeVar
+	}
+
+	return nil
+}
+
 // AmazonRedshiftLinkedServiceTypeProperties amazon Redshift linked service properties.
 type AmazonRedshiftLinkedServiceTypeProperties struct {
 	// Server - The name of the Amazon Redshift server. Type: string (or Expression with resultType string).
@@ -3665,6 +3769,78 @@ func (asd AmazonS3Dataset) AsBasicDataset() (BasicDataset, bool) {
 	return &asd, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AmazonS3Dataset struct.
+func (asd *AmazonS3Dataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AmazonS3DatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		asd.AmazonS3DatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		asd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		asd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		asd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		asd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		asd.Type = typeVar
+	}
+
+	return nil
+}
+
 // AmazonS3DatasetTypeProperties amazon S3 dataset properties.
 type AmazonS3DatasetTypeProperties struct {
 	// BucketName - The name of the Amazon S3 bucket. Type: string (or Expression with resultType string).
@@ -4106,6 +4282,58 @@ func (asls AmazonS3LinkedService) AsBasicLinkedService() (BasicLinkedService, bo
 	return &asls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AmazonS3LinkedService struct.
+func (asls *AmazonS3LinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AmazonS3LinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		asls.AmazonS3LinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		asls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		asls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		asls.Type = typeVar
+	}
+
+	return nil
+}
+
 // AmazonS3LinkedServiceTypeProperties amazon S3 linked service properties.
 type AmazonS3LinkedServiceTypeProperties struct {
 	// AccessKeyID - The access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or Expression with resultType string).
@@ -4529,6 +4757,58 @@ func (abls AzureBatchLinkedService) AsBasicLinkedService() (BasicLinkedService, 
 	return &abls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureBatchLinkedService struct.
+func (abls *AzureBatchLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureBatchLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		abls.AzureBatchLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		abls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		abls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		abls.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureBatchLinkedServiceTypeProperties azure Batch linked service properties.
 type AzureBatchLinkedServiceTypeProperties struct {
 	// AccountName - The Azure Batch account name. Type: string (or Expression with resultType string).
@@ -4822,6 +5102,78 @@ func (abd AzureBlobDataset) AsDataset() (*Dataset, bool) {
 // AsBasicDataset is the BasicDataset implementation for AzureBlobDataset.
 func (abd AzureBlobDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &abd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureBlobDataset struct.
+func (abd *AzureBlobDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureBlobDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		abd.AzureBlobDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		abd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		abd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		abd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		abd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		abd.Type = typeVar
+	}
+
+	return nil
 }
 
 // AzureBlobDatasetTypeProperties azure Blob dataset properties.
@@ -5253,6 +5605,58 @@ func (adlals AzureDataLakeAnalyticsLinkedService) AsBasicLinkedService() (BasicL
 	return &adlals, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureDataLakeAnalyticsLinkedService struct.
+func (adlals *AzureDataLakeAnalyticsLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureDataLakeAnalyticsLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		adlals.AzureDataLakeAnalyticsLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		adlals.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		adlals.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		adlals.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureDataLakeAnalyticsLinkedServiceTypeProperties azure Data Lake Analytics linked service properties.
 type AzureDataLakeAnalyticsLinkedServiceTypeProperties struct {
 	// AccountName - The Azure Data Lake Analytics account name. Type: string (or Expression with resultType string).
@@ -5550,6 +5954,78 @@ func (adlsd AzureDataLakeStoreDataset) AsDataset() (*Dataset, bool) {
 // AsBasicDataset is the BasicDataset implementation for AzureDataLakeStoreDataset.
 func (adlsd AzureDataLakeStoreDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &adlsd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureDataLakeStoreDataset struct.
+func (adlsd *AzureDataLakeStoreDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureDataLakeStoreDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		adlsd.AzureDataLakeStoreDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		adlsd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		adlsd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		adlsd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		adlsd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		adlsd.Type = typeVar
+	}
+
+	return nil
 }
 
 // AzureDataLakeStoreDatasetTypeProperties azure Data Lake Store dataset properties.
@@ -5967,6 +6443,58 @@ func (adlsls AzureDataLakeStoreLinkedService) AsLinkedService() (*LinkedService,
 // AsBasicLinkedService is the BasicLinkedService implementation for AzureDataLakeStoreLinkedService.
 func (adlsls AzureDataLakeStoreLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &adlsls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureDataLakeStoreLinkedService struct.
+func (adlsls *AzureDataLakeStoreLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureDataLakeStoreLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		adlsls.AzureDataLakeStoreLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		adlsls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		adlsls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		adlsls.Type = typeVar
+	}
+
+	return nil
 }
 
 // AzureDataLakeStoreLinkedServiceTypeProperties azure Data Lake Store linked service properties.
@@ -6713,6 +7241,58 @@ func (akvls AzureKeyVaultLinkedService) AsBasicLinkedService() (BasicLinkedServi
 	return &akvls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureKeyVaultLinkedService struct.
+func (akvls *AzureKeyVaultLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureKeyVaultLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		akvls.AzureKeyVaultLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		akvls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		akvls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		akvls.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureKeyVaultLinkedServiceTypeProperties azure Key Vault linked service properties.
 type AzureKeyVaultLinkedServiceTypeProperties struct {
 	// BaseURL - The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string (or Expression with resultType string).
@@ -6921,6 +7501,88 @@ func (ambea AzureMLBatchExecutionActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for AzureMLBatchExecutionActivity.
 func (ambea AzureMLBatchExecutionActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &ambea, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureMLBatchExecutionActivity struct.
+func (ambea *AzureMLBatchExecutionActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureMLBatchExecutionActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ambea.AzureMLBatchExecutionActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		ambea.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		ambea.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ambea.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ambea.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		ambea.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ambea.Type = typeVar
+	}
+
+	return nil
 }
 
 // AzureMLBatchExecutionActivityTypeProperties azure ML Batch Execution activity properties.
@@ -7288,6 +7950,58 @@ func (amls AzureMLLinkedService) AsBasicLinkedService() (BasicLinkedService, boo
 	return &amls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureMLLinkedService struct.
+func (amls *AzureMLLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureMLLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		amls.AzureMLLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		amls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		amls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		amls.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureMLLinkedServiceTypeProperties azure ML Web Service linked service properties.
 type AzureMLLinkedServiceTypeProperties struct {
 	// MlEndpoint - The Batch Execution REST URL for an Azure ML Web Service endpoint. Type: string (or Expression with resultType string).
@@ -7465,6 +8179,88 @@ func (amura AzureMLUpdateResourceActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for AzureMLUpdateResourceActivity.
 func (amura AzureMLUpdateResourceActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &amura, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureMLUpdateResourceActivity struct.
+func (amura *AzureMLUpdateResourceActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureMLUpdateResourceActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		amura.AzureMLUpdateResourceActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		amura.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		amura.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		amura.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		amura.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		amura.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		amura.Type = typeVar
+	}
+
+	return nil
 }
 
 // AzureMLUpdateResourceActivityTypeProperties azure ML Update Resource activity properties.
@@ -7838,6 +8634,58 @@ func (amsls AzureMySQLLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for AzureMySQLLinkedService.
 func (amsls AzureMySQLLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &amsls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureMySQLLinkedService struct.
+func (amsls *AzureMySQLLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureMySQLLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		amsls.AzureMySQLLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		amsls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		amsls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		amsls.Type = typeVar
+	}
+
+	return nil
 }
 
 // AzureMySQLLinkedServiceTypeProperties azure MySQL database linked service properties.
@@ -8387,6 +9235,78 @@ func (amstd AzureMySQLTableDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &amstd, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureMySQLTableDataset struct.
+func (amstd *AzureMySQLTableDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureMySQLTableDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		amstd.AzureMySQLTableDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		amstd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		amstd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		amstd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		amstd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		amstd.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureMySQLTableDatasetTypeProperties azure MySQL database dataset properties.
 type AzureMySQLTableDatasetTypeProperties struct {
 	// TableName - The Azure MySQL database table name. Type: string (or Expression with resultType string).
@@ -8746,6 +9666,58 @@ func (apsls AzurePostgreSQLLinkedService) AsLinkedService() (*LinkedService, boo
 // AsBasicLinkedService is the BasicLinkedService implementation for AzurePostgreSQLLinkedService.
 func (apsls AzurePostgreSQLLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &apsls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzurePostgreSQLLinkedService struct.
+func (apsls *AzurePostgreSQLLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzurePostgreSQLLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		apsls.AzurePostgreSQLLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		apsls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		apsls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		apsls.Type = typeVar
+	}
+
+	return nil
 }
 
 // AzurePostgreSQLLinkedServiceTypeProperties azure PostgreSQL linked service properties.
@@ -9710,6 +10682,78 @@ func (asid AzureSearchIndexDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &asid, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureSearchIndexDataset struct.
+func (asid *AzureSearchIndexDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureSearchIndexDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		asid.AzureSearchIndexDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		asid.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		asid.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		asid.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		asid.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		asid.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureSearchIndexDatasetTypeProperties properties specific to this dataset type.
 type AzureSearchIndexDatasetTypeProperties struct {
 	// IndexName - The name of the Azure Search Index. Type: string (or Expression with resultType string).
@@ -10180,6 +11224,58 @@ func (asls AzureSearchLinkedService) AsBasicLinkedService() (BasicLinkedService,
 	return &asls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureSearchLinkedService struct.
+func (asls *AzureSearchLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureSearchLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		asls.AzureSearchLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		asls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		asls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		asls.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureSearchLinkedServiceTypeProperties windows Azure Search Service linked service properties.
 type AzureSearchLinkedServiceTypeProperties struct {
 	// URL - URL for Azure Search service. Type: string (or Expression with resultType string).
@@ -10545,6 +11641,58 @@ func (asdls AzureSQLDatabaseLinkedService) AsBasicLinkedService() (BasicLinkedSe
 	return &asdls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureSQLDatabaseLinkedService struct.
+func (asdls *AzureSQLDatabaseLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureSQLDatabaseLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		asdls.AzureSQLDatabaseLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		asdls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		asdls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		asdls.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureSQLDatabaseLinkedServiceTypeProperties azure SQL Database linked service properties.
 type AzureSQLDatabaseLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
@@ -10908,6 +12056,58 @@ func (asdls AzureSQLDWLinkedService) AsBasicLinkedService() (BasicLinkedService,
 	return &asdls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureSQLDWLinkedService struct.
+func (asdls *AzureSQLDWLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureSQLDWLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		asdls.AzureSQLDWLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		asdls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		asdls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		asdls.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureSQLDWLinkedServiceTypeProperties azure SQL Data Warehouse linked service properties.
 type AzureSQLDWLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
@@ -11195,6 +12395,78 @@ func (asdtd AzureSQLDWTableDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &asdtd, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureSQLDWTableDataset struct.
+func (asdtd *AzureSQLDWTableDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureSQLDWTableDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		asdtd.AzureSQLDWTableDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		asdtd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		asdtd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		asdtd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		asdtd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		asdtd.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureSQLDWTableDatasetTypeProperties azure SQL Data Warehouse dataset properties.
 type AzureSQLDWTableDatasetTypeProperties struct {
 	// TableName - The table name of the Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
@@ -11478,6 +12750,78 @@ func (astd AzureSQLTableDataset) AsDataset() (*Dataset, bool) {
 // AsBasicDataset is the BasicDataset implementation for AzureSQLTableDataset.
 func (astd AzureSQLTableDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &astd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureSQLTableDataset struct.
+func (astd *AzureSQLTableDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureSQLTableDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		astd.AzureSQLTableDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		astd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		astd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		astd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		astd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		astd.Type = typeVar
+	}
+
+	return nil
 }
 
 // AzureSQLTableDatasetTypeProperties azure SQL dataset properties.
@@ -11841,6 +13185,58 @@ func (asls AzureStorageLinkedService) AsBasicLinkedService() (BasicLinkedService
 	return &asls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureStorageLinkedService struct.
+func (asls *AzureStorageLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureStorageLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		asls.AzureStorageLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		asls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		asls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		asls.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureStorageLinkedServiceTypeProperties azure Storage linked service properties.
 type AzureStorageLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string. It is mutually exclusive with sasUri property.
@@ -12128,6 +13524,78 @@ func (atd AzureTableDataset) AsDataset() (*Dataset, bool) {
 // AsBasicDataset is the BasicDataset implementation for AzureTableDataset.
 func (atd AzureTableDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &atd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureTableDataset struct.
+func (atd *AzureTableDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties AzureTableDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		atd.AzureTableDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		atd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		atd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		atd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		atd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		atd.Type = typeVar
+	}
+
+	return nil
 }
 
 // AzureTableDatasetTypeProperties azure Table dataset properties.
@@ -12954,6 +14422,68 @@ func (bt BlobTrigger) AsBasicTrigger() (BasicTrigger, bool) {
 	return &bt, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for BlobTrigger struct.
+func (bt *BlobTrigger) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties BlobTriggerTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		bt.BlobTriggerTypeProperties = &typeProperties
+	}
+
+	v = m["pipelines"]
+	if v != nil {
+		var pipelines []TriggerPipelineReference
+		err = json.Unmarshal(*m["pipelines"], &pipelines)
+		if err != nil {
+			return err
+		}
+		bt.Pipelines = &pipelines
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		bt.Description = &description
+	}
+
+	v = m["runtimeState"]
+	if v != nil {
+		var runtimeState TriggerRuntimeState
+		err = json.Unmarshal(*m["runtimeState"], &runtimeState)
+		if err != nil {
+			return err
+		}
+		bt.RuntimeState = runtimeState
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicTrigger
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		bt.Type = typeVar
+	}
+
+	return nil
+}
+
 // BlobTriggerTypeProperties blob Trigger properties.
 type BlobTriggerTypeProperties struct {
 	// FolderPath - The path of the container/folder that will trigger the pipeline.
@@ -13317,6 +14847,58 @@ func (cls CassandraLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for CassandraLinkedService.
 func (cls CassandraLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &cls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for CassandraLinkedService struct.
+func (cls *CassandraLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties CassandraLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		cls.CassandraLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		cls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		cls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		cls.Type = typeVar
+	}
+
+	return nil
 }
 
 // CassandraLinkedServiceTypeProperties cassandra linked service properties.
@@ -13876,6 +15458,78 @@ func (ctd CassandraTableDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &ctd, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for CassandraTableDataset struct.
+func (ctd *CassandraTableDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties CassandraTableDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ctd.CassandraTableDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ctd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		ctd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		ctd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		ctd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ctd.Type = typeVar
+	}
+
+	return nil
+}
+
 // CassandraTableDatasetTypeProperties cassandra dataset properties.
 type CassandraTableDatasetTypeProperties struct {
 	// TableName - The table name of the Cassandra database. Type: string (or Expression with resultType string).
@@ -14237,6 +15891,58 @@ func (cls ConcurLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for ConcurLinkedService.
 func (cls ConcurLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &cls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConcurLinkedService struct.
+func (cls *ConcurLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ConcurLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		cls.ConcurLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		cls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		cls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		cls.Type = typeVar
+	}
+
+	return nil
 }
 
 // ConcurLinkedServiceTypeProperties concur Serivce linked service properties.
@@ -15256,6 +16962,108 @@ func (ca CopyActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for CopyActivity.
 func (ca CopyActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &ca, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for CopyActivity struct.
+func (ca *CopyActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties CopyActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ca.CopyActivityTypeProperties = &typeProperties
+	}
+
+	v = m["inputs"]
+	if v != nil {
+		var inputs []DatasetReference
+		err = json.Unmarshal(*m["inputs"], &inputs)
+		if err != nil {
+			return err
+		}
+		ca.Inputs = &inputs
+	}
+
+	v = m["outputs"]
+	if v != nil {
+		var outputs []DatasetReference
+		err = json.Unmarshal(*m["outputs"], &outputs)
+		if err != nil {
+			return err
+		}
+		ca.Outputs = &outputs
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		ca.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		ca.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ca.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ca.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		ca.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ca.Type = typeVar
+	}
+
+	return nil
 }
 
 // CopyActivityTypeProperties copy activity properties.
@@ -16547,6 +18355,58 @@ func (cdls CosmosDbLinkedService) AsBasicLinkedService() (BasicLinkedService, bo
 	return &cdls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for CosmosDbLinkedService struct.
+func (cdls *CosmosDbLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties CosmosDbLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		cdls.CosmosDbLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		cdls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		cdls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		cdls.Type = typeVar
+	}
+
+	return nil
+}
+
 // CosmosDbLinkedServiceTypeProperties cosmosDB linked service properties.
 type CosmosDbLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
@@ -16908,6 +18768,58 @@ func (cls CouchbaseLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for CouchbaseLinkedService.
 func (cls CouchbaseLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &cls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for CouchbaseLinkedService struct.
+func (cls *CouchbaseLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties CouchbaseLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		cls.CouchbaseLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		cls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		cls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		cls.Type = typeVar
+	}
+
+	return nil
 }
 
 // CouchbaseLinkedServiceTypeProperties couchbase server linked service properties.
@@ -17652,6 +19564,88 @@ func (ca CustomActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for CustomActivity.
 func (ca CustomActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &ca, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomActivity struct.
+func (ca *CustomActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties CustomActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ca.CustomActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		ca.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		ca.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ca.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ca.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		ca.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ca.Type = typeVar
+	}
+
+	return nil
 }
 
 // CustomActivityReferenceObject reference objects for custom activity
@@ -18469,6 +20463,88 @@ func (dlaua DataLakeAnalyticsUSQLActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for DataLakeAnalyticsUSQLActivity.
 func (dlaua DataLakeAnalyticsUSQLActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &dlaua, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for DataLakeAnalyticsUSQLActivity struct.
+func (dlaua *DataLakeAnalyticsUSQLActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties DataLakeAnalyticsUSQLActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		dlaua.DataLakeAnalyticsUSQLActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		dlaua.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		dlaua.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		dlaua.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		dlaua.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		dlaua.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		dlaua.Type = typeVar
+	}
+
+	return nil
 }
 
 // DataLakeAnalyticsUSQLActivityTypeProperties dataLakeAnalyticsU-SQL activity properties.
@@ -20019,6 +22095,58 @@ func (d2ls Db2LinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &d2ls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for Db2LinkedService struct.
+func (d2ls *Db2LinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties Db2LinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		d2ls.Db2LinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		d2ls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		d2ls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		d2ls.Type = typeVar
+	}
+
+	return nil
+}
+
 // Db2LinkedServiceTypeProperties dB2 linked service properties.
 type Db2LinkedServiceTypeProperties struct {
 	// Server - Server name for connection. Type: string (or Expression with resultType string).
@@ -20324,6 +22452,78 @@ func (ddcd DocumentDbCollectionDataset) AsDataset() (*Dataset, bool) {
 // AsBasicDataset is the BasicDataset implementation for DocumentDbCollectionDataset.
 func (ddcd DocumentDbCollectionDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &ddcd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for DocumentDbCollectionDataset struct.
+func (ddcd *DocumentDbCollectionDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties DocumentDbCollectionDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ddcd.DocumentDbCollectionDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ddcd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		ddcd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		ddcd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		ddcd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ddcd.Type = typeVar
+	}
+
+	return nil
 }
 
 // DocumentDbCollectionDatasetTypeProperties documentDB Collection dataset properties.
@@ -21056,6 +23256,58 @@ func (dls DrillLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for DrillLinkedService.
 func (dls DrillLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &dls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for DrillLinkedService struct.
+func (dls *DrillLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties DrillLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		dls.DrillLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		dls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		dls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		dls.Type = typeVar
+	}
+
+	return nil
 }
 
 // DrillLinkedServiceTypeProperties drill server linked service properties.
@@ -21913,6 +24165,78 @@ func (ded DynamicsEntityDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &ded, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for DynamicsEntityDataset struct.
+func (ded *DynamicsEntityDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties DynamicsEntityDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ded.DynamicsEntityDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ded.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		ded.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		ded.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		ded.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ded.Type = typeVar
+	}
+
+	return nil
+}
+
 // DynamicsEntityDatasetTypeProperties dynamics entity dataset properties.
 type DynamicsEntityDatasetTypeProperties struct {
 	// EntityName - The logical name of the entity. Type: string (or Expression with resultType string).
@@ -22272,6 +24596,58 @@ func (dls DynamicsLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for DynamicsLinkedService.
 func (dls DynamicsLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &dls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for DynamicsLinkedService struct.
+func (dls *DynamicsLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties DynamicsLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		dls.DynamicsLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		dls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		dls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		dls.Type = typeVar
+	}
+
+	return nil
 }
 
 // DynamicsLinkedServiceTypeProperties dynamics linked service properties.
@@ -23111,6 +25487,58 @@ func (els EloquaLinkedService) AsBasicLinkedService() (BasicLinkedService, bool)
 	return &els, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for EloquaLinkedService struct.
+func (els *EloquaLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties EloquaLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		els.EloquaLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		els.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		els.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		els.Type = typeVar
+	}
+
+	return nil
+}
+
 // EloquaLinkedServiceTypeProperties eloqua server linked service properties.
 type EloquaLinkedServiceTypeProperties struct {
 	// Endpoint - The endpoint of the Eloqua server. (i.e. eloqua.example.com)
@@ -23916,6 +26344,68 @@ func (epa ExecutePipelineActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &epa, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for ExecutePipelineActivity struct.
+func (epa *ExecutePipelineActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ExecutePipelineActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		epa.ExecutePipelineActivityTypeProperties = &typeProperties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		epa.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		epa.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		epa.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		epa.Type = typeVar
+	}
+
+	return nil
+}
+
 // ExecutePipelineActivityTypeProperties execute pipeline activity properties.
 type ExecutePipelineActivityTypeProperties struct {
 	// Pipeline - Pipeline reference.
@@ -24085,6 +26575,88 @@ func (espa ExecuteSSISPackageActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for ExecuteSSISPackageActivity.
 func (espa ExecuteSSISPackageActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &espa, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ExecuteSSISPackageActivity struct.
+func (espa *ExecuteSSISPackageActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ExecuteSSISPackageActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		espa.ExecuteSSISPackageActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		espa.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		espa.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		espa.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		espa.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		espa.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		espa.Type = typeVar
+	}
+
+	return nil
 }
 
 // ExecuteSSISPackageActivityTypeProperties execute SSIS package activity properties.
@@ -24400,6 +26972,88 @@ type Factory struct {
 	Identity *FactoryIdentity `json:"identity,omitempty"`
 	// FactoryProperties - Properties of the factory.
 	*FactoryProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Factory struct.
+func (f *Factory) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["identity"]
+	if v != nil {
+		var identity FactoryIdentity
+		err = json.Unmarshal(*m["identity"], &identity)
+		if err != nil {
+			return err
+		}
+		f.Identity = &identity
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties FactoryProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		f.FactoryProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		f.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		f.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		f.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		f.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		f.Tags = &tags
+	}
+
+	return nil
 }
 
 // FactoryIdentity identity properties of the factory resource.
@@ -24887,6 +27541,58 @@ func (fsls FileServerLinkedService) AsBasicLinkedService() (BasicLinkedService, 
 	return &fsls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for FileServerLinkedService struct.
+func (fsls *FileServerLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties FileServerLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		fsls.FileServerLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		fsls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		fsls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		fsls.Type = typeVar
+	}
+
+	return nil
+}
+
 // FileServerLinkedServiceTypeProperties file system linked service properties.
 type FileServerLinkedServiceTypeProperties struct {
 	// Host - Host name of the server. Type: string (or Expression with resultType string).
@@ -25176,6 +27882,78 @@ func (fsd FileShareDataset) AsDataset() (*Dataset, bool) {
 // AsBasicDataset is the BasicDataset implementation for FileShareDataset.
 func (fsd FileShareDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &fsd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for FileShareDataset struct.
+func (fsd *FileShareDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties FileShareDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		fsd.FileShareDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		fsd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		fsd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		fsd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		fsd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		fsd.Type = typeVar
+	}
+
+	return nil
 }
 
 // FileShareDatasetTypeProperties on-premises file system dataset properties.
@@ -25778,6 +28556,68 @@ func (fea ForEachActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &fea, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for ForEachActivity struct.
+func (fea *ForEachActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ForEachActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		fea.ForEachActivityTypeProperties = &typeProperties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		fea.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		fea.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		fea.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		fea.Type = typeVar
+	}
+
+	return nil
+}
+
 // ForEachActivityTypeProperties forEach activity properties.
 type ForEachActivityTypeProperties struct {
 	// IsSequential - Should the loop be executed in sequence or in parallel (max 20)
@@ -26184,6 +29024,58 @@ func (fsls FtpServerLinkedService) AsBasicLinkedService() (BasicLinkedService, b
 	return &fsls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for FtpServerLinkedService struct.
+func (fsls *FtpServerLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties FtpServerLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		fsls.FtpServerLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		fsls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		fsls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		fsls.Type = typeVar
+	}
+
+	return nil
+}
+
 // FtpServerLinkedServiceTypeProperties properties specific to this linked service type.
 type FtpServerLinkedServiceTypeProperties struct {
 	// Host - Host name of the FTP server. Type: string (or Expression with resultType string).
@@ -26363,6 +29255,88 @@ func (gma GetMetadataActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for GetMetadataActivity.
 func (gma GetMetadataActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &gma, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for GetMetadataActivity struct.
+func (gma *GetMetadataActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties GetMetadataActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		gma.GetMetadataActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		gma.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		gma.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		gma.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		gma.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		gma.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		gma.Type = typeVar
+	}
+
+	return nil
 }
 
 // GetMetadataActivityTypeProperties getMetadata activity properties.
@@ -26726,6 +29700,58 @@ func (gbqls GoogleBigQueryLinkedService) AsLinkedService() (*LinkedService, bool
 // AsBasicLinkedService is the BasicLinkedService implementation for GoogleBigQueryLinkedService.
 func (gbqls GoogleBigQueryLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &gbqls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for GoogleBigQueryLinkedService struct.
+func (gbqls *GoogleBigQueryLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties GoogleBigQueryLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		gbqls.GoogleBigQueryLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		gbqls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		gbqls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		gbqls.Type = typeVar
+	}
+
+	return nil
 }
 
 // GoogleBigQueryLinkedServiceTypeProperties google BigQuery service linked service properties.
@@ -27755,6 +30781,58 @@ func (gls GreenplumLinkedService) AsBasicLinkedService() (BasicLinkedService, bo
 	return &gls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for GreenplumLinkedService struct.
+func (gls *GreenplumLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties GreenplumLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		gls.GreenplumLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		gls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		gls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		gls.Type = typeVar
+	}
+
+	return nil
+}
+
 // GreenplumLinkedServiceTypeProperties greenplum Database linked service properties.
 type GreenplumLinkedServiceTypeProperties struct {
 	// ConnectionString - An ODBC connection string.
@@ -28684,6 +31762,58 @@ func (hbls HBaseLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for HBaseLinkedService.
 func (hbls HBaseLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &hbls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for HBaseLinkedService struct.
+func (hbls *HBaseLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HBaseLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		hbls.HBaseLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		hbls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		hbls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hbls.Type = typeVar
+	}
+
+	return nil
 }
 
 // HBaseLinkedServiceTypeProperties hBase server linked service properties.
@@ -29725,6 +32855,58 @@ func (hls HdfsLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &hls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for HdfsLinkedService struct.
+func (hls *HdfsLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HdfsLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		hls.HdfsLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		hls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		hls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hls.Type = typeVar
+	}
+
+	return nil
+}
+
 // HdfsLinkedServiceTypeProperties HDFS linked service properties.
 type HdfsLinkedServiceTypeProperties struct {
 	// URL - The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with resultType string).
@@ -30162,6 +33344,88 @@ func (hiha HDInsightHiveActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &hiha, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for HDInsightHiveActivity struct.
+func (hiha *HDInsightHiveActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HDInsightHiveActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		hiha.HDInsightHiveActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		hiha.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		hiha.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		hiha.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		hiha.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		hiha.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hiha.Type = typeVar
+	}
+
+	return nil
+}
+
 // HDInsightHiveActivityTypeProperties hDInsight Hive activity properties.
 type HDInsightHiveActivityTypeProperties struct {
 	// StorageLinkedServices - Storage linked service references.
@@ -30533,6 +33797,58 @@ func (hils HDInsightLinkedService) AsBasicLinkedService() (BasicLinkedService, b
 	return &hils, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for HDInsightLinkedService struct.
+func (hils *HDInsightLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HDInsightLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		hils.HDInsightLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		hils.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		hils.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hils.Type = typeVar
+	}
+
+	return nil
+}
+
 // HDInsightLinkedServiceTypeProperties hDInsight linked service properties.
 type HDInsightLinkedServiceTypeProperties struct {
 	// ClusterURI - HDInsight cluster URI. Type: string (or Expression with resultType string).
@@ -30708,6 +34024,88 @@ func (himra HDInsightMapReduceActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for HDInsightMapReduceActivity.
 func (himra HDInsightMapReduceActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &himra, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for HDInsightMapReduceActivity struct.
+func (himra *HDInsightMapReduceActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HDInsightMapReduceActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		himra.HDInsightMapReduceActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		himra.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		himra.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		himra.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		himra.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		himra.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		himra.Type = typeVar
+	}
+
+	return nil
 }
 
 // HDInsightMapReduceActivityTypeProperties hDInsight MapReduce activity properties.
@@ -31085,6 +34483,58 @@ func (hiodls HDInsightOnDemandLinkedService) AsBasicLinkedService() (BasicLinked
 	return &hiodls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for HDInsightOnDemandLinkedService struct.
+func (hiodls *HDInsightOnDemandLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HDInsightOnDemandLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		hiodls.HDInsightOnDemandLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		hiodls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		hiodls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hiodls.Type = typeVar
+	}
+
+	return nil
+}
+
 // HDInsightOnDemandLinkedServiceTypeProperties hDInsight ondemand linked service properties.
 type HDInsightOnDemandLinkedServiceTypeProperties struct {
 	// ClusterSize - Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or Expression with resultType string).
@@ -31304,6 +34754,88 @@ func (hipa HDInsightPigActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &hipa, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for HDInsightPigActivity struct.
+func (hipa *HDInsightPigActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HDInsightPigActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		hipa.HDInsightPigActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		hipa.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		hipa.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		hipa.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		hipa.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		hipa.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hipa.Type = typeVar
+	}
+
+	return nil
+}
+
 // HDInsightPigActivityTypeProperties hDInsight Pig activity properties.
 type HDInsightPigActivityTypeProperties struct {
 	// StorageLinkedServices - Storage linked service references.
@@ -31479,6 +35011,88 @@ func (hisa HDInsightSparkActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for HDInsightSparkActivity.
 func (hisa HDInsightSparkActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &hisa, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for HDInsightSparkActivity struct.
+func (hisa *HDInsightSparkActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HDInsightSparkActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		hisa.HDInsightSparkActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		hisa.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		hisa.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		hisa.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		hisa.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		hisa.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hisa.Type = typeVar
+	}
+
+	return nil
 }
 
 // HDInsightSparkActivityTypeProperties hDInsight spark activity properties.
@@ -31660,6 +35274,88 @@ func (hisa HDInsightStreamingActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for HDInsightStreamingActivity.
 func (hisa HDInsightStreamingActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &hisa, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for HDInsightStreamingActivity struct.
+func (hisa *HDInsightStreamingActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HDInsightStreamingActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		hisa.HDInsightStreamingActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		hisa.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		hisa.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		hisa.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		hisa.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		hisa.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hisa.Type = typeVar
+	}
+
+	return nil
 }
 
 // HDInsightStreamingActivityTypeProperties hDInsight streaming activity properties.
@@ -32043,6 +35739,58 @@ func (hls HiveLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for HiveLinkedService.
 func (hls HiveLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &hls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for HiveLinkedService struct.
+func (hls *HiveLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HiveLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		hls.HiveLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		hls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		hls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hls.Type = typeVar
+	}
+
+	return nil
 }
 
 // HiveLinkedServiceTypeProperties hive Server linked service properties.
@@ -33080,6 +36828,78 @@ func (hd HTTPDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &hd, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for HTTPDataset struct.
+func (hd *HTTPDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HTTPDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		hd.HTTPDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		hd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		hd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		hd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		hd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hd.Type = typeVar
+	}
+
+	return nil
+}
+
 // HTTPDatasetTypeProperties properties specific to this dataset type.
 type HTTPDatasetTypeProperties struct {
 	// RelativeURL - The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression with resultType string).
@@ -33521,6 +37341,58 @@ func (hls HTTPLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for HTTPLinkedService.
 func (hls HTTPLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &hls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for HTTPLinkedService struct.
+func (hls *HTTPLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HTTPLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		hls.HTTPLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		hls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		hls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hls.Type = typeVar
+	}
+
+	return nil
 }
 
 // HTTPLinkedServiceTypeProperties properties specific to this linked service type.
@@ -34156,6 +38028,58 @@ func (hls HubspotLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for HubspotLinkedService.
 func (hls HubspotLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &hls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for HubspotLinkedService struct.
+func (hls *HubspotLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties HubspotLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		hls.HubspotLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		hls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		hls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hls.Type = typeVar
+	}
+
+	return nil
 }
 
 // HubspotLinkedServiceTypeProperties hubspot Serivce linked service properties.
@@ -34962,6 +38886,68 @@ func (ica IfConditionActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &ica, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for IfConditionActivity struct.
+func (ica *IfConditionActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties IfConditionActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ica.IfConditionActivityTypeProperties = &typeProperties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ica.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ica.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		ica.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ica.Type = typeVar
+	}
+
+	return nil
+}
+
 // IfConditionActivityTypeProperties ifCondition activity properties.
 type IfConditionActivityTypeProperties struct {
 	// Expression - An expression that would evaluate to Boolean. This is used to determine the block of activities (ifTrueActivities or ifFalseActivities) that will be executed.
@@ -35365,6 +39351,58 @@ func (ils ImpalaLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for ImpalaLinkedService.
 func (ils ImpalaLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &ils, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ImpalaLinkedService struct.
+func (ils *ImpalaLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ImpalaLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ils.ImpalaLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		ils.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ils.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ils.Type = typeVar
+	}
+
+	return nil
 }
 
 // ImpalaLinkedServiceTypeProperties impala server linked service properties.
@@ -37010,6 +41048,58 @@ func (jls JiraLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for JiraLinkedService.
 func (jls JiraLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &jls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for JiraLinkedService struct.
+func (jls *JiraLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties JiraLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		jls.JiraLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		jls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		jls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		jls.Type = typeVar
+	}
+
+	return nil
 }
 
 // JiraLinkedServiceTypeProperties jira Serivce linked service properties.
@@ -38788,6 +42878,88 @@ func (la LookupActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &la, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for LookupActivity struct.
+func (la *LookupActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties LookupActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		la.LookupActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		la.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		la.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		la.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		la.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		la.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		la.Type = typeVar
+	}
+
+	return nil
+}
+
 // LookupActivityTypeProperties lookup activity properties.
 type LookupActivityTypeProperties struct {
 	// Source - Dataset-specific source properties, same as copy activity source.
@@ -39192,6 +43364,58 @@ func (mls MagentoLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for MagentoLinkedService.
 func (mls MagentoLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &mls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MagentoLinkedService struct.
+func (mls *MagentoLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties MagentoLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		mls.MagentoLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		mls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		mls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		mls.Type = typeVar
+	}
+
+	return nil
 }
 
 // MagentoLinkedServiceTypeProperties magento server linked service properties.
@@ -39864,6 +44088,58 @@ func (mir ManagedIntegrationRuntime) AsBasicIntegrationRuntime() (BasicIntegrati
 	return &mir, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for ManagedIntegrationRuntime struct.
+func (mir *ManagedIntegrationRuntime) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["state"]
+	if v != nil {
+		var state IntegrationRuntimeState
+		err = json.Unmarshal(*m["state"], &state)
+		if err != nil {
+			return err
+		}
+		mir.State = state
+	}
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ManagedIntegrationRuntimeTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		mir.ManagedIntegrationRuntimeTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		mir.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicIntegrationRuntime
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		mir.Type = typeVar
+	}
+
+	return nil
+}
+
 // ManagedIntegrationRuntimeError error definition for managed integration runtime.
 type ManagedIntegrationRuntimeError struct {
 	// Time - The time when the error occurred.
@@ -39943,6 +44219,48 @@ func (mirs ManagedIntegrationRuntimeStatus) AsIntegrationRuntimeStatus() (*Integ
 // AsBasicIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for ManagedIntegrationRuntimeStatus.
 func (mirs ManagedIntegrationRuntimeStatus) AsBasicIntegrationRuntimeStatus() (BasicIntegrationRuntimeStatus, bool) {
 	return &mirs, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedIntegrationRuntimeStatus struct.
+func (mirs *ManagedIntegrationRuntimeStatus) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ManagedIntegrationRuntimeStatusTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		mirs.ManagedIntegrationRuntimeStatusTypeProperties = &typeProperties
+	}
+
+	v = m["state"]
+	if v != nil {
+		var state IntegrationRuntimeState
+		err = json.Unmarshal(*m["state"], &state)
+		if err != nil {
+			return err
+		}
+		mirs.State = state
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicIntegrationRuntimeStatus
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		mirs.Type = typeVar
+	}
+
+	return nil
 }
 
 // ManagedIntegrationRuntimeStatusTypeProperties managed integration runtime status type properties.
@@ -40318,6 +44636,58 @@ func (mdls MariaDBLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for MariaDBLinkedService.
 func (mdls MariaDBLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &mdls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MariaDBLinkedService struct.
+func (mdls *MariaDBLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties MariaDBLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		mdls.MariaDBLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		mdls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		mdls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		mdls.Type = typeVar
+	}
+
+	return nil
 }
 
 // MariaDBLinkedServiceTypeProperties mariaDB server linked service properties.
@@ -41251,6 +45621,58 @@ func (mls MarketoLinkedService) AsBasicLinkedService() (BasicLinkedService, bool
 	return &mls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for MarketoLinkedService struct.
+func (mls *MarketoLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties MarketoLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		mls.MarketoLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		mls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		mls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		mls.Type = typeVar
+	}
+
+	return nil
+}
+
 // MarketoLinkedServiceTypeProperties marketo server linked service properties.
 type MarketoLinkedServiceTypeProperties struct {
 	// Endpoint - The endpoint of the Marketo server. (i.e. 123-ABC-321.mktorest.com)
@@ -42166,6 +46588,78 @@ func (mdcd MongoDbCollectionDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &mdcd, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for MongoDbCollectionDataset struct.
+func (mdcd *MongoDbCollectionDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties MongoDbCollectionDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		mdcd.MongoDbCollectionDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		mdcd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		mdcd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		mdcd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		mdcd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		mdcd.Type = typeVar
+	}
+
+	return nil
+}
+
 // MongoDbCollectionDatasetTypeProperties mongoDB database dataset properties.
 type MongoDbCollectionDatasetTypeProperties struct {
 	// CollectionName - The table name of the MongoDB database. Type: string (or Expression with resultType string).
@@ -42525,6 +47019,58 @@ func (mdls MongoDbLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for MongoDbLinkedService.
 func (mdls MongoDbLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &mdls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MongoDbLinkedService struct.
+func (mdls *MongoDbLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties MongoDbLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		mdls.MongoDbLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		mdls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		mdls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		mdls.Type = typeVar
+	}
+
+	return nil
 }
 
 // MongoDbLinkedServiceTypeProperties mongoDB linked service properties.
@@ -43270,6 +47816,58 @@ func (msls MySQLLinkedService) AsBasicLinkedService() (BasicLinkedService, bool)
 	return &msls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for MySQLLinkedService struct.
+func (msls *MySQLLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties MySQLLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		msls.MySQLLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		msls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		msls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		msls.Type = typeVar
+	}
+
+	return nil
+}
+
 // MySQLLinkedServiceTypeProperties mySQL linked service properties.
 type MySQLLinkedServiceTypeProperties struct {
 	// Server - Server name for connection. Type: string (or Expression with resultType string).
@@ -43641,6 +48239,58 @@ func (odls ODataLinkedService) AsBasicLinkedService() (BasicLinkedService, bool)
 	return &odls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for ODataLinkedService struct.
+func (odls *ODataLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ODataLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		odls.ODataLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		odls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		odls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		odls.Type = typeVar
+	}
+
+	return nil
+}
+
 // ODataLinkedServiceTypeProperties oData linked service properties.
 type ODataLinkedServiceTypeProperties struct {
 	// URL - The URL of the OData service endpoint. Type: string (or Expression with resultType string).
@@ -43932,6 +48582,78 @@ func (odrd ODataResourceDataset) AsDataset() (*Dataset, bool) {
 // AsBasicDataset is the BasicDataset implementation for ODataResourceDataset.
 func (odrd ODataResourceDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &odrd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ODataResourceDataset struct.
+func (odrd *ODataResourceDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ODataResourceDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		odrd.ODataResourceDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		odrd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		odrd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		odrd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		odrd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		odrd.Type = typeVar
+	}
+
+	return nil
 }
 
 // ODataResourceDatasetTypeProperties oData dataset properties.
@@ -44295,6 +49017,58 @@ func (ols OdbcLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &ols, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for OdbcLinkedService struct.
+func (ols *OdbcLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties OdbcLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ols.OdbcLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		ols.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ols.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ols.Type = typeVar
+	}
+
+	return nil
+}
+
 // OdbcLinkedServiceTypeProperties ODBC linked service properties.
 type OdbcLinkedServiceTypeProperties struct {
 	// ConnectionString - The non-access credential portion of the connection string as well as an optional encrypted credential.
@@ -44430,6 +49204,58 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 	// OperationProperties - Additional details about the operation.
 	*OperationProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Operation struct.
+func (o *Operation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		o.Name = &name
+	}
+
+	v = m["origin"]
+	if v != nil {
+		var origin string
+		err = json.Unmarshal(*m["origin"], &origin)
+		if err != nil {
+			return err
+		}
+		o.Origin = &origin
+	}
+
+	v = m["display"]
+	if v != nil {
+		var display OperationDisplay
+		err = json.Unmarshal(*m["display"], &display)
+		if err != nil {
+			return err
+		}
+		o.Display = &display
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties OperationProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		o.OperationProperties = &properties
+	}
+
+	return nil
 }
 
 // OperationDisplay metadata associated with the operation.
@@ -44860,6 +49686,58 @@ func (ols OracleLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for OracleLinkedService.
 func (ols OracleLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &ols, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for OracleLinkedService struct.
+func (ols *OracleLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties OracleLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ols.OracleLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		ols.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ols.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ols.Type = typeVar
+	}
+
+	return nil
 }
 
 // OracleLinkedServiceTypeProperties oracle database linked service properties.
@@ -45520,6 +50398,78 @@ func (otd OracleTableDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &otd, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for OracleTableDataset struct.
+func (otd *OracleTableDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties OracleTableDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		otd.OracleTableDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		otd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		otd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		otd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		otd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		otd.Type = typeVar
+	}
+
+	return nil
+}
+
 // OracleTableDatasetTypeProperties on-premises Oracle dataset properties.
 type OracleTableDatasetTypeProperties struct {
 	// TableName - The table name of the on-premises Oracle database. Type: string (or Expression with resultType string).
@@ -46003,6 +50953,58 @@ func (pls PaypalLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for PaypalLinkedService.
 func (pls PaypalLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &pls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for PaypalLinkedService struct.
+func (pls *PaypalLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties PaypalLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		pls.PaypalLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		pls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		pls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		pls.Type = typeVar
+	}
+
+	return nil
 }
 
 // PaypalLinkedServiceTypeProperties paypal Serivce linked service properties.
@@ -46996,6 +51998,58 @@ func (pls PhoenixLinkedService) AsBasicLinkedService() (BasicLinkedService, bool
 	return &pls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for PhoenixLinkedService struct.
+func (pls *PhoenixLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties PhoenixLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		pls.PhoenixLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		pls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		pls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		pls.Type = typeVar
+	}
+
+	return nil
+}
+
 // PhoenixLinkedServiceTypeProperties phoenix server linked service properties.
 type PhoenixLinkedServiceTypeProperties struct {
 	// Host - The IP address or host name of the Phoenix server. (i.e. 192.168.222.160)
@@ -47884,6 +52938,68 @@ type PipelineResource struct {
 	*Pipeline `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for PipelineResource struct.
+func (pr *PipelineResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties Pipeline
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		pr.Pipeline = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		pr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		pr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		pr.Type = &typeVar
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		pr.Etag = &etag
+	}
+
+	return nil
+}
+
 // PipelineRun information about a pipeline run.
 type PipelineRun struct {
 	autorest.Response `json:"-"`
@@ -48329,6 +53445,58 @@ func (psls PostgreSQLLinkedService) AsBasicLinkedService() (BasicLinkedService, 
 	return &psls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for PostgreSQLLinkedService struct.
+func (psls *PostgreSQLLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties PostgreSQLLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		psls.PostgreSQLLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		psls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		psls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		psls.Type = typeVar
+	}
+
+	return nil
+}
+
 // PostgreSQLLinkedServiceTypeProperties postgreSQL linked service properties.
 type PostgreSQLLinkedServiceTypeProperties struct {
 	// Server - Server name for connection. Type: string (or Expression with resultType string).
@@ -48698,6 +53866,58 @@ func (pls PrestoLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for PrestoLinkedService.
 func (pls PrestoLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &pls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrestoLinkedService struct.
+func (pls *PrestoLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties PrestoLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		pls.PrestoLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		pls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		pls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		pls.Type = typeVar
+	}
+
+	return nil
 }
 
 // PrestoLinkedServiceTypeProperties presto server linked service properties.
@@ -49773,6 +54993,58 @@ func (qbls QuickBooksLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for QuickBooksLinkedService.
 func (qbls QuickBooksLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &qbls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for QuickBooksLinkedService struct.
+func (qbls *QuickBooksLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties QuickBooksLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		qbls.QuickBooksLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		qbls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		qbls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		qbls.Type = typeVar
+	}
+
+	return nil
 }
 
 // QuickBooksLinkedServiceTypeProperties quickBooks server linked service properties.
@@ -50983,6 +56255,78 @@ func (rtd RelationalTableDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &rtd, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for RelationalTableDataset struct.
+func (rtd *RelationalTableDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties RelationalTableDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		rtd.RelationalTableDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		rtd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		rtd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		rtd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		rtd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		rtd.Type = typeVar
+	}
+
+	return nil
+}
+
 // RelationalTableDatasetTypeProperties relational table dataset properties.
 type RelationalTableDatasetTypeProperties struct {
 	// TableName - The relational table name. Type: string (or Expression with resultType string).
@@ -51366,6 +56710,58 @@ func (sls SalesforceLinkedService) AsBasicLinkedService() (BasicLinkedService, b
 	return &sls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for SalesforceLinkedService struct.
+func (sls *SalesforceLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SalesforceLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		sls.SalesforceLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		sls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		sls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sls.Type = typeVar
+	}
+
+	return nil
+}
+
 // SalesforceLinkedServiceTypeProperties salesforce linked service properties.
 type SalesforceLinkedServiceTypeProperties struct {
 	// EnvironmentURL - The URL of Salesforce instance. Default is 'https://login.salesforce.com'. To copy data from sandbox, specify 'https://test.salesforce.com'. To copy data from custom domain, specify, for example, 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
@@ -51717,6 +57113,78 @@ func (sod SalesforceObjectDataset) AsDataset() (*Dataset, bool) {
 // AsBasicDataset is the BasicDataset implementation for SalesforceObjectDataset.
 func (sod SalesforceObjectDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &sod, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for SalesforceObjectDataset struct.
+func (sod *SalesforceObjectDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SalesforceObjectDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		sod.SalesforceObjectDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		sod.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		sod.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		sod.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		sod.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sod.Type = typeVar
+	}
+
+	return nil
 }
 
 // SalesforceObjectDatasetTypeProperties salesforce object dataset properties.
@@ -52455,6 +57923,58 @@ func (sbls SapBWLinkedService) AsBasicLinkedService() (BasicLinkedService, bool)
 	return &sbls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for SapBWLinkedService struct.
+func (sbls *SapBWLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SapBWLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		sbls.SapBWLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		sbls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		sbls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sbls.Type = typeVar
+	}
+
+	return nil
+}
+
 // SapBWLinkedServiceTypeProperties properties specific to this linked service type.
 type SapBWLinkedServiceTypeProperties struct {
 	// Server - Host name of the SAP BW instance. Type: string (or Expression with resultType string).
@@ -52826,6 +58346,58 @@ func (scfcls SapCloudForCustomerLinkedService) AsBasicLinkedService() (BasicLink
 	return &scfcls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for SapCloudForCustomerLinkedService struct.
+func (scfcls *SapCloudForCustomerLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SapCloudForCustomerLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		scfcls.SapCloudForCustomerLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		scfcls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		scfcls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		scfcls.Type = typeVar
+	}
+
+	return nil
+}
+
 // SapCloudForCustomerLinkedServiceTypeProperties SAP Cloud for Customer linked service properties.
 type SapCloudForCustomerLinkedServiceTypeProperties struct {
 	// URL - The URL of SAP Cloud for Customer OData API. For example, '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).
@@ -53115,6 +58687,78 @@ func (scfcrd SapCloudForCustomerResourceDataset) AsDataset() (*Dataset, bool) {
 // AsBasicDataset is the BasicDataset implementation for SapCloudForCustomerResourceDataset.
 func (scfcrd SapCloudForCustomerResourceDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &scfcrd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for SapCloudForCustomerResourceDataset struct.
+func (scfcrd *SapCloudForCustomerResourceDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SapCloudForCustomerResourceDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		scfcrd.SapCloudForCustomerResourceDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		scfcrd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		scfcrd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		scfcrd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		scfcrd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		scfcrd.Type = typeVar
+	}
+
+	return nil
 }
 
 // SapCloudForCustomerResourceDatasetTypeProperties sap Cloud For Customer OData resource dataset properties.
@@ -53847,6 +59491,58 @@ func (shls SapHanaLinkedService) AsBasicLinkedService() (BasicLinkedService, boo
 	return &shls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for SapHanaLinkedService struct.
+func (shls *SapHanaLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SapHanaLinkedServiceProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		shls.SapHanaLinkedServiceProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		shls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		shls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		shls.Type = typeVar
+	}
+
+	return nil
+}
+
 // SapHanaLinkedServiceProperties properties specific to this linked service type.
 type SapHanaLinkedServiceProperties struct {
 	// Server - Host name of the SAP HANA server. Type: string (or Expression with resultType string).
@@ -53921,6 +59617,68 @@ func (st ScheduleTrigger) AsTrigger() (*Trigger, bool) {
 // AsBasicTrigger is the BasicTrigger implementation for ScheduleTrigger.
 func (st ScheduleTrigger) AsBasicTrigger() (BasicTrigger, bool) {
 	return &st, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ScheduleTrigger struct.
+func (st *ScheduleTrigger) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ScheduleTriggerTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		st.ScheduleTriggerTypeProperties = &typeProperties
+	}
+
+	v = m["pipelines"]
+	if v != nil {
+		var pipelines []TriggerPipelineReference
+		err = json.Unmarshal(*m["pipelines"], &pipelines)
+		if err != nil {
+			return err
+		}
+		st.Pipelines = &pipelines
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		st.Description = &description
+	}
+
+	v = m["runtimeState"]
+	if v != nil {
+		var runtimeState TriggerRuntimeState
+		err = json.Unmarshal(*m["runtimeState"], &runtimeState)
+		if err != nil {
+			return err
+		}
+		st.RuntimeState = runtimeState
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicTrigger
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		st.Type = typeVar
+	}
+
+	return nil
 }
 
 // ScheduleTriggerRecurrence the workflow trigger recurrence.
@@ -54195,6 +59953,48 @@ func (shirs SelfHostedIntegrationRuntimeStatus) AsIntegrationRuntimeStatus() (*I
 // AsBasicIntegrationRuntimeStatus is the BasicIntegrationRuntimeStatus implementation for SelfHostedIntegrationRuntimeStatus.
 func (shirs SelfHostedIntegrationRuntimeStatus) AsBasicIntegrationRuntimeStatus() (BasicIntegrationRuntimeStatus, bool) {
 	return &shirs, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for SelfHostedIntegrationRuntimeStatus struct.
+func (shirs *SelfHostedIntegrationRuntimeStatus) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SelfHostedIntegrationRuntimeStatusTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		shirs.SelfHostedIntegrationRuntimeStatusTypeProperties = &typeProperties
+	}
+
+	v = m["state"]
+	if v != nil {
+		var state IntegrationRuntimeState
+		err = json.Unmarshal(*m["state"], &state)
+		if err != nil {
+			return err
+		}
+		shirs.State = state
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicIntegrationRuntimeStatus
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		shirs.Type = typeVar
+	}
+
+	return nil
 }
 
 // SelfHostedIntegrationRuntimeStatusTypeProperties self-hosted integration runtime status type properties.
@@ -54578,6 +60378,58 @@ func (snls ServiceNowLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for ServiceNowLinkedService.
 func (snls ServiceNowLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &snls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServiceNowLinkedService struct.
+func (snls *ServiceNowLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ServiceNowLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		snls.ServiceNowLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		snls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		snls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		snls.Type = typeVar
+	}
+
+	return nil
 }
 
 // ServiceNowLinkedServiceTypeProperties serviceNow server linked service properties.
@@ -55606,6 +61458,58 @@ func (ssls SftpServerLinkedService) AsBasicLinkedService() (BasicLinkedService, 
 	return &ssls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for SftpServerLinkedService struct.
+func (ssls *SftpServerLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SftpServerLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ssls.SftpServerLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		ssls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ssls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ssls.Type = typeVar
+	}
+
+	return nil
+}
+
 // SftpServerLinkedServiceTypeProperties properties specific to this linked service type.
 type SftpServerLinkedServiceTypeProperties struct {
 	// Host - The SFTP server host name. Type: string (or Expression with resultType string).
@@ -55985,6 +61889,58 @@ func (sls ShopifyLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for ShopifyLinkedService.
 func (sls ShopifyLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &sls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ShopifyLinkedService struct.
+func (sls *ShopifyLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ShopifyLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		sls.ShopifyLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		sls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		sls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sls.Type = typeVar
+	}
+
+	return nil
 }
 
 // ShopifyLinkedServiceTypeProperties shopify Serivce linked service properties.
@@ -56964,6 +62920,58 @@ func (sls SparkLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for SparkLinkedService.
 func (sls SparkLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &sls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for SparkLinkedService struct.
+func (sls *SparkLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SparkLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		sls.SparkLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		sls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		sls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sls.Type = typeVar
+	}
+
+	return nil
 }
 
 // SparkLinkedServiceTypeProperties spark Server linked service properties.
@@ -58418,6 +64426,58 @@ func (ssls SQLServerLinkedService) AsBasicLinkedService() (BasicLinkedService, b
 	return &ssls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for SQLServerLinkedService struct.
+func (ssls *SQLServerLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SQLServerLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ssls.SQLServerLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		ssls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ssls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ssls.Type = typeVar
+	}
+
+	return nil
+}
+
 // SQLServerLinkedServiceTypeProperties SQL Server linked service properties.
 type SQLServerLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
@@ -58589,6 +64649,88 @@ func (ssspa SQLServerStoredProcedureActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for SQLServerStoredProcedureActivity.
 func (ssspa SQLServerStoredProcedureActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &ssspa, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for SQLServerStoredProcedureActivity struct.
+func (ssspa *SQLServerStoredProcedureActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SQLServerStoredProcedureActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ssspa.SQLServerStoredProcedureActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		ssspa.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		ssspa.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ssspa.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ssspa.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		ssspa.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ssspa.Type = typeVar
+	}
+
+	return nil
 }
 
 // SQLServerStoredProcedureActivityTypeProperties SQL stored procedure activity properties.
@@ -58876,6 +65018,78 @@ func (sstd SQLServerTableDataset) AsDataset() (*Dataset, bool) {
 // AsBasicDataset is the BasicDataset implementation for SQLServerTableDataset.
 func (sstd SQLServerTableDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &sstd, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for SQLServerTableDataset struct.
+func (sstd *SQLServerTableDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SQLServerTableDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		sstd.SQLServerTableDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		sstd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		sstd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		sstd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		sstd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sstd.Type = typeVar
+	}
+
+	return nil
 }
 
 // SQLServerTableDatasetTypeProperties on-premises SQL Server dataset properties.
@@ -59616,6 +65830,58 @@ func (sls SquareLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for SquareLinkedService.
 func (sls SquareLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &sls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for SquareLinkedService struct.
+func (sls *SquareLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SquareLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		sls.SquareLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		sls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		sls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sls.Type = typeVar
+	}
+
+	return nil
 }
 
 // SquareLinkedServiceTypeProperties square Serivce linked service properties.
@@ -60659,6 +66925,58 @@ func (sls SybaseLinkedService) AsBasicLinkedService() (BasicLinkedService, bool)
 	return &sls, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for SybaseLinkedService struct.
+func (sls *SybaseLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties SybaseLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		sls.SybaseLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		sls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		sls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sls.Type = typeVar
+	}
+
+	return nil
+}
+
 // SybaseLinkedServiceTypeProperties sybase linked service properties.
 type SybaseLinkedServiceTypeProperties struct {
 	// Server - Server name for connection. Type: string (or Expression with resultType string).
@@ -61066,6 +67384,58 @@ func (TLSVar TeradataLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for TeradataLinkedService.
 func (TLSVar TeradataLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &TLSVar, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for TeradataLinkedService struct.
+func (TLSVar *TeradataLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties TeradataLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		TLSVar.TeradataLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		TLSVar.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		TLSVar.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		TLSVar.Type = typeVar
+	}
+
+	return nil
 }
 
 // TeradataLinkedServiceTypeProperties teradata linked service properties.
@@ -61712,6 +68082,68 @@ func (twt TumblingWindowTrigger) AsBasicTrigger() (BasicTrigger, bool) {
 	return &twt, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for TumblingWindowTrigger struct.
+func (twt *TumblingWindowTrigger) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["pipeline"]
+	if v != nil {
+		var pipeline TriggerPipelineReference
+		err = json.Unmarshal(*m["pipeline"], &pipeline)
+		if err != nil {
+			return err
+		}
+		twt.Pipeline = &pipeline
+	}
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties TumblingWindowTriggerTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		twt.TumblingWindowTriggerTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		twt.Description = &description
+	}
+
+	v = m["runtimeState"]
+	if v != nil {
+		var runtimeState TriggerRuntimeState
+		err = json.Unmarshal(*m["runtimeState"], &runtimeState)
+		if err != nil {
+			return err
+		}
+		twt.RuntimeState = runtimeState
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicTrigger
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		twt.Type = typeVar
+	}
+
+	return nil
+}
+
 // TumblingWindowTriggerTypeProperties tumbling Window Trigger properties.
 type TumblingWindowTriggerTypeProperties struct {
 	// Frequency - The frequency of the time windows. Possible values include: 'TumblingWindowFrequencyMinute', 'TumblingWindowFrequencyHour'
@@ -61886,6 +68318,68 @@ func (ua UntilActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for UntilActivity.
 func (ua UntilActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &ua, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for UntilActivity struct.
+func (ua *UntilActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties UntilActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		ua.UntilActivityTypeProperties = &typeProperties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ua.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		ua.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		ua.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ua.Type = typeVar
+	}
+
+	return nil
 }
 
 // UntilActivityTypeProperties until activity properties.
@@ -62110,6 +68604,68 @@ func (wa WaitActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &wa, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for WaitActivity struct.
+func (wa *WaitActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties WaitActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		wa.WaitActivityTypeProperties = &typeProperties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		wa.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		wa.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		wa.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		wa.Type = typeVar
+	}
+
+	return nil
+}
+
 // WaitActivityTypeProperties wait activity properties.
 type WaitActivityTypeProperties struct {
 	// WaitTimeInSeconds - Duration in seconds.
@@ -62275,6 +68831,88 @@ func (wa WebActivity) AsActivity() (*Activity, bool) {
 // AsBasicActivity is the BasicActivity implementation for WebActivity.
 func (wa WebActivity) AsBasicActivity() (BasicActivity, bool) {
 	return &wa, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for WebActivity struct.
+func (wa *WebActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties WebActivityTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		wa.WebActivityTypeProperties = &typeProperties
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		wa.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["policy"]
+	if v != nil {
+		var policy ActivityPolicy
+		err = json.Unmarshal(*m["policy"], &policy)
+		if err != nil {
+			return err
+		}
+		wa.Policy = &policy
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		wa.Name = &name
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		wa.Description = &description
+	}
+
+	v = m["dependsOn"]
+	if v != nil {
+		var dependsOn []ActivityDependency
+		err = json.Unmarshal(*m["dependsOn"], &dependsOn)
+		if err != nil {
+			return err
+		}
+		wa.DependsOn = &dependsOn
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicActivity
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		wa.Type = typeVar
+	}
+
+	return nil
 }
 
 // WebActivityAuthentication web activity authentication properties.
@@ -63492,6 +70130,78 @@ func (wtd WebTableDataset) AsBasicDataset() (BasicDataset, bool) {
 	return &wtd, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for WebTableDataset struct.
+func (wtd *WebTableDataset) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties WebTableDatasetTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		wtd.WebTableDatasetTypeProperties = &typeProperties
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		wtd.Description = &description
+	}
+
+	v = m["structure"]
+	if v != nil {
+		var structure map[string]interface{}
+		err = json.Unmarshal(*m["structure"], &structure)
+		if err != nil {
+			return err
+		}
+		wtd.Structure = &structure
+	}
+
+	v = m["linkedServiceName"]
+	if v != nil {
+		var linkedServiceName LinkedServiceReference
+		err = json.Unmarshal(*m["linkedServiceName"], &linkedServiceName)
+		if err != nil {
+			return err
+		}
+		wtd.LinkedServiceName = &linkedServiceName
+	}
+
+	v = m["parameters"]
+	if v != nil {
+		var parameters map[string]*ParameterSpecification
+		err = json.Unmarshal(*m["parameters"], &parameters)
+		if err != nil {
+			return err
+		}
+		wtd.Parameters = &parameters
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicDataset
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		wtd.Type = typeVar
+	}
+
+	return nil
+}
+
 // WebTableDatasetTypeProperties web table dataset properties.
 type WebTableDatasetTypeProperties struct {
 	// Index - The zero-based index of the table in the web page. Type: integer (or Expression with resultType integer), minimum: 0.
@@ -63853,6 +70563,58 @@ func (xls XeroLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for XeroLinkedService.
 func (xls XeroLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &xls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for XeroLinkedService struct.
+func (xls *XeroLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties XeroLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		xls.XeroLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		xls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		xls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		xls.Type = typeVar
+	}
+
+	return nil
 }
 
 // XeroLinkedServiceTypeProperties xero Serivce linked service properties.
@@ -64844,6 +71606,58 @@ func (zls ZohoLinkedService) AsLinkedService() (*LinkedService, bool) {
 // AsBasicLinkedService is the BasicLinkedService implementation for ZohoLinkedService.
 func (zls ZohoLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
 	return &zls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ZohoLinkedService struct.
+func (zls *ZohoLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["typeProperties"]
+	if v != nil {
+		var typeProperties ZohoLinkedServiceTypeProperties
+		err = json.Unmarshal(*m["typeProperties"], &typeProperties)
+		if err != nil {
+			return err
+		}
+		zls.ZohoLinkedServiceTypeProperties = &typeProperties
+	}
+
+	v = m["connectVia"]
+	if v != nil {
+		var connectVia IntegrationRuntimeReference
+		err = json.Unmarshal(*m["connectVia"], &connectVia)
+		if err != nil {
+			return err
+		}
+		zls.ConnectVia = &connectVia
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		zls.Description = &description
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicLinkedService
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		zls.Type = typeVar
+	}
+
+	return nil
 }
 
 // ZohoLinkedServiceTypeProperties zoho server linked service properties.

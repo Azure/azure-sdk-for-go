@@ -18,6 +18,7 @@ package insights
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
@@ -87,6 +88,88 @@ type ApplicationInsightsComponent struct {
 	Kind *string `json:"kind,omitempty"`
 	// ApplicationInsightsComponentProperties - Properties that define an Application Insights component resource.
 	*ApplicationInsightsComponentProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationInsightsComponent struct.
+func (aic *ApplicationInsightsComponent) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["kind"]
+	if v != nil {
+		var kind string
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		aic.Kind = &kind
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationInsightsComponentProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		aic.ApplicationInsightsComponentProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		aic.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		aic.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		aic.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		aic.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		aic.Tags = &tags
+	}
+
+	return nil
 }
 
 // ApplicationInsightsComponentAPIKey properties that define an API key of an Application Insights Component.
@@ -520,6 +603,88 @@ type WebTest struct {
 	Kind WebTestKind `json:"kind,omitempty"`
 	// WebTestProperties - Metadata describing a web test for an Azure resource.
 	*WebTestProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for WebTest struct.
+func (wt *WebTest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["kind"]
+	if v != nil {
+		var kind WebTestKind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		wt.Kind = kind
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties WebTestProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		wt.WebTestProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		wt.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		wt.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		wt.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		wt.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		wt.Tags = &tags
+	}
+
+	return nil
 }
 
 // WebTestGeolocation geo-physical location to run a web test from. You must specify one or more locations for the test

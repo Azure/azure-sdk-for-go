@@ -18,6 +18,7 @@ package authorization
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
@@ -33,6 +34,58 @@ type ClassicAdministrator struct {
 	Type *string `json:"type,omitempty"`
 	// ClassicAdministratorProperties - Properties for the classic administrator.
 	*ClassicAdministratorProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ClassicAdministrator struct.
+func (ca *ClassicAdministrator) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ca.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ca.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ca.Type = &typeVar
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ClassicAdministratorProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ca.ClassicAdministratorProperties = &properties
+	}
+
+	return nil
 }
 
 // ClassicAdministratorListResult classicAdministrator list result information.
@@ -412,10 +465,84 @@ type RoleAssignment struct {
 	*RoleAssignmentPropertiesWithScope `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for RoleAssignment struct.
+func (ra *RoleAssignment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ra.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ra.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ra.Type = &typeVar
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties RoleAssignmentPropertiesWithScope
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ra.RoleAssignmentPropertiesWithScope = &properties
+	}
+
+	return nil
+}
+
 // RoleAssignmentCreateParameters role assignment create parameters.
 type RoleAssignmentCreateParameters struct {
 	// RoleAssignmentProperties - Role assignment properties.
 	*RoleAssignmentProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RoleAssignmentCreateParameters struct.
+func (racp *RoleAssignmentCreateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RoleAssignmentProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		racp.RoleAssignmentProperties = &properties
+	}
+
+	return nil
 }
 
 // RoleAssignmentFilter role Assignments filter
@@ -561,6 +688,58 @@ type RoleDefinition struct {
 	Type *string `json:"type,omitempty"`
 	// RoleDefinitionProperties - Role definition properties.
 	*RoleDefinitionProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RoleDefinition struct.
+func (rd *RoleDefinition) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rd.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rd.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		rd.Type = &typeVar
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties RoleDefinitionProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rd.RoleDefinitionProperties = &properties
+	}
+
+	return nil
 }
 
 // RoleDefinitionFilter role Definitions filter

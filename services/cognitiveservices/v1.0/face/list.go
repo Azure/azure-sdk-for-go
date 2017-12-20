@@ -40,8 +40,8 @@ func NewListClient(azureRegion AzureRegions) ListClient {
 // persistedFaceId representing the added face, and persistedFaceId will not expire.
 //
 // faceListID is id referencing a Face List. imageURL is a JSON document with a URL pointing to the image that is to be
-// analyzed. userData is user-specified data about the face list for any purpose. The  maximum length is 1KB.
-// targetFace is a face rectangle to specify the target face to be added to a person in the format of
+// analyzed. userData is user-specified data about the face list for any purpose. The maximum length is 1KB. targetFace
+// is a face rectangle to specify the target face to be added to a person in the format of
 // "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image,
 // targetFace is required to specify which face to add. No targetFace means there is only one face detected in the
 // entire image.
@@ -50,6 +50,8 @@ func (client ListClient) AddFace(ctx context.Context, faceListID string, imageUR
 		{TargetValue: faceListID,
 			Constraints: []validation.Constraint{{Target: "faceListID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "faceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
+		{TargetValue: userData,
+			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}},
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "face.ListClient", "AddFace")
@@ -137,7 +139,9 @@ func (client ListClient) AddFaceFromStream(ctx context.Context, faceListID strin
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,
 			Constraints: []validation.Constraint{{Target: "faceListID", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "faceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+				{Target: "faceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
+		{TargetValue: userData,
+			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "face.ListClient", "AddFaceFromStream")
 	}
 

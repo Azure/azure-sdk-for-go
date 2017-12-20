@@ -348,7 +348,10 @@ func (client Client) GroupResponder(resp *http.Response) (result GroupResponse, 
 func (client Client) Identify(ctx context.Context, body IdentifyRequest) (result ListIdentifyResultItem, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.PersonGroupID", Name: validation.Null, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "body.PersonGroupID", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "body.PersonGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+					{Target: "body.PersonGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil},
+				}},
 				{Target: "body.FaceIds", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "body.FaceIds", Name: validation.MaxItems, Rule: 1000, Chain: nil}}},
 				{Target: "body.MaxNumOfCandidatesReturned", Name: validation.Null, Rule: false,
@@ -492,7 +495,10 @@ func (client Client) VerifyWithPersonGroup(ctx context.Context, body VerifyPerso
 			Constraints: []validation.Constraint{{Target: "body.FaceID", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "body.FaceID", Name: validation.MaxLength, Rule: 64, Chain: nil}}},
 				{Target: "body.PersonID", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "body.PersonGroupID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "body.PersonGroupID", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "body.PersonGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+						{Target: "body.PersonGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil},
+					}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "face.Client", "VerifyWithPersonGroup")
 	}
 

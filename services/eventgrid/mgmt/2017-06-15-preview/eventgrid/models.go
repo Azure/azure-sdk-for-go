@@ -18,6 +18,7 @@ package eventgrid
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"net/http"
@@ -120,12 +121,96 @@ type EventSubscription struct {
 	*EventSubscriptionProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for EventSubscription struct.
+func (es *EventSubscription) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties EventSubscriptionProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		es.EventSubscriptionProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		es.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		es.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		es.Type = &typeVar
+	}
+
+	return nil
+}
+
 // EventSubscriptionDestination information about the destination for an event subscription
 type EventSubscriptionDestination struct {
 	// EndpointType - Type of the endpoint for the event subscription destination. Possible values include: 'WebHook'
 	EndpointType EndpointType `json:"endpointType,omitempty"`
 	// EventSubscriptionDestinationProperties - Properties of the event subscription destination
 	*EventSubscriptionDestinationProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for EventSubscriptionDestination struct.
+func (esd *EventSubscriptionDestination) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["endpointType"]
+	if v != nil {
+		var endpointType EndpointType
+		err = json.Unmarshal(*m["endpointType"], &endpointType)
+		if err != nil {
+			return err
+		}
+		esd.EndpointType = endpointType
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties EventSubscriptionDestinationProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		esd.EventSubscriptionDestinationProperties = &properties
+	}
+
+	return nil
 }
 
 // EventSubscriptionDestinationProperties properties of the event subscription destination
@@ -296,6 +381,58 @@ type EventType struct {
 	*EventTypeProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for EventType struct.
+func (et *EventType) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties EventTypeProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		et.EventTypeProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		et.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		et.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		et.Type = &typeVar
+	}
+
+	return nil
+}
+
 // EventTypeProperties properties of the event type
 type EventTypeProperties struct {
 	// DisplayName - Display name of the event type.
@@ -369,6 +506,78 @@ type Topic struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 	// TopicProperties - Properties of the topic
 	*TopicProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Topic struct.
+func (t *Topic) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties TopicProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		t.TopicProperties = &properties
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		t.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		t.Tags = &tags
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		t.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		t.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		t.Type = &typeVar
+	}
+
+	return nil
 }
 
 // TopicProperties properties of the Topic
@@ -474,6 +683,58 @@ type TopicTypeInfo struct {
 	Type *string `json:"type,omitempty"`
 	// TopicTypeProperties - Properties of the topic type info
 	*TopicTypeProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TopicTypeInfo struct.
+func (tti *TopicTypeInfo) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties TopicTypeProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		tti.TopicTypeProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		tti.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		tti.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		tti.Type = &typeVar
+	}
+
+	return nil
 }
 
 // TopicTypeProperties properties of a topic type.

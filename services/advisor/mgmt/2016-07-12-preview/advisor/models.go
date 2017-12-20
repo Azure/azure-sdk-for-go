@@ -18,6 +18,7 @@ package advisor
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
@@ -240,6 +241,68 @@ type ResourceRecommendationBase struct {
 	SuppressionIds *[]uuid.UUID `json:"suppressionIds,omitempty"`
 	// Type - The recommendation type: Microsoft.Advisor/recommendations.
 	Type *string `json:"type,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ResourceRecommendationBase struct.
+func (rrb *ResourceRecommendationBase) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rrb.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rrb.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties RecommendationProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rrb.RecommendationProperties = &properties
+	}
+
+	v = m["suppressionIds"]
+	if v != nil {
+		var suppressionIds []uuid.UUID
+		err = json.Unmarshal(*m["suppressionIds"], &suppressionIds)
+		if err != nil {
+			return err
+		}
+		rrb.SuppressionIds = &suppressionIds
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		rrb.Type = &typeVar
+	}
+
+	return nil
 }
 
 // ResourceRecommendationBaseListResult the list of Advisor recommendations.

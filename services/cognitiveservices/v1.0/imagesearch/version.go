@@ -1,4 +1,4 @@
-package face
+package imagesearch
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //

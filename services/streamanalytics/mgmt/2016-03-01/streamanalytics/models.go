@@ -329,6 +329,38 @@ func (adlsods AzureDataLakeStoreOutputDataSource) AsBasicOutputDataSource() (Bas
 	return &adlsods, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureDataLakeStoreOutputDataSource struct.
+func (adlsods *AzureDataLakeStoreOutputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AzureDataLakeStoreOutputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		adlsods.AzureDataLakeStoreOutputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicOutputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		adlsods.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureDataLakeStoreOutputDataSourceProperties the properties that are associated with an Azure Data Lake Store.
 type AzureDataLakeStoreOutputDataSourceProperties struct {
 	// RefreshToken - A refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests.
@@ -386,6 +418,38 @@ func (amlwsfb AzureMachineLearningWebServiceFunctionBinding) AsFunctionBinding()
 // AsBasicFunctionBinding is the BasicFunctionBinding implementation for AzureMachineLearningWebServiceFunctionBinding.
 func (amlwsfb AzureMachineLearningWebServiceFunctionBinding) AsBasicFunctionBinding() (BasicFunctionBinding, bool) {
 	return &amlwsfb, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureMachineLearningWebServiceFunctionBinding struct.
+func (amlwsfb *AzureMachineLearningWebServiceFunctionBinding) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AzureMachineLearningWebServiceFunctionBindingProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		amlwsfb.AzureMachineLearningWebServiceFunctionBindingProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicFunctionBinding
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		amlwsfb.Type = typeVar
+	}
+
+	return nil
 }
 
 // AzureMachineLearningWebServiceFunctionBindingProperties the binding properties associated with an Azure Machine
@@ -450,6 +514,38 @@ func (amlwsfrddp AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinition
 // AsBasicFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.
 func (amlwsfrddp AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters) AsBasicFunctionRetrieveDefaultDefinitionParameters() (BasicFunctionRetrieveDefaultDefinitionParameters, bool) {
 	return &amlwsfrddp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters struct.
+func (amlwsfrddp *AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["bindingRetrievalProperties"]
+	if v != nil {
+		var bindingRetrievalProperties AzureMachineLearningWebServiceFunctionBindingRetrievalProperties
+		err = json.Unmarshal(*m["bindingRetrievalProperties"], &bindingRetrievalProperties)
+		if err != nil {
+			return err
+		}
+		amlwsfrddp.AzureMachineLearningWebServiceFunctionBindingRetrievalProperties = &bindingRetrievalProperties
+	}
+
+	v = m["bindingType"]
+	if v != nil {
+		var bindingType BindingType
+		err = json.Unmarshal(*m["bindingType"], &bindingType)
+		if err != nil {
+			return err
+		}
+		amlwsfrddp.BindingType = bindingType
+	}
+
+	return nil
 }
 
 // AzureMachineLearningWebServiceInputColumn describes an input column for the Azure Machine Learning web service
@@ -568,6 +664,38 @@ func (asdods AzureSQLDatabaseOutputDataSource) AsBasicOutputDataSource() (BasicO
 	return &asdods, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AzureSQLDatabaseOutputDataSource struct.
+func (asdods *AzureSQLDatabaseOutputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AzureSQLDatabaseOutputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		asdods.AzureSQLDatabaseOutputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicOutputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		asdods.Type = typeVar
+	}
+
+	return nil
+}
+
 // AzureSQLDatabaseOutputDataSourceProperties the properties that are associated with an Azure SQL database output.
 type AzureSQLDatabaseOutputDataSourceProperties struct {
 	// Server - The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
@@ -654,6 +782,38 @@ func (atods AzureTableOutputDataSource) AsOutputDataSource() (*OutputDataSource,
 // AsBasicOutputDataSource is the BasicOutputDataSource implementation for AzureTableOutputDataSource.
 func (atods AzureTableOutputDataSource) AsBasicOutputDataSource() (BasicOutputDataSource, bool) {
 	return &atods, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureTableOutputDataSource struct.
+func (atods *AzureTableOutputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AzureTableOutputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		atods.AzureTableOutputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicOutputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		atods.Type = typeVar
+	}
+
+	return nil
 }
 
 // AzureTableOutputDataSourceProperties the properties that are associated with an Azure Table output.
@@ -762,6 +922,38 @@ func (bods BlobOutputDataSource) AsBasicOutputDataSource() (BasicOutputDataSourc
 	return &bods, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for BlobOutputDataSource struct.
+func (bods *BlobOutputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties BlobOutputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		bods.BlobOutputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicOutputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		bods.Type = typeVar
+	}
+
+	return nil
+}
+
 // BlobOutputDataSourceProperties the properties that are associated with a blob output.
 type BlobOutputDataSourceProperties struct {
 	// StorageAccounts - A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
@@ -808,6 +1000,38 @@ func (brids BlobReferenceInputDataSource) AsReferenceInputDataSource() (*Referen
 // AsBasicReferenceInputDataSource is the BasicReferenceInputDataSource implementation for BlobReferenceInputDataSource.
 func (brids BlobReferenceInputDataSource) AsBasicReferenceInputDataSource() (BasicReferenceInputDataSource, bool) {
 	return &brids, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for BlobReferenceInputDataSource struct.
+func (brids *BlobReferenceInputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties BlobReferenceInputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		brids.BlobReferenceInputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicReferenceInputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		brids.Type = typeVar
+	}
+
+	return nil
 }
 
 // BlobReferenceInputDataSourceProperties the properties that are associated with a blob input containing reference
@@ -869,6 +1093,38 @@ func (bsids BlobStreamInputDataSource) AsBasicStreamInputDataSource() (BasicStre
 	return &bsids, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for BlobStreamInputDataSource struct.
+func (bsids *BlobStreamInputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties BlobStreamInputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		bsids.BlobStreamInputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicStreamInputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		bsids.Type = typeVar
+	}
+
+	return nil
+}
+
 // BlobStreamInputDataSourceProperties the properties that are associated with a blob input containing stream data.
 type BlobStreamInputDataSourceProperties struct {
 	// StorageAccounts - A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
@@ -928,6 +1184,38 @@ func (cs CsvSerialization) AsSerialization() (*Serialization, bool) {
 // AsBasicSerialization is the BasicSerialization implementation for CsvSerialization.
 func (cs CsvSerialization) AsBasicSerialization() (BasicSerialization, bool) {
 	return &cs, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for CsvSerialization struct.
+func (cs *CsvSerialization) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties CsvSerializationProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		cs.CsvSerializationProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar Type
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		cs.Type = typeVar
+	}
+
+	return nil
 }
 
 // CsvSerializationProperties the properties that are associated with the CSV serialization type.
@@ -1027,6 +1315,38 @@ func (ddods DocumentDbOutputDataSource) AsOutputDataSource() (*OutputDataSource,
 // AsBasicOutputDataSource is the BasicOutputDataSource implementation for DocumentDbOutputDataSource.
 func (ddods DocumentDbOutputDataSource) AsBasicOutputDataSource() (BasicOutputDataSource, bool) {
 	return &ddods, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for DocumentDbOutputDataSource struct.
+func (ddods *DocumentDbOutputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties DocumentDbOutputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ddods.DocumentDbOutputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicOutputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ddods.Type = typeVar
+	}
+
+	return nil
 }
 
 // DocumentDbOutputDataSourceProperties the properties that are associated with a DocumentDB output.
@@ -1139,6 +1459,38 @@ func (ehods EventHubOutputDataSource) AsBasicOutputDataSource() (BasicOutputData
 	return &ehods, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for EventHubOutputDataSource struct.
+func (ehods *EventHubOutputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties EventHubOutputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ehods.EventHubOutputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicOutputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ehods.Type = typeVar
+	}
+
+	return nil
+}
+
 // EventHubOutputDataSourceProperties the properties that are associated with an Event Hub output.
 type EventHubOutputDataSourceProperties struct {
 	// ServiceBusNamespace - The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
@@ -1195,6 +1547,38 @@ func (ehsids EventHubStreamInputDataSource) AsStreamInputDataSource() (*StreamIn
 // AsBasicStreamInputDataSource is the BasicStreamInputDataSource implementation for EventHubStreamInputDataSource.
 func (ehsids EventHubStreamInputDataSource) AsBasicStreamInputDataSource() (BasicStreamInputDataSource, bool) {
 	return &ehsids, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for EventHubStreamInputDataSource struct.
+func (ehsids *EventHubStreamInputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties EventHubStreamInputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ehsids.EventHubStreamInputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicStreamInputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ehsids.Type = typeVar
+	}
+
+	return nil
 }
 
 // EventHubStreamInputDataSourceProperties the properties that are associated with a Event Hub input containing stream
@@ -2059,6 +2443,38 @@ func (ithsids IoTHubStreamInputDataSource) AsBasicStreamInputDataSource() (Basic
 	return &ithsids, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for IoTHubStreamInputDataSource struct.
+func (ithsids *IoTHubStreamInputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties IoTHubStreamInputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ithsids.IoTHubStreamInputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicStreamInputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ithsids.Type = typeVar
+	}
+
+	return nil
+}
+
 // IoTHubStreamInputDataSourceProperties the properties that are associated with a IoT Hub input containing stream
 // data.
 type IoTHubStreamInputDataSourceProperties struct {
@@ -2111,6 +2527,38 @@ func (jsfb JavaScriptFunctionBinding) AsFunctionBinding() (*FunctionBinding, boo
 // AsBasicFunctionBinding is the BasicFunctionBinding implementation for JavaScriptFunctionBinding.
 func (jsfb JavaScriptFunctionBinding) AsBasicFunctionBinding() (BasicFunctionBinding, bool) {
 	return &jsfb, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for JavaScriptFunctionBinding struct.
+func (jsfb *JavaScriptFunctionBinding) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties JavaScriptFunctionBindingProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		jsfb.JavaScriptFunctionBindingProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicFunctionBinding
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		jsfb.Type = typeVar
+	}
+
+	return nil
 }
 
 // JavaScriptFunctionBindingProperties the binding properties associated with a JavaScript function.
@@ -2167,6 +2615,38 @@ func (jsfrddp JavaScriptFunctionRetrieveDefaultDefinitionParameters) AsBasicFunc
 	return &jsfrddp, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for JavaScriptFunctionRetrieveDefaultDefinitionParameters struct.
+func (jsfrddp *JavaScriptFunctionRetrieveDefaultDefinitionParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["bindingRetrievalProperties"]
+	if v != nil {
+		var bindingRetrievalProperties JavaScriptFunctionBindingRetrievalProperties
+		err = json.Unmarshal(*m["bindingRetrievalProperties"], &bindingRetrievalProperties)
+		if err != nil {
+			return err
+		}
+		jsfrddp.JavaScriptFunctionBindingRetrievalProperties = &bindingRetrievalProperties
+	}
+
+	v = m["bindingType"]
+	if v != nil {
+		var bindingType BindingType
+		err = json.Unmarshal(*m["bindingType"], &bindingType)
+		if err != nil {
+			return err
+		}
+		jsfrddp.BindingType = bindingType
+	}
+
+	return nil
+}
+
 // JSONSerialization describes how data from an input is serialized or how data is serialized when written to an output
 // in JSON format.
 type JSONSerialization struct {
@@ -2210,6 +2690,38 @@ func (js JSONSerialization) AsSerialization() (*Serialization, bool) {
 // AsBasicSerialization is the BasicSerialization implementation for JSONSerialization.
 func (js JSONSerialization) AsBasicSerialization() (BasicSerialization, bool) {
 	return &js, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for JSONSerialization struct.
+func (js *JSONSerialization) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties JSONSerializationProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		js.JSONSerializationProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar Type
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		js.Type = typeVar
+	}
+
+	return nil
 }
 
 // JSONSerializationProperties the properties that are associated with the JSON serialization type.
@@ -2366,6 +2878,58 @@ type Output struct {
 	Type *string `json:"type,omitempty"`
 	// OutputProperties - The properties that are associated with an output. Required on PUT (CreateOrReplace) requests.
 	*OutputProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Output struct.
+func (o *Output) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties OutputProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		o.OutputProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		o.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		o.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		o.Type = &typeVar
+	}
+
+	return nil
 }
 
 // BasicOutputDataSource describes the data source that output will be written to.
@@ -2792,6 +3356,38 @@ func (pbods PowerBIOutputDataSource) AsBasicOutputDataSource() (BasicOutputDataS
 	return &pbods, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for PowerBIOutputDataSource struct.
+func (pbods *PowerBIOutputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties PowerBIOutputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		pbods.PowerBIOutputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicOutputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		pbods.Type = typeVar
+	}
+
+	return nil
+}
+
 // PowerBIOutputDataSourceProperties the properties that are associated with a Power BI output.
 type PowerBIOutputDataSourceProperties struct {
 	// RefreshToken - A refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests.
@@ -3100,6 +3696,48 @@ func (sfp ScalarFunctionProperties) AsBasicFunctionProperties() (BasicFunctionPr
 	return &sfp, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for ScalarFunctionProperties struct.
+func (sfp *ScalarFunctionProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ScalarFunctionConfiguration
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sfp.ScalarFunctionConfiguration = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		sfp.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicFunctionProperties
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sfp.Type = typeVar
+	}
+
+	return nil
+}
+
 // BasicSerialization describes how data from an input is serialized or how data is serialized when written to an
 // output.
 type BasicSerialization interface {
@@ -3281,6 +3919,38 @@ func (sbqods ServiceBusQueueOutputDataSource) AsBasicOutputDataSource() (BasicOu
 	return &sbqods, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for ServiceBusQueueOutputDataSource struct.
+func (sbqods *ServiceBusQueueOutputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ServiceBusQueueOutputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sbqods.ServiceBusQueueOutputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicOutputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sbqods.Type = typeVar
+	}
+
+	return nil
+}
+
 // ServiceBusQueueOutputDataSourceProperties the properties that are associated with a Service Bus Queue output.
 type ServiceBusQueueOutputDataSourceProperties struct {
 	// ServiceBusNamespace - The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
@@ -3369,6 +4039,38 @@ func (sbtods ServiceBusTopicOutputDataSource) AsBasicOutputDataSource() (BasicOu
 	return &sbtods, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for ServiceBusTopicOutputDataSource struct.
+func (sbtods *ServiceBusTopicOutputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ServiceBusTopicOutputDataSourceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sbtods.ServiceBusTopicOutputDataSourceProperties = &properties
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar TypeBasicOutputDataSource
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sbtods.Type = typeVar
+	}
+
+	return nil
+}
+
 // ServiceBusTopicOutputDataSourceProperties the properties that are associated with a Service Bus Topic output.
 type ServiceBusTopicOutputDataSourceProperties struct {
 	// ServiceBusNamespace - The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
@@ -3420,6 +4122,78 @@ type StreamingJob struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 	// StreamingJobProperties - The properties that are associated with a streaming job.  Required on PUT (CreateOrReplace) requests.
 	*StreamingJobProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for StreamingJob struct.
+func (sj *StreamingJob) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties StreamingJobProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sj.StreamingJobProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		sj.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		sj.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sj.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		sj.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		sj.Tags = &tags
+	}
+
+	return nil
 }
 
 // StreamingJobListResult object containing a list of streaming jobs.
@@ -3913,6 +4687,58 @@ type SubscriptionQuota struct {
 	*SubscriptionQuotaProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for SubscriptionQuota struct.
+func (sq *SubscriptionQuota) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties SubscriptionQuotaProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sq.SubscriptionQuotaProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		sq.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		sq.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sq.Type = &typeVar
+	}
+
+	return nil
+}
+
 // SubscriptionQuotaProperties describes the properties of the quota.
 type SubscriptionQuotaProperties struct {
 	// MaxCount - The max permitted usage of this resource.
@@ -3941,6 +4767,58 @@ type Transformation struct {
 	Type *string `json:"type,omitempty"`
 	// TransformationProperties - The properties that are associated with a transformation. Required on PUT (CreateOrReplace) requests.
 	*TransformationProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Transformation struct.
+func (t *Transformation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties TransformationProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		t.TransformationProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		t.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		t.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		t.Type = &typeVar
+	}
+
+	return nil
 }
 
 // TransformationProperties the properties that are associated with a transformation.

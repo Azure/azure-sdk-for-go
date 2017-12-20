@@ -19,6 +19,7 @@ package graphrbac
 
 import (
 	"encoding/json"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 )
@@ -52,6 +53,8 @@ const (
 // AADObject the properties of an Active Directory object.
 type AADObject struct {
 	autorest.Response `json:"-"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ObjectID - The ID of the object.
 	ObjectID *string `json:"objectId,omitempty"`
 	// ObjectType - The type of AAD object.
@@ -99,6 +102,8 @@ type ADGroup struct {
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// DisplayName - The display name of the group.
 	DisplayName *string `json:"displayName,omitempty"`
 	// SecurityEnabled - Whether the group is security-enable.
@@ -157,6 +162,8 @@ type Application struct {
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// AppID - The application ID.
 	AppID *string `json:"appId,omitempty"`
 	// AppPermissions - The application permissions.
@@ -218,12 +225,16 @@ func (a Application) AsBasicDirectoryObject() (BasicDirectoryObject, bool) {
 
 // ApplicationAddOwnerParameters request parameters for adding a owner to an application.
 type ApplicationAddOwnerParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// URL - A owner object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the owner (user, application, servicePrincipal, group) to be added.
 	URL *string `json:"url,omitempty"`
 }
 
 // ApplicationCreateParameters request parameters for creating a new application.
 type ApplicationCreateParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// AvailableToOtherTenants - Whether the application is available to other tenants.
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
 	// DisplayName - The display name of the application.
@@ -336,6 +347,8 @@ func (page ApplicationListResultPage) Values() []Application {
 
 // ApplicationUpdateParameters request parameters for updating an existing application.
 type ApplicationUpdateParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// AvailableToOtherTenants - Whether the application is available to other tenants
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
 	// DisplayName - The display name of the application.
@@ -358,6 +371,8 @@ type ApplicationUpdateParameters struct {
 
 // CheckGroupMembershipParameters request parameters for IsMemberOf API call.
 type CheckGroupMembershipParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// GroupID - The object ID of the group to check.
 	GroupID *string `json:"groupId,omitempty"`
 	// MemberID - The object ID of the contact, group, user, or service principal to check for membership in the specified group.
@@ -367,6 +382,8 @@ type CheckGroupMembershipParameters struct {
 // CheckGroupMembershipResult server response for IsMemberOf API call
 type CheckGroupMembershipResult struct {
 	autorest.Response `json:"-"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// Value - True if the specified user, group, contact, or service principal has either direct or transitive membership in the specified group; otherwise, false.
 	Value *bool `json:"value,omitempty"`
 }
@@ -511,6 +528,8 @@ func (dolr *DirectoryObjectListResult) UnmarshalJSON(body []byte) error {
 // Domain active Directory Domain information.
 type Domain struct {
 	autorest.Response `json:"-"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// AuthenticationType - the type of the authentication into the domain.
 	AuthenticationType *string `json:"authenticationType,omitempty"`
 	// IsDefault - if this is the default domain in the tenant.
@@ -536,6 +555,8 @@ type ErrorMessage struct {
 
 // GetObjectsParameters request parameters for the GetObjectsByObjectIds API.
 type GetObjectsParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ObjectIds - The requested object IDs.
 	ObjectIds *[]string `json:"objectIds,omitempty"`
 	// Types - The requested object types.
@@ -640,14 +661,40 @@ type GraphError struct {
 	*OdataError `json:"odata.error,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for GraphError struct.
+func (ge *GraphError) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["odata.error"]
+	if v != nil {
+		var odataerror OdataError
+		err = json.Unmarshal(*m["odata.error"], &odataerror)
+		if err != nil {
+			return err
+		}
+		ge.OdataError = &odataerror
+	}
+
+	return nil
+}
+
 // GroupAddMemberParameters request parameters for adding a member to a group.
 type GroupAddMemberParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// URL - A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
 	URL *string `json:"url,omitempty"`
 }
 
 // GroupCreateParameters request parameters for creating a new group.
 type GroupCreateParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// DisplayName - Group display name
 	DisplayName *string `json:"displayName,omitempty"`
 	// MailEnabled - Whether the group is mail-enabled. Must be false. This is because only pure security groups can be created using the Graph API.
@@ -660,6 +707,8 @@ type GroupCreateParameters struct {
 
 // GroupGetMemberGroupsParameters request parameters for GetMemberGroups API call.
 type GroupGetMemberGroupsParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// SecurityEnabledOnly - If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
 	SecurityEnabledOnly *bool `json:"securityEnabledOnly,omitempty"`
 }
@@ -763,6 +812,8 @@ func (page GroupListResultPage) Values() []ADGroup {
 
 // KeyCredential active Directory Key Credential information.
 type KeyCredential struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// StartDate - Start date.
 	StartDate *date.Time `json:"startDate,omitempty"`
 	// EndDate - End date.
@@ -798,8 +849,42 @@ type OdataError struct {
 	*ErrorMessage `json:"message,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for OdataError struct.
+func (oe *OdataError) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["code"]
+	if v != nil {
+		var code string
+		err = json.Unmarshal(*m["code"], &code)
+		if err != nil {
+			return err
+		}
+		oe.Code = &code
+	}
+
+	v = m["message"]
+	if v != nil {
+		var message ErrorMessage
+		err = json.Unmarshal(*m["message"], &message)
+		if err != nil {
+			return err
+		}
+		oe.ErrorMessage = &message
+	}
+
+	return nil
+}
+
 // PasswordCredential active Directory Password Credential information.
 type PasswordCredential struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// StartDate - Start date.
 	StartDate *date.Time `json:"startDate,omitempty"`
 	// EndDate - End date.
@@ -825,6 +910,8 @@ type PasswordCredentialsUpdateParameters struct {
 
 // PasswordProfile the password profile associated with a user.
 type PasswordProfile struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// Password - Password
 	Password *string `json:"password,omitempty"`
 	// ForceChangePasswordNextLogin - Whether to force a password change on next login.
@@ -836,6 +923,8 @@ type PasswordProfile struct {
 // applications (through the requiredResourceAccess collection) when calling a resource application. The
 // requiredResourceAccess property of the Application entity is a collection of ReqiredResourceAccess.
 type RequiredResourceAccess struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ResourceAccess - The list of OAuth2.0 permission scopes and app roles that the application requires from the specified resource.
 	ResourceAccess *[]ResourceAccess `json:"resourceAccess,omitempty"`
 	// ResourceAppID - The unique identifier for the resource that the application requires access to. This should be equal to the appId declared on the target resource application.
@@ -845,6 +934,8 @@ type RequiredResourceAccess struct {
 // ResourceAccess specifies an OAuth 2.0 permission scope or an app role that an application requires. The
 // resourceAccess property of the RequiredResourceAccess type is a collection of ResourceAccess.
 type ResourceAccess struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ID - The unique identifier for one of the OAuth2Permission or AppRole instances that the resource application exposes.
 	ID *string `json:"id,omitempty"`
 	// Type - Specifies whether the id property references an OAuth2Permission or an AppRole. Possible values are "scope" or "role".
@@ -860,6 +951,8 @@ type ServicePrincipal struct {
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// DisplayName - The display name of the service principal.
 	DisplayName *string `json:"displayName,omitempty"`
 	// AppID - The application ID.
@@ -911,6 +1004,8 @@ func (sp ServicePrincipal) AsBasicDirectoryObject() (BasicDirectoryObject, bool)
 
 // ServicePrincipalCreateParameters request parameters for creating a new service principal.
 type ServicePrincipalCreateParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// AppID - application Id
 	AppID *string `json:"appId,omitempty"`
 	// AccountEnabled - Whether the account is enabled
@@ -1014,6 +1109,8 @@ func (page ServicePrincipalListResultPage) Values() []ServicePrincipal {
 // SignInName contains information about a sign-in name of a local account user in an Azure Active Directory B2C
 // tenant.
 type SignInName struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// Type - A string value that can be used to classify user sign-in types in your directory, such as 'emailAddress' or 'userName'.
 	Type *string `json:"type,omitempty"`
 	// Value - The sign-in used by the local account. Must be unique across the company/tenant. For example, 'johnc@example.com'.
@@ -1029,6 +1126,8 @@ type User struct {
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ImmutableID - This must be specified if you are using a federated domain for the user's userPrincipalName (UPN) property when creating a new user account. It is used to associate an on-premises Active Directory user account with their Azure AD user object.
 	ImmutableID *string `json:"immutableId,omitempty"`
 	// UsageLocation - A two letter country code (ISO standard 3166). Required for users that will be assigned licenses due to legal requirement to check for availability of services in countries. Examples include: "US", "JP", and "GB".
@@ -1096,6 +1195,8 @@ func (u User) AsBasicDirectoryObject() (BasicDirectoryObject, bool) {
 
 // UserBase ...
 type UserBase struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ImmutableID - This must be specified if you are using a federated domain for the user's userPrincipalName (UPN) property when creating a new user account. It is used to associate an on-premises Active Directory user account with their Azure AD user object.
 	ImmutableID *string `json:"immutableId,omitempty"`
 	// UsageLocation - A two letter country code (ISO standard 3166). Required for users that will be assigned licenses due to legal requirement to check for availability of services in countries. Examples include: "US", "JP", and "GB".
@@ -1120,6 +1221,8 @@ type UserCreateParameters struct {
 	Surname *string `json:"surname,omitempty"`
 	// UserType - A string value that can be used to classify user types in your directory, such as 'Member' and 'Guest'. Possible values include: 'Member', 'Guest'
 	UserType UserType `json:"userType,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// AccountEnabled - Whether the account is enabled.
 	AccountEnabled *bool `json:"accountEnabled,omitempty"`
 	// DisplayName - The display name of the user.
@@ -1136,6 +1239,8 @@ type UserCreateParameters struct {
 
 // UserGetMemberGroupsParameters request parameters for GetMemberGroups API call.
 type UserGetMemberGroupsParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// SecurityEnabledOnly - If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
 	SecurityEnabledOnly *bool `json:"securityEnabledOnly,omitempty"`
 }
@@ -1249,6 +1354,8 @@ type UserUpdateParameters struct {
 	Surname *string `json:"surname,omitempty"`
 	// UserType - A string value that can be used to classify user types in your directory, such as 'Member' and 'Guest'. Possible values include: 'Member', 'Guest'
 	UserType UserType `json:"userType,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// AccountEnabled - Whether the account is enabled.
 	AccountEnabled *bool `json:"accountEnabled,omitempty"`
 	// DisplayName - The display name of the user.

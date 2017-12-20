@@ -226,9 +226,9 @@ func unmarshalBasicAnswer(body []byte) (BasicAnswer, error) {
 
 	switch m["_type"] {
 	case string(TypeVideos):
-		var v Videos
-		err := json.Unmarshal(body, &v)
-		return v, err
+		var vVar Videos
+		err := json.Unmarshal(body, &vVar)
+		return vVar, err
 	case string(TypeSearchResultsAnswer):
 		var sra SearchResultsAnswer
 		err := json.Unmarshal(body, &sra)
@@ -907,9 +907,9 @@ func unmarshalBasicIdentifiable(body []byte) (BasicIdentifiable, error) {
 		err := json.Unmarshal(body, &vo)
 		return vo, err
 	case string(TypeVideos):
-		var v Videos
-		err := json.Unmarshal(body, &v)
-		return v, err
+		var vVar Videos
+		err := json.Unmarshal(body, &vVar)
+		return vVar, err
 	case string(TypeSearchResultsAnswer):
 		var sra SearchResultsAnswer
 		err := json.Unmarshal(body, &sra)
@@ -1884,9 +1884,9 @@ func unmarshalBasicResponse(body []byte) (BasicResponse, error) {
 		err := json.Unmarshal(body, &vo)
 		return vo, err
 	case string(TypeVideos):
-		var v Videos
-		err := json.Unmarshal(body, &v)
-		return v, err
+		var vVar Videos
+		err := json.Unmarshal(body, &vVar)
+		return vVar, err
 	case string(TypeSearchResultsAnswer):
 		var sra SearchResultsAnswer
 		err := json.Unmarshal(body, &sra)
@@ -2113,9 +2113,9 @@ func unmarshalBasicResponseBase(body []byte) (BasicResponseBase, error) {
 		err := json.Unmarshal(body, &vo)
 		return vo, err
 	case string(TypeVideos):
-		var v Videos
-		err := json.Unmarshal(body, &v)
-		return v, err
+		var vVar Videos
+		err := json.Unmarshal(body, &vVar)
+		return vVar, err
 	case string(TypeSearchResultsAnswer):
 		var sra SearchResultsAnswer
 		err := json.Unmarshal(body, &sra)
@@ -2331,9 +2331,9 @@ func unmarshalBasicSearchResultsAnswer(body []byte) (BasicSearchResultsAnswer, e
 
 	switch m["_type"] {
 	case string(TypeVideos):
-		var v Videos
-		err := json.Unmarshal(body, &v)
-		return v, err
+		var vVar Videos
+		err := json.Unmarshal(body, &vVar)
+		return vVar, err
 	default:
 		var sra SearchResultsAnswer
 		err := json.Unmarshal(body, &sra)
@@ -3414,124 +3414,124 @@ type Videos struct {
 }
 
 // MarshalJSON is the custom marshaler for Videos.
-func (v Videos) MarshalJSON() ([]byte, error) {
-	v.Type = TypeVideos
+func (vVar Videos) MarshalJSON() ([]byte, error) {
+	vVar.Type = TypeVideos
 	type Alias Videos
 	return json.Marshal(&struct {
 		Alias
 	}{
-		Alias: (Alias)(v),
+		Alias: (Alias)(vVar),
 	})
 }
 
 // AsImageObject is the BasicResponseBase implementation for Videos.
-func (v Videos) AsImageObject() (*ImageObject, bool) {
+func (vVar Videos) AsImageObject() (*ImageObject, bool) {
 	return nil, false
 }
 
 // AsVideoObject is the BasicResponseBase implementation for Videos.
-func (v Videos) AsVideoObject() (*VideoObject, bool) {
+func (vVar Videos) AsVideoObject() (*VideoObject, bool) {
 	return nil, false
 }
 
 // AsVideos is the BasicResponseBase implementation for Videos.
-func (v Videos) AsVideos() (*Videos, bool) {
-	return &v, true
+func (vVar Videos) AsVideos() (*Videos, bool) {
+	return &vVar, true
 }
 
 // AsSearchResultsAnswer is the BasicResponseBase implementation for Videos.
-func (v Videos) AsSearchResultsAnswer() (*SearchResultsAnswer, bool) {
+func (vVar Videos) AsSearchResultsAnswer() (*SearchResultsAnswer, bool) {
 	return nil, false
 }
 
 // AsBasicSearchResultsAnswer is the BasicResponseBase implementation for Videos.
-func (v Videos) AsBasicSearchResultsAnswer() (BasicSearchResultsAnswer, bool) {
-	return &v, true
+func (vVar Videos) AsBasicSearchResultsAnswer() (BasicSearchResultsAnswer, bool) {
+	return &vVar, true
 }
 
 // AsAnswer is the BasicResponseBase implementation for Videos.
-func (v Videos) AsAnswer() (*Answer, bool) {
+func (vVar Videos) AsAnswer() (*Answer, bool) {
 	return nil, false
 }
 
 // AsBasicAnswer is the BasicResponseBase implementation for Videos.
-func (v Videos) AsBasicAnswer() (BasicAnswer, bool) {
-	return &v, true
+func (vVar Videos) AsBasicAnswer() (BasicAnswer, bool) {
+	return &vVar, true
 }
 
 // AsMediaObject is the BasicResponseBase implementation for Videos.
-func (v Videos) AsMediaObject() (*MediaObject, bool) {
+func (vVar Videos) AsMediaObject() (*MediaObject, bool) {
 	return nil, false
 }
 
 // AsBasicMediaObject is the BasicResponseBase implementation for Videos.
-func (v Videos) AsBasicMediaObject() (BasicMediaObject, bool) {
+func (vVar Videos) AsBasicMediaObject() (BasicMediaObject, bool) {
 	return nil, false
 }
 
 // AsResponse is the BasicResponseBase implementation for Videos.
-func (v Videos) AsResponse() (*Response, bool) {
+func (vVar Videos) AsResponse() (*Response, bool) {
 	return nil, false
 }
 
 // AsBasicResponse is the BasicResponseBase implementation for Videos.
-func (v Videos) AsBasicResponse() (BasicResponse, bool) {
-	return &v, true
+func (vVar Videos) AsBasicResponse() (BasicResponse, bool) {
+	return &vVar, true
 }
 
 // AsThing is the BasicResponseBase implementation for Videos.
-func (v Videos) AsThing() (*Thing, bool) {
+func (vVar Videos) AsThing() (*Thing, bool) {
 	return nil, false
 }
 
 // AsBasicThing is the BasicResponseBase implementation for Videos.
-func (v Videos) AsBasicThing() (BasicThing, bool) {
+func (vVar Videos) AsBasicThing() (BasicThing, bool) {
 	return nil, false
 }
 
 // AsCreativeWork is the BasicResponseBase implementation for Videos.
-func (v Videos) AsCreativeWork() (*CreativeWork, bool) {
+func (vVar Videos) AsCreativeWork() (*CreativeWork, bool) {
 	return nil, false
 }
 
 // AsBasicCreativeWork is the BasicResponseBase implementation for Videos.
-func (v Videos) AsBasicCreativeWork() (BasicCreativeWork, bool) {
+func (vVar Videos) AsBasicCreativeWork() (BasicCreativeWork, bool) {
 	return nil, false
 }
 
 // AsIdentifiable is the BasicResponseBase implementation for Videos.
-func (v Videos) AsIdentifiable() (*Identifiable, bool) {
+func (vVar Videos) AsIdentifiable() (*Identifiable, bool) {
 	return nil, false
 }
 
 // AsBasicIdentifiable is the BasicResponseBase implementation for Videos.
-func (v Videos) AsBasicIdentifiable() (BasicIdentifiable, bool) {
-	return &v, true
+func (vVar Videos) AsBasicIdentifiable() (BasicIdentifiable, bool) {
+	return &vVar, true
 }
 
 // AsErrorResponse is the BasicResponseBase implementation for Videos.
-func (v Videos) AsErrorResponse() (*ErrorResponse, bool) {
+func (vVar Videos) AsErrorResponse() (*ErrorResponse, bool) {
 	return nil, false
 }
 
 // AsTrendingVideos is the BasicResponseBase implementation for Videos.
-func (v Videos) AsTrendingVideos() (*TrendingVideos, bool) {
+func (vVar Videos) AsTrendingVideos() (*TrendingVideos, bool) {
 	return nil, false
 }
 
 // AsVideoDetails is the BasicResponseBase implementation for Videos.
-func (v Videos) AsVideoDetails() (*VideoDetails, bool) {
+func (vVar Videos) AsVideoDetails() (*VideoDetails, bool) {
 	return nil, false
 }
 
 // AsResponseBase is the BasicResponseBase implementation for Videos.
-func (v Videos) AsResponseBase() (*ResponseBase, bool) {
+func (vVar Videos) AsResponseBase() (*ResponseBase, bool) {
 	return nil, false
 }
 
 // AsBasicResponseBase is the BasicResponseBase implementation for Videos.
-func (v Videos) AsBasicResponseBase() (BasicResponseBase, bool) {
-	return &v, true
+func (vVar Videos) AsBasicResponseBase() (BasicResponseBase, bool) {
+	return &vVar, true
 }
 
 // VideosModule ...

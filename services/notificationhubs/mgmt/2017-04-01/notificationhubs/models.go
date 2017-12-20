@@ -18,6 +18,7 @@ package notificationhubs
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -65,6 +66,28 @@ type AdmCredential struct {
 	*AdmCredentialProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for AdmCredential struct.
+func (ac *AdmCredential) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AdmCredentialProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ac.AdmCredentialProperties = &properties
+	}
+
+	return nil
+}
+
 // AdmCredentialProperties description of a NotificationHub AdmCredential.
 type AdmCredentialProperties struct {
 	// ClientID - The client identifier.
@@ -79,6 +102,28 @@ type AdmCredentialProperties struct {
 type ApnsCredential struct {
 	// ApnsCredentialProperties - Properties of NotificationHub ApnsCredential.
 	*ApnsCredentialProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApnsCredential struct.
+func (ac *ApnsCredential) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApnsCredentialProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ac.ApnsCredentialProperties = &properties
+	}
+
+	return nil
 }
 
 // ApnsCredentialProperties description of a NotificationHub ApnsCredential.
@@ -105,6 +150,28 @@ type ApnsCredentialProperties struct {
 type BaiduCredential struct {
 	// BaiduCredentialProperties - Properties of NotificationHub BaiduCredential.
 	*BaiduCredentialProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for BaiduCredential struct.
+func (bc *BaiduCredential) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties BaiduCredentialProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		bc.BaiduCredentialProperties = &properties
+	}
+
+	return nil
 }
 
 // BaiduCredentialProperties description of a NotificationHub BaiduCredential.
@@ -192,10 +259,114 @@ type CreateOrUpdateParameters struct {
 	*Properties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for CreateOrUpdateParameters struct.
+func (coup *CreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties Properties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		coup.Properties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		coup.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		coup.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		coup.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		coup.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		coup.Tags = &tags
+	}
+
+	v = m["sku"]
+	if v != nil {
+		var sku Sku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		coup.Sku = &sku
+	}
+
+	return nil
+}
+
 // GcmCredential description of a NotificationHub GcmCredential.
 type GcmCredential struct {
 	// GcmCredentialProperties - Properties of NotificationHub GcmCredential.
 	*GcmCredentialProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for GcmCredential struct.
+func (gc *GcmCredential) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties GcmCredentialProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		gc.GcmCredentialProperties = &properties
+	}
+
+	return nil
 }
 
 // GcmCredentialProperties description of a NotificationHub GcmCredential.
@@ -314,6 +485,28 @@ type MpnsCredential struct {
 	*MpnsCredentialProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for MpnsCredential struct.
+func (mc *MpnsCredential) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties MpnsCredentialProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		mc.MpnsCredentialProperties = &properties
+	}
+
+	return nil
+}
+
 // MpnsCredentialProperties description of a NotificationHub MpnsCredential.
 type MpnsCredentialProperties struct {
 	// MpnsCertificate - The MPNS certificate.
@@ -340,6 +533,88 @@ type NamespaceCreateOrUpdateParameters struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// NamespaceProperties - Properties of the Namespace.
 	*NamespaceProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for NamespaceCreateOrUpdateParameters struct.
+func (ncoup *NamespaceCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties NamespaceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ncoup.NamespaceProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ncoup.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ncoup.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ncoup.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		ncoup.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		ncoup.Tags = &tags
+	}
+
+	v = m["sku"]
+	if v != nil {
+		var sku Sku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		ncoup.Sku = &sku
+	}
+
+	return nil
 }
 
 // NamespaceListResult the response of the List Namespace operation.
@@ -497,6 +772,88 @@ type NamespaceResource struct {
 	*NamespaceProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for NamespaceResource struct.
+func (nr *NamespaceResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties NamespaceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		nr.NamespaceProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		nr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		nr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		nr.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		nr.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		nr.Tags = &tags
+	}
+
+	v = m["sku"]
+	if v != nil {
+		var sku Sku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		nr.Sku = &sku
+	}
+
+	return nil
+}
+
 // NamespacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type NamespacesDeleteFuture struct {
 	azure.Future
@@ -561,6 +918,88 @@ type PnsCredentialsResource struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// PnsCredentialsProperties - NotificationHub PNS Credentials.
 	*PnsCredentialsProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for PnsCredentialsResource struct.
+func (pcr *PnsCredentialsResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties PnsCredentialsProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		pcr.PnsCredentialsProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		pcr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		pcr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		pcr.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		pcr.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		pcr.Tags = &tags
+	}
+
+	v = m["sku"]
+	if v != nil {
+		var sku Sku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		pcr.Sku = &sku
+	}
+
+	return nil
 }
 
 // PolicykeyResource namespace/NotificationHub Regenerate Keys
@@ -639,6 +1078,88 @@ type ResourceType struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// Properties - Properties of the NotificationHub.
 	*Properties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ResourceType struct.
+func (rt *ResourceType) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties Properties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rt.Properties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rt.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rt.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		rt.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		rt.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		rt.Tags = &tags
+	}
+
+	v = m["sku"]
+	if v != nil {
+		var sku Sku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		rt.Sku = &sku
+	}
+
+	return nil
 }
 
 // SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters supplied to the CreateOrUpdate Namespace
@@ -788,6 +1309,88 @@ type SharedAccessAuthorizationRuleResource struct {
 	*SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for SharedAccessAuthorizationRuleResource struct.
+func (saarr *SharedAccessAuthorizationRuleResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties SharedAccessAuthorizationRuleProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		saarr.SharedAccessAuthorizationRuleProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		saarr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		saarr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		saarr.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		saarr.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		saarr.Tags = &tags
+	}
+
+	v = m["sku"]
+	if v != nil {
+		var sku Sku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		saarr.Sku = &sku
+	}
+
+	return nil
+}
+
 // Sku the Sku description for a namespace
 type Sku struct {
 	// Name - Name of the notification hub sku. Possible values include: 'Free', 'Basic', 'Standard'
@@ -812,6 +1415,28 @@ type SubResource struct {
 type WnsCredential struct {
 	// WnsCredentialProperties - Properties of NotificationHub WnsCredential.
 	*WnsCredentialProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for WnsCredential struct.
+func (wc *WnsCredential) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties WnsCredentialProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		wc.WnsCredentialProperties = &properties
+	}
+
+	return nil
 }
 
 // WnsCredentialProperties description of a NotificationHub WnsCredential.

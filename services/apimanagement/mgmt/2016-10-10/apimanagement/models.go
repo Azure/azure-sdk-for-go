@@ -18,6 +18,7 @@ package apimanagement
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -663,6 +664,118 @@ type BackendBaseParameters struct {
 	// ResourceID - Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or Api Apps.
 	ResourceID         *string `json:"resourceId,omitempty"`
 	*BackendProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for BackendBaseParameters struct.
+func (bbp *BackendBaseParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["certificate"]
+	if v != nil {
+		var certificate []string
+		err = json.Unmarshal(*m["certificate"], &certificate)
+		if err != nil {
+			return err
+		}
+		bbp.Certificate = &certificate
+	}
+
+	v = m["query"]
+	if v != nil {
+		var query map[string][]string
+		err = json.Unmarshal(*m["query"], &query)
+		if err != nil {
+			return err
+		}
+		bbp.Query = &query
+	}
+
+	v = m["header"]
+	if v != nil {
+		var header map[string][]string
+		err = json.Unmarshal(*m["header"], &header)
+		if err != nil {
+			return err
+		}
+		bbp.Header = &header
+	}
+
+	v = m["url"]
+	if v != nil {
+		var URLVar string
+		err = json.Unmarshal(*m["url"], &URLVar)
+		if err != nil {
+			return err
+		}
+		bbp.URL = &URLVar
+	}
+
+	v = m["username"]
+	if v != nil {
+		var username string
+		err = json.Unmarshal(*m["username"], &username)
+		if err != nil {
+			return err
+		}
+		bbp.Username = &username
+	}
+
+	v = m["password"]
+	if v != nil {
+		var password string
+		err = json.Unmarshal(*m["password"], &password)
+		if err != nil {
+			return err
+		}
+		bbp.Password = &password
+	}
+
+	v = m["title"]
+	if v != nil {
+		var title string
+		err = json.Unmarshal(*m["title"], &title)
+		if err != nil {
+			return err
+		}
+		bbp.Title = &title
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		bbp.Description = &description
+	}
+
+	v = m["resourceId"]
+	if v != nil {
+		var resourceID string
+		err = json.Unmarshal(*m["resourceId"], &resourceID)
+		if err != nil {
+			return err
+		}
+		bbp.ResourceID = &resourceID
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties BackendProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		bbp.BackendProperties = &properties
+	}
+
+	return nil
 }
 
 // BackendCollection paged Backend list representation.
@@ -2745,6 +2858,98 @@ type ServiceResource struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ServiceResource struct.
+func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ServiceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sr.ServiceProperties = &properties
+	}
+
+	v = m["sku"]
+	if v != nil {
+		var sku ServiceSkuProperties
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		sr.Sku = &sku
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		sr.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		sr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		sr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sr.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		sr.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		sr.Tags = &tags
+	}
+
+	return nil
+}
+
 // ServicesApplyNetworkConfigurationUpdatesFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ServicesApplyNetworkConfigurationUpdatesFuture struct {
@@ -2957,6 +3162,48 @@ type ServiceUpdateParameters struct {
 	Sku *ServiceSkuProperties `json:"sku,omitempty"`
 	// Tags - Resource tags.
 	Tags *map[string]*string `json:"tags,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServiceUpdateParameters struct.
+func (sup *ServiceUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ServiceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sup.ServiceProperties = &properties
+	}
+
+	v = m["sku"]
+	if v != nil {
+		var sku ServiceSkuProperties
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		sup.Sku = &sku
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		sup.Tags = &tags
+	}
+
+	return nil
 }
 
 // ServiceUploadCertificateParameters parameters supplied to the Upload SSL certificate for an API Management service

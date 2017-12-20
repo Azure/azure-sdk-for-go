@@ -18,6 +18,7 @@ package network
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -935,6 +936,88 @@ type ApplicationGateway struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ApplicationGateway struct.
+func (ag *ApplicationGateway) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ag.ApplicationGatewayPropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		ag.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ag.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ag.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ag.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		ag.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		ag.Tags = &tags
+	}
+
+	return nil
+}
+
 // ApplicationGatewayAuthenticationCertificate authentication certificates of an application gateway.
 type ApplicationGatewayAuthenticationCertificate struct {
 	// ID - Resource ID.
@@ -946,6 +1029,68 @@ type ApplicationGatewayAuthenticationCertificate struct {
 	Etag *string `json:"etag,omitempty"`
 	// Type - Type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayAuthenticationCertificate struct.
+func (agac *ApplicationGatewayAuthenticationCertificate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayAuthenticationCertificatePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agac.ApplicationGatewayAuthenticationCertificatePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agac.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		agac.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agac.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agac.ID = &ID
+	}
+
+	return nil
 }
 
 // ApplicationGatewayAuthenticationCertificatePropertiesFormat authentication certificates properties of an application
@@ -971,6 +1116,78 @@ type ApplicationGatewayAvailableSslOptions struct {
 	// Tags - Resource tags.
 	Tags                                                   *map[string]*string `json:"tags,omitempty"`
 	*ApplicationGatewayAvailableSslOptionsPropertiesFormat `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayAvailableSslOptions struct.
+func (agaso *ApplicationGatewayAvailableSslOptions) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayAvailableSslOptionsPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agaso.ApplicationGatewayAvailableSslOptionsPropertiesFormat = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agaso.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agaso.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agaso.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		agaso.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		agaso.Tags = &tags
+	}
+
+	return nil
 }
 
 // ApplicationGatewayAvailableSslOptionsPropertiesFormat properties of ApplicationGatewayAvailableSslOptions
@@ -1118,6 +1335,68 @@ type ApplicationGatewayBackendAddressPool struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayBackendAddressPool struct.
+func (agbap *ApplicationGatewayBackendAddressPool) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayBackendAddressPoolPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agbap.ApplicationGatewayBackendAddressPoolPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agbap.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		agbap.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agbap.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agbap.ID = &ID
+	}
+
+	return nil
+}
+
 // ApplicationGatewayBackendAddressPoolPropertiesFormat properties of Backend Address Pool of an application gateway.
 type ApplicationGatewayBackendAddressPoolPropertiesFormat struct {
 	// BackendIPConfigurations - Collection of references to IPs defined in network interfaces.
@@ -1171,6 +1450,68 @@ type ApplicationGatewayBackendHTTPSettings struct {
 	Etag *string `json:"etag,omitempty"`
 	// Type - Type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayBackendHTTPSettings struct.
+func (agbhs *ApplicationGatewayBackendHTTPSettings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayBackendHTTPSettingsPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agbhs.ApplicationGatewayBackendHTTPSettingsPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agbhs.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		agbhs.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agbhs.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agbhs.ID = &ID
+	}
+
+	return nil
 }
 
 // ApplicationGatewayBackendHTTPSettingsPropertiesFormat properties of Backend address pool settings of an application
@@ -1254,6 +1595,78 @@ type ApplicationGatewayFirewallRuleSet struct {
 	*ApplicationGatewayFirewallRuleSetPropertiesFormat `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayFirewallRuleSet struct.
+func (agfrs *ApplicationGatewayFirewallRuleSet) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayFirewallRuleSetPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agfrs.ApplicationGatewayFirewallRuleSetPropertiesFormat = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agfrs.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agfrs.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agfrs.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		agfrs.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		agfrs.Tags = &tags
+	}
+
+	return nil
+}
+
 // ApplicationGatewayFirewallRuleSetPropertiesFormat properties of the web application firewall rule set.
 type ApplicationGatewayFirewallRuleSetPropertiesFormat struct {
 	// ProvisioningState - The provisioning state of the web application firewall rule set.
@@ -1277,6 +1690,68 @@ type ApplicationGatewayFrontendIPConfiguration struct {
 	Etag *string `json:"etag,omitempty"`
 	// Type - Type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayFrontendIPConfiguration struct.
+func (agfic *ApplicationGatewayFrontendIPConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayFrontendIPConfigurationPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agfic.ApplicationGatewayFrontendIPConfigurationPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agfic.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		agfic.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agfic.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agfic.ID = &ID
+	}
+
+	return nil
 }
 
 // ApplicationGatewayFrontendIPConfigurationPropertiesFormat properties of Frontend IP configuration of an application
@@ -1307,6 +1782,68 @@ type ApplicationGatewayFrontendPort struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayFrontendPort struct.
+func (agfp *ApplicationGatewayFrontendPort) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayFrontendPortPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agfp.ApplicationGatewayFrontendPortPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agfp.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		agfp.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agfp.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agfp.ID = &ID
+	}
+
+	return nil
+}
+
 // ApplicationGatewayFrontendPortPropertiesFormat properties of Frontend port of an application gateway.
 type ApplicationGatewayFrontendPortPropertiesFormat struct {
 	// Port - Frontend port
@@ -1326,6 +1863,68 @@ type ApplicationGatewayHTTPListener struct {
 	Etag *string `json:"etag,omitempty"`
 	// Type - Type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayHTTPListener struct.
+func (aghl *ApplicationGatewayHTTPListener) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayHTTPListenerPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		aghl.ApplicationGatewayHTTPListenerPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		aghl.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		aghl.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		aghl.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		aghl.ID = &ID
+	}
+
+	return nil
 }
 
 // ApplicationGatewayHTTPListenerPropertiesFormat properties of HTTP listener of an application gateway.
@@ -1358,6 +1957,68 @@ type ApplicationGatewayIPConfiguration struct {
 	Etag *string `json:"etag,omitempty"`
 	// Type - Type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayIPConfiguration struct.
+func (agic *ApplicationGatewayIPConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayIPConfigurationPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agic.ApplicationGatewayIPConfigurationPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agic.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		agic.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agic.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agic.ID = &ID
+	}
+
+	return nil
 }
 
 // ApplicationGatewayIPConfigurationPropertiesFormat properties of IP configuration of an application gateway.
@@ -1483,6 +2144,68 @@ type ApplicationGatewayPathRule struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayPathRule struct.
+func (agpr *ApplicationGatewayPathRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayPathRulePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agpr.ApplicationGatewayPathRulePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agpr.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		agpr.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agpr.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agpr.ID = &ID
+	}
+
+	return nil
+}
+
 // ApplicationGatewayPathRulePropertiesFormat properties of path rule of an application gateway.
 type ApplicationGatewayPathRulePropertiesFormat struct {
 	// Paths - Path rules of URL path map.
@@ -1508,6 +2231,68 @@ type ApplicationGatewayProbe struct {
 	Etag *string `json:"etag,omitempty"`
 	// Type - Type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayProbe struct.
+func (agp *ApplicationGatewayProbe) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayProbePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agp.ApplicationGatewayProbePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agp.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		agp.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agp.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agp.ID = &ID
+	}
+
+	return nil
 }
 
 // ApplicationGatewayProbeHealthResponseMatch application gateway probe health response match
@@ -1595,6 +2380,68 @@ type ApplicationGatewayRedirectConfiguration struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayRedirectConfiguration struct.
+func (agrc *ApplicationGatewayRedirectConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayRedirectConfigurationPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agrc.ApplicationGatewayRedirectConfigurationPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agrc.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		agrc.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agrc.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agrc.ID = &ID
+	}
+
+	return nil
+}
+
 // ApplicationGatewayRedirectConfigurationPropertiesFormat properties of redirect configuration of the application
 // gateway.
 type ApplicationGatewayRedirectConfigurationPropertiesFormat struct {
@@ -1627,6 +2474,68 @@ type ApplicationGatewayRequestRoutingRule struct {
 	Etag *string `json:"etag,omitempty"`
 	// Type - Type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayRequestRoutingRule struct.
+func (agrrr *ApplicationGatewayRequestRoutingRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayRequestRoutingRulePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agrrr.ApplicationGatewayRequestRoutingRulePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agrrr.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		agrrr.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agrrr.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agrrr.ID = &ID
+	}
+
+	return nil
 }
 
 // ApplicationGatewayRequestRoutingRulePropertiesFormat properties of request routing rule of the application gateway.
@@ -1766,6 +2675,68 @@ type ApplicationGatewaySslCertificate struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewaySslCertificate struct.
+func (agsc *ApplicationGatewaySslCertificate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewaySslCertificatePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agsc.ApplicationGatewaySslCertificatePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agsc.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		agsc.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agsc.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agsc.ID = &ID
+	}
+
+	return nil
+}
+
 // ApplicationGatewaySslCertificatePropertiesFormat properties of SSL certificates of an application gateway.
 type ApplicationGatewaySslCertificatePropertiesFormat struct {
 	// Data - Base-64 encoded pfx certificate. Only applicable in PUT Request.
@@ -1800,6 +2771,48 @@ type ApplicationGatewaySslPredefinedPolicy struct {
 	// Name - Name of Ssl predefined policy.
 	Name                                                   *string `json:"name,omitempty"`
 	*ApplicationGatewaySslPredefinedPolicyPropertiesFormat `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewaySslPredefinedPolicy struct.
+func (agspp *ApplicationGatewaySslPredefinedPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agspp.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewaySslPredefinedPolicyPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agspp.ApplicationGatewaySslPredefinedPolicyPropertiesFormat = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agspp.ID = &ID
+	}
+
+	return nil
 }
 
 // ApplicationGatewaySslPredefinedPolicyPropertiesFormat properties of ApplicationGatewaySslPredefinedPolicy
@@ -1883,6 +2896,68 @@ type ApplicationGatewayURLPathMap struct {
 	Etag *string `json:"etag,omitempty"`
 	// Type - Type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayURLPathMap struct.
+func (agupm *ApplicationGatewayURLPathMap) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ApplicationGatewayURLPathMapPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agupm.ApplicationGatewayURLPathMapPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agupm.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		agupm.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agupm.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agupm.ID = &ID
+	}
+
+	return nil
 }
 
 // ApplicationGatewayURLPathMapPropertiesFormat properties of UrlPathMap of the application gateway.
@@ -2050,6 +3125,58 @@ type BackendAddressPool struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for BackendAddressPool struct.
+func (bap *BackendAddressPool) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties BackendAddressPoolPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		bap.BackendAddressPoolPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		bap.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		bap.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		bap.ID = &ID
+	}
+
+	return nil
+}
+
 // BackendAddressPoolPropertiesFormat properties of the backend address pool.
 type BackendAddressPoolPropertiesFormat struct {
 	// BackendIPConfigurations - Gets collection of references to IP addresses defined in network interfaces.
@@ -2118,6 +3245,78 @@ type BgpServiceCommunity struct {
 	// Tags - Resource tags.
 	Tags                                 *map[string]*string `json:"tags,omitempty"`
 	*BgpServiceCommunityPropertiesFormat `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for BgpServiceCommunity struct.
+func (bsc *BgpServiceCommunity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties BgpServiceCommunityPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		bsc.BgpServiceCommunityPropertiesFormat = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		bsc.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		bsc.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		bsc.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		bsc.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		bsc.Tags = &tags
+	}
+
+	return nil
 }
 
 // BgpServiceCommunityListResult response for the ListServiceCommunity API service call.
@@ -2575,6 +3774,98 @@ type ExpressRouteCircuit struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ExpressRouteCircuit struct.
+func (erc *ExpressRouteCircuit) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["sku"]
+	if v != nil {
+		var sku ExpressRouteCircuitSku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		erc.Sku = &sku
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ExpressRouteCircuitPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		erc.ExpressRouteCircuitPropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		erc.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		erc.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		erc.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		erc.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		erc.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		erc.Tags = &tags
+	}
+
+	return nil
+}
+
 // ExpressRouteCircuitArpTable the ARP table associated with the ExpressRouteCircuit.
 type ExpressRouteCircuitArpTable struct {
 	// Age - Age
@@ -2597,6 +3888,58 @@ type ExpressRouteCircuitAuthorization struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ExpressRouteCircuitAuthorization struct.
+func (erca *ExpressRouteCircuitAuthorization) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AuthorizationPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		erca.AuthorizationPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		erca.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		erca.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		erca.ID = &ID
+	}
+
+	return nil
 }
 
 // ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -2775,6 +4118,58 @@ type ExpressRouteCircuitPeering struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ExpressRouteCircuitPeering struct.
+func (ercp *ExpressRouteCircuitPeering) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ExpressRouteCircuitPeeringPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ercp.ExpressRouteCircuitPeeringPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ercp.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		ercp.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ercp.ID = &ID
+	}
+
+	return nil
 }
 
 // ExpressRouteCircuitPeeringConfig specifies the peering configuration.
@@ -3288,6 +4683,78 @@ type ExpressRouteServiceProvider struct {
 	*ExpressRouteServiceProviderPropertiesFormat `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ExpressRouteServiceProvider struct.
+func (ersp *ExpressRouteServiceProvider) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ExpressRouteServiceProviderPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ersp.ExpressRouteServiceProviderPropertiesFormat = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ersp.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ersp.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ersp.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		ersp.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		ersp.Tags = &tags
+	}
+
+	return nil
+}
+
 // ExpressRouteServiceProviderBandwidthsOffered contains bandwidths offered in ExpressRouteServiceProvider resources.
 type ExpressRouteServiceProviderBandwidthsOffered struct {
 	// OfferName - The OfferName.
@@ -3417,6 +4884,38 @@ type FlowLogInformation struct {
 	*FlowLogProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for FlowLogInformation struct.
+func (fli *FlowLogInformation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["targetResourceId"]
+	if v != nil {
+		var targetResourceID string
+		err = json.Unmarshal(*m["targetResourceId"], &targetResourceID)
+		if err != nil {
+			return err
+		}
+		fli.TargetResourceID = &targetResourceID
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties FlowLogProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		fli.FlowLogProperties = &properties
+	}
+
+	return nil
+}
+
 // FlowLogProperties parameters that define the configuration of flow log.
 type FlowLogProperties struct {
 	// StorageID - ID of the storage account which is used to store the flow log.
@@ -3445,6 +4944,68 @@ type FrontendIPConfiguration struct {
 	Etag *string `json:"etag,omitempty"`
 	// Zones - A list of availability zones denoting the IP allocated for the resource needs to come from.
 	Zones *[]string `json:"zones,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for FrontendIPConfiguration struct.
+func (fic *FrontendIPConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties FrontendIPConfigurationPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		fic.FrontendIPConfigurationPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		fic.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		fic.Etag = &etag
+	}
+
+	v = m["zones"]
+	if v != nil {
+		var zones []string
+		err = json.Unmarshal(*m["zones"], &zones)
+		if err != nil {
+			return err
+		}
+		fic.Zones = &zones
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		fic.ID = &ID
+	}
+
+	return nil
 }
 
 // FrontendIPConfigurationPropertiesFormat properties of Frontend IP Configuration of the load balancer.
@@ -3506,6 +5067,58 @@ type InboundNatPool struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for InboundNatPool struct.
+func (inp *InboundNatPool) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties InboundNatPoolPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		inp.InboundNatPoolPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		inp.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		inp.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		inp.ID = &ID
+	}
+
+	return nil
+}
+
 // InboundNatPoolPropertiesFormat properties of Inbound NAT pool.
 type InboundNatPoolPropertiesFormat struct {
 	// FrontendIPConfiguration - A reference to frontend IP addresses.
@@ -3533,6 +5146,58 @@ type InboundNatRule struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for InboundNatRule struct.
+func (inr *InboundNatRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties InboundNatRulePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		inr.InboundNatRulePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		inr.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		inr.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		inr.ID = &ID
+	}
+
+	return nil
 }
 
 // InboundNatRuleListResult response for ListInboundNatRule API service call.
@@ -3739,6 +5404,88 @@ type Interface struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Interface struct.
+func (i *Interface) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties InterfacePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		i.InterfacePropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		i.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		i.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		i.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		i.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		i.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		i.Tags = &tags
+	}
+
+	return nil
+}
+
 // InterfaceAssociation network interface and its custom security rules.
 type InterfaceAssociation struct {
 	// ID - Network interface ID.
@@ -3772,6 +5519,58 @@ type InterfaceIPConfiguration struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for InterfaceIPConfiguration struct.
+func (iic *InterfaceIPConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties InterfaceIPConfigurationPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		iic.InterfaceIPConfigurationPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		iic.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		iic.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		iic.ID = &ID
+	}
+
+	return nil
 }
 
 // InterfaceIPConfigurationListResult response for list ip configurations API service call.
@@ -4275,6 +6074,58 @@ type IPConfiguration struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for IPConfiguration struct.
+func (ic *IPConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties IPConfigurationPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ic.IPConfigurationPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ic.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		ic.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ic.ID = &ID
+	}
+
+	return nil
+}
+
 // IPConfigurationPropertiesFormat properties of IP configuration.
 type IPConfigurationPropertiesFormat struct {
 	// PrivateIPAddress - The private IP address of the IP configuration.
@@ -4342,6 +6193,98 @@ type LoadBalancer struct {
 	*LoadBalancerPropertiesFormat `json:"properties,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for LoadBalancer struct.
+func (lb *LoadBalancer) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["sku"]
+	if v != nil {
+		var sku LoadBalancerSku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		lb.Sku = &sku
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties LoadBalancerPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		lb.LoadBalancerPropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		lb.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		lb.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		lb.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		lb.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		lb.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		lb.Tags = &tags
+	}
+
+	return nil
 }
 
 // LoadBalancerBackendAddressPoolListResult response for ListBackendAddressPool API service call.
@@ -4959,6 +6902,58 @@ type LoadBalancingRule struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for LoadBalancingRule struct.
+func (lbr *LoadBalancingRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties LoadBalancingRulePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		lbr.LoadBalancingRulePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		lbr.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		lbr.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		lbr.ID = &ID
+	}
+
+	return nil
+}
+
 // LoadBalancingRulePropertiesFormat properties of the load balancer.
 type LoadBalancingRulePropertiesFormat struct {
 	// FrontendIPConfiguration - A reference to frontend IP addresses.
@@ -5002,6 +6997,88 @@ type LocalNetworkGateway struct {
 	*LocalNetworkGatewayPropertiesFormat `json:"properties,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for LocalNetworkGateway struct.
+func (lng *LocalNetworkGateway) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties LocalNetworkGatewayPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		lng.LocalNetworkGatewayPropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		lng.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		lng.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		lng.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		lng.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		lng.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		lng.Tags = &tags
+	}
+
+	return nil
 }
 
 // LocalNetworkGatewayListResult response for ListLocalNetworkGateways API service call.
@@ -5219,6 +7296,58 @@ type OutboundNatRule struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for OutboundNatRule struct.
+func (onr *OutboundNatRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties OutboundNatRulePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		onr.OutboundNatRulePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		onr.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		onr.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		onr.ID = &ID
+	}
+
+	return nil
+}
+
 // OutboundNatRulePropertiesFormat outbound NAT pool of the load balancer.
 type OutboundNatRulePropertiesFormat struct {
 	// AllocatedOutboundPorts - The number of outbound ports to be used for NAT.
@@ -5234,6 +7363,28 @@ type OutboundNatRulePropertiesFormat struct {
 // PacketCapture parameters that define the create packet capture operation.
 type PacketCapture struct {
 	*PacketCaptureParameters `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for PacketCapture struct.
+func (pc *PacketCapture) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties PacketCaptureParameters
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		pc.PacketCaptureParameters = &properties
+	}
+
+	return nil
 }
 
 // PacketCaptureFilter filter that is applied to packet capture request. Multiple filters can be applied.
@@ -5297,6 +7448,58 @@ type PacketCaptureResult struct {
 	ID                             *string `json:"id,omitempty"`
 	Etag                           *string `json:"etag,omitempty"`
 	*PacketCaptureResultProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for PacketCaptureResult struct.
+func (pcr *PacketCaptureResult) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		pcr.Name = &name
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		pcr.ID = &ID
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		pcr.Etag = &etag
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties PacketCaptureResultProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		pcr.PacketCaptureResultProperties = &properties
+	}
+
+	return nil
 }
 
 // PacketCaptureResultProperties describes the properties of a packet capture session.
@@ -5464,6 +7667,78 @@ type PatchRouteFilter struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for PatchRouteFilter struct.
+func (prf *PatchRouteFilter) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RouteFilterPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		prf.RouteFilterPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		prf.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		prf.Etag = &etag
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		prf.Type = &typeVar
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		prf.Tags = &tags
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		prf.ID = &ID
+	}
+
+	return nil
+}
+
 // PatchRouteFilterRule route Filter Rule Resource
 type PatchRouteFilterRule struct {
 	// ID - Resource ID.
@@ -5477,6 +7752,68 @@ type PatchRouteFilterRule struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for PatchRouteFilterRule struct.
+func (prfr *PatchRouteFilterRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RouteFilterRulePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		prfr.RouteFilterRulePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		prfr.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		prfr.Etag = &etag
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		prfr.Tags = &tags
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		prfr.ID = &ID
+	}
+
+	return nil
+}
+
 // Probe a load balancer probe.
 type Probe struct {
 	autorest.Response `json:"-"`
@@ -5488,6 +7825,58 @@ type Probe struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Probe struct.
+func (p *Probe) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ProbePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		p.ProbePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		p.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		p.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		p.ID = &ID
+	}
+
+	return nil
 }
 
 // ProbePropertiesFormat load balancer probe resource.
@@ -5529,6 +7918,108 @@ type PublicIPAddress struct {
 	Etag *string `json:"etag,omitempty"`
 	// Zones - A list of availability zones denoting the IP allocated for the resource needs to come from.
 	Zones *[]string `json:"zones,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for PublicIPAddress struct.
+func (pia *PublicIPAddress) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["sku"]
+	if v != nil {
+		var sku PublicIPAddressSku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		pia.Sku = &sku
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties PublicIPAddressPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		pia.PublicIPAddressPropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		pia.Etag = &etag
+	}
+
+	v = m["zones"]
+	if v != nil {
+		var zones []string
+		err = json.Unmarshal(*m["zones"], &zones)
+		if err != nil {
+			return err
+		}
+		pia.Zones = &zones
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		pia.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		pia.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		pia.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		pia.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		pia.Tags = &tags
+	}
+
+	return nil
 }
 
 // PublicIPAddressDNSSettings contains FQDN of the DNS record associated with the public IP address
@@ -5764,6 +8255,58 @@ type ResourceNavigationLink struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ResourceNavigationLink struct.
+func (rnl *ResourceNavigationLink) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ResourceNavigationLinkFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rnl.ResourceNavigationLinkFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rnl.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		rnl.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rnl.ID = &ID
+	}
+
+	return nil
+}
+
 // ResourceNavigationLinkFormat properties of ResourceNavigationLink.
 type ResourceNavigationLinkFormat struct {
 	// LinkedResourceType - Resource type of the linked resource.
@@ -5795,6 +8338,58 @@ type Route struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Route struct.
+func (r *Route) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RoutePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		r.RoutePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		r.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		r.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		r.ID = &ID
+	}
+
+	return nil
+}
+
 // RouteFilter route Filter Resource.
 type RouteFilter struct {
 	autorest.Response `json:"-"`
@@ -5811,6 +8406,88 @@ type RouteFilter struct {
 	*RouteFilterPropertiesFormat `json:"properties,omitempty"`
 	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RouteFilter struct.
+func (rf *RouteFilter) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RouteFilterPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rf.RouteFilterPropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		rf.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		rf.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		rf.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		rf.Tags = &tags
+	}
+
+	return nil
 }
 
 // RouteFilterListResult response for the ListRouteFilters API service call.
@@ -5939,6 +8616,78 @@ type RouteFilterRule struct {
 	Etag *string `json:"etag,omitempty"`
 	// Tags - Resource tags.
 	Tags *map[string]*string `json:"tags,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RouteFilterRule struct.
+func (rfr *RouteFilterRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RouteFilterRulePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rfr.RouteFilterRulePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rfr.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		rfr.Location = &location
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		rfr.Etag = &etag
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		rfr.Tags = &tags
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rfr.ID = &ID
+	}
+
+	return nil
 }
 
 // RouteFilterRuleListResult response for the ListRouteFilterRules API service call
@@ -6438,6 +9187,88 @@ type RouteTable struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for RouteTable struct.
+func (rt *RouteTable) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RouteTablePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rt.RouteTablePropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		rt.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rt.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rt.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		rt.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		rt.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		rt.Tags = &tags
+	}
+
+	return nil
+}
+
 // RouteTableListResult response for the ListRouteTable API service call.
 type RouteTableListResult struct {
 	autorest.Response `json:"-"`
@@ -6630,6 +9461,88 @@ type SecurityGroup struct {
 	*SecurityGroupPropertiesFormat `json:"properties,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SecurityGroup struct.
+func (sg *SecurityGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties SecurityGroupPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sg.SecurityGroupPropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		sg.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		sg.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		sg.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sg.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		sg.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		sg.Tags = &tags
+	}
+
+	return nil
 }
 
 // SecurityGroupListResult response for ListNetworkSecurityGroups API service call.
@@ -6844,6 +9757,58 @@ type SecurityRule struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SecurityRule struct.
+func (sr *SecurityRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties SecurityRulePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sr.SecurityRulePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		sr.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		sr.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		sr.ID = &ID
+	}
+
+	return nil
 }
 
 // SecurityRuleAssociations all security rules associated with the network interface.
@@ -7081,6 +10046,58 @@ type Subnet struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Subnet struct.
+func (s *Subnet) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties SubnetPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		s.SubnetPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		s.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		s.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		s.ID = &ID
+	}
+
+	return nil
 }
 
 // SubnetAssociation network interface and its custom security rules.
@@ -7340,6 +10357,38 @@ type TroubleshootingParameters struct {
 	*TroubleshootingProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for TroubleshootingParameters struct.
+func (tp *TroubleshootingParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["targetResourceId"]
+	if v != nil {
+		var targetResourceID string
+		err = json.Unmarshal(*m["targetResourceId"], &targetResourceID)
+		if err != nil {
+			return err
+		}
+		tp.TargetResourceID = &targetResourceID
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties TroubleshootingProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		tp.TroubleshootingProperties = &properties
+	}
+
+	return nil
+}
+
 // TroubleshootingProperties storage location provided for troubleshoot.
 type TroubleshootingProperties struct {
 	// StorageID - The ID for the storage account to save the troubleshoot result.
@@ -7559,6 +10608,88 @@ type VirtualNetwork struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for VirtualNetwork struct.
+func (vn *VirtualNetwork) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualNetworkPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vn.VirtualNetworkPropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		vn.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vn.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vn.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		vn.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		vn.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		vn.Tags = &tags
+	}
+
+	return nil
+}
+
 // VirtualNetworkConnectionGatewayReference a reference to VirtualNetworkGateway or LocalNetworkGateway resource.
 type VirtualNetworkConnectionGatewayReference struct {
 	// ID - The ID of VirtualNetworkGateway or LocalNetworkGateway resource.
@@ -7584,6 +10715,88 @@ type VirtualNetworkGateway struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for VirtualNetworkGateway struct.
+func (vng *VirtualNetworkGateway) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualNetworkGatewayPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vng.VirtualNetworkGatewayPropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		vng.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vng.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vng.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		vng.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		vng.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		vng.Tags = &tags
+	}
+
+	return nil
+}
+
 // VirtualNetworkGatewayConnection a common class for general resource information
 type VirtualNetworkGatewayConnection struct {
 	autorest.Response `json:"-"`
@@ -7603,6 +10816,88 @@ type VirtualNetworkGatewayConnection struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for VirtualNetworkGatewayConnection struct.
+func (vngc *VirtualNetworkGatewayConnection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualNetworkGatewayConnectionPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vngc.VirtualNetworkGatewayConnectionPropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		vngc.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vngc.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vngc.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		vngc.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		vngc.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		vngc.Tags = &tags
+	}
+
+	return nil
+}
+
 // VirtualNetworkGatewayConnectionListEntity a common class for general resource information
 type VirtualNetworkGatewayConnectionListEntity struct {
 	// ID - Resource ID.
@@ -7619,6 +10914,88 @@ type VirtualNetworkGatewayConnectionListEntity struct {
 	*VirtualNetworkGatewayConnectionListEntityPropertiesFormat `json:"properties,omitempty"`
 	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualNetworkGatewayConnectionListEntity struct.
+func (vngcle *VirtualNetworkGatewayConnectionListEntity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualNetworkGatewayConnectionListEntityPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vngcle.VirtualNetworkGatewayConnectionListEntityPropertiesFormat = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		vngcle.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vngcle.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vngcle.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		vngcle.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		vngcle.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		vngcle.Tags = &tags
+	}
+
+	return nil
 }
 
 // VirtualNetworkGatewayConnectionListEntityPropertiesFormat virtualNetworkGatewayConnection properties
@@ -7938,6 +11315,58 @@ type VirtualNetworkGatewayIPConfiguration struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualNetworkGatewayIPConfiguration struct.
+func (vngic *VirtualNetworkGatewayIPConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualNetworkGatewayIPConfigurationPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vngic.VirtualNetworkGatewayIPConfigurationPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vngic.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		vngic.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vngic.ID = &ID
+	}
+
+	return nil
 }
 
 // VirtualNetworkGatewayIPConfigurationPropertiesFormat properties of VirtualNetworkGatewayIPConfiguration
@@ -8698,6 +12127,58 @@ type VirtualNetworkPeering struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for VirtualNetworkPeering struct.
+func (vnp *VirtualNetworkPeering) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VirtualNetworkPeeringPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vnp.VirtualNetworkPeeringPropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vnp.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		vnp.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vnp.ID = &ID
+	}
+
+	return nil
+}
+
 // VirtualNetworkPeeringListResult response for ListSubnets API service call. Retrieves all subnets that belong to a
 // virtual network.
 type VirtualNetworkPeeringListResult struct {
@@ -9024,6 +12505,58 @@ type VpnClientRevokedCertificate struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for VpnClientRevokedCertificate struct.
+func (vcrc *VpnClientRevokedCertificate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VpnClientRevokedCertificatePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vcrc.VpnClientRevokedCertificatePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vcrc.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		vcrc.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vcrc.ID = &ID
+	}
+
+	return nil
+}
+
 // VpnClientRevokedCertificatePropertiesFormat properties of the revoked VPN client certificate of virtual network
 // gateway.
 type VpnClientRevokedCertificatePropertiesFormat struct {
@@ -9043,6 +12576,58 @@ type VpnClientRootCertificate struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for VpnClientRootCertificate struct.
+func (vcrc *VpnClientRootCertificate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VpnClientRootCertificatePropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vcrc.VpnClientRootCertificatePropertiesFormat = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vcrc.Name = &name
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		vcrc.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vcrc.ID = &ID
+	}
+
+	return nil
 }
 
 // VpnClientRootCertificatePropertiesFormat properties of SSL certificates of application gateway
@@ -9069,6 +12654,88 @@ type Watcher struct {
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag                     *string `json:"etag,omitempty"`
 	*WatcherPropertiesFormat `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Watcher struct.
+func (w *Watcher) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		w.Etag = &etag
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties WatcherPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		w.WatcherPropertiesFormat = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		w.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		w.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		w.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		w.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		w.Tags = &tags
+	}
+
+	return nil
 }
 
 // WatcherListResult list of network watcher resources.

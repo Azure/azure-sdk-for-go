@@ -429,6 +429,58 @@ type UsageAggregation struct {
 	*UsageSample `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for UsageAggregation struct.
+func (ua *UsageAggregation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ua.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ua.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ua.Type = &typeVar
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties UsageSample
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ua.UsageSample = &properties
+	}
+
+	return nil
+}
+
 // UsageAggregationListResult the Get UsageAggregates operation response.
 type UsageAggregationListResult struct {
 	autorest.Response `json:"-"`

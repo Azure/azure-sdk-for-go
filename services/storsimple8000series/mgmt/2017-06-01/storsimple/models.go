@@ -18,6 +18,7 @@ package storsimple
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -664,6 +665,68 @@ type AccessControlRecord struct {
 	*AccessControlRecordProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for AccessControlRecord struct.
+func (acr *AccessControlRecord) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AccessControlRecordProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		acr.AccessControlRecordProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		acr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		acr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		acr.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		acr.Kind = kind
+	}
+
+	return nil
+}
+
 // AccessControlRecordList the collection of access control records.
 type AccessControlRecordList struct {
 	autorest.Response `json:"-"`
@@ -765,6 +828,68 @@ type Alert struct {
 	Kind Kind `json:"kind,omitempty"`
 	// AlertProperties - The properties of the alert.
 	*AlertProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Alert struct.
+func (a *Alert) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AlertProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		a.AlertProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		a.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		a.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		a.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		a.Kind = kind
+	}
+
+	return nil
 }
 
 // AlertErrorDetails the details of the error for which the alert was raised
@@ -952,6 +1077,68 @@ type AlertSettings struct {
 	*AlertNotificationProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for AlertSettings struct.
+func (as *AlertSettings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AlertNotificationProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		as.AlertNotificationProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		as.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		as.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		as.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		as.Kind = kind
+	}
+
+	return nil
+}
+
 // AlertSource the source details at which the alert was raised
 type AlertSource struct {
 	// Name - The name of the source
@@ -1112,6 +1299,68 @@ type Backup struct {
 	Kind Kind `json:"kind,omitempty"`
 	// BackupProperties - The properties of the backup.
 	*BackupProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Backup struct.
+func (b *Backup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties BackupProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		b.BackupProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		b.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		b.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		b.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		b.Kind = kind
+	}
+
+	return nil
 }
 
 // BackupElement the backup element.
@@ -1353,6 +1602,68 @@ type BackupPolicy struct {
 	*BackupPolicyProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for BackupPolicy struct.
+func (bp *BackupPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties BackupPolicyProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		bp.BackupPolicyProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		bp.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		bp.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		bp.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		bp.Kind = kind
+	}
+
+	return nil
+}
+
 // BackupPolicyList the collection of backup policies.
 type BackupPolicyList struct {
 	autorest.Response `json:"-"`
@@ -1409,6 +1720,68 @@ type BackupSchedule struct {
 	Kind Kind `json:"kind,omitempty"`
 	// BackupScheduleProperties - The properties of the backup schedule.
 	*BackupScheduleProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for BackupSchedule struct.
+func (bs *BackupSchedule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties BackupScheduleProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		bs.BackupScheduleProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		bs.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		bs.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		bs.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		bs.Kind = kind
+	}
+
+	return nil
 }
 
 // BackupScheduleList the backup schedule list.
@@ -1625,6 +1998,68 @@ type BandwidthSetting struct {
 	*BandwidthRateSettingProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for BandwidthSetting struct.
+func (bs *BandwidthSetting) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties BandwidthRateSettingProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		bs.BandwidthRateSettingProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		bs.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		bs.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		bs.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		bs.Kind = kind
+	}
+
+	return nil
+}
+
 // BandwidthSettingList the collection of bandwidth setting entities.
 type BandwidthSettingList struct {
 	autorest.Response `json:"-"`
@@ -1779,6 +2214,68 @@ type CloudApplianceConfiguration struct {
 	*CloudApplianceConfigurationProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for CloudApplianceConfiguration struct.
+func (cac *CloudApplianceConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties CloudApplianceConfigurationProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		cac.CloudApplianceConfigurationProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		cac.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		cac.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		cac.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		cac.Kind = kind
+	}
+
+	return nil
+}
+
 // CloudApplianceConfigurationList the cloud appliance configuration list
 type CloudApplianceConfigurationList struct {
 	autorest.Response `json:"-"`
@@ -1857,6 +2354,68 @@ type ConfigureDeviceRequest struct {
 	*ConfigureDeviceRequestProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ConfigureDeviceRequest struct.
+func (cdr *ConfigureDeviceRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ConfigureDeviceRequestProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		cdr.ConfigureDeviceRequestProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		cdr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		cdr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		cdr.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		cdr.Kind = kind
+	}
+
+	return nil
+}
+
 // ConfigureDeviceRequestProperties the properties of the configure device request.
 type ConfigureDeviceRequestProperties struct {
 	// FriendlyName - The friendly name for the device.
@@ -1883,6 +2442,68 @@ type ControllerPowerStateChangeRequest struct {
 	Kind Kind `json:"kind,omitempty"`
 	// ControllerPowerStateChangeRequestProperties - The properties of the controller power state change request.
 	*ControllerPowerStateChangeRequestProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ControllerPowerStateChangeRequest struct.
+func (cpscr *ControllerPowerStateChangeRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ControllerPowerStateChangeRequestProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		cpscr.ControllerPowerStateChangeRequestProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		cpscr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		cpscr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		cpscr.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		cpscr.Kind = kind
+	}
+
+	return nil
 }
 
 // ControllerPowerStateChangeRequestProperties the properties of the controller power state change request.
@@ -1925,6 +2546,68 @@ type Device struct {
 	*DeviceProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Device struct.
+func (d *Device) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties DeviceProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		d.DeviceProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		d.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		d.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		d.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		d.Kind = kind
+	}
+
+	return nil
+}
+
 // DeviceDetails the additional device details regarding the end point count and volume container count.
 type DeviceDetails struct {
 	// EndpointCount - The total number of endpoints that are currently on the device ( i.e. number of volumes).
@@ -1944,6 +2627,28 @@ type DeviceList struct {
 type DevicePatch struct {
 	// DevicePatchProperties - The properties of the device patch.
 	*DevicePatchProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for DevicePatch struct.
+func (dp *DevicePatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties DevicePatchProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dp.DevicePatchProperties = &properties
+	}
+
+	return nil
 }
 
 // DevicePatchProperties the properties of the device patch.
@@ -2401,6 +3106,68 @@ type EncryptionSettings struct {
 	*EncryptionSettingsProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for EncryptionSettings struct.
+func (es *EncryptionSettings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties EncryptionSettingsProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		es.EncryptionSettingsProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		es.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		es.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		es.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		es.Kind = kind
+	}
+
+	return nil
+}
+
 // EncryptionSettingsProperties the properties of encryption settings.
 type EncryptionSettingsProperties struct {
 	// EncryptionStatus - The encryption status to indicates if encryption is enabled or not. Possible values include: 'EncryptionStatusEnabled', 'EncryptionStatusDisabled'
@@ -2521,6 +3288,68 @@ type HardwareComponentGroup struct {
 	*HardwareComponentGroupProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for HardwareComponentGroup struct.
+func (hcg *HardwareComponentGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties HardwareComponentGroupProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		hcg.HardwareComponentGroupProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		hcg.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		hcg.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		hcg.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		hcg.Kind = kind
+	}
+
+	return nil
+}
+
 // HardwareComponentGroupList the collection of hardware component groups.
 type HardwareComponentGroupList struct {
 	autorest.Response `json:"-"`
@@ -2593,6 +3422,118 @@ type Job struct {
 	Error *JobErrorDetails `json:"error,omitempty"`
 	// JobProperties - The properties of the job.
 	*JobProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Job struct.
+func (j *Job) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["status"]
+	if v != nil {
+		var status JobStatus
+		err = json.Unmarshal(*m["status"], &status)
+		if err != nil {
+			return err
+		}
+		j.Status = status
+	}
+
+	v = m["startTime"]
+	if v != nil {
+		var startTime date.Time
+		err = json.Unmarshal(*m["startTime"], &startTime)
+		if err != nil {
+			return err
+		}
+		j.StartTime = &startTime
+	}
+
+	v = m["endTime"]
+	if v != nil {
+		var endTime date.Time
+		err = json.Unmarshal(*m["endTime"], &endTime)
+		if err != nil {
+			return err
+		}
+		j.EndTime = &endTime
+	}
+
+	v = m["percentComplete"]
+	if v != nil {
+		var percentComplete int32
+		err = json.Unmarshal(*m["percentComplete"], &percentComplete)
+		if err != nil {
+			return err
+		}
+		j.PercentComplete = &percentComplete
+	}
+
+	v = m["error"]
+	if v != nil {
+		var errorVar JobErrorDetails
+		err = json.Unmarshal(*m["error"], &errorVar)
+		if err != nil {
+			return err
+		}
+		j.Error = &errorVar
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties JobProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		j.JobProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		j.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		j.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		j.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		j.Kind = kind
+	}
+
+	return nil
 }
 
 // JobErrorDetails the job error details. Contains list of job error items.
@@ -2827,6 +3768,88 @@ type Manager struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Manager struct.
+func (mVar *Manager) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ManagerProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		mVar.ManagerProperties = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		mVar.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		mVar.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		mVar.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		mVar.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		mVar.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		mVar.Tags = &tags
+	}
+
+	return nil
+}
+
 // ManagerExtendedInfo the extended info of the manager.
 type ManagerExtendedInfo struct {
 	autorest.Response `json:"-"`
@@ -2842,6 +3865,78 @@ type ManagerExtendedInfo struct {
 	*ManagerExtendedInfoProperties `json:"properties,omitempty"`
 	// Etag - The etag of the resource.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagerExtendedInfo struct.
+func (mei *ManagerExtendedInfo) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ManagerExtendedInfoProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		mei.ManagerExtendedInfoProperties = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		mei.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		mei.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		mei.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		mei.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		mei.Kind = kind
+	}
+
+	return nil
 }
 
 // ManagerExtendedInfoProperties the properties of the manager extended info.
@@ -3064,10 +4159,94 @@ type NetworkSettings struct {
 	*NetworkSettingsProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for NetworkSettings struct.
+func (ns *NetworkSettings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties NetworkSettingsProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ns.NetworkSettingsProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ns.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ns.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ns.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		ns.Kind = kind
+	}
+
+	return nil
+}
+
 // NetworkSettingsPatch represents the patch request for the network settings of a device.
 type NetworkSettingsPatch struct {
 	// NetworkSettingsPatchProperties - The properties of the network settings patch.
 	*NetworkSettingsPatchProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for NetworkSettingsPatch struct.
+func (nsp *NetworkSettingsPatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties NetworkSettingsPatchProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		nsp.NetworkSettingsPatchProperties = &properties
+	}
+
+	return nil
 }
 
 // NetworkSettingsPatchProperties the properties of the network settings patch.
@@ -3182,10 +4361,94 @@ type SecuritySettings struct {
 	*SecuritySettingsProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for SecuritySettings struct.
+func (ss *SecuritySettings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties SecuritySettingsProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ss.SecuritySettingsProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ss.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ss.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ss.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		ss.Kind = kind
+	}
+
+	return nil
+}
+
 // SecuritySettingsPatch represents the patch request for the security settings of a device.
 type SecuritySettingsPatch struct {
 	// SecuritySettingsPatchProperties - The properties of the security settings patch.
 	*SecuritySettingsPatchProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SecuritySettingsPatch struct.
+func (ssp *SecuritySettingsPatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties SecuritySettingsPatchProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ssp.SecuritySettingsPatchProperties = &properties
+	}
+
+	return nil
 }
 
 // SecuritySettingsPatchProperties the properties of the security settings patch.
@@ -3229,6 +4492,68 @@ type StorageAccountCredential struct {
 	Kind Kind `json:"kind,omitempty"`
 	// StorageAccountCredentialProperties - The storage account credential properties.
 	*StorageAccountCredentialProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for StorageAccountCredential struct.
+func (sac *StorageAccountCredential) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties StorageAccountCredentialProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sac.StorageAccountCredentialProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		sac.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		sac.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sac.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		sac.Kind = kind
+	}
+
+	return nil
 }
 
 // StorageAccountCredentialList the collection of storage account credential entities.
@@ -3369,6 +4694,68 @@ type TimeSettings struct {
 	*TimeSettingsProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for TimeSettings struct.
+func (ts *TimeSettings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties TimeSettingsProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ts.TimeSettingsProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ts.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ts.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ts.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		ts.Kind = kind
+	}
+
+	return nil
+}
+
 // TimeSettingsProperties the properties of time settings of a device.
 type TimeSettingsProperties struct {
 	// TimeZone - The timezone of device, like '(UTC -06:00) Central America'
@@ -3392,6 +4779,68 @@ type Updates struct {
 	Kind Kind `json:"kind,omitempty"`
 	// UpdatesProperties - The properties of the updates profile.
 	*UpdatesProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Updates struct.
+func (u *Updates) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties UpdatesProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		u.UpdatesProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		u.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		u.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		u.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		u.Kind = kind
+	}
+
+	return nil
 }
 
 // UpdatesProperties the properties of the updates profile.
@@ -3435,6 +4884,68 @@ type Volume struct {
 	*VolumeProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Volume struct.
+func (vVar *Volume) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VolumeProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vVar.VolumeProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vVar.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vVar.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		vVar.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		vVar.Kind = kind
+	}
+
+	return nil
+}
+
 // VolumeContainer the volume container.
 type VolumeContainer struct {
 	autorest.Response `json:"-"`
@@ -3448,6 +4959,68 @@ type VolumeContainer struct {
 	Kind Kind `json:"kind,omitempty"`
 	// VolumeContainerProperties - The volume container properties.
 	*VolumeContainerProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for VolumeContainer struct.
+func (vc *VolumeContainer) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties VolumeContainerProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vc.VolumeContainerProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vc.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vc.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		vc.Type = &typeVar
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind Kind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		vc.Kind = kind
+	}
+
+	return nil
 }
 
 // VolumeContainerFailoverMetadata the metadata of the volume container, that is being considered as part of a failover
@@ -3604,17 +5177,17 @@ type VolumesCreateOrUpdateFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future VolumesCreateOrUpdateFuture) Result(client VolumesClient) (v Volume, err error) {
+func (future VolumesCreateOrUpdateFuture) Result(client VolumesClient) (vVar Volume, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
 		return
 	}
 	if !done {
-		return v, autorest.NewError("storsimple.VolumesCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return vVar, autorest.NewError("storsimple.VolumesCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		v, err = client.CreateOrUpdateResponder(future.Response())
+		vVar, err = client.CreateOrUpdateResponder(future.Response())
 		return
 	}
 	var resp *http.Response
@@ -3623,7 +5196,7 @@ func (future VolumesCreateOrUpdateFuture) Result(client VolumesClient) (v Volume
 	if err != nil {
 		return
 	}
-	v, err = client.CreateOrUpdateResponder(resp)
+	vVar, err = client.CreateOrUpdateResponder(resp)
 	return
 }
 

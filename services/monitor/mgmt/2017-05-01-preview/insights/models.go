@@ -249,6 +249,78 @@ type ActionGroupResource struct {
 	*ActionGroup `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ActionGroupResource struct.
+func (agr *ActionGroupResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ActionGroup
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		agr.ActionGroup = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		agr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		agr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		agr.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		agr.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		agr.Tags = &tags
+	}
+
+	return nil
+}
+
 // ActivityLogAlert an Azure activity log alert.
 type ActivityLogAlert struct {
 	// Scopes - A list of resourceIds that will be used as prefixes. The alert will only apply to activityLogs with resourceIds that fall under one of these prefixes. This list must include at least one item.
@@ -315,6 +387,38 @@ type ActivityLogAlertPatchBody struct {
 	*ActivityLogAlertPatch `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ActivityLogAlertPatchBody struct.
+func (alapb *ActivityLogAlertPatchBody) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		alapb.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ActivityLogAlertPatch
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		alapb.ActivityLogAlertPatch = &properties
+	}
+
+	return nil
+}
+
 // ActivityLogAlertResource an activity log alert resource.
 type ActivityLogAlertResource struct {
 	autorest.Response `json:"-"`
@@ -330,6 +434,78 @@ type ActivityLogAlertResource struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 	// ActivityLogAlert - The activity log alert properties of the resource.
 	*ActivityLogAlert `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ActivityLogAlertResource struct.
+func (alar *ActivityLogAlertResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ActivityLogAlert
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		alar.ActivityLogAlert = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		alar.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		alar.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		alar.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		alar.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		alar.Tags = &tags
+	}
+
+	return nil
 }
 
 // AlertRule an alert rule.
@@ -435,6 +611,78 @@ type AlertRuleResource struct {
 	*AlertRule `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for AlertRuleResource struct.
+func (arr *AlertRuleResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AlertRule
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		arr.AlertRule = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		arr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		arr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		arr.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		arr.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		arr.Tags = &tags
+	}
+
+	return nil
+}
+
 // AlertRuleResourceCollection represents a collection of alert rule resources.
 type AlertRuleResourceCollection struct {
 	autorest.Response `json:"-"`
@@ -448,6 +696,38 @@ type AlertRuleResourcePatch struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 	// AlertRule - The properties of an alert rule.
 	*AlertRule `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertRuleResourcePatch struct.
+func (arrp *AlertRuleResourcePatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		arrp.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties AlertRule
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		arrp.AlertRule = &properties
+	}
+
+	return nil
 }
 
 // AutoscaleNotification autoscale notification.
@@ -503,6 +783,78 @@ type AutoscaleSettingResource struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 	// AutoscaleSetting - The autoscale setting of the resource.
 	*AutoscaleSetting `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AutoscaleSettingResource struct.
+func (asr *AutoscaleSettingResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AutoscaleSetting
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		asr.AutoscaleSetting = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		asr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		asr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		asr.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		asr.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		asr.Tags = &tags
+	}
+
+	return nil
 }
 
 // AutoscaleSettingResourceCollection represents a collection of autoscale setting resources.
@@ -615,6 +967,38 @@ type AutoscaleSettingResourcePatch struct {
 	*AutoscaleSetting `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for AutoscaleSettingResourcePatch struct.
+func (asrp *AutoscaleSettingResourcePatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		asrp.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties AutoscaleSetting
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		asrp.AutoscaleSetting = &properties
+	}
+
+	return nil
+}
+
 // DiagnosticSettings the diagnostic settings.
 type DiagnosticSettings struct {
 	// StorageAccountID - The resource ID of the storage account to which you would like to send Diagnostic Logs.
@@ -649,6 +1033,58 @@ type DiagnosticSettingsCategoryResource struct {
 	*DiagnosticSettingsCategory `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for DiagnosticSettingsCategoryResource struct.
+func (dscr *DiagnosticSettingsCategoryResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties DiagnosticSettingsCategory
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dscr.DiagnosticSettingsCategory = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		dscr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		dscr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		dscr.Type = &typeVar
+	}
+
+	return nil
+}
+
 // DiagnosticSettingsCategoryResourceCollection represents a collection of diagnostic setting category resources.
 type DiagnosticSettingsCategoryResourceCollection struct {
 	autorest.Response `json:"-"`
@@ -666,6 +1102,58 @@ type DiagnosticSettingsResource struct {
 	// Type - Azure resource type
 	Type                *string `json:"type,omitempty"`
 	*DiagnosticSettings `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for DiagnosticSettingsResource struct.
+func (dsr *DiagnosticSettingsResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties DiagnosticSettings
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dsr.DiagnosticSettings = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		dsr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		dsr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		dsr.Type = &typeVar
+	}
+
+	return nil
 }
 
 // DiagnosticSettingsResourceCollection represents a collection of alert rule resources.
@@ -868,12 +1356,116 @@ type LogProfileResource struct {
 	*LogProfileProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for LogProfileResource struct.
+func (lpr *LogProfileResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties LogProfileProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		lpr.LogProfileProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		lpr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		lpr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		lpr.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		lpr.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		lpr.Tags = &tags
+	}
+
+	return nil
+}
+
 // LogProfileResourcePatch the log profile resource for patch operations.
 type LogProfileResourcePatch struct {
 	// Tags - Resource tags
 	Tags *map[string]*string `json:"tags,omitempty"`
 	// LogProfileProperties - The log profile properties for an update operation.
 	*LogProfileProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for LogProfileResourcePatch struct.
+func (lprp *LogProfileResourcePatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		lprp.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties LogProfileProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		lprp.LogProfileProperties = &properties
+	}
+
+	return nil
 }
 
 // LogSettings part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log.

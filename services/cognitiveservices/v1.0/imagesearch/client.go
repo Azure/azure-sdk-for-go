@@ -1,7 +1,10 @@
-// Package automation implements the Azure ARM Automation service API version 2015-10-31.
+// Package imagesearch implements the Azure ARM Imagesearch service API version 1.0.
 //
-// Automation Client
-package automation
+// The Image Search API lets you send a search query to Bing and get back a list of relevant images. This section
+// provides technical details about the query parameters and headers that you use to request images and the JSON
+// response objects that contain them. For examples that show how to make requests, see [Searching the Web for
+// Images](https://docs.microsoft.com/azure/cognitive-services/bing-image-search/search-the-web).
+package imagesearch
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,29 +28,25 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Automation
-	DefaultBaseURI = "https://management.azure.com"
+	// DefaultBaseURI is the default URI used for the service Imagesearch
+	DefaultBaseURI = "https://api.cognitive.microsoft.com/bing/v7.0"
 )
 
-// BaseClient is the base client for Automation.
+// BaseClient is the base client for Imagesearch.
 type BaseClient struct {
 	autorest.Client
-	BaseURI           string
-	SubscriptionID    string
-	ResourceGroupName string
+	BaseURI string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, resourceGroupName string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName)
+func New() BaseClient {
+	return NewWithBaseURI(DefaultBaseURI)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) BaseClient {
+func NewWithBaseURI(baseURI string) BaseClient {
 	return BaseClient{
-		Client:            autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:           baseURI,
-		SubscriptionID:    subscriptionID,
-		ResourceGroupName: resourceGroupName,
+		Client:  autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI: baseURI,
 	}
 }

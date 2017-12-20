@@ -18,6 +18,7 @@ package containerregistry
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -231,6 +232,88 @@ type Registry struct {
 	*RegistryProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Registry struct.
+func (r *Registry) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["sku"]
+	if v != nil {
+		var sku Sku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		r.Sku = &sku
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties RegistryProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		r.RegistryProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		r.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		r.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		r.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		r.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		r.Tags = &tags
+	}
+
+	return nil
+}
+
 // RegistryCreateParameters the parameters for creating a container registry.
 type RegistryCreateParameters struct {
 	// Tags - The tags for the container registry.
@@ -241,6 +324,58 @@ type RegistryCreateParameters struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// RegistryPropertiesCreateParameters - The properties that the container registry will be created with.
 	*RegistryPropertiesCreateParameters `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RegistryCreateParameters struct.
+func (rcp *RegistryCreateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		rcp.Tags = &tags
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		rcp.Location = &location
+	}
+
+	v = m["sku"]
+	if v != nil {
+		var sku Sku
+		err = json.Unmarshal(*m["sku"], &sku)
+		if err != nil {
+			return err
+		}
+		rcp.Sku = &sku
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties RegistryPropertiesCreateParameters
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rcp.RegistryPropertiesCreateParameters = &properties
+	}
+
+	return nil
 }
 
 // RegistryListCredentialsResult the response from the ListCredentials operation.
@@ -417,6 +552,38 @@ type RegistryUpdateParameters struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 	// RegistryPropertiesUpdateParameters - The properties that the container registry will be updated with.
 	*RegistryPropertiesUpdateParameters `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RegistryUpdateParameters struct.
+func (rup *RegistryUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		rup.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties RegistryPropertiesUpdateParameters
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rup.RegistryPropertiesUpdateParameters = &properties
+	}
+
+	return nil
 }
 
 // Resource an Azure resource.

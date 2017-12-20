@@ -18,6 +18,7 @@ package customerinsights
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -416,6 +417,58 @@ type AuthorizationPolicyResourceFormat struct {
 	*AuthorizationPolicy `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for AuthorizationPolicyResourceFormat struct.
+func (aprf *AuthorizationPolicyResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AuthorizationPolicy
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		aprf.AuthorizationPolicy = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		aprf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		aprf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		aprf.Type = &typeVar
+	}
+
+	return nil
+}
+
 // AzureBlobConnectorProperties the Azure Blob connector properties.
 type AzureBlobConnectorProperties struct {
 	// ConnectionKeyVaultURL - The connection KeyVault URL.
@@ -758,6 +811,58 @@ type ConnectorMappingResourceFormat struct {
 	*ConnectorMapping `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ConnectorMappingResourceFormat struct.
+func (cmrf *ConnectorMappingResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ConnectorMapping
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		cmrf.ConnectorMapping = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		cmrf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		cmrf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		cmrf.Type = &typeVar
+	}
+
+	return nil
+}
+
 // ConnectorMappingStructure connector mapping property structure.
 type ConnectorMappingStructure struct {
 	// PropertyName - The property name of the mapping entity.
@@ -780,6 +885,58 @@ type ConnectorResourceFormat struct {
 	// Type - Resource type.
 	Type       *string `json:"type,omitempty"`
 	*Connector `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectorResourceFormat struct.
+func (crf *ConnectorResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties Connector
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		crf.Connector = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		crf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		crf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		crf.Type = &typeVar
+	}
+
+	return nil
 }
 
 // ConnectorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -890,6 +1047,38 @@ type DataSourcePrecedence struct {
 	Precedence *int32 `json:"precedence,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for DataSourcePrecedence struct.
+func (dsp *DataSourcePrecedence) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["dataSource"]
+	if v != nil {
+		var dataSource DataSource
+		err = json.Unmarshal(*m["dataSource"], &dataSource)
+		if err != nil {
+			return err
+		}
+		dsp.DataSource = &dataSource
+	}
+
+	v = m["precedence"]
+	if v != nil {
+		var precedence int32
+		err = json.Unmarshal(*m["precedence"], &precedence)
+		if err != nil {
+			return err
+		}
+		dsp.Precedence = &precedence
+	}
+
+	return nil
+}
+
 // EnrichingKpi the enriching KPI definition.
 type EnrichingKpi struct {
 	// EntityType - The mapping entity type. Possible values include: 'EntityTypesNone', 'EntityTypesProfile', 'EntityTypesInteraction', 'EntityTypesRelationship'
@@ -994,6 +1183,78 @@ type Hub struct {
 	// Tags - Resource tags.
 	Tags                 *map[string]*string `json:"tags,omitempty"`
 	*HubPropertiesFormat `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Hub struct.
+func (h *Hub) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties HubPropertiesFormat
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		h.HubPropertiesFormat = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		h.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		h.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		h.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		h.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		h.Tags = &tags
+	}
+
+	return nil
 }
 
 // HubBillingInfoFormat hub billing info.
@@ -1278,6 +1539,58 @@ type InteractionResourceFormat struct {
 	*InteractionTypeDefinition `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for InteractionResourceFormat struct.
+func (irf *InteractionResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties InteractionTypeDefinition
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		irf.InteractionTypeDefinition = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		irf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		irf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		irf.Type = &typeVar
+	}
+
+	return nil
+}
+
 // InteractionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type InteractionsCreateOrUpdateFuture struct {
@@ -1358,6 +1671,248 @@ type InteractionTypeDefinition struct {
 	*DataSource `json:"defaultDataSource,omitempty"`
 	// IsActivity - An interaction can be tagged as an activity only during create. This enables the interaction to be editable and can enable merging of properties from multiple data sources based on precedence, which is defined at a link level.
 	IsActivity *bool `json:"isActivity,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for InteractionTypeDefinition struct.
+func (itd *InteractionTypeDefinition) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["idPropertyNames"]
+	if v != nil {
+		var IDPropertyNames []string
+		err = json.Unmarshal(*m["idPropertyNames"], &IDPropertyNames)
+		if err != nil {
+			return err
+		}
+		itd.IDPropertyNames = &IDPropertyNames
+	}
+
+	v = m["participantProfiles"]
+	if v != nil {
+		var participantProfiles []Participant
+		err = json.Unmarshal(*m["participantProfiles"], &participantProfiles)
+		if err != nil {
+			return err
+		}
+		itd.ParticipantProfiles = &participantProfiles
+	}
+
+	v = m["primaryParticipantProfilePropertyName"]
+	if v != nil {
+		var primaryParticipantProfilePropertyName string
+		err = json.Unmarshal(*m["primaryParticipantProfilePropertyName"], &primaryParticipantProfilePropertyName)
+		if err != nil {
+			return err
+		}
+		itd.PrimaryParticipantProfilePropertyName = &primaryParticipantProfilePropertyName
+	}
+
+	v = m["dataSourcePrecedenceRules"]
+	if v != nil {
+		var dataSourcePrecedenceRules []DataSourcePrecedence
+		err = json.Unmarshal(*m["dataSourcePrecedenceRules"], &dataSourcePrecedenceRules)
+		if err != nil {
+			return err
+		}
+		itd.DataSourcePrecedenceRules = &dataSourcePrecedenceRules
+	}
+
+	v = m["defaultDataSource"]
+	if v != nil {
+		var defaultDataSource DataSource
+		err = json.Unmarshal(*m["defaultDataSource"], &defaultDataSource)
+		if err != nil {
+			return err
+		}
+		itd.DataSource = &defaultDataSource
+	}
+
+	v = m["isActivity"]
+	if v != nil {
+		var isActivity bool
+		err = json.Unmarshal(*m["isActivity"], &isActivity)
+		if err != nil {
+			return err
+		}
+		itd.IsActivity = &isActivity
+	}
+
+	v = m["apiEntitySetName"]
+	if v != nil {
+		var APIEntitySetName string
+		err = json.Unmarshal(*m["apiEntitySetName"], &APIEntitySetName)
+		if err != nil {
+			return err
+		}
+		itd.APIEntitySetName = &APIEntitySetName
+	}
+
+	v = m["entityType"]
+	if v != nil {
+		var entityType EntityTypes
+		err = json.Unmarshal(*m["entityType"], &entityType)
+		if err != nil {
+			return err
+		}
+		itd.EntityType = entityType
+	}
+
+	v = m["fields"]
+	if v != nil {
+		var fields []PropertyDefinition
+		err = json.Unmarshal(*m["fields"], &fields)
+		if err != nil {
+			return err
+		}
+		itd.Fields = &fields
+	}
+
+	v = m["instancesCount"]
+	if v != nil {
+		var instancesCount int32
+		err = json.Unmarshal(*m["instancesCount"], &instancesCount)
+		if err != nil {
+			return err
+		}
+		itd.InstancesCount = &instancesCount
+	}
+
+	v = m["lastChangedUtc"]
+	if v != nil {
+		var lastChangedUtc date.Time
+		err = json.Unmarshal(*m["lastChangedUtc"], &lastChangedUtc)
+		if err != nil {
+			return err
+		}
+		itd.LastChangedUtc = &lastChangedUtc
+	}
+
+	v = m["provisioningState"]
+	if v != nil {
+		var provisioningState ProvisioningStates
+		err = json.Unmarshal(*m["provisioningState"], &provisioningState)
+		if err != nil {
+			return err
+		}
+		itd.ProvisioningState = provisioningState
+	}
+
+	v = m["schemaItemTypeLink"]
+	if v != nil {
+		var schemaItemTypeLink string
+		err = json.Unmarshal(*m["schemaItemTypeLink"], &schemaItemTypeLink)
+		if err != nil {
+			return err
+		}
+		itd.SchemaItemTypeLink = &schemaItemTypeLink
+	}
+
+	v = m["tenantId"]
+	if v != nil {
+		var tenantID string
+		err = json.Unmarshal(*m["tenantId"], &tenantID)
+		if err != nil {
+			return err
+		}
+		itd.TenantID = &tenantID
+	}
+
+	v = m["timestampFieldName"]
+	if v != nil {
+		var timestampFieldName string
+		err = json.Unmarshal(*m["timestampFieldName"], &timestampFieldName)
+		if err != nil {
+			return err
+		}
+		itd.TimestampFieldName = &timestampFieldName
+	}
+
+	v = m["typeName"]
+	if v != nil {
+		var typeName string
+		err = json.Unmarshal(*m["typeName"], &typeName)
+		if err != nil {
+			return err
+		}
+		itd.TypeName = &typeName
+	}
+
+	v = m["attributes"]
+	if v != nil {
+		var attributes map[string][]string
+		err = json.Unmarshal(*m["attributes"], &attributes)
+		if err != nil {
+			return err
+		}
+		itd.Attributes = &attributes
+	}
+
+	v = m["description"]
+	if v != nil {
+		var description map[string]*string
+		err = json.Unmarshal(*m["description"], &description)
+		if err != nil {
+			return err
+		}
+		itd.Description = &description
+	}
+
+	v = m["displayName"]
+	if v != nil {
+		var displayName map[string]*string
+		err = json.Unmarshal(*m["displayName"], &displayName)
+		if err != nil {
+			return err
+		}
+		itd.DisplayName = &displayName
+	}
+
+	v = m["localizedAttributes"]
+	if v != nil {
+		var localizedAttributes map[string]map[string]*string
+		err = json.Unmarshal(*m["localizedAttributes"], &localizedAttributes)
+		if err != nil {
+			return err
+		}
+		itd.LocalizedAttributes = &localizedAttributes
+	}
+
+	v = m["smallImage"]
+	if v != nil {
+		var smallImage string
+		err = json.Unmarshal(*m["smallImage"], &smallImage)
+		if err != nil {
+			return err
+		}
+		itd.SmallImage = &smallImage
+	}
+
+	v = m["mediumImage"]
+	if v != nil {
+		var mediumImage string
+		err = json.Unmarshal(*m["mediumImage"], &mediumImage)
+		if err != nil {
+			return err
+		}
+		itd.MediumImage = &mediumImage
+	}
+
+	v = m["largeImage"]
+	if v != nil {
+		var largeImage string
+		err = json.Unmarshal(*m["largeImage"], &largeImage)
+		if err != nil {
+			return err
+		}
+		itd.LargeImage = &largeImage
+	}
+
+	return nil
 }
 
 // KpiAlias the KPI alias.
@@ -1610,6 +2165,58 @@ type KpiResourceFormat struct {
 	*KpiDefinition `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for KpiResourceFormat struct.
+func (krf *KpiResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties KpiDefinition
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		krf.KpiDefinition = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		krf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		krf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		krf.Type = &typeVar
+	}
+
+	return nil
+}
+
 // KpiThresholds defines the KPI Threshold limits.
 type KpiThresholds struct {
 	// LowerLimit - The lower threshold limit.
@@ -1758,6 +2365,58 @@ type LinkResourceFormat struct {
 	// Type - Resource type.
 	Type            *string `json:"type,omitempty"`
 	*LinkDefinition `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for LinkResourceFormat struct.
+func (lrf *LinkResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties LinkDefinition
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		lrf.LinkDefinition = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		lrf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		lrf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		lrf.Type = &typeVar
+	}
+
+	return nil
 }
 
 // LinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -2080,6 +2739,58 @@ type ProfileResourceFormat struct {
 	// Type - Resource type.
 	Type                   *string `json:"type,omitempty"`
 	*ProfileTypeDefinition `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ProfileResourceFormat struct.
+func (prf *ProfileResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ProfileTypeDefinition
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		prf.ProfileTypeDefinition = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		prf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		prf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		prf.Type = &typeVar
+	}
+
+	return nil
 }
 
 // ProfilesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -2408,6 +3119,58 @@ type RelationshipLinkResourceFormat struct {
 	*RelationshipLinkDefinition `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for RelationshipLinkResourceFormat struct.
+func (rlrf *RelationshipLinkResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RelationshipLinkDefinition
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rlrf.RelationshipLinkDefinition = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rlrf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rlrf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		rlrf.Type = &typeVar
+	}
+
+	return nil
+}
+
 // RelationshipLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RelationshipLinksCreateOrUpdateFuture struct {
@@ -2583,6 +3346,58 @@ type RelationshipResourceFormat struct {
 	// Type - Resource type.
 	Type                    *string `json:"type,omitempty"`
 	*RelationshipDefinition `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RelationshipResourceFormat struct.
+func (rrf *RelationshipResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RelationshipDefinition
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rrf.RelationshipDefinition = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rrf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rrf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		rrf.Type = &typeVar
+	}
+
+	return nil
 }
 
 // RelationshipsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -2864,6 +3679,58 @@ type RoleAssignmentResourceFormat struct {
 	*RoleAssignment `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for RoleAssignmentResourceFormat struct.
+func (rarf *RoleAssignmentResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RoleAssignment
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rarf.RoleAssignment = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rarf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rarf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		rarf.Type = &typeVar
+	}
+
+	return nil
+}
+
 // RoleAssignmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RoleAssignmentsCreateOrUpdateFuture struct {
@@ -3007,6 +3874,58 @@ type RoleResourceFormat struct {
 	// Type - Resource type.
 	Type  *string `json:"type,omitempty"`
 	*Role `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RoleResourceFormat struct.
+func (rrf *RoleResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties Role
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rrf.Role = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rrf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rrf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		rrf.Type = &typeVar
+	}
+
+	return nil
 }
 
 // SalesforceConnectorProperties the Salesforce connector properties.
@@ -3202,6 +4121,58 @@ type ViewResourceFormat struct {
 	*View `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ViewResourceFormat struct.
+func (vrf *ViewResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties View
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vrf.View = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vrf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vrf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		vrf.Type = &typeVar
+	}
+
+	return nil
+}
+
 // WidgetType definition of WidgetType.
 type WidgetType struct {
 	// WidgetTypeName - Name of the widget type.
@@ -3336,4 +4307,56 @@ type WidgetTypeResourceFormat struct {
 	// Type - Resource type.
 	Type        *string `json:"type,omitempty"`
 	*WidgetType `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for WidgetTypeResourceFormat struct.
+func (wtrf *WidgetTypeResourceFormat) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties WidgetType
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		wtrf.WidgetType = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		wtrf.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		wtrf.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		wtrf.Type = &typeVar
+	}
+
+	return nil
 }

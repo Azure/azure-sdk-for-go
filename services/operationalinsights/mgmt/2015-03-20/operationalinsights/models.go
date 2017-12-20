@@ -18,6 +18,7 @@ package operationalinsights
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -106,6 +107,48 @@ type SavedSearch struct {
 	Etag *string `json:"etag,omitempty"`
 	// SavedSearchProperties - Gets or sets properties of the saved search.
 	*SavedSearchProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SavedSearch struct.
+func (ss *SavedSearch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ss.ID = &ID
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		ss.Etag = &etag
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties SavedSearchProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ss.SavedSearchProperties = &properties
+	}
+
+	return nil
 }
 
 // SavedSearchesListResult the saved search operation response.
@@ -278,6 +321,78 @@ type StorageInsight struct {
 	*StorageInsightProperties `json:"properties,omitempty"`
 	// ETag - The ETag of the storage insight.
 	ETag *string `json:"eTag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for StorageInsight struct.
+func (si *StorageInsight) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties StorageInsightProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		si.StorageInsightProperties = &properties
+	}
+
+	v = m["eTag"]
+	if v != nil {
+		var eTag string
+		err = json.Unmarshal(*m["eTag"], &eTag)
+		if err != nil {
+			return err
+		}
+		si.ETag = &eTag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		si.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		si.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		si.Type = &typeVar
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		si.Tags = &tags
+	}
+
+	return nil
 }
 
 // StorageInsightListResult the list storage insights operation response.

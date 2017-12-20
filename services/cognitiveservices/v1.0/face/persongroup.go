@@ -115,6 +115,13 @@ func (client PersonGroupClient) CreateResponder(resp *http.Response) (result aut
 //
 // personGroupID is the personGroupId of the person group to be deleted.
 func (client PersonGroupClient) Delete(ctx context.Context, personGroupID string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Delete")
+	}
+
 	req, err := client.DeletePreparer(ctx, personGroupID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Delete", nil, "Failure preparing request")
@@ -176,6 +183,13 @@ func (client PersonGroupClient) DeleteResponder(resp *http.Response) (result aut
 //
 // personGroupID is personGroupId of the target person group.
 func (client PersonGroupClient) Get(ctx context.Context, personGroupID string) (result PersonGroupResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Get")
+	}
+
 	req, err := client.GetPreparer(ctx, personGroupID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Get", nil, "Failure preparing request")
@@ -237,7 +251,14 @@ func (client PersonGroupClient) GetResponder(resp *http.Response) (result Person
 // GetTrainingStatus retrieve the training status of a person group (completed or ongoing).
 //
 // personGroupID is personGroupId of target person group.
-func (client PersonGroupClient) GetTrainingStatus(ctx context.Context, personGroupID string) (result TrainingStatus1, err error) {
+func (client PersonGroupClient) GetTrainingStatus(ctx context.Context, personGroupID string) (result TrainingStatus, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "GetTrainingStatus")
+	}
+
 	req, err := client.GetTrainingStatusPreparer(ctx, personGroupID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "GetTrainingStatus", nil, "Failure preparing request")
@@ -285,7 +306,7 @@ func (client PersonGroupClient) GetTrainingStatusSender(req *http.Request) (*htt
 
 // GetTrainingStatusResponder handles the response to the GetTrainingStatus request. The method always
 // closes the http.Response Body.
-func (client PersonGroupClient) GetTrainingStatusResponder(resp *http.Response) (result TrainingStatus1, err error) {
+func (client PersonGroupClient) GetTrainingStatusResponder(resp *http.Response) (result TrainingStatus, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -379,6 +400,13 @@ func (client PersonGroupClient) ListResponder(resp *http.Response) (result ListP
 //
 // personGroupID is target person group to be trained.
 func (client PersonGroupClient) Train(ctx context.Context, personGroupID string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Train")
+	}
+
 	req, err := client.TrainPreparer(ctx, personGroupID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Train", nil, "Failure preparing request")
@@ -441,6 +469,13 @@ func (client PersonGroupClient) TrainResponder(resp *http.Response) (result auto
 //
 // personGroupID is personGroupId of the person group to be updated. body is request body for updating person group.
 func (client PersonGroupClient) Update(ctx context.Context, personGroupID string, body CreatePersonGroupRequest) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Update")
+	}
+
 	req, err := client.UpdatePreparer(ctx, personGroupID, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupClient", "Update", nil, "Failure preparing request")

@@ -26,34 +26,34 @@ import (
 type AttributeTypes string
 
 const (
-	// Accessories ...
-	Accessories AttributeTypes = "accessories"
-	// Age ...
-	Age AttributeTypes = "age"
-	// Blur ...
-	Blur AttributeTypes = "blur"
-	// Emotion ...
-	Emotion AttributeTypes = "emotion"
-	// Exposure ...
-	Exposure AttributeTypes = "exposure"
-	// FacialHair ...
-	FacialHair AttributeTypes = "facialHair"
-	// Gender ...
-	Gender AttributeTypes = "gender"
-	// Glasses ...
-	Glasses AttributeTypes = "glasses"
-	// Hair ...
-	Hair AttributeTypes = "hair"
-	// HeadPose ...
-	HeadPose AttributeTypes = "headPose"
-	// Makeup ...
-	Makeup AttributeTypes = "makeup"
-	// Noise ...
-	Noise AttributeTypes = "noise"
-	// Occlusion ...
-	Occlusion AttributeTypes = "occlusion"
-	// Smile ...
-	Smile AttributeTypes = "smile"
+	// AttributeTypesAccessories ...
+	AttributeTypesAccessories AttributeTypes = "accessories"
+	// AttributeTypesAge ...
+	AttributeTypesAge AttributeTypes = "age"
+	// AttributeTypesBlur ...
+	AttributeTypesBlur AttributeTypes = "blur"
+	// AttributeTypesEmotion ...
+	AttributeTypesEmotion AttributeTypes = "emotion"
+	// AttributeTypesExposure ...
+	AttributeTypesExposure AttributeTypes = "exposure"
+	// AttributeTypesFacialHair ...
+	AttributeTypesFacialHair AttributeTypes = "facialHair"
+	// AttributeTypesGender ...
+	AttributeTypesGender AttributeTypes = "gender"
+	// AttributeTypesGlasses ...
+	AttributeTypesGlasses AttributeTypes = "glasses"
+	// AttributeTypesHair ...
+	AttributeTypesHair AttributeTypes = "hair"
+	// AttributeTypesHeadPose ...
+	AttributeTypesHeadPose AttributeTypes = "headPose"
+	// AttributeTypesMakeup ...
+	AttributeTypesMakeup AttributeTypes = "makeup"
+	// AttributeTypesNoise ...
+	AttributeTypesNoise AttributeTypes = "noise"
+	// AttributeTypesOcclusion ...
+	AttributeTypesOcclusion AttributeTypes = "occlusion"
+	// AttributeTypesSmile ...
+	AttributeTypesSmile AttributeTypes = "smile"
 )
 
 // AzureRegions enumerates the values for azure regions.
@@ -110,14 +110,16 @@ const (
 	UnderExposure ExposureLevels = "UnderExposure"
 )
 
-// GenderType enumerates the values for gender.
-type GenderType string
+// Gender enumerates the values for gender.
+type Gender string
 
 const (
 	// Female ...
-	Female GenderType = "female"
+	Female Gender = "female"
+	// Genderless ...
+	Genderless Gender = "genderless"
 	// Male ...
-	Male GenderType = "male"
+	Male Gender = "male"
 )
 
 // GlassesTypes enumerates the values for glasses types.
@@ -156,18 +158,18 @@ const (
 	NoiseLevelsMedium NoiseLevels = "Medium"
 )
 
-// TrainingStatus enumerates the values for training status.
-type TrainingStatus string
+// TrainingStatusType enumerates the values for training status type.
+type TrainingStatusType string
 
 const (
 	// Failed ...
-	Failed TrainingStatus = "failed"
+	Failed TrainingStatusType = "failed"
 	// Nonstarted ...
-	Nonstarted TrainingStatus = "nonstarted"
+	Nonstarted TrainingStatusType = "nonstarted"
 	// Running ...
-	Running TrainingStatus = "running"
+	Running TrainingStatusType = "running"
 	// Succeeded ...
-	Succeeded TrainingStatus = "succeeded"
+	Succeeded TrainingStatusType = "succeeded"
 )
 
 // AccessoryItem accessory item and corresponding confidence level.
@@ -186,8 +188,8 @@ type APIError struct {
 type Attributes struct {
 	// Age - Age in years
 	Age *float64 `json:"age,omitempty"`
-	// Gender - Possible gender of the face. Possible values include: 'Male', 'Female'
-	Gender GenderType `json:"gender,omitempty"`
+	// Gender - Possible gender of the face. Possible values include: 'Male', 'Female', 'Genderless'
+	Gender Gender `json:"gender,omitempty"`
 	// Smile - Smile intensity, a number between [0,1]
 	Smile      *float64              `json:"smile,omitempty"`
 	FacialHair *FacialHairProperties `json:"facialHair,omitempty"`
@@ -229,9 +231,9 @@ type CreateFaceListRequest struct {
 
 // CreatePersonGroupRequest request to create a person group.
 type CreatePersonGroupRequest struct {
-	// Name - Name of the face list, maximum length is 128.
+	// Name - Person group display name. The maximum length is 128.
 	Name *string `json:"name,omitempty"`
-	// UserData - Optional user defined data for the face list. Length should not exceed 16KB.
+	// UserData - User-provided data attached to the person group. The size limit is 16KB.
 	UserData *string `json:"userData,omitempty"`
 }
 
@@ -310,9 +312,9 @@ type GetFaceListResult struct {
 	autorest.Response `json:"-"`
 	// FaceListID - faceListId of the target face list.
 	FaceListID *string `json:"faceListId,omitempty"`
-	// Name - Face list's display name.
+	// Name - Face list's display name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
-	// UserData - User-provided data attached to this face list.
+	// UserData - User-provided data attached to this face list. Length should not exceed 16KB.
 	UserData *string `json:"userData,omitempty"`
 	// PersistedFaces - Persisted faces within the face list.
 	PersistedFaces *[]PersonFaceResult `json:"persistedFaces,omitempty"`
@@ -484,18 +486,18 @@ type PersonFaceResult struct {
 	autorest.Response `json:"-"`
 	// PersistedFaceID - The persistedFaceId of the target face, which is persisted and will not expire. Different from faceId created by Face - Detect and will expire in 24 hours after the detection call.
 	PersistedFaceID *string `json:"persistedFaceId,omitempty"`
-	// UserData - User-provided data attached to the face.
+	// UserData - User-provided data attached to the face. The size limit is 1KB.
 	UserData *string `json:"userData,omitempty"`
 }
 
 // PersonGroupResult person group object.
 type PersonGroupResult struct {
 	autorest.Response `json:"-"`
-	// PersonGroupID - faceListId of the target face list.
+	// PersonGroupID - personGroupId of the existing person groups.
 	PersonGroupID *string `json:"personGroupId,omitempty"`
-	// Name - Face list's display name.
+	// Name - Person group's display name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
-	// UserData - User-provided data attached to this face list.
+	// UserData - User-provided data attached to this person group. Length should not exceed 16KB.
 	UserData *string `json:"userData,omitempty"`
 }
 
@@ -506,9 +508,9 @@ type PersonResult struct {
 	PersonID *string `json:"personId,omitempty"`
 	// PersistedFaceIds - persistedFaceIds of registered faces in the person. These persistedFaceIds are returned from Person - Add a Person Face, and will not expire.
 	PersistedFaceIds *[]string `json:"persistedFaceIds,omitempty"`
-	// Name - Person's display name.
+	// Name - Person's display name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
-	// UserData - User-provided data attached to this person.
+	// UserData - User-provided data attached to this person. Length should not exceed 16KB.
 	UserData *string `json:"userData,omitempty"`
 }
 
@@ -541,22 +543,22 @@ type SimilarFaceResult struct {
 	Confidence      *float64 `json:"confidence,omitempty"`
 }
 
-// TrainingStatus1 training status object.
-type TrainingStatus1 struct {
+// TrainingStatus training status object.
+type TrainingStatus struct {
 	autorest.Response `json:"-"`
 	// Status - Training status: notstarted, running, succeeded, failed. If the training process is waiting to perform, the status is notstarted. If the training is ongoing, the status is running. Status succeed means this person group is ready for Face - Identify. Status failed is often caused by no person or no persisted face exist in the person group. Possible values include: 'Nonstarted', 'Running', 'Succeeded', 'Failed'
-	Status TrainingStatus `json:"status,omitempty"`
+	Status TrainingStatusType `json:"status,omitempty"`
 	// Created - A combined UTC date and time string that describes person group created time.
-	Created *date.TimeRFC1123 `json:"createdDateTime,omitempty"`
+	Created *date.Time `json:"createdDateTime,omitempty"`
 	// LastAction - Person group last modify time in the UTC, could be null value when the person group is not successfully trained.
-	LastAction *date.TimeRFC1123 `json:"lastActionDateTime,omitempty"`
+	LastAction *date.Time `json:"lastActionDateTime,omitempty"`
 	// Message - Show failure message when training failed (omitted when training succeed).
 	Message *string `json:"message,omitempty"`
 }
 
 // UpdatePersonFaceDataRequest request to update person face data.
 type UpdatePersonFaceDataRequest struct {
-	// UserData - User-provided data attached to the face. The size limit is 1KB
+	// UserData - User-provided data attached to the face. The size limit is 1KB.
 	UserData *string `json:"userData,omitempty"`
 }
 

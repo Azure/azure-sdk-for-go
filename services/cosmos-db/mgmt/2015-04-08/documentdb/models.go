@@ -18,6 +18,7 @@ package documentdb
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -140,6 +141,88 @@ type DatabaseAccount struct {
 	*DatabaseAccountProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for DatabaseAccount struct.
+func (da *DatabaseAccount) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["kind"]
+	if v != nil {
+		var kind DatabaseAccountKind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		da.Kind = kind
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties DatabaseAccountProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		da.DatabaseAccountProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		da.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		da.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		da.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		da.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		da.Tags = &tags
+	}
+
+	return nil
+}
+
 // DatabaseAccountConnectionString connection string for the Cosmos DB account
 type DatabaseAccountConnectionString struct {
 	// ConnectionString - Value of the connection string
@@ -162,6 +245,88 @@ type DatabaseAccountCreateUpdateParameters struct {
 	// Kind - Indicates the type of database account. This can only be set at database account creation. Possible values include: 'GlobalDocumentDB', 'MongoDB', 'Parse'
 	Kind                                   DatabaseAccountKind `json:"kind,omitempty"`
 	*DatabaseAccountCreateUpdateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for DatabaseAccountCreateUpdateParameters struct.
+func (dacup *DatabaseAccountCreateUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["kind"]
+	if v != nil {
+		var kind DatabaseAccountKind
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		dacup.Kind = kind
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties DatabaseAccountCreateUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dacup.DatabaseAccountCreateUpdateProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		dacup.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		dacup.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		dacup.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		dacup.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		dacup.Tags = &tags
+	}
+
+	return nil
 }
 
 // DatabaseAccountCreateUpdateProperties properties to create and update Azure Cosmos DB database accounts.
@@ -192,6 +357,48 @@ type DatabaseAccountListKeysResult struct {
 	// SecondaryMasterKey - Base 64 encoded value of the secondary read-write key.
 	SecondaryMasterKey                     *string `json:"secondaryMasterKey,omitempty"`
 	*DatabaseAccountListReadOnlyKeysResult `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for DatabaseAccountListKeysResult struct.
+func (dalkr *DatabaseAccountListKeysResult) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["primaryMasterKey"]
+	if v != nil {
+		var primaryMasterKey string
+		err = json.Unmarshal(*m["primaryMasterKey"], &primaryMasterKey)
+		if err != nil {
+			return err
+		}
+		dalkr.PrimaryMasterKey = &primaryMasterKey
+	}
+
+	v = m["secondaryMasterKey"]
+	if v != nil {
+		var secondaryMasterKey string
+		err = json.Unmarshal(*m["secondaryMasterKey"], &secondaryMasterKey)
+		if err != nil {
+			return err
+		}
+		dalkr.SecondaryMasterKey = &secondaryMasterKey
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties DatabaseAccountListReadOnlyKeysResult
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dalkr.DatabaseAccountListReadOnlyKeysResult = &properties
+	}
+
+	return nil
 }
 
 // DatabaseAccountListReadOnlyKeysResult the read-only access keys for the given database account.

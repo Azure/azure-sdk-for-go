@@ -18,6 +18,7 @@ package account
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -307,6 +308,88 @@ type DataLakeStoreAccount struct {
 	*DataLakeStoreAccountProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for DataLakeStoreAccount struct.
+func (dlsa *DataLakeStoreAccount) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["identity"]
+	if v != nil {
+		var identity EncryptionIdentity
+		err = json.Unmarshal(*m["identity"], &identity)
+		if err != nil {
+			return err
+		}
+		dlsa.Identity = &identity
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties DataLakeStoreAccountProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dlsa.DataLakeStoreAccountProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		dlsa.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		dlsa.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		dlsa.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		dlsa.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		dlsa.Tags = &tags
+	}
+
+	return nil
+}
+
 // DataLakeStoreAccountBasic basic Data Lake Store account information, returned on list calls.
 type DataLakeStoreAccountBasic struct {
 	// ID - Resource Id
@@ -321,6 +404,78 @@ type DataLakeStoreAccountBasic struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 	// DataLakeStoreAccountPropertiesBasic - the basic Data Lake Store account properties.
 	*DataLakeStoreAccountPropertiesBasic `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for DataLakeStoreAccountBasic struct.
+func (dlsab *DataLakeStoreAccountBasic) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties DataLakeStoreAccountPropertiesBasic
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dlsab.DataLakeStoreAccountPropertiesBasic = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		dlsab.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		dlsab.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		dlsab.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		dlsab.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		dlsab.Tags = &tags
+	}
+
+	return nil
 }
 
 // DataLakeStoreAccountListResult data Lake Store account list information response.
@@ -486,6 +641,38 @@ type DataLakeStoreAccountUpdateParameters struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 	// UpdateDataLakeStoreAccountProperties - the Data Lake Store account properties to update.
 	*UpdateDataLakeStoreAccountProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for DataLakeStoreAccountUpdateParameters struct.
+func (dlsaup *DataLakeStoreAccountUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		dlsaup.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties UpdateDataLakeStoreAccountProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dlsaup.UpdateDataLakeStoreAccountProperties = &properties
+	}
+
+	return nil
 }
 
 // DataLakeStoreFirewallRuleListResult data Lake Store firewall rule list information.
@@ -733,6 +920,58 @@ type FirewallRule struct {
 	*FirewallRuleProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for FirewallRule struct.
+func (fr *FirewallRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties FirewallRuleProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		fr.FirewallRuleProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		fr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		fr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		fr.Type = &typeVar
+	}
+
+	return nil
+}
+
 // FirewallRuleProperties data Lake Store firewall rule properties information
 type FirewallRuleProperties struct {
 	// StartIPAddress - the start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same protocol.
@@ -830,6 +1069,58 @@ type TrustedIDProvider struct {
 	*TrustedIDProviderProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for TrustedIDProvider struct.
+func (tip *TrustedIDProvider) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties TrustedIDProviderProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		tip.TrustedIDProviderProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		tip.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		tip.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		tip.Type = &typeVar
+	}
+
+	return nil
+}
+
 // TrustedIDProviderProperties data Lake Store trusted identity provider properties information
 type TrustedIDProviderProperties struct {
 	// IDProvider - The URL of this trusted identity provider
@@ -864,6 +1155,28 @@ type UpdateFirewallRuleParameters struct {
 	*UpdateFirewallRuleProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for UpdateFirewallRuleParameters struct.
+func (ufrp *UpdateFirewallRuleParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties UpdateFirewallRuleProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ufrp.UpdateFirewallRuleProperties = &properties
+	}
+
+	return nil
+}
+
 // UpdateFirewallRuleProperties data Lake Store firewall rule properties information
 type UpdateFirewallRuleProperties struct {
 	// StartIPAddress - the start IP address for the firewall rule. This can be either ipv4 or ipv6. Start and End should be in the same protocol.
@@ -882,6 +1195,28 @@ type UpdateKeyVaultMetaInfo struct {
 type UpdateTrustedIDProviderParameters struct {
 	// UpdateTrustedIDProviderProperties - the properties of the trusted identity provider to update.
 	*UpdateTrustedIDProviderProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for UpdateTrustedIDProviderParameters struct.
+func (utipp *UpdateTrustedIDProviderParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties UpdateTrustedIDProviderProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		utipp.UpdateTrustedIDProviderProperties = &properties
+	}
+
+	return nil
 }
 
 // UpdateTrustedIDProviderProperties data Lake Store trusted identity provider property update information

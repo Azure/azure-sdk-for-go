@@ -18,6 +18,7 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -372,6 +373,88 @@ type Account struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Account struct.
+func (a *Account) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AccountProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		a.AccountProperties = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		a.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		a.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		a.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		a.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		a.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		a.Tags = &tags
+	}
+
+	return nil
+}
+
 // AccountCreateOrUpdateParameters the parameters supplied to the create or update automation account operation.
 type AccountCreateOrUpdateParameters struct {
 	// AccountCreateOrUpdateProperties - Gets or sets account create or update properties.
@@ -382,6 +465,58 @@ type AccountCreateOrUpdateParameters struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
 	Tags *map[string]*string `json:"tags,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AccountCreateOrUpdateParameters struct.
+func (acoup *AccountCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AccountCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		acoup.AccountCreateOrUpdateProperties = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		acoup.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		acoup.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		acoup.Tags = &tags
+	}
+
+	return nil
 }
 
 // AccountCreateOrUpdateProperties the parameters supplied to the create or update account properties.
@@ -520,6 +655,58 @@ type AccountUpdateParameters struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for AccountUpdateParameters struct.
+func (aup *AccountUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties AccountUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		aup.AccountUpdateProperties = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		aup.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		aup.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		aup.Tags = &tags
+	}
+
+	return nil
+}
+
 // AccountUpdateProperties the parameters supplied to the update account properties.
 type AccountUpdateProperties struct {
 	// Sku - Gets or sets account SKU.
@@ -535,6 +722,48 @@ type Activity struct {
 	Name *string `json:"name,omitempty"`
 	// ActivityProperties - Gets or sets the properties of the activity.
 	*ActivityProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Activity struct.
+func (a *Activity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		a.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		a.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ActivityProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		a.ActivityProperties = &properties
+	}
+
+	return nil
 }
 
 // ActivityListResult the response model for the list activity operation.
@@ -753,6 +982,48 @@ type Certificate struct {
 	*CertificateProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Certificate struct.
+func (c *Certificate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		c.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		c.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties CertificateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		c.CertificateProperties = &properties
+	}
+
+	return nil
+}
+
 // CertificateCreateOrUpdateParameters the parameters supplied to the create or update or replace certificate
 // operation.
 type CertificateCreateOrUpdateParameters struct {
@@ -760,6 +1031,38 @@ type CertificateCreateOrUpdateParameters struct {
 	Name *string `json:"name,omitempty"`
 	// CertificateCreateOrUpdateProperties - Gets or sets the properties of the certificate.
 	*CertificateCreateOrUpdateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for CertificateCreateOrUpdateParameters struct.
+func (ccoup *CertificateCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ccoup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties CertificateCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ccoup.CertificateCreateOrUpdateProperties = &properties
+	}
+
+	return nil
 }
 
 // CertificateCreateOrUpdateProperties the properties of the create certificate operation.
@@ -900,6 +1203,38 @@ type CertificateUpdateParameters struct {
 	*CertificateUpdateProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for CertificateUpdateParameters struct.
+func (cup *CertificateUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		cup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties CertificateUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		cup.CertificateUpdateProperties = &properties
+	}
+
+	return nil
+}
+
 // CertificateUpdateProperties the properties of the update certificate operation
 type CertificateUpdateProperties struct {
 	// Description - Gets or sets the description of the certificate.
@@ -917,12 +1252,86 @@ type Connection struct {
 	*ConnectionProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Connection struct.
+func (c *Connection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		c.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		c.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ConnectionProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		c.ConnectionProperties = &properties
+	}
+
+	return nil
+}
+
 // ConnectionCreateOrUpdateParameters the parameters supplied to the create or update connection operation.
 type ConnectionCreateOrUpdateParameters struct {
 	// Name - Gets or sets the name of the connection.
 	Name *string `json:"name,omitempty"`
 	// ConnectionCreateOrUpdateProperties - Gets or sets the properties of the connection.
 	*ConnectionCreateOrUpdateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectionCreateOrUpdateParameters struct.
+func (ccoup *ConnectionCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ccoup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ConnectionCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ccoup.ConnectionCreateOrUpdateProperties = &properties
+	}
+
+	return nil
 }
 
 // ConnectionCreateOrUpdateProperties the properties of the create connection properties
@@ -1062,6 +1471,48 @@ type ConnectionType struct {
 	*ConnectionTypeProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ConnectionType struct.
+func (ct *ConnectionType) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ct.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ct.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ConnectionTypeProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ct.ConnectionTypeProperties = &properties
+	}
+
+	return nil
+}
+
 // ConnectionTypeAssociationProperty the connection type property associated with the entity.
 type ConnectionTypeAssociationProperty struct {
 	// Name - Gets or sets the name of the connection type.
@@ -1074,6 +1525,38 @@ type ConnectionTypeCreateOrUpdateParameters struct {
 	Name *string `json:"name,omitempty"`
 	// ConnectionTypeCreateOrUpdateProperties - Gets or sets the value of the connection type.
 	*ConnectionTypeCreateOrUpdateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectionTypeCreateOrUpdateParameters struct.
+func (ctcoup *ConnectionTypeCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ctcoup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ConnectionTypeCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ctcoup.ConnectionTypeCreateOrUpdateProperties = &properties
+	}
+
+	return nil
 }
 
 // ConnectionTypeCreateOrUpdateProperties the properties of the create connection type.
@@ -1208,6 +1691,38 @@ type ConnectionUpdateParameters struct {
 	*ConnectionUpdateProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ConnectionUpdateParameters struct.
+func (cup *ConnectionUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		cup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ConnectionUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		cup.ConnectionUpdateProperties = &properties
+	}
+
+	return nil
+}
+
 // ConnectionUpdateProperties the properties of the update connection operation.
 type ConnectionUpdateProperties struct {
 	// Description - Gets or sets the description of the connection.
@@ -1257,12 +1772,86 @@ type Credential struct {
 	*CredentialProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Credential struct.
+func (c *Credential) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		c.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		c.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties CredentialProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		c.CredentialProperties = &properties
+	}
+
+	return nil
+}
+
 // CredentialCreateOrUpdateParameters the parameters supplied to the create or update credential operation.
 type CredentialCreateOrUpdateParameters struct {
 	// Name - Gets or sets the name of the credential.
 	Name *string `json:"name,omitempty"`
 	// CredentialCreateOrUpdateProperties - Gets or sets the properties of the credential.
 	*CredentialCreateOrUpdateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for CredentialCreateOrUpdateParameters struct.
+func (ccoup *CredentialCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ccoup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties CredentialCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ccoup.CredentialCreateOrUpdateProperties = &properties
+	}
+
+	return nil
 }
 
 // CredentialCreateOrUpdateProperties the properties of the create cerdential operation.
@@ -1397,6 +1986,38 @@ type CredentialUpdateParameters struct {
 	*CredentialUpdateProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for CredentialUpdateParameters struct.
+func (cup *CredentialUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		cup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties CredentialUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		cup.CredentialUpdateProperties = &properties
+	}
+
+	return nil
+}
+
 // CredentialUpdateProperties the properties of the Update credential
 type CredentialUpdateProperties struct {
 	// UserName - Gets or sets the user name of the credential.
@@ -1416,6 +2037,38 @@ type DscCompilationJob struct {
 	*DscCompilationJobProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for DscCompilationJob struct.
+func (dcj *DscCompilationJob) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		dcj.ID = &ID
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties DscCompilationJobProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dcj.DscCompilationJobProperties = &properties
+	}
+
+	return nil
+}
+
 // DscCompilationJobCreateParameters the parameters supplied to the create compilation job operation.
 type DscCompilationJobCreateParameters struct {
 	// DscCompilationJobCreateProperties - Gets or sets the list of compilation job properties.
@@ -1426,6 +2079,58 @@ type DscCompilationJobCreateParameters struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
 	Tags *map[string]*string `json:"tags,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscCompilationJobCreateParameters struct.
+func (dcjcp *DscCompilationJobCreateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties DscCompilationJobCreateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dcjcp.DscCompilationJobCreateProperties = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		dcjcp.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		dcjcp.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		dcjcp.Tags = &tags
+	}
+
+	return nil
 }
 
 // DscCompilationJobCreateProperties the parameters supplied to the create compilation job operation.
@@ -1587,6 +2292,88 @@ type DscConfiguration struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for DscConfiguration struct.
+func (dc *DscConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties DscConfigurationProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dc.DscConfigurationProperties = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		dc.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		dc.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		dc.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		dc.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		dc.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		dc.Tags = &tags
+	}
+
+	return nil
+}
+
 // DscConfigurationAssociationProperty the Dsc configuration property associated with the entity.
 type DscConfigurationAssociationProperty struct {
 	// Name - Gets or sets the name of the Dsc configuration.
@@ -1603,6 +2390,58 @@ type DscConfigurationCreateOrUpdateParameters struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
 	Tags *map[string]*string `json:"tags,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscConfigurationCreateOrUpdateParameters struct.
+func (dccoup *DscConfigurationCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties DscConfigurationCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dccoup.DscConfigurationCreateOrUpdateProperties = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		dccoup.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		dccoup.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		dccoup.Tags = &tags
+	}
+
+	return nil
 }
 
 // DscConfigurationCreateOrUpdateProperties the properties to create or update configuration.
@@ -2410,6 +3249,38 @@ type Job struct {
 	*JobProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Job struct.
+func (j *Job) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		j.ID = &ID
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties JobProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		j.JobProperties = &properties
+	}
+
+	return nil
+}
+
 // JobCreateParameters the parameters supplied to the create job operation.
 type JobCreateParameters struct {
 	// JobCreateProperties - Gets or sets the list of job properties.
@@ -2420,6 +3291,58 @@ type JobCreateParameters struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
 	Tags *map[string]*string `json:"tags,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for JobCreateParameters struct.
+func (jcp *JobCreateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties JobCreateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		jcp.JobCreateProperties = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		jcp.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		jcp.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		jcp.Tags = &tags
+	}
+
+	return nil
 }
 
 // JobCreateProperties the parameters supplied to the create job operation.
@@ -2573,10 +3496,64 @@ type JobSchedule struct {
 	*JobScheduleProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for JobSchedule struct.
+func (js *JobSchedule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		js.ID = &ID
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties JobScheduleProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		js.JobScheduleProperties = &properties
+	}
+
+	return nil
+}
+
 // JobScheduleCreateParameters the parameters supplied to the create job schedule operation.
 type JobScheduleCreateParameters struct {
 	// JobScheduleCreateProperties - Gets or sets the list of job schedule properties.
 	*JobScheduleCreateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for JobScheduleCreateParameters struct.
+func (jscp *JobScheduleCreateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties JobScheduleCreateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		jscp.JobScheduleCreateProperties = &properties
+	}
+
+	return nil
 }
 
 // JobScheduleCreateProperties the parameters supplied to the create job schedule operation.
@@ -2716,6 +3693,38 @@ type JobStream struct {
 	*JobStreamProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for JobStream struct.
+func (js *JobStream) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		js.ID = &ID
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties JobStreamProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		js.JobStreamProperties = &properties
+	}
+
+	return nil
+}
+
 // JobStreamListResult the response model for the list job stream operation.
 type JobStreamListResult struct {
 	autorest.Response `json:"-"`
@@ -2853,6 +3862,88 @@ type Module struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Module struct.
+func (mVar *Module) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ModuleProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		mVar.ModuleProperties = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		mVar.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		mVar.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		mVar.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		mVar.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		mVar.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		mVar.Tags = &tags
+	}
+
+	return nil
+}
+
 // ModuleCreateOrUpdateParameters the parameters supplied to the create or update module operation.
 type ModuleCreateOrUpdateParameters struct {
 	// ModuleCreateOrUpdateProperties - Gets or sets the module create properties.
@@ -2863,6 +3954,58 @@ type ModuleCreateOrUpdateParameters struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
 	Tags *map[string]*string `json:"tags,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ModuleCreateOrUpdateParameters struct.
+func (mcoup *ModuleCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ModuleCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		mcoup.ModuleCreateOrUpdateProperties = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		mcoup.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		mcoup.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		mcoup.Tags = &tags
+	}
+
+	return nil
 }
 
 // ModuleCreateOrUpdateProperties the parameters supplied to the create or update module properties.
@@ -3017,6 +4160,58 @@ type ModuleUpdateParameters struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ModuleUpdateParameters struct.
+func (mup *ModuleUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ModuleUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		mup.ModuleUpdateProperties = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		mup.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		mup.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		mup.Tags = &tags
+	}
+
+	return nil
+}
+
 // ModuleUpdateProperties the parameters supplied to the update properties.
 type ModuleUpdateProperties struct {
 	// ContentLink - Gets or sets the module content link.
@@ -3093,6 +4288,88 @@ type Runbook struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Runbook struct.
+func (r *Runbook) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RunbookProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		r.RunbookProperties = &properties
+	}
+
+	v = m["etag"]
+	if v != nil {
+		var etag string
+		err = json.Unmarshal(*m["etag"], &etag)
+		if err != nil {
+			return err
+		}
+		r.Etag = &etag
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		r.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		r.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		r.Type = &typeVar
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		r.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		r.Tags = &tags
+	}
+
+	return nil
+}
+
 // RunbookAssociationProperty the runbook property associated with the entity.
 type RunbookAssociationProperty struct {
 	// Name - Gets or sets the name of the runbook.
@@ -3131,6 +4408,58 @@ type RunbookCreateOrUpdateParameters struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
 	Tags *map[string]*string `json:"tags,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RunbookCreateOrUpdateParameters struct.
+func (rcoup *RunbookCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RunbookCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rcoup.RunbookCreateOrUpdateProperties = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rcoup.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		rcoup.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		rcoup.Tags = &tags
+	}
+
+	return nil
 }
 
 // RunbookCreateOrUpdateProperties the parameters supplied to the create or update runbook properties.
@@ -3399,6 +4728,58 @@ type RunbookUpdateParameters struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for RunbookUpdateParameters struct.
+func (rup *RunbookUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RunbookUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rup.RunbookUpdateProperties = &properties
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rup.Name = &name
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		rup.Location = &location
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		rup.Tags = &tags
+	}
+
+	return nil
+}
+
 // RunbookUpdateProperties the parameters supplied to the update runbook properties.
 type RunbookUpdateProperties struct {
 	// Description - Gets or sets the description of the runbook.
@@ -3422,6 +4803,48 @@ type Schedule struct {
 	*ScheduleProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Schedule struct.
+func (s *Schedule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		s.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		s.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ScheduleProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		s.ScheduleProperties = &properties
+	}
+
+	return nil
+}
+
 // ScheduleAssociationProperty the schedule property associated with the entity.
 type ScheduleAssociationProperty struct {
 	// Name - Gets or sets the name of the schedule.
@@ -3434,6 +4857,38 @@ type ScheduleCreateOrUpdateParameters struct {
 	Name *string `json:"name,omitempty"`
 	// ScheduleCreateOrUpdateProperties - Gets or sets the list of schedule properties.
 	*ScheduleCreateOrUpdateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ScheduleCreateOrUpdateParameters struct.
+func (scoup *ScheduleCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		scoup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ScheduleCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		scoup.ScheduleCreateOrUpdateProperties = &properties
+	}
+
+	return nil
 }
 
 // ScheduleCreateOrUpdateProperties the parameters supplied to the create or update schedule operation.
@@ -3596,6 +5051,38 @@ type ScheduleUpdateParameters struct {
 	*ScheduleUpdateProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ScheduleUpdateParameters struct.
+func (sup *ScheduleUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		sup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ScheduleUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sup.ScheduleUpdateProperties = &properties
+	}
+
+	return nil
+}
+
 // ScheduleUpdateProperties the parameters supplied to the update schedule operation.
 type ScheduleUpdateProperties struct {
 	// Description - Gets or sets the description of the schedule.
@@ -3739,12 +5226,86 @@ type Variable struct {
 	*VariableProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Variable struct.
+func (vVar *Variable) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		vVar.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vVar.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties VariableProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vVar.VariableProperties = &properties
+	}
+
+	return nil
+}
+
 // VariableCreateOrUpdateParameters the parameters supplied to the create or update variable operation.
 type VariableCreateOrUpdateParameters struct {
 	// Name - Gets or sets the name of the variable.
 	Name *string `json:"name,omitempty"`
 	// VariableCreateOrUpdateProperties - Gets or sets the properties of the variable.
 	*VariableCreateOrUpdateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for VariableCreateOrUpdateParameters struct.
+func (vcoup *VariableCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vcoup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties VariableCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vcoup.VariableCreateOrUpdateProperties = &properties
+	}
+
+	return nil
 }
 
 // VariableCreateOrUpdateProperties the properties of the create variable operation.
@@ -3881,6 +5442,38 @@ type VariableUpdateParameters struct {
 	*VariableUpdateProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for VariableUpdateParameters struct.
+func (vup *VariableUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		vup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties VariableUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		vup.VariableUpdateProperties = &properties
+	}
+
+	return nil
+}
+
 // VariableUpdateProperties the properties of the update variable
 type VariableUpdateProperties struct {
 	// Value - Gets or sets the value of the variable.
@@ -3900,12 +5493,86 @@ type Webhook struct {
 	*WebhookProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Webhook struct.
+func (w *Webhook) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		w.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		w.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties WebhookProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		w.WebhookProperties = &properties
+	}
+
+	return nil
+}
+
 // WebhookCreateOrUpdateParameters the parameters supplied to the create or update webhook operation.
 type WebhookCreateOrUpdateParameters struct {
 	// Name - Gets or sets the name of the webhook.
 	Name *string `json:"name,omitempty"`
 	// WebhookCreateOrUpdateProperties - Gets or sets the properties of the webhook.
 	*WebhookCreateOrUpdateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for WebhookCreateOrUpdateParameters struct.
+func (wcoup *WebhookCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		wcoup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties WebhookCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		wcoup.WebhookCreateOrUpdateProperties = &properties
+	}
+
+	return nil
 }
 
 // WebhookCreateOrUpdateProperties the properties of the create webhook operation.
@@ -4056,6 +5723,38 @@ type WebhookUpdateParameters struct {
 	Name *string `json:"name,omitempty"`
 	// WebhookUpdateProperties - Gets or sets the value of the webhook.
 	*WebhookUpdateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for WebhookUpdateParameters struct.
+func (wup *WebhookUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		wup.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties WebhookUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		wup.WebhookUpdateProperties = &properties
+	}
+
+	return nil
 }
 
 // WebhookUpdateProperties the properties of the update webhook.

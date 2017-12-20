@@ -18,6 +18,7 @@ package storageimportexport
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
@@ -85,6 +86,28 @@ type ErrorResponse struct {
 	*ErrorResponseError `json:"error,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ErrorResponse struct.
+func (er *ErrorResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["error"]
+	if v != nil {
+		var errorVar ErrorResponseError
+		err = json.Unmarshal(*m["error"], &errorVar)
+		if err != nil {
+			return err
+		}
+		er.ErrorResponseError = &errorVar
+	}
+
+	return nil
+}
+
 // ErrorResponseError describes the error information.
 type ErrorResponseError struct {
 	// Code - Provides information about the error code.
@@ -116,6 +139,38 @@ type Export struct {
 	*ExportBlobList `json:"blobList,omitempty"`
 	// BlobListblobPath - The relative URI to the block blob that contains the list of blob paths or blob path prefixes as defined above, beginning with the container name. If the blob is in root container, the URI must begin with $root.
 	BlobListblobPath *string `json:"blobListblobPath,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Export struct.
+func (e *Export) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["blobList"]
+	if v != nil {
+		var blobList ExportBlobList
+		err = json.Unmarshal(*m["blobList"], &blobList)
+		if err != nil {
+			return err
+		}
+		e.ExportBlobList = &blobList
+	}
+
+	v = m["blobListblobPath"]
+	if v != nil {
+		var blobListblobPath string
+		err = json.Unmarshal(*m["blobListblobPath"], &blobListblobPath)
+		if err != nil {
+			return err
+		}
+		e.BlobListblobPath = &blobListblobPath
+	}
+
+	return nil
 }
 
 // ExportBlobList a list of the blobs to be exported.
@@ -310,6 +365,58 @@ type Location struct {
 	*LocationProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Location struct.
+func (l *Location) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		l.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		l.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		l.Type = &typeVar
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties LocationProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		l.LocationProperties = &properties
+	}
+
+	return nil
+}
+
 // LocationProperties location properties
 type LocationProperties struct {
 	// RecipientName - The recipient name to use when shipping the drives to the Azure data center.
@@ -347,6 +454,38 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// OperationDisplay - operation display properties
 	*OperationDisplay `json:"display,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Operation struct.
+func (o *Operation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		o.Name = &name
+	}
+
+	v = m["display"]
+	if v != nil {
+		var display OperationDisplay
+		err = json.Unmarshal(*m["display"], &display)
+		if err != nil {
+			return err
+		}
+		o.OperationDisplay = &display
+	}
+
+	return nil
 }
 
 // OperationDisplay operation display properties
@@ -439,6 +578,38 @@ type UpdateJobParameters struct {
 	Tags *map[string]interface{} `json:"tags,omitempty"`
 	// UpdateJobParametersProperties - Specifies the properties of a UpdateJob.
 	*UpdateJobParametersProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for UpdateJobParameters struct.
+func (ujp *UpdateJobParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]interface{}
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		ujp.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties UpdateJobParametersProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ujp.UpdateJobParametersProperties = &properties
+	}
+
+	return nil
 }
 
 // UpdateJobParametersProperties specifies the properties of a UpdateJob.

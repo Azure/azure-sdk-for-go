@@ -47,6 +47,11 @@ func NewPersonClient(azureRegion AzureRegions) PersonClient {
 // which face to add. No targetFace means there is only one face detected in the entire image.
 func (client PersonClient) AddPersonFace(ctx context.Context, personGroupID string, personID string, imageURL ImageURL, userData string, targetFace []int32) (result PersistedFaceResult, err error) {
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
+		{TargetValue: userData,
+			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}},
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "AddPersonFace")
@@ -133,6 +138,15 @@ func (client PersonClient) AddPersonFaceResponder(resp *http.Response) (result P
 // image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in
 // the entire image.
 func (client PersonClient) AddPersonFaceFromStream(ctx context.Context, personGroupID string, personID string, imageParameter io.ReadCloser, userData string, targetFace []int32) (result PersistedFaceResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
+		{TargetValue: userData,
+			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "AddPersonFaceFromStream")
+	}
+
 	req, err := client.AddPersonFaceFromStreamPreparer(ctx, personGroupID, personID, imageParameter, userData, targetFace)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "AddPersonFaceFromStream", nil, "Failure preparing request")
@@ -208,6 +222,9 @@ func (client PersonClient) AddPersonFaceFromStreamResponder(resp *http.Response)
 // person.
 func (client PersonClient) Create(ctx context.Context, personGroupID string, body CreatePersonRequest) (result CreatePersonResult, err error) {
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body.Name", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "body.Name", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
@@ -280,6 +297,13 @@ func (client PersonClient) CreateResponder(resp *http.Response) (result CreatePe
 //
 // personGroupID is specifying the person group containing the person. personID is the target personId to delete.
 func (client PersonClient) Delete(ctx context.Context, personGroupID string, personID string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "Delete")
+	}
+
 	req, err := client.DeletePreparer(ctx, personGroupID, personID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "Delete", nil, "Failure preparing request")
@@ -343,6 +367,13 @@ func (client PersonClient) DeleteResponder(resp *http.Response) (result autorest
 // personGroupID is specifying the person group containing the target person. personID is specifying the person that
 // the target persisted face belong to. persistedFaceID is the persisted face to remove.
 func (client PersonClient) DeleteFace(ctx context.Context, personGroupID string, personID string, persistedFaceID string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "DeleteFace")
+	}
+
 	req, err := client.DeleteFacePreparer(ctx, personGroupID, personID, persistedFaceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "DeleteFace", nil, "Failure preparing request")
@@ -406,6 +437,13 @@ func (client PersonClient) DeleteFaceResponder(resp *http.Response) (result auto
 //
 // personGroupID is specifying the person group containing the target person. personID is specifying the target person.
 func (client PersonClient) Get(ctx context.Context, personGroupID string, personID string) (result PersonResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "Get")
+	}
+
 	req, err := client.GetPreparer(ctx, personGroupID, personID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "Get", nil, "Failure preparing request")
@@ -471,6 +509,13 @@ func (client PersonClient) GetResponder(resp *http.Response) (result PersonResul
 // personGroupID is specifying the person group containing the target person. personID is specifying the target person
 // that the face belongs to. persistedFaceID is the persistedFaceId of the target persisted face of the person.
 func (client PersonClient) GetFace(ctx context.Context, personGroupID string, personID string, persistedFaceID string) (result PersonFaceResult, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "GetFace")
+	}
+
 	req, err := client.GetFacePreparer(ctx, personGroupID, personID, persistedFaceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "GetFace", nil, "Failure preparing request")
@@ -539,6 +584,9 @@ func (client PersonClient) GetFaceResponder(resp *http.Response) (result PersonF
 // parameter.
 func (client PersonClient) List(ctx context.Context, personGroupID string, start string, top *int32) (result ListPersonResult, err error) {
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
@@ -619,6 +667,13 @@ func (client PersonClient) ListResponder(resp *http.Response) (result ListPerson
 // personGroupID is specifying the person group containing the target person. personID is personId of the target
 // person. body is request body  for person update operation.
 func (client PersonClient) Update(ctx context.Context, personGroupID string, personID string, body CreatePersonRequest) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "Update")
+	}
+
 	req, err := client.UpdatePreparer(ctx, personGroupID, personID, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "Update", nil, "Failure preparing request")
@@ -685,6 +740,13 @@ func (client PersonClient) UpdateResponder(resp *http.Response) (result autorest
 // person. persistedFaceID is persistedFaceId of target face, which is persisted and will not expire. body is request
 // body for updating persisted face.
 func (client PersonClient) UpdateFace(ctx context.Context, personGroupID string, personID string, persistedFaceID string, body UpdatePersonFaceDataRequest) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "UpdateFace")
+	}
+
 	req, err := client.UpdateFacePreparer(ctx, personGroupID, personID, persistedFaceID, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonClient", "UpdateFace", nil, "Failure preparing request")

@@ -18,6 +18,7 @@ package management
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
@@ -93,6 +94,58 @@ type Group struct {
 	*GroupProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Group struct.
+func (g *Group) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		g.ID = &ID
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		g.Type = &typeVar
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name uuid.UUID
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		g.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties GroupProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		g.GroupProperties = &properties
+	}
+
+	return nil
+}
+
 // GroupChildInfo the unique identifier (ID) of a management group.
 type GroupChildInfo struct {
 	// ChildType - Possible values include: 'Enrollment', 'Department', 'Account', 'Subscription'
@@ -127,6 +180,58 @@ type GroupInfo struct {
 	// Name - The name of the management group. E.g. 20000000-0000-0000-0000-000000000000
 	Name                 *uuid.UUID `json:"name,omitempty"`
 	*GroupInfoProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for GroupInfo struct.
+func (gi *GroupInfo) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		gi.ID = &ID
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		gi.Type = &typeVar
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name uuid.UUID
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		gi.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties GroupInfoProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		gi.GroupInfoProperties = &properties
+	}
+
+	return nil
 }
 
 // GroupInfoProperties the generic properties of a management group.
@@ -295,6 +400,58 @@ type GroupWithChildren struct {
 	*GroupPropertiesWithChildren `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for GroupWithChildren struct.
+func (gwc *GroupWithChildren) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		gwc.ID = &ID
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		gwc.Type = &typeVar
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name uuid.UUID
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		gwc.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties GroupPropertiesWithChildren
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		gwc.GroupPropertiesWithChildren = &properties
+	}
+
+	return nil
+}
+
 // GroupWithHierarchy the management group details.
 type GroupWithHierarchy struct {
 	autorest.Response `json:"-"`
@@ -305,6 +462,58 @@ type GroupWithHierarchy struct {
 	// Name - The name of the management group. E.g. 20000000-0000-0000-0000-000000000000
 	Name                          *uuid.UUID `json:"name,omitempty"`
 	*GroupPropertiesWithHierarchy `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for GroupWithHierarchy struct.
+func (gwh *GroupWithHierarchy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		gwh.ID = &ID
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		gwh.Type = &typeVar
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name uuid.UUID
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		gwh.Name = &name
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties GroupPropertiesWithHierarchy
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		gwh.GroupPropertiesWithHierarchy = &properties
+	}
+
+	return nil
 }
 
 // Operation a Management REST API operation.

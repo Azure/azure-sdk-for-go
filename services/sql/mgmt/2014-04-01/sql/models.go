@@ -18,6 +18,7 @@ package sql
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -81,6 +82,8 @@ const (
 	Free DatabaseEdition = "Free"
 	// Premium ...
 	Premium DatabaseEdition = "Premium"
+	// PremiumRS ...
+	PremiumRS DatabaseEdition = "PremiumRS"
 	// Standard ...
 	Standard DatabaseEdition = "Standard"
 	// Stretch ...
@@ -257,8 +260,76 @@ type ServiceObjectiveName string
 const (
 	// ServiceObjectiveNameBasic ...
 	ServiceObjectiveNameBasic ServiceObjectiveName = "Basic"
+	// ServiceObjectiveNameDS100 ...
+	ServiceObjectiveNameDS100 ServiceObjectiveName = "DS100"
+	// ServiceObjectiveNameDS1000 ...
+	ServiceObjectiveNameDS1000 ServiceObjectiveName = "DS1000"
+	// ServiceObjectiveNameDS1200 ...
+	ServiceObjectiveNameDS1200 ServiceObjectiveName = "DS1200"
+	// ServiceObjectiveNameDS1500 ...
+	ServiceObjectiveNameDS1500 ServiceObjectiveName = "DS1500"
+	// ServiceObjectiveNameDS200 ...
+	ServiceObjectiveNameDS200 ServiceObjectiveName = "DS200"
+	// ServiceObjectiveNameDS2000 ...
+	ServiceObjectiveNameDS2000 ServiceObjectiveName = "DS2000"
+	// ServiceObjectiveNameDS300 ...
+	ServiceObjectiveNameDS300 ServiceObjectiveName = "DS300"
+	// ServiceObjectiveNameDS400 ...
+	ServiceObjectiveNameDS400 ServiceObjectiveName = "DS400"
+	// ServiceObjectiveNameDS500 ...
+	ServiceObjectiveNameDS500 ServiceObjectiveName = "DS500"
+	// ServiceObjectiveNameDS600 ...
+	ServiceObjectiveNameDS600 ServiceObjectiveName = "DS600"
+	// ServiceObjectiveNameDW100 ...
+	ServiceObjectiveNameDW100 ServiceObjectiveName = "DW100"
+	// ServiceObjectiveNameDW1000 ...
+	ServiceObjectiveNameDW1000 ServiceObjectiveName = "DW1000"
+	// ServiceObjectiveNameDW10000c ...
+	ServiceObjectiveNameDW10000c ServiceObjectiveName = "DW10000c"
+	// ServiceObjectiveNameDW1000c ...
+	ServiceObjectiveNameDW1000c ServiceObjectiveName = "DW1000c"
+	// ServiceObjectiveNameDW1200 ...
+	ServiceObjectiveNameDW1200 ServiceObjectiveName = "DW1200"
+	// ServiceObjectiveNameDW1500 ...
+	ServiceObjectiveNameDW1500 ServiceObjectiveName = "DW1500"
+	// ServiceObjectiveNameDW15000c ...
+	ServiceObjectiveNameDW15000c ServiceObjectiveName = "DW15000c"
+	// ServiceObjectiveNameDW1500c ...
+	ServiceObjectiveNameDW1500c ServiceObjectiveName = "DW1500c"
+	// ServiceObjectiveNameDW200 ...
+	ServiceObjectiveNameDW200 ServiceObjectiveName = "DW200"
+	// ServiceObjectiveNameDW2000 ...
+	ServiceObjectiveNameDW2000 ServiceObjectiveName = "DW2000"
+	// ServiceObjectiveNameDW2000c ...
+	ServiceObjectiveNameDW2000c ServiceObjectiveName = "DW2000c"
+	// ServiceObjectiveNameDW2500c ...
+	ServiceObjectiveNameDW2500c ServiceObjectiveName = "DW2500c"
+	// ServiceObjectiveNameDW300 ...
+	ServiceObjectiveNameDW300 ServiceObjectiveName = "DW300"
+	// ServiceObjectiveNameDW3000 ...
+	ServiceObjectiveNameDW3000 ServiceObjectiveName = "DW3000"
+	// ServiceObjectiveNameDW30000c ...
+	ServiceObjectiveNameDW30000c ServiceObjectiveName = "DW30000c"
+	// ServiceObjectiveNameDW3000c ...
+	ServiceObjectiveNameDW3000c ServiceObjectiveName = "DW3000c"
+	// ServiceObjectiveNameDW400 ...
+	ServiceObjectiveNameDW400 ServiceObjectiveName = "DW400"
+	// ServiceObjectiveNameDW500 ...
+	ServiceObjectiveNameDW500 ServiceObjectiveName = "DW500"
+	// ServiceObjectiveNameDW5000c ...
+	ServiceObjectiveNameDW5000c ServiceObjectiveName = "DW5000c"
+	// ServiceObjectiveNameDW600 ...
+	ServiceObjectiveNameDW600 ServiceObjectiveName = "DW600"
+	// ServiceObjectiveNameDW6000 ...
+	ServiceObjectiveNameDW6000 ServiceObjectiveName = "DW6000"
+	// ServiceObjectiveNameDW6000c ...
+	ServiceObjectiveNameDW6000c ServiceObjectiveName = "DW6000c"
+	// ServiceObjectiveNameDW7500c ...
+	ServiceObjectiveNameDW7500c ServiceObjectiveName = "DW7500c"
 	// ServiceObjectiveNameElasticPool ...
 	ServiceObjectiveNameElasticPool ServiceObjectiveName = "ElasticPool"
+	// ServiceObjectiveNameFree ...
+	ServiceObjectiveNameFree ServiceObjectiveName = "Free"
 	// ServiceObjectiveNameP1 ...
 	ServiceObjectiveNameP1 ServiceObjectiveName = "P1"
 	// ServiceObjectiveNameP11 ...
@@ -273,18 +344,50 @@ const (
 	ServiceObjectiveNameP4 ServiceObjectiveName = "P4"
 	// ServiceObjectiveNameP6 ...
 	ServiceObjectiveNameP6 ServiceObjectiveName = "P6"
+	// ServiceObjectiveNamePRS1 ...
+	ServiceObjectiveNamePRS1 ServiceObjectiveName = "PRS1"
+	// ServiceObjectiveNamePRS2 ...
+	ServiceObjectiveNamePRS2 ServiceObjectiveName = "PRS2"
+	// ServiceObjectiveNamePRS4 ...
+	ServiceObjectiveNamePRS4 ServiceObjectiveName = "PRS4"
+	// ServiceObjectiveNamePRS6 ...
+	ServiceObjectiveNamePRS6 ServiceObjectiveName = "PRS6"
 	// ServiceObjectiveNameS0 ...
 	ServiceObjectiveNameS0 ServiceObjectiveName = "S0"
 	// ServiceObjectiveNameS1 ...
 	ServiceObjectiveNameS1 ServiceObjectiveName = "S1"
+	// ServiceObjectiveNameS12 ...
+	ServiceObjectiveNameS12 ServiceObjectiveName = "S12"
 	// ServiceObjectiveNameS2 ...
 	ServiceObjectiveNameS2 ServiceObjectiveName = "S2"
 	// ServiceObjectiveNameS3 ...
 	ServiceObjectiveNameS3 ServiceObjectiveName = "S3"
+	// ServiceObjectiveNameS4 ...
+	ServiceObjectiveNameS4 ServiceObjectiveName = "S4"
+	// ServiceObjectiveNameS6 ...
+	ServiceObjectiveNameS6 ServiceObjectiveName = "S6"
+	// ServiceObjectiveNameS7 ...
+	ServiceObjectiveNameS7 ServiceObjectiveName = "S7"
+	// ServiceObjectiveNameS9 ...
+	ServiceObjectiveNameS9 ServiceObjectiveName = "S9"
 	// ServiceObjectiveNameSystem ...
 	ServiceObjectiveNameSystem ServiceObjectiveName = "System"
+	// ServiceObjectiveNameSystem0 ...
+	ServiceObjectiveNameSystem0 ServiceObjectiveName = "System0"
+	// ServiceObjectiveNameSystem1 ...
+	ServiceObjectiveNameSystem1 ServiceObjectiveName = "System1"
 	// ServiceObjectiveNameSystem2 ...
 	ServiceObjectiveNameSystem2 ServiceObjectiveName = "System2"
+	// ServiceObjectiveNameSystem2L ...
+	ServiceObjectiveNameSystem2L ServiceObjectiveName = "System2L"
+	// ServiceObjectiveNameSystem3 ...
+	ServiceObjectiveNameSystem3 ServiceObjectiveName = "System3"
+	// ServiceObjectiveNameSystem3L ...
+	ServiceObjectiveNameSystem3L ServiceObjectiveName = "System3L"
+	// ServiceObjectiveNameSystem4 ...
+	ServiceObjectiveNameSystem4 ServiceObjectiveName = "System4"
+	// ServiceObjectiveNameSystem4L ...
+	ServiceObjectiveNameSystem4L ServiceObjectiveName = "System4L"
 )
 
 // StorageKeyType enumerates the values for storage key type.
@@ -357,6 +460,88 @@ type Database struct {
 	*DatabaseProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for Database struct.
+func (d *Database) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["kind"]
+	if v != nil {
+		var kind string
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		d.Kind = &kind
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties DatabaseProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		d.DatabaseProperties = &properties
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		d.Tags = &tags
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		d.Location = &location
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		d.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		d.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		d.Type = &typeVar
+	}
+
+	return nil
+}
+
 // DatabaseListResult represents the response to a list database request.
 type DatabaseListResult struct {
 	autorest.Response `json:"-"`
@@ -396,15 +581,15 @@ type DatabaseProperties struct {
 	RestorePointInTime *date.Time `json:"restorePointInTime,omitempty"`
 	// RecoveryServicesRecoveryPointResourceID - Conditional. If createMode is RestoreLongTermRetentionBackup, then this value is required. Specifies the resource ID of the recovery point to restore from.
 	RecoveryServicesRecoveryPointResourceID *string `json:"recoveryServicesRecoveryPointResourceId,omitempty"`
-	// Edition - The edition of the database. The DatabaseEditions enumeration contains all the valid editions. If createMode is NonReadableSecondary or OnlineSecondary, this value is ignored. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation.". Possible values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2'
+	// Edition - The edition of the database. The DatabaseEditions enumeration contains all the valid editions. If createMode is NonReadableSecondary or OnlineSecondary, this value is ignored. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation." or use the Azure CLI command `az sql db list-editions -l westus --query [].name`. Possible values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'PremiumRS', 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2'
 	Edition DatabaseEdition `json:"edition,omitempty"`
 	// MaxSizeBytes - The max size of the database expressed in bytes. If createMode is not Default, this value is ignored. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation."
 	MaxSizeBytes *string `json:"maxSizeBytes,omitempty"`
-	// RequestedServiceObjectiveID - The configured service level objective ID of the database. This is the service level objective that is in the process of being applied to the database. Once successfully updated, it will match the value of currentServiceObjectiveId property. If requestedServiceObjectiveId and requestedServiceObjectiveName are both updated, the value of requestedServiceObjectiveId overrides the value of requestedServiceObjectiveName. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation."
+	// RequestedServiceObjectiveID - The configured service level objective ID of the database. This is the service level objective that is in the process of being applied to the database. Once successfully updated, it will match the value of currentServiceObjectiveId property. If requestedServiceObjectiveId and requestedServiceObjectiveName are both updated, the value of requestedServiceObjectiveId overrides the value of requestedServiceObjectiveName. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation." or use the Azure CLI command `az sql db list-editions --location <location> --query [].supportedServiceLevelObjectives[].name` .
 	RequestedServiceObjectiveID *uuid.UUID `json:"requestedServiceObjectiveId,omitempty"`
-	// RequestedServiceObjectiveName - The name of the configured service level objective of the database. This is the service level objective that is in the process of being applied to the database. Once successfully updated, it will match the value of serviceLevelObjective property. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation.". Possible values include: 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameElasticPool'
+	// RequestedServiceObjectiveName - The name of the configured service level objective of the database. This is the service level objective that is in the process of being applied to the database. Once successfully updated, it will match the value of serviceLevelObjective property. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation." or use the Azure CLI command `az sql db list-editions --location <location> --query [].supportedServiceLevelObjectives[].name`. Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'
 	RequestedServiceObjectiveName ServiceObjectiveName `json:"requestedServiceObjectiveName,omitempty"`
-	// ServiceLevelObjective - The current service level objective of the database. Possible values include: 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameElasticPool'
+	// ServiceLevelObjective - The current service level objective of the database. Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'
 	ServiceLevelObjective ServiceObjectiveName `json:"serviceLevelObjective,omitempty"`
 	// Status - The status of the database.
 	Status *string `json:"status,omitempty"`
@@ -506,6 +691,78 @@ type DatabaseSecurityAlertPolicy struct {
 	Kind *string `json:"kind,omitempty"`
 	// DatabaseSecurityAlertPolicyProperties - Properties of the security alert policy.
 	*DatabaseSecurityAlertPolicyProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for DatabaseSecurityAlertPolicy struct.
+func (dsap *DatabaseSecurityAlertPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		dsap.Location = &location
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind string
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		dsap.Kind = &kind
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties DatabaseSecurityAlertPolicyProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dsap.DatabaseSecurityAlertPolicyProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		dsap.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		dsap.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		dsap.Type = &typeVar
+	}
+
+	return nil
 }
 
 // DatabaseSecurityAlertPolicyProperties properties for a database Threat Detection policy.
@@ -697,6 +954,68 @@ type DatabaseUpdate struct {
 	*DatabaseProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for DatabaseUpdate struct.
+func (du *DatabaseUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		du.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties DatabaseProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		du.DatabaseProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		du.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		du.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		du.Type = &typeVar
+	}
+
+	return nil
+}
+
 // ElasticPool represents a database elastic pool.
 type ElasticPool struct {
 	autorest.Response `json:"-"`
@@ -716,6 +1035,88 @@ type ElasticPool struct {
 	Kind *string `json:"kind,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ElasticPool struct.
+func (ep *ElasticPool) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ElasticPoolProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ep.ElasticPoolProperties = &properties
+	}
+
+	v = m["kind"]
+	if v != nil {
+		var kind string
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		ep.Kind = &kind
+	}
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		ep.Tags = &tags
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		ep.Location = &location
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ep.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ep.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ep.Type = &typeVar
+	}
+
+	return nil
+}
+
 // ElasticPoolActivity represents the activity on an elastic pool.
 type ElasticPoolActivity struct {
 	// ID - Resource ID.
@@ -728,6 +1129,68 @@ type ElasticPoolActivity struct {
 	Location *string `json:"location,omitempty"`
 	// ElasticPoolActivityProperties - The properties representing the resource.
 	*ElasticPoolActivityProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ElasticPoolActivity struct.
+func (epa *ElasticPoolActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		epa.Location = &location
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ElasticPoolActivityProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		epa.ElasticPoolActivityProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		epa.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		epa.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		epa.Type = &typeVar
+	}
+
+	return nil
 }
 
 // ElasticPoolActivityListResult represents the response to a list elastic pool activity request.
@@ -793,6 +1256,68 @@ type ElasticPoolDatabaseActivity struct {
 	Location *string `json:"location,omitempty"`
 	// ElasticPoolDatabaseActivityProperties - The properties representing the resource.
 	*ElasticPoolDatabaseActivityProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ElasticPoolDatabaseActivity struct.
+func (epda *ElasticPoolDatabaseActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		epda.Location = &location
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ElasticPoolDatabaseActivityProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		epda.ElasticPoolDatabaseActivityProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		epda.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		epda.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		epda.Type = &typeVar
+	}
+
+	return nil
 }
 
 // ElasticPoolDatabaseActivityListResult represents the response to a list elastic pool database activity request.
@@ -940,6 +1465,68 @@ type ElasticPoolUpdate struct {
 	*ElasticPoolProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ElasticPoolUpdate struct.
+func (epu *ElasticPoolUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		epu.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ElasticPoolProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		epu.ElasticPoolProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		epu.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		epu.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		epu.Type = &typeVar
+	}
+
+	return nil
+}
+
 // ExportRequest export database parameters.
 type ExportRequest struct {
 	// StorageKeyType - The type of the storage key to use. Possible values include: 'StorageAccessKey', 'SharedAccessKey'
@@ -973,6 +1560,78 @@ type FirewallRule struct {
 	*FirewallRuleProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for FirewallRule struct.
+func (fr *FirewallRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["kind"]
+	if v != nil {
+		var kind string
+		err = json.Unmarshal(*m["kind"], &kind)
+		if err != nil {
+			return err
+		}
+		fr.Kind = &kind
+	}
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		fr.Location = &location
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties FirewallRuleProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		fr.FirewallRuleProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		fr.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		fr.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		fr.Type = &typeVar
+	}
+
+	return nil
+}
+
 // FirewallRuleListResult represents the response to a List Firewall Rules request.
 type FirewallRuleListResult struct {
 	autorest.Response `json:"-"`
@@ -999,6 +1658,58 @@ type ImportExportResponse struct {
 	Type *string `json:"type,omitempty"`
 	// ImportExportResponseProperties - The import/export operation properties.
 	*ImportExportResponseProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ImportExportResponse struct.
+func (ier *ImportExportResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ImportExportResponseProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ier.ImportExportResponseProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ier.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ier.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ier.Type = &typeVar
+	}
+
+	return nil
 }
 
 // ImportExportResponseProperties response for Import/Export Status operation.
@@ -1051,6 +1762,48 @@ type ImportExtensionRequest struct {
 	*ImportExtensionProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ImportExtensionRequest struct.
+func (ier *ImportExtensionRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ier.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ier.Type = &typeVar
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ImportExtensionProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ier.ImportExtensionProperties = &properties
+	}
+
+	return nil
+}
+
 // ImportRequest import database parameters.
 type ImportRequest struct {
 	// StorageKeyType - The type of the storage key to use. Possible values include: 'StorageAccessKey', 'SharedAccessKey'
@@ -1067,9 +1820,9 @@ type ImportRequest struct {
 	AuthenticationType AuthenticationType `json:"authenticationType,omitempty"`
 	// DatabaseName - The name of the database to import.
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// Edition - The edition for the database being created. Possible values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2'
+	// Edition - The edition for the database being created. Possible values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'PremiumRS', 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2'
 	Edition DatabaseEdition `json:"edition,omitempty"`
-	// ServiceObjectiveName - The name of the service objective to assign to the database. Possible values include: 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameElasticPool'
+	// ServiceObjectiveName - The name of the service objective to assign to the database. Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'
 	ServiceObjectiveName ServiceObjectiveName `json:"serviceObjectiveName,omitempty"`
 	// MaxSizeBytes - The maximum size for the newly imported database.
 	MaxSizeBytes *string `json:"maxSizeBytes,omitempty"`
@@ -1108,6 +1861,58 @@ type RecommendedElasticPool struct {
 	Type *string `json:"type,omitempty"`
 	// RecommendedElasticPoolProperties - The properites representing the resource.
 	*RecommendedElasticPoolProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RecommendedElasticPool struct.
+func (rep *RecommendedElasticPool) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RecommendedElasticPoolProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rep.RecommendedElasticPoolProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rep.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rep.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		rep.Type = &typeVar
+	}
+
+	return nil
 }
 
 // RecommendedElasticPoolListMetricsResult represents the response to a list recommended elastic pool metrics request.
@@ -1172,6 +1977,58 @@ type RecommendedIndex struct {
 	*RecommendedIndexProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for RecommendedIndex struct.
+func (ri *RecommendedIndex) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties RecommendedIndexProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		ri.RecommendedIndexProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		ri.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		ri.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ri.Type = &typeVar
+	}
+
+	return nil
+}
+
 // RecommendedIndexProperties represents the properties of a database recommended index.
 type RecommendedIndexProperties struct {
 	// Action - The proposed index action. You can create a missing index, drop an unused index, or rebuild an existing index to improve its performance. Possible values include: 'Create', 'Drop', 'Rebuild'
@@ -1213,6 +2070,68 @@ type ReplicationLink struct {
 	Location *string `json:"location,omitempty"`
 	// ReplicationLinkProperties - The properties representing the resource.
 	*ReplicationLinkProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ReplicationLink struct.
+func (rl *ReplicationLink) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		rl.Location = &location
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties ReplicationLinkProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		rl.ReplicationLinkProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		rl.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		rl.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		rl.Type = &typeVar
+	}
+
+	return nil
 }
 
 // ReplicationLinkListResult represents the response to a List database replication link request.
@@ -1332,6 +2251,58 @@ type ServiceTierAdvisor struct {
 	*ServiceTierAdvisorProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ServiceTierAdvisor struct.
+func (sta *ServiceTierAdvisor) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties ServiceTierAdvisorProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sta.ServiceTierAdvisorProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		sta.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		sta.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sta.Type = &typeVar
+	}
+
+	return nil
+}
+
 // ServiceTierAdvisorListResult represents the response to a list service tier advisor request.
 type ServiceTierAdvisorListResult struct {
 	autorest.Response `json:"-"`
@@ -1383,7 +2354,7 @@ type ServiceTierAdvisorProperties struct {
 
 // SloUsageMetric a Slo Usage Metric.
 type SloUsageMetric struct {
-	// ServiceLevelObjective - The serviceLevelObjective for SLO usage metric. Possible values include: 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameElasticPool'
+	// ServiceLevelObjective - The serviceLevelObjective for SLO usage metric. Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'
 	ServiceLevelObjective ServiceObjectiveName `json:"serviceLevelObjective,omitempty"`
 	// ServiceLevelObjectiveID - The serviceLevelObjectiveId for SLO usage metric.
 	ServiceLevelObjectiveID *uuid.UUID `json:"serviceLevelObjectiveId,omitempty"`
@@ -1420,6 +2391,68 @@ type TransparentDataEncryption struct {
 	*TransparentDataEncryptionProperties `json:"properties,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for TransparentDataEncryption struct.
+func (tde *TransparentDataEncryption) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		tde.Location = &location
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties TransparentDataEncryptionProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		tde.TransparentDataEncryptionProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		tde.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		tde.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		tde.Type = &typeVar
+	}
+
+	return nil
+}
+
 // TransparentDataEncryptionActivity represents a database transparent data encryption Scan.
 type TransparentDataEncryptionActivity struct {
 	// ID - Resource ID.
@@ -1432,6 +2465,68 @@ type TransparentDataEncryptionActivity struct {
 	Location *string `json:"location,omitempty"`
 	// TransparentDataEncryptionActivityProperties - Represents the properties of the resource.
 	*TransparentDataEncryptionActivityProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TransparentDataEncryptionActivity struct.
+func (tdea *TransparentDataEncryptionActivity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["location"]
+	if v != nil {
+		var location string
+		err = json.Unmarshal(*m["location"], &location)
+		if err != nil {
+			return err
+		}
+		tdea.Location = &location
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties TransparentDataEncryptionActivityProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		tdea.TransparentDataEncryptionActivityProperties = &properties
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		tdea.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		tdea.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		tdea.Type = &typeVar
+	}
+
+	return nil
 }
 
 // TransparentDataEncryptionActivityListResult represents the response to a list database transparent data encryption

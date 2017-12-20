@@ -22,9 +22,6 @@ package eventgrid
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2017-09-15-preview/eventgrid"
 
-type TopicsClient = original.TopicsClient
-type TopicTypesClient = original.TopicTypesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -123,7 +120,15 @@ type TrackedResource = original.TrackedResource
 type WebHookEventSubscriptionDestination = original.WebHookEventSubscriptionDestination
 type WebHookEventSubscriptionDestinationProperties = original.WebHookEventSubscriptionDestinationProperties
 type OperationsClient = original.OperationsClient
+type TopicsClient = original.TopicsClient
+type TopicTypesClient = original.TopicTypesClient
 
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewTopicsClient(subscriptionID string) TopicsClient {
 	return original.NewTopicsClient(subscriptionID)
 }
@@ -153,10 +158,4 @@ func NewEventSubscriptionsClient(subscriptionID string) EventSubscriptionsClient
 }
 func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) EventSubscriptionsClient {
 	return original.NewEventSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

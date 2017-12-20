@@ -22,11 +22,6 @@ package filesystem
 
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/store/2016-11-01/filesystem"
 
-const (
-	DefaultAdlsFileSystemDNSSuffix = original.DefaultAdlsFileSystemDNSSuffix
-)
-
-type BaseClient = original.BaseClient
 type Client = original.Client
 type AppendModeType = original.AppendModeType
 
@@ -97,6 +92,12 @@ type FileStatusesResult = original.FileStatusesResult
 type FileStatusProperties = original.FileStatusProperties
 type FileStatusResult = original.FileStatusResult
 type ReadCloser = original.ReadCloser
+
+const (
+	DefaultAdlsFileSystemDNSSuffix = original.DefaultAdlsFileSystemDNSSuffix
+)
+
+type BaseClient = original.BaseClient
 
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -22,7 +22,6 @@ package media
 
 import original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2015-10-01/media"
 
-type OperationsClient = original.OperationsClient
 type ServiceClient = original.ServiceClient
 
 const (
@@ -67,19 +66,8 @@ type ServiceKeys = original.ServiceKeys
 type ServiceProperties = original.ServiceProperties
 type StorageAccount = original.StorageAccount
 type SyncStorageKeysInput = original.SyncStorageKeysInput
+type OperationsClient = original.OperationsClient
 
-func NewServiceClient(subscriptionID string) ServiceClient {
-	return original.NewServiceClient(subscriptionID)
-}
-func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
-	return original.NewServiceClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -91,4 +79,16 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceClient(subscriptionID string) ServiceClient {
+	return original.NewServiceClient(subscriptionID)
+}
+func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
+	return original.NewServiceClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }

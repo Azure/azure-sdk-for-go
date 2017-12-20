@@ -23,6 +23,18 @@ package dtl
 import original "github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2016-05-15/dtl"
 
 type LabsClient = original.LabsClient
+type SchedulesClient = original.SchedulesClient
+type SecretsClient = original.SecretsClient
+type ServiceRunnersClient = original.ServiceRunnersClient
+type VirtualNetworksClient = original.VirtualNetworksClient
+type CostsClient = original.CostsClient
+type ArtifactsClient = original.ArtifactsClient
+type CustomImagesClient = original.CustomImagesClient
+type GlobalSchedulesClient = original.GlobalSchedulesClient
+type OperationsClient = original.OperationsClient
+type PoliciesClient = original.PoliciesClient
+type UsersClient = original.UsersClient
+type ArmTemplatesClient = original.ArmTemplatesClient
 type CostThresholdStatus = original.CostThresholdStatus
 
 const (
@@ -456,50 +468,26 @@ type WeekDetails = original.WeekDetails
 type WeekDetailsFragment = original.WeekDetailsFragment
 type WindowsOsInfo = original.WindowsOsInfo
 type NotificationChannelsClient = original.NotificationChannelsClient
-type OperationsClient = original.OperationsClient
-type PolicySetsClient = original.PolicySetsClient
-type VirtualMachineSchedulesClient = original.VirtualMachineSchedulesClient
-type ArtifactsClient = original.ArtifactsClient
-type CostsClient = original.CostsClient
-type FormulasClient = original.FormulasClient
-type GalleryImagesClient = original.GalleryImagesClient
-type GlobalSchedulesClient = original.GlobalSchedulesClient
-type UsersClient = original.UsersClient
 type VirtualMachinesClient = original.VirtualMachinesClient
-type VirtualNetworksClient = original.VirtualNetworksClient
+type VirtualMachineSchedulesClient = original.VirtualMachineSchedulesClient
+type EnvironmentsClient = original.EnvironmentsClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type CustomImagesClient = original.CustomImagesClient
-type PoliciesClient = original.PoliciesClient
-type SchedulesClient = original.SchedulesClient
-type ArmTemplatesClient = original.ArmTemplatesClient
 type DisksClient = original.DisksClient
-type EnvironmentsClient = original.EnvironmentsClient
-type SecretsClient = original.SecretsClient
-type ServiceRunnersClient = original.ServiceRunnersClient
+type FormulasClient = original.FormulasClient
+type GalleryImagesClient = original.GalleryImagesClient
+type PolicySetsClient = original.PolicySetsClient
 type ArtifactSourcesClient = original.ArtifactSourcesClient
 
-func NewUsersClient(subscriptionID string) UsersClient {
-	return original.NewUsersClient(subscriptionID)
+func NewArtifactSourcesClient(subscriptionID string) ArtifactSourcesClient {
+	return original.NewArtifactSourcesClient(subscriptionID)
 }
-func NewUsersClientWithBaseURI(baseURI string, subscriptionID string) UsersClient {
-	return original.NewUsersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
-	return original.NewVirtualMachinesClient(subscriptionID)
-}
-func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
-	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
-	return original.NewVirtualNetworksClient(subscriptionID)
-}
-func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworksClient {
-	return original.NewVirtualNetworksClientWithBaseURI(baseURI, subscriptionID)
+func NewArtifactSourcesClientWithBaseURI(baseURI string, subscriptionID string) ArtifactSourcesClient {
+	return original.NewArtifactSourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -507,11 +495,11 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewCostsClient(subscriptionID string) CostsClient {
-	return original.NewCostsClient(subscriptionID)
+func NewDisksClient(subscriptionID string) DisksClient {
+	return original.NewDisksClient(subscriptionID)
 }
-func NewCostsClientWithBaseURI(baseURI string, subscriptionID string) CostsClient {
-	return original.NewCostsClientWithBaseURI(baseURI, subscriptionID)
+func NewDisksClientWithBaseURI(baseURI string, subscriptionID string) DisksClient {
+	return original.NewDisksClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewFormulasClient(subscriptionID string) FormulasClient {
 	return original.NewFormulasClient(subscriptionID)
@@ -525,53 +513,35 @@ func NewGalleryImagesClient(subscriptionID string) GalleryImagesClient {
 func NewGalleryImagesClientWithBaseURI(baseURI string, subscriptionID string) GalleryImagesClient {
 	return original.NewGalleryImagesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewGlobalSchedulesClient(subscriptionID string) GlobalSchedulesClient {
-	return original.NewGlobalSchedulesClient(subscriptionID)
+func NewPolicySetsClient(subscriptionID string) PolicySetsClient {
+	return original.NewPolicySetsClient(subscriptionID)
 }
-func NewGlobalSchedulesClientWithBaseURI(baseURI string, subscriptionID string) GlobalSchedulesClient {
-	return original.NewGlobalSchedulesClientWithBaseURI(baseURI, subscriptionID)
+func NewPolicySetsClientWithBaseURI(baseURI string, subscriptionID string) PolicySetsClient {
+	return original.NewPolicySetsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewArmTemplatesClient(subscriptionID string) ArmTemplatesClient {
-	return original.NewArmTemplatesClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
 }
-func NewArmTemplatesClientWithBaseURI(baseURI string, subscriptionID string) ArmTemplatesClient {
-	return original.NewArmTemplatesClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
-func NewCustomImagesClient(subscriptionID string) CustomImagesClient {
-	return original.NewCustomImagesClient(subscriptionID)
+func NewCostsClient(subscriptionID string) CostsClient {
+	return original.NewCostsClient(subscriptionID)
 }
-func NewCustomImagesClientWithBaseURI(baseURI string, subscriptionID string) CustomImagesClient {
-	return original.NewCustomImagesClientWithBaseURI(baseURI, subscriptionID)
+func NewCostsClientWithBaseURI(baseURI string, subscriptionID string) CostsClient {
+	return original.NewCostsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPoliciesClient(subscriptionID string) PoliciesClient {
-	return original.NewPoliciesClient(subscriptionID)
+func NewLabsClient(subscriptionID string) LabsClient {
+	return original.NewLabsClient(subscriptionID)
 }
-func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
-	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
+func NewLabsClientWithBaseURI(baseURI string, subscriptionID string) LabsClient {
+	return original.NewLabsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSchedulesClient(subscriptionID string) SchedulesClient {
 	return original.NewSchedulesClient(subscriptionID)
 }
 func NewSchedulesClientWithBaseURI(baseURI string, subscriptionID string) SchedulesClient {
 	return original.NewSchedulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewArtifactSourcesClient(subscriptionID string) ArtifactSourcesClient {
-	return original.NewArtifactSourcesClient(subscriptionID)
-}
-func NewArtifactSourcesClientWithBaseURI(baseURI string, subscriptionID string) ArtifactSourcesClient {
-	return original.NewArtifactSourcesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDisksClient(subscriptionID string) DisksClient {
-	return original.NewDisksClient(subscriptionID)
-}
-func NewDisksClientWithBaseURI(baseURI string, subscriptionID string) DisksClient {
-	return original.NewDisksClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewEnvironmentsClient(subscriptionID string) EnvironmentsClient {
-	return original.NewEnvironmentsClient(subscriptionID)
-}
-func NewEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) EnvironmentsClient {
-	return original.NewEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSecretsClient(subscriptionID string) SecretsClient {
 	return original.NewSecretsClient(subscriptionID)
@@ -585,23 +555,17 @@ func NewServiceRunnersClient(subscriptionID string) ServiceRunnersClient {
 func NewServiceRunnersClientWithBaseURI(baseURI string, subscriptionID string) ServiceRunnersClient {
 	return original.NewServiceRunnersClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPolicySetsClient(subscriptionID string) PolicySetsClient {
-	return original.NewPolicySetsClient(subscriptionID)
+func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
+	return original.NewVirtualNetworksClient(subscriptionID)
 }
-func NewPolicySetsClientWithBaseURI(baseURI string, subscriptionID string) PolicySetsClient {
-	return original.NewPolicySetsClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworksClient {
+	return original.NewVirtualNetworksClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
+func NewArmTemplatesClient(subscriptionID string) ArmTemplatesClient {
+	return original.NewArmTemplatesClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
-}
-func NewVirtualMachineSchedulesClient(subscriptionID string) VirtualMachineSchedulesClient {
-	return original.NewVirtualMachineSchedulesClient(subscriptionID)
-}
-func NewVirtualMachineSchedulesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineSchedulesClient {
-	return original.NewVirtualMachineSchedulesClientWithBaseURI(baseURI, subscriptionID)
+func NewArmTemplatesClientWithBaseURI(baseURI string, subscriptionID string) ArmTemplatesClient {
+	return original.NewArmTemplatesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewArtifactsClient(subscriptionID string) ArtifactsClient {
 	return original.NewArtifactsClient(subscriptionID)
@@ -609,11 +573,41 @@ func NewArtifactsClient(subscriptionID string) ArtifactsClient {
 func NewArtifactsClientWithBaseURI(baseURI string, subscriptionID string) ArtifactsClient {
 	return original.NewArtifactsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewLabsClient(subscriptionID string) LabsClient {
-	return original.NewLabsClient(subscriptionID)
+func NewCustomImagesClient(subscriptionID string) CustomImagesClient {
+	return original.NewCustomImagesClient(subscriptionID)
 }
-func NewLabsClientWithBaseURI(baseURI string, subscriptionID string) LabsClient {
-	return original.NewLabsClientWithBaseURI(baseURI, subscriptionID)
+func NewCustomImagesClientWithBaseURI(baseURI string, subscriptionID string) CustomImagesClient {
+	return original.NewCustomImagesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGlobalSchedulesClient(subscriptionID string) GlobalSchedulesClient {
+	return original.NewGlobalSchedulesClient(subscriptionID)
+}
+func NewGlobalSchedulesClientWithBaseURI(baseURI string, subscriptionID string) GlobalSchedulesClient {
+	return original.NewGlobalSchedulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPoliciesClient(subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClient(subscriptionID)
+}
+func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsersClient(subscriptionID string) UsersClient {
+	return original.NewUsersClient(subscriptionID)
+}
+func NewUsersClientWithBaseURI(baseURI string, subscriptionID string) UsersClient {
+	return original.NewUsersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewEnvironmentsClient(subscriptionID string) EnvironmentsClient {
+	return original.NewEnvironmentsClient(subscriptionID)
+}
+func NewEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) EnvironmentsClient {
+	return original.NewEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewNotificationChannelsClient(subscriptionID string) NotificationChannelsClient {
 	return original.NewNotificationChannelsClient(subscriptionID)
@@ -621,9 +615,15 @@ func NewNotificationChannelsClient(subscriptionID string) NotificationChannelsCl
 func NewNotificationChannelsClientWithBaseURI(baseURI string, subscriptionID string) NotificationChannelsClient {
 	return original.NewNotificationChannelsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualMachineSchedulesClient(subscriptionID string) VirtualMachineSchedulesClient {
+	return original.NewVirtualMachineSchedulesClient(subscriptionID)
+}
+func NewVirtualMachineSchedulesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineSchedulesClient {
+	return original.NewVirtualMachineSchedulesClientWithBaseURI(baseURI, subscriptionID)
 }

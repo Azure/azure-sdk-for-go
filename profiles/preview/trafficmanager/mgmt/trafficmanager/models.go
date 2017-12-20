@@ -22,6 +22,7 @@ package trafficmanager
 
 import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2017-09-01-preview/trafficmanager"
 
+type EndpointsClient = original.EndpointsClient
 type GeographicHierarchiesClient = original.GeographicHierarchiesClient
 type HeatMapClient = original.HeatMapClient
 type EndpointMonitorStatus = original.EndpointMonitorStatus
@@ -108,7 +109,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type EndpointsClient = original.EndpointsClient
 
 func NewProfilesClient(subscriptionID string) ProfilesClient {
 	return original.NewProfilesClient(subscriptionID)

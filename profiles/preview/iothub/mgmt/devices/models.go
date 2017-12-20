@@ -205,18 +205,6 @@ type SharedAccessSignatureAuthorizationRuleListResultPage = original.SharedAcces
 type StorageEndpointProperties = original.StorageEndpointProperties
 type OperationsClient = original.OperationsClient
 
-func NewCertificatesClient(subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClient(subscriptionID)
-}
-func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewIotHubResourceClient(subscriptionID string) IotHubResourceClient {
 	return original.NewIotHubResourceClient(subscriptionID)
 }
@@ -234,4 +222,16 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewCertificatesClient(subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClient(subscriptionID)
+}
+func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

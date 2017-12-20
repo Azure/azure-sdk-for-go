@@ -22,7 +22,6 @@ package storage
 
 import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2016-01-01/storage"
 
-type UsageClient = original.UsageClient
 type AccountsClient = original.AccountsClient
 
 const (
@@ -124,13 +123,8 @@ type Sku = original.Sku
 type Usage = original.Usage
 type UsageListResult = original.UsageListResult
 type UsageName = original.UsageName
+type UsageClient = original.UsageClient
 
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
-}
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -148,4 +142,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
+}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,7 +22,11 @@ package mysql
 
 import original "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2017-04-30-preview/mysql"
 
-type PerformanceTiersClient = original.PerformanceTiersClient
+type ConfigurationsClient = original.ConfigurationsClient
+type LocationBasedPerformanceTierClient = original.LocationBasedPerformanceTierClient
+type LogFilesClient = original.LogFilesClient
+type OperationsClient = original.OperationsClient
+type VirtualNetworkRulesClient = original.VirtualNetworkRulesClient
 type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
 
 const (
@@ -32,8 +36,6 @@ const (
 type BaseClient = original.BaseClient
 type DatabasesClient = original.DatabasesClient
 type FirewallRulesClient = original.FirewallRulesClient
-type LocationBasedPerformanceTierClient = original.LocationBasedPerformanceTierClient
-type LogFilesClient = original.LogFilesClient
 type CreateMode = original.CreateMode
 
 const (
@@ -137,11 +139,39 @@ type VirtualNetworkRuleListResultPage = original.VirtualNetworkRuleListResultPag
 type VirtualNetworkRuleProperties = original.VirtualNetworkRuleProperties
 type VirtualNetworkRulesCreateOrUpdateFuture = original.VirtualNetworkRulesCreateOrUpdateFuture
 type VirtualNetworkRulesDeleteFuture = original.VirtualNetworkRulesDeleteFuture
+type PerformanceTiersClient = original.PerformanceTiersClient
 type ServersClient = original.ServersClient
-type VirtualNetworkRulesClient = original.VirtualNetworkRulesClient
-type ConfigurationsClient = original.ConfigurationsClient
-type OperationsClient = original.OperationsClient
 
+func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClient(subscriptionID)
+}
+func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPerformanceTiersClient(subscriptionID string) PerformanceTiersClient {
+	return original.NewPerformanceTiersClient(subscriptionID)
+}
+func NewPerformanceTiersClientWithBaseURI(baseURI string, subscriptionID string) PerformanceTiersClient {
+	return original.NewPerformanceTiersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServersClient(subscriptionID string) ServersClient {
+	return original.NewServersClient(subscriptionID)
+}
+func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
+	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualNetworkRulesClient(subscriptionID string) VirtualNetworkRulesClient {
+	return original.NewVirtualNetworkRulesClient(subscriptionID)
+}
+func NewVirtualNetworkRulesClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkRulesClient {
+	return original.NewVirtualNetworkRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCheckNameAvailabilityClient(subscriptionID string) CheckNameAvailabilityClient {
+	return original.NewCheckNameAvailabilityClient(subscriptionID)
+}
+func NewCheckNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckNameAvailabilityClient {
+	return original.NewCheckNameAvailabilityClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -154,11 +184,23 @@ func NewDatabasesClient(subscriptionID string) DatabasesClient {
 func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
 	return original.NewDatabasesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
+	return original.NewConfigurationsClient(subscriptionID)
+}
+func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
+	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewLocationBasedPerformanceTierClient(subscriptionID string) LocationBasedPerformanceTierClient {
 	return original.NewLocationBasedPerformanceTierClient(subscriptionID)
@@ -171,46 +213,4 @@ func NewLogFilesClient(subscriptionID string) LogFilesClient {
 }
 func NewLogFilesClientWithBaseURI(baseURI string, subscriptionID string) LogFilesClient {
 	return original.NewLogFilesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPerformanceTiersClient(subscriptionID string) PerformanceTiersClient {
-	return original.NewPerformanceTiersClient(subscriptionID)
-}
-func NewPerformanceTiersClientWithBaseURI(baseURI string, subscriptionID string) PerformanceTiersClient {
-	return original.NewPerformanceTiersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewCheckNameAvailabilityClient(subscriptionID string) CheckNameAvailabilityClient {
-	return original.NewCheckNameAvailabilityClient(subscriptionID)
-}
-func NewCheckNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckNameAvailabilityClient {
-	return original.NewCheckNameAvailabilityClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewVirtualNetworkRulesClient(subscriptionID string) VirtualNetworkRulesClient {
-	return original.NewVirtualNetworkRulesClient(subscriptionID)
-}
-func NewVirtualNetworkRulesClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkRulesClient {
-	return original.NewVirtualNetworkRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServersClient(subscriptionID string) ServersClient {
-	return original.NewServersClient(subscriptionID)
-}
-func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
-	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
-	return original.NewConfigurationsClient(subscriptionID)
-}
-func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
-	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }

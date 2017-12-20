@@ -22,12 +22,6 @@ package entitysearch
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/entitysearch"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type EntitiesClient = original.EntitiesClient
 type AnswerType = original.AnswerType
 
 const (
@@ -250,6 +244,13 @@ type StructuredValue = original.StructuredValue
 type BasicThing = original.BasicThing
 type Thing = original.Thing
 type TouristAttraction = original.TouristAttraction
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type EntitiesClient = original.EntitiesClient
 
 func New() BaseClient {
 	return original.New()

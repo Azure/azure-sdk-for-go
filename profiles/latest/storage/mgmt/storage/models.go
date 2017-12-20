@@ -22,13 +22,14 @@ package storage
 
 import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2017-10-01/storage"
 
+type UsageClient = original.UsageClient
 type AccountsClient = original.AccountsClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type BaseClient = original.BaseClient
+type ManagementClient = original.ManagementClient
 type AccessTier = original.AccessTier
 
 const (
@@ -204,7 +205,6 @@ type AccountPropertiesCreateParameters = original.AccountPropertiesCreateParamet
 type AccountPropertiesUpdateParameters = original.AccountPropertiesUpdateParameters
 type AccountRegenerateKeyParameters = original.AccountRegenerateKeyParameters
 type AccountSasParameters = original.AccountSasParameters
-type AccountsCreateFuture = original.AccountsCreateFuture
 type AccountUpdateParameters = original.AccountUpdateParameters
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type CustomDomain = original.CustomDomain
@@ -237,8 +237,13 @@ type UsageName = original.UsageName
 type VirtualNetworkRule = original.VirtualNetworkRule
 type OperationsClient = original.OperationsClient
 type SkusClient = original.SkusClient
-type UsageClient = original.UsageClient
 
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSkusClient(subscriptionID string) SkusClient {
 	return original.NewSkusClient(subscriptionID)
 }
@@ -263,15 +268,9 @@ func NewAccountsClient(subscriptionID string) AccountsClient {
 func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
+func New(subscriptionID string) ManagementClient {
 	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

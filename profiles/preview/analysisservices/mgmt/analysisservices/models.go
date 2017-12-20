@@ -116,6 +116,12 @@ type SkuEnumerationForNewResourceResult = original.SkuEnumerationForNewResourceR
 type OperationsClient = original.OperationsClient
 type ServersClient = original.ServersClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -133,10 +139,4 @@ func NewServersClient(subscriptionID string) ServersClient {
 }
 func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
 	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

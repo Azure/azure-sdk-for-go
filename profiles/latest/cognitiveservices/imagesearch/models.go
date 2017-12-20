@@ -440,6 +440,12 @@ type TrendingImagesTile = original.TrendingImagesTile
 type BasicWebPage = original.BasicWebPage
 type WebPage = original.WebPage
 
+func NewImagesClient() ImagesClient {
+	return original.NewImagesClient()
+}
+func NewImagesClientWithBaseURI(baseURI string) ImagesClient {
+	return original.NewImagesClientWithBaseURI(baseURI)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
@@ -451,10 +457,4 @@ func New() BaseClient {
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
-}
-func NewImagesClient() ImagesClient {
-	return original.NewImagesClient()
-}
-func NewImagesClientWithBaseURI(baseURI string) ImagesClient {
-	return original.NewImagesClientWithBaseURI(baseURI)
 }

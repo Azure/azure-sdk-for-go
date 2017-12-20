@@ -63,18 +63,6 @@ const (
 
 type BaseClient = original.BaseClient
 
-func NewClassicAdministratorsClient(subscriptionID string) ClassicAdministratorsClient {
-	return original.NewClassicAdministratorsClient(subscriptionID)
-}
-func NewClassicAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ClassicAdministratorsClient {
-	return original.NewClassicAdministratorsClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewPermissionsClient(subscriptionID string) PermissionsClient {
 	return original.NewPermissionsClient(subscriptionID)
 }
@@ -104,4 +92,16 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewClassicAdministratorsClient(subscriptionID string) ClassicAdministratorsClient {
+	return original.NewClassicAdministratorsClient(subscriptionID)
+}
+func NewClassicAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ClassicAdministratorsClient {
+	return original.NewClassicAdministratorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

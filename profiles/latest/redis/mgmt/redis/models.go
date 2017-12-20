@@ -22,6 +22,7 @@ package redis
 
 import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-02-01/redis"
 
+type PatchSchedulesClient = original.PatchSchedulesClient
 type Client = original.Client
 
 const (
@@ -128,20 +129,7 @@ type TrackedResource = original.TrackedResource
 type UpdateParameters = original.UpdateParameters
 type UpdateProperties = original.UpdateProperties
 type OperationsClient = original.OperationsClient
-type PatchSchedulesClient = original.PatchSchedulesClient
 
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -171,4 +159,16 @@ func NewPatchSchedulesClient(subscriptionID string) PatchSchedulesClient {
 }
 func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) PatchSchedulesClient {
 	return original.NewPatchSchedulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }

@@ -22,6 +22,8 @@ package managedapplications
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01-preview/managedapplications"
 
+type AppliancesClient = original.AppliancesClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -94,20 +96,7 @@ type PlanPatchable = original.PlanPatchable
 type Resource = original.Resource
 type Sku = original.Sku
 type ApplianceDefinitionsClient = original.ApplianceDefinitionsClient
-type AppliancesClient = original.AppliancesClient
 
-func NewAppliancesClient(subscriptionID string) AppliancesClient {
-	return original.NewAppliancesClient(subscriptionID)
-}
-func NewAppliancesClientWithBaseURI(baseURI string, subscriptionID string) AppliancesClient {
-	return original.NewAppliancesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -119,4 +108,16 @@ func NewApplianceDefinitionsClient(subscriptionID string) ApplianceDefinitionsCl
 }
 func NewApplianceDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) ApplianceDefinitionsClient {
 	return original.NewApplianceDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAppliancesClient(subscriptionID string) AppliancesClient {
+	return original.NewAppliancesClient(subscriptionID)
+}
+func NewAppliancesClientWithBaseURI(baseURI string, subscriptionID string) AppliancesClient {
+	return original.NewAppliancesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

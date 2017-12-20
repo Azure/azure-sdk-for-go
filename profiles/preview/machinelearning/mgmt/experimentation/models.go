@@ -22,6 +22,8 @@ package experimentation
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-05-01-preview/experimentation"
 
+type ProjectsClient = original.ProjectsClient
+type WorkspacesClient = original.WorkspacesClient
 type AccountsClient = original.AccountsClient
 
 const (
@@ -67,21 +69,7 @@ type WorkspaceProperties = original.WorkspaceProperties
 type WorkspacePropertiesUpdateParameters = original.WorkspacePropertiesUpdateParameters
 type WorkspaceUpdateParameters = original.WorkspaceUpdateParameters
 type OperationsClient = original.OperationsClient
-type ProjectsClient = original.ProjectsClient
-type WorkspacesClient = original.WorkspacesClient
 
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
-}
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -105,4 +93,16 @@ func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 }
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
+}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

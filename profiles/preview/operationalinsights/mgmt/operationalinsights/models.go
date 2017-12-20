@@ -22,8 +22,6 @@ package operationalinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-11-01-preview/operationalinsights"
 
-type DataSourcesClient = original.DataSourcesClient
-type LinkedServicesClient = original.LinkedServicesClient
 type DataSourceKind = original.DataSourceKind
 
 const (
@@ -137,7 +135,21 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type DataSourcesClient = original.DataSourcesClient
+type LinkedServicesClient = original.LinkedServicesClient
 
+func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClient(subscriptionID)
+}
+func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSavedSearchesClient(subscriptionID string) SavedSearchesClient {
+	return original.NewSavedSearchesClient(subscriptionID)
+}
+func NewSavedSearchesClientWithBaseURI(baseURI string, subscriptionID string) SavedSearchesClient {
+	return original.NewSavedSearchesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewStorageInsightsClient(subscriptionID string) StorageInsightsClient {
 	return original.NewStorageInsightsClient(subscriptionID)
 }
@@ -167,16 +179,4 @@ func NewDataSourcesClient(subscriptionID string) DataSourcesClient {
 }
 func NewDataSourcesClientWithBaseURI(baseURI string, subscriptionID string) DataSourcesClient {
 	return original.NewDataSourcesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClient(subscriptionID)
-}
-func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSavedSearchesClient(subscriptionID string) SavedSearchesClient {
-	return original.NewSavedSearchesClient(subscriptionID)
-}
-func NewSavedSearchesClientWithBaseURI(baseURI string, subscriptionID string) SavedSearchesClient {
-	return original.NewSavedSearchesClientWithBaseURI(baseURI, subscriptionID)
 }

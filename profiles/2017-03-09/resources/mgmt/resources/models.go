@@ -22,17 +22,18 @@ package resources
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-02-01/resources"
 
+type DeploymentsClient = original.DeploymentsClient
+type GroupsClient = original.GroupsClient
+type ProvidersClient = original.ProvidersClient
+type Client = original.Client
+type TagsClient = original.TagsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
 type DeploymentOperationsClient = original.DeploymentOperationsClient
-type TagsClient = original.TagsClient
-type ProvidersClient = original.ProvidersClient
-type Client = original.Client
-type DeploymentsClient = original.DeploymentsClient
-type GroupsClient = original.GroupsClient
 type DeploymentMode = original.DeploymentMode
 
 const (
@@ -108,24 +109,6 @@ type TagValue = original.TagValue
 type TargetResource = original.TargetResource
 type TemplateLink = original.TemplateLink
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewDeploymentOperationsClient(subscriptionID string) DeploymentOperationsClient {
-	return original.NewDeploymentOperationsClient(subscriptionID)
-}
-func NewDeploymentOperationsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentOperationsClient {
-	return original.NewDeploymentOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTagsClient(subscriptionID string) TagsClient {
-	return original.NewTagsClient(subscriptionID)
-}
-func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
-	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
 	return original.NewDeploymentsClient(subscriptionID)
 }
@@ -150,9 +133,27 @@ func NewClient(subscriptionID string) Client {
 func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewTagsClient(subscriptionID string) TagsClient {
+	return original.NewTagsClient(subscriptionID)
+}
+func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
+	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/2017-03-09"
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewDeploymentOperationsClient(subscriptionID string) DeploymentOperationsClient {
+	return original.NewDeploymentOperationsClient(subscriptionID)
+}
+func NewDeploymentOperationsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentOperationsClient {
+	return original.NewDeploymentOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,18 +22,9 @@ package graphrbac
 
 import original "github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
 
-type DomainsClient = original.DomainsClient
-type ServicePrincipalsClient = original.ServicePrincipalsClient
-type ObjectsClient = original.ObjectsClient
-type UsersClient = original.UsersClient
-type ApplicationsClient = original.ApplicationsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type GroupsClient = original.GroupsClient
+type ObjectsClient = original.ObjectsClient
+type DomainsClient = original.DomainsClient
 type ObjectType = original.ObjectType
 
 const (
@@ -105,31 +96,16 @@ type UserListResult = original.UserListResult
 type UserListResultIterator = original.UserListResultIterator
 type UserListResultPage = original.UserListResultPage
 type UserUpdateParameters = original.UserUpdateParameters
+type ServicePrincipalsClient = original.ServicePrincipalsClient
+type UsersClient = original.UsersClient
+type ApplicationsClient = original.ApplicationsClient
 
-func NewDomainsClient(tenantID string) DomainsClient {
-	return original.NewDomainsClient(tenantID)
-}
-func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient {
-	return original.NewDomainsClientWithBaseURI(baseURI, tenantID)
-}
-func NewServicePrincipalsClient(tenantID string) ServicePrincipalsClient {
-	return original.NewServicePrincipalsClient(tenantID)
-}
-func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) ServicePrincipalsClient {
-	return original.NewServicePrincipalsClientWithBaseURI(baseURI, tenantID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
-func NewObjectsClient(tenantID string) ObjectsClient {
-	return original.NewObjectsClient(tenantID)
-}
-func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient {
-	return original.NewObjectsClientWithBaseURI(baseURI, tenantID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
 func NewUsersClient(tenantID string) UsersClient {
 	return original.NewUsersClient(tenantID)
 }
@@ -148,9 +124,33 @@ func New(tenantID string) BaseClient {
 func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, tenantID)
 }
+func NewDomainsClient(tenantID string) DomainsClient {
+	return original.NewDomainsClient(tenantID)
+}
+func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient {
+	return original.NewDomainsClientWithBaseURI(baseURI, tenantID)
+}
+func NewServicePrincipalsClient(tenantID string) ServicePrincipalsClient {
+	return original.NewServicePrincipalsClient(tenantID)
+}
+func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) ServicePrincipalsClient {
+	return original.NewServicePrincipalsClientWithBaseURI(baseURI, tenantID)
+}
 func NewGroupsClient(tenantID string) GroupsClient {
 	return original.NewGroupsClient(tenantID)
 }
 func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
 	return original.NewGroupsClientWithBaseURI(baseURI, tenantID)
+}
+func NewObjectsClient(tenantID string) ObjectsClient {
+	return original.NewObjectsClient(tenantID)
+}
+func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient {
+	return original.NewObjectsClientWithBaseURI(baseURI, tenantID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }

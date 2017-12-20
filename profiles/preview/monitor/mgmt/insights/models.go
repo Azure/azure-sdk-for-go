@@ -22,19 +22,17 @@ package insights
 
 import original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2017-05-01-preview/insights"
 
-type AlertRulesClient = original.AlertRulesClient
 type DiagnosticSettingsClient = original.DiagnosticSettingsClient
-type OperationsClient = original.OperationsClient
+type DiagnosticSettingsCategoryClient = original.DiagnosticSettingsCategoryClient
+type LogProfilesClient = original.LogProfilesClient
 type ActionGroupsClient = original.ActionGroupsClient
-type ActivityLogAlertsClient = original.ActivityLogAlertsClient
+type AlertRulesClient = original.AlertRulesClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type DiagnosticSettingsCategoryClient = original.DiagnosticSettingsCategoryClient
-type LogProfilesClient = original.LogProfilesClient
 type CategoryType = original.CategoryType
 
 const (
@@ -226,20 +224,28 @@ type ThresholdRuleCondition = original.ThresholdRuleCondition
 type TimeWindow = original.TimeWindow
 type WebhookNotification = original.WebhookNotification
 type WebhookReceiver = original.WebhookReceiver
+type OperationsClient = original.OperationsClient
+type ActivityLogAlertsClient = original.ActivityLogAlertsClient
 type AlertRuleIncidentsClient = original.AlertRuleIncidentsClient
 type AutoscaleSettingsClient = original.AutoscaleSettingsClient
 
+func NewLogProfilesClient(subscriptionID string) LogProfilesClient {
+	return original.NewLogProfilesClient(subscriptionID)
+}
+func NewLogProfilesClientWithBaseURI(baseURI string, subscriptionID string) LogProfilesClient {
+	return original.NewLogProfilesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func NewActionGroupsClient(subscriptionID string) ActionGroupsClient {
 	return original.NewActionGroupsClient(subscriptionID)
 }
 func NewActionGroupsClientWithBaseURI(baseURI string, subscriptionID string) ActionGroupsClient {
 	return original.NewActionGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewActivityLogAlertsClient(subscriptionID string) ActivityLogAlertsClient {
-	return original.NewActivityLogAlertsClient(subscriptionID)
-}
-func NewActivityLogAlertsClientWithBaseURI(baseURI string, subscriptionID string) ActivityLogAlertsClient {
-	return original.NewActivityLogAlertsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
 	return original.NewAlertRulesClient(subscriptionID)
@@ -247,17 +253,29 @@ func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
 func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) AlertRulesClient {
 	return original.NewAlertRulesClientWithBaseURI(baseURI, subscriptionID)
 }
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func NewDiagnosticSettingsClient(subscriptionID string) DiagnosticSettingsClient {
 	return original.NewDiagnosticSettingsClient(subscriptionID)
 }
 func NewDiagnosticSettingsClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsClient {
 	return original.NewDiagnosticSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
+	return original.NewDiagnosticSettingsCategoryClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsCategoryClient {
+	return original.NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewActivityLogAlertsClient(subscriptionID string) ActivityLogAlertsClient {
+	return original.NewActivityLogAlertsClient(subscriptionID)
+}
+func NewActivityLogAlertsClientWithBaseURI(baseURI string, subscriptionID string) ActivityLogAlertsClient {
+	return original.NewActivityLogAlertsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAlertRuleIncidentsClient(subscriptionID string) AlertRuleIncidentsClient {
 	return original.NewAlertRuleIncidentsClient(subscriptionID)
@@ -271,27 +289,9 @@ func NewAutoscaleSettingsClient(subscriptionID string) AutoscaleSettingsClient {
 func NewAutoscaleSettingsClientWithBaseURI(baseURI string, subscriptionID string) AutoscaleSettingsClient {
 	return original.NewAutoscaleSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
-	return original.NewDiagnosticSettingsCategoryClient(subscriptionID)
-}
-func NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsCategoryClient {
-	return original.NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewLogProfilesClient(subscriptionID string) LogProfilesClient {
-	return original.NewLogProfilesClient(subscriptionID)
-}
-func NewLogProfilesClientWithBaseURI(baseURI string, subscriptionID string) LogProfilesClient {
-	return original.NewLogProfilesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

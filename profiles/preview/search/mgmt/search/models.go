@@ -95,18 +95,6 @@ type Sku = original.Sku
 type QueryKeysClient = original.QueryKeysClient
 type ServicesClient = original.ServicesClient
 
-func NewServicesClient(subscriptionID string) ServicesClient {
-	return original.NewServicesClient(subscriptionID)
-}
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
-	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func NewAdminKeysClient(subscriptionID string) AdminKeysClient {
 	return original.NewAdminKeysClient(subscriptionID)
 }
@@ -124,4 +112,16 @@ func NewQueryKeysClient(subscriptionID string) QueryKeysClient {
 }
 func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryKeysClient {
 	return original.NewQueryKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServicesClient(subscriptionID string) ServicesClient {
+	return original.NewServicesClient(subscriptionID)
+}
+func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
+	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

@@ -23,15 +23,10 @@ package datafactory
 import original "github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2017-09-01-preview/datafactory"
 
 type TriggersClient = original.TriggersClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
+type ActivityRunsClient = original.ActivityRunsClient
 type DatasetsClient = original.DatasetsClient
 type OperationsClient = original.OperationsClient
-type PipelinesClient = original.PipelinesClient
+type PipelineRunsClient = original.PipelineRunsClient
 type LinkedServicesClient = original.LinkedServicesClient
 type AuthenticationType = original.AuthenticationType
 
@@ -1244,17 +1239,22 @@ type ZohoLinkedService = original.ZohoLinkedService
 type ZohoLinkedServiceTypeProperties = original.ZohoLinkedServiceTypeProperties
 type ZohoObjectDataset = original.ZohoObjectDataset
 type ZohoSource = original.ZohoSource
-type PipelineRunsClient = original.PipelineRunsClient
-type ActivityRunsClient = original.ActivityRunsClient
+type PipelinesClient = original.PipelinesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type FactoriesClient = original.FactoriesClient
 type IntegrationRuntimeNodesClient = original.IntegrationRuntimeNodesClient
 type IntegrationRuntimesClient = original.IntegrationRuntimesClient
 
-func NewPipelineRunsClient(subscriptionID string) PipelineRunsClient {
-	return original.NewPipelineRunsClient(subscriptionID)
+func NewPipelinesClient(subscriptionID string) PipelinesClient {
+	return original.NewPipelinesClient(subscriptionID)
 }
-func NewPipelineRunsClientWithBaseURI(baseURI string, subscriptionID string) PipelineRunsClient {
-	return original.NewPipelineRunsClientWithBaseURI(baseURI, subscriptionID)
+func NewPipelinesClientWithBaseURI(baseURI string, subscriptionID string) PipelinesClient {
+	return original.NewPipelinesClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
@@ -1262,11 +1262,11 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-func NewActivityRunsClient(subscriptionID string) ActivityRunsClient {
-	return original.NewActivityRunsClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewActivityRunsClientWithBaseURI(baseURI string, subscriptionID string) ActivityRunsClient {
-	return original.NewActivityRunsClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewFactoriesClient(subscriptionID string) FactoriesClient {
 	return original.NewFactoriesClient(subscriptionID)
@@ -1292,11 +1292,11 @@ func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
 func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
 	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewActivityRunsClient(subscriptionID string) ActivityRunsClient {
+	return original.NewActivityRunsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewActivityRunsClientWithBaseURI(baseURI string, subscriptionID string) ActivityRunsClient {
+	return original.NewActivityRunsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDatasetsClient(subscriptionID string) DatasetsClient {
 	return original.NewDatasetsClient(subscriptionID)
@@ -1310,11 +1310,11 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPipelinesClient(subscriptionID string) PipelinesClient {
-	return original.NewPipelinesClient(subscriptionID)
+func NewPipelineRunsClient(subscriptionID string) PipelineRunsClient {
+	return original.NewPipelineRunsClient(subscriptionID)
 }
-func NewPipelinesClientWithBaseURI(baseURI string, subscriptionID string) PipelinesClient {
-	return original.NewPipelinesClientWithBaseURI(baseURI, subscriptionID)
+func NewPipelineRunsClientWithBaseURI(baseURI string, subscriptionID string) PipelineRunsClient {
+	return original.NewPipelineRunsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTriggersClient(subscriptionID string) TriggersClient {
 	return original.NewTriggersClient(subscriptionID)

@@ -22,16 +22,12 @@ package insights
 
 import original "github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2015-05-01/insights"
 
-type ComponentQuotaStatusClient = original.ComponentQuotaStatusClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ComponentCurrentBillingFeaturesClient = original.ComponentCurrentBillingFeaturesClient
 type ComponentsClient = original.ComponentsClient
 type ExportConfigurationsClient = original.ExportConfigurationsClient
+type OperationsClient = original.OperationsClient
+type WebTestsClient = original.WebTestsClient
+type ComponentCurrentBillingFeaturesClient = original.ComponentCurrentBillingFeaturesClient
+type ComponentQuotaStatusClient = original.ComponentQuotaStatusClient
 type ApplicationType = original.ApplicationType
 
 const (
@@ -87,52 +83,14 @@ type WebTestListResultIterator = original.WebTestListResultIterator
 type WebTestListResultPage = original.WebTestListResultPage
 type WebTestProperties = original.WebTestProperties
 type WebTestPropertiesConfiguration = original.WebTestPropertiesConfiguration
-type OperationsClient = original.OperationsClient
-type WebTestsClient = original.WebTestsClient
 type APIKeysClient = original.APIKeysClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewComponentQuotaStatusClient(subscriptionID string) ComponentQuotaStatusClient {
-	return original.NewComponentQuotaStatusClient(subscriptionID)
-}
-func NewComponentQuotaStatusClientWithBaseURI(baseURI string, subscriptionID string) ComponentQuotaStatusClient {
-	return original.NewComponentQuotaStatusClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
-func NewWebTestsClient(subscriptionID string) WebTestsClient {
-	return original.NewWebTestsClient(subscriptionID)
-}
-func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string) WebTestsClient {
-	return original.NewWebTestsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAPIKeysClient(subscriptionID string) APIKeysClient {
-	return original.NewAPIKeysClient(subscriptionID)
-}
-func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string) APIKeysClient {
-	return original.NewAPIKeysClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewComponentCurrentBillingFeaturesClient(subscriptionID string) ComponentCurrentBillingFeaturesClient {
-	return original.NewComponentCurrentBillingFeaturesClient(subscriptionID)
-}
-func NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentCurrentBillingFeaturesClient {
-	return original.NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewComponentsClient(subscriptionID string) ComponentsClient {
-	return original.NewComponentsClient(subscriptionID)
-}
-func NewComponentsClientWithBaseURI(baseURI string, subscriptionID string) ComponentsClient {
-	return original.NewComponentsClientWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
 func NewExportConfigurationsClient(subscriptionID string) ExportConfigurationsClient {
 	return original.NewExportConfigurationsClient(subscriptionID)
 }
@@ -144,4 +102,46 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWebTestsClient(subscriptionID string) WebTestsClient {
+	return original.NewWebTestsClient(subscriptionID)
+}
+func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string) WebTestsClient {
+	return original.NewWebTestsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewComponentCurrentBillingFeaturesClient(subscriptionID string) ComponentCurrentBillingFeaturesClient {
+	return original.NewComponentCurrentBillingFeaturesClient(subscriptionID)
+}
+func NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentCurrentBillingFeaturesClient {
+	return original.NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewComponentQuotaStatusClient(subscriptionID string) ComponentQuotaStatusClient {
+	return original.NewComponentQuotaStatusClient(subscriptionID)
+}
+func NewComponentQuotaStatusClientWithBaseURI(baseURI string, subscriptionID string) ComponentQuotaStatusClient {
+	return original.NewComponentQuotaStatusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewComponentsClient(subscriptionID string) ComponentsClient {
+	return original.NewComponentsClient(subscriptionID)
+}
+func NewComponentsClientWithBaseURI(baseURI string, subscriptionID string) ComponentsClient {
+	return original.NewComponentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
+func NewAPIKeysClient(subscriptionID string) APIKeysClient {
+	return original.NewAPIKeysClient(subscriptionID)
+}
+func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string) APIKeysClient {
+	return original.NewAPIKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

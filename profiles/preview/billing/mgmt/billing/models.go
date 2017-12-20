@@ -22,6 +22,8 @@ package billing
 
 import original "github.com/Azure/azure-sdk-for-go/services/billing/mgmt/2017-04-24-preview/billing"
 
+type PeriodsClient = original.PeriodsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -48,8 +50,13 @@ type PeriodsListResultIterator = original.PeriodsListResultIterator
 type PeriodsListResultPage = original.PeriodsListResultPage
 type Resource = original.Resource
 type OperationsClient = original.OperationsClient
-type PeriodsClient = original.PeriodsClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -73,10 +80,4 @@ func NewPeriodsClient(subscriptionID string) PeriodsClient {
 }
 func NewPeriodsClientWithBaseURI(baseURI string, subscriptionID string) PeriodsClient {
 	return original.NewPeriodsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

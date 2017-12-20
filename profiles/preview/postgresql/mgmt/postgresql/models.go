@@ -22,13 +22,8 @@ package postgresql
 
 import original "github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2017-04-30-preview/postgresql"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ConfigurationsClient = original.ConfigurationsClient
-type LocationBasedPerformanceTierClient = original.LocationBasedPerformanceTierClient
+type FirewallRulesClient = original.FirewallRulesClient
+type LogFilesClient = original.LogFilesClient
 type CreateMode = original.CreateMode
 
 const (
@@ -132,21 +127,21 @@ type VirtualNetworkRuleListResultPage = original.VirtualNetworkRuleListResultPag
 type VirtualNetworkRuleProperties = original.VirtualNetworkRuleProperties
 type VirtualNetworkRulesCreateOrUpdateFuture = original.VirtualNetworkRulesCreateOrUpdateFuture
 type VirtualNetworkRulesDeleteFuture = original.VirtualNetworkRulesDeleteFuture
-type ServersClient = original.ServersClient
-type VirtualNetworkRulesClient = original.VirtualNetworkRulesClient
-type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
-type DatabasesClient = original.DatabasesClient
-type FirewallRulesClient = original.FirewallRulesClient
-type LogFilesClient = original.LogFilesClient
-type OperationsClient = original.OperationsClient
 type PerformanceTiersClient = original.PerformanceTiersClient
+type ServersClient = original.ServersClient
+type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
 
-func NewDatabasesClient(subscriptionID string) DatabasesClient {
-	return original.NewDatabasesClient(subscriptionID)
-}
-func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
-	return original.NewDatabasesClientWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ConfigurationsClient = original.ConfigurationsClient
+type DatabasesClient = original.DatabasesClient
+type LocationBasedPerformanceTierClient = original.LocationBasedPerformanceTierClient
+type OperationsClient = original.OperationsClient
+type VirtualNetworkRulesClient = original.VirtualNetworkRulesClient
+
 func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
 	return original.NewFirewallRulesClient(subscriptionID)
 }
@@ -158,6 +153,48 @@ func NewLogFilesClient(subscriptionID string) LogFilesClient {
 }
 func NewLogFilesClientWithBaseURI(baseURI string, subscriptionID string) LogFilesClient {
 	return original.NewLogFilesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewServersClient(subscriptionID string) ServersClient {
+	return original.NewServersClient(subscriptionID)
+}
+func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
+	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCheckNameAvailabilityClient(subscriptionID string) CheckNameAvailabilityClient {
+	return original.NewCheckNameAvailabilityClient(subscriptionID)
+}
+func NewCheckNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckNameAvailabilityClient {
+	return original.NewCheckNameAvailabilityClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
+	return original.NewConfigurationsClient(subscriptionID)
+}
+func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
+	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDatabasesClient(subscriptionID string) DatabasesClient {
+	return original.NewDatabasesClient(subscriptionID)
+}
+func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
+	return original.NewDatabasesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLocationBasedPerformanceTierClient(subscriptionID string) LocationBasedPerformanceTierClient {
+	return original.NewLocationBasedPerformanceTierClient(subscriptionID)
+}
+func NewLocationBasedPerformanceTierClientWithBaseURI(baseURI string, subscriptionID string) LocationBasedPerformanceTierClient {
+	return original.NewLocationBasedPerformanceTierClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -171,45 +208,9 @@ func NewPerformanceTiersClient(subscriptionID string) PerformanceTiersClient {
 func NewPerformanceTiersClientWithBaseURI(baseURI string, subscriptionID string) PerformanceTiersClient {
 	return original.NewPerformanceTiersClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewCheckNameAvailabilityClient(subscriptionID string) CheckNameAvailabilityClient {
-	return original.NewCheckNameAvailabilityClient(subscriptionID)
-}
-func NewCheckNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckNameAvailabilityClient {
-	return original.NewCheckNameAvailabilityClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
-	return original.NewConfigurationsClient(subscriptionID)
-}
-func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
-	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewLocationBasedPerformanceTierClient(subscriptionID string) LocationBasedPerformanceTierClient {
-	return original.NewLocationBasedPerformanceTierClient(subscriptionID)
-}
-func NewLocationBasedPerformanceTierClientWithBaseURI(baseURI string, subscriptionID string) LocationBasedPerformanceTierClient {
-	return original.NewLocationBasedPerformanceTierClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServersClient(subscriptionID string) ServersClient {
-	return original.NewServersClient(subscriptionID)
-}
-func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
-	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewVirtualNetworkRulesClient(subscriptionID string) VirtualNetworkRulesClient {
 	return original.NewVirtualNetworkRulesClient(subscriptionID)
 }
 func NewVirtualNetworkRulesClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkRulesClient {
 	return original.NewVirtualNetworkRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

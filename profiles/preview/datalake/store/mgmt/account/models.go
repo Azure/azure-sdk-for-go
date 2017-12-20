@@ -22,17 +22,6 @@ package account
 
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/2016-11-01/account"
 
-type OperationsClient = original.OperationsClient
-type TrustedIDProvidersClient = original.TrustedIDProvidersClient
-type Client = original.Client
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type FirewallRulesClient = original.FirewallRulesClient
-type LocationsClient = original.LocationsClient
 type DataLakeStoreAccountState = original.DataLakeStoreAccountState
 
 const (
@@ -168,6 +157,17 @@ type UpdateFirewallRuleProperties = original.UpdateFirewallRuleProperties
 type UpdateKeyVaultMetaInfo = original.UpdateKeyVaultMetaInfo
 type UpdateTrustedIDProviderParameters = original.UpdateTrustedIDProviderParameters
 type UpdateTrustedIDProviderProperties = original.UpdateTrustedIDProviderProperties
+type OperationsClient = original.OperationsClient
+type TrustedIDProvidersClient = original.TrustedIDProvidersClient
+type Client = original.Client
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type FirewallRulesClient = original.FirewallRulesClient
+type LocationsClient = original.LocationsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

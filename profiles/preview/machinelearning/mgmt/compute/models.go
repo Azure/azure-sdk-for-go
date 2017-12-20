@@ -164,18 +164,6 @@ type SystemService = original.SystemService
 type UpdateSystemServicesResponse = original.UpdateSystemServicesResponse
 type OperationalizationClustersClient = original.OperationalizationClustersClient
 
-func NewOperationalizationClustersClient(subscriptionID string) OperationalizationClustersClient {
-	return original.NewOperationalizationClustersClient(subscriptionID)
-}
-func NewOperationalizationClustersClientWithBaseURI(baseURI string, subscriptionID string) OperationalizationClustersClient {
-	return original.NewOperationalizationClustersClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -187,4 +175,16 @@ func NewMachineLearningComputeClient(subscriptionID string) MachineLearningCompu
 }
 func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
 	return original.NewMachineLearningComputeClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationalizationClustersClient(subscriptionID string) OperationalizationClustersClient {
+	return original.NewOperationalizationClustersClient(subscriptionID)
+}
+func NewOperationalizationClustersClientWithBaseURI(baseURI string, subscriptionID string) OperationalizationClustersClient {
+	return original.NewOperationalizationClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

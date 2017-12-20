@@ -22,6 +22,10 @@ package redis
 
 import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-02-01/redis"
 
+type OperationsClient = original.OperationsClient
+type PatchSchedulesClient = original.PatchSchedulesClient
+type Client = original.Client
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -125,10 +129,25 @@ type Sku = original.Sku
 type TrackedResource = original.TrackedResource
 type UpdateParameters = original.UpdateParameters
 type UpdateProperties = original.UpdateProperties
-type OperationsClient = original.OperationsClient
-type PatchSchedulesClient = original.PatchSchedulesClient
-type Client = original.Client
 
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPatchSchedulesClient(subscriptionID string) PatchSchedulesClient {
+	return original.NewPatchSchedulesClient(subscriptionID)
+}
+func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) PatchSchedulesClient {
+	return original.NewPatchSchedulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -152,22 +171,4 @@ func NewLinkedServerClient(subscriptionID string) LinkedServerClient {
 }
 func NewLinkedServerClientWithBaseURI(baseURI string, subscriptionID string) LinkedServerClient {
 	return original.NewLinkedServerClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPatchSchedulesClient(subscriptionID string) PatchSchedulesClient {
-	return original.NewPatchSchedulesClient(subscriptionID)
-}
-func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) PatchSchedulesClient {
-	return original.NewPatchSchedulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }

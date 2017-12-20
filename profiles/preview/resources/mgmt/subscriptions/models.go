@@ -59,6 +59,12 @@ type TenantListResultPage = original.TenantListResultPage
 type Client = original.Client
 type TenantsClient = original.TenantsClient
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
 func NewClient() Client {
 	return original.NewClient()
 }
@@ -76,10 +82,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
 }

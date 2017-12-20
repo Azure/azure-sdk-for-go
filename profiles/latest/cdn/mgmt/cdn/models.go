@@ -22,14 +22,8 @@ package cdn
 
 import original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2017-04-02/cdn"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type CustomDomainsClient = original.CustomDomainsClient
 type OperationsClient = original.OperationsClient
-type ResourceUsageClient = original.ResourceUsageClient
+type ProfilesClient = original.ProfilesClient
 type EdgeNodesClient = original.EdgeNodesClient
 type EndpointsClient = original.EndpointsClient
 type CustomDomainResourceState = original.CustomDomainResourceState
@@ -209,8 +203,15 @@ type ValidateCustomDomainInput = original.ValidateCustomDomainInput
 type ValidateCustomDomainOutput = original.ValidateCustomDomainOutput
 type ValidateProbeInput = original.ValidateProbeInput
 type ValidateProbeOutput = original.ValidateProbeOutput
+type ResourceUsageClient = original.ResourceUsageClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type CustomDomainsClient = original.CustomDomainsClient
 type OriginsClient = original.OriginsClient
-type ProfilesClient = original.ProfilesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -224,11 +225,11 @@ func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
 func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) CustomDomainsClient {
 	return original.NewCustomDomainsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOriginsClient(subscriptionID string) OriginsClient {
+	return original.NewOriginsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsClient {
+	return original.NewOriginsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewResourceUsageClient(subscriptionID string) ResourceUsageClient {
 	return original.NewResourceUsageClient(subscriptionID)
@@ -248,11 +249,11 @@ func NewEndpointsClient(subscriptionID string) EndpointsClient {
 func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
 	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewOriginsClient(subscriptionID string) OriginsClient {
-	return original.NewOriginsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsClient {
-	return original.NewOriginsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProfilesClient(subscriptionID string) ProfilesClient {
 	return original.NewProfilesClient(subscriptionID)

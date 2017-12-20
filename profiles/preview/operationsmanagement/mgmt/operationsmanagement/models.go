@@ -22,6 +22,15 @@ package operationsmanagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationsmanagement/mgmt/2015-11-01-preview/operationsmanagement"
 
+type OperationsClient = original.OperationsClient
+type SolutionsClient = original.SolutionsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ManagementAssociationsClient = original.ManagementAssociationsClient
 type ManagementConfigurationsClient = original.ManagementConfigurationsClient
 type ArmTemplateParameter = original.ArmTemplateParameter
 type CodeMessageError = original.CodeMessageError
@@ -39,16 +48,13 @@ type Solution = original.Solution
 type SolutionPlan = original.SolutionPlan
 type SolutionProperties = original.SolutionProperties
 type SolutionPropertiesList = original.SolutionPropertiesList
-type OperationsClient = original.OperationsClient
-type SolutionsClient = original.SolutionsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ManagementAssociationsClient = original.ManagementAssociationsClient
-
+func New(subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
+	return original.New(subscriptionID, providerName, resourceType, resourceName)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
+}
 func NewManagementAssociationsClient(subscriptionID string, providerName string, resourceType string, resourceName string) ManagementAssociationsClient {
 	return original.NewManagementAssociationsClient(subscriptionID, providerName, resourceType, resourceName)
 }
@@ -78,10 +84,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New(subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
-	return original.New(subscriptionID, providerName, resourceType, resourceName)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
 }

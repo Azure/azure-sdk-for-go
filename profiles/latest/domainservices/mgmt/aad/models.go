@@ -22,13 +22,6 @@ package aad
 
 import original "github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-01-01/aad"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type DomainServiceOperationsClient = original.DomainServiceOperationsClient
-type DomainServicesClient = original.DomainServicesClient
 type ExternalAccess = original.ExternalAccess
 
 const (
@@ -56,12 +49,14 @@ type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type Resource = original.Resource
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type DomainServiceOperationsClient = original.DomainServiceOperationsClient
+type DomainServicesClient = original.DomainServicesClient
+
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -79,4 +74,10 @@ func NewDomainServicesClient(subscriptionID string) DomainServicesClient {
 }
 func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) DomainServicesClient {
 	return original.NewDomainServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }

@@ -1,4 +1,4 @@
-package recoveryservices
+package storage
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,7 +19,7 @@ package recoveryservices
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v11.3.0-beta arm-recoveryservices/"
+	return "Azure-SDK-For-Go/v11.3.0-beta arm-storage/2017-10-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

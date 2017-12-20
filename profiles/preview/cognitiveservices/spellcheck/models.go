@@ -22,11 +22,6 @@ package spellcheck
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/spellcheck"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type ActionType = original.ActionType
 
 const (
@@ -93,15 +88,21 @@ type SpellCheck = original.SpellCheck
 type SpellingFlaggedToken = original.SpellingFlaggedToken
 type SpellingTokenSuggestion = original.SpellingTokenSuggestion
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
 func New() BaseClient {
 	return original.New()
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

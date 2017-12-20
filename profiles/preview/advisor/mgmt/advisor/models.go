@@ -22,6 +22,10 @@ package advisor
 
 import original "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-04-19/advisor"
 
+type OperationsClient = original.OperationsClient
+type RecommendationsClient = original.RecommendationsClient
+type SuppressionsClient = original.SuppressionsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -75,10 +79,13 @@ type SuppressionContractListResult = original.SuppressionContractListResult
 type SuppressionContractListResultIterator = original.SuppressionContractListResultIterator
 type SuppressionContractListResultPage = original.SuppressionContractListResultPage
 type SuppressionProperties = original.SuppressionProperties
-type OperationsClient = original.OperationsClient
-type RecommendationsClient = original.RecommendationsClient
-type SuppressionsClient = original.SuppressionsClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -108,10 +115,4 @@ func NewSuppressionsClient(subscriptionID string) SuppressionsClient {
 }
 func NewSuppressionsClientWithBaseURI(baseURI string, subscriptionID string) SuppressionsClient {
 	return original.NewSuppressionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

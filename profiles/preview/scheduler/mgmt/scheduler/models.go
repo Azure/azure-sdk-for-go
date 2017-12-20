@@ -22,6 +22,7 @@ package scheduler
 
 import original "github.com/Azure/azure-sdk-for-go/services/scheduler/mgmt/2016-03-01/scheduler"
 
+type JobsClient = original.JobsClient
 type DayOfWeek = original.DayOfWeek
 
 const (
@@ -188,20 +189,7 @@ const (
 
 type BaseClient = original.BaseClient
 type JobCollectionsClient = original.JobCollectionsClient
-type JobsClient = original.JobsClient
 
-func NewJobCollectionsClient(subscriptionID string) JobCollectionsClient {
-	return original.NewJobCollectionsClient(subscriptionID)
-}
-func NewJobCollectionsClientWithBaseURI(baseURI string, subscriptionID string) JobCollectionsClient {
-	return original.NewJobCollectionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewJobsClient(subscriptionID string) JobsClient {
-	return original.NewJobsClient(subscriptionID)
-}
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
-	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -213,4 +201,16 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobCollectionsClient(subscriptionID string) JobCollectionsClient {
+	return original.NewJobCollectionsClient(subscriptionID)
+}
+func NewJobCollectionsClientWithBaseURI(baseURI string, subscriptionID string) JobCollectionsClient {
+	return original.NewJobCollectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobsClient(subscriptionID string) JobsClient {
+	return original.NewJobsClient(subscriptionID)
+}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
+	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
 }

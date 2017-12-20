@@ -22,11 +22,8 @@ package web
 
 import original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2016-09-01/web"
 
-type ProviderClient = original.ProviderClient
 type AppServiceEnvironmentsClient = original.AppServiceEnvironmentsClient
-type CertificateRegistrationProviderClient = original.CertificateRegistrationProviderClient
-type CertificatesClient = original.CertificatesClient
-type DomainsClient = original.DomainsClient
+type DiagnosticsClient = original.DiagnosticsClient
 type AccessControlEntryAction = original.AccessControlEntryAction
 
 const (
@@ -1035,11 +1032,13 @@ type WorkerPoolCollectionIterator = original.WorkerPoolCollectionIterator
 type WorkerPoolCollectionPage = original.WorkerPoolCollectionPage
 type WorkerPoolResource = original.WorkerPoolResource
 type AppServiceCertificateOrdersClient = original.AppServiceCertificateOrdersClient
+type AppServicePlansClient = original.AppServicePlansClient
+type CertificateRegistrationProviderClient = original.CertificateRegistrationProviderClient
 type RecommendationsClient = original.RecommendationsClient
 type TopLevelDomainsClient = original.TopLevelDomainsClient
-type DomainRegistrationProviderClient = original.DomainRegistrationProviderClient
+type ProviderClient = original.ProviderClient
 type AppsClient = original.AppsClient
-type AppServicePlansClient = original.AppServicePlansClient
+type CertificatesClient = original.CertificatesClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -1047,50 +1046,9 @@ const (
 
 type BaseClient = original.BaseClient
 type DeletedWebAppsClient = original.DeletedWebAppsClient
-type DiagnosticsClient = original.DiagnosticsClient
+type DomainRegistrationProviderClient = original.DomainRegistrationProviderClient
+type DomainsClient = original.DomainsClient
 
-func NewProviderClient(subscriptionID string) ProviderClient {
-	return original.NewProviderClient(subscriptionID)
-}
-func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) ProviderClient {
-	return original.NewProviderClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAppServiceEnvironmentsClient(subscriptionID string) AppServiceEnvironmentsClient {
-	return original.NewAppServiceEnvironmentsClient(subscriptionID)
-}
-func NewAppServiceEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) AppServiceEnvironmentsClient {
-	return original.NewAppServiceEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewCertificateRegistrationProviderClient(subscriptionID string) CertificateRegistrationProviderClient {
-	return original.NewCertificateRegistrationProviderClient(subscriptionID)
-}
-func NewCertificateRegistrationProviderClientWithBaseURI(baseURI string, subscriptionID string) CertificateRegistrationProviderClient {
-	return original.NewCertificateRegistrationProviderClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewCertificatesClient(subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClient(subscriptionID)
-}
-func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDomainsClient(subscriptionID string) DomainsClient {
-	return original.NewDomainsClient(subscriptionID)
-}
-func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsClient {
-	return original.NewDomainsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAppServiceCertificateOrdersClient(subscriptionID string) AppServiceCertificateOrdersClient {
-	return original.NewAppServiceCertificateOrdersClient(subscriptionID)
-}
-func NewAppServiceCertificateOrdersClientWithBaseURI(baseURI string, subscriptionID string) AppServiceCertificateOrdersClient {
-	return original.NewAppServiceCertificateOrdersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
-	return original.NewRecommendationsClient(subscriptionID)
-}
-func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) RecommendationsClient {
-	return original.NewRecommendationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewTopLevelDomainsClient(subscriptionID string) TopLevelDomainsClient {
 	return original.NewTopLevelDomainsClient(subscriptionID)
 }
@@ -1103,11 +1061,47 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
+func NewAppServiceCertificateOrdersClient(subscriptionID string) AppServiceCertificateOrdersClient {
+	return original.NewAppServiceCertificateOrdersClient(subscriptionID)
+}
+func NewAppServiceCertificateOrdersClientWithBaseURI(baseURI string, subscriptionID string) AppServiceCertificateOrdersClient {
+	return original.NewAppServiceCertificateOrdersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAppServicePlansClient(subscriptionID string) AppServicePlansClient {
+	return original.NewAppServicePlansClient(subscriptionID)
+}
+func NewAppServicePlansClientWithBaseURI(baseURI string, subscriptionID string) AppServicePlansClient {
+	return original.NewAppServicePlansClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCertificateRegistrationProviderClient(subscriptionID string) CertificateRegistrationProviderClient {
+	return original.NewCertificateRegistrationProviderClient(subscriptionID)
+}
+func NewCertificateRegistrationProviderClientWithBaseURI(baseURI string, subscriptionID string) CertificateRegistrationProviderClient {
+	return original.NewCertificateRegistrationProviderClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
+	return original.NewRecommendationsClient(subscriptionID)
+}
+func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) RecommendationsClient {
+	return original.NewRecommendationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewDomainRegistrationProviderClient(subscriptionID string) DomainRegistrationProviderClient {
 	return original.NewDomainRegistrationProviderClient(subscriptionID)
 }
 func NewDomainRegistrationProviderClientWithBaseURI(baseURI string, subscriptionID string) DomainRegistrationProviderClient {
 	return original.NewDomainRegistrationProviderClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDomainsClient(subscriptionID string) DomainsClient {
+	return original.NewDomainsClient(subscriptionID)
+}
+func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsClient {
+	return original.NewDomainsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProviderClient(subscriptionID string) ProviderClient {
+	return original.NewProviderClient(subscriptionID)
+}
+func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) ProviderClient {
+	return original.NewProviderClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAppsClient(subscriptionID string) AppsClient {
 	return original.NewAppsClient(subscriptionID)
@@ -1115,11 +1109,11 @@ func NewAppsClient(subscriptionID string) AppsClient {
 func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient {
 	return original.NewAppsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAppServicePlansClient(subscriptionID string) AppServicePlansClient {
-	return original.NewAppServicePlansClient(subscriptionID)
+func NewCertificatesClient(subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClient(subscriptionID)
 }
-func NewAppServicePlansClientWithBaseURI(baseURI string, subscriptionID string) AppServicePlansClient {
-	return original.NewAppServicePlansClientWithBaseURI(baseURI, subscriptionID)
+func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -1132,6 +1126,12 @@ func NewDeletedWebAppsClient(subscriptionID string) DeletedWebAppsClient {
 }
 func NewDeletedWebAppsClientWithBaseURI(baseURI string, subscriptionID string) DeletedWebAppsClient {
 	return original.NewDeletedWebAppsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAppServiceEnvironmentsClient(subscriptionID string) AppServiceEnvironmentsClient {
+	return original.NewAppServiceEnvironmentsClient(subscriptionID)
+}
+func NewAppServiceEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) AppServiceEnvironmentsClient {
+	return original.NewAppServiceEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDiagnosticsClient(subscriptionID string) DiagnosticsClient {
 	return original.NewDiagnosticsClient(subscriptionID)

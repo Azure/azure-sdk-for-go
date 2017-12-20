@@ -22,7 +22,6 @@ package storage
 
 import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2017-10-01/storage"
 
-type SkusClient = original.SkusClient
 type UsageClient = original.UsageClient
 type AccountsClient = original.AccountsClient
 
@@ -237,7 +236,20 @@ type UsageListResult = original.UsageListResult
 type UsageName = original.UsageName
 type VirtualNetworkRule = original.VirtualNetworkRule
 type OperationsClient = original.OperationsClient
+type SkusClient = original.SkusClient
 
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSkusClient(subscriptionID string) SkusClient {
+	return original.NewSkusClient(subscriptionID)
+}
+func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
+	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewUsageClient(subscriptionID string) UsageClient {
 	return original.NewUsageClient(subscriptionID)
 }
@@ -261,16 +273,4 @@ func New(subscriptionID string) ManagementClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) ManagementClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSkusClient(subscriptionID string) SkusClient {
-	return original.NewSkusClient(subscriptionID)
-}
-func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
-	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
 }

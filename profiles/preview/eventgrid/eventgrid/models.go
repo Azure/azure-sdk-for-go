@@ -22,8 +22,8 @@ package eventgrid
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid"
 
-type BaseClient = original.BaseClient
 type Event = original.Event
+type BaseClient = original.BaseClient
 
 func New() BaseClient {
 	return original.New()

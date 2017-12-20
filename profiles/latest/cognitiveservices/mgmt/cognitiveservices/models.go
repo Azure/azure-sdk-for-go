@@ -22,6 +22,13 @@ package cognitiveservices
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices"
 
+type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type KeyName = original.KeyName
 
 const (
@@ -115,26 +122,7 @@ type ResourceAndSku = original.ResourceAndSku
 type Sku = original.Sku
 type OperationsClient = original.OperationsClient
 type AccountsClient = original.AccountsClient
-type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
-}
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewCheckSkuAvailabilityClient(subscriptionID string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClient(subscriptionID)
-}
-func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID)
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -152,4 +140,16 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
+}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCheckSkuAvailabilityClient(subscriptionID string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClient(subscriptionID)
+}
+func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID)
 }

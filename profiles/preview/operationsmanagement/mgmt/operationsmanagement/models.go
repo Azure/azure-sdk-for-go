@@ -22,6 +22,16 @@ package operationsmanagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationsmanagement/mgmt/2015-11-01-preview/operationsmanagement"
 
+type OperationsClient = original.OperationsClient
+type SolutionsClient = original.SolutionsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ManagementAssociationsClient = original.ManagementAssociationsClient
+type ManagementConfigurationsClient = original.ManagementConfigurationsClient
 type ArmTemplateParameter = original.ArmTemplateParameter
 type CodeMessageError = original.CodeMessageError
 type CodeMessageErrorError = original.CodeMessageErrorError
@@ -38,29 +48,7 @@ type Solution = original.Solution
 type SolutionPlan = original.SolutionPlan
 type SolutionProperties = original.SolutionProperties
 type SolutionPropertiesList = original.SolutionPropertiesList
-type OperationsClient = original.OperationsClient
-type SolutionsClient = original.SolutionsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ManagementAssociationsClient = original.ManagementAssociationsClient
-type ManagementConfigurationsClient = original.ManagementConfigurationsClient
-
-func NewSolutionsClient(subscriptionID string, providerName string, resourceType string, resourceName string) SolutionsClient {
-	return original.NewSolutionsClient(subscriptionID, providerName, resourceType, resourceName)
-}
-func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) SolutionsClient {
-	return original.NewSolutionsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func New(subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
 	return original.New(subscriptionID, providerName, resourceType, resourceName)
 }
@@ -84,4 +72,16 @@ func NewOperationsClient(subscriptionID string, providerName string, resourceTyp
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
+}
+func NewSolutionsClient(subscriptionID string, providerName string, resourceType string, resourceName string) SolutionsClient {
+	return original.NewSolutionsClient(subscriptionID, providerName, resourceType, resourceName)
+}
+func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) SolutionsClient {
+	return original.NewSolutionsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

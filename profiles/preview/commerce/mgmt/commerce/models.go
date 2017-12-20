@@ -22,8 +22,6 @@ package commerce
 
 import original "github.com/Azure/azure-sdk-for-go/services/commerce/mgmt/2015-06-01-preview/commerce"
 
-type UsageAggregatesClient = original.UsageAggregatesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -61,13 +59,8 @@ type UsageAggregationListResultIterator = original.UsageAggregationListResultIte
 type UsageAggregationListResultPage = original.UsageAggregationListResultPage
 type UsageSample = original.UsageSample
 type RateCardClient = original.RateCardClient
+type UsageAggregatesClient = original.UsageAggregatesClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -85,4 +78,10 @@ func NewUsageAggregatesClient(subscriptionID string) UsageAggregatesClient {
 }
 func NewUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) UsageAggregatesClient {
 	return original.NewUsageAggregatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

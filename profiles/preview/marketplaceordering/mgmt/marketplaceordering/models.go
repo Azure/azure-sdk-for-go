@@ -22,8 +22,6 @@ package marketplaceordering
 
 import original "github.com/Azure/azure-sdk-for-go/services/marketplaceordering/mgmt/2015-06-01/marketplaceordering"
 
-type OperationsClient = original.OperationsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -40,7 +38,14 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type Resource = original.Resource
+type OperationsClient = original.OperationsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func NewMarketplaceAgreementsClient(subscriptionID string) MarketplaceAgreementsClient {
 	return original.NewMarketplaceAgreementsClient(subscriptionID)
 }
@@ -58,10 +63,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,8 +22,16 @@ package xpackagex
 
 import original "github.com/Azure/azure-sdk-for-go/services/batch/2017-05-01.5.0/batch"
 
-type AccountClient = original.AccountClient
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type JobScheduleClient = original.JobScheduleClient
+type CertificateClient = original.CertificateClient
+type ApplicationClient = original.ApplicationClient
 type ComputeNodeClient = original.ComputeNodeClient
+type FileClient = original.FileClient
 type JobClient = original.JobClient
 type AccessScope = original.AccessScope
 
@@ -449,30 +457,15 @@ type UserAccount = original.UserAccount
 type UserIdentity = original.UserIdentity
 type VirtualMachineConfiguration = original.VirtualMachineConfiguration
 type WindowsConfiguration = original.WindowsConfiguration
-type TaskClient = original.TaskClient
-type ApplicationClient = original.ApplicationClient
-type CertificateClient = original.CertificateClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type FileClient = original.FileClient
-type JobScheduleClient = original.JobScheduleClient
 type PoolClient = original.PoolClient
+type TaskClient = original.TaskClient
+type AccountClient = original.AccountClient
 
-func NewComputeNodeClient() ComputeNodeClient {
-	return original.NewComputeNodeClient()
+func NewPoolClient() PoolClient {
+	return original.NewPoolClient()
 }
-func NewComputeNodeClientWithBaseURI(baseURI string) ComputeNodeClient {
-	return original.NewComputeNodeClientWithBaseURI(baseURI)
-}
-func NewJobClient() JobClient {
-	return original.NewJobClient()
-}
-func NewJobClientWithBaseURI(baseURI string) JobClient {
-	return original.NewJobClientWithBaseURI(baseURI)
+func NewPoolClientWithBaseURI(baseURI string) PoolClient {
+	return original.NewPoolClientWithBaseURI(baseURI)
 }
 func NewTaskClient() TaskClient {
 	return original.NewTaskClient()
@@ -486,6 +479,30 @@ func NewAccountClient() AccountClient {
 func NewAccountClientWithBaseURI(baseURI string) AccountClient {
 	return original.NewAccountClientWithBaseURI(baseURI)
 }
+func NewApplicationClient() ApplicationClient {
+	return original.NewApplicationClient()
+}
+func NewApplicationClientWithBaseURI(baseURI string) ApplicationClient {
+	return original.NewApplicationClientWithBaseURI(baseURI)
+}
+func NewComputeNodeClient() ComputeNodeClient {
+	return original.NewComputeNodeClient()
+}
+func NewComputeNodeClientWithBaseURI(baseURI string) ComputeNodeClient {
+	return original.NewComputeNodeClientWithBaseURI(baseURI)
+}
+func NewFileClient() FileClient {
+	return original.NewFileClient()
+}
+func NewFileClientWithBaseURI(baseURI string) FileClient {
+	return original.NewFileClientWithBaseURI(baseURI)
+}
+func NewJobClient() JobClient {
+	return original.NewJobClient()
+}
+func NewJobClientWithBaseURI(baseURI string) JobClient {
+	return original.NewJobClientWithBaseURI(baseURI)
+}
 func NewCertificateClient() CertificateClient {
 	return original.NewCertificateClient()
 }
@@ -498,33 +515,15 @@ func New() BaseClient {
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
 }
-func NewFileClient() FileClient {
-	return original.NewFileClient()
-}
-func NewFileClientWithBaseURI(baseURI string) FileClient {
-	return original.NewFileClientWithBaseURI(baseURI)
-}
 func NewJobScheduleClient() JobScheduleClient {
 	return original.NewJobScheduleClient()
 }
 func NewJobScheduleClientWithBaseURI(baseURI string) JobScheduleClient {
 	return original.NewJobScheduleClientWithBaseURI(baseURI)
 }
-func NewPoolClient() PoolClient {
-	return original.NewPoolClient()
-}
-func NewPoolClientWithBaseURI(baseURI string) PoolClient {
-	return original.NewPoolClientWithBaseURI(baseURI)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
-}
-func NewApplicationClient() ApplicationClient {
-	return original.NewApplicationClient()
-}
-func NewApplicationClientWithBaseURI(baseURI string) ApplicationClient {
-	return original.NewApplicationClientWithBaseURI(baseURI)
 }

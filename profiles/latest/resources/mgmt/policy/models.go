@@ -22,6 +22,7 @@ package policy
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-12-01/policy"
 
+type DefinitionsClient = original.DefinitionsClient
 type Mode = original.Mode
 
 const (
@@ -55,14 +56,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type DefinitionsClient = original.DefinitionsClient
 
-func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClient(subscriptionID)
-}
-func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -80,4 +74,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClient(subscriptionID)
+}
+func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }

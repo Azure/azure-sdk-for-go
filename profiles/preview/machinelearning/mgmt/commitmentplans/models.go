@@ -22,6 +22,13 @@ package commitmentplans
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2016-05-01-preview/commitmentplans"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type CommitmentAssociationsClient = original.CommitmentAssociationsClient
+type Client = original.Client
 type CommitmentAssociation = original.CommitmentAssociation
 type CommitmentAssociationListResult = original.CommitmentAssociationListResult
 type CommitmentAssociationListResultIterator = original.CommitmentAssociationListResultIterator
@@ -43,26 +50,6 @@ type Resource = original.Resource
 type ResourceSku = original.ResourceSku
 type UsageHistoryClient = original.UsageHistoryClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type CommitmentAssociationsClient = original.CommitmentAssociationsClient
-type Client = original.Client
-
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUsageHistoryClient(subscriptionID string) UsageHistoryClient {
-	return original.NewUsageHistoryClient(subscriptionID)
-}
-func NewUsageHistoryClientWithBaseURI(baseURI string, subscriptionID string) UsageHistoryClient {
-	return original.NewUsageHistoryClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -80,4 +67,16 @@ func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociatio
 }
 func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID string) CommitmentAssociationsClient {
 	return original.NewCommitmentAssociationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageHistoryClient(subscriptionID string) UsageHistoryClient {
+	return original.NewUsageHistoryClient(subscriptionID)
+}
+func NewUsageHistoryClientWithBaseURI(baseURI string, subscriptionID string) UsageHistoryClient {
+	return original.NewUsageHistoryClientWithBaseURI(baseURI, subscriptionID)
 }

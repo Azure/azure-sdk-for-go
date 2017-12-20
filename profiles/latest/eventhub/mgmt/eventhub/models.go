@@ -22,11 +22,6 @@ package eventhub
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventhub/mgmt/2017-04-01/eventhub"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type ConsumerGroupsClient = original.ConsumerGroupsClient
 type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
 type EventHubsClient = original.EventHubsClient
@@ -153,6 +148,24 @@ type TrackedResource = original.TrackedResource
 type NamespacesClient = original.NamespacesClient
 type OperationsClient = original.OperationsClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewConsumerGroupsClient(subscriptionID string) ConsumerGroupsClient {
+	return original.NewConsumerGroupsClient(subscriptionID)
+}
+func NewConsumerGroupsClientWithBaseURI(baseURI string, subscriptionID string) ConsumerGroupsClient {
+	return original.NewConsumerGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewDisasterRecoveryConfigsClient(subscriptionID string) DisasterRecoveryConfigsClient {
 	return original.NewDisasterRecoveryConfigsClient(subscriptionID)
 }
@@ -182,16 +195,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewConsumerGroupsClient(subscriptionID string) ConsumerGroupsClient {
-	return original.NewConsumerGroupsClient(subscriptionID)
-}
-func NewConsumerGroupsClientWithBaseURI(baseURI string, subscriptionID string) ConsumerGroupsClient {
-	return original.NewConsumerGroupsClientWithBaseURI(baseURI, subscriptionID)
 }

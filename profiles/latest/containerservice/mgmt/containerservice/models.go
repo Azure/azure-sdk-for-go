@@ -22,6 +22,12 @@ package containerservice
 
 import original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2017-09-30/containerservice"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ContainerServicesClient = original.ContainerServicesClient
 type ManagedClustersClient = original.ManagedClustersClient
 type OrchestratorTypes = original.OrchestratorTypes
 
@@ -218,13 +224,6 @@ type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
 type VMDiagnostics = original.VMDiagnostics
 type WindowsProfile = original.WindowsProfile
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ContainerServicesClient = original.ContainerServicesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

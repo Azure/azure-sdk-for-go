@@ -205,6 +205,12 @@ const (
 
 type BaseClient = original.BaseClient
 
+func NewCertificatesClient(subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClient(subscriptionID)
+}
+func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -228,10 +234,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func NewCertificatesClient(subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClient(subscriptionID)
-}
-func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
 }

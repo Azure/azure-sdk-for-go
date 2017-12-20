@@ -22,6 +22,8 @@ package trafficmanager
 
 import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2017-09-01-preview/trafficmanager"
 
+type EndpointsClient = original.EndpointsClient
+type GeographicHierarchiesClient = original.GeographicHierarchiesClient
 type HeatMapClient = original.HeatMapClient
 type EndpointMonitorStatus = original.EndpointMonitorStatus
 
@@ -107,15 +109,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type EndpointsClient = original.EndpointsClient
-type GeographicHierarchiesClient = original.GeographicHierarchiesClient
 
-func NewHeatMapClient(subscriptionID string) HeatMapClient {
-	return original.NewHeatMapClient(subscriptionID)
-}
-func NewHeatMapClientWithBaseURI(baseURI string, subscriptionID string) HeatMapClient {
-	return original.NewHeatMapClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewProfilesClient(subscriptionID string) ProfilesClient {
 	return original.NewProfilesClient(subscriptionID)
 }
@@ -151,4 +145,10 @@ func NewGeographicHierarchiesClient(subscriptionID string) GeographicHierarchies
 }
 func NewGeographicHierarchiesClientWithBaseURI(baseURI string, subscriptionID string) GeographicHierarchiesClient {
 	return original.NewGeographicHierarchiesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewHeatMapClient(subscriptionID string) HeatMapClient {
+	return original.NewHeatMapClient(subscriptionID)
+}
+func NewHeatMapClientWithBaseURI(baseURI string, subscriptionID string) HeatMapClient {
+	return original.NewHeatMapClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,10 +22,17 @@ package mobileengagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/mobileengagement/mgmt/2014-12-01/mobileengagement"
 
-type AppCollectionsClient = original.AppCollectionsClient
 type CampaignsClient = original.CampaignsClient
-type DevicesClient = original.DevicesClient
 type ExportTasksClient = original.ExportTasksClient
+type AppCollectionsClient = original.AppCollectionsClient
+type AppsClient = original.AppsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type DevicesClient = original.DevicesClient
 type ImportTasksClient = original.ImportTasksClient
 type AudienceOperators = original.AudienceOperators
 
@@ -284,49 +291,18 @@ type SegmentCriterion = original.SegmentCriterion
 type StringTagCriterion = original.StringTagCriterion
 type SupportedPlatformsListResult = original.SupportedPlatformsListResult
 type SupportedPlatformsClient = original.SupportedPlatformsClient
-type AppsClient = original.AppsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func NewAppsClient(subscriptionID string) AppsClient {
-	return original.NewAppsClient(subscriptionID)
-}
-func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient {
-	return original.NewAppsClientWithBaseURI(baseURI, subscriptionID)
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewAppCollectionsClient(subscriptionID string) AppCollectionsClient {
-	return original.NewAppCollectionsClient(subscriptionID)
-}
-func NewAppCollectionsClientWithBaseURI(baseURI string, subscriptionID string) AppCollectionsClient {
-	return original.NewAppCollectionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewCampaignsClient(subscriptionID string) CampaignsClient {
-	return original.NewCampaignsClient(subscriptionID)
-}
-func NewCampaignsClientWithBaseURI(baseURI string, subscriptionID string) CampaignsClient {
-	return original.NewCampaignsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewDevicesClient(subscriptionID string) DevicesClient {
 	return original.NewDevicesClient(subscriptionID)
 }
 func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesClient {
 	return original.NewDevicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewExportTasksClient(subscriptionID string) ExportTasksClient {
-	return original.NewExportTasksClient(subscriptionID)
-}
-func NewExportTasksClientWithBaseURI(baseURI string, subscriptionID string) ExportTasksClient {
-	return original.NewExportTasksClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewImportTasksClient(subscriptionID string) ImportTasksClient {
 	return original.NewImportTasksClient(subscriptionID)
@@ -340,9 +316,33 @@ func NewSupportedPlatformsClient(subscriptionID string) SupportedPlatformsClient
 func NewSupportedPlatformsClientWithBaseURI(baseURI string, subscriptionID string) SupportedPlatformsClient {
 	return original.NewSupportedPlatformsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewAppCollectionsClient(subscriptionID string) AppCollectionsClient {
+	return original.NewAppCollectionsClient(subscriptionID)
+}
+func NewAppCollectionsClientWithBaseURI(baseURI string, subscriptionID string) AppCollectionsClient {
+	return original.NewAppCollectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAppsClient(subscriptionID string) AppsClient {
+	return original.NewAppsClient(subscriptionID)
+}
+func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient {
+	return original.NewAppsClientWithBaseURI(baseURI, subscriptionID)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+func NewCampaignsClient(subscriptionID string) CampaignsClient {
+	return original.NewCampaignsClient(subscriptionID)
+}
+func NewCampaignsClientWithBaseURI(baseURI string, subscriptionID string) CampaignsClient {
+	return original.NewCampaignsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExportTasksClient(subscriptionID string) ExportTasksClient {
+	return original.NewExportTasksClient(subscriptionID)
+}
+func NewExportTasksClientWithBaseURI(baseURI string, subscriptionID string) ExportTasksClient {
+	return original.NewExportTasksClientWithBaseURI(baseURI, subscriptionID)
 }

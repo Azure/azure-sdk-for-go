@@ -71,18 +71,6 @@ type UpdateJobParameters = original.UpdateJobParameters
 type UpdateJobParametersProperties = original.UpdateJobParametersProperties
 type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, acceptLanguage)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func NewBitLockerKeysClient(subscriptionID string, acceptLanguage string) BitLockerKeysClient {
 	return original.NewBitLockerKeysClient(subscriptionID, acceptLanguage)
 }
@@ -106,4 +94,16 @@ func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsC
 }
 func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) LocationsClient {
 	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, acceptLanguage)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

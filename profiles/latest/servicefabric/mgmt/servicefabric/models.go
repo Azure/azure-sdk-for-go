@@ -22,6 +22,12 @@ package servicefabric
 
 import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2016-09-01/servicefabric"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ClustersClient = original.ClustersClient
 type ClusterVersionsClient = original.ClusterVersionsClient
 type ClusterState = original.ClusterState
 
@@ -141,13 +147,6 @@ type Resource = original.Resource
 type SettingsParameterDescription = original.SettingsParameterDescription
 type SettingsSectionDescription = original.SettingsSectionDescription
 type OperationsClient = original.OperationsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ClustersClient = original.ClustersClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

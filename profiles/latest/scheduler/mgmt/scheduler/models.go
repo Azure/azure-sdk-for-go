@@ -22,6 +22,13 @@ package scheduler
 
 import original "github.com/Azure/azure-sdk-for-go/services/scheduler/mgmt/2016-03-01/scheduler"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type JobCollectionsClient = original.JobCollectionsClient
+type JobsClient = original.JobsClient
 type DayOfWeek = original.DayOfWeek
 
 const (
@@ -182,20 +189,6 @@ type ServiceBusTopicMessage = original.ServiceBusTopicMessage
 type Sku = original.Sku
 type StorageQueueMessage = original.StorageQueueMessage
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type JobCollectionsClient = original.JobCollectionsClient
-type JobsClient = original.JobsClient
-
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -213,4 +206,10 @@ func NewJobsClient(subscriptionID string) JobsClient {
 }
 func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
 	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }

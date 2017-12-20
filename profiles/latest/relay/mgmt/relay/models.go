@@ -22,6 +22,8 @@ package relay
 
 import original "github.com/Azure/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay"
 
+type WCFRelaysClient = original.WCFRelaysClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -117,7 +119,6 @@ type WcfRelaysListResultIterator = original.WcfRelaysListResultIterator
 type WcfRelaysListResultPage = original.WcfRelaysListResultPage
 type NamespacesClient = original.NamespacesClient
 type OperationsClient = original.OperationsClient
-type WCFRelaysClient = original.WCFRelaysClient
 
 func NewHybridConnectionsClient(subscriptionID string) HybridConnectionsClient {
 	return original.NewHybridConnectionsClient(subscriptionID)

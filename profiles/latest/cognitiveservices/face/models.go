@@ -167,6 +167,12 @@ type BaseClient = original.BaseClient
 type Client = original.Client
 type ListClient = original.ListClient
 
+func New(azureRegion AzureRegions) BaseClient {
+	return original.New(azureRegion)
+}
+func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+	return original.NewWithoutDefaults(azureRegion)
+}
 func NewClient(azureRegion AzureRegions) Client {
 	return original.NewClient(azureRegion)
 }
@@ -184,10 +190,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
-}
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
 }

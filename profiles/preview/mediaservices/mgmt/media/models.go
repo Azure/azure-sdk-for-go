@@ -67,18 +67,6 @@ type SyncStorageKeysInput = original.SyncStorageKeysInput
 type OperationsClient = original.OperationsClient
 type ServiceClient = original.ServiceClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewServiceClient(subscriptionID string) ServiceClient {
 	return original.NewServiceClient(subscriptionID)
 }
@@ -90,4 +78,16 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,15 +22,12 @@ package datafactory
 
 import original "github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2017-09-01-preview/datafactory"
 
+type TriggersClient = original.TriggersClient
 type ActivityRunsClient = original.ActivityRunsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type FactoriesClient = original.FactoriesClient
-type IntegrationRuntimeNodesClient = original.IntegrationRuntimeNodesClient
+type DatasetsClient = original.DatasetsClient
+type OperationsClient = original.OperationsClient
+type PipelineRunsClient = original.PipelineRunsClient
+type LinkedServicesClient = original.LinkedServicesClient
 type AuthenticationType = original.AuthenticationType
 
 const (
@@ -1243,66 +1240,27 @@ type ZohoLinkedServiceTypeProperties = original.ZohoLinkedServiceTypeProperties
 type ZohoObjectDataset = original.ZohoObjectDataset
 type ZohoSource = original.ZohoSource
 type PipelinesClient = original.PipelinesClient
-type TriggersClient = original.TriggersClient
-type DatasetsClient = original.DatasetsClient
-type IntegrationRuntimesClient = original.IntegrationRuntimesClient
-type LinkedServicesClient = original.LinkedServicesClient
-type OperationsClient = original.OperationsClient
-type PipelineRunsClient = original.PipelineRunsClient
 
-func NewPipelineRunsClient(subscriptionID string) PipelineRunsClient {
-	return original.NewPipelineRunsClient(subscriptionID)
-}
-func NewPipelineRunsClientWithBaseURI(baseURI string, subscriptionID string) PipelineRunsClient {
-	return original.NewPipelineRunsClientWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type FactoriesClient = original.FactoriesClient
+type IntegrationRuntimeNodesClient = original.IntegrationRuntimeNodesClient
+type IntegrationRuntimesClient = original.IntegrationRuntimesClient
+
 func NewPipelinesClient(subscriptionID string) PipelinesClient {
 	return original.NewPipelinesClient(subscriptionID)
 }
 func NewPipelinesClientWithBaseURI(baseURI string, subscriptionID string) PipelinesClient {
 	return original.NewPipelinesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTriggersClient(subscriptionID string) TriggersClient {
-	return original.NewTriggersClient(subscriptionID)
-}
-func NewTriggersClientWithBaseURI(baseURI string, subscriptionID string) TriggersClient {
-	return original.NewTriggersClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
-}
-func NewDatasetsClient(subscriptionID string) DatasetsClient {
-	return original.NewDatasetsClient(subscriptionID)
-}
-func NewDatasetsClientWithBaseURI(baseURI string, subscriptionID string) DatasetsClient {
-	return original.NewDatasetsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewIntegrationRuntimesClient(subscriptionID string) IntegrationRuntimesClient {
-	return original.NewIntegrationRuntimesClient(subscriptionID)
-}
-func NewIntegrationRuntimesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimesClient {
-	return original.NewIntegrationRuntimesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClient(subscriptionID)
-}
-func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewActivityRunsClient(subscriptionID string) ActivityRunsClient {
-	return original.NewActivityRunsClient(subscriptionID)
-}
-func NewActivityRunsClientWithBaseURI(baseURI string, subscriptionID string) ActivityRunsClient {
-	return original.NewActivityRunsClientWithBaseURI(baseURI, subscriptionID)
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -1321,4 +1279,46 @@ func NewIntegrationRuntimeNodesClient(subscriptionID string) IntegrationRuntimeN
 }
 func NewIntegrationRuntimeNodesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeNodesClient {
 	return original.NewIntegrationRuntimeNodesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimesClient(subscriptionID string) IntegrationRuntimesClient {
+	return original.NewIntegrationRuntimesClient(subscriptionID)
+}
+func NewIntegrationRuntimesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimesClient {
+	return original.NewIntegrationRuntimesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClient(subscriptionID)
+}
+func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewActivityRunsClient(subscriptionID string) ActivityRunsClient {
+	return original.NewActivityRunsClient(subscriptionID)
+}
+func NewActivityRunsClientWithBaseURI(baseURI string, subscriptionID string) ActivityRunsClient {
+	return original.NewActivityRunsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDatasetsClient(subscriptionID string) DatasetsClient {
+	return original.NewDatasetsClient(subscriptionID)
+}
+func NewDatasetsClientWithBaseURI(baseURI string, subscriptionID string) DatasetsClient {
+	return original.NewDatasetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPipelineRunsClient(subscriptionID string) PipelineRunsClient {
+	return original.NewPipelineRunsClient(subscriptionID)
+}
+func NewPipelineRunsClientWithBaseURI(baseURI string, subscriptionID string) PipelineRunsClient {
+	return original.NewPipelineRunsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTriggersClient(subscriptionID string) TriggersClient {
+	return original.NewTriggersClient(subscriptionID)
+}
+func NewTriggersClientWithBaseURI(baseURI string, subscriptionID string) TriggersClient {
+	return original.NewTriggersClientWithBaseURI(baseURI, subscriptionID)
 }

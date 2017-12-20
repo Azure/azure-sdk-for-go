@@ -22,13 +22,6 @@ package search
 
 import original "github.com/Azure/azure-sdk-for-go/services/search/2016-09-01/search"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type DataSourcesClient = original.DataSourcesClient
-type DocumentsProxyClient = original.DocumentsProxyClient
 type IndexersClient = original.IndexersClient
 type IndexesClient = original.IndexesClient
 type CjkBigramTokenFilterScripts = original.CjkBigramTokenFilterScripts
@@ -556,12 +549,14 @@ type UaxURLEmailTokenizer = original.UaxURLEmailTokenizer
 type UniqueTokenFilter = original.UniqueTokenFilter
 type WordDelimiterTokenFilter = original.WordDelimiterTokenFilter
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type DataSourcesClient = original.DataSourcesClient
+type DocumentsProxyClient = original.DocumentsProxyClient
+
 func New() BaseClient {
 	return original.New()
 }
@@ -591,4 +586,10 @@ func NewIndexesClient() IndexesClient {
 }
 func NewIndexesClientWithBaseURI(baseURI string) IndexesClient {
 	return original.NewIndexesClientWithBaseURI(baseURI)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }

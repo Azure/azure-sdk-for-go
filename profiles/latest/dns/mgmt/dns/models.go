@@ -131,6 +131,12 @@ const (
 
 type BaseClient = original.BaseClient
 
+func NewZonesClient(subscriptionID string) ZonesClient {
+	return original.NewZonesClient(subscriptionID)
+}
+func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClient {
+	return original.NewZonesClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -148,10 +154,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func NewZonesClient(subscriptionID string) ZonesClient {
-	return original.NewZonesClient(subscriptionID)
-}
-func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClient {
-	return original.NewZonesClientWithBaseURI(baseURI, subscriptionID)
 }

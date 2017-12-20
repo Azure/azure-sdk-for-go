@@ -48,12 +48,6 @@ type UserAssignedIdentitiesListResultPage = original.UserAssignedIdentitiesListR
 type OperationsClient = original.OperationsClient
 type UserAssignedIdentitiesClient = original.UserAssignedIdentitiesClient
 
-func NewUserAssignedIdentitiesClient(subscriptionID string) UserAssignedIdentitiesClient {
-	return original.NewUserAssignedIdentitiesClient(subscriptionID)
-}
-func NewUserAssignedIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) UserAssignedIdentitiesClient {
-	return original.NewUserAssignedIdentitiesClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -71,4 +65,10 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUserAssignedIdentitiesClient(subscriptionID string) UserAssignedIdentitiesClient {
+	return original.NewUserAssignedIdentitiesClient(subscriptionID)
+}
+func NewUserAssignedIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) UserAssignedIdentitiesClient {
+	return original.NewUserAssignedIdentitiesClientWithBaseURI(baseURI, subscriptionID)
 }

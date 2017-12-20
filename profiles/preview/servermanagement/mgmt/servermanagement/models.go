@@ -121,6 +121,12 @@ type NodeClient = original.NodeClient
 type PowerShellClient = original.PowerShellClient
 type SessionClient = original.SessionClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -150,10 +156,4 @@ func NewSessionClient(subscriptionID string) SessionClient {
 }
 func NewSessionClientWithBaseURI(baseURI string, subscriptionID string) SessionClient {
 	return original.NewSessionClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

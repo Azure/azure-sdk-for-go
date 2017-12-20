@@ -22,6 +22,13 @@ package resourcehealth
 
 import original "github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2017-07-01/resourcehealth"
 
+type AvailabilityStatusesClient = original.AvailabilityStatusesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type AvailabilityStateValues = original.AvailabilityStateValues
 
 const (
@@ -52,13 +59,6 @@ type ServiceImpactingEvent = original.ServiceImpactingEvent
 type ServiceImpactingEventIncidentProperties = original.ServiceImpactingEventIncidentProperties
 type ServiceImpactingEventStatus = original.ServiceImpactingEventStatus
 type OperationsClient = original.OperationsClient
-type AvailabilityStatusesClient = original.AvailabilityStatusesClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 
 func NewAvailabilityStatusesClient(subscriptionID string) AvailabilityStatusesClient {
 	return original.NewAvailabilityStatusesClient(subscriptionID)

@@ -22,6 +22,8 @@ package managedapplications
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01-preview/managedapplications"
 
+type AppliancesClient = original.AppliancesClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -94,7 +96,6 @@ type PlanPatchable = original.PlanPatchable
 type Resource = original.Resource
 type Sku = original.Sku
 type ApplianceDefinitionsClient = original.ApplianceDefinitionsClient
-type AppliancesClient = original.AppliancesClient
 
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## `v12.1.0-beta`
+
+### New Services
+
+#### Data plane
+- Cognitive Services Computer Vision
+- Cognitive Services Content Moderator
+- Cognitive Services LUIS
+
 ## `v12.0.0-beta`
 
 ### Changes
@@ -8,7 +17,7 @@
 - Operations now make use of the [Context Pattern](https://blog.golang.org/context).
 - Container Services has been moved out of Compute folder in its own folder.
 - Azure Go SDK is now using [dep](https://github.com/golang/dep) for vendoring.
-- The *arm* folder has been deprecated. Use the *profiles* and the *services* folders instead.
+- The *arm* and *dataplane* folders have been deprecated. Use the *profiles* and the *services* folders instead.
 - Group clients have been renamed to a a service specific name.
 
 ### New Services

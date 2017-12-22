@@ -101,6 +101,12 @@ type Resource = original.Resource
 type TrackedResource = original.TrackedResource
 type ProfilesClient = original.ProfilesClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func NewEndpointsClient(subscriptionID string) EndpointsClient {
 	return original.NewEndpointsClient(subscriptionID)
 }
@@ -124,10 +130,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

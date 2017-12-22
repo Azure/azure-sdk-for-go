@@ -22,8 +22,6 @@ package storageimportexport
 
 import original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport"
 
-type BitLockerKeysClient = original.BitLockerKeysClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -70,25 +68,8 @@ type ShippingInformation = original.ShippingInformation
 type UpdateJobParameters = original.UpdateJobParameters
 type UpdateJobParametersProperties = original.UpdateJobParametersProperties
 type OperationsClient = original.OperationsClient
+type BitLockerKeysClient = original.BitLockerKeysClient
 
-func NewBitLockerKeysClient(subscriptionID string, acceptLanguage string) BitLockerKeysClient {
-	return original.NewBitLockerKeysClient(subscriptionID, acceptLanguage)
-}
-func NewBitLockerKeysClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BitLockerKeysClient {
-	return original.NewBitLockerKeysClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func New(subscriptionID string, acceptLanguage string) BaseClient {
-	return original.New(subscriptionID, acceptLanguage)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func NewJobsClient(subscriptionID string, acceptLanguage string) JobsClient {
-	return original.NewJobsClient(subscriptionID, acceptLanguage)
-}
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) JobsClient {
-	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
 func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsClient {
 	return original.NewLocationsClient(subscriptionID, acceptLanguage)
 }
@@ -106,4 +87,22 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewBitLockerKeysClient(subscriptionID string, acceptLanguage string) BitLockerKeysClient {
+	return original.NewBitLockerKeysClient(subscriptionID, acceptLanguage)
+}
+func NewBitLockerKeysClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BitLockerKeysClient {
+	return original.NewBitLockerKeysClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func New(subscriptionID string, acceptLanguage string) BaseClient {
+	return original.New(subscriptionID, acceptLanguage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func NewJobsClient(subscriptionID string, acceptLanguage string) JobsClient {
+	return original.NewJobsClient(subscriptionID, acceptLanguage)
+}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) JobsClient {
+	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }

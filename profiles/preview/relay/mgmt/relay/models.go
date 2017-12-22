@@ -22,6 +22,8 @@ package relay
 
 import original "github.com/Azure/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay"
 
+type NamespacesClient = original.NamespacesClient
+type OperationsClient = original.OperationsClient
 type WCFRelaysClient = original.WCFRelaysClient
 
 const (
@@ -117,9 +119,13 @@ type WcfRelayProperties = original.WcfRelayProperties
 type WcfRelaysListResult = original.WcfRelaysListResult
 type WcfRelaysListResultIterator = original.WcfRelaysListResultIterator
 type WcfRelaysListResultPage = original.WcfRelaysListResultPage
-type NamespacesClient = original.NamespacesClient
-type OperationsClient = original.OperationsClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func NewWCFRelaysClient(subscriptionID string) WCFRelaysClient {
 	return original.NewWCFRelaysClient(subscriptionID)
 }
@@ -149,10 +155,4 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

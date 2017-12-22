@@ -43,12 +43,6 @@ type ManagementLockObject = original.ManagementLockObject
 type ManagementLockOwner = original.ManagementLockOwner
 type ManagementLockProperties = original.ManagementLockProperties
 
-func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
-	return original.NewManagementLocksClient(subscriptionID)
-}
-func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) ManagementLocksClient {
-	return original.NewManagementLocksClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -60,4 +54,10 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
+	return original.NewManagementLocksClient(subscriptionID)
+}
+func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) ManagementLocksClient {
+	return original.NewManagementLocksClientWithBaseURI(baseURI, subscriptionID)
 }

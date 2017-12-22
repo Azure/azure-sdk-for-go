@@ -22,6 +22,13 @@ package devices
 
 import original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2017-07-01/devices"
 
+type CertificatesClient = original.CertificatesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type IotHubResourceClient = original.IotHubResourceClient
 type AccessRights = original.AccessRights
 
@@ -197,26 +204,7 @@ type SharedAccessSignatureAuthorizationRuleListResultIterator = original.SharedA
 type SharedAccessSignatureAuthorizationRuleListResultPage = original.SharedAccessSignatureAuthorizationRuleListResultPage
 type StorageEndpointProperties = original.StorageEndpointProperties
 type OperationsClient = original.OperationsClient
-type CertificatesClient = original.CertificatesClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func NewCertificatesClient(subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClient(subscriptionID)
-}
-func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewIotHubResourceClient(subscriptionID string) IotHubResourceClient {
 	return original.NewIotHubResourceClient(subscriptionID)
 }
@@ -234,4 +222,16 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewCertificatesClient(subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClient(subscriptionID)
+}
+func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

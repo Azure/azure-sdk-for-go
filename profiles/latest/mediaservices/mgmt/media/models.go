@@ -22,8 +22,6 @@ package media
 
 import original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2015-10-01/media"
 
-type ServiceClient = original.ServiceClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -67,19 +65,8 @@ type ServiceProperties = original.ServiceProperties
 type StorageAccount = original.StorageAccount
 type SyncStorageKeysInput = original.SyncStorageKeysInput
 type OperationsClient = original.OperationsClient
+type ServiceClient = original.ServiceClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewServiceClient(subscriptionID string) ServiceClient {
 	return original.NewServiceClient(subscriptionID)
 }
@@ -91,4 +78,16 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -169,6 +169,12 @@ type UpdateKeyVaultMetaInfo = original.UpdateKeyVaultMetaInfo
 type UpdateTrustedIDProviderParameters = original.UpdateTrustedIDProviderParameters
 type UpdateTrustedIDProviderProperties = original.UpdateTrustedIDProviderProperties
 
+func NewLocationsClient(subscriptionID string) LocationsClient {
+	return original.NewLocationsClient(subscriptionID)
+}
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
+	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -204,10 +210,4 @@ func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
 }
 func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
 	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewLocationsClient(subscriptionID string) LocationsClient {
-	return original.NewLocationsClient(subscriptionID)
-}
-func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
-	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
 }

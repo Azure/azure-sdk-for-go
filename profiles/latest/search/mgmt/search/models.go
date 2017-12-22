@@ -22,6 +22,13 @@ package search
 
 import original "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2015-08-19/search"
 
+type AdminKeysClient = original.AdminKeysClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type AdminKeyKind = original.AdminKeyKind
 
 const (
@@ -87,20 +94,7 @@ type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type Sku = original.Sku
 type QueryKeysClient = original.QueryKeysClient
 type ServicesClient = original.ServicesClient
-type AdminKeysClient = original.AdminKeysClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func NewQueryKeysClient(subscriptionID string) QueryKeysClient {
-	return original.NewQueryKeysClient(subscriptionID)
-}
-func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryKeysClient {
-	return original.NewQueryKeysClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewServicesClient(subscriptionID string) ServicesClient {
 	return original.NewServicesClient(subscriptionID)
 }
@@ -124,4 +118,10 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewQueryKeysClient(subscriptionID string) QueryKeysClient {
+	return original.NewQueryKeysClient(subscriptionID)
+}
+func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryKeysClient {
+	return original.NewQueryKeysClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -98,12 +98,6 @@ type NameClient = original.NameClient
 type NamespacesClient = original.NamespacesClient
 type Client = original.Client
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewHubsClient(subscriptionID string) HubsClient {
 	return original.NewHubsClient(subscriptionID)
 }
@@ -133,4 +127,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

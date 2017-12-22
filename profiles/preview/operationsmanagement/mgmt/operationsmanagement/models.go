@@ -22,9 +22,6 @@ package operationsmanagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationsmanagement/mgmt/2015-11-01-preview/operationsmanagement"
 
-type OperationsClient = original.OperationsClient
-type SolutionsClient = original.SolutionsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -48,25 +45,9 @@ type Solution = original.Solution
 type SolutionPlan = original.SolutionPlan
 type SolutionProperties = original.SolutionProperties
 type SolutionPropertiesList = original.SolutionPropertiesList
+type OperationsClient = original.OperationsClient
+type SolutionsClient = original.SolutionsClient
 
-func New(subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
-	return original.New(subscriptionID, providerName, resourceType, resourceName)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
-}
-func NewManagementAssociationsClient(subscriptionID string, providerName string, resourceType string, resourceName string) ManagementAssociationsClient {
-	return original.NewManagementAssociationsClient(subscriptionID, providerName, resourceType, resourceName)
-}
-func NewManagementAssociationsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) ManagementAssociationsClient {
-	return original.NewManagementAssociationsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
-}
-func NewManagementConfigurationsClient(subscriptionID string, providerName string, resourceType string, resourceName string) ManagementConfigurationsClient {
-	return original.NewManagementConfigurationsClient(subscriptionID, providerName, resourceType, resourceName)
-}
-func NewManagementConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) ManagementConfigurationsClient {
-	return original.NewManagementConfigurationsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
-}
 func NewOperationsClient(subscriptionID string, providerName string, resourceType string, resourceName string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, providerName, resourceType, resourceName)
 }
@@ -84,4 +65,22 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
+	return original.New(subscriptionID, providerName, resourceType, resourceName)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
+}
+func NewManagementAssociationsClient(subscriptionID string, providerName string, resourceType string, resourceName string) ManagementAssociationsClient {
+	return original.NewManagementAssociationsClient(subscriptionID, providerName, resourceType, resourceName)
+}
+func NewManagementAssociationsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) ManagementAssociationsClient {
+	return original.NewManagementAssociationsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
+}
+func NewManagementConfigurationsClient(subscriptionID string, providerName string, resourceType string, resourceName string) ManagementConfigurationsClient {
+	return original.NewManagementConfigurationsClient(subscriptionID, providerName, resourceType, resourceName)
+}
+func NewManagementConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) ManagementConfigurationsClient {
+	return original.NewManagementConfigurationsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
 }

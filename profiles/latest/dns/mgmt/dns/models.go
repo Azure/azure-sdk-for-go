@@ -20,73 +20,19 @@
 
 package dns
 
-import original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2016-04-01/dns"
-
-type HTTPStatusCode = original.HTTPStatusCode
+import original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2017-09-01/dns"
 
 const (
-	Accepted                     HTTPStatusCode = original.Accepted
-	Ambiguous                    HTTPStatusCode = original.Ambiguous
-	BadGateway                   HTTPStatusCode = original.BadGateway
-	BadRequest                   HTTPStatusCode = original.BadRequest
-	Conflict                     HTTPStatusCode = original.Conflict
-	Continue                     HTTPStatusCode = original.Continue
-	Created                      HTTPStatusCode = original.Created
-	ExpectationFailed            HTTPStatusCode = original.ExpectationFailed
-	Forbidden                    HTTPStatusCode = original.Forbidden
-	Found                        HTTPStatusCode = original.Found
-	GatewayTimeout               HTTPStatusCode = original.GatewayTimeout
-	Gone                         HTTPStatusCode = original.Gone
-	HTTPVersionNotSupported      HTTPStatusCode = original.HTTPVersionNotSupported
-	InternalServerError          HTTPStatusCode = original.InternalServerError
-	LengthRequired               HTTPStatusCode = original.LengthRequired
-	MethodNotAllowed             HTTPStatusCode = original.MethodNotAllowed
-	Moved                        HTTPStatusCode = original.Moved
-	MovedPermanently             HTTPStatusCode = original.MovedPermanently
-	MultipleChoices              HTTPStatusCode = original.MultipleChoices
-	NoContent                    HTTPStatusCode = original.NoContent
-	NonAuthoritativeInformation  HTTPStatusCode = original.NonAuthoritativeInformation
-	NotAcceptable                HTTPStatusCode = original.NotAcceptable
-	NotFound                     HTTPStatusCode = original.NotFound
-	NotImplemented               HTTPStatusCode = original.NotImplemented
-	NotModified                  HTTPStatusCode = original.NotModified
-	OK                           HTTPStatusCode = original.OK
-	PartialContent               HTTPStatusCode = original.PartialContent
-	PaymentRequired              HTTPStatusCode = original.PaymentRequired
-	PreconditionFailed           HTTPStatusCode = original.PreconditionFailed
-	ProxyAuthenticationRequired  HTTPStatusCode = original.ProxyAuthenticationRequired
-	Redirect                     HTTPStatusCode = original.Redirect
-	RedirectKeepVerb             HTTPStatusCode = original.RedirectKeepVerb
-	RedirectMethod               HTTPStatusCode = original.RedirectMethod
-	RequestedRangeNotSatisfiable HTTPStatusCode = original.RequestedRangeNotSatisfiable
-	RequestEntityTooLarge        HTTPStatusCode = original.RequestEntityTooLarge
-	RequestTimeout               HTTPStatusCode = original.RequestTimeout
-	RequestURITooLong            HTTPStatusCode = original.RequestURITooLong
-	ResetContent                 HTTPStatusCode = original.ResetContent
-	SeeOther                     HTTPStatusCode = original.SeeOther
-	ServiceUnavailable           HTTPStatusCode = original.ServiceUnavailable
-	SwitchingProtocols           HTTPStatusCode = original.SwitchingProtocols
-	TemporaryRedirect            HTTPStatusCode = original.TemporaryRedirect
-	Unauthorized                 HTTPStatusCode = original.Unauthorized
-	UnsupportedMediaType         HTTPStatusCode = original.UnsupportedMediaType
-	Unused                       HTTPStatusCode = original.Unused
-	UpgradeRequired              HTTPStatusCode = original.UpgradeRequired
-	UseProxy                     HTTPStatusCode = original.UseProxy
+	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type OperationStatus = original.OperationStatus
-
-const (
-	Failed     OperationStatus = original.Failed
-	InProgress OperationStatus = original.InProgress
-	Succeeded  OperationStatus = original.Succeeded
-)
-
+type BaseClient = original.BaseClient
 type RecordType = original.RecordType
 
 const (
 	A     RecordType = original.A
 	AAAA  RecordType = original.AAAA
+	CAA   RecordType = original.CAA
 	CNAME RecordType = original.CNAME
 	MX    RecordType = original.MX
 	NS    RecordType = original.NS
@@ -98,6 +44,7 @@ const (
 
 type AaaaRecord = original.AaaaRecord
 type ARecord = original.ARecord
+type CaaRecord = original.CaaRecord
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type CnameRecord = original.CnameRecord
@@ -116,7 +63,6 @@ type SrvRecord = original.SrvRecord
 type SubResource = original.SubResource
 type TxtRecord = original.TxtRecord
 type Zone = original.Zone
-type ZoneDeleteResult = original.ZoneDeleteResult
 type ZoneListResult = original.ZoneListResult
 type ZoneListResultIterator = original.ZoneListResultIterator
 type ZoneListResultPage = original.ZoneListResultPage
@@ -125,18 +71,6 @@ type ZonesDeleteFuture = original.ZonesDeleteFuture
 type RecordSetsClient = original.RecordSetsClient
 type ZonesClient = original.ZonesClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func NewZonesClient(subscriptionID string) ZonesClient {
-	return original.NewZonesClient(subscriptionID)
-}
-func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClient {
-	return original.NewZonesClientWithBaseURI(baseURI, subscriptionID)
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -154,4 +88,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewZonesClient(subscriptionID string) ZonesClient {
+	return original.NewZonesClient(subscriptionID)
+}
+func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClient {
+	return original.NewZonesClientWithBaseURI(baseURI, subscriptionID)
 }

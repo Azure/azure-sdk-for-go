@@ -125,12 +125,6 @@ type UsageListResult = original.UsageListResult
 type UsageName = original.UsageName
 type UsageClient = original.UsageClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewUsageClient(subscriptionID string) UsageClient {
 	return original.NewUsageClient(subscriptionID)
 }
@@ -148,4 +142,10 @@ func NewAccountsClient(subscriptionID string) AccountsClient {
 }
 func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,6 +22,7 @@ package cognitiveservices
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices"
 
+type OperationsClient = original.OperationsClient
 type AccountsClient = original.AccountsClient
 type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
 
@@ -121,7 +122,6 @@ type OperationEntityListResultPage = original.OperationEntityListResultPage
 type RegenerateKeyParameters = original.RegenerateKeyParameters
 type ResourceAndSku = original.ResourceAndSku
 type Sku = original.Sku
-type OperationsClient = original.OperationsClient
 
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)

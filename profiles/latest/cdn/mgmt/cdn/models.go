@@ -22,8 +22,12 @@ package cdn
 
 import original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2017-04-02/cdn"
 
-type OperationsClient = original.OperationsClient
-type ProfilesClient = original.ProfilesClient
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type CustomDomainsClient = original.CustomDomainsClient
 type EdgeNodesClient = original.EdgeNodesClient
 type EndpointsClient = original.EndpointsClient
 type CustomDomainResourceState = original.CustomDomainResourceState
@@ -203,27 +207,22 @@ type ValidateCustomDomainInput = original.ValidateCustomDomainInput
 type ValidateCustomDomainOutput = original.ValidateCustomDomainOutput
 type ValidateProbeInput = original.ValidateProbeInput
 type ValidateProbeOutput = original.ValidateProbeOutput
-type ResourceUsageClient = original.ResourceUsageClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type CustomDomainsClient = original.CustomDomainsClient
 type OriginsClient = original.OriginsClient
+type ResourceUsageClient = original.ResourceUsageClient
+type OperationsClient = original.OperationsClient
+type ProfilesClient = original.ProfilesClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewEdgeNodesClient(subscriptionID string) EdgeNodesClient {
+	return original.NewEdgeNodesClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string) EdgeNodesClient {
+	return original.NewEdgeNodesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
-	return original.NewCustomDomainsClient(subscriptionID)
+func NewEndpointsClient(subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClient(subscriptionID)
 }
-func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) CustomDomainsClient {
-	return original.NewCustomDomainsClientWithBaseURI(baseURI, subscriptionID)
+func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOriginsClient(subscriptionID string) OriginsClient {
 	return original.NewOriginsClient(subscriptionID)
@@ -237,17 +236,23 @@ func NewResourceUsageClient(subscriptionID string) ResourceUsageClient {
 func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string) ResourceUsageClient {
 	return original.NewResourceUsageClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewEdgeNodesClient(subscriptionID string) EdgeNodesClient {
-	return original.NewEdgeNodesClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string) EdgeNodesClient {
-	return original.NewEdgeNodesClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewEndpointsClient(subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClient(subscriptionID)
+func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
+	return original.NewCustomDomainsClient(subscriptionID)
 }
-func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
+func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) CustomDomainsClient {
+	return original.NewCustomDomainsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -260,10 +265,4 @@ func NewProfilesClient(subscriptionID string) ProfilesClient {
 }
 func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
 	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
 }

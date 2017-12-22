@@ -79,6 +79,12 @@ type OperationsClient = original.OperationsClient
 type RecommendationsClient = original.RecommendationsClient
 type SuppressionsClient = original.SuppressionsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
 	return original.NewConfigurationsClient(subscriptionID)
 }
@@ -108,10 +114,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

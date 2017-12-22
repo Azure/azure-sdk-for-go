@@ -556,12 +556,6 @@ type UaxURLEmailTokenizer = original.UaxURLEmailTokenizer
 type UniqueTokenFilter = original.UniqueTokenFilter
 type WordDelimiterTokenFilter = original.WordDelimiterTokenFilter
 
-func NewDataSourcesClient() DataSourcesClient {
-	return original.NewDataSourcesClient()
-}
-func NewDataSourcesClientWithBaseURI(baseURI string) DataSourcesClient {
-	return original.NewDataSourcesClientWithBaseURI(baseURI)
-}
 func NewDocumentsProxyClient() DocumentsProxyClient {
 	return original.NewDocumentsProxyClient()
 }
@@ -591,4 +585,10 @@ func New() BaseClient {
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func NewDataSourcesClient() DataSourcesClient {
+	return original.NewDataSourcesClient()
+}
+func NewDataSourcesClientWithBaseURI(baseURI string) DataSourcesClient {
+	return original.NewDataSourcesClientWithBaseURI(baseURI)
 }

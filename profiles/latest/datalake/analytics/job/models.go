@@ -140,6 +140,12 @@ type USQLJobProperties = original.USQLJobProperties
 type PipelineClient = original.PipelineClient
 type RecurrenceClient = original.RecurrenceClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
 func New() BaseClient {
 	return original.New()
 }
@@ -154,10 +160,4 @@ func NewPipelineClient() PipelineClient {
 }
 func NewRecurrenceClient() RecurrenceClient {
 	return original.NewRecurrenceClient()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
 }

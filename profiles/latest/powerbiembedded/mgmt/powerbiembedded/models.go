@@ -62,12 +62,6 @@ type WorkspaceList = original.WorkspaceList
 type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
 type WorkspacesClient = original.WorkspacesClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
@@ -85,4 +79,10 @@ func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 }
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

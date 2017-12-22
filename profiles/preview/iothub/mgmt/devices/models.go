@@ -22,8 +22,6 @@ package devices
 
 import original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2017-07-01/devices"
 
-type CertificatesClient = original.CertificatesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -204,13 +202,8 @@ type SharedAccessSignatureAuthorizationRuleListResultIterator = original.SharedA
 type SharedAccessSignatureAuthorizationRuleListResultPage = original.SharedAccessSignatureAuthorizationRuleListResultPage
 type StorageEndpointProperties = original.StorageEndpointProperties
 type OperationsClient = original.OperationsClient
+type CertificatesClient = original.CertificatesClient
 
-func NewIotHubResourceClient(subscriptionID string) IotHubResourceClient {
-	return original.NewIotHubResourceClient(subscriptionID)
-}
-func NewIotHubResourceClientWithBaseURI(baseURI string, subscriptionID string) IotHubResourceClient {
-	return original.NewIotHubResourceClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -234,4 +227,10 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewIotHubResourceClient(subscriptionID string) IotHubResourceClient {
+	return original.NewIotHubResourceClient(subscriptionID)
+}
+func NewIotHubResourceClientWithBaseURI(baseURI string, subscriptionID string) IotHubResourceClient {
+	return original.NewIotHubResourceClientWithBaseURI(baseURI, subscriptionID)
 }

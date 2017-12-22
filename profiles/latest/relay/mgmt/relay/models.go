@@ -120,6 +120,12 @@ type WcfRelaysListResultPage = original.WcfRelaysListResultPage
 type NamespacesClient = original.NamespacesClient
 type OperationsClient = original.OperationsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func NewHybridConnectionsClient(subscriptionID string) HybridConnectionsClient {
 	return original.NewHybridConnectionsClient(subscriptionID)
 }
@@ -149,10 +155,4 @@ func NewWCFRelaysClient(subscriptionID string) WCFRelaysClient {
 }
 func NewWCFRelaysClientWithBaseURI(baseURI string, subscriptionID string) WCFRelaysClient {
 	return original.NewWCFRelaysClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

@@ -205,15 +205,15 @@ type SubjectAlternativeNames = original.SubjectAlternativeNames
 type Trigger = original.Trigger
 type X509CertificateProperties = original.X509CertificateProperties
 
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults() BaseClient {
-	return original.NewWithoutDefaults()
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults() BaseClient {
+	return original.NewWithoutDefaults()
 }

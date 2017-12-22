@@ -27,9 +27,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type JobScheduleClient = original.JobScheduleClient
-type CertificateClient = original.CertificateClient
-type ApplicationClient = original.ApplicationClient
 type ComputeNodeClient = original.ComputeNodeClient
 type FileClient = original.FileClient
 type JobClient = original.JobClient
@@ -459,8 +456,17 @@ type VirtualMachineConfiguration = original.VirtualMachineConfiguration
 type WindowsConfiguration = original.WindowsConfiguration
 type PoolClient = original.PoolClient
 type TaskClient = original.TaskClient
+type ApplicationClient = original.ApplicationClient
+type CertificateClient = original.CertificateClient
+type JobScheduleClient = original.JobScheduleClient
 type AccountClient = original.AccountClient
 
+func NewJobClient() JobClient {
+	return original.NewJobClient()
+}
+func NewJobClientWithBaseURI(baseURI string) JobClient {
+	return original.NewJobClientWithBaseURI(baseURI)
+}
 func NewPoolClient() PoolClient {
 	return original.NewPoolClient()
 }
@@ -473,17 +479,17 @@ func NewTaskClient() TaskClient {
 func NewTaskClientWithBaseURI(baseURI string) TaskClient {
 	return original.NewTaskClientWithBaseURI(baseURI)
 }
-func NewAccountClient() AccountClient {
-	return original.NewAccountClient()
-}
-func NewAccountClientWithBaseURI(baseURI string) AccountClient {
-	return original.NewAccountClientWithBaseURI(baseURI)
-}
 func NewApplicationClient() ApplicationClient {
 	return original.NewApplicationClient()
 }
 func NewApplicationClientWithBaseURI(baseURI string) ApplicationClient {
 	return original.NewApplicationClientWithBaseURI(baseURI)
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }
 func NewComputeNodeClient() ComputeNodeClient {
 	return original.NewComputeNodeClient()
@@ -497,11 +503,17 @@ func NewFileClient() FileClient {
 func NewFileClientWithBaseURI(baseURI string) FileClient {
 	return original.NewFileClientWithBaseURI(baseURI)
 }
-func NewJobClient() JobClient {
-	return original.NewJobClient()
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewJobClientWithBaseURI(baseURI string) JobClient {
-	return original.NewJobClientWithBaseURI(baseURI)
+func Version() string {
+	return original.Version()
+}
+func NewAccountClient() AccountClient {
+	return original.NewAccountClient()
+}
+func NewAccountClientWithBaseURI(baseURI string) AccountClient {
+	return original.NewAccountClientWithBaseURI(baseURI)
 }
 func NewCertificateClient() CertificateClient {
 	return original.NewCertificateClient()
@@ -509,21 +521,9 @@ func NewCertificateClient() CertificateClient {
 func NewCertificateClientWithBaseURI(baseURI string) CertificateClient {
 	return original.NewCertificateClientWithBaseURI(baseURI)
 }
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
 func NewJobScheduleClient() JobScheduleClient {
 	return original.NewJobScheduleClient()
 }
 func NewJobScheduleClientWithBaseURI(baseURI string) JobScheduleClient {
 	return original.NewJobScheduleClientWithBaseURI(baseURI)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

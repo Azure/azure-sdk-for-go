@@ -22,6 +22,8 @@ package compute
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-08-01-preview/compute"
 
+type OperationalizationClustersClient = original.OperationalizationClustersClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -162,14 +164,7 @@ type StorageAccountCredentials = original.StorageAccountCredentials
 type StorageAccountProperties = original.StorageAccountProperties
 type SystemService = original.SystemService
 type UpdateSystemServicesResponse = original.UpdateSystemServicesResponse
-type OperationalizationClustersClient = original.OperationalizationClustersClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
 	return original.NewMachineLearningComputeClient(subscriptionID)
 }
@@ -187,4 +182,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,6 +22,16 @@ package eventhub
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventhub/mgmt/2017-04-01/eventhub"
 
+type NamespacesClient = original.NamespacesClient
+type OperationsClient = original.OperationsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ConsumerGroupsClient = original.ConsumerGroupsClient
+type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
 type EventHubsClient = original.EventHubsClient
 type AccessRights = original.AccessRights
 
@@ -143,17 +153,13 @@ type RegenerateAccessKeyParameters = original.RegenerateAccessKeyParameters
 type Resource = original.Resource
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
-type NamespacesClient = original.NamespacesClient
-type OperationsClient = original.OperationsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ConsumerGroupsClient = original.ConsumerGroupsClient
-type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
-
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
+}
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -189,10 +195,4 @@ func NewEventHubsClient(subscriptionID string) EventHubsClient {
 }
 func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
 	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
-}
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
 }

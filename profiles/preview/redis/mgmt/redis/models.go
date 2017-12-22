@@ -130,12 +130,6 @@ type TrackedResource = original.TrackedResource
 type UpdateParameters = original.UpdateParameters
 type UpdateProperties = original.UpdateProperties
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewPatchSchedulesClient(subscriptionID string) PatchSchedulesClient {
 	return original.NewPatchSchedulesClient(subscriptionID)
 }
@@ -171,4 +165,10 @@ func NewLinkedServerClient(subscriptionID string) LinkedServerClient {
 }
 func NewLinkedServerClientWithBaseURI(baseURI string, subscriptionID string) LinkedServerClient {
 	return original.NewLinkedServerClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

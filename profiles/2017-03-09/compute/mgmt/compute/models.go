@@ -22,6 +22,18 @@ package compute
 
 import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2016-03-30/compute"
 
+type VirtualMachineImagesClient = original.VirtualMachineImagesClient
+type VirtualMachineScaleSetsClient = original.VirtualMachineScaleSetsClient
+type VirtualMachineSizesClient = original.VirtualMachineSizesClient
+type VirtualMachineExtensionsClient = original.VirtualMachineExtensionsClient
+type VirtualMachinesClient = original.VirtualMachinesClient
+type AvailabilitySetsClient = original.AvailabilitySetsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type CachingTypes = original.CachingTypes
 
 const (
@@ -309,27 +321,15 @@ type VirtualMachineStatusCodeCount = original.VirtualMachineStatusCodeCount
 type WindowsConfiguration = original.WindowsConfiguration
 type WinRMConfiguration = original.WinRMConfiguration
 type WinRMListener = original.WinRMListener
-type VirtualMachineExtensionImagesClient = original.VirtualMachineExtensionImagesClient
-type VirtualMachineExtensionsClient = original.VirtualMachineExtensionsClient
-type VirtualMachineScaleSetVMsClient = original.VirtualMachineScaleSetVMsClient
-type AvailabilitySetsClient = original.AvailabilitySetsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type UsageClient = original.UsageClient
-type VirtualMachineImagesClient = original.VirtualMachineImagesClient
-type VirtualMachinesClient = original.VirtualMachinesClient
-type VirtualMachineScaleSetsClient = original.VirtualMachineScaleSetsClient
-type VirtualMachineSizesClient = original.VirtualMachineSizesClient
+type VirtualMachineExtensionImagesClient = original.VirtualMachineExtensionImagesClient
+type VirtualMachineScaleSetVMsClient = original.VirtualMachineScaleSetVMsClient
 
-func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
-	return original.NewVirtualMachinesClient(subscriptionID)
+func NewVirtualMachineImagesClient(subscriptionID string) VirtualMachineImagesClient {
+	return original.NewVirtualMachineImagesClient(subscriptionID)
 }
-func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
-	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImagesClient {
+	return original.NewVirtualMachineImagesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualMachineScaleSetsClient(subscriptionID string) VirtualMachineScaleSetsClient {
 	return original.NewVirtualMachineScaleSetsClient(subscriptionID)
@@ -361,18 +361,6 @@ func NewUsageClient(subscriptionID string) UsageClient {
 func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
 	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewVirtualMachineImagesClient(subscriptionID string) VirtualMachineImagesClient {
-	return original.NewVirtualMachineImagesClient(subscriptionID)
-}
-func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImagesClient {
-	return original.NewVirtualMachineImagesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVirtualMachineScaleSetVMsClient(subscriptionID string) VirtualMachineScaleSetVMsClient {
-	return original.NewVirtualMachineScaleSetVMsClient(subscriptionID)
-}
-func NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetVMsClient {
-	return original.NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/2017-03-09"
 }
@@ -390,4 +378,16 @@ func NewVirtualMachineExtensionsClient(subscriptionID string) VirtualMachineExte
 }
 func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionsClient {
 	return original.NewVirtualMachineExtensionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClient(subscriptionID)
+}
+func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualMachineScaleSetVMsClient(subscriptionID string) VirtualMachineScaleSetVMsClient {
+	return original.NewVirtualMachineScaleSetVMsClient(subscriptionID)
+}
+func NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetVMsClient {
+	return original.NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI, subscriptionID)
 }

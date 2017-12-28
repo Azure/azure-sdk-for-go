@@ -82,6 +82,12 @@ type OperationListResultPage = original.OperationListResultPage
 type ParentGroupInfo = original.ParentGroupInfo
 type OperationsClient = original.OperationsClient
 
+func New(groupID uuid.UUID) BaseClient {
+	return original.New(groupID)
+}
+func NewWithBaseURI(baseURI string, groupID uuid.UUID) BaseClient {
+	return original.NewWithBaseURI(baseURI, groupID)
+}
 func NewGroupsClient(groupID uuid.UUID) GroupsClient {
 	return original.NewGroupsClient(groupID)
 }
@@ -99,10 +105,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New(groupID uuid.UUID) BaseClient {
-	return original.New(groupID)
-}
-func NewWithBaseURI(baseURI string, groupID uuid.UUID) BaseClient {
-	return original.NewWithBaseURI(baseURI, groupID)
 }

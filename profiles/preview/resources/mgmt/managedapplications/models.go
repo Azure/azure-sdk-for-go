@@ -22,6 +22,7 @@ package managedapplications
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01-preview/managedapplications"
 
+type ApplianceDefinitionsClient = original.ApplianceDefinitionsClient
 type AppliancesClient = original.AppliancesClient
 
 const (
@@ -95,14 +96,7 @@ type Plan = original.Plan
 type PlanPatchable = original.PlanPatchable
 type Resource = original.Resource
 type Sku = original.Sku
-type ApplianceDefinitionsClient = original.ApplianceDefinitionsClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func NewApplianceDefinitionsClient(subscriptionID string) ApplianceDefinitionsClient {
 	return original.NewApplianceDefinitionsClient(subscriptionID)
 }
@@ -120,4 +114,10 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

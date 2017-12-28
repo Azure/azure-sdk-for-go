@@ -22,6 +22,13 @@ package operationalinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-03-20/operationalinsights"
 
+type WorkspacesClient = original.WorkspacesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type SearchSortEnum = original.SearchSortEnum
 
 const (
@@ -64,20 +71,7 @@ type Tag = original.Tag
 type WorkspacesGetSearchResultsFuture = original.WorkspacesGetSearchResultsFuture
 type SavedSearchesClient = original.SavedSearchesClient
 type StorageInsightsClient = original.StorageInsightsClient
-type WorkspacesClient = original.WorkspacesClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewSavedSearchesClient(subscriptionID string) SavedSearchesClient {
 	return original.NewSavedSearchesClient(subscriptionID)
 }
@@ -101,4 +95,10 @@ func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 }
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

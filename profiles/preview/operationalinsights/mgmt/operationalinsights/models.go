@@ -22,6 +22,13 @@ package operationalinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-11-01-preview/operationalinsights"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type DataSourcesClient = original.DataSourcesClient
+type LinkedServicesClient = original.LinkedServicesClient
 type DataSourceKind = original.DataSourceKind
 
 const (
@@ -130,20 +137,6 @@ type SavedSearchesClient = original.SavedSearchesClient
 type StorageInsightsClient = original.StorageInsightsClient
 type WorkspacesClient = original.WorkspacesClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type DataSourcesClient = original.DataSourcesClient
-type LinkedServicesClient = original.LinkedServicesClient
-
-func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClient(subscriptionID)
-}
-func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewSavedSearchesClient(subscriptionID string) SavedSearchesClient {
 	return original.NewSavedSearchesClient(subscriptionID)
 }
@@ -179,4 +172,10 @@ func NewDataSourcesClient(subscriptionID string) DataSourcesClient {
 }
 func NewDataSourcesClientWithBaseURI(baseURI string, subscriptionID string) DataSourcesClient {
 	return original.NewDataSourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClient(subscriptionID)
+}
+func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
 }

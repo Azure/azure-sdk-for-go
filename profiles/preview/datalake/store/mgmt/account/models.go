@@ -22,6 +22,13 @@ package account
 
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/2016-11-01/account"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type FirewallRulesClient = original.FirewallRulesClient
+type LocationsClient = original.LocationsClient
 type DataLakeStoreAccountState = original.DataLakeStoreAccountState
 
 const (
@@ -161,20 +168,6 @@ type OperationsClient = original.OperationsClient
 type TrustedIDProvidersClient = original.TrustedIDProvidersClient
 type Client = original.Client
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type FirewallRulesClient = original.FirewallRulesClient
-type LocationsClient = original.LocationsClient
-
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewTrustedIDProvidersClient(subscriptionID string) TrustedIDProvidersClient {
 	return original.NewTrustedIDProvidersClient(subscriptionID)
 }
@@ -210,4 +203,10 @@ func NewLocationsClient(subscriptionID string) LocationsClient {
 }
 func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
 	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

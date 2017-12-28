@@ -61,18 +61,6 @@ type UsageSample = original.UsageSample
 type RateCardClient = original.RateCardClient
 type UsageAggregatesClient = original.UsageAggregatesClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewRateCardClient(subscriptionID string) RateCardClient {
-	return original.NewRateCardClient(subscriptionID)
-}
-func NewRateCardClientWithBaseURI(baseURI string, subscriptionID string) RateCardClient {
-	return original.NewRateCardClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewUsageAggregatesClient(subscriptionID string) UsageAggregatesClient {
 	return original.NewUsageAggregatesClient(subscriptionID)
 }
@@ -84,4 +72,16 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewRateCardClient(subscriptionID string) RateCardClient {
+	return original.NewRateCardClient(subscriptionID)
+}
+func NewRateCardClientWithBaseURI(baseURI string, subscriptionID string) RateCardClient {
+	return original.NewRateCardClientWithBaseURI(baseURI, subscriptionID)
 }

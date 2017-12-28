@@ -22,6 +22,9 @@ package graphrbac
 
 import original "github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
 
+type ServicePrincipalsClient = original.ServicePrincipalsClient
+type UsersClient = original.UsersClient
+type ApplicationsClient = original.ApplicationsClient
 type ObjectType = original.ObjectType
 
 const (
@@ -93,6 +96,7 @@ type UserListResult = original.UserListResult
 type UserListResultIterator = original.UserListResultIterator
 type UserListResultPage = original.UserListResultPage
 type UserUpdateParameters = original.UserUpdateParameters
+type ObjectsClient = original.ObjectsClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -101,10 +105,6 @@ const (
 type BaseClient = original.BaseClient
 type DomainsClient = original.DomainsClient
 type GroupsClient = original.GroupsClient
-type UsersClient = original.UsersClient
-type ApplicationsClient = original.ApplicationsClient
-type ObjectsClient = original.ObjectsClient
-type ServicePrincipalsClient = original.ServicePrincipalsClient
 
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
@@ -130,18 +130,6 @@ func NewGroupsClient(tenantID string) GroupsClient {
 func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
 	return original.NewGroupsClientWithBaseURI(baseURI, tenantID)
 }
-func NewApplicationsClient(tenantID string) ApplicationsClient {
-	return original.NewApplicationsClient(tenantID)
-}
-func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) ApplicationsClient {
-	return original.NewApplicationsClientWithBaseURI(baseURI, tenantID)
-}
-func NewObjectsClient(tenantID string) ObjectsClient {
-	return original.NewObjectsClient(tenantID)
-}
-func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient {
-	return original.NewObjectsClientWithBaseURI(baseURI, tenantID)
-}
 func NewServicePrincipalsClient(tenantID string) ServicePrincipalsClient {
 	return original.NewServicePrincipalsClient(tenantID)
 }
@@ -153,4 +141,16 @@ func NewUsersClient(tenantID string) UsersClient {
 }
 func NewUsersClientWithBaseURI(baseURI string, tenantID string) UsersClient {
 	return original.NewUsersClientWithBaseURI(baseURI, tenantID)
+}
+func NewApplicationsClient(tenantID string) ApplicationsClient {
+	return original.NewApplicationsClient(tenantID)
+}
+func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) ApplicationsClient {
+	return original.NewApplicationsClientWithBaseURI(baseURI, tenantID)
+}
+func NewObjectsClient(tenantID string) ObjectsClient {
+	return original.NewObjectsClient(tenantID)
+}
+func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient {
+	return original.NewObjectsClientWithBaseURI(baseURI, tenantID)
 }

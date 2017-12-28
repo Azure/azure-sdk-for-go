@@ -22,13 +22,17 @@ package mobileengagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/mobileengagement/mgmt/2014-12-01/mobileengagement"
 
+type AppsClient = original.AppsClient
+type CampaignsClient = original.CampaignsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
 type ImportTasksClient = original.ImportTasksClient
-type CampaignsClient = original.CampaignsClient
+type SupportedPlatformsClient = original.SupportedPlatformsClient
+type AppCollectionsClient = original.AppCollectionsClient
 type DevicesClient = original.DevicesClient
 type ExportTasksClient = original.ExportTasksClient
 type AudienceOperators = original.AudienceOperators
@@ -287,21 +291,18 @@ type ScreenSizeCriterion = original.ScreenSizeCriterion
 type SegmentCriterion = original.SegmentCriterion
 type StringTagCriterion = original.StringTagCriterion
 type SupportedPlatformsListResult = original.SupportedPlatformsListResult
-type SupportedPlatformsClient = original.SupportedPlatformsClient
-type AppCollectionsClient = original.AppCollectionsClient
-type AppsClient = original.AppsClient
 
+func NewDevicesClient(subscriptionID string) DevicesClient {
+	return original.NewDevicesClient(subscriptionID)
+}
+func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesClient {
+	return original.NewDevicesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewExportTasksClient(subscriptionID string) ExportTasksClient {
 	return original.NewExportTasksClient(subscriptionID)
 }
 func NewExportTasksClientWithBaseURI(baseURI string, subscriptionID string) ExportTasksClient {
 	return original.NewExportTasksClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSupportedPlatformsClient(subscriptionID string) SupportedPlatformsClient {
-	return original.NewSupportedPlatformsClient(subscriptionID)
-}
-func NewSupportedPlatformsClientWithBaseURI(baseURI string, subscriptionID string) SupportedPlatformsClient {
-	return original.NewSupportedPlatformsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
@@ -315,23 +316,11 @@ func NewAppCollectionsClient(subscriptionID string) AppCollectionsClient {
 func NewAppCollectionsClientWithBaseURI(baseURI string, subscriptionID string) AppCollectionsClient {
 	return original.NewAppCollectionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAppsClient(subscriptionID string) AppsClient {
-	return original.NewAppsClient(subscriptionID)
-}
-func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient {
-	return original.NewAppsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewCampaignsClient(subscriptionID string) CampaignsClient {
 	return original.NewCampaignsClient(subscriptionID)
 }
 func NewCampaignsClientWithBaseURI(baseURI string, subscriptionID string) CampaignsClient {
 	return original.NewCampaignsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDevicesClient(subscriptionID string) DevicesClient {
-	return original.NewDevicesClient(subscriptionID)
-}
-func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesClient {
-	return original.NewDevicesClientWithBaseURI(baseURI, subscriptionID)
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -344,4 +333,16 @@ func NewImportTasksClient(subscriptionID string) ImportTasksClient {
 }
 func NewImportTasksClientWithBaseURI(baseURI string, subscriptionID string) ImportTasksClient {
 	return original.NewImportTasksClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSupportedPlatformsClient(subscriptionID string) SupportedPlatformsClient {
+	return original.NewSupportedPlatformsClient(subscriptionID)
+}
+func NewSupportedPlatformsClientWithBaseURI(baseURI string, subscriptionID string) SupportedPlatformsClient {
+	return original.NewSupportedPlatformsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAppsClient(subscriptionID string) AppsClient {
+	return original.NewAppsClient(subscriptionID)
+}
+func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient {
+	return original.NewAppsClientWithBaseURI(baseURI, subscriptionID)
 }

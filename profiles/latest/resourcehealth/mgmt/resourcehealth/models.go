@@ -60,6 +60,12 @@ type ServiceImpactingEventIncidentProperties = original.ServiceImpactingEventInc
 type ServiceImpactingEventStatus = original.ServiceImpactingEventStatus
 type OperationsClient = original.OperationsClient
 
+func NewAvailabilityStatusesClient(subscriptionID string) AvailabilityStatusesClient {
+	return original.NewAvailabilityStatusesClient(subscriptionID)
+}
+func NewAvailabilityStatusesClientWithBaseURI(baseURI string, subscriptionID string) AvailabilityStatusesClient {
+	return original.NewAvailabilityStatusesClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -77,10 +83,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func NewAvailabilityStatusesClient(subscriptionID string) AvailabilityStatusesClient {
-	return original.NewAvailabilityStatusesClient(subscriptionID)
-}
-func NewAvailabilityStatusesClientWithBaseURI(baseURI string, subscriptionID string) AvailabilityStatusesClient {
-	return original.NewAvailabilityStatusesClientWithBaseURI(baseURI, subscriptionID)
 }

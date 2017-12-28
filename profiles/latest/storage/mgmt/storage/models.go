@@ -22,9 +22,6 @@ package storage
 
 import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2017-10-01/storage"
 
-type UsageClient = original.UsageClient
-type AccountsClient = original.AccountsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -237,6 +234,8 @@ type UsageName = original.UsageName
 type VirtualNetworkRule = original.VirtualNetworkRule
 type OperationsClient = original.OperationsClient
 type SkusClient = original.SkusClient
+type UsageClient = original.UsageClient
+type AccountsClient = original.AccountsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

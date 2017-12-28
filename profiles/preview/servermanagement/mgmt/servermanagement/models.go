@@ -121,24 +121,6 @@ type NodeClient = original.NodeClient
 type PowerShellClient = original.PowerShellClient
 type SessionClient = original.SessionClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewGatewayClient(subscriptionID string) GatewayClient {
-	return original.NewGatewayClient(subscriptionID)
-}
-func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayClient {
-	return original.NewGatewayClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewNodeClient(subscriptionID string) NodeClient {
 	return original.NewNodeClient(subscriptionID)
 }
@@ -156,4 +138,22 @@ func NewSessionClient(subscriptionID string) SessionClient {
 }
 func NewSessionClientWithBaseURI(baseURI string, subscriptionID string) SessionClient {
 	return original.NewSessionClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewGatewayClient(subscriptionID string) GatewayClient {
+	return original.NewGatewayClient(subscriptionID)
+}
+func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayClient {
+	return original.NewGatewayClientWithBaseURI(baseURI, subscriptionID)
 }

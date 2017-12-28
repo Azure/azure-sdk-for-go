@@ -123,12 +123,6 @@ type OperationsClient = original.OperationsClient
 type TopicsClient = original.TopicsClient
 type TopicTypesClient = original.TopicTypesClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewTopicsClient(subscriptionID string) TopicsClient {
 	return original.NewTopicsClient(subscriptionID)
 }
@@ -158,4 +152,10 @@ func NewEventSubscriptionsClient(subscriptionID string) EventSubscriptionsClient
 }
 func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) EventSubscriptionsClient {
 	return original.NewEventSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

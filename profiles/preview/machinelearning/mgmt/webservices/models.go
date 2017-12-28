@@ -22,11 +22,6 @@ package webservices
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-01-01/webservices"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type AssetType = original.AssetType
 
 const (
@@ -155,6 +150,12 @@ type WebServicesCreateRegionalPropertiesFuture = original.WebServicesCreateRegio
 type WebServicesPatchFuture = original.WebServicesPatchFuture
 type WebServicesRemoveFuture = original.WebServicesRemoveFuture
 type Client = original.Client
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

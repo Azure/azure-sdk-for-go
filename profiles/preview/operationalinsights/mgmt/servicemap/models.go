@@ -22,15 +22,6 @@ package servicemap
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-11-01-preview/servicemap"
 
-type ProcessesClient = original.ProcessesClient
-type SummariesClient = original.SummariesClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type MachineGroupsClient = original.MachineGroupsClient
 type Accuracy = original.Accuracy
 
 const (
@@ -231,22 +222,19 @@ type SummaryProperties = original.SummaryProperties
 type Timezone = original.Timezone
 type VirtualMachineConfiguration = original.VirtualMachineConfiguration
 type PortsClient = original.PortsClient
+type SummariesClient = original.SummariesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type MachineGroupsClient = original.MachineGroupsClient
+type MapsClient = original.MapsClient
 type ClientGroupsClient = original.ClientGroupsClient
 type MachinesClient = original.MachinesClient
-type MapsClient = original.MapsClient
+type ProcessesClient = original.ProcessesClient
 
-func NewMapsClient(subscriptionID string) MapsClient {
-	return original.NewMapsClient(subscriptionID)
-}
-func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient {
-	return original.NewMapsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 func NewClientGroupsClient(subscriptionID string) ClientGroupsClient {
 	return original.NewClientGroupsClient(subscriptionID)
 }
@@ -259,23 +247,17 @@ func NewMachinesClient(subscriptionID string) MachinesClient {
 func NewMachinesClientWithBaseURI(baseURI string, subscriptionID string) MachinesClient {
 	return original.NewMachinesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPortsClient(subscriptionID string) PortsClient {
-	return original.NewPortsClient(subscriptionID)
-}
-func NewPortsClientWithBaseURI(baseURI string, subscriptionID string) PortsClient {
-	return original.NewPortsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewProcessesClient(subscriptionID string) ProcessesClient {
 	return original.NewProcessesClient(subscriptionID)
 }
 func NewProcessesClientWithBaseURI(baseURI string, subscriptionID string) ProcessesClient {
 	return original.NewProcessesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSummariesClient(subscriptionID string) SummariesClient {
-	return original.NewSummariesClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewSummariesClientWithBaseURI(baseURI string, subscriptionID string) SummariesClient {
-	return original.NewSummariesClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -288,4 +270,22 @@ func NewMachineGroupsClient(subscriptionID string) MachineGroupsClient {
 }
 func NewMachineGroupsClientWithBaseURI(baseURI string, subscriptionID string) MachineGroupsClient {
 	return original.NewMachineGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMapsClient(subscriptionID string) MapsClient {
+	return original.NewMapsClient(subscriptionID)
+}
+func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient {
+	return original.NewMapsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPortsClient(subscriptionID string) PortsClient {
+	return original.NewPortsClient(subscriptionID)
+}
+func NewPortsClientWithBaseURI(baseURI string, subscriptionID string) PortsClient {
+	return original.NewPortsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSummariesClient(subscriptionID string) SummariesClient {
+	return original.NewSummariesClient(subscriptionID)
+}
+func NewSummariesClientWithBaseURI(baseURI string, subscriptionID string) SummariesClient {
+	return original.NewSummariesClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -133,12 +133,6 @@ func (t *TableBatch) MergeEntity(entity *Entity) {
 func (t *TableBatch) ExecuteBatch() error {
 
 	// Using `github.com/marstr/guid` is in response to issue #947 (https://github.com/Azure/azure-sdk-for-go/issues/947).
-	// Basically, the issue is our code needs to be able to operate regardless of whether people have vendored in code
-	// on either side of Satori's inadvertant breaking changes. That leaves us two options:
-	// 	1. Use reflection to try to invoke whichever method is available to us in Satori's package.
-	// 	2. Take a dependency on an alternate library for the sake of generation.
-	// I've opted for strategy two, because it is easier to validate.
-	// Once Satori has resolved this, it would not be inappropriate to revert this code change.
 	id, err := guid.NewGUIDs(guid.CreationStrategyVersion1)
 	if err != nil {
 		return err

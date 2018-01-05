@@ -9,6 +9,11 @@
 - Cognitive Services Content Moderator
 - Cognitive Services LUIS
 
+## `v12.1.1-beta`
+
+### Changes
+- Removing, at least temporarily, our calls to `uuid.NewV1()`.
+
 ## `v12.0.0-beta`
 
 ### Changes

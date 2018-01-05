@@ -5,6 +5,7 @@
 ### Changes
 
 - Removing (at least temporarily) calls to `uuid.NewV1()` due to breaking changes (see https://github.com/Azure/azure-sdk-for-go/issues/947 for more info).
+- Deleted glide files as we are now using dep.
 
 ## `v12.1.0-beta`
 

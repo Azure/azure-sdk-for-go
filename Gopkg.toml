@@ -38,6 +38,10 @@
   name = "github.com/marstr/goalias"
 
 [[constraint]]
+  revision = "8bdf7d1a087ccc975cf37dd6507da50698fd19ca"
+  name = "github.com/marstr/guid"
+
+[[constraint]]
   branch = "master"
   name = "github.com/marstr/randname"
 

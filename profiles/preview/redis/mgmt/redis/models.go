@@ -20,7 +20,7 @@
 
 package redis
 
-import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-02-01/redis"
+import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-10-01/redis"
 
 type OperationsClient = original.OperationsClient
 type PatchSchedulesClient = original.PatchSchedulesClient
@@ -85,10 +85,12 @@ const (
 )
 
 type AccessKeys = original.AccessKeys
+type CommonProperties = original.CommonProperties
 type CreateParameters = original.CreateParameters
 type CreateProperties = original.CreateProperties
 type ExportRDBParameters = original.ExportRDBParameters
 type FirewallRule = original.FirewallRule
+type FirewallRuleCreateParameters = original.FirewallRuleCreateParameters
 type FirewallRuleListResult = original.FirewallRuleListResult
 type FirewallRuleListResultIterator = original.FirewallRuleListResultIterator
 type FirewallRuleListResultPage = original.FirewallRuleListResultPage
@@ -99,10 +101,11 @@ type LinkedServer = original.LinkedServer
 type LinkedServerCreateFuture = original.LinkedServerCreateFuture
 type LinkedServerCreateParameters = original.LinkedServerCreateParameters
 type LinkedServerCreateProperties = original.LinkedServerCreateProperties
-type LinkedServerList = original.LinkedServerList
 type LinkedServerProperties = original.LinkedServerProperties
 type LinkedServerWithProperties = original.LinkedServerWithProperties
 type LinkedServerWithPropertiesList = original.LinkedServerWithPropertiesList
+type LinkedServerWithPropertiesListIterator = original.LinkedServerWithPropertiesListIterator
+type LinkedServerWithPropertiesListPage = original.LinkedServerWithPropertiesListPage
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
@@ -121,7 +124,6 @@ type RedisExportDataFuture = original.RedisExportDataFuture
 type RedisImportDataFuture = original.RedisImportDataFuture
 type RegenerateKeyParameters = original.RegenerateKeyParameters
 type Resource = original.Resource
-type ResourceProperties = original.ResourceProperties
 type ResourceType = original.ResourceType
 type ScheduleEntries = original.ScheduleEntries
 type ScheduleEntry = original.ScheduleEntry

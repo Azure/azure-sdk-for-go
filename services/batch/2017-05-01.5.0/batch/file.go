@@ -1,4 +1,4 @@
-package xpackagex
+package batch
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,12 +19,13 @@ package xpackagex
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/satori/go.uuid"
-	"net/http"
 )
 
 // FileClient is the a client for issuing REST requests to the Azure Batch service.
@@ -57,20 +58,20 @@ func NewFileClientWithBaseURI(baseURI string) FileClient {
 func (client FileClient) DeleteFromComputeNode(ctx context.Context, poolID string, nodeID string, filePath string, recursive *bool, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.DeleteFromComputeNodePreparer(ctx, poolID, nodeID, filePath, recursive, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "DeleteFromComputeNode", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "DeleteFromComputeNode", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteFromComputeNodeSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "DeleteFromComputeNode", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "DeleteFromComputeNode", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteFromComputeNodeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "DeleteFromComputeNode", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "DeleteFromComputeNode", resp, "Failure responding to request")
 	}
 
 	return
@@ -149,20 +150,20 @@ func (client FileClient) DeleteFromComputeNodeResponder(resp *http.Response) (re
 func (client FileClient) DeleteFromTask(ctx context.Context, jobID string, taskID string, filePath string, recursive *bool, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.DeleteFromTaskPreparer(ctx, jobID, taskID, filePath, recursive, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "DeleteFromTask", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "DeleteFromTask", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteFromTaskSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "DeleteFromTask", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "DeleteFromTask", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteFromTaskResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "DeleteFromTask", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "DeleteFromTask", resp, "Failure responding to request")
 	}
 
 	return
@@ -243,20 +244,20 @@ func (client FileClient) DeleteFromTaskResponder(resp *http.Response) (result au
 func (client FileClient) GetFromComputeNode(ctx context.Context, poolID string, nodeID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ocpRange string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result ReadCloser, err error) {
 	req, err := client.GetFromComputeNodePreparer(ctx, poolID, nodeID, filePath, timeout, clientRequestID, returnClientRequestID, ocpDate, ocpRange, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "GetFromComputeNode", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetFromComputeNode", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetFromComputeNodeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "GetFromComputeNode", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetFromComputeNode", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetFromComputeNodeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "GetFromComputeNode", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetFromComputeNode", resp, "Failure responding to request")
 	}
 
 	return
@@ -346,20 +347,20 @@ func (client FileClient) GetFromComputeNodeResponder(resp *http.Response) (resul
 func (client FileClient) GetFromTask(ctx context.Context, jobID string, taskID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ocpRange string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result ReadCloser, err error) {
 	req, err := client.GetFromTaskPreparer(ctx, jobID, taskID, filePath, timeout, clientRequestID, returnClientRequestID, ocpDate, ocpRange, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "GetFromTask", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetFromTask", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetFromTaskSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "GetFromTask", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetFromTask", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetFromTaskResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "GetFromTask", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetFromTask", resp, "Failure responding to request")
 	}
 
 	return
@@ -448,20 +449,20 @@ func (client FileClient) GetFromTaskResponder(resp *http.Response) (result ReadC
 func (client FileClient) GetPropertiesFromComputeNode(ctx context.Context, poolID string, nodeID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.GetPropertiesFromComputeNodePreparer(ctx, poolID, nodeID, filePath, timeout, clientRequestID, returnClientRequestID, ocpDate, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "GetPropertiesFromComputeNode", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetPropertiesFromComputeNode", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetPropertiesFromComputeNodeSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "GetPropertiesFromComputeNode", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetPropertiesFromComputeNode", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetPropertiesFromComputeNodeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "GetPropertiesFromComputeNode", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetPropertiesFromComputeNode", resp, "Failure responding to request")
 	}
 
 	return
@@ -546,20 +547,20 @@ func (client FileClient) GetPropertiesFromComputeNodeResponder(resp *http.Respon
 func (client FileClient) GetPropertiesFromTask(ctx context.Context, jobID string, taskID string, filePath string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.GetPropertiesFromTaskPreparer(ctx, jobID, taskID, filePath, timeout, clientRequestID, returnClientRequestID, ocpDate, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "GetPropertiesFromTask", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetPropertiesFromTask", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetPropertiesFromTaskSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "GetPropertiesFromTask", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetPropertiesFromTask", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetPropertiesFromTaskResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "GetPropertiesFromTask", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "GetPropertiesFromTask", resp, "Failure responding to request")
 	}
 
 	return
@@ -645,26 +646,26 @@ func (client FileClient) ListFromComputeNode(ctx context.Context, poolID string,
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.FileClient", "ListFromComputeNode")
+		return result, validation.NewErrorWithValidationError(err, "batch.FileClient", "ListFromComputeNode")
 	}
 
 	result.fn = client.listFromComputeNodeNextResults
 	req, err := client.ListFromComputeNodePreparer(ctx, poolID, nodeID, filter, recursive, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "ListFromComputeNode", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "ListFromComputeNode", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListFromComputeNodeSender(req)
 	if err != nil {
 		result.nflr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "ListFromComputeNode", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "ListFromComputeNode", resp, "Failure sending request")
 		return
 	}
 
 	result.nflr, err = client.ListFromComputeNodeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "ListFromComputeNode", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "ListFromComputeNode", resp, "Failure responding to request")
 	}
 
 	return
@@ -738,7 +739,7 @@ func (client FileClient) ListFromComputeNodeResponder(resp *http.Response) (resu
 func (client FileClient) listFromComputeNodeNextResults(lastResults NodeFileListResult) (result NodeFileListResult, err error) {
 	req, err := lastResults.nodeFileListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "xpackagex.FileClient", "listFromComputeNodeNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.FileClient", "listFromComputeNodeNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -746,11 +747,11 @@ func (client FileClient) listFromComputeNodeNextResults(lastResults NodeFileList
 	resp, err := client.ListFromComputeNodeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "xpackagex.FileClient", "listFromComputeNodeNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.FileClient", "listFromComputeNodeNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListFromComputeNodeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "listFromComputeNodeNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "listFromComputeNodeNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
@@ -779,26 +780,26 @@ func (client FileClient) ListFromTask(ctx context.Context, jobID string, taskID 
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.FileClient", "ListFromTask")
+		return result, validation.NewErrorWithValidationError(err, "batch.FileClient", "ListFromTask")
 	}
 
 	result.fn = client.listFromTaskNextResults
 	req, err := client.ListFromTaskPreparer(ctx, jobID, taskID, filter, recursive, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "ListFromTask", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "ListFromTask", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListFromTaskSender(req)
 	if err != nil {
 		result.nflr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "ListFromTask", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "ListFromTask", resp, "Failure sending request")
 		return
 	}
 
 	result.nflr, err = client.ListFromTaskResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "ListFromTask", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "ListFromTask", resp, "Failure responding to request")
 	}
 
 	return
@@ -872,7 +873,7 @@ func (client FileClient) ListFromTaskResponder(resp *http.Response) (result Node
 func (client FileClient) listFromTaskNextResults(lastResults NodeFileListResult) (result NodeFileListResult, err error) {
 	req, err := lastResults.nodeFileListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "xpackagex.FileClient", "listFromTaskNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.FileClient", "listFromTaskNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -880,11 +881,11 @@ func (client FileClient) listFromTaskNextResults(lastResults NodeFileListResult)
 	resp, err := client.ListFromTaskSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "xpackagex.FileClient", "listFromTaskNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.FileClient", "listFromTaskNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListFromTaskResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.FileClient", "listFromTaskNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.FileClient", "listFromTaskNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }

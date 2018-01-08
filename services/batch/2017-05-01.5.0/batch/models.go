@@ -1,4 +1,4 @@
-package xpackagex
+package batch
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -18,11 +18,12 @@ package xpackagex
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"io"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
-	"io"
-	"net/http"
 )
 
 // AccessScope enumerates the values for access scope.

@@ -1,4 +1,4 @@
-package xpackagex
+package batch
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,12 +19,13 @@ package xpackagex
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/satori/go.uuid"
-	"net/http"
 )
 
 // JobClient is the a client for issuing REST requests to the Azure Batch service.
@@ -88,25 +89,25 @@ func (client JobClient) Add(ctx context.Context, job JobAddParameter, timeout *i
 							}},
 						}},
 					}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.JobClient", "Add")
+		return result, validation.NewErrorWithValidationError(err, "batch.JobClient", "Add")
 	}
 
 	req, err := client.AddPreparer(ctx, job, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Add", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Add", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.AddSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Add", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Add", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.AddResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Add", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Add", resp, "Failure responding to request")
 	}
 
 	return
@@ -183,20 +184,20 @@ func (client JobClient) AddResponder(resp *http.Response) (result autorest.Respo
 func (client JobClient) Delete(ctx context.Context, jobID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, jobID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -295,20 +296,20 @@ func (client JobClient) DeleteResponder(resp *http.Response) (result autorest.Re
 func (client JobClient) Disable(ctx context.Context, jobID string, jobDisableParameter JobDisableParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.DisablePreparer(ctx, jobID, jobDisableParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Disable", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Disable", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DisableSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Disable", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Disable", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DisableResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Disable", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Disable", resp, "Failure responding to request")
 	}
 
 	return
@@ -406,20 +407,20 @@ func (client JobClient) DisableResponder(resp *http.Response) (result autorest.R
 func (client JobClient) Enable(ctx context.Context, jobID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.EnablePreparer(ctx, jobID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Enable", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Enable", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.EnableSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Enable", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Enable", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.EnableResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Enable", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Enable", resp, "Failure responding to request")
 	}
 
 	return
@@ -513,20 +514,20 @@ func (client JobClient) EnableResponder(resp *http.Response) (result autorest.Re
 func (client JobClient) Get(ctx context.Context, jobID string, selectParameter string, expand string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result CloudJob, err error) {
 	req, err := client.GetPreparer(ctx, jobID, selectParameter, expand, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -619,20 +620,20 @@ func (client JobClient) GetResponder(resp *http.Response) (result CloudJob, err 
 func (client JobClient) GetAllLifetimeStatistics(ctx context.Context, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result JobStatistics, err error) {
 	req, err := client.GetAllLifetimeStatisticsPreparer(ctx, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "GetAllLifetimeStatistics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "GetAllLifetimeStatistics", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetAllLifetimeStatisticsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "GetAllLifetimeStatistics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "GetAllLifetimeStatistics", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetAllLifetimeStatisticsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "GetAllLifetimeStatistics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "GetAllLifetimeStatistics", resp, "Failure responding to request")
 	}
 
 	return
@@ -704,26 +705,26 @@ func (client JobClient) List(ctx context.Context, filter string, selectParameter
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.JobClient", "List")
+		return result, validation.NewErrorWithValidationError(err, "batch.JobClient", "List")
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, filter, selectParameter, expand, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.cjlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.cjlr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -795,7 +796,7 @@ func (client JobClient) ListResponder(resp *http.Response) (result CloudJobListR
 func (client JobClient) listNextResults(lastResults CloudJobListResult) (result CloudJobListResult, err error) {
 	req, err := lastResults.cloudJobListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "xpackagex.JobClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.JobClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -803,11 +804,11 @@ func (client JobClient) listNextResults(lastResults CloudJobListResult) (result 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "xpackagex.JobClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.JobClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
@@ -835,26 +836,26 @@ func (client JobClient) ListFromJobSchedule(ctx context.Context, jobScheduleID s
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.JobClient", "ListFromJobSchedule")
+		return result, validation.NewErrorWithValidationError(err, "batch.JobClient", "ListFromJobSchedule")
 	}
 
 	result.fn = client.listFromJobScheduleNextResults
 	req, err := client.ListFromJobSchedulePreparer(ctx, jobScheduleID, filter, selectParameter, expand, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "ListFromJobSchedule", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "ListFromJobSchedule", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListFromJobScheduleSender(req)
 	if err != nil {
 		result.cjlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "ListFromJobSchedule", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "ListFromJobSchedule", resp, "Failure sending request")
 		return
 	}
 
 	result.cjlr, err = client.ListFromJobScheduleResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "ListFromJobSchedule", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "ListFromJobSchedule", resp, "Failure responding to request")
 	}
 
 	return
@@ -930,7 +931,7 @@ func (client JobClient) ListFromJobScheduleResponder(resp *http.Response) (resul
 func (client JobClient) listFromJobScheduleNextResults(lastResults CloudJobListResult) (result CloudJobListResult, err error) {
 	req, err := lastResults.cloudJobListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "xpackagex.JobClient", "listFromJobScheduleNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.JobClient", "listFromJobScheduleNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -938,11 +939,11 @@ func (client JobClient) listFromJobScheduleNextResults(lastResults CloudJobListR
 	resp, err := client.ListFromJobScheduleSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "xpackagex.JobClient", "listFromJobScheduleNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.JobClient", "listFromJobScheduleNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListFromJobScheduleResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "listFromJobScheduleNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "listFromJobScheduleNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
@@ -971,26 +972,26 @@ func (client JobClient) ListPreparationAndReleaseTaskStatus(ctx context.Context,
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.JobClient", "ListPreparationAndReleaseTaskStatus")
+		return result, validation.NewErrorWithValidationError(err, "batch.JobClient", "ListPreparationAndReleaseTaskStatus")
 	}
 
 	result.fn = client.listPreparationAndReleaseTaskStatusNextResults
 	req, err := client.ListPreparationAndReleaseTaskStatusPreparer(ctx, jobID, filter, selectParameter, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "ListPreparationAndReleaseTaskStatus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "ListPreparationAndReleaseTaskStatus", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListPreparationAndReleaseTaskStatusSender(req)
 	if err != nil {
 		result.cjlpartsr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "ListPreparationAndReleaseTaskStatus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "ListPreparationAndReleaseTaskStatus", resp, "Failure sending request")
 		return
 	}
 
 	result.cjlpartsr, err = client.ListPreparationAndReleaseTaskStatusResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "ListPreparationAndReleaseTaskStatus", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "ListPreparationAndReleaseTaskStatus", resp, "Failure responding to request")
 	}
 
 	return
@@ -1063,7 +1064,7 @@ func (client JobClient) ListPreparationAndReleaseTaskStatusResponder(resp *http.
 func (client JobClient) listPreparationAndReleaseTaskStatusNextResults(lastResults CloudJobListPreparationAndReleaseTaskStatusResult) (result CloudJobListPreparationAndReleaseTaskStatusResult, err error) {
 	req, err := lastResults.cloudJobListPreparationAndReleaseTaskStatusResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "xpackagex.JobClient", "listPreparationAndReleaseTaskStatusNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.JobClient", "listPreparationAndReleaseTaskStatusNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -1071,11 +1072,11 @@ func (client JobClient) listPreparationAndReleaseTaskStatusNextResults(lastResul
 	resp, err := client.ListPreparationAndReleaseTaskStatusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "xpackagex.JobClient", "listPreparationAndReleaseTaskStatusNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.JobClient", "listPreparationAndReleaseTaskStatusNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListPreparationAndReleaseTaskStatusResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "listPreparationAndReleaseTaskStatusNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "listPreparationAndReleaseTaskStatusNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
@@ -1106,20 +1107,20 @@ func (client JobClient) ListPreparationAndReleaseTaskStatusComplete(ctx context.
 func (client JobClient) Patch(ctx context.Context, jobID string, jobPatchParameter JobPatchParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.PatchPreparer(ctx, jobID, jobPatchParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Patch", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Patch", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.PatchSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Patch", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Patch", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.PatchResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Patch", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Patch", resp, "Failure responding to request")
 	}
 
 	return
@@ -1217,20 +1218,20 @@ func (client JobClient) PatchResponder(resp *http.Response) (result autorest.Res
 func (client JobClient) Terminate(ctx context.Context, jobID string, jobTerminateParameter *JobTerminateParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.TerminatePreparer(ctx, jobID, jobTerminateParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Terminate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Terminate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.TerminateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Terminate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Terminate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.TerminateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Terminate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Terminate", resp, "Failure responding to request")
 	}
 
 	return
@@ -1352,25 +1353,25 @@ func (client JobClient) Update(ctx context.Context, jobID string, jobUpdateParam
 						}},
 					}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.JobClient", "Update")
+		return result, validation.NewErrorWithValidationError(err, "batch.JobClient", "Update")
 	}
 
 	req, err := client.UpdatePreparer(ctx, jobID, jobUpdateParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.JobClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.JobClient", "Update", resp, "Failure responding to request")
 	}
 
 	return

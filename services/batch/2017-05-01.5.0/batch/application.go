@@ -1,4 +1,4 @@
-package xpackagex
+package batch
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,12 +19,13 @@ package xpackagex
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/satori/go.uuid"
-	"net/http"
 )
 
 // ApplicationClient is the a client for issuing REST requests to the Azure Batch service.
@@ -53,20 +54,20 @@ func NewApplicationClientWithBaseURI(baseURI string) ApplicationClient {
 func (client ApplicationClient) Get(ctx context.Context, applicationID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result ApplicationSummary, err error) {
 	req, err := client.GetPreparer(ctx, applicationID, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ApplicationClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.ApplicationClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ApplicationClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -143,26 +144,26 @@ func (client ApplicationClient) List(ctx context.Context, maxResults *int32, tim
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.ApplicationClient", "List")
+		return result, validation.NewErrorWithValidationError(err, "batch.ApplicationClient", "List")
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ApplicationClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.alr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.ApplicationClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.alr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ApplicationClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -225,7 +226,7 @@ func (client ApplicationClient) ListResponder(resp *http.Response) (result Appli
 func (client ApplicationClient) listNextResults(lastResults ApplicationListResult) (result ApplicationListResult, err error) {
 	req, err := lastResults.applicationListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "xpackagex.ApplicationClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.ApplicationClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -233,11 +234,11 @@ func (client ApplicationClient) listNextResults(lastResults ApplicationListResul
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "xpackagex.ApplicationClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.ApplicationClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ApplicationClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }

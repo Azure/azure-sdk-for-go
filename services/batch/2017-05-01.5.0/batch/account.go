@@ -1,4 +1,4 @@
-package xpackagex
+package batch
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,12 +19,13 @@ package xpackagex
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/satori/go.uuid"
-	"net/http"
 )
 
 // AccountClient is the a client for issuing REST requests to the Azure Batch service.
@@ -58,26 +59,26 @@ func (client AccountClient) ListNodeAgentSkus(ctx context.Context, filter string
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.AccountClient", "ListNodeAgentSkus")
+		return result, validation.NewErrorWithValidationError(err, "batch.AccountClient", "ListNodeAgentSkus")
 	}
 
 	result.fn = client.listNodeAgentSkusNextResults
 	req, err := client.ListNodeAgentSkusPreparer(ctx, filter, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.AccountClient", "ListNodeAgentSkus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListNodeAgentSkus", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListNodeAgentSkusSender(req)
 	if err != nil {
 		result.alnasr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.AccountClient", "ListNodeAgentSkus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListNodeAgentSkus", resp, "Failure sending request")
 		return
 	}
 
 	result.alnasr, err = client.ListNodeAgentSkusResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.AccountClient", "ListNodeAgentSkus", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListNodeAgentSkus", resp, "Failure responding to request")
 	}
 
 	return
@@ -143,7 +144,7 @@ func (client AccountClient) ListNodeAgentSkusResponder(resp *http.Response) (res
 func (client AccountClient) listNodeAgentSkusNextResults(lastResults AccountListNodeAgentSkusResult) (result AccountListNodeAgentSkusResult, err error) {
 	req, err := lastResults.accountListNodeAgentSkusResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "xpackagex.AccountClient", "listNodeAgentSkusNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "listNodeAgentSkusNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -151,11 +152,11 @@ func (client AccountClient) listNodeAgentSkusNextResults(lastResults AccountList
 	resp, err := client.ListNodeAgentSkusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "xpackagex.AccountClient", "listNodeAgentSkusNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.AccountClient", "listNodeAgentSkusNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListNodeAgentSkusResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.AccountClient", "listNodeAgentSkusNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.AccountClient", "listNodeAgentSkusNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }

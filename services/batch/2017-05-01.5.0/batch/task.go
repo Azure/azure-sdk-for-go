@@ -1,4 +1,4 @@
-package xpackagex
+package batch
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,12 +19,13 @@ package xpackagex
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/satori/go.uuid"
-	"net/http"
 )
 
 // TaskClient is the a client for issuing REST requests to the Azure Batch service.
@@ -59,25 +60,25 @@ func (client TaskClient) Add(ctx context.Context, jobID string, task TaskAddPara
 					Chain: []validation.Constraint{{Target: "task.AffinityInfo.AffinityID", Name: validation.Null, Rule: true, Chain: nil}}},
 				{Target: "task.MultiInstanceSettings", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "task.MultiInstanceSettings.NumberOfInstances", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.TaskClient", "Add")
+		return result, validation.NewErrorWithValidationError(err, "batch.TaskClient", "Add")
 	}
 
 	req, err := client.AddPreparer(ctx, jobID, task, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Add", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Add", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.AddSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Add", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Add", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.AddResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Add", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Add", resp, "Failure responding to request")
 	}
 
 	return
@@ -156,25 +157,25 @@ func (client TaskClient) AddCollection(ctx context.Context, jobID string, taskCo
 		{TargetValue: taskCollection,
 			Constraints: []validation.Constraint{{Target: "taskCollection.Value", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "taskCollection.Value", Name: validation.MaxItems, Rule: 100, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.TaskClient", "AddCollection")
+		return result, validation.NewErrorWithValidationError(err, "batch.TaskClient", "AddCollection")
 	}
 
 	req, err := client.AddCollectionPreparer(ctx, jobID, taskCollection, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "AddCollection", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "AddCollection", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.AddCollectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "AddCollection", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "AddCollection", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.AddCollectionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "AddCollection", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "AddCollection", resp, "Failure responding to request")
 	}
 
 	return
@@ -257,20 +258,20 @@ func (client TaskClient) AddCollectionResponder(resp *http.Response) (result Tas
 func (client TaskClient) Delete(ctx context.Context, jobID string, taskID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, jobID, taskID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -367,20 +368,20 @@ func (client TaskClient) DeleteResponder(resp *http.Response) (result autorest.R
 func (client TaskClient) Get(ctx context.Context, jobID string, taskID string, selectParameter string, expand string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result CloudTask, err error) {
 	req, err := client.GetPreparer(ctx, jobID, taskID, selectParameter, expand, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -481,26 +482,26 @@ func (client TaskClient) List(ctx context.Context, jobID string, filter string, 
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.TaskClient", "List")
+		return result, validation.NewErrorWithValidationError(err, "batch.TaskClient", "List")
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, jobID, filter, selectParameter, expand, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.ctlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.ctlr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -576,7 +577,7 @@ func (client TaskClient) ListResponder(resp *http.Response) (result CloudTaskLis
 func (client TaskClient) listNextResults(lastResults CloudTaskListResult) (result CloudTaskListResult, err error) {
 	req, err := lastResults.cloudTaskListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "xpackagex.TaskClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.TaskClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -584,11 +585,11 @@ func (client TaskClient) listNextResults(lastResults CloudTaskListResult) (resul
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "xpackagex.TaskClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.TaskClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
@@ -610,20 +611,20 @@ func (client TaskClient) ListComplete(ctx context.Context, jobID string, filter 
 func (client TaskClient) ListSubtasks(ctx context.Context, jobID string, taskID string, selectParameter string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result CloudTaskListSubtasksResult, err error) {
 	req, err := client.ListSubtasksPreparer(ctx, jobID, taskID, selectParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "ListSubtasks", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "ListSubtasks", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSubtasksSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "ListSubtasks", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "ListSubtasks", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListSubtasksResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "ListSubtasks", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "ListSubtasks", resp, "Failure responding to request")
 	}
 
 	return
@@ -710,20 +711,20 @@ func (client TaskClient) ListSubtasksResponder(resp *http.Response) (result Clou
 func (client TaskClient) Reactivate(ctx context.Context, jobID string, taskID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.ReactivatePreparer(ctx, jobID, taskID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Reactivate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Reactivate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ReactivateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Reactivate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Reactivate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ReactivateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Reactivate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Reactivate", resp, "Failure responding to request")
 	}
 
 	return
@@ -820,20 +821,20 @@ func (client TaskClient) ReactivateResponder(resp *http.Response) (result autore
 func (client TaskClient) Terminate(ctx context.Context, jobID string, taskID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.TerminatePreparer(ctx, jobID, taskID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Terminate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Terminate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.TerminateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Terminate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Terminate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.TerminateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Terminate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Terminate", resp, "Failure responding to request")
 	}
 
 	return
@@ -928,20 +929,20 @@ func (client TaskClient) TerminateResponder(resp *http.Response) (result autores
 func (client TaskClient) Update(ctx context.Context, jobID string, taskID string, taskUpdateParameter TaskUpdateParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.UpdatePreparer(ctx, jobID, taskID, taskUpdateParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.TaskClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.TaskClient", "Update", resp, "Failure responding to request")
 	}
 
 	return

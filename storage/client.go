@@ -17,7 +17,6 @@ package storage
 
 import (
 	"bufio"
-	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"encoding/xml"
@@ -145,14 +144,8 @@ type Client struct {
 	accountSASToken  url.Values
 }
 
-type storageResponse struct {
-	statusCode int
-	headers    http.Header
-	body       io.ReadCloser
-}
-
 type odataResponse struct {
-	storageResponse
+	resp  *http.Response
 	odata odataErrorWrapper
 }
 
@@ -192,6 +185,7 @@ type odataErrorWrapper struct {
 type UnexpectedStatusCodeError struct {
 	allowed []int
 	got     int
+	inner   error
 }
 
 func (e UnexpectedStatusCodeError) Error() string {
@@ -202,12 +196,17 @@ func (e UnexpectedStatusCodeError) Error() string {
 	for _, v := range e.allowed {
 		expected = append(expected, s(v))
 	}
-	return fmt.Sprintf("storage: status code from service response is %s; was expecting %s", got, strings.Join(expected, " or "))
+	return fmt.Sprintf("storage: status code from service response is %s; was expecting %s.  Inner error: %+v", got, strings.Join(expected, " or "), e.inner)
 }
 
 // Got is the actual status code returned by Azure.
 func (e UnexpectedStatusCodeError) Got() int {
 	return e.got
+}
+
+// Inner returns any inner error info.
+func (e UnexpectedStatusCodeError) Inner() error {
+	return e.inner
 }
 
 // NewClientFromConnectionString creates a Client from the connection string.
@@ -647,7 +646,7 @@ func (c Client) getStandardHeaders() map[string]string {
 	}
 }
 
-func (c Client) exec(verb, url string, headers map[string]string, body io.Reader, auth authentication) (*storageResponse, error) {
+func (c Client) exec(verb, url string, headers map[string]string, body io.Reader, auth authentication) (*http.Response, error) {
 	headers, err := c.addAuthorizationHeader(verb, url, headers, auth)
 	if err != nil {
 		return nil, err
@@ -678,48 +677,10 @@ func (c Client) exec(verb, url string, headers map[string]string, body io.Reader
 	}
 
 	if resp.StatusCode >= 400 && resp.StatusCode <= 505 {
-		var respBody []byte
-		respBody, err = readAndCloseBody(resp.Body)
-		if err != nil {
-			return nil, err
-		}
-
-		requestID, date, version := getDebugHeaders(resp.Header)
-		if len(respBody) == 0 {
-			// no error in response body, might happen in HEAD requests
-			err = serviceErrFromStatusCode(resp.StatusCode, resp.Status, requestID, date, version)
-		} else {
-			storageErr := AzureStorageServiceError{
-				StatusCode: resp.StatusCode,
-				RequestID:  requestID,
-				Date:       date,
-				APIVersion: version,
-			}
-			// response contains storage service error object, unmarshal
-			if resp.Header.Get("Content-Type") == "application/xml" {
-				errIn := serviceErrFromXML(respBody, &storageErr)
-				if err != nil { // error unmarshaling the error response
-					err = errIn
-				}
-			} else {
-				errIn := serviceErrFromJSON(respBody, &storageErr)
-				if err != nil { // error unmarshaling the error response
-					err = errIn
-				}
-			}
-			err = storageErr
-		}
-		return &storageResponse{
-			statusCode: resp.StatusCode,
-			headers:    resp.Header,
-			body:       ioutil.NopCloser(bytes.NewReader(respBody)), /* restore the body */
-		}, err
+		return resp, getErrorFromResponse(resp)
 	}
 
-	return &storageResponse{
-		statusCode: resp.StatusCode,
-		headers:    resp.Header,
-		body:       resp.Body}, nil
+	return resp, nil
 }
 
 func (c Client) execInternalJSONCommon(verb, url string, headers map[string]string, body io.Reader, auth authentication) (*odataResponse, *http.Request, *http.Response, error) {
@@ -738,10 +699,7 @@ func (c Client) execInternalJSONCommon(verb, url string, headers map[string]stri
 		return nil, nil, nil, err
 	}
 
-	respToRet := &odataResponse{}
-	respToRet.body = resp.Body
-	respToRet.statusCode = resp.StatusCode
-	respToRet.headers = resp.Header
+	respToRet := &odataResponse{resp: resp}
 
 	statusCode := resp.StatusCode
 	if statusCode >= 400 && statusCode <= 505 {
@@ -826,7 +784,7 @@ func genChangesetReader(req *http.Request, respToRet *odataResponse, batchPartBu
 		if err != nil {
 			return err
 		}
-		respToRet.statusCode = changesetResp.StatusCode
+		respToRet.resp = changesetResp
 	}
 
 	return nil
@@ -899,13 +857,18 @@ func (e AzureStorageServiceError) Error() string {
 
 // checkRespCode returns UnexpectedStatusError if the given response code is not
 // one of the allowed status codes; otherwise nil.
-func checkRespCode(respCode int, allowed []int) error {
+func checkRespCode(resp *http.Response, allowed []int) error {
 	for _, v := range allowed {
-		if respCode == v {
+		if resp.StatusCode == v {
 			return nil
 		}
 	}
-	return UnexpectedStatusCodeError{allowed, respCode}
+	err := getErrorFromResponse(resp)
+	return UnexpectedStatusCodeError{
+		allowed: allowed,
+		got:     resp.StatusCode,
+		inner:   err,
+	}
 }
 
 func (c Client) addMetadataToHeaders(h map[string]string, metadata map[string]string) map[string]string {
@@ -921,4 +884,38 @@ func getDebugHeaders(h http.Header) (requestID, date, version string) {
 	version = h.Get("x-ms-version")
 	date = h.Get("Date")
 	return
+}
+
+func getErrorFromResponse(resp *http.Response) error {
+	respBody, err := readAndCloseBody(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	requestID, date, version := getDebugHeaders(resp.Header)
+	if len(respBody) == 0 {
+		// no error in response body, might happen in HEAD requests
+		err = serviceErrFromStatusCode(resp.StatusCode, resp.Status, requestID, date, version)
+	} else {
+		storageErr := AzureStorageServiceError{
+			StatusCode: resp.StatusCode,
+			RequestID:  requestID,
+			Date:       date,
+			APIVersion: version,
+		}
+		// response contains storage service error object, unmarshal
+		if resp.Header.Get("Content-Type") == "application/xml" {
+			errIn := serviceErrFromXML(respBody, &storageErr)
+			if err != nil { // error unmarshaling the error response
+				err = errIn
+			}
+		} else {
+			errIn := serviceErrFromJSON(respBody, &storageErr)
+			if err != nil { // error unmarshaling the error response
+				err = errIn
+			}
+		}
+		err = storageErr
+	}
+	return err
 }

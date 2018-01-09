@@ -20,15 +20,8 @@
 
 package redis
 
-import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-02-01/redis"
+import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-10-01/redis"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type FirewallRulesClient = original.FirewallRulesClient
-type LinkedServerClient = original.LinkedServerClient
 type DayOfWeek = original.DayOfWeek
 
 const (
@@ -81,10 +74,12 @@ const (
 )
 
 type AccessKeys = original.AccessKeys
+type CommonProperties = original.CommonProperties
 type CreateParameters = original.CreateParameters
 type CreateProperties = original.CreateProperties
 type ExportRDBParameters = original.ExportRDBParameters
 type FirewallRule = original.FirewallRule
+type FirewallRuleCreateParameters = original.FirewallRuleCreateParameters
 type FirewallRuleListResult = original.FirewallRuleListResult
 type FirewallRuleListResultIterator = original.FirewallRuleListResultIterator
 type FirewallRuleListResultPage = original.FirewallRuleListResultPage
@@ -95,10 +90,11 @@ type LinkedServer = original.LinkedServer
 type LinkedServerCreateFuture = original.LinkedServerCreateFuture
 type LinkedServerCreateParameters = original.LinkedServerCreateParameters
 type LinkedServerCreateProperties = original.LinkedServerCreateProperties
-type LinkedServerList = original.LinkedServerList
 type LinkedServerProperties = original.LinkedServerProperties
 type LinkedServerWithProperties = original.LinkedServerWithProperties
 type LinkedServerWithPropertiesList = original.LinkedServerWithPropertiesList
+type LinkedServerWithPropertiesListIterator = original.LinkedServerWithPropertiesListIterator
+type LinkedServerWithPropertiesListPage = original.LinkedServerWithPropertiesListPage
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
@@ -117,7 +113,6 @@ type RedisExportDataFuture = original.RedisExportDataFuture
 type RedisImportDataFuture = original.RedisImportDataFuture
 type RegenerateKeyParameters = original.RegenerateKeyParameters
 type Resource = original.Resource
-type ResourceProperties = original.ResourceProperties
 type ResourceType = original.ResourceType
 type ScheduleEntries = original.ScheduleEntries
 type ScheduleEntry = original.ScheduleEntry
@@ -129,6 +124,32 @@ type OperationsClient = original.OperationsClient
 type PatchSchedulesClient = original.PatchSchedulesClient
 type Client = original.Client
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type FirewallRulesClient = original.FirewallRulesClient
+type LinkedServerClient = original.LinkedServerClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClient(subscriptionID)
+}
+func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLinkedServerClient(subscriptionID string) LinkedServerClient {
+	return original.NewLinkedServerClient(subscriptionID)
+}
+func NewLinkedServerClientWithBaseURI(baseURI string, subscriptionID string) LinkedServerClient {
+	return original.NewLinkedServerClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -152,22 +173,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClient(subscriptionID)
-}
-func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewLinkedServerClient(subscriptionID string) LinkedServerClient {
-	return original.NewLinkedServerClient(subscriptionID)
-}
-func NewLinkedServerClientWithBaseURI(baseURI string, subscriptionID string) LinkedServerClient {
-	return original.NewLinkedServerClientWithBaseURI(baseURI, subscriptionID)
 }

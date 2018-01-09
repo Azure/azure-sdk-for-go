@@ -1,4 +1,4 @@
-package xpackagex
+package batch
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,12 +19,13 @@ package xpackagex
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/satori/go.uuid"
-	"net/http"
 )
 
 // PoolClient is the a client for issuing REST requests to the Azure Batch service.
@@ -70,25 +71,25 @@ func (client PoolClient) Add(ctx context.Context, pool PoolAddParameter, timeout
 					}},
 				{Target: "pool.StartTask", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "pool.StartTask.CommandLine", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.PoolClient", "Add")
+		return result, validation.NewErrorWithValidationError(err, "batch.PoolClient", "Add")
 	}
 
 	req, err := client.AddPreparer(ctx, pool, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Add", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Add", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.AddSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Add", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Add", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.AddResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Add", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Add", resp, "Failure responding to request")
 	}
 
 	return
@@ -171,20 +172,20 @@ func (client PoolClient) AddResponder(resp *http.Response) (result autorest.Resp
 func (client PoolClient) Delete(ctx context.Context, poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, poolID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -270,20 +271,20 @@ func (client PoolClient) DeleteResponder(resp *http.Response) (result autorest.R
 func (client PoolClient) DisableAutoScale(ctx context.Context, poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.DisableAutoScalePreparer(ctx, poolID, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "DisableAutoScale", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "DisableAutoScale", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DisableAutoScaleSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "DisableAutoScale", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "DisableAutoScale", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DisableAutoScaleResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "DisableAutoScale", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "DisableAutoScale", resp, "Failure responding to request")
 	}
 
 	return
@@ -364,20 +365,20 @@ func (client PoolClient) DisableAutoScaleResponder(resp *http.Response) (result 
 func (client PoolClient) EnableAutoScale(ctx context.Context, poolID string, poolEnableAutoScaleParameter PoolEnableAutoScaleParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.EnableAutoScalePreparer(ctx, poolID, poolEnableAutoScaleParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "EnableAutoScale", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "EnableAutoScale", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.EnableAutoScaleSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "EnableAutoScale", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "EnableAutoScale", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.EnableAutoScaleResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "EnableAutoScale", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "EnableAutoScale", resp, "Failure responding to request")
 	}
 
 	return
@@ -468,25 +469,25 @@ func (client PoolClient) EvaluateAutoScale(ctx context.Context, poolID string, p
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: poolEvaluateAutoScaleParameter,
 			Constraints: []validation.Constraint{{Target: "poolEvaluateAutoScaleParameter.AutoScaleFormula", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.PoolClient", "EvaluateAutoScale")
+		return result, validation.NewErrorWithValidationError(err, "batch.PoolClient", "EvaluateAutoScale")
 	}
 
 	req, err := client.EvaluateAutoScalePreparer(ctx, poolID, poolEvaluateAutoScaleParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "EvaluateAutoScale", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "EvaluateAutoScale", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.EvaluateAutoScaleSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "EvaluateAutoScale", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "EvaluateAutoScale", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.EvaluateAutoScaleResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "EvaluateAutoScale", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "EvaluateAutoScale", resp, "Failure responding to request")
 	}
 
 	return
@@ -566,20 +567,20 @@ func (client PoolClient) EvaluateAutoScaleResponder(resp *http.Response) (result
 func (client PoolClient) Exists(ctx context.Context, poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.ExistsPreparer(ctx, poolID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Exists", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Exists", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ExistsSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Exists", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Exists", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ExistsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Exists", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Exists", resp, "Failure responding to request")
 	}
 
 	return
@@ -673,20 +674,20 @@ func (client PoolClient) ExistsResponder(resp *http.Response) (result autorest.R
 func (client PoolClient) Get(ctx context.Context, poolID string, selectParameter string, expand string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result CloudPool, err error) {
 	req, err := client.GetPreparer(ctx, poolID, selectParameter, expand, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -779,20 +780,20 @@ func (client PoolClient) GetResponder(resp *http.Response) (result CloudPool, er
 func (client PoolClient) GetAllLifetimeStatistics(ctx context.Context, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result PoolStatistics, err error) {
 	req, err := client.GetAllLifetimeStatisticsPreparer(ctx, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "GetAllLifetimeStatistics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "GetAllLifetimeStatistics", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetAllLifetimeStatisticsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "GetAllLifetimeStatistics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "GetAllLifetimeStatistics", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetAllLifetimeStatisticsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "GetAllLifetimeStatistics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "GetAllLifetimeStatistics", resp, "Failure responding to request")
 	}
 
 	return
@@ -864,26 +865,26 @@ func (client PoolClient) List(ctx context.Context, filter string, selectParamete
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.PoolClient", "List")
+		return result, validation.NewErrorWithValidationError(err, "batch.PoolClient", "List")
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, filter, selectParameter, expand, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.cplr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.cplr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -955,7 +956,7 @@ func (client PoolClient) ListResponder(resp *http.Response) (result CloudPoolLis
 func (client PoolClient) listNextResults(lastResults CloudPoolListResult) (result CloudPoolListResult, err error) {
 	req, err := lastResults.cloudPoolListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "xpackagex.PoolClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.PoolClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -963,11 +964,11 @@ func (client PoolClient) listNextResults(lastResults CloudPoolListResult) (resul
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "xpackagex.PoolClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.PoolClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
@@ -1000,26 +1001,26 @@ func (client PoolClient) ListUsageMetrics(ctx context.Context, startTime *date.T
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.PoolClient", "ListUsageMetrics")
+		return result, validation.NewErrorWithValidationError(err, "batch.PoolClient", "ListUsageMetrics")
 	}
 
 	result.fn = client.listUsageMetricsNextResults
 	req, err := client.ListUsageMetricsPreparer(ctx, startTime, endTime, filter, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "ListUsageMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "ListUsageMetrics", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListUsageMetricsSender(req)
 	if err != nil {
 		result.plumr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "ListUsageMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "ListUsageMetrics", resp, "Failure sending request")
 		return
 	}
 
 	result.plumr, err = client.ListUsageMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "ListUsageMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "ListUsageMetrics", resp, "Failure responding to request")
 	}
 
 	return
@@ -1091,7 +1092,7 @@ func (client PoolClient) ListUsageMetricsResponder(resp *http.Response) (result 
 func (client PoolClient) listUsageMetricsNextResults(lastResults PoolListUsageMetricsResult) (result PoolListUsageMetricsResult, err error) {
 	req, err := lastResults.poolListUsageMetricsResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "xpackagex.PoolClient", "listUsageMetricsNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.PoolClient", "listUsageMetricsNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -1099,11 +1100,11 @@ func (client PoolClient) listUsageMetricsNextResults(lastResults PoolListUsageMe
 	resp, err := client.ListUsageMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "xpackagex.PoolClient", "listUsageMetricsNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.PoolClient", "listUsageMetricsNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListUsageMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "listUsageMetricsNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "listUsageMetricsNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
@@ -1135,20 +1136,20 @@ func (client PoolClient) ListUsageMetricsComplete(ctx context.Context, startTime
 func (client PoolClient) Patch(ctx context.Context, poolID string, poolPatchParameter PoolPatchParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.PatchPreparer(ctx, poolID, poolPatchParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Patch", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Patch", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.PatchSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Patch", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Patch", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.PatchResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Patch", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Patch", resp, "Failure responding to request")
 	}
 
 	return
@@ -1247,25 +1248,25 @@ func (client PoolClient) RemoveNodes(ctx context.Context, poolID string, nodeRem
 		{TargetValue: nodeRemoveParameter,
 			Constraints: []validation.Constraint{{Target: "nodeRemoveParameter.NodeList", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "nodeRemoveParameter.NodeList", Name: validation.MaxItems, Rule: 100, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.PoolClient", "RemoveNodes")
+		return result, validation.NewErrorWithValidationError(err, "batch.PoolClient", "RemoveNodes")
 	}
 
 	req, err := client.RemoveNodesPreparer(ctx, poolID, nodeRemoveParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "RemoveNodes", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "RemoveNodes", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.RemoveNodesSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "RemoveNodes", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "RemoveNodes", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.RemoveNodesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "RemoveNodes", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "RemoveNodes", resp, "Failure responding to request")
 	}
 
 	return
@@ -1365,20 +1366,20 @@ func (client PoolClient) RemoveNodesResponder(resp *http.Response) (result autor
 func (client PoolClient) Resize(ctx context.Context, poolID string, poolResizeParameter PoolResizeParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.ResizePreparer(ctx, poolID, poolResizeParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Resize", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Resize", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ResizeSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Resize", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Resize", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ResizeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "Resize", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "Resize", resp, "Failure responding to request")
 	}
 
 	return
@@ -1476,20 +1477,20 @@ func (client PoolClient) ResizeResponder(resp *http.Response) (result autorest.R
 func (client PoolClient) StopResize(ctx context.Context, poolID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.StopResizePreparer(ctx, poolID, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "StopResize", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "StopResize", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.StopResizeSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "StopResize", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "StopResize", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.StopResizeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "StopResize", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "StopResize", resp, "Failure responding to request")
 	}
 
 	return
@@ -1582,25 +1583,25 @@ func (client PoolClient) UpdateProperties(ctx context.Context, poolID string, po
 				{Target: "poolUpdatePropertiesParameter.CertificateReferences", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "poolUpdatePropertiesParameter.ApplicationPackageReferences", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "poolUpdatePropertiesParameter.Metadata", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.PoolClient", "UpdateProperties")
+		return result, validation.NewErrorWithValidationError(err, "batch.PoolClient", "UpdateProperties")
 	}
 
 	req, err := client.UpdatePropertiesPreparer(ctx, poolID, poolUpdatePropertiesParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "UpdateProperties", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "UpdateProperties", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdatePropertiesSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "UpdateProperties", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "UpdateProperties", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdatePropertiesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "UpdateProperties", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "UpdateProperties", resp, "Failure responding to request")
 	}
 
 	return
@@ -1687,25 +1688,25 @@ func (client PoolClient) UpgradeOS(ctx context.Context, poolID string, poolUpgra
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: poolUpgradeOSParameter,
 			Constraints: []validation.Constraint{{Target: "poolUpgradeOSParameter.TargetOSVersion", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.PoolClient", "UpgradeOS")
+		return result, validation.NewErrorWithValidationError(err, "batch.PoolClient", "UpgradeOS")
 	}
 
 	req, err := client.UpgradeOSPreparer(ctx, poolID, poolUpgradeOSParameter, timeout, clientRequestID, returnClientRequestID, ocpDate, ifMatch, ifNoneMatch, ifModifiedSince, ifUnmodifiedSince)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "UpgradeOS", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "UpgradeOS", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpgradeOSSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "UpgradeOS", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "UpgradeOS", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpgradeOSResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.PoolClient", "UpgradeOS", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.PoolClient", "UpgradeOS", resp, "Failure responding to request")
 	}
 
 	return

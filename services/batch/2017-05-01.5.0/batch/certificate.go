@@ -1,4 +1,4 @@
-package xpackagex
+package batch
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,12 +19,13 @@ package xpackagex
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/satori/go.uuid"
-	"net/http"
 )
 
 // CertificateClient is the a client for issuing REST requests to the Azure Batch service.
@@ -56,25 +57,25 @@ func (client CertificateClient) Add(ctx context.Context, certificate Certificate
 			Constraints: []validation.Constraint{{Target: "certificate.Thumbprint", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "certificate.ThumbprintAlgorithm", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "certificate.Data", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.CertificateClient", "Add")
+		return result, validation.NewErrorWithValidationError(err, "batch.CertificateClient", "Add")
 	}
 
 	req, err := client.AddPreparer(ctx, certificate, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "Add", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "Add", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.AddSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "Add", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "Add", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.AddResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "Add", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "Add", resp, "Failure responding to request")
 	}
 
 	return
@@ -147,20 +148,20 @@ func (client CertificateClient) AddResponder(resp *http.Response) (result autore
 func (client CertificateClient) CancelDeletion(ctx context.Context, thumbprintAlgorithm string, thumbprint string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.CancelDeletionPreparer(ctx, thumbprintAlgorithm, thumbprint, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "CancelDeletion", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "CancelDeletion", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CancelDeletionSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "CancelDeletion", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "CancelDeletion", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CancelDeletionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "CancelDeletion", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "CancelDeletion", resp, "Failure responding to request")
 	}
 
 	return
@@ -238,20 +239,20 @@ func (client CertificateClient) CancelDeletionResponder(resp *http.Response) (re
 func (client CertificateClient) Delete(ctx context.Context, thumbprintAlgorithm string, thumbprint string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, thumbprintAlgorithm, thumbprint, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -323,20 +324,20 @@ func (client CertificateClient) DeleteResponder(resp *http.Response) (result aut
 func (client CertificateClient) Get(ctx context.Context, thumbprintAlgorithm string, thumbprint string, selectParameter string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result Certificate, err error) {
 	req, err := client.GetPreparer(ctx, thumbprintAlgorithm, thumbprint, selectParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -416,26 +417,26 @@ func (client CertificateClient) List(ctx context.Context, filter string, selectP
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.CertificateClient", "List")
+		return result, validation.NewErrorWithValidationError(err, "batch.CertificateClient", "List")
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, filter, selectParameter, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.clr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.clr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -504,7 +505,7 @@ func (client CertificateClient) ListResponder(resp *http.Response) (result Certi
 func (client CertificateClient) listNextResults(lastResults CertificateListResult) (result CertificateListResult, err error) {
 	req, err := lastResults.certificateListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.CertificateClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -512,11 +513,11 @@ func (client CertificateClient) listNextResults(lastResults CertificateListResul
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.CertificateClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.CertificateClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }

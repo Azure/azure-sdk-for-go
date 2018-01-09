@@ -1,4 +1,4 @@
-package xpackagex
+package batch
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -19,12 +19,13 @@ package xpackagex
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/satori/go.uuid"
-	"net/http"
 )
 
 // ComputeNodeClient is the a client for issuing REST requests to the Azure Batch service.
@@ -55,25 +56,25 @@ func (client ComputeNodeClient) AddUser(ctx context.Context, poolID string, node
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: userParameter,
 			Constraints: []validation.Constraint{{Target: "userParameter.Name", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.ComputeNodeClient", "AddUser")
+		return result, validation.NewErrorWithValidationError(err, "batch.ComputeNodeClient", "AddUser")
 	}
 
 	req, err := client.AddUserPreparer(ctx, poolID, nodeID, userParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "AddUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "AddUser", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.AddUserSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "AddUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "AddUser", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.AddUserResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "AddUser", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "AddUser", resp, "Failure responding to request")
 	}
 
 	return
@@ -147,20 +148,20 @@ func (client ComputeNodeClient) AddUserResponder(resp *http.Response) (result au
 func (client ComputeNodeClient) DeleteUser(ctx context.Context, poolID string, nodeID string, userName string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.DeleteUserPreparer(ctx, poolID, nodeID, userName, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "DeleteUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "DeleteUser", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteUserSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "DeleteUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "DeleteUser", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteUserResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "DeleteUser", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "DeleteUser", resp, "Failure responding to request")
 	}
 
 	return
@@ -233,20 +234,20 @@ func (client ComputeNodeClient) DeleteUserResponder(resp *http.Response) (result
 func (client ComputeNodeClient) DisableScheduling(ctx context.Context, poolID string, nodeID string, nodeDisableSchedulingParameter *NodeDisableSchedulingParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.DisableSchedulingPreparer(ctx, poolID, nodeID, nodeDisableSchedulingParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "DisableScheduling", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "DisableScheduling", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DisableSchedulingSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "DisableScheduling", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "DisableScheduling", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DisableSchedulingResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "DisableScheduling", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "DisableScheduling", resp, "Failure responding to request")
 	}
 
 	return
@@ -323,20 +324,20 @@ func (client ComputeNodeClient) DisableSchedulingResponder(resp *http.Response) 
 func (client ComputeNodeClient) EnableScheduling(ctx context.Context, poolID string, nodeID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.EnableSchedulingPreparer(ctx, poolID, nodeID, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "EnableScheduling", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "EnableScheduling", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.EnableSchedulingSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "EnableScheduling", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "EnableScheduling", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.EnableSchedulingResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "EnableScheduling", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "EnableScheduling", resp, "Failure responding to request")
 	}
 
 	return
@@ -408,20 +409,20 @@ func (client ComputeNodeClient) EnableSchedulingResponder(resp *http.Response) (
 func (client ComputeNodeClient) Get(ctx context.Context, poolID string, nodeID string, selectParameter string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result ComputeNode, err error) {
 	req, err := client.GetPreparer(ctx, poolID, nodeID, selectParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -498,20 +499,20 @@ func (client ComputeNodeClient) GetResponder(resp *http.Response) (result Comput
 func (client ComputeNodeClient) GetRemoteDesktop(ctx context.Context, poolID string, nodeID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result ReadCloser, err error) {
 	req, err := client.GetRemoteDesktopPreparer(ctx, poolID, nodeID, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "GetRemoteDesktop", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "GetRemoteDesktop", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetRemoteDesktopSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "GetRemoteDesktop", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "GetRemoteDesktop", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetRemoteDesktopResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "GetRemoteDesktop", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "GetRemoteDesktop", resp, "Failure responding to request")
 	}
 
 	return
@@ -585,20 +586,20 @@ func (client ComputeNodeClient) GetRemoteDesktopResponder(resp *http.Response) (
 func (client ComputeNodeClient) GetRemoteLoginSettings(ctx context.Context, poolID string, nodeID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result ComputeNodeGetRemoteLoginSettingsResult, err error) {
 	req, err := client.GetRemoteLoginSettingsPreparer(ctx, poolID, nodeID, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "GetRemoteLoginSettings", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "GetRemoteLoginSettings", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetRemoteLoginSettingsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "GetRemoteLoginSettings", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "GetRemoteLoginSettings", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetRemoteLoginSettingsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "GetRemoteLoginSettings", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "GetRemoteLoginSettings", resp, "Failure responding to request")
 	}
 
 	return
@@ -676,26 +677,26 @@ func (client ComputeNodeClient) List(ctx context.Context, poolID string, filter 
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "xpackagex.ComputeNodeClient", "List")
+		return result, validation.NewErrorWithValidationError(err, "batch.ComputeNodeClient", "List")
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, poolID, filter, selectParameter, maxResults, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.cnlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.cnlr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "List", resp, "Failure responding to request")
 	}
 
 	return
@@ -768,7 +769,7 @@ func (client ComputeNodeClient) ListResponder(resp *http.Response) (result Compu
 func (client ComputeNodeClient) listNextResults(lastResults ComputeNodeListResult) (result ComputeNodeListResult, err error) {
 	req, err := lastResults.computeNodeListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -776,11 +777,11 @@ func (client ComputeNodeClient) listNextResults(lastResults ComputeNodeListResul
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
@@ -803,20 +804,20 @@ func (client ComputeNodeClient) ListComplete(ctx context.Context, poolID string,
 func (client ComputeNodeClient) Reboot(ctx context.Context, poolID string, nodeID string, nodeRebootParameter *NodeRebootParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.RebootPreparer(ctx, poolID, nodeID, nodeRebootParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "Reboot", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "Reboot", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.RebootSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "Reboot", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "Reboot", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.RebootResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "Reboot", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "Reboot", resp, "Failure responding to request")
 	}
 
 	return
@@ -894,20 +895,20 @@ func (client ComputeNodeClient) RebootResponder(resp *http.Response) (result aut
 func (client ComputeNodeClient) Reimage(ctx context.Context, poolID string, nodeID string, nodeReimageParameter *NodeReimageParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.ReimagePreparer(ctx, poolID, nodeID, nodeReimageParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "Reimage", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "Reimage", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ReimageSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "Reimage", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "Reimage", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ReimageResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "Reimage", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "Reimage", resp, "Failure responding to request")
 	}
 
 	return
@@ -987,20 +988,20 @@ func (client ComputeNodeClient) ReimageResponder(resp *http.Response) (result au
 func (client ComputeNodeClient) UpdateUser(ctx context.Context, poolID string, nodeID string, userName string, nodeUpdateUserParameter NodeUpdateUserParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (result autorest.Response, err error) {
 	req, err := client.UpdateUserPreparer(ctx, poolID, nodeID, userName, nodeUpdateUserParameter, timeout, clientRequestID, returnClientRequestID, ocpDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "UpdateUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "UpdateUser", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateUserSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "UpdateUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "UpdateUser", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateUserResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "xpackagex.ComputeNodeClient", "UpdateUser", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "UpdateUser", resp, "Failure responding to request")
 	}
 
 	return

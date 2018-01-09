@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## `v12.2.0-beta`
+
+### Changes
+
+#### Storage
+
+- Add support for creating a SAS client from an endpoint and SAS token.
+- Fixed bug that wasn't appending SAS token to URI query parameters in all cases.
+
 ## `v12.1.1-beta`
 
 ### Changes

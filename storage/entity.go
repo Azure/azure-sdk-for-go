@@ -16,6 +16,7 @@ package storage
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -246,7 +247,7 @@ func (e *Entity) MarshalJSON() ([]byte, error) {
 		switch t := v.(type) {
 		case []byte:
 			completeMap[typeKey] = OdataBinary
-			completeMap[k] = string(t)
+			completeMap[k] = t
 		case time.Time:
 			completeMap[typeKey] = OdataDateTime
 			completeMap[k] = t.Format(time.RFC3339Nano)
@@ -320,7 +321,10 @@ func (e *Entity) UnmarshalJSON(data []byte) error {
 			}
 			switch v {
 			case OdataBinary:
-				props[valueKey] = []byte(str)
+				props[valueKey], err = base64.StdEncoding.DecodeString(str)
+				if err != nil {
+					return fmt.Errorf(errorTemplate, err)
+				}
 			case OdataDateTime:
 				t, err := time.Parse("2006-01-02T15:04:05Z", str)
 				if err != nil {

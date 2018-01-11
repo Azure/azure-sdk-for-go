@@ -3,8 +3,11 @@ package servicebus
 import (
 	"testing"
 
+	"context"
 	"github.com/stretchr/testify/assert"
 	"os"
+	"pack.ag/amqp"
+	"time"
 )
 
 func TestServiceBus(t *testing.T) {
@@ -12,5 +15,31 @@ func TestServiceBus(t *testing.T) {
 	sb, err := New(connStr)
 	defer sb.Close()
 	assert.Nil(t, err)
-	assert.NotNil(t, sb)
+
+	catcher := make(chan string)
+	sb.Receive("myQueue", func(c context.Context, message *amqp.Message) error {
+		catcher <- string(message.Data)
+		return nil
+	})
+
+	ctx, cancel := context.WithTimeout(context.Background(), 1000*time.Millisecond)
+	defer cancel()
+
+	go func() {
+		sb.Send(ctx, "myQueue", &amqp.Message{
+			Data: []byte("Hello World!"),
+			Properties: &amqp.MessageProperties{
+				MessageID: "1",
+			},
+		})
+	}()
+
+	select {
+	case msg := <-catcher:
+		assert.Equal(t, msg, "Hello World!")
+	case <- ctx.Done():
+		t.Log("timed out")
+		t.Fail()
+	}
+
 }

@@ -26,14 +26,14 @@
   version = "v1.2.0"
 
 [[projects]]
+  branch = "integration-tests"
   name = "pack.ag/amqp"
   packages = [".","internal/testconn"]
-  revision = "3a14daf1519f46ba15b8aef088c630779dbed553"
-  version = "v0.1.0"
+  revision = "eddd36b95c8515ea90a2e9cf09e35fcc70bee5fb"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5e96c71a62eb43e04721a461d40c62bcf359db7894e92793c670f5c02f399299"
+  inputs-digest = "02030ee066ee17d48d021e32f3825cb34b00d0989c152669bde468388610a6c3"
   solver-name = "gps-cdcl"
   solver-version = 1

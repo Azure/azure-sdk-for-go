@@ -42,6 +42,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"sort"
 	"time"
 
 	"github.com/marstr/collection"
@@ -245,7 +246,14 @@ func main() {
 		fmt.Fprint(outputFile, generatorStampBuilder.String())
 
 		outputLog.Printf("Writing File: %s", outputPath)
-		printer.Fprint(outputFile, files, cast.ModelFile())
+
+		file := cast.ModelFile()
+		sort.SliceStable(file.Decls,  func(i, j int) bool {
+			return file.Decls[i].Pos() < file.Decls[j].Pos()
+		  })
+
+		ast.Print(nil,file)
+		printer.Fprint(outputFile, files, file)
 
 		return true
 	})

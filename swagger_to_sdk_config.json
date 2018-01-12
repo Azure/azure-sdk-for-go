@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "autorest_options": {
+      "use": "@microsoft.azure/autorest.go@v2.1.62",
+      "go": "",
+      "verbose": "",
+      "sdkrel:go-sdk-folder": ".",
+      "multiapi": ""
+    },
+    "version": "0.2.0"
+  }
+}

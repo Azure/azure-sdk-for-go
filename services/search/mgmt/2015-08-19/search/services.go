@@ -144,8 +144,7 @@ func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 						Chain: []validation.Constraint{{Target: "service.ServiceProperties.PartitionCount", Name: validation.InclusiveMaximum, Rule: 12, Chain: nil},
 							{Target: "service.ServiceProperties.PartitionCount", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 						}},
-				}},
-				{Target: "service.Sku", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "search.ServicesClient", "CreateOrUpdate")
 	}
 
@@ -425,6 +424,81 @@ func (client ServicesClient) ListByResourceGroupSender(req *http.Request) (*http
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
 func (client ServicesClient) ListByResourceGroupResponder(resp *http.Response) (result ServiceListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Update updates an existing Search service in the given resource group.
+//
+// resourceGroupName is the name of the resource group within the current subscription. You can obtain this value from
+// the Azure Resource Manager API or the portal. searchServiceName is the name of the Azure Search service to update.
+// service is the definition of the Search service to update. clientRequestID is a client-generated GUID value that
+// identifies this request. If specified, this will be included in response information as a way to track the request.
+func (client ServicesClient) Update(ctx context.Context, resourceGroupName string, searchServiceName string, service Service, clientRequestID *uuid.UUID) (result Service, err error) {
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, searchServiceName, service, clientRequestID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.ServicesClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "search.ServicesClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "search.ServicesClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, searchServiceName string, service Service, clientRequestID *uuid.UUID) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"searchServiceName": autorest.Encode("path", searchServiceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-08-19"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}", pathParameters),
+		autorest.WithJSON(service),
+		autorest.WithQueryParameters(queryParameters))
+	if clientRequestID != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("x-ms-client-request-id", autorest.String(clientRequestID)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServicesClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client ServicesClient) UpdateResponder(resp *http.Response) (result Service, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

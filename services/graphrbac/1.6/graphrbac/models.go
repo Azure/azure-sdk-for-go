@@ -19,7 +19,6 @@ package graphrbac
 
 import (
 	"encoding/json"
-
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 )
@@ -96,14 +95,14 @@ type AADObject struct {
 // ADGroup active Directory group information.
 type ADGroup struct {
 	autorest.Response `json:"-"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ObjectID - The object ID.
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// DisplayName - The display name of the group.
 	DisplayName *string `json:"displayName,omitempty"`
 	// SecurityEnabled - Whether the group is security-enable.
@@ -156,14 +155,14 @@ func (ag ADGroup) AsBasicDirectoryObject() (BasicDirectoryObject, bool) {
 // Application active Directory application information.
 type Application struct {
 	autorest.Response `json:"-"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ObjectID - The object ID.
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// AppID - The application ID.
 	AppID *string `json:"appId,omitempty"`
 	// AppPermissions - The application permissions.
@@ -399,6 +398,8 @@ type BasicDirectoryObject interface {
 
 // DirectoryObject represents an Azure Active Directory object.
 type DirectoryObject struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ObjectID - The object ID.
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - The time at which the directory object was deleted.
@@ -945,14 +946,14 @@ type ResourceAccess struct {
 // ServicePrincipal active Directory service principal information.
 type ServicePrincipal struct {
 	autorest.Response `json:"-"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ObjectID - The object ID.
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// DisplayName - The display name of the service principal.
 	DisplayName *string `json:"displayName,omitempty"`
 	// AppID - The application ID.
@@ -1120,14 +1121,14 @@ type SignInName struct {
 // User active Directory user information.
 type User struct {
 	autorest.Response `json:"-"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ObjectID - The object ID.
 	ObjectID *string `json:"objectId,omitempty"`
 	// DeletionTimestamp - The time at which the directory object was deleted.
 	DeletionTimestamp *date.Time `json:"deletionTimestamp,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeDirectoryObject', 'ObjectTypeApplication', 'ObjectTypeGroup', 'ObjectTypeServicePrincipal', 'ObjectTypeUser'
 	ObjectType ObjectType `json:"objectType,omitempty"`
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ImmutableID - This must be specified if you are using a federated domain for the user's userPrincipalName (UPN) property when creating a new user account. It is used to associate an on-premises Active Directory user account with their Azure AD user object.
 	ImmutableID *string `json:"immutableId,omitempty"`
 	// UsageLocation - A two letter country code (ISO standard 3166). Required for users that will be assigned licenses due to legal requirement to check for availability of services in countries. Examples include: "US", "JP", and "GB".
@@ -1211,6 +1212,8 @@ type UserBase struct {
 
 // UserCreateParameters request parameters for creating a new work or school account user.
 type UserCreateParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ImmutableID - This must be specified if you are using a federated domain for the user's userPrincipalName (UPN) property when creating a new user account. It is used to associate an on-premises Active Directory user account with their Azure AD user object.
 	ImmutableID *string `json:"immutableId,omitempty"`
 	// UsageLocation - A two letter country code (ISO standard 3166). Required for users that will be assigned licenses due to legal requirement to check for availability of services in countries. Examples include: "US", "JP", and "GB".
@@ -1221,8 +1224,6 @@ type UserCreateParameters struct {
 	Surname *string `json:"surname,omitempty"`
 	// UserType - A string value that can be used to classify user types in your directory, such as 'Member' and 'Guest'. Possible values include: 'Member', 'Guest'
 	UserType UserType `json:"userType,omitempty"`
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// AccountEnabled - Whether the account is enabled.
 	AccountEnabled *bool `json:"accountEnabled,omitempty"`
 	// DisplayName - The display name of the user.
@@ -1344,6 +1345,8 @@ func (page UserListResultPage) Values() []User {
 
 // UserUpdateParameters request parameters for updating an existing work or school account user.
 type UserUpdateParameters struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// ImmutableID - This must be specified if you are using a federated domain for the user's userPrincipalName (UPN) property when creating a new user account. It is used to associate an on-premises Active Directory user account with their Azure AD user object.
 	ImmutableID *string `json:"immutableId,omitempty"`
 	// UsageLocation - A two letter country code (ISO standard 3166). Required for users that will be assigned licenses due to legal requirement to check for availability of services in countries. Examples include: "US", "JP", and "GB".
@@ -1354,8 +1357,6 @@ type UserUpdateParameters struct {
 	Surname *string `json:"surname,omitempty"`
 	// UserType - A string value that can be used to classify user types in your directory, such as 'Member' and 'Guest'. Possible values include: 'Member', 'Guest'
 	UserType UserType `json:"userType,omitempty"`
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties *map[string]*map[string]interface{} `json:",omitempty"`
 	// AccountEnabled - Whether the account is enabled.
 	AccountEnabled *bool `json:"accountEnabled,omitempty"`
 	// DisplayName - The display name of the user.

@@ -3219,13 +3219,84 @@ type AmazonRedshiftLinkedServiceTypeProperties struct {
 	// Username - The username of the Amazon Redshift source. Type: string (or Expression with resultType string).
 	Username *map[string]interface{} `json:"username,omitempty"`
 	// Password - The password of the Amazon Redshift source.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// Database - The database name of the Amazon Redshift source. Type: string (or Expression with resultType string).
 	Database *map[string]interface{} `json:"database,omitempty"`
 	// Port - The TCP port number that the Amazon Redshift server uses to listen for client connections. The default value is 5439. Type: integer (or Expression with resultType integer).
 	Port *map[string]interface{} `json:"port,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AmazonRedshiftLinkedServiceTypeProperties struct.
+func (arlstp *AmazonRedshiftLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["server"]
+	if v != nil {
+		var server map[string]interface{}
+		err = json.Unmarshal(*m["server"], &server)
+		if err != nil {
+			return err
+		}
+		arlstp.Server = &server
+	}
+
+	v = m["username"]
+	if v != nil {
+		var username map[string]interface{}
+		err = json.Unmarshal(*m["username"], &username)
+		if err != nil {
+			return err
+		}
+		arlstp.Username = &username
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		arlstp.Password = password
+	}
+
+	v = m["database"]
+	if v != nil {
+		var databaseVar map[string]interface{}
+		err = json.Unmarshal(*m["database"], &databaseVar)
+		if err != nil {
+			return err
+		}
+		arlstp.Database = &databaseVar
+	}
+
+	v = m["port"]
+	if v != nil {
+		var port map[string]interface{}
+		err = json.Unmarshal(*m["port"], &port)
+		if err != nil {
+			return err
+		}
+		arlstp.Port = &port
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		arlstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // AmazonRedshiftSource a copy activity source for Amazon Redshift Source.
@@ -4339,9 +4410,50 @@ type AmazonS3LinkedServiceTypeProperties struct {
 	// AccessKeyID - The access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or Expression with resultType string).
 	AccessKeyID *map[string]interface{} `json:"accessKeyId,omitempty"`
 	// SecretAccessKey - The secret access key of the Amazon S3 Identity and Access Management (IAM) user.
-	SecretAccessKey *SecureString `json:"secretAccessKey,omitempty"`
+	SecretAccessKey BasicSecretBase `json:"secretAccessKey,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AmazonS3LinkedServiceTypeProperties struct.
+func (aslstp *AmazonS3LinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["accessKeyId"]
+	if v != nil {
+		var accessKeyID map[string]interface{}
+		err = json.Unmarshal(*m["accessKeyId"], &accessKeyID)
+		if err != nil {
+			return err
+		}
+		aslstp.AccessKeyID = &accessKeyID
+	}
+
+	v = m["secretAccessKey"]
+	if v != nil {
+		secretAccessKey, err := unmarshalBasicSecretBase(*m["secretAccessKey"])
+		if err != nil {
+			return err
+		}
+		aslstp.SecretAccessKey = secretAccessKey
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		aslstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // AvroFormat the data stored in Avro format.
@@ -6504,7 +6616,7 @@ type AzureDataLakeStoreLinkedServiceTypeProperties struct {
 	// ServicePrincipalID - The ID of the application used to authenticate against the Azure Data Lake Store account. Type: string (or Expression with resultType string).
 	ServicePrincipalID *map[string]interface{} `json:"servicePrincipalId,omitempty"`
 	// ServicePrincipalKey - The Key of the application used to authenticate against the Azure Data Lake Store account.
-	ServicePrincipalKey *SecureString `json:"servicePrincipalKey,omitempty"`
+	ServicePrincipalKey BasicSecretBase `json:"servicePrincipalKey,omitempty"`
 	// Tenant - The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
 	Tenant *map[string]interface{} `json:"tenant,omitempty"`
 	// AccountName - Data Lake Store account name. Type: string (or Expression with resultType string).
@@ -6515,6 +6627,97 @@ type AzureDataLakeStoreLinkedServiceTypeProperties struct {
 	ResourceGroupName *map[string]interface{} `json:"resourceGroupName,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureDataLakeStoreLinkedServiceTypeProperties struct.
+func (adlslstp *AzureDataLakeStoreLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["dataLakeStoreUri"]
+	if v != nil {
+		var dataLakeStoreURI map[string]interface{}
+		err = json.Unmarshal(*m["dataLakeStoreUri"], &dataLakeStoreURI)
+		if err != nil {
+			return err
+		}
+		adlslstp.DataLakeStoreURI = &dataLakeStoreURI
+	}
+
+	v = m["servicePrincipalId"]
+	if v != nil {
+		var servicePrincipalID map[string]interface{}
+		err = json.Unmarshal(*m["servicePrincipalId"], &servicePrincipalID)
+		if err != nil {
+			return err
+		}
+		adlslstp.ServicePrincipalID = &servicePrincipalID
+	}
+
+	v = m["servicePrincipalKey"]
+	if v != nil {
+		servicePrincipalKey, err := unmarshalBasicSecretBase(*m["servicePrincipalKey"])
+		if err != nil {
+			return err
+		}
+		adlslstp.ServicePrincipalKey = servicePrincipalKey
+	}
+
+	v = m["tenant"]
+	if v != nil {
+		var tenant map[string]interface{}
+		err = json.Unmarshal(*m["tenant"], &tenant)
+		if err != nil {
+			return err
+		}
+		adlslstp.Tenant = &tenant
+	}
+
+	v = m["accountName"]
+	if v != nil {
+		var accountName map[string]interface{}
+		err = json.Unmarshal(*m["accountName"], &accountName)
+		if err != nil {
+			return err
+		}
+		adlslstp.AccountName = &accountName
+	}
+
+	v = m["subscriptionId"]
+	if v != nil {
+		var subscriptionID map[string]interface{}
+		err = json.Unmarshal(*m["subscriptionId"], &subscriptionID)
+		if err != nil {
+			return err
+		}
+		adlslstp.SubscriptionID = &subscriptionID
+	}
+
+	v = m["resourceGroupName"]
+	if v != nil {
+		var resourceGroupName map[string]interface{}
+		err = json.Unmarshal(*m["resourceGroupName"], &resourceGroupName)
+		if err != nil {
+			return err
+		}
+		adlslstp.ResourceGroupName = &resourceGroupName
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		adlslstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // AzureDataLakeStoreSink a copy activity Azure Data Lake Store sink.
@@ -8691,9 +8894,40 @@ func (amsls *AzureMySQLLinkedService) UnmarshalJSON(body []byte) error {
 // AzureMySQLLinkedServiceTypeProperties azure MySQL database linked service properties.
 type AzureMySQLLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString *SecureString `json:"connectionString,omitempty"`
+	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureMySQLLinkedServiceTypeProperties struct.
+func (amslstp *AzureMySQLLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["connectionString"]
+	if v != nil {
+		connectionString, err := unmarshalBasicSecretBase(*m["connectionString"])
+		if err != nil {
+			return err
+		}
+		amslstp.ConnectionString = connectionString
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		amslstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // AzureMySQLSource a copy activity Azure MySQL source.
@@ -11281,9 +11515,50 @@ type AzureSearchLinkedServiceTypeProperties struct {
 	// URL - URL for Azure Search service. Type: string (or Expression with resultType string).
 	URL *map[string]interface{} `json:"url,omitempty"`
 	// Key - Admin Key for Azure Search service
-	Key *SecureString `json:"key,omitempty"`
+	Key BasicSecretBase `json:"key,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureSearchLinkedServiceTypeProperties struct.
+func (aslstp *AzureSearchLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["url"]
+	if v != nil {
+		var URLVar map[string]interface{}
+		err = json.Unmarshal(*m["url"], &URLVar)
+		if err != nil {
+			return err
+		}
+		aslstp.URL = &URLVar
+	}
+
+	v = m["key"]
+	if v != nil {
+		key, err := unmarshalBasicSecretBase(*m["key"])
+		if err != nil {
+			return err
+		}
+		aslstp.Key = key
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		aslstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // AzureSQLDatabaseLinkedService microsoft Azure SQL Database linked service.
@@ -11696,9 +11971,40 @@ func (asdls *AzureSQLDatabaseLinkedService) UnmarshalJSON(body []byte) error {
 // AzureSQLDatabaseLinkedServiceTypeProperties azure SQL Database linked service properties.
 type AzureSQLDatabaseLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString *SecureString `json:"connectionString,omitempty"`
+	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureSQLDatabaseLinkedServiceTypeProperties struct.
+func (asdlstp *AzureSQLDatabaseLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["connectionString"]
+	if v != nil {
+		connectionString, err := unmarshalBasicSecretBase(*m["connectionString"])
+		if err != nil {
+			return err
+		}
+		asdlstp.ConnectionString = connectionString
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		asdlstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // AzureSQLDWLinkedService azure SQL Data Warehouse linked service.
@@ -12111,9 +12417,40 @@ func (asdls *AzureSQLDWLinkedService) UnmarshalJSON(body []byte) error {
 // AzureSQLDWLinkedServiceTypeProperties azure SQL Data Warehouse linked service properties.
 type AzureSQLDWLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString *SecureString `json:"connectionString,omitempty"`
+	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureSQLDWLinkedServiceTypeProperties struct.
+func (asdlstp *AzureSQLDWLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["connectionString"]
+	if v != nil {
+		connectionString, err := unmarshalBasicSecretBase(*m["connectionString"])
+		if err != nil {
+			return err
+		}
+		asdlstp.ConnectionString = connectionString
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		asdlstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // AzureSQLDWTableDataset the Azure SQL Data Warehouse dataset.
@@ -13240,11 +13577,51 @@ func (asls *AzureStorageLinkedService) UnmarshalJSON(body []byte) error {
 // AzureStorageLinkedServiceTypeProperties azure Storage linked service properties.
 type AzureStorageLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string. It is mutually exclusive with sasUri property.
-	ConnectionString *SecureString `json:"connectionString,omitempty"`
+	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
 	// SasURI - SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property.
-	SasURI *SecureString `json:"sasUri,omitempty"`
+	SasURI BasicSecretBase `json:"sasUri,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureStorageLinkedServiceTypeProperties struct.
+func (aslstp *AzureStorageLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["connectionString"]
+	if v != nil {
+		connectionString, err := unmarshalBasicSecretBase(*m["connectionString"])
+		if err != nil {
+			return err
+		}
+		aslstp.ConnectionString = connectionString
+	}
+
+	v = m["sasUri"]
+	if v != nil {
+		sasURI, err := unmarshalBasicSecretBase(*m["sasUri"])
+		if err != nil {
+			return err
+		}
+		aslstp.SasURI = sasURI
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		aslstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // AzureTableDataset the Azure Table storage dataset.
@@ -14912,9 +15289,80 @@ type CassandraLinkedServiceTypeProperties struct {
 	// Username - Username for authentication. Type: string (or Expression with resultType string).
 	Username *map[string]interface{} `json:"username,omitempty"`
 	// Password - Password for authentication.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for CassandraLinkedServiceTypeProperties struct.
+func (clstp *CassandraLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["host"]
+	if v != nil {
+		var host map[string]interface{}
+		err = json.Unmarshal(*m["host"], &host)
+		if err != nil {
+			return err
+		}
+		clstp.Host = &host
+	}
+
+	v = m["authenticationType"]
+	if v != nil {
+		var authenticationType map[string]interface{}
+		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
+		if err != nil {
+			return err
+		}
+		clstp.AuthenticationType = &authenticationType
+	}
+
+	v = m["port"]
+	if v != nil {
+		var port map[string]interface{}
+		err = json.Unmarshal(*m["port"], &port)
+		if err != nil {
+			return err
+		}
+		clstp.Port = &port
+	}
+
+	v = m["username"]
+	if v != nil {
+		var username map[string]interface{}
+		err = json.Unmarshal(*m["username"], &username)
+		if err != nil {
+			return err
+		}
+		clstp.Username = &username
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		clstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		clstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // CassandraSource a copy activity source for a Cassandra database.
@@ -18410,9 +18858,40 @@ func (cdls *CosmosDbLinkedService) UnmarshalJSON(body []byte) error {
 // CosmosDbLinkedServiceTypeProperties cosmosDB linked service properties.
 type CosmosDbLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString *SecureString `json:"connectionString,omitempty"`
+	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for CosmosDbLinkedServiceTypeProperties struct.
+func (cdlstp *CosmosDbLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["connectionString"]
+	if v != nil {
+		connectionString, err := unmarshalBasicSecretBase(*m["connectionString"])
+		if err != nil {
+			return err
+		}
+		cdlstp.ConnectionString = connectionString
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		cdlstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // CouchbaseLinkedService couchbase server linked service.
@@ -22160,9 +22639,90 @@ type Db2LinkedServiceTypeProperties struct {
 	// Username - Username for authentication. Type: string (or Expression with resultType string).
 	Username *map[string]interface{} `json:"username,omitempty"`
 	// Password - Password for authentication.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Db2LinkedServiceTypeProperties struct.
+func (d2lstp *Db2LinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["server"]
+	if v != nil {
+		var server map[string]interface{}
+		err = json.Unmarshal(*m["server"], &server)
+		if err != nil {
+			return err
+		}
+		d2lstp.Server = &server
+	}
+
+	v = m["database"]
+	if v != nil {
+		var databaseVar map[string]interface{}
+		err = json.Unmarshal(*m["database"], &databaseVar)
+		if err != nil {
+			return err
+		}
+		d2lstp.Database = &databaseVar
+	}
+
+	v = m["schema"]
+	if v != nil {
+		var schema map[string]interface{}
+		err = json.Unmarshal(*m["schema"], &schema)
+		if err != nil {
+			return err
+		}
+		d2lstp.Schema = &schema
+	}
+
+	v = m["authenticationType"]
+	if v != nil {
+		var authenticationType Db2AuthenticationType
+		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
+		if err != nil {
+			return err
+		}
+		d2lstp.AuthenticationType = authenticationType
+	}
+
+	v = m["username"]
+	if v != nil {
+		var username map[string]interface{}
+		err = json.Unmarshal(*m["username"], &username)
+		if err != nil {
+			return err
+		}
+		d2lstp.Username = &username
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		d2lstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		d2lstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // DistcpSettings distcp settings.
@@ -27600,9 +28160,60 @@ type FileServerLinkedServiceTypeProperties struct {
 	// UserID - User ID to logon the server. Type: string (or Expression with resultType string).
 	UserID *map[string]interface{} `json:"userId,omitempty"`
 	// Password - Password to logon the server.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for FileServerLinkedServiceTypeProperties struct.
+func (fslstp *FileServerLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["host"]
+	if v != nil {
+		var host map[string]interface{}
+		err = json.Unmarshal(*m["host"], &host)
+		if err != nil {
+			return err
+		}
+		fslstp.Host = &host
+	}
+
+	v = m["userId"]
+	if v != nil {
+		var userID map[string]interface{}
+		err = json.Unmarshal(*m["userId"], &userID)
+		if err != nil {
+			return err
+		}
+		fslstp.UserID = &userID
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		fslstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		fslstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // FileShareDataset an on-premises file system dataset.
@@ -29087,13 +29698,104 @@ type FtpServerLinkedServiceTypeProperties struct {
 	// UserName - Username to logon the FTP server. Type: string (or Expression with resultType string).
 	UserName *map[string]interface{} `json:"userName,omitempty"`
 	// Password - Password to logon the FTP server.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
 	// EnableSsl - If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType boolean).
 	EnableSsl *map[string]interface{} `json:"enableSsl,omitempty"`
 	// EnableServerCertificateValidation - If true, validate the FTP server SSL certificate when connect over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType boolean).
 	EnableServerCertificateValidation *map[string]interface{} `json:"enableServerCertificateValidation,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for FtpServerLinkedServiceTypeProperties struct.
+func (fslstp *FtpServerLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["host"]
+	if v != nil {
+		var host map[string]interface{}
+		err = json.Unmarshal(*m["host"], &host)
+		if err != nil {
+			return err
+		}
+		fslstp.Host = &host
+	}
+
+	v = m["port"]
+	if v != nil {
+		var port map[string]interface{}
+		err = json.Unmarshal(*m["port"], &port)
+		if err != nil {
+			return err
+		}
+		fslstp.Port = &port
+	}
+
+	v = m["authenticationType"]
+	if v != nil {
+		var authenticationType FtpAuthenticationType
+		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
+		if err != nil {
+			return err
+		}
+		fslstp.AuthenticationType = authenticationType
+	}
+
+	v = m["userName"]
+	if v != nil {
+		var userName map[string]interface{}
+		err = json.Unmarshal(*m["userName"], &userName)
+		if err != nil {
+			return err
+		}
+		fslstp.UserName = &userName
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		fslstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		fslstp.EncryptedCredential = &encryptedCredential
+	}
+
+	v = m["enableSsl"]
+	if v != nil {
+		var enableSsl map[string]interface{}
+		err = json.Unmarshal(*m["enableSsl"], &enableSsl)
+		if err != nil {
+			return err
+		}
+		fslstp.EnableSsl = &enableSsl
+	}
+
+	v = m["enableServerCertificateValidation"]
+	if v != nil {
+		var enableServerCertificateValidation map[string]interface{}
+		err = json.Unmarshal(*m["enableServerCertificateValidation"], &enableServerCertificateValidation)
+		if err != nil {
+			return err
+		}
+		fslstp.EnableServerCertificateValidation = &enableServerCertificateValidation
+	}
+
+	return nil
 }
 
 // GetMetadataActivity activity to get metadata of dataset
@@ -32918,7 +33620,68 @@ type HdfsLinkedServiceTypeProperties struct {
 	// UserName - User name for Windows authentication. Type: string (or Expression with resultType string).
 	UserName *map[string]interface{} `json:"userName,omitempty"`
 	// Password - Password for Windows authentication.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for HdfsLinkedServiceTypeProperties struct.
+func (hlstp *HdfsLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["url"]
+	if v != nil {
+		var URLVar map[string]interface{}
+		err = json.Unmarshal(*m["url"], &URLVar)
+		if err != nil {
+			return err
+		}
+		hlstp.URL = &URLVar
+	}
+
+	v = m["authenticationType"]
+	if v != nil {
+		var authenticationType map[string]interface{}
+		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
+		if err != nil {
+			return err
+		}
+		hlstp.AuthenticationType = &authenticationType
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		hlstp.EncryptedCredential = &encryptedCredential
+	}
+
+	v = m["userName"]
+	if v != nil {
+		var userName map[string]interface{}
+		err = json.Unmarshal(*m["userName"], &userName)
+		if err != nil {
+			return err
+		}
+		hlstp.UserName = &userName
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		hlstp.Password = password
+	}
+
+	return nil
 }
 
 // HdfsSource a copy activity HDFS source.
@@ -35814,7 +36577,7 @@ type HiveLinkedServiceTypeProperties struct {
 	// Username - The user name that you use to access Hive Server.
 	Username *map[string]interface{} `json:"username,omitempty"`
 	// Password - The password corresponding to the user name that you provided in the Username field
-	Password BasicSecretBase `json:"password,omitempty"`
+	Password *SecureString `json:"password,omitempty"`
 	// HTTPPath - The partial URL corresponding to the Hive server.
 	HTTPPath *map[string]interface{} `json:"httpPath,omitempty"`
 	// EnableSsl - Specifies whether the connections to the server are encrypted using SSL. The default value is false.
@@ -35829,187 +36592,6 @@ type HiveLinkedServiceTypeProperties struct {
 	AllowSelfSignedServerCert *map[string]interface{} `json:"allowSelfSignedServerCert,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for HiveLinkedServiceTypeProperties struct.
-func (hlstp *HiveLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["host"]
-	if v != nil {
-		var host map[string]interface{}
-		err = json.Unmarshal(*m["host"], &host)
-		if err != nil {
-			return err
-		}
-		hlstp.Host = &host
-	}
-
-	v = m["port"]
-	if v != nil {
-		var port map[string]interface{}
-		err = json.Unmarshal(*m["port"], &port)
-		if err != nil {
-			return err
-		}
-		hlstp.Port = &port
-	}
-
-	v = m["serverType"]
-	if v != nil {
-		var serverType HiveServerType
-		err = json.Unmarshal(*m["serverType"], &serverType)
-		if err != nil {
-			return err
-		}
-		hlstp.ServerType = serverType
-	}
-
-	v = m["thriftTransportProtocol"]
-	if v != nil {
-		var thriftTransportProtocol HiveThriftTransportProtocol
-		err = json.Unmarshal(*m["thriftTransportProtocol"], &thriftTransportProtocol)
-		if err != nil {
-			return err
-		}
-		hlstp.ThriftTransportProtocol = thriftTransportProtocol
-	}
-
-	v = m["authenticationType"]
-	if v != nil {
-		var authenticationType HiveAuthenticationType
-		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
-		if err != nil {
-			return err
-		}
-		hlstp.AuthenticationType = authenticationType
-	}
-
-	v = m["serviceDiscoveryMode"]
-	if v != nil {
-		var serviceDiscoveryMode map[string]interface{}
-		err = json.Unmarshal(*m["serviceDiscoveryMode"], &serviceDiscoveryMode)
-		if err != nil {
-			return err
-		}
-		hlstp.ServiceDiscoveryMode = &serviceDiscoveryMode
-	}
-
-	v = m["zooKeeperNameSpace"]
-	if v != nil {
-		var zooKeeperNameSpace map[string]interface{}
-		err = json.Unmarshal(*m["zooKeeperNameSpace"], &zooKeeperNameSpace)
-		if err != nil {
-			return err
-		}
-		hlstp.ZooKeeperNameSpace = &zooKeeperNameSpace
-	}
-
-	v = m["useNativeQuery"]
-	if v != nil {
-		var useNativeQuery map[string]interface{}
-		err = json.Unmarshal(*m["useNativeQuery"], &useNativeQuery)
-		if err != nil {
-			return err
-		}
-		hlstp.UseNativeQuery = &useNativeQuery
-	}
-
-	v = m["username"]
-	if v != nil {
-		var username map[string]interface{}
-		err = json.Unmarshal(*m["username"], &username)
-		if err != nil {
-			return err
-		}
-		hlstp.Username = &username
-	}
-
-	v = m["password"]
-	if v != nil {
-		password, err := unmarshalBasicSecretBase(*m["password"])
-		if err != nil {
-			return err
-		}
-		hlstp.Password = password
-	}
-
-	v = m["httpPath"]
-	if v != nil {
-		var HTTPPath map[string]interface{}
-		err = json.Unmarshal(*m["httpPath"], &HTTPPath)
-		if err != nil {
-			return err
-		}
-		hlstp.HTTPPath = &HTTPPath
-	}
-
-	v = m["enableSsl"]
-	if v != nil {
-		var enableSsl map[string]interface{}
-		err = json.Unmarshal(*m["enableSsl"], &enableSsl)
-		if err != nil {
-			return err
-		}
-		hlstp.EnableSsl = &enableSsl
-	}
-
-	v = m["trustedCertPath"]
-	if v != nil {
-		var trustedCertPath map[string]interface{}
-		err = json.Unmarshal(*m["trustedCertPath"], &trustedCertPath)
-		if err != nil {
-			return err
-		}
-		hlstp.TrustedCertPath = &trustedCertPath
-	}
-
-	v = m["useSystemTrustStore"]
-	if v != nil {
-		var useSystemTrustStore map[string]interface{}
-		err = json.Unmarshal(*m["useSystemTrustStore"], &useSystemTrustStore)
-		if err != nil {
-			return err
-		}
-		hlstp.UseSystemTrustStore = &useSystemTrustStore
-	}
-
-	v = m["allowHostNameCNMismatch"]
-	if v != nil {
-		var allowHostNameCNMismatch map[string]interface{}
-		err = json.Unmarshal(*m["allowHostNameCNMismatch"], &allowHostNameCNMismatch)
-		if err != nil {
-			return err
-		}
-		hlstp.AllowHostNameCNMismatch = &allowHostNameCNMismatch
-	}
-
-	v = m["allowSelfSignedServerCert"]
-	if v != nil {
-		var allowSelfSignedServerCert map[string]interface{}
-		err = json.Unmarshal(*m["allowSelfSignedServerCert"], &allowSelfSignedServerCert)
-		if err != nil {
-			return err
-		}
-		hlstp.AllowSelfSignedServerCert = &allowSelfSignedServerCert
-	}
-
-	v = m["encryptedCredential"]
-	if v != nil {
-		var encryptedCredential map[string]interface{}
-		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
-		if err != nil {
-			return err
-		}
-		hlstp.EncryptedCredential = &encryptedCredential
-	}
-
-	return nil
 }
 
 // HiveObjectDataset hive Server dataset.
@@ -37404,7 +37986,7 @@ type HTTPLinkedServiceTypeProperties struct {
 	// UserName - User name for Basic, Digest, or Windows authentication. Type: string (or Expression with resultType string).
 	UserName *map[string]interface{} `json:"userName,omitempty"`
 	// Password - Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData authentication.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EmbeddedCertData - Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
 	EmbeddedCertData *map[string]interface{} `json:"embeddedCertData,omitempty"`
 	// CertThumbprint - Thumbprint of certificate for ClientCertificate authentication. Only valid for on-premises copy. For on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
@@ -37413,6 +37995,97 @@ type HTTPLinkedServiceTypeProperties struct {
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
 	// EnableServerCertificateValidation - If true, validate the HTTPS server SSL certificate. Default value is true. Type: boolean (or Expression with resultType boolean).
 	EnableServerCertificateValidation *map[string]interface{} `json:"enableServerCertificateValidation,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for HTTPLinkedServiceTypeProperties struct.
+func (hlstp *HTTPLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["url"]
+	if v != nil {
+		var URLVar map[string]interface{}
+		err = json.Unmarshal(*m["url"], &URLVar)
+		if err != nil {
+			return err
+		}
+		hlstp.URL = &URLVar
+	}
+
+	v = m["authenticationType"]
+	if v != nil {
+		var authenticationType HTTPAuthenticationType
+		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
+		if err != nil {
+			return err
+		}
+		hlstp.AuthenticationType = authenticationType
+	}
+
+	v = m["userName"]
+	if v != nil {
+		var userName map[string]interface{}
+		err = json.Unmarshal(*m["userName"], &userName)
+		if err != nil {
+			return err
+		}
+		hlstp.UserName = &userName
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		hlstp.Password = password
+	}
+
+	v = m["embeddedCertData"]
+	if v != nil {
+		var embeddedCertData map[string]interface{}
+		err = json.Unmarshal(*m["embeddedCertData"], &embeddedCertData)
+		if err != nil {
+			return err
+		}
+		hlstp.EmbeddedCertData = &embeddedCertData
+	}
+
+	v = m["certThumbprint"]
+	if v != nil {
+		var certThumbprint map[string]interface{}
+		err = json.Unmarshal(*m["certThumbprint"], &certThumbprint)
+		if err != nil {
+			return err
+		}
+		hlstp.CertThumbprint = &certThumbprint
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		hlstp.EncryptedCredential = &encryptedCredential
+	}
+
+	v = m["enableServerCertificateValidation"]
+	if v != nil {
+		var enableServerCertificateValidation map[string]interface{}
+		err = json.Unmarshal(*m["enableServerCertificateValidation"], &enableServerCertificateValidation)
+		if err != nil {
+			return err
+		}
+		hlstp.EnableServerCertificateValidation = &enableServerCertificateValidation
+	}
+
+	return nil
 }
 
 // HTTPSource a copy activity source for an HTTP file.
@@ -47084,13 +47757,104 @@ type MongoDbLinkedServiceTypeProperties struct {
 	// Username - Username for authentication. Type: string (or Expression with resultType string).
 	Username *map[string]interface{} `json:"username,omitempty"`
 	// Password - Password for authentication.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// AuthSource - Database to verify the username and password. Type: string (or Expression with resultType string).
 	AuthSource *map[string]interface{} `json:"authSource,omitempty"`
 	// Port - The TCP port number that the MongoDB server uses to listen for client connections. The default value is 27017. Type: integer (or Expression with resultType integer), minimum: 0.
 	Port *map[string]interface{} `json:"port,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for MongoDbLinkedServiceTypeProperties struct.
+func (mdlstp *MongoDbLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["server"]
+	if v != nil {
+		var server map[string]interface{}
+		err = json.Unmarshal(*m["server"], &server)
+		if err != nil {
+			return err
+		}
+		mdlstp.Server = &server
+	}
+
+	v = m["authenticationType"]
+	if v != nil {
+		var authenticationType MongoDbAuthenticationType
+		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
+		if err != nil {
+			return err
+		}
+		mdlstp.AuthenticationType = authenticationType
+	}
+
+	v = m["databaseName"]
+	if v != nil {
+		var databaseName map[string]interface{}
+		err = json.Unmarshal(*m["databaseName"], &databaseName)
+		if err != nil {
+			return err
+		}
+		mdlstp.DatabaseName = &databaseName
+	}
+
+	v = m["username"]
+	if v != nil {
+		var username map[string]interface{}
+		err = json.Unmarshal(*m["username"], &username)
+		if err != nil {
+			return err
+		}
+		mdlstp.Username = &username
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		mdlstp.Password = password
+	}
+
+	v = m["authSource"]
+	if v != nil {
+		var authSource map[string]interface{}
+		err = json.Unmarshal(*m["authSource"], &authSource)
+		if err != nil {
+			return err
+		}
+		mdlstp.AuthSource = &authSource
+	}
+
+	v = m["port"]
+	if v != nil {
+		var port map[string]interface{}
+		err = json.Unmarshal(*m["port"], &port)
+		if err != nil {
+			return err
+		}
+		mdlstp.Port = &port
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		mdlstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // MongoDbSource a copy activity source for a MongoDB database.
@@ -47879,9 +48643,80 @@ type MySQLLinkedServiceTypeProperties struct {
 	// Username - Username for authentication. Type: string (or Expression with resultType string).
 	Username *map[string]interface{} `json:"username,omitempty"`
 	// Password - Password for authentication.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for MySQLLinkedServiceTypeProperties struct.
+func (mslstp *MySQLLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["server"]
+	if v != nil {
+		var server map[string]interface{}
+		err = json.Unmarshal(*m["server"], &server)
+		if err != nil {
+			return err
+		}
+		mslstp.Server = &server
+	}
+
+	v = m["database"]
+	if v != nil {
+		var databaseVar map[string]interface{}
+		err = json.Unmarshal(*m["database"], &databaseVar)
+		if err != nil {
+			return err
+		}
+		mslstp.Database = &databaseVar
+	}
+
+	v = m["schema"]
+	if v != nil {
+		var schema map[string]interface{}
+		err = json.Unmarshal(*m["schema"], &schema)
+		if err != nil {
+			return err
+		}
+		mslstp.Schema = &schema
+	}
+
+	v = m["username"]
+	if v != nil {
+		var username map[string]interface{}
+		err = json.Unmarshal(*m["username"], &username)
+		if err != nil {
+			return err
+		}
+		mslstp.Username = &username
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		mslstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		mslstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // ODataLinkedService open Data Protocol (OData) linked service.
@@ -48300,9 +49135,70 @@ type ODataLinkedServiceTypeProperties struct {
 	// UserName - User name of the OData service. Type: string (or Expression with resultType string).
 	UserName *map[string]interface{} `json:"userName,omitempty"`
 	// Password - Password of the OData service.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ODataLinkedServiceTypeProperties struct.
+func (odlstp *ODataLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["url"]
+	if v != nil {
+		var URLVar map[string]interface{}
+		err = json.Unmarshal(*m["url"], &URLVar)
+		if err != nil {
+			return err
+		}
+		odlstp.URL = &URLVar
+	}
+
+	v = m["authenticationType"]
+	if v != nil {
+		var authenticationType ODataAuthenticationType
+		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
+		if err != nil {
+			return err
+		}
+		odlstp.AuthenticationType = authenticationType
+	}
+
+	v = m["userName"]
+	if v != nil {
+		var userName map[string]interface{}
+		err = json.Unmarshal(*m["userName"], &userName)
+		if err != nil {
+			return err
+		}
+		odlstp.UserName = &userName
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		odlstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		odlstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // ODataResourceDataset the Open Data Protocol (OData) resource dataset.
@@ -49072,17 +49968,86 @@ func (ols *OdbcLinkedService) UnmarshalJSON(body []byte) error {
 // OdbcLinkedServiceTypeProperties ODBC linked service properties.
 type OdbcLinkedServiceTypeProperties struct {
 	// ConnectionString - The non-access credential portion of the connection string as well as an optional encrypted credential.
-	ConnectionString *SecureString `json:"connectionString,omitempty"`
+	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
 	// AuthenticationType - Type of authentication used to connect to the ODBC data store. Possible values are: Anonymous and Basic. Type: string (or Expression with resultType string).
 	AuthenticationType *map[string]interface{} `json:"authenticationType,omitempty"`
 	// Credential - The access credential portion of the connection string specified in driver-specific property-value format.
-	Credential *SecureString `json:"credential,omitempty"`
+	Credential BasicSecretBase `json:"credential,omitempty"`
 	// UserName - User name for Basic authentication. Type: string (or Expression with resultType string).
 	UserName *map[string]interface{} `json:"userName,omitempty"`
 	// Password - Password for Basic authentication.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for OdbcLinkedServiceTypeProperties struct.
+func (olstp *OdbcLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["connectionString"]
+	if v != nil {
+		connectionString, err := unmarshalBasicSecretBase(*m["connectionString"])
+		if err != nil {
+			return err
+		}
+		olstp.ConnectionString = connectionString
+	}
+
+	v = m["authenticationType"]
+	if v != nil {
+		var authenticationType map[string]interface{}
+		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
+		if err != nil {
+			return err
+		}
+		olstp.AuthenticationType = &authenticationType
+	}
+
+	v = m["credential"]
+	if v != nil {
+		credential, err := unmarshalBasicSecretBase(*m["credential"])
+		if err != nil {
+			return err
+		}
+		olstp.Credential = credential
+	}
+
+	v = m["userName"]
+	if v != nil {
+		var userName map[string]interface{}
+		err = json.Unmarshal(*m["userName"], &userName)
+		if err != nil {
+			return err
+		}
+		olstp.UserName = &userName
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		olstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		olstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // OdbcSink a copy activity ODBC sink.
@@ -49743,9 +50708,40 @@ func (ols *OracleLinkedService) UnmarshalJSON(body []byte) error {
 // OracleLinkedServiceTypeProperties oracle database linked service properties.
 type OracleLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString *SecureString `json:"connectionString,omitempty"`
+	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for OracleLinkedServiceTypeProperties struct.
+func (olstp *OracleLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["connectionString"]
+	if v != nil {
+		connectionString, err := unmarshalBasicSecretBase(*m["connectionString"])
+		if err != nil {
+			return err
+		}
+		olstp.ConnectionString = connectionString
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		olstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // OracleSink a copy activity Oracle sink.
@@ -53508,9 +54504,80 @@ type PostgreSQLLinkedServiceTypeProperties struct {
 	// Username - Username for authentication. Type: string (or Expression with resultType string).
 	Username *map[string]interface{} `json:"username,omitempty"`
 	// Password - Password for authentication.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for PostgreSQLLinkedServiceTypeProperties struct.
+func (pslstp *PostgreSQLLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["server"]
+	if v != nil {
+		var server map[string]interface{}
+		err = json.Unmarshal(*m["server"], &server)
+		if err != nil {
+			return err
+		}
+		pslstp.Server = &server
+	}
+
+	v = m["database"]
+	if v != nil {
+		var databaseVar map[string]interface{}
+		err = json.Unmarshal(*m["database"], &databaseVar)
+		if err != nil {
+			return err
+		}
+		pslstp.Database = &databaseVar
+	}
+
+	v = m["schema"]
+	if v != nil {
+		var schema map[string]interface{}
+		err = json.Unmarshal(*m["schema"], &schema)
+		if err != nil {
+			return err
+		}
+		pslstp.Schema = &schema
+	}
+
+	v = m["username"]
+	if v != nil {
+		var username map[string]interface{}
+		err = json.Unmarshal(*m["username"], &username)
+		if err != nil {
+			return err
+		}
+		pslstp.Username = &username
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		pslstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		pslstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // PrestoLinkedService presto server linked service.
@@ -57986,9 +59053,80 @@ type SapBWLinkedServiceTypeProperties struct {
 	// UserName - Username to access the SAP BW server. Type: string (or Expression with resultType string).
 	UserName *map[string]interface{} `json:"userName,omitempty"`
 	// Password - Password to access the SAP BW server.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SapBWLinkedServiceTypeProperties struct.
+func (sblstp *SapBWLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["server"]
+	if v != nil {
+		var server map[string]interface{}
+		err = json.Unmarshal(*m["server"], &server)
+		if err != nil {
+			return err
+		}
+		sblstp.Server = &server
+	}
+
+	v = m["systemNumber"]
+	if v != nil {
+		var systemNumber map[string]interface{}
+		err = json.Unmarshal(*m["systemNumber"], &systemNumber)
+		if err != nil {
+			return err
+		}
+		sblstp.SystemNumber = &systemNumber
+	}
+
+	v = m["clientId"]
+	if v != nil {
+		var clientID map[string]interface{}
+		err = json.Unmarshal(*m["clientId"], &clientID)
+		if err != nil {
+			return err
+		}
+		sblstp.ClientID = &clientID
+	}
+
+	v = m["userName"]
+	if v != nil {
+		var userName map[string]interface{}
+		err = json.Unmarshal(*m["userName"], &userName)
+		if err != nil {
+			return err
+		}
+		sblstp.UserName = &userName
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		sblstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		sblstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // SapCloudForCustomerLinkedService linked service for SAP Cloud for Customer.
@@ -58405,9 +59543,60 @@ type SapCloudForCustomerLinkedServiceTypeProperties struct {
 	// Username - The username for Basic authentication. Type: string (or Expression with resultType string).
 	Username *map[string]interface{} `json:"username,omitempty"`
 	// Password - The password for Basic authentication.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must be provided. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SapCloudForCustomerLinkedServiceTypeProperties struct.
+func (scfclstp *SapCloudForCustomerLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["url"]
+	if v != nil {
+		var URLVar map[string]interface{}
+		err = json.Unmarshal(*m["url"], &URLVar)
+		if err != nil {
+			return err
+		}
+		scfclstp.URL = &URLVar
+	}
+
+	v = m["username"]
+	if v != nil {
+		var username map[string]interface{}
+		err = json.Unmarshal(*m["username"], &username)
+		if err != nil {
+			return err
+		}
+		scfclstp.Username = &username
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		scfclstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		scfclstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // SapCloudForCustomerResourceDataset the path of the SAP Cloud for Customer OData entity.
@@ -59552,9 +60741,70 @@ type SapHanaLinkedServiceProperties struct {
 	// UserName - Username to access the SAP HANA server. Type: string (or Expression with resultType string).
 	UserName *map[string]interface{} `json:"userName,omitempty"`
 	// Password - Password to access the SAP HANA server.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SapHanaLinkedServiceProperties struct.
+func (shlsp *SapHanaLinkedServiceProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["server"]
+	if v != nil {
+		var server map[string]interface{}
+		err = json.Unmarshal(*m["server"], &server)
+		if err != nil {
+			return err
+		}
+		shlsp.Server = &server
+	}
+
+	v = m["authenticationType"]
+	if v != nil {
+		var authenticationType SapHanaAuthenticationType
+		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
+		if err != nil {
+			return err
+		}
+		shlsp.AuthenticationType = authenticationType
+	}
+
+	v = m["userName"]
+	if v != nil {
+		var userName map[string]interface{}
+		err = json.Unmarshal(*m["userName"], &userName)
+		if err != nil {
+			return err
+		}
+		shlsp.UserName = &userName
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		shlsp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		shlsp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // ScheduleTrigger trigger that creates pipeline runs periodically, on schedule.
@@ -61521,19 +62771,138 @@ type SftpServerLinkedServiceTypeProperties struct {
 	// UserName - The username used to log on to the SFTP server. Type: string (or Expression with resultType string).
 	UserName *map[string]interface{} `json:"userName,omitempty"`
 	// Password - Password to logon the SFTP server for Basic authentication.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
 	// PrivateKeyPath - The SSH private key file path for SshPublicKey authentication. Only valid for on-premises copy. For on-premises copy with SshPublicKey authentication, either PrivateKeyPath or PrivateKeyContent should be specified. SSH private key should be OpenSSH format. Type: string (or Expression with resultType string).
 	PrivateKeyPath *map[string]interface{} `json:"privateKeyPath,omitempty"`
 	// PrivateKeyContent - Base64 encoded SSH private key content for SshPublicKey authentication. For on-premises copy with SshPublicKey authentication, either PrivateKeyPath or PrivateKeyContent should be specified. SSH private key should be OpenSSH format.
-	PrivateKeyContent *SecureString `json:"privateKeyContent,omitempty"`
+	PrivateKeyContent BasicSecretBase `json:"privateKeyContent,omitempty"`
 	// PassPhrase - The password to decrypt the SSH private key if the SSH private key is encrypted.
-	PassPhrase *SecureString `json:"passPhrase,omitempty"`
+	PassPhrase BasicSecretBase `json:"passPhrase,omitempty"`
 	// SkipHostKeyValidation - If true, skip the SSH host key validation. Default value is false. Type: boolean (or Expression with resultType boolean).
 	SkipHostKeyValidation *map[string]interface{} `json:"skipHostKeyValidation,omitempty"`
 	// HostKeyFingerprint - The host key finger-print of the SFTP server. When SkipHostKeyValidation is false, HostKeyFingerprint should be specified. Type: string (or Expression with resultType string).
 	HostKeyFingerprint *map[string]interface{} `json:"hostKeyFingerprint,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SftpServerLinkedServiceTypeProperties struct.
+func (sslstp *SftpServerLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["host"]
+	if v != nil {
+		var host map[string]interface{}
+		err = json.Unmarshal(*m["host"], &host)
+		if err != nil {
+			return err
+		}
+		sslstp.Host = &host
+	}
+
+	v = m["port"]
+	if v != nil {
+		var port map[string]interface{}
+		err = json.Unmarshal(*m["port"], &port)
+		if err != nil {
+			return err
+		}
+		sslstp.Port = &port
+	}
+
+	v = m["authenticationType"]
+	if v != nil {
+		var authenticationType SftpAuthenticationType
+		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
+		if err != nil {
+			return err
+		}
+		sslstp.AuthenticationType = authenticationType
+	}
+
+	v = m["userName"]
+	if v != nil {
+		var userName map[string]interface{}
+		err = json.Unmarshal(*m["userName"], &userName)
+		if err != nil {
+			return err
+		}
+		sslstp.UserName = &userName
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		sslstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		sslstp.EncryptedCredential = &encryptedCredential
+	}
+
+	v = m["privateKeyPath"]
+	if v != nil {
+		var privateKeyPath map[string]interface{}
+		err = json.Unmarshal(*m["privateKeyPath"], &privateKeyPath)
+		if err != nil {
+			return err
+		}
+		sslstp.PrivateKeyPath = &privateKeyPath
+	}
+
+	v = m["privateKeyContent"]
+	if v != nil {
+		privateKeyContent, err := unmarshalBasicSecretBase(*m["privateKeyContent"])
+		if err != nil {
+			return err
+		}
+		sslstp.PrivateKeyContent = privateKeyContent
+	}
+
+	v = m["passPhrase"]
+	if v != nil {
+		passPhrase, err := unmarshalBasicSecretBase(*m["passPhrase"])
+		if err != nil {
+			return err
+		}
+		sslstp.PassPhrase = passPhrase
+	}
+
+	v = m["skipHostKeyValidation"]
+	if v != nil {
+		var skipHostKeyValidation map[string]interface{}
+		err = json.Unmarshal(*m["skipHostKeyValidation"], &skipHostKeyValidation)
+		if err != nil {
+			return err
+		}
+		sslstp.SkipHostKeyValidation = &skipHostKeyValidation
+	}
+
+	v = m["hostKeyFingerprint"]
+	if v != nil {
+		var hostKeyFingerprint map[string]interface{}
+		err = json.Unmarshal(*m["hostKeyFingerprint"], &hostKeyFingerprint)
+		if err != nil {
+			return err
+		}
+		sslstp.HostKeyFingerprint = &hostKeyFingerprint
+	}
+
+	return nil
 }
 
 // ShopifyLinkedService shopify Serivce linked service.
@@ -64481,13 +65850,63 @@ func (ssls *SQLServerLinkedService) UnmarshalJSON(body []byte) error {
 // SQLServerLinkedServiceTypeProperties SQL Server linked service properties.
 type SQLServerLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString *SecureString `json:"connectionString,omitempty"`
+	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
 	// UserName - The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
 	UserName *map[string]interface{} `json:"userName,omitempty"`
 	// Password - The on-premises Windows authentication password.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SQLServerLinkedServiceTypeProperties struct.
+func (sslstp *SQLServerLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["connectionString"]
+	if v != nil {
+		connectionString, err := unmarshalBasicSecretBase(*m["connectionString"])
+		if err != nil {
+			return err
+		}
+		sslstp.ConnectionString = connectionString
+	}
+
+	v = m["userName"]
+	if v != nil {
+		var userName map[string]interface{}
+		err = json.Unmarshal(*m["userName"], &userName)
+		if err != nil {
+			return err
+		}
+		sslstp.UserName = &userName
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		sslstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		sslstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // SQLServerStoredProcedureActivity SQL stored procedure activity type.
@@ -66990,9 +68409,90 @@ type SybaseLinkedServiceTypeProperties struct {
 	// Username - Username for authentication. Type: string (or Expression with resultType string).
 	Username *map[string]interface{} `json:"username,omitempty"`
 	// Password - Password for authentication.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SybaseLinkedServiceTypeProperties struct.
+func (slstp *SybaseLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["server"]
+	if v != nil {
+		var server map[string]interface{}
+		err = json.Unmarshal(*m["server"], &server)
+		if err != nil {
+			return err
+		}
+		slstp.Server = &server
+	}
+
+	v = m["database"]
+	if v != nil {
+		var databaseVar map[string]interface{}
+		err = json.Unmarshal(*m["database"], &databaseVar)
+		if err != nil {
+			return err
+		}
+		slstp.Database = &databaseVar
+	}
+
+	v = m["schema"]
+	if v != nil {
+		var schema map[string]interface{}
+		err = json.Unmarshal(*m["schema"], &schema)
+		if err != nil {
+			return err
+		}
+		slstp.Schema = &schema
+	}
+
+	v = m["authenticationType"]
+	if v != nil {
+		var authenticationType SybaseAuthenticationType
+		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
+		if err != nil {
+			return err
+		}
+		slstp.AuthenticationType = authenticationType
+	}
+
+	v = m["username"]
+	if v != nil {
+		var username map[string]interface{}
+		err = json.Unmarshal(*m["username"], &username)
+		if err != nil {
+			return err
+		}
+		slstp.Username = &username
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		slstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		slstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // TabularTranslator a copy activity tabular translator.
@@ -67449,9 +68949,80 @@ type TeradataLinkedServiceTypeProperties struct {
 	// Username - Username for authentication. Type: string (or Expression with resultType string).
 	Username *map[string]interface{} `json:"username,omitempty"`
 	// Password - Password for authentication.
-	Password *SecureString `json:"password,omitempty"`
+	Password BasicSecretBase `json:"password,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential *map[string]interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TeradataLinkedServiceTypeProperties struct.
+func (tlstp *TeradataLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["server"]
+	if v != nil {
+		var server map[string]interface{}
+		err = json.Unmarshal(*m["server"], &server)
+		if err != nil {
+			return err
+		}
+		tlstp.Server = &server
+	}
+
+	v = m["schema"]
+	if v != nil {
+		var schema map[string]interface{}
+		err = json.Unmarshal(*m["schema"], &schema)
+		if err != nil {
+			return err
+		}
+		tlstp.Schema = &schema
+	}
+
+	v = m["authenticationType"]
+	if v != nil {
+		var authenticationType TeradataAuthenticationType
+		err = json.Unmarshal(*m["authenticationType"], &authenticationType)
+		if err != nil {
+			return err
+		}
+		tlstp.AuthenticationType = authenticationType
+	}
+
+	v = m["username"]
+	if v != nil {
+		var username map[string]interface{}
+		err = json.Unmarshal(*m["username"], &username)
+		if err != nil {
+			return err
+		}
+		tlstp.Username = &username
+	}
+
+	v = m["password"]
+	if v != nil {
+		password, err := unmarshalBasicSecretBase(*m["password"])
+		if err != nil {
+			return err
+		}
+		tlstp.Password = password
+	}
+
+	v = m["encryptedCredential"]
+	if v != nil {
+		var encryptedCredential map[string]interface{}
+		err = json.Unmarshal(*m["encryptedCredential"], &encryptedCredential)
+		if err != nil {
+			return err
+		}
+		tlstp.EncryptedCredential = &encryptedCredential
+	}
+
+	return nil
 }
 
 // TextFormat the data stored in text format.

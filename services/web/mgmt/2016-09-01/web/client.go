@@ -499,6 +499,100 @@ func (client BaseClient) ListPremierAddOnOffersComplete(ctx context.Context) (re
 	return
 }
 
+// ListSiteIdentifiersAssignedToHostName list all apps that are assigned to a hostname.
+//
+// nameIdentifier is hostname information.
+func (client BaseClient) ListSiteIdentifiersAssignedToHostName(ctx context.Context, nameIdentifier NameIdentifier) (result IdentifierCollectionPage, err error) {
+	result.fn = client.listSiteIdentifiersAssignedToHostNameNextResults
+	req, err := client.ListSiteIdentifiersAssignedToHostNamePreparer(ctx, nameIdentifier)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListSiteIdentifiersAssignedToHostName", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSiteIdentifiersAssignedToHostNameSender(req)
+	if err != nil {
+		result.ic.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListSiteIdentifiersAssignedToHostName", resp, "Failure sending request")
+		return
+	}
+
+	result.ic, err = client.ListSiteIdentifiersAssignedToHostNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListSiteIdentifiersAssignedToHostName", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSiteIdentifiersAssignedToHostNamePreparer prepares the ListSiteIdentifiersAssignedToHostName request.
+func (client BaseClient) ListSiteIdentifiersAssignedToHostNamePreparer(ctx context.Context, nameIdentifier NameIdentifier) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Web/listSitesAssignedToHostName", pathParameters),
+		autorest.WithJSON(nameIdentifier),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSiteIdentifiersAssignedToHostNameSender sends the ListSiteIdentifiersAssignedToHostName request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) ListSiteIdentifiersAssignedToHostNameSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSiteIdentifiersAssignedToHostNameResponder handles the response to the ListSiteIdentifiersAssignedToHostName request. The method always
+// closes the http.Response Body.
+func (client BaseClient) ListSiteIdentifiersAssignedToHostNameResponder(resp *http.Response) (result IdentifierCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listSiteIdentifiersAssignedToHostNameNextResults retrieves the next set of results, if any.
+func (client BaseClient) listSiteIdentifiersAssignedToHostNameNextResults(lastResults IdentifierCollection) (result IdentifierCollection, err error) {
+	req, err := lastResults.identifierCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.BaseClient", "listSiteIdentifiersAssignedToHostNameNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSiteIdentifiersAssignedToHostNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.BaseClient", "listSiteIdentifiersAssignedToHostNameNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListSiteIdentifiersAssignedToHostNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.BaseClient", "listSiteIdentifiersAssignedToHostNameNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListSiteIdentifiersAssignedToHostNameComplete enumerates all values, automatically crossing page boundaries as required.
+func (client BaseClient) ListSiteIdentifiersAssignedToHostNameComplete(ctx context.Context, nameIdentifier NameIdentifier) (result IdentifierCollectionIterator, err error) {
+	result.page, err = client.ListSiteIdentifiersAssignedToHostName(ctx, nameIdentifier)
+	return
+}
+
 // ListSkus list all SKUs.
 func (client BaseClient) ListSkus(ctx context.Context) (result SkuInfos, err error) {
 	req, err := client.ListSkusPreparer(ctx)

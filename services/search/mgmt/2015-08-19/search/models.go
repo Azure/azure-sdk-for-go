@@ -130,6 +130,7 @@ type CheckNameAvailabilityOutput struct {
 
 // CloudError contains information about an API error.
 type CloudError struct {
+	// Error - Describes a particular API error with an error code and a message.
 	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
@@ -152,6 +153,36 @@ type ListQueryKeysResult struct {
 	Value *[]QueryKey `json:"value,omitempty"`
 }
 
+// Operation describes a REST API operation.
+type Operation struct {
+	// Name - The name of the operation. This name is of the form {provider}/{resource}/{operation}.
+	Name *string `json:"name,omitempty"`
+	// Display - The object that describes the operation.
+	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// OperationDisplay the object that describes the operation.
+type OperationDisplay struct {
+	// Provider - The friendly name of the resource provider.
+	Provider *string `json:"provider,omitempty"`
+	// Operation - The operation type: read, write, delete, listKeys/action, etc.
+	Operation *string `json:"operation,omitempty"`
+	// Resource - The resource type on which the operation is performed.
+	Resource *string `json:"resource,omitempty"`
+	// Description - The friendly name of the operation.
+	Description *string `json:"description,omitempty"`
+}
+
+// OperationListResult the result of the request to list REST API operations. It contains a list of operations and a
+// URL  to get the next set of results.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of operations supported by the resource provider.
+	Value *[]Operation `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of operation list results, if any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
 // QueryKey describes an API key for a given Azure Search service that has permissions for query operations only.
 type QueryKey struct {
 	autorest.Response `json:"-"`
@@ -169,7 +200,7 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - The resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - The geographic location of the resource. This must be one of the supported and registered Azure Geo Regions (for example, West US, East US, Southeast Asia, and so forth).
+	// Location - The geographic location of the resource. This must be one of the supported and registered Azure Geo Regions (for example, West US, East US, Southeast Asia, and so forth). This property is required when creating a new resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags to help categorize the resource in the Azure portal.
 	Tags *map[string]*string `json:"tags,omitempty"`
@@ -184,13 +215,13 @@ type Service struct {
 	Name *string `json:"name,omitempty"`
 	// Type - The resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - The geographic location of the resource. This must be one of the supported and registered Azure Geo Regions (for example, West US, East US, Southeast Asia, and so forth).
+	// Location - The geographic location of the resource. This must be one of the supported and registered Azure Geo Regions (for example, West US, East US, Southeast Asia, and so forth). This property is required when creating a new resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags to help categorize the resource in the Azure portal.
 	Tags *map[string]*string `json:"tags,omitempty"`
 	// ServiceProperties - Properties of the Search service.
 	*ServiceProperties `json:"properties,omitempty"`
-	// Sku - The SKU of the Search Service, which determines price tier and capacity limits.
+	// Sku - The SKU of the Search Service, which determines price tier and capacity limits. This property is required when creating a new Search Service.
 	Sku *Sku `json:"sku,omitempty"`
 }
 

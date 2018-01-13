@@ -104,7 +104,7 @@ type ACLStatus struct {
 	// Owner - the user owner, an AAD Object ID.
 	Owner *string `json:"owner,omitempty"`
 	// Permission - The octal representation of the unnamed user, mask and other permissions.
-	Permission *int32 `json:"permission,omitempty"`
+	Permission *string `json:"permission,omitempty"`
 	// StickyBit - the indicator of whether the sticky bit is on or off.
 	StickyBit *bool `json:"stickyBit,omitempty"`
 }

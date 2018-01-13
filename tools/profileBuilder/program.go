@@ -252,7 +252,7 @@ func main() {
 			return file.Decls[i].Pos() < file.Decls[j].Pos()
 		  })
 
-		ast.Print(nil,file)
+		outputLog.Printf("Writing File: %s", outputPath)
 		printer.Fprint(outputFile, files, file)
 
 		return true
@@ -287,7 +287,7 @@ func init() {
 	flag.StringVar(&outputLocation, "o", defaultOutputLocation(), "The output location for the package generated as a profile.")
 	flag.StringVar(&inputRoot, "root", defaultInputRoot(), "The location of the Azure SDK for Go's service packages.")
 	flag.StringVar(&inputListLocation, "l", "", "If the `list` strategy is chosen, -l is the location of the file to read for said list. If not present, stdin is used.")
-	flag.StringVar(&selectedStrategy, "s", string(WellKnownStrategyLatest), "The strategy to employ for finding packages to put in a profile.")
+	flag.StringVar(&selectedStrategy, "s", string(WellKnownStrategyLatest), "The strategy to employ for finding packages to put in a profile. NOTE: this won't respect the new azure specs repo. Use 'list' instead to provide the stable API's.")
 	flag.BoolVar(&useVerbose, "v", false, "Write status to stderr as the program progresses")
 	flag.Parse()
 

@@ -852,6 +852,8 @@ type Plan struct {
 	Product *string `json:"product,omitempty"`
 	// PromotionCode - The promotion code.
 	PromotionCode *string `json:"promotionCode,omitempty"`
+	// Version - The plan's version.
+	Version *string `json:"version,omitempty"`
 }
 
 // Provider resource provider information.

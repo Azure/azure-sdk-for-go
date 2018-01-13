@@ -22,154 +22,64 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/satori/go.uuid"
 	"io"
 	"net/http"
 )
 
-// PersonClient is the an API for face detection, verification, and identification.
-type PersonClient struct {
+// PersonGroupPersonClient is the an API for face detection, verification, and identification.
+type PersonGroupPersonClient struct {
 	BaseClient
 }
 
-// NewPersonClient creates an instance of the PersonClient client.
-func NewPersonClient(azureRegion AzureRegions) PersonClient {
-	return PersonClient{New(azureRegion)}
-}
-
-// AddPersonFace add a representative face to a person for identification. The input face is specified as an image with
-// a targetFace rectangle.
-//
-// personGroupID is specifying the person group containing the target person. personID is target person that the face
-// is added to. imageURL is a JSON document with a URL pointing to the image that is to be analyzed. userData is
-// user-specified data about the target face to add for any purpose. The maximum length is 1KB. targetFace is a face
-// rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height".
-// E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify
-// which face to add. No targetFace means there is only one face detected in the entire image.
-func (client PersonClient) AddPersonFace(ctx context.Context, personGroupID string, personID string, imageURL ImageURL, userData string, targetFace []int32) (result PersistedFaceResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: personGroupID,
-			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
-		{TargetValue: userData,
-			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}},
-		{TargetValue: imageURL,
-			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "AddPersonFace")
-	}
-
-	req, err := client.AddPersonFacePreparer(ctx, personGroupID, personID, imageURL, userData, targetFace)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "AddPersonFace", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.AddPersonFaceSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "AddPersonFace", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.AddPersonFaceResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "AddPersonFace", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// AddPersonFacePreparer prepares the AddPersonFace request.
-func (client PersonClient) AddPersonFacePreparer(ctx context.Context, personGroupID string, personID string, imageURL ImageURL, userData string, targetFace []int32) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
-	pathParameters := map[string]interface{}{
-		"personGroupId": autorest.Encode("path", personGroupID),
-		"personId":      autorest.Encode("path", personID),
-	}
-
-	queryParameters := map[string]interface{}{}
-	if len(userData) > 0 {
-		queryParameters["userData"] = autorest.Encode("query", userData)
-	}
-	if targetFace != nil && len(targetFace) > 0 {
-		queryParameters["targetFace"] = autorest.Encode("query", targetFace, ",")
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
-		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedFaces", pathParameters),
-		autorest.WithJSON(imageURL),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// AddPersonFaceSender sends the AddPersonFace request. The method will close the
-// http.Response Body if it receives an error.
-func (client PersonClient) AddPersonFaceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// AddPersonFaceResponder handles the response to the AddPersonFace request. The method always
-// closes the http.Response Body.
-func (client PersonClient) AddPersonFaceResponder(resp *http.Response) (result PersistedFaceResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// NewPersonGroupPersonClient creates an instance of the PersonGroupPersonClient client.
+func NewPersonGroupPersonClient(azureRegion AzureRegions) PersonGroupPersonClient {
+	return PersonGroupPersonClient{New(azureRegion)}
 }
 
 // AddPersonFaceFromStream add a representative face to a person for identification. The input face is specified as an
 // image with a targetFace rectangle.
 //
-// personGroupID is specifying the person group containing the target person. personID is target person that the face
-// is added to. imageParameter is an image stream. imageParameter will be closed upon successful return. Callers should
-// ensure closure when receiving an error.userData is user-specified data about the target face to add for any purpose.
-// The maximum length is 1KB. targetFace is a face rectangle to specify the target face to be added to a person in the
-// format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
-// image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in
-// the entire image.
-func (client PersonClient) AddPersonFaceFromStream(ctx context.Context, personGroupID string, personID string, imageParameter io.ReadCloser, userData string, targetFace []int32) (result PersistedFaceResult, err error) {
+// personGroupID is id referencing a particular person group. personID is id referencing a particular person.
+// imageParameter is an image stream. imageParameter will be closed upon successful return. Callers should ensure
+// closure when receiving an error.userData is user-specified data about the face for any purpose. The maximum length
+// is 1KB. targetFace is a face rectangle to specify the target face to be added to a person in the format of
+// "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image,
+// targetFace is required to specify which face to add. No targetFace means there is only one face detected in the
+// entire image.
+func (client PersonGroupPersonClient) AddPersonFaceFromStream(ctx context.Context, personGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32) (result PersistedFace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
 		{TargetValue: userData,
 			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "AddPersonFaceFromStream")
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromStream")
 	}
 
 	req, err := client.AddPersonFaceFromStreamPreparer(ctx, personGroupID, personID, imageParameter, userData, targetFace)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "AddPersonFaceFromStream", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromStream", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.AddPersonFaceFromStreamSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "AddPersonFaceFromStream", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromStream", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.AddPersonFaceFromStreamResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "AddPersonFaceFromStream", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromStream", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // AddPersonFaceFromStreamPreparer prepares the AddPersonFaceFromStream request.
-func (client PersonClient) AddPersonFaceFromStreamPreparer(ctx context.Context, personGroupID string, personID string, imageParameter io.ReadCloser, userData string, targetFace []int32) (*http.Request, error) {
+func (client PersonGroupPersonClient) AddPersonFaceFromStreamPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -198,14 +108,105 @@ func (client PersonClient) AddPersonFaceFromStreamPreparer(ctx context.Context, 
 
 // AddPersonFaceFromStreamSender sends the AddPersonFaceFromStream request. The method will close the
 // http.Response Body if it receives an error.
-func (client PersonClient) AddPersonFaceFromStreamSender(req *http.Request) (*http.Response, error) {
+func (client PersonGroupPersonClient) AddPersonFaceFromStreamSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddPersonFaceFromStreamResponder handles the response to the AddPersonFaceFromStream request. The method always
 // closes the http.Response Body.
-func (client PersonClient) AddPersonFaceFromStreamResponder(resp *http.Response) (result PersistedFaceResult, err error) {
+func (client PersonGroupPersonClient) AddPersonFaceFromStreamResponder(resp *http.Response) (result PersistedFace, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// AddPersonFaceFromURL add a representative face to a person for identification. The input face is specified as an
+// image with a targetFace rectangle.
+//
+// personGroupID is id referencing a particular person group. personID is id referencing a particular person. imageURL
+// is a JSON document with a URL pointing to the image that is to be analyzed. userData is user-specified data about
+// the face for any purpose. The maximum length is 1KB. targetFace is a face rectangle to specify the target face to be
+// added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is
+// more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is
+// only one face detected in the entire image.
+func (client PersonGroupPersonClient) AddPersonFaceFromURL(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (result PersistedFace, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: personGroupID,
+			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
+		{TargetValue: userData,
+			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}},
+		{TargetValue: imageURL,
+			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromURL")
+	}
+
+	req, err := client.AddPersonFaceFromURLPreparer(ctx, personGroupID, personID, imageURL, userData, targetFace)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromURL", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.AddPersonFaceFromURLSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromURL", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.AddPersonFaceFromURLResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddPersonFaceFromURL", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// AddPersonFaceFromURLPreparer prepares the AddPersonFaceFromURL request.
+func (client PersonGroupPersonClient) AddPersonFaceFromURLPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"AzureRegion": client.AzureRegion,
+	}
+
+	pathParameters := map[string]interface{}{
+		"personGroupId": autorest.Encode("path", personGroupID),
+		"personId":      autorest.Encode("path", personID),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(userData) > 0 {
+		queryParameters["userData"] = autorest.Encode("query", userData)
+	}
+	if targetFace != nil && len(targetFace) > 0 {
+		queryParameters["targetFace"] = autorest.Encode("query", targetFace, ",")
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
+		autorest.WithPathParameters("/persongroups/{personGroupId}/persons/{personId}/persistedFaces", pathParameters),
+		autorest.WithJSON(imageURL),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AddPersonFaceFromURLSender sends the AddPersonFaceFromURL request. The method will close the
+// http.Response Body if it receives an error.
+func (client PersonGroupPersonClient) AddPersonFaceFromURLSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// AddPersonFaceFromURLResponder handles the response to the AddPersonFaceFromURL request. The method always
+// closes the http.Response Body.
+func (client PersonGroupPersonClient) AddPersonFaceFromURLResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -218,9 +219,8 @@ func (client PersonClient) AddPersonFaceFromStreamResponder(resp *http.Response)
 
 // Create create a new person in a specified person group.
 //
-// personGroupID is specifying the target person group to create the person. body is request body for creating new
-// person.
-func (client PersonClient) Create(ctx context.Context, personGroupID string, body CreatePersonRequest) (result CreatePersonResult, err error) {
+// personGroupID is id referencing a particular person group. body is request body for creating new person.
+func (client PersonGroupPersonClient) Create(ctx context.Context, personGroupID string, body NameAndUserDataContract) (result Person, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -230,32 +230,32 @@ func (client PersonClient) Create(ctx context.Context, personGroupID string, bod
 				Chain: []validation.Constraint{{Target: "body.Name", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
 				{Target: "body.UserData", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "body.UserData", Name: validation.MaxLength, Rule: 16384, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "Create")
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupPersonClient", "Create")
 	}
 
 	req, err := client.CreatePreparer(ctx, personGroupID, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Create", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreatePreparer prepares the Create request.
-func (client PersonClient) CreatePreparer(ctx context.Context, personGroupID string, body CreatePersonRequest) (*http.Request, error) {
+func (client PersonGroupPersonClient) CreatePreparer(ctx context.Context, personGroupID string, body NameAndUserDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -275,14 +275,14 @@ func (client PersonClient) CreatePreparer(ctx context.Context, personGroupID str
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client PersonClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client PersonGroupPersonClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client PersonClient) CreateResponder(resp *http.Response) (result CreatePersonResult, err error) {
+func (client PersonGroupPersonClient) CreateResponder(resp *http.Response) (result Person, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -295,38 +295,38 @@ func (client PersonClient) CreateResponder(resp *http.Response) (result CreatePe
 
 // Delete delete an existing person from a person group. Persisted face images of the person will also be deleted.
 //
-// personGroupID is specifying the person group containing the person. personID is the target personId to delete.
-func (client PersonClient) Delete(ctx context.Context, personGroupID string, personID string) (result autorest.Response, err error) {
+// personGroupID is id referencing a particular person group. personID is id referencing a particular person.
+func (client PersonGroupPersonClient) Delete(ctx context.Context, personGroupID string, personID uuid.UUID) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "Delete")
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupPersonClient", "Delete")
 	}
 
 	req, err := client.DeletePreparer(ctx, personGroupID, personID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PersonClient) DeletePreparer(ctx context.Context, personGroupID string, personID string) (*http.Request, error) {
+func (client PersonGroupPersonClient) DeletePreparer(ctx context.Context, personGroupID string, personID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -345,14 +345,14 @@ func (client PersonClient) DeletePreparer(ctx context.Context, personGroupID str
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client PersonClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client PersonGroupPersonClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PersonClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PersonGroupPersonClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -364,39 +364,39 @@ func (client PersonClient) DeleteResponder(resp *http.Response) (result autorest
 
 // DeleteFace delete a face from a person. Relative image for the persisted face will also be deleted.
 //
-// personGroupID is specifying the person group containing the target person. personID is specifying the person that
-// the target persisted face belong to. persistedFaceID is the persisted face to remove.
-func (client PersonClient) DeleteFace(ctx context.Context, personGroupID string, personID string, persistedFaceID string) (result autorest.Response, err error) {
+// personGroupID is id referencing a particular person group. personID is id referencing a particular person.
+// persistedFaceID is id referencing a particular persistedFaceId of an existing face.
+func (client PersonGroupPersonClient) DeleteFace(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "DeleteFace")
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupPersonClient", "DeleteFace")
 	}
 
 	req, err := client.DeleteFacePreparer(ctx, personGroupID, personID, persistedFaceID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "DeleteFace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "DeleteFace", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteFaceSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "DeleteFace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "DeleteFace", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteFaceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "DeleteFace", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "DeleteFace", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeleteFacePreparer prepares the DeleteFace request.
-func (client PersonClient) DeleteFacePreparer(ctx context.Context, personGroupID string, personID string, persistedFaceID string) (*http.Request, error) {
+func (client PersonGroupPersonClient) DeleteFacePreparer(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -416,14 +416,14 @@ func (client PersonClient) DeleteFacePreparer(ctx context.Context, personGroupID
 
 // DeleteFaceSender sends the DeleteFace request. The method will close the
 // http.Response Body if it receives an error.
-func (client PersonClient) DeleteFaceSender(req *http.Request) (*http.Response, error) {
+func (client PersonGroupPersonClient) DeleteFaceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteFaceResponder handles the response to the DeleteFace request. The method always
 // closes the http.Response Body.
-func (client PersonClient) DeleteFaceResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PersonGroupPersonClient) DeleteFaceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -435,38 +435,38 @@ func (client PersonClient) DeleteFaceResponder(resp *http.Response) (result auto
 
 // Get retrieve a person's information, including registered persisted faces, name and userData.
 //
-// personGroupID is specifying the person group containing the target person. personID is specifying the target person.
-func (client PersonClient) Get(ctx context.Context, personGroupID string, personID string) (result PersonResult, err error) {
+// personGroupID is id referencing a particular person group. personID is id referencing a particular person.
+func (client PersonGroupPersonClient) Get(ctx context.Context, personGroupID string, personID uuid.UUID) (result Person, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "Get")
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupPersonClient", "Get")
 	}
 
 	req, err := client.GetPreparer(ctx, personGroupID, personID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client PersonClient) GetPreparer(ctx context.Context, personGroupID string, personID string) (*http.Request, error) {
+func (client PersonGroupPersonClient) GetPreparer(ctx context.Context, personGroupID string, personID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -485,14 +485,14 @@ func (client PersonClient) GetPreparer(ctx context.Context, personGroupID string
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client PersonClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client PersonGroupPersonClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client PersonClient) GetResponder(resp *http.Response) (result PersonResult, err error) {
+func (client PersonGroupPersonClient) GetResponder(resp *http.Response) (result Person, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -506,39 +506,39 @@ func (client PersonClient) GetResponder(resp *http.Response) (result PersonResul
 // GetFace retrieve information about a persisted face (specified by persistedFaceId, personId and its belonging
 // personGroupId).
 //
-// personGroupID is specifying the person group containing the target person. personID is specifying the target person
-// that the face belongs to. persistedFaceID is the persistedFaceId of the target persisted face of the person.
-func (client PersonClient) GetFace(ctx context.Context, personGroupID string, personID string, persistedFaceID string) (result PersonFaceResult, err error) {
+// personGroupID is id referencing a particular person group. personID is id referencing a particular person.
+// persistedFaceID is id referencing a particular persistedFaceId of an existing face.
+func (client PersonGroupPersonClient) GetFace(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID) (result PersistedFace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "GetFace")
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupPersonClient", "GetFace")
 	}
 
 	req, err := client.GetFacePreparer(ctx, personGroupID, personID, persistedFaceID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "GetFace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "GetFace", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetFaceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "GetFace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "GetFace", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetFaceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "GetFace", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "GetFace", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetFacePreparer prepares the GetFace request.
-func (client PersonClient) GetFacePreparer(ctx context.Context, personGroupID string, personID string, persistedFaceID string) (*http.Request, error) {
+func (client PersonGroupPersonClient) GetFacePreparer(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -558,14 +558,14 @@ func (client PersonClient) GetFacePreparer(ctx context.Context, personGroupID st
 
 // GetFaceSender sends the GetFace request. The method will close the
 // http.Response Body if it receives an error.
-func (client PersonClient) GetFaceSender(req *http.Request) (*http.Response, error) {
+func (client PersonGroupPersonClient) GetFaceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetFaceResponder handles the response to the GetFace request. The method always
 // closes the http.Response Body.
-func (client PersonClient) GetFaceResponder(resp *http.Response) (result PersonFaceResult, err error) {
+func (client PersonGroupPersonClient) GetFaceResponder(resp *http.Response) (result PersistedFace, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -579,10 +579,10 @@ func (client PersonClient) GetFaceResponder(resp *http.Response) (result PersonF
 // List list all persons in a person group, and retrieve person information (including personId, name, userData and
 // persistedFaceIds of registered faces of the person).
 //
-// personGroupID is personGroupId of the target person group. start is starting person id to return (used to list a
+// personGroupID is id referencing a particular person group. start is starting person id to return (used to list a
 // range of persons). top is number of persons to return starting with the person id indicated by the 'start'
 // parameter.
-func (client PersonClient) List(ctx context.Context, personGroupID string, start string, top *int32) (result ListPersonResult, err error) {
+func (client PersonGroupPersonClient) List(ctx context.Context, personGroupID string, start string, top *int32) (result ListPerson, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -592,32 +592,32 @@ func (client PersonClient) List(ctx context.Context, personGroupID string, start
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "List")
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupPersonClient", "List")
 	}
 
 	req, err := client.ListPreparer(ctx, personGroupID, start, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client PersonClient) ListPreparer(ctx context.Context, personGroupID string, start string, top *int32) (*http.Request, error) {
+func (client PersonGroupPersonClient) ListPreparer(ctx context.Context, personGroupID string, start string, top *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -644,14 +644,14 @@ func (client PersonClient) ListPreparer(ctx context.Context, personGroupID strin
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client PersonClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client PersonGroupPersonClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client PersonClient) ListResponder(resp *http.Response) (result ListPersonResult, err error) {
+func (client PersonGroupPersonClient) ListResponder(resp *http.Response) (result ListPerson, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -664,39 +664,39 @@ func (client PersonClient) ListResponder(resp *http.Response) (result ListPerson
 
 // Update update name or userData of a person.
 //
-// personGroupID is specifying the person group containing the target person. personID is personId of the target
-// person. body is request body  for person update operation.
-func (client PersonClient) Update(ctx context.Context, personGroupID string, personID string, body CreatePersonRequest) (result autorest.Response, err error) {
+// personGroupID is id referencing a particular person group. personID is id referencing a particular person. body is
+// request body for person update operation.
+func (client PersonGroupPersonClient) Update(ctx context.Context, personGroupID string, personID uuid.UUID, body NameAndUserDataContract) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "Update")
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupPersonClient", "Update")
 	}
 
 	req, err := client.UpdatePreparer(ctx, personGroupID, personID, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdatePreparer prepares the Update request.
-func (client PersonClient) UpdatePreparer(ctx context.Context, personGroupID string, personID string, body CreatePersonRequest) (*http.Request, error) {
+func (client PersonGroupPersonClient) UpdatePreparer(ctx context.Context, personGroupID string, personID uuid.UUID, body NameAndUserDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -717,14 +717,14 @@ func (client PersonClient) UpdatePreparer(ctx context.Context, personGroupID str
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client PersonClient) UpdateSender(req *http.Request) (*http.Response, error) {
+func (client PersonGroupPersonClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client PersonClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PersonGroupPersonClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -736,40 +736,40 @@ func (client PersonClient) UpdateResponder(resp *http.Response) (result autorest
 
 // UpdateFace update a person persisted face's userData field.
 //
-// personGroupID is specifying the person group containing the target person. personID is personId of the target
-// person. persistedFaceID is persistedFaceId of target face, which is persisted and will not expire. body is request
-// body for updating persisted face.
-func (client PersonClient) UpdateFace(ctx context.Context, personGroupID string, personID string, persistedFaceID string, body UpdatePersonFaceDataRequest) (result autorest.Response, err error) {
+// personGroupID is id referencing a particular person group. personID is id referencing a particular person.
+// persistedFaceID is id referencing a particular persistedFaceId of an existing face. body is request body for
+// updating persisted face.
+func (client PersonGroupPersonClient) UpdateFace(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID, body UpdatePersonFaceRequest) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonClient", "UpdateFace")
+		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupPersonClient", "UpdateFace")
 	}
 
 	req, err := client.UpdateFacePreparer(ctx, personGroupID, personID, persistedFaceID, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "UpdateFace", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "UpdateFace", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateFaceSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "UpdateFace", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "UpdateFace", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateFaceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "face.PersonClient", "UpdateFace", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "UpdateFace", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdateFacePreparer prepares the UpdateFace request.
-func (client PersonClient) UpdateFacePreparer(ctx context.Context, personGroupID string, personID string, persistedFaceID string, body UpdatePersonFaceDataRequest) (*http.Request, error) {
+func (client PersonGroupPersonClient) UpdateFacePreparer(ctx context.Context, personGroupID string, personID uuid.UUID, persistedFaceID uuid.UUID, body UpdatePersonFaceRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -791,14 +791,14 @@ func (client PersonClient) UpdateFacePreparer(ctx context.Context, personGroupID
 
 // UpdateFaceSender sends the UpdateFace request. The method will close the
 // http.Response Body if it receives an error.
-func (client PersonClient) UpdateFaceSender(req *http.Request) (*http.Response, error) {
+func (client PersonGroupPersonClient) UpdateFaceSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateFaceResponder handles the response to the UpdateFace request. The method always
 // closes the http.Response Body.
-func (client PersonClient) UpdateFaceResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PersonGroupPersonClient) UpdateFaceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

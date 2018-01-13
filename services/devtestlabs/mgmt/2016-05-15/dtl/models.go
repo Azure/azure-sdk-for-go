@@ -1206,7 +1206,7 @@ type CostThresholdProperties struct {
 	// SendNotificationWhenExceeded - Indicates whether notifications will be sent when this threshold is exceeded. Possible values include: 'Enabled', 'Disabled'
 	SendNotificationWhenExceeded CostThresholdStatus `json:"sendNotificationWhenExceeded,omitempty"`
 	// NotificationSent - Indicates the datetime when notifications were last sent for this threshold.
-	NotificationSent *string `json:"NotificationSent,omitempty"`
+	NotificationSent *string `json:"notificationSent,omitempty"`
 }
 
 // CustomImage a custom image.
@@ -2284,7 +2284,7 @@ type HourDetailsFragment struct {
 	Minute *int32 `json:"minute,omitempty"`
 }
 
-// IdentityProperties identityProperties
+// IdentityProperties properties of a managed identity
 type IdentityProperties struct {
 	// Type - Managed identity.
 	Type *string `json:"type,omitempty"`
@@ -3576,6 +3576,26 @@ type OperationError struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// OperationMetadata the REST API operation supported by DevTestLab ResourceProvider.
+type OperationMetadata struct {
+	// Name - Operation name: {provider}/{resource}/{operation}
+	Name *string `json:"name,omitempty"`
+	// Display - The object that describes the operations
+	Display *OperationMetadataDisplay `json:"display,omitempty"`
+}
+
+// OperationMetadataDisplay the object that describes the operations
+type OperationMetadataDisplay struct {
+	// Provider - Friendly name of the resource provider
+	Provider *string `json:"provider,omitempty"`
+	// Resource - Resource type on which the operation is performed.
+	Resource *string `json:"resource,omitempty"`
+	// Operation - Operation type: read, write, delete, listKeys/action, etc.
+	Operation *string `json:"operation,omitempty"`
+	// Description - Friendly name of the operation
+	Description *string `json:"description,omitempty"`
+}
+
 // OperationResult an Operation Result
 type OperationResult struct {
 	autorest.Response `json:"-"`
@@ -3858,6 +3878,108 @@ type PortFragment struct {
 	TransportProtocol TransportProtocol `json:"transportProtocol,omitempty"`
 	// BackendPort - Backend port of the target virtual machine.
 	BackendPort *int32 `json:"backendPort,omitempty"`
+}
+
+// ProviderOperationResult result of the request to list REST API operations
+type ProviderOperationResult struct {
+	autorest.Response `json:"-"`
+	// Value - List of operations supported by the resource provider.
+	Value *[]OperationMetadata `json:"value,omitempty"`
+	// NextLink - URL to get the next set of operation list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ProviderOperationResultIterator provides access to a complete listing of OperationMetadata values.
+type ProviderOperationResultIterator struct {
+	i    int
+	page ProviderOperationResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ProviderOperationResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ProviderOperationResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ProviderOperationResultIterator) Response() ProviderOperationResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ProviderOperationResultIterator) Value() OperationMetadata {
+	if !iter.page.NotDone() {
+		return OperationMetadata{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (por ProviderOperationResult) IsEmpty() bool {
+	return por.Value == nil || len(*por.Value) == 0
+}
+
+// providerOperationResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (por ProviderOperationResult) providerOperationResultPreparer() (*http.Request, error) {
+	if por.NextLink == nil || len(to.String(por.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(por.NextLink)))
+}
+
+// ProviderOperationResultPage contains a page of OperationMetadata values.
+type ProviderOperationResultPage struct {
+	fn  func(ProviderOperationResult) (ProviderOperationResult, error)
+	por ProviderOperationResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ProviderOperationResultPage) Next() error {
+	next, err := page.fn(page.por)
+	if err != nil {
+		return err
+	}
+	page.por = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ProviderOperationResultPage) NotDone() bool {
+	return !page.por.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ProviderOperationResultPage) Response() ProviderOperationResult {
+	return page.por
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ProviderOperationResultPage) Values() []OperationMetadata {
+	if page.por.IsEmpty() {
+		return nil
+	}
+	return *page.por.Value
 }
 
 // Resource an Azure resource.

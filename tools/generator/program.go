@@ -84,7 +84,7 @@ func main() {
 		return strings.EqualFold(path.Base(subject.(string)), "README.md")
 	})
 
-	stableAPIVersions := []string{}
+	stableAPIPaths := []string{}
 
 	tuples := collection.SelectMany(literateFiles,
 		// The following function compiles the regexp which finds Go related package tags in a literate file, and creates a collection.Unfolder.
@@ -116,15 +116,11 @@ func main() {
 					} else {
 						packageMatches := packageConfigPattern.FindAllStringSubmatch(string(targetContents), -1)
 
-						stableApis := map[string]bool{}
-
+						latestStablePackagename := ""
 						for _, submatch := range packageMatches {
-							name := submatch[1]
-
-							if strings.Contains(normalizePath(submatch[2]),"/preview/") {
-								stableApis[name] = false
-							} else {
-								stableApis[name] = true
+							if !strings.Contains(normalizePath(submatch[2]), "/preview/") {
+								latestStablePackagename = normalizePath(submatch[1])
+								break
 							}
 						}
 
@@ -133,8 +129,8 @@ func main() {
 							packageName := normalizePath(submatch[1])
 							outputFolder := normalizePath(submatch[2])
 
-							if stableApis[packageName] == true {
-									stableAPIVersions = append(stableAPIVersions, path.Join(getRelativeOutputBase(),strings.Trim(outputFolder,"/")))
+							if packageName == latestStablePackagename {
+								stableAPIPaths = append(stableAPIPaths, path.Join(getRelativeOutputBase(), strings.Trim(outputFolder, "/")))
 							}
 
 							results <- generationTuple{
@@ -255,14 +251,14 @@ func main() {
 		}
 
 		// Write list of stable apis.
-		writeListToFile(path.Join(outputBase, "profiles","latest","stableApis.txt"), stableAPIVersions)
+		writeListToFile(path.Join(outputBase, "profiles", "latest", "stableApis.txt"), stableAPIPaths)
 
 		fmt.Println("Execution Time: ", time.Now().Sub(start))
 		fmt.Println("Generated: ", generatedCount)
 		fmt.Println("Formatted: ", formattedCount)
 		fmt.Println("Built: ", builtCount)
 		fmt.Println("Vetted: ", vettedCount)
-		fmt.Println("Stable APIs count: ", len(stableAPIVersions))
+		fmt.Println("Stable APIs count: ", len(stableAPIPaths))
 		close(done)
 	}
 }
@@ -377,6 +373,7 @@ func normalizePath(location string) (result string) {
 func isntNil(subject interface{}) bool {
 	return subject != nil
 }
+
 // writeListToFile prints a list of strings to the specified filepath.
 func writeListToFile(filepath string, list []string) error {
 	outputFile, err := os.Create(filepath)

@@ -23,6 +23,7 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-08-31-preview/management"
 	uuid "github.com/satori/go.uuid"
 )
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )

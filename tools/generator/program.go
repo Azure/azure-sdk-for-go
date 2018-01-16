@@ -93,7 +93,7 @@ func main() {
 			const goSettingsPatternText = "```" + `\s+yaml\s+\$\(\s*tag\s*\)\s*==\s*'([\d\w\-\.]+)'\s*&&\s*\$\(go\)[\w\d\-\s:]*\s+output-folder:\s+\$\(go-sdk-folder\)([\w\d\-_\\/\.]+)\s+[\w\d\-\s:]*` + "```"
 			goConfigPattern := regexp.MustCompile(goSettingsPatternText)
 
-			const packagePatternText = `(?ms)\s+yaml\s+\$\(\s*tag\s*\)\s*==\s*'([\d\w\-\.]+)'\s*^input-file:\s+(- .*?)\x60`
+			const packagePatternText = `(?ms)\s+yaml\s+\$\(\s*tag\s*\)\s*==\s*'([\d\w\-\.]+)'\s*^input-file:(\s+.*?)\x60`
 			packageConfigPattern := regexp.MustCompile(packagePatternText)
 
 			// This function is a collection.Unfolder which takes a literate file as a path, and retrieves all configuration which applies to a package tag and Go.
@@ -115,21 +115,18 @@ func main() {
 						statusLog.Printf("Skipping %q because there were no package tags with go configuration found.", subject.(string))
 					} else {
 						packageMatches := packageConfigPattern.FindAllStringSubmatch(string(targetContents), -1)
-
-						latestStablePackagename := ""
-						for _, submatch := range packageMatches {
-							if !strings.Contains(normalizePath(submatch[2]), "/preview/") {
-								latestStablePackagename = normalizePath(submatch[1])
-								break
-							}
-						}
+						outputAPIFolders := map[string]string{}
 
 						for _, submatch := range matches {
 
 							packageName := normalizePath(submatch[1])
 							outputFolder := normalizePath(submatch[2])
+							leafFolder := getLeafOutputFolder(outputFolder)
+							isStableAPI := isStableAPI(packageName, packageMatches)
+							_, ok := outputAPIFolders[leafFolder]
 
-							if packageName == latestStablePackagename {
+							if !ok && isStableAPI {
+								outputAPIFolders[leafFolder] = packageName
 								stableAPIPaths = append(stableAPIPaths, path.Join(getRelativeOutputBase(), strings.Trim(outputFolder, "/")))
 							}
 
@@ -367,6 +364,22 @@ func trimGoPath(location string) string {
 func normalizePath(location string) (result string) {
 	result = strings.Replace(location, `\`, "/", -1)
 	return
+}
+
+//getLeafOutputFolder returns the leaf of a given path.
+func getLeafOutputFolder(location string) string {
+	_, leaf := filepath.Split(location)
+	return leaf
+}
+
+//isStableAPI returns true if for the given package name there are no preview input files.
+func isStableAPI(packageName string, packageInputFiles [][]string) bool {
+	for _, packageDefinition := range packageInputFiles {
+		if !strings.Contains(normalizePath(packageDefinition[2]), "/preview/") && packageName == packageDefinition[1] {
+			return true
+		}
+	}
+	return false
 }
 
 // isntNil is a simple `collection.Predicate` which filters out `nil` objects from an Enumerator.

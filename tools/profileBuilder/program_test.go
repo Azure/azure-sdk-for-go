@@ -26,9 +26,15 @@
 package main
 
 import (
+	"go/parser"
+	"go/token"
+	"os"
+	"path"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
+	"github.com/marstr/collection"
 )
 
 func Test_getAliasPath(t *testing.T) {
@@ -90,5 +96,33 @@ func Test_getAliasPath(t *testing.T) {
 				t.Fail()
 			}
 		})
+	}
+}
+
+func Test_generateAliasPackages(t *testing.T) {
+	files := token.NewFileSet()
+	gopath := strings.Replace(os.Getenv("GOPATH"), "\\", "/", -1)
+	folder := path.Join(gopath, "src", "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2015-06-15/network")
+	iterations := 10
+
+	packagesEnumerator := collection.NewList()
+	parsed, err := parser.ParseDir(files, folder, nil, 0)
+
+	if err != nil {
+		errLog.Printf("Couldn't open %q because: %v", folder, err)
+		return
+	}
+
+	for _, entry := range parsed {
+		packagesEnumerator.Add(entry)
+	}
+
+	want := generateAliasPackages(packagesEnumerator.Enumerate(nil)).ElementAt(0).(*alias).AliasPackage
+
+	for i := 0; i < iterations; i++ {
+		got := generateAliasPackages(packagesEnumerator.Enumerate(nil)).ElementAt(0).(*alias).AliasPackage
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("writeAliasPackages() = %v, want %v", got, want)
+		}
 	}
 }

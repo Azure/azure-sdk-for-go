@@ -1,12 +1,15 @@
 package servicebus
 
 import (
-	"errors"
-	"regexp"
-
 	"context"
+	"errors"
+	mgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/adal"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"log"
 	"pack.ag/amqp"
+	"regexp"
 )
 
 var (
@@ -15,10 +18,30 @@ var (
 	senders      = make(map[string]*amqp.Sender)
 )
 
-// ServiceBus provides a simplified facade over the AMQP implementation of Azure Service Bus.
-type ServiceBus struct {
+// SenderReceiver provides the ability to send and receive messages
+type SenderReceiver interface {
+	Send(ctx context.Context, entityPath string, msg *amqp.Message) error
+	Receive(entityPath string, handler Handler) error
+	Close()
+}
+
+// EntityManager provides the ability to manage Service Bus entities (Queues, Topics, Subscriptions, etc.)
+type EntityManager interface {
+	EnsureQueue(ctx context.Context, queueName string) error
+	DeleteQueue(ctx context.Context, queueName string) error
+}
+
+// SenderReceiverManager provides Service Bus entity management as well as access to send and receive messages
+type SenderReceiverManager interface {
+	SenderReceiver
+	EntityManager
+}
+
+// serviceBus provides a simplified facade over the AMQP implementation of Azure Service Bus.
+type serviceBus struct {
 	client  *amqp.Client
 	session *amqp.Session
+	token   *adal.ServicePrincipalToken
 }
 
 // parsedConn is the structure of a parsed Service Bus connection string.
@@ -31,9 +54,16 @@ type parsedConn struct {
 // Handler is the function signature for any receiver of AMQP messages
 type Handler func(context.Context, *amqp.Message) error
 
-// New creates a new connected instance of an Azure Service Bus given a connection string with the same format as the
-// Azure portal (e.g. Endpoint=sb://XXXXX.servicebus.windows.net/;SharedAccessKeyName=XXXXX;SharedAccessKey=XXXXX).
-func New(connStr string) (*ServiceBus, error) {
+// NewWithConnectionString creates a new connected instance of an Azure Service Bus given a connection string with the
+// same format as the Azure portal
+// (e.g. Endpoint=sb://XXXXX.servicebus.windows.net/;SharedAccessKeyName=XXXXX;SharedAccessKey=XXXXX). The Service Bus
+// instance returned from this function does not have the ability to manage Subscriptions, Topics or Queues. The
+// instance is only able to use existing Service Bus entities.
+func NewWithConnectionString(connStr string) (SenderReceiver, error) {
+	return newWithConnectionString(connStr)
+}
+
+func newWithConnectionString(connStr string) (*serviceBus, error) {
 	if connStr == "" {
 		return nil, errors.New("connection string can not be null")
 	}
@@ -52,14 +82,51 @@ func New(connStr string) (*ServiceBus, error) {
 		return nil, err
 	}
 
-	return &ServiceBus{
+	return &serviceBus{
 		client:  client,
 		session: session,
 	}, nil
 }
 
+// NewWithMSI creates a new connected instance of an Azure Service Bus given a subscription Id, resource group,
+// Service Bus namespace, and Service Bus authorization rule name.
+func NewWithMSI(subscriptionID, resourceGroup, namespace, ruleName string, environment azure.Environment) (SenderReceiverManager, error) {
+	msiEndpoint, err := adal.GetMSIVMEndpoint()
+	spToken, err := adal.NewServicePrincipalTokenFromMSI(msiEndpoint, environment.ResourceManagerEndpoint)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return NewWithSPToken(spToken, subscriptionID, resourceGroup, namespace, ruleName, environment)
+}
+
+// NewWithSPToken creates a new connected instance of an Azure Service Bus given a, Azure Active Directory service
+// principal token subscription Id, resource group, Service Bus namespace, and Service Bus authorization rule name.
+func NewWithSPToken(spToken *adal.ServicePrincipalToken, subscriptionID, resourceGroup, namespace, ruleName string, environment azure.Environment) (SenderReceiverManager, error) {
+	authorizer := autorest.NewBearerAuthorizer(spToken)
+
+	nsClient := mgmt.NewNamespacesClientWithBaseURI(environment.ResourceManagerEndpoint, subscriptionID)
+	nsClient.Authorizer = authorizer
+	nsClient.AddToUserAgent("dataplane-servicebus")
+
+	result, err := nsClient.ListKeys(context.Background(), resourceGroup, namespace, ruleName)
+	if err != nil {
+		return nil, err
+	}
+
+	primary := *result.PrimaryConnectionString
+	sb, err := newWithConnectionString(primary)
+	if err != nil {
+		return nil, err
+	}
+
+	sb.token = spToken
+	return sb, err
+}
+
 // Close closes the Service Bus connection.
-func (sb *ServiceBus) Close() {
+func (sb *serviceBus) Close() {
 	sb.client.Close()
 }
 
@@ -86,7 +153,7 @@ func newParsedConnection(host string, keyName string, key string) (*parsedConn, 
 }
 
 // Receive subscribes for messages sent to the provided entityPath.
-func (sb *ServiceBus) Receive(entityPath string, handler Handler) error {
+func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
 	receiver, err := sb.fetchReceiver(entityPath)
 	if err != nil {
 		return err
@@ -124,7 +191,7 @@ func (sb *ServiceBus) Receive(entityPath string, handler Handler) error {
 	return nil
 }
 
-func (sb *ServiceBus) fetchReceiver(entityPath string) (*amqp.Receiver, error) {
+func (sb *serviceBus) fetchReceiver(entityPath string) (*amqp.Receiver, error) {
 	receiver, ok := receivers[entityPath]
 	if ok {
 		return receiver, nil
@@ -139,7 +206,7 @@ func (sb *ServiceBus) fetchReceiver(entityPath string) (*amqp.Receiver, error) {
 }
 
 // Send sends a message to a provided entity path.
-func (sb *ServiceBus) Send(ctx context.Context, entityPath string, msg *amqp.Message) error {
+func (sb *serviceBus) Send(ctx context.Context, entityPath string, msg *amqp.Message) error {
 	sender, err := sb.fetchSender(entityPath)
 	if err != nil {
 		return err
@@ -148,7 +215,7 @@ func (sb *ServiceBus) Send(ctx context.Context, entityPath string, msg *amqp.Mes
 	return sender.Send(ctx, msg)
 }
 
-func (sb *ServiceBus) fetchSender(entityPath string) (*amqp.Sender, error) {
+func (sb *serviceBus) fetchSender(entityPath string) (*amqp.Sender, error) {
 	sender, ok := senders[entityPath]
 	if ok {
 		return sender, nil
@@ -160,4 +227,12 @@ func (sb *ServiceBus) fetchSender(entityPath string) (*amqp.Sender, error) {
 	}
 	senders[entityPath] = sender
 	return sender, nil
+}
+
+func (sb *serviceBus) EnsureQueue(ctx context.Context, queueName string) error {
+	return nil
+}
+
+func (sb *serviceBus) DeleteQueue(ctx context.Context, queuename string) error {
+	return nil
 }

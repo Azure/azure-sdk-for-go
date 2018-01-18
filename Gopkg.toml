@@ -4,4 +4,8 @@
 
 [[constraint]]
     name = "pack.ag/amqp"
-    branch = "integration-tests"
+    version = "0.3"
+
+[[constraint]]
+    name = "github.com/Azure/azure-sdk-for-go"
+    version = "12.2.0-beta"

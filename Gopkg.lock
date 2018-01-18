@@ -2,10 +2,28 @@
 
 
 [[projects]]
+  name = "github.com/Azure/azure-sdk-for-go"
+  packages = ["services/resources/mgmt/2017-05-10/resources","services/servicebus/mgmt/2017-04-01/servicebus"]
+  revision = "eae258195456be76b2ec9ad2ee2ab63cdda365d9"
+  version = "v12.2.0-beta"
+
+[[projects]]
+  name = "github.com/Azure/go-autorest"
+  packages = ["autorest","autorest/adal","autorest/azure","autorest/date","autorest/to","autorest/validation"]
+  revision = "3c16bcd9ea019819c1d7c14055ed74f845f44a8a"
+  version = "v9.8.0"
+
+[[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
   version = "v1.1.0"
+
+[[projects]]
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  revision = "dbeaa9332f19a944acb5736b4456cfcc02140e29"
+  version = "v3.1.0"
 
 [[projects]]
   name = "github.com/pkg/errors"
@@ -21,19 +39,19 @@
 
 [[projects]]
   name = "github.com/stretchr/testify"
-  packages = ["assert"]
+  packages = ["assert","require","suite"]
   revision = "b91bfb9ebec76498946beb6af7c0230c7cc7ba6c"
   version = "v1.2.0"
 
 [[projects]]
-  branch = "integration-tests"
   name = "pack.ag/amqp"
   packages = [".","internal/testconn"]
-  revision = "eddd36b95c8515ea90a2e9cf09e35fcc70bee5fb"
+  revision = "9f2af47522ed54e6382ee766d4211e2d084458f9"
+  version = "v0.3.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "02030ee066ee17d48d021e32f3825cb34b00d0989c152669bde468388610a6c3"
+  inputs-digest = "36847adf55be947805d90915bd4cb156bd25377598f527fefaad1180bde5dd47"
   solver-name = "gps-cdcl"
   solver-version = 1

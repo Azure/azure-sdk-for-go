@@ -1,4 +1,4 @@
-// Package batch implements the Azure ARM batch service API version 2017-05-01.5.0.
+// Package batch implements the Azure ARM Batch service API version 2017-05-01.5.0.
 //
 // A client for issuing REST requests to the Azure Batch service.
 package batch
@@ -25,11 +25,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service batch
+	// DefaultBaseURI is the default URI used for the service Batch
 	DefaultBaseURI = "https://batch.core.windows.net"
 )
 
-// BaseClient is the base client for batch.
+// BaseClient is the base client for Batch.
 type BaseClient struct {
 	autorest.Client
 	BaseURI string

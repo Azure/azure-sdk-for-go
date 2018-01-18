@@ -18,12 +18,11 @@ package batch
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"io"
-	"net/http"
-
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"io"
+	"net/http"
 )
 
 // AccessScope enumerates the values for access scope.
@@ -710,19 +709,6 @@ type AutoUserSpecification struct {
 	Scope AutoUserScope `json:"scope,omitempty"`
 	// ElevationLevel - nonAdmin - The auto user is a standard user without elevated access. admin - The auto user is a user with elevated access and operates with full Administrator permissions. The default value is nonAdmin. Possible values include: 'NonAdmin', 'Admin'
 	ElevationLevel ElevationLevel `json:"elevationLevel,omitempty"`
-}
-
-// BatchError ...
-type BatchError struct {
-	Code    *string             `json:"code,omitempty"`
-	Message *ErrorMessage       `json:"message,omitempty"`
-	Values  *[]BatchErrorDetail `json:"values,omitempty"`
-}
-
-// BatchErrorDetail ...
-type BatchErrorDetail struct {
-	Key   *string `json:"key,omitempty"`
-	Value *string `json:"value,omitempty"`
 }
 
 // Certificate a certificate that can be installed on compute nodes and can be used to authenticate operations on the
@@ -1732,6 +1718,19 @@ type DeleteCertificateError struct {
 // EnvironmentSetting ...
 type EnvironmentSetting struct {
 	Name  *string `json:"name,omitempty"`
+	Value *string `json:"value,omitempty"`
+}
+
+// Error ...
+type Error struct {
+	Code    *string        `json:"code,omitempty"`
+	Message *ErrorMessage  `json:"message,omitempty"`
+	Values  *[]ErrorDetail `json:"values,omitempty"`
+}
+
+// ErrorDetail ...
+type ErrorDetail struct {
+	Key   *string `json:"key,omitempty"`
 	Value *string `json:"value,omitempty"`
 }
 
@@ -2766,7 +2765,7 @@ type TaskAddResult struct {
 	ETag         *string       `json:"eTag,omitempty"`
 	LastModified *date.Time    `json:"lastModified,omitempty"`
 	Location     *string       `json:"location,omitempty"`
-	Error        *BatchError   `json:"error,omitempty"`
+	Error        *Error        `json:"error,omitempty"`
 }
 
 // TaskConstraints ...

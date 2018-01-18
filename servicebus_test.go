@@ -69,7 +69,15 @@ func (suite *ServiceBusSuite) TestQueue() {
 
 	queueName := randomName("gosbtest", 10)
 	for _, testFunc := range tests {
+		_, err := sb.EnsureQueue(context.Background(), queueName)
+		if err != nil {
+			log.Fatalln(err)
+		}
 		testFunc(suite.T(), sb, queueName)
+		err = sb.DeleteQueue(context.Background(), queueName)
+		if err != nil {
+			log.Fatalln(err)
+		}
 	}
 }
 
@@ -84,7 +92,7 @@ func TestServiceBusSuite(t *testing.T) {
 	suite.Run(t, new(ServiceBusSuite))
 }
 
-func TestServiceBusConstruction(t *testing.T) {
+func TestCreateFromConnectionString(t *testing.T) {
 	connStr := os.Getenv("AZURE_SERVICE_BUS_CONN_STR") // `Endpoint=sb://XXXX.servicebus.windows.net/;SharedAccessKeyName=XXXX;SharedAccessKey=XXXX`
 	sb, err := NewWithConnectionString(connStr)
 	defer sb.Close()

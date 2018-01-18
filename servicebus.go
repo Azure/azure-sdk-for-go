@@ -27,7 +27,7 @@ type SenderReceiver interface {
 
 // EntityManager provides the ability to manage Service Bus entities (Queues, Topics, Subscriptions, etc.)
 type EntityManager interface {
-	EnsureQueue(ctx context.Context, queueName string) error
+	EnsureQueue(ctx context.Context, queueName string) (*mgmt.SBQueue, error)
 	DeleteQueue(ctx context.Context, queueName string) error
 }
 
@@ -39,9 +39,13 @@ type SenderReceiverManager interface {
 
 // serviceBus provides a simplified facade over the AMQP implementation of Azure Service Bus.
 type serviceBus struct {
-	client  *amqp.Client
-	session *amqp.Session
-	token   *adal.ServicePrincipalToken
+	client         *amqp.Client
+	session        *amqp.Session
+	token          *adal.ServicePrincipalToken
+	environment    azure.Environment
+	subscriptionID string
+	resourceGroup  string
+	namespace      string
 }
 
 // parsedConn is the structure of a parsed Service Bus connection string.
@@ -122,6 +126,10 @@ func NewWithSPToken(spToken *adal.ServicePrincipalToken, subscriptionID, resourc
 	}
 
 	sb.token = spToken
+	sb.environment = environment
+	sb.subscriptionID = subscriptionID
+	sb.resourceGroup = resourceGroup
+	sb.namespace = namespace
 	return sb, err
 }
 
@@ -229,10 +237,33 @@ func (sb *serviceBus) fetchSender(entityPath string) (*amqp.Sender, error) {
 	return sender, nil
 }
 
-func (sb *serviceBus) EnsureQueue(ctx context.Context, queueName string) error {
-	return nil
+func (sb *serviceBus) EnsureQueue(ctx context.Context, queueName string) (*mgmt.SBQueue, error) {
+	queueClient := sb.getQueueMgmtClient()
+	queue, err := queueClient.Get(ctx, sb.resourceGroup, sb.namespace, queueName)
+	if err != nil {
+		log.Println("building a new queue " + queueName)
+		newQueue := mgmt.SBQueue{
+			Name: &queueName,
+			SBQueueProperties: &mgmt.SBQueueProperties{
+				EnablePartitioning: ptrBool(true),
+			},
+		}
+		queue, err = queueClient.CreateOrUpdate(ctx, sb.resourceGroup, sb.namespace, queueName, newQueue)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return &queue, nil
 }
 
-func (sb *serviceBus) DeleteQueue(ctx context.Context, queuename string) error {
-	return nil
+func (sb *serviceBus) DeleteQueue(ctx context.Context, queueName string) error {
+	queueClient := sb.getQueueMgmtClient()
+	_, err := queueClient.Delete(ctx, sb.resourceGroup, sb.namespace, queueName)
+	return err
+}
+
+func (sb *serviceBus) getQueueMgmtClient() mgmt.QueuesClient {
+	client := mgmt.NewQueuesClientWithBaseURI(sb.environment.ResourceManagerEndpoint, sb.subscriptionID)
+	client.Authorizer = autorest.NewBearerAuthorizer(sb.token)
+	return client
 }

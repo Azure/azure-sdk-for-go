@@ -27,7 +27,7 @@ type SenderReceiver interface {
 
 // EntityManager provides the ability to manage Service Bus entities (Queues, Topics, Subscriptions, etc.)
 type EntityManager interface {
-	EnsureQueue(ctx context.Context, queueName string) (*mgmt.SBQueue, error)
+	EnsureQueue(ctx context.Context, queueName string, properties *mgmt.SBQueueProperties) (*mgmt.SBQueue, error)
 	DeleteQueue(ctx context.Context, queueName string) error
 }
 
@@ -237,16 +237,25 @@ func (sb *serviceBus) fetchSender(entityPath string) (*amqp.Sender, error) {
 	return sender, nil
 }
 
-func (sb *serviceBus) EnsureQueue(ctx context.Context, queueName string) (*mgmt.SBQueue, error) {
+// EnsureQueue makes sure a queue exists in the given namespace. If the queue doesn't exist, it will create it with
+// the specified name and properties. If properties are not specified, it will build a default partitioned queue.
+func (sb *serviceBus) EnsureQueue(ctx context.Context, queueName string, properties *mgmt.SBQueueProperties) (*mgmt.SBQueue, error) {
+	log.Println("ensuring exists queue " + queueName)
 	queueClient := sb.getQueueMgmtClient()
 	queue, err := queueClient.Get(ctx, sb.resourceGroup, sb.namespace, queueName)
+
+	if properties == nil {
+		log.Println("no properties specified, so using default partitioned queue for " + queueName)
+		properties = &mgmt.SBQueueProperties{
+			EnablePartitioning: ptrBool(true),
+		}
+	}
+
 	if err != nil {
 		log.Println("building a new queue " + queueName)
 		newQueue := mgmt.SBQueue{
 			Name: &queueName,
-			SBQueueProperties: &mgmt.SBQueueProperties{
-				EnablePartitioning: ptrBool(true),
-			},
+			SBQueueProperties: properties,
 		}
 		queue, err = queueClient.CreateOrUpdate(ctx, sb.resourceGroup, sb.namespace, queueName, newQueue)
 		if err != nil {
@@ -256,6 +265,7 @@ func (sb *serviceBus) EnsureQueue(ctx context.Context, queueName string) (*mgmt.
 	return &queue, nil
 }
 
+// DeleteQueue deletes an existing queue
 func (sb *serviceBus) DeleteQueue(ctx context.Context, queueName string) error {
 	queueClient := sb.getQueueMgmtClient()
 	_, err := queueClient.Delete(ctx, sb.resourceGroup, sb.namespace, queueName)

@@ -48,6 +48,7 @@ import (
 	"github.com/marstr/collection"
 	goalias "github.com/marstr/goalias/model"
 	"github.com/marstr/randname"
+	"golang.org/x/tools/imports"
 )
 
 var (
@@ -359,8 +360,11 @@ func writeAliasPackages(x interface{}) interface{} {
 	file := cast.ModelFile()
 
 	outputLog.Printf("Writing File: %s", outputPath)
-	printer.Fprint(outputFile, files, file)
 
+	var b bytes.Buffer
+	printer.Fprint(&b, files, file)
+	res, _ := imports.Process(outputPath,b.Bytes(), nil)
+	fmt.Fprintf(outputFile,"%s" , res)
 	return true
 }
 

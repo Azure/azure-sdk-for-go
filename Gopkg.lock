@@ -3,7 +3,14 @@
 
 [[projects]]
   name = "github.com/Azure/go-autorest"
-  packages = ["autorest","autorest/adal","autorest/azure","autorest/date","autorest/to","autorest/validation"]
+  packages = [
+    "autorest",
+    "autorest/adal",
+    "autorest/azure",
+    "autorest/date",
+    "autorest/to",
+    "autorest/validation"
+  ]
   revision = "809ed2ef5c4c9a60c3c2f3aa9cc11f3a7c2ce59d"
   version = "v9.6.0"
 
@@ -16,7 +23,10 @@
 [[projects]]
   branch = "master"
   name = "github.com/dnaeon/go-vcr"
-  packages = ["cassette","recorder"]
+  packages = [
+    "cassette",
+    "recorder"
+  ]
   revision = "87d4990451a858cc210399285be976e63bc3c364"
 
 [[projects]]
@@ -57,8 +67,20 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = ["pkcs12","pkcs12/internal/rc2"]
+  packages = [
+    "pkcs12",
+    "pkcs12/internal/rc2"
+  ]
   revision = "94eea52f7b742c7cbe0b03b22f0c4c8631ece122"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/tools"
+  packages = [
+    "go/ast/astutil",
+    "imports"
+  ]
+  revision = "af2bfe26b6891a197d033db63786cf8eb6bebd7b"
 
 [[projects]]
   branch = "v1"
@@ -69,7 +91,13 @@
 [[projects]]
   branch = "v2"
   name = "gopkg.in/mgo.v2"
-  packages = [".","bson","internal/json","internal/sasl","internal/scram"]
+  packages = [
+    ".",
+    "bson",
+    "internal/json",
+    "internal/sasl",
+    "internal/scram"
+  ]
   revision = "3f83fa5005286a7fe593b055f0d7771a7dce4655"
 
 [[projects]]
@@ -81,6 +109,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "db9074210af478934e87ee6c2b68492578d7c186d94b8f81d82e810b2956cc07"
+  inputs-digest = "f9a0071a2dece8f3df1ee7e64cf4b8b4daeac3f68df40814044c33e0344dacf2"
   solver-name = "gps-cdcl"
   solver-version = 1

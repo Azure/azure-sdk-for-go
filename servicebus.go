@@ -7,22 +7,33 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"log"
+	log "github.com/sirupsen/logrus"
+	"net"
 	"pack.ag/amqp"
 	"regexp"
+	"sync"
+	"time"
 )
 
 var (
 	connStrRegex = regexp.MustCompile(`Endpoint=sb:\/\/(?P<Host>.+?);SharedAccessKeyName=(?P<KeyName>.+?);SharedAccessKey=(?P<Key>.+)`)
-	receivers    = make(map[string]*amqp.Receiver)
-	senders      = make(map[string]*amqp.Sender)
 )
+
+type receiverSession struct {
+	session  *amqp.Session
+	receiver *amqp.Receiver
+}
+
+type senderSession struct {
+	session *amqp.Session
+	sender  *amqp.Sender
+}
 
 // SenderReceiver provides the ability to send and receive messages
 type SenderReceiver interface {
 	Send(ctx context.Context, entityPath string, msg *amqp.Message) error
 	Receive(entityPath string, handler Handler) error
-	Close()
+	Close() error
 }
 
 // EntityManager provides the ability to manage Service Bus entities (Queues, Topics, Subscriptions, etc.)
@@ -39,13 +50,18 @@ type SenderReceiverManager interface {
 
 // serviceBus provides a simplified facade over the AMQP implementation of Azure Service Bus.
 type serviceBus struct {
-	client         *amqp.Client
-	session        *amqp.Session
-	token          *adal.ServicePrincipalToken
-	environment    azure.Environment
-	subscriptionID string
-	resourceGroup  string
-	namespace      string
+	client           *amqp.Client
+	token            *adal.ServicePrincipalToken
+	environment      azure.Environment
+	subscriptionID   string
+	resourceGroup    string
+	namespace        string
+	primaryKey       string
+	receiverSessions map[string]*receiverSession
+	senderSessions   map[string]*senderSession
+	receiverMu       sync.Mutex
+	senderMu         sync.Mutex
+	Logger           *log.Logger
 }
 
 // parsedConn is the structure of a parsed Service Bus connection string.
@@ -67,7 +83,7 @@ func NewWithConnectionString(connStr string) (SenderReceiver, error) {
 	return newWithConnectionString(connStr)
 }
 
-func newWithConnectionString(connStr string) (*serviceBus, error) {
+func newClient(connStr string) (*amqp.Client, error) {
 	if connStr == "" {
 		return nil, errors.New("connection string can not be null")
 	}
@@ -76,20 +92,27 @@ func newWithConnectionString(connStr string) (*serviceBus, error) {
 		return nil, errors.New("connection string was not in expected format (Endpoint=sb://XXXXX.servicebus.windows.net/;SharedAccessKeyName=XXXXX;SharedAccessKey=XXXXX)")
 	}
 
-	client, err := amqp.Dial(parsed.Host, amqp.ConnSASLPlain(parsed.KeyName, parsed.Key))
+	client, err := amqp.Dial(parsed.Host, amqp.ConnSASLPlain(parsed.KeyName, parsed.Key), amqp.ConnMaxChannels(65535))
+	if err != nil {
+		return nil, err
+	}
+	return client, nil
+}
+
+func newWithConnectionString(connStr string) (*serviceBus, error) {
+	client, err := newClient(connStr)
 	if err != nil {
 		return nil, err
 	}
 
-	session, err := client.NewSession()
-	if err != nil {
-		return nil, err
+	sb := &serviceBus{
+		Logger: log.New(),
+		client: client,
 	}
-
-	return &serviceBus{
-		client:  client,
-		session: session,
-	}, nil
+	sb.Logger.SetLevel(log.WarnLevel)
+	sb.senderSessions = make(map[string]*senderSession)
+	sb.receiverSessions = make(map[string]*receiverSession)
+	return sb, nil
 }
 
 // NewWithMSI creates a new connected instance of an Azure Service Bus given a subscription Id, resource group,
@@ -130,12 +153,8 @@ func NewWithSPToken(spToken *adal.ServicePrincipalToken, subscriptionID, resourc
 	sb.subscriptionID = subscriptionID
 	sb.resourceGroup = resourceGroup
 	sb.namespace = namespace
+	sb.primaryKey = primary
 	return sb, err
-}
-
-// Close closes the Service Bus connection.
-func (sb *serviceBus) Close() {
-	sb.client.Close()
 }
 
 // parsedConnectionFromStr takes a string connection string from the Azure portal and returns the parsed representation.
@@ -160,6 +179,57 @@ func newParsedConnection(host string, keyName string, key string) (*parsedConn, 
 	}, nil
 }
 
+// Close drains and closes all of the existing senders, receivers and connections
+func (sb *serviceBus) Close() error {
+	log.Infof("closing sb %v", sb)
+	err := sb.drainReceivers()
+	if err != nil {
+		return err
+	}
+
+	err = sb.drainSenders()
+	if err != nil {
+		return err
+	}
+
+	return sb.client.Close()
+}
+
+func (sb *serviceBus) drainReceivers() error {
+	log.Infoln("draining receivers")
+	sb.receiverMu.Lock()
+	defer sb.receiverMu.Unlock()
+	for _, item := range sb.receiverSessions {
+		err := item.receiver.Close()
+		if err != nil {
+			return err
+		}
+		err = item.session.Close()
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (sb *serviceBus) drainSenders() error {
+	log.Infoln("draining senders")
+	sb.senderMu.Lock()
+	defer sb.senderMu.Unlock()
+	for key, item := range sb.senderSessions {
+		//err := item.sender.Close()
+		//if err != nil {
+		//	return err
+		//}
+		err := item.session.Close()
+		if err != nil {
+			return err
+		}
+		delete(sb.senderSessions, key)
+	}
+	return nil
+}
+
 // Receive subscribes for messages sent to the provided entityPath.
 func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
 	receiver, err := sb.fetchReceiver(entityPath)
@@ -167,31 +237,33 @@ func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
 		return err
 	}
 
-	ctx := context.Background()
-
 	go func() {
 		for {
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 			// Receive next message
 			msg, err := receiver.Receive(ctx)
-			if err != nil {
-				log.Fatal("Reading message from AMQP:", err)
+			if err, ok := err.(net.Error); ok && err.Timeout() {
+				continue
+			} else if err != nil {
+				log.Fatalln(err)
 			}
+			cancel()
 
 			if msg != nil {
 				id := interface{}("null")
 				if msg.Properties != nil {
 					id = msg.Properties.MessageID
 				}
-				log.Printf("Message received: %s, id: %s\n", msg.Data, id)
+				log.Info("Message received: %s, id: %s\n", msg.Data, id)
 
 				err = handler(ctx, msg)
 				if err != nil {
 					msg.Reject()
-					log.Printf("Message rejected \n")
+					log.Info("Message rejected \n")
 				} else {
 					// Accept message
 					msg.Accept()
-					log.Printf("Message accepted \n")
+					log.Info("Message accepted \n")
 				}
 			}
 		}
@@ -200,61 +272,88 @@ func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
 }
 
 func (sb *serviceBus) fetchReceiver(entityPath string) (*amqp.Receiver, error) {
-	receiver, ok := receivers[entityPath]
-	if ok {
-		return receiver, nil
-	}
+	sb.receiverMu.Lock()
+	defer sb.receiverMu.Unlock()
 
-	receiver, err := sb.session.NewReceiver(amqp.LinkAddress(entityPath), amqp.LinkCredit(10))
-	if err != nil {
-		return nil, err
+	entry, ok := sb.receiverSessions[entityPath]
+	if ok {
+		log.Infof("found receiver for entity path %s", entityPath)
+		return entry.receiver, nil
+	} else {
+		log.Infof("creating a new receiver for entity path %s", entityPath)
+		session, err := sb.client.NewSession()
+		if err != nil {
+			return nil, err
+		}
+
+		receiver, err := session.NewReceiver(
+			amqp.LinkAddress(entityPath),
+			amqp.LinkCredit(10),
+			amqp.LinkBatching(true))
+		if err != nil {
+			return nil, err
+		}
+
+		receiverSession := &receiverSession{receiver: receiver, session: session}
+		sb.receiverSessions[entityPath] = receiverSession
+		return receiverSession.receiver, nil
 	}
-	receivers[entityPath] = receiver
-	return receiver, nil
 }
 
 // Send sends a message to a provided entity path.
 func (sb *serviceBus) Send(ctx context.Context, entityPath string, msg *amqp.Message) error {
-	sender, err := sb.fetchSender(entityPath)
+	senderSession, err := sb.fetchSender(entityPath)
 	if err != nil {
 		return err
 	}
 
-	return sender.Send(ctx, msg)
+	return senderSession.sender.Send(ctx, msg)
 }
 
-func (sb *serviceBus) fetchSender(entityPath string) (*amqp.Sender, error) {
-	sender, ok := senders[entityPath]
-	if ok {
-		return sender, nil
-	}
+func (sb *serviceBus) fetchSender(entityPath string) (*senderSession, error) {
+	sb.senderMu.Lock()
+	defer sb.senderMu.Unlock()
 
-	sender, err := sb.session.NewSender(amqp.LinkAddress(entityPath))
-	if err != nil {
-		return nil, err
+	entry, ok := sb.senderSessions[entityPath]
+	if ok {
+		log.Infof("found sender for entity path %s", entityPath)
+		return entry, nil
+	} else {
+		log.Infof("creating a new sender for entity path %s", entityPath)
+		session, err := sb.client.NewSession()
+		if err != nil {
+			return nil, err
+		}
+
+		sender, err := session.NewSender(amqp.LinkAddress(entityPath))
+		if err != nil {
+			return nil, err
+		}
+
+		senderSession := &senderSession{session: session, sender: sender}
+		sb.senderSessions[entityPath] = senderSession
+		return senderSession, nil
 	}
-	senders[entityPath] = sender
-	return sender, nil
 }
 
 // EnsureQueue makes sure a queue exists in the given namespace. If the queue doesn't exist, it will create it with
 // the specified name and properties. If properties are not specified, it will build a default partitioned queue.
 func (sb *serviceBus) EnsureQueue(ctx context.Context, queueName string, properties *mgmt.SBQueueProperties) (*mgmt.SBQueue, error) {
-	log.Println("ensuring exists queue " + queueName)
+	log.Infof("ensuring exists queue %s", queueName)
 	queueClient := sb.getQueueMgmtClient()
 	queue, err := queueClient.Get(ctx, sb.resourceGroup, sb.namespace, queueName)
 
 	if properties == nil {
-		log.Println("no properties specified, so using default partitioned queue for " + queueName)
+		log.Infof("no properties specified, so using default partitioned queue for %s", queueName)
 		properties = &mgmt.SBQueueProperties{
-			EnablePartitioning: ptrBool(true),
+			EnablePartitioning: ptrBool(false),
 		}
 	}
 
 	if err != nil {
-		log.Println("building a new queue " + queueName)
+		log.Infof("building a new queue %s", queueName)
 		newQueue := mgmt.SBQueue{
-			Name: &queueName,
+			Name:              &queueName,
 			SBQueueProperties: properties,
 		}
 		queue, err = queueClient.CreateOrUpdate(ctx, sb.resourceGroup, sb.namespace, queueName, newQueue)

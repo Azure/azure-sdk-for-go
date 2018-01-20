@@ -7,13 +7,15 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/Azure/go-autorest/autorest/azure"
+	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
-	"log"
 	"math/rand"
 	"os"
 	"pack.ag/amqp"
+	"sync"
 	"testing"
+	"time"
 )
 
 var (
@@ -22,9 +24,17 @@ var (
 
 const (
 	RootRuleName      = "RootManageSharedAccessKey"
-	WestUS2           = "westus2"
+	Location          = "westus"
 	ResourceGroupName = "sbtest"
 )
+
+func init() {
+	if testing.Verbose() {
+		log.SetLevel(log.DebugLevel)
+	} else {
+		log.SetLevel(log.WarnLevel)
+	}
+}
 
 // ServiceBusSuite encapsulates a end to end test of Service Bus with build up and tear down of all SB resources
 type ServiceBusSuite struct {
@@ -47,18 +57,21 @@ func (suite *ServiceBusSuite) SetupSuite() {
 	suite.Token = suite.servicePrincipalToken()
 	suite.Environment = azure.PublicCloud
 
-	err := suite.ensureProvisioned()
+	err := suite.ensureProvisioned(sbmgmt.SkuTierStandard)
 	if err != nil {
 		log.Fatalln(err)
 	}
 }
 
 func (suite *ServiceBusSuite) TearDownSuite() {
-	// tear down queues and subscriptions
+	// tear down queues and subscriptions maybe??
 }
 
 func (suite *ServiceBusSuite) TestQueue() {
-	tests := []func(*testing.T, SenderReceiver, string){testQueueSend}
+	tests := map[string]func(*testing.T, SenderReceiver, string){
+		"SimpleSend":     testQueueSend,
+		"SendAndReceive": testQueueReceive,
+	}
 
 	spToken := suite.servicePrincipalToken()
 	sb, err := NewWithSPToken(spToken, suite.SubscriptionID, ResourceGroupName, suite.Namespace, RootRuleName, suite.Environment)
@@ -67,13 +80,13 @@ func (suite *ServiceBusSuite) TestQueue() {
 	}
 	defer sb.Close()
 
-	queueName := randomName("gosbtest", 10)
-	for _, testFunc := range tests {
-		_, err := sb.EnsureQueue(context.Background(), queueName)
+	for name, testFunc := range tests {
+		queueName := randomName("gosbtest", 10)
+		_, err := sb.EnsureQueue(context.Background(), queueName, nil)
 		if err != nil {
 			log.Fatalln(err)
 		}
-		testFunc(suite.T(), sb, queueName)
+		suite.T().Run(name, func(t *testing.T) { testFunc(t, sb, queueName) })
 		err = sb.DeleteQueue(context.Background(), queueName)
 		if err != nil {
 			log.Fatalln(err)
@@ -88,6 +101,37 @@ func testQueueSend(t *testing.T, sb SenderReceiver, queueName string) {
 	assert.Nil(t, err)
 }
 
+func testQueueReceive(t *testing.T, sb SenderReceiver, queueName string) {
+	var wg sync.WaitGroup
+	wg.Add(3)
+
+	messages := []string{
+		randomName("hello", 10),
+		randomName("world", 10),
+	}
+
+	go func() {
+		for _, message := range messages {
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			err := sb.Send(ctx, queueName, &amqp.Message{Data: []byte(message)})
+			cancel()
+			if err != nil {
+				log.Fatalln(err)
+			}
+		}
+		defer wg.Done()
+	}()
+
+	count := 0
+	sb.Receive(queueName, func(ctx context.Context, msg *amqp.Message) error {
+		assert.Equal(t, messages[count], string(msg.Data))
+		count++
+		wg.Done()
+		return nil
+	})
+	wg.Wait()
+}
+
 func TestServiceBusSuite(t *testing.T) {
 	suite.Run(t, new(ServiceBusSuite))
 }
@@ -98,6 +142,83 @@ func TestCreateFromConnectionString(t *testing.T) {
 	defer sb.Close()
 	assert.Nil(t, err)
 }
+
+func BenchmarkSend(b *testing.B) {
+	sbSuite := &ServiceBusSuite{}
+	sbSuite.SetupSuite()
+	defer sbSuite.TearDownSuite()
+
+	spToken := sbSuite.servicePrincipalToken()
+	sb, err := NewWithSPToken(spToken, sbSuite.SubscriptionID, ResourceGroupName, sbSuite.Namespace, RootRuleName, sbSuite.Environment)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer func() {
+		err = sb.Close()
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}()
+
+	queueName := randomName("gosbbench", 10)
+	_, err = sb.EnsureQueue(context.Background(), queueName, nil)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	b.ResetTimer()
+	//b.RunParallel(func(pb *testing.PB){
+	//	for pb.Next() {
+	//		err = sb.Send(context.Background(), queueName, &amqp.Message{
+	//			Data: []byte("Hello!"),
+	//		})
+	//		if err != nil {
+	//			b.Fail()
+	//		}
+	//	}
+	//})
+	for i := 0; i < b.N; i++ {
+		sb.Send(context.Background(), queueName, &amqp.Message{
+			Data: []byte("Hello!"),
+		})
+	}
+	b.StopTimer()
+	err = sb.DeleteQueue(context.Background(), queueName)
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
+//func BenchmarkReceive(b *testing.B) {
+//	sbSuite := &ServiceBusSuite{}
+//	sbSuite.SetupSuite()
+//	defer sbSuite.TearDownSuite()
+//
+//	spToken := sbSuite.servicePrincipalToken()
+//	sb, err := NewWithSPToken(spToken, sbSuite.SubscriptionID, ResourceGroupName, sbSuite.Namespace, RootRuleName, sbSuite.Environment)
+//	if err != nil {
+//		log.Fatalln(err)
+//	}
+//
+//	queueName := randomName("gosbbench", 10)
+//	_, err = sb.EnsureQueue(context.Background(), queueName, nil)
+//	if err != nil {
+//		log.Fatalln(err)
+//	}
+//
+//	for i := 0; i < b.N; i++ {
+//		sb.Send(context.Background(), queueName, &amqp.Message{
+//			Data: []byte("Hello!"),
+//		})
+//	}
+//
+//	b.ResetTimer()
+//	sb.Receive(queueName, func(ctx context.Context, msg *amqp.Message) error {
+//
+//	})
+//
+//	b.StopTimer()
+//}
 
 func mustGetenv(key string) string {
 	v := os.Getenv(key)
@@ -145,10 +266,10 @@ func (suite *ServiceBusSuite) getServiceBusNamespaceClient() *sbmgmt.NamespacesC
 	return &nsClient
 }
 
-func (suite *ServiceBusSuite) ensureProvisioned() error {
-	log.Println("ensuring test resource group is provisioned")
+func (suite *ServiceBusSuite) ensureProvisioned(tier sbmgmt.SkuTier) error {
+	log.Info("ensuring test resource group is provisioned")
 	groupsClient := suite.getRmGroupClient()
-	location := WestUS2
+	location := Location
 	_, err := groupsClient.CreateOrUpdate(context.Background(), ResourceGroupName, rm.Group{Location: &location})
 	if err != nil {
 		return err
@@ -157,26 +278,23 @@ func (suite *ServiceBusSuite) ensureProvisioned() error {
 	nsClient := suite.getServiceBusNamespaceClient()
 	_, err = nsClient.Get(context.Background(), ResourceGroupName, suite.Namespace)
 	if err != nil {
-		log.Println("namespace is not there, create it")
-		res, err := nsClient.CreateOrUpdate(
-			context.Background(),
-			ResourceGroupName,
-			suite.Namespace,
-			sbmgmt.SBNamespace{
-				Sku: &sbmgmt.SBSku{
-					Name: "Standard",
-					Tier: sbmgmt.SkuTierStandard,
-				},
-				Location: &location,
-			})
+		log.Info("namespace is not there, create it")
+		ns := sbmgmt.SBNamespace{
+			Sku: &sbmgmt.SBSku{
+				Name: sbmgmt.SkuName(tier),
+				Tier: tier,
+			},
+			Location: &location,
+		}
+		res, err := nsClient.CreateOrUpdate(context.Background(), ResourceGroupName, suite.Namespace, ns)
 		if err != nil {
 			return err
 		}
 
-		log.Println("waiting for namespace to provision")
+		log.Info("waiting for namespace to provision")
 		return res.WaitForCompletion(context.Background(), nsClient.Client)
 	}
 
-	log.Println("namespace was already provisioned")
+	log.Info("namespace was already provisioned")
 	return nil
 }

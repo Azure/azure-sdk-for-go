@@ -4,8 +4,12 @@
 
 [[constraint]]
     name = "pack.ag/amqp"
-    version = "0.3"
+    branch = "channels"
 
 [[constraint]]
     name = "github.com/Azure/azure-sdk-for-go"
     version = "12.2.0-beta"
+
+[[constraint]]
+  name = "github.com/sirupsen/logrus"
+  version = "1.0.4"

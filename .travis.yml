@@ -4,11 +4,11 @@ language: go
 go:
   - 1.8.x
   - 1.9.x
+  - master
 
 install:
   - go get -u github.com/golang/lint/golint
   - go get -u github.com/golang/dep/cmd/dep
-  - export GO15VENDOREXPERIMENT=1
   - dep ensure
 
 script:
@@ -16,7 +16,6 @@ script:
   - grep -L -r --include *.go --exclude-dir vendor -P "Copyright (\d{4}|\(c\)) Microsoft" ./ | tee /dev/stderr | test -z "$(< /dev/stdin)"
   - test -z "$(gofmt -s -l -w management | tee /dev/stderr)"
   - test -z "$(gofmt -s -l -w storage | tee /dev/stderr)"
-  - test -z "$(gofmt -s -l -w Gododir | tee /dev/stderr)"
   - test -z "$(gofmt -s -l -w $(find ./services/* -type d -print) | tee /dev/stderr)"
   - test -z "$(go build $(find ./* -type d -print | grep -v '^./vendor$' | grep -v '^./storage$') | tee /dev/stderr)"
   - go build ./profiles/...
@@ -34,5 +33,3 @@ script:
   - test -z "$(golint ./storage/... | tee /dev/stderr)"
   - go vet ./management/...
   - go vet ./storage/...
-  - test -z "$(golint ./Gododir/... | tee /dev/stderr)"
-  - go vet ./Gododir/...

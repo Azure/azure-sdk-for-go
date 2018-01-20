@@ -181,7 +181,7 @@ func newParsedConnection(host string, keyName string, key string) (*parsedConn, 
 
 // Close drains and closes all of the existing senders, receivers and connections
 func (sb *serviceBus) Close() error {
-	log.Infof("closing sb %v", sb)
+	log.Debugf("closing sb %v", sb)
 	err := sb.drainReceivers()
 	if err != nil {
 		return err
@@ -196,7 +196,7 @@ func (sb *serviceBus) Close() error {
 }
 
 func (sb *serviceBus) drainReceivers() error {
-	log.Infoln("draining receivers")
+	log.Debugln("draining receivers")
 	sb.receiverMu.Lock()
 	defer sb.receiverMu.Unlock()
 	for _, item := range sb.receiverSessions {
@@ -213,7 +213,7 @@ func (sb *serviceBus) drainReceivers() error {
 }
 
 func (sb *serviceBus) drainSenders() error {
-	log.Infoln("draining senders")
+	log.Debugln("draining senders")
 	sb.senderMu.Lock()
 	defer sb.senderMu.Unlock()
 	for key, item := range sb.senderSessions {
@@ -254,16 +254,16 @@ func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
 				if msg.Properties != nil {
 					id = msg.Properties.MessageID
 				}
-				log.Info("Message received: %s, id: %s\n", msg.Data, id)
+				log.Debugf("Message received: %s, id: %s", msg.Data, id)
 
 				err = handler(ctx, msg)
 				if err != nil {
 					msg.Reject()
-					log.Info("Message rejected \n")
+					log.Debugln("Message rejected")
 				} else {
 					// Accept message
 					msg.Accept()
-					log.Info("Message accepted \n")
+					log.Debugln("Message accepted")
 				}
 			}
 		}
@@ -277,27 +277,27 @@ func (sb *serviceBus) fetchReceiver(entityPath string) (*amqp.Receiver, error) {
 
 	entry, ok := sb.receiverSessions[entityPath]
 	if ok {
-		log.Infof("found receiver for entity path %s", entityPath)
+		log.Debugf("found receiver for entity path %s", entityPath)
 		return entry.receiver, nil
-	} else {
-		log.Infof("creating a new receiver for entity path %s", entityPath)
-		session, err := sb.client.NewSession()
-		if err != nil {
-			return nil, err
-		}
-
-		receiver, err := session.NewReceiver(
-			amqp.LinkAddress(entityPath),
-			amqp.LinkCredit(10),
-			amqp.LinkBatching(true))
-		if err != nil {
-			return nil, err
-		}
-
-		receiverSession := &receiverSession{receiver: receiver, session: session}
-		sb.receiverSessions[entityPath] = receiverSession
-		return receiverSession.receiver, nil
 	}
+
+	log.Debugf("creating a new receiver for entity path %s", entityPath)
+	session, err := sb.client.NewSession()
+	if err != nil {
+		return nil, err
+	}
+
+	receiver, err := session.NewReceiver(
+		amqp.LinkAddress(entityPath),
+		amqp.LinkCredit(10),
+		amqp.LinkBatching(true))
+	if err != nil {
+		return nil, err
+	}
+
+	receiverSession := &receiverSession{receiver: receiver, session: session}
+	sb.receiverSessions[entityPath] = receiverSession
+	return receiverSession.receiver, nil
 }
 
 // Send sends a message to a provided entity path.
@@ -316,42 +316,42 @@ func (sb *serviceBus) fetchSender(entityPath string) (*senderSession, error) {
 
 	entry, ok := sb.senderSessions[entityPath]
 	if ok {
-		log.Infof("found sender for entity path %s", entityPath)
+		log.Debugf("found sender for entity path %s", entityPath)
 		return entry, nil
-	} else {
-		log.Infof("creating a new sender for entity path %s", entityPath)
-		session, err := sb.client.NewSession()
-		if err != nil {
-			return nil, err
-		}
-
-		sender, err := session.NewSender(amqp.LinkAddress(entityPath))
-		if err != nil {
-			return nil, err
-		}
-
-		senderSession := &senderSession{session: session, sender: sender}
-		sb.senderSessions[entityPath] = senderSession
-		return senderSession, nil
 	}
+
+	log.Debugf("creating a new sender for entity path %s", entityPath)
+	session, err := sb.client.NewSession()
+	if err != nil {
+		return nil, err
+	}
+
+	sender, err := session.NewSender(amqp.LinkAddress(entityPath))
+	if err != nil {
+		return nil, err
+	}
+
+	senderSession := &senderSession{session: session, sender: sender}
+	sb.senderSessions[entityPath] = senderSession
+	return senderSession, nil
 }
 
 // EnsureQueue makes sure a queue exists in the given namespace. If the queue doesn't exist, it will create it with
 // the specified name and properties. If properties are not specified, it will build a default partitioned queue.
 func (sb *serviceBus) EnsureQueue(ctx context.Context, queueName string, properties *mgmt.SBQueueProperties) (*mgmt.SBQueue, error) {
-	log.Infof("ensuring exists queue %s", queueName)
+	log.Debugf("ensuring exists queue %s", queueName)
 	queueClient := sb.getQueueMgmtClient()
 	queue, err := queueClient.Get(ctx, sb.resourceGroup, sb.namespace, queueName)
 
 	if properties == nil {
-		log.Infof("no properties specified, so using default partitioned queue for %s", queueName)
+		log.Debugf("no properties specified, so using default partitioned queue for %s", queueName)
 		properties = &mgmt.SBQueueProperties{
 			EnablePartitioning: ptrBool(false),
 		}
 	}
 
 	if err != nil {
-		log.Infof("building a new queue %s", queueName)
+		log.Debugf("building a new queue %s", queueName)
 		newQueue := mgmt.SBQueue{
 			Name:              &queueName,
 			SBQueueProperties: properties,

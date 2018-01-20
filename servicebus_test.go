@@ -29,11 +29,7 @@ const (
 )
 
 func init() {
-	if testing.Verbose() {
-		log.SetLevel(log.DebugLevel)
-	} else {
-		log.SetLevel(log.WarnLevel)
-	}
+	rand.Seed(time.Now().Unix())
 }
 
 // ServiceBusSuite encapsulates a end to end test of Service Bus with build up and tear down of all SB resources
@@ -49,6 +45,10 @@ type ServiceBusSuite struct {
 }
 
 func (suite *ServiceBusSuite) SetupSuite() {
+	if testing.Verbose() {
+		log.SetLevel(log.DebugLevel)
+	}
+
 	suite.TenantID = mustGetenv("AZURE_TENANT_ID")
 	suite.SubscriptionID = mustGetenv("AZURE_SUBSCRIPTION_ID")
 	suite.ClientID = mustGetenv("AZURE_CLIENT_ID")
@@ -70,7 +70,7 @@ func (suite *ServiceBusSuite) TearDownSuite() {
 func (suite *ServiceBusSuite) TestQueue() {
 	tests := map[string]func(*testing.T, SenderReceiver, string){
 		"SimpleSend":     testQueueSend,
-		"SendAndReceive": testQueueReceive,
+		"SendAndReceive": testQueueSendAndReceive,
 	}
 
 	spToken := suite.servicePrincipalToken()
@@ -101,13 +101,15 @@ func testQueueSend(t *testing.T, sb SenderReceiver, queueName string) {
 	assert.Nil(t, err)
 }
 
-func testQueueReceive(t *testing.T, sb SenderReceiver, queueName string) {
+func testQueueSendAndReceive(t *testing.T, sb SenderReceiver, queueName string) {
+	numMessages := rand.Intn(100)
 	var wg sync.WaitGroup
-	wg.Add(3)
+	wg.Add(numMessages + 1)
+	log.Debugf("SendAndReceive: sending and receiving %d messages", numMessages)
 
-	messages := []string{
-		randomName("hello", 10),
-		randomName("world", 10),
+	messages := make([]string, numMessages)
+	for i := 0; i < numMessages; i++ {
+		messages[i] = randomName("hello", 10)
 	}
 
 	go func() {
@@ -267,7 +269,7 @@ func (suite *ServiceBusSuite) getServiceBusNamespaceClient() *sbmgmt.NamespacesC
 }
 
 func (suite *ServiceBusSuite) ensureProvisioned(tier sbmgmt.SkuTier) error {
-	log.Info("ensuring test resource group is provisioned")
+	log.Debug("ensuring test resource group is provisioned")
 	groupsClient := suite.getRmGroupClient()
 	location := Location
 	_, err := groupsClient.CreateOrUpdate(context.Background(), ResourceGroupName, rm.Group{Location: &location})
@@ -278,7 +280,7 @@ func (suite *ServiceBusSuite) ensureProvisioned(tier sbmgmt.SkuTier) error {
 	nsClient := suite.getServiceBusNamespaceClient()
 	_, err = nsClient.Get(context.Background(), ResourceGroupName, suite.Namespace)
 	if err != nil {
-		log.Info("namespace is not there, create it")
+		log.Debug("namespace is not there, create it")
 		ns := sbmgmt.SBNamespace{
 			Sku: &sbmgmt.SBSku{
 				Name: sbmgmt.SkuName(tier),
@@ -291,10 +293,10 @@ func (suite *ServiceBusSuite) ensureProvisioned(tier sbmgmt.SkuTier) error {
 			return err
 		}
 
-		log.Info("waiting for namespace to provision")
+		log.Debug("waiting for namespace to provision")
 		return res.WaitForCompletion(context.Background(), nsClient.Client)
 	}
 
-	log.Info("namespace was already provisioned")
+	log.Debug("namespace was already provisioned")
 	return nil
 }

@@ -17,10 +17,10 @@ DEP   	= dep
 V = 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
-TIMEOUT = 10
+TIMEOUT = 100
 
 .PHONY: all
-all: fmt vendor | $(BASE) ; $(info $(M) building library…) @ ## Build program
+all: fmt vendor lint vet | $(BASE) ; $(info $(M) building library…) @ ## Build program
 	$Q cd $(BASE) && $(GO) build \
 		-tags release \
 		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION) -X $(PACKAGE)/cmd.BuildDate=$(DATE)'

@@ -16,7 +16,6 @@ script:
   - grep -L -r --include *.go --exclude-dir vendor -P "Copyright (\d{4}|\(c\)) Microsoft" ./ | tee /dev/stderr | test -z "$(< /dev/stdin)"
   - test -z "$(gofmt -s -l -w management | tee /dev/stderr)"
   - test -z "$(gofmt -s -l -w storage | tee /dev/stderr)"
-  - test -z "$(gofmt -s -l -w Gododir | tee /dev/stderr)"
   - test -z "$(gofmt -s -l -w $(find ./services/* -type d -print) | tee /dev/stderr)"
   - test -z "$(go build $(find ./* -type d -print | grep -v '^./vendor$' | grep -v '^./storage$') | tee /dev/stderr)"
   - go build ./profiles/...
@@ -34,5 +33,3 @@ script:
   - test -z "$(golint ./storage/... | tee /dev/stderr)"
   - go vet ./management/...
   - go vet ./storage/...
-  - test -z "$(golint ./Gododir/... | tee /dev/stderr)"
-  - go vet ./Gododir/...

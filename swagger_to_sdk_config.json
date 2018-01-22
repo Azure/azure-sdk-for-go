@@ -1,11 +1,16 @@
 {
   "meta": {
+    "after_scripts": [
+      "gofmt -w ./services/"
+    ],
     "autorest_options": {
-      "use": "@microsoft.azure/autorest.go@v2.1.62",
+      "use": "@microsoft.azure/autorest.go@preview",
       "go": "",
       "verbose": "",
       "sdkrel:go-sdk-folder": ".",
-      "multiapi": ""
+      "multiapi": "",
+      "package-version": "v12.2.1-beta",
+      "user-agent": "Azure-SDK-For-Go/v12.2.1-beta services"
     },
     "version": "0.2.0"
   }

@@ -14,6 +14,7 @@ type Receiver struct {
 	session    *amqp.Session
 	receiver   *amqp.Receiver
 	entityPath string
+	done       chan struct{}
 }
 
 // NewReceiver creates a new Service Bus message listener given an AMQP client and an entity path
@@ -21,6 +22,7 @@ func NewReceiver(client *amqp.Client, entityPath string) (*Receiver, error) {
 	receiver := &Receiver{
 		client:     client,
 		entityPath: entityPath,
+		done:       make(chan struct{}),
 	}
 	err := receiver.newSessionAndLink()
 	if err != nil {
@@ -41,6 +43,7 @@ func (r *Receiver) Close() error {
 		return err
 	}
 
+	close(r.done)
 	return nil
 }
 
@@ -59,23 +62,65 @@ func (r *Receiver) Recover() error {
 	return nil
 }
 
-// Receive start a listener for messages sent to the entity path
-func (r *Receiver) Receive(ctx context.Context, handler Handler) {
-	go func() {
-	loop:
-		for {
-			select {
-			case <-ctx.Done():
-				r.Close()
-				break loop
-			default:
-				err := r.handleMessageWithAcceptReject(handler)
-				if err != nil {
-					log.Warnln(err)
-				}
+// Listen start a listener for messages sent to the entity path
+func (r *Receiver) Listen(handler Handler) {
+	messages := make(chan *amqp.Message)
+	go r.listenForMessages(messages)
+	go r.handleMessages(messages, handler)
+}
+
+func (r *Receiver) handleMessages(messages chan *amqp.Message, handler Handler) {
+	for {
+		select {
+		case <-r.done:
+			log.Debug("done handling messages")
+			return
+		case msg := <-messages:
+			ctx := context.Background()
+			err := handler(ctx, msg)
+			id := interface{}("null")
+			if msg.Properties != nil {
+				id = msg.Properties.MessageID
+			}
+
+			if err != nil {
+				msg.Reject()
+				log.Debugf("Message rejected: id: %s", id)
+			} else {
+				// Accept message
+				msg.Accept()
+				log.Debugf("Message accepted: id: %s", id)
 			}
 		}
-	}()
+	}
+}
+
+func (r *Receiver) listenForMessages(msgChan chan *amqp.Message) {
+	for {
+		select {
+		case <-r.done:
+			log.Debug("done listenting for messages")
+			close(msgChan)
+			return
+		default:
+			waitCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			msg, err := r.receiver.Receive(waitCtx)
+			cancel()
+			if err, ok := err.(net.Error); ok && err.Timeout() {
+				continue
+			} else if err != nil {
+				log.Fatalln(err)
+			}
+			if msg != nil {
+				id := interface{}("null")
+				if msg.Properties != nil {
+					id = msg.Properties.MessageID
+				}
+				log.Debugf("Message received: %s", id)
+				msgChan <- msg
+			}
+		}
+	}
 }
 
 // newSessionAndLink will replace the session and link on the receiver
@@ -96,38 +141,5 @@ func (r *Receiver) newSessionAndLink() error {
 	r.session = session
 	r.receiver = amqpReceiver
 
-	return nil
-}
-
-// handleMessageWithAcceptReject will fetch a message from the entity path and accept if handler returns
-// a nil error or it will reject the message if the handler returns a non-nil error
-func (r *Receiver) handleMessageWithAcceptReject(handler Handler) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	// Receive next message
-	msg, err := r.receiver.Receive(ctx)
-	cancel()
-	if err, ok := err.(net.Error); ok && err.Timeout() {
-		return nil
-	} else if err != nil {
-		log.Fatalln(err)
-	}
-
-	if msg != nil {
-		id := interface{}("null")
-		if msg.Properties != nil {
-			id = msg.Properties.MessageID
-		}
-		log.Debugf("Message received: %s, id: %s", msg.Data, id)
-
-		err = handler(ctx, msg)
-		if err != nil {
-			msg.Reject()
-			log.Debugln("Message rejected")
-		} else {
-			// Accept message
-			msg.Accept()
-			log.Debugln("Message accepted")
-		}
-	}
 	return nil
 }

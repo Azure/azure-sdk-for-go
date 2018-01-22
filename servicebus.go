@@ -181,6 +181,7 @@ func (sb *serviceBus) Close() error {
 		return err
 	}
 
+	log.Debug("Closing the context")
 	sb.context.Done()
 	return sb.client.Close()
 }
@@ -189,12 +190,14 @@ func (sb *serviceBus) drainReceivers() error {
 	log.Debugln("draining receivers")
 	sb.receiverMu.Lock()
 	defer sb.receiverMu.Unlock()
+
 	for _, receiver := range sb.receivers {
 		err := receiver.Close()
 		if err != nil {
 			return err
 		}
 	}
+	sb.receivers = []*Receiver{}
 	return nil
 }
 
@@ -202,6 +205,7 @@ func (sb *serviceBus) drainSenders() error {
 	log.Debugln("draining senders")
 	sb.senderMu.Lock()
 	defer sb.senderMu.Unlock()
+
 	for key, sender := range sb.senders {
 		err := sender.Close()
 		if err != nil {
@@ -212,7 +216,7 @@ func (sb *serviceBus) drainSenders() error {
 	return nil
 }
 
-// Receive subscribes for messages sent to the provided entityPath.
+// Listen subscribes for messages sent to the provided entityPath.
 func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
 	sb.receiverMu.Lock()
 	defer sb.receiverMu.Unlock()
@@ -223,7 +227,7 @@ func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
 	}
 
 	sb.receivers = append(sb.receivers, receiver)
-	receiver.Receive(sb.context, handler)
+	receiver.Listen(handler)
 	return nil
 }
 

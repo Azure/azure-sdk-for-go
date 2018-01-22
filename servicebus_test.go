@@ -102,7 +102,7 @@ func testQueueSend(t *testing.T, sb SenderReceiver, queueName string) {
 }
 
 func testQueueSendAndReceive(t *testing.T, sb SenderReceiver, queueName string) {
-	numMessages := rand.Intn(100)
+	numMessages := rand.Intn(100) + 20
 	var wg sync.WaitGroup
 	wg.Add(numMessages + 1)
 	log.Debugf("SendAndReceive: sending and receiving %d messages", numMessages)
@@ -216,7 +216,7 @@ func BenchmarkSend(b *testing.B) {
 //	}
 //
 //	b.ResetTimer()
-//	sb.Receive(queueName, func(ctx context.Context, msg *amqp.Message) error {
+//	sb.Listen(queueName, func(ctx context.Context, msg *amqp.Message) error {
 //
 //	})
 //

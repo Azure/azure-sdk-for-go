@@ -8,26 +8,14 @@ import (
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/Azure/go-autorest/autorest/azure"
 	log "github.com/sirupsen/logrus"
-	"net"
 	"pack.ag/amqp"
 	"regexp"
 	"sync"
-	"time"
 )
 
 var (
 	connStrRegex = regexp.MustCompile(`Endpoint=sb:\/\/(?P<Host>.+?);SharedAccessKeyName=(?P<KeyName>.+?);SharedAccessKey=(?P<Key>.+)`)
 )
-
-type receiverSession struct {
-	session  *amqp.Session
-	receiver *amqp.Receiver
-}
-
-type senderSession struct {
-	session *amqp.Session
-	sender  *amqp.Sender
-}
 
 // SenderReceiver provides the ability to send and receive messages
 type SenderReceiver interface {
@@ -50,18 +38,19 @@ type SenderReceiverManager interface {
 
 // serviceBus provides a simplified facade over the AMQP implementation of Azure Service Bus.
 type serviceBus struct {
-	client           *amqp.Client
-	token            *adal.ServicePrincipalToken
-	environment      azure.Environment
-	subscriptionID   string
-	resourceGroup    string
-	namespace        string
-	primaryKey       string
-	receiverSessions map[string]*receiverSession
-	senderSessions   map[string]*senderSession
-	receiverMu       sync.Mutex
-	senderMu         sync.Mutex
-	Logger           *log.Logger
+	client         *amqp.Client
+	token          *adal.ServicePrincipalToken
+	environment    azure.Environment
+	subscriptionID string
+	resourceGroup  string
+	namespace      string
+	primaryKey     string
+	receivers      []*Receiver
+	senders        map[string]*Sender
+	receiverMu     sync.Mutex
+	senderMu       sync.Mutex
+	Logger         *log.Logger
+	context        context.Context
 }
 
 // parsedConn is the structure of a parsed Service Bus connection string.
@@ -110,8 +99,8 @@ func newWithConnectionString(connStr string) (*serviceBus, error) {
 		client: client,
 	}
 	sb.Logger.SetLevel(log.WarnLevel)
-	sb.senderSessions = make(map[string]*senderSession)
-	sb.receiverSessions = make(map[string]*receiverSession)
+	sb.senders = make(map[string]*Sender)
+	sb.context = context.Background()
 	return sb, nil
 }
 
@@ -192,6 +181,7 @@ func (sb *serviceBus) Close() error {
 		return err
 	}
 
+	sb.context.Done()
 	return sb.client.Close()
 }
 
@@ -199,12 +189,8 @@ func (sb *serviceBus) drainReceivers() error {
 	log.Debugln("draining receivers")
 	sb.receiverMu.Lock()
 	defer sb.receiverMu.Unlock()
-	for _, item := range sb.receiverSessions {
-		err := item.receiver.Close()
-		if err != nil {
-			return err
-		}
-		err = item.session.Close()
+	for _, receiver := range sb.receivers {
+		err := receiver.Close()
 		if err != nil {
 			return err
 		}
@@ -216,124 +202,58 @@ func (sb *serviceBus) drainSenders() error {
 	log.Debugln("draining senders")
 	sb.senderMu.Lock()
 	defer sb.senderMu.Unlock()
-	for key, item := range sb.senderSessions {
-		//err := item.sender.Close()
-		//if err != nil {
-		//	return err
-		//}
-		err := item.session.Close()
+	for key, sender := range sb.senders {
+		err := sender.Close()
 		if err != nil {
 			return err
 		}
-		delete(sb.senderSessions, key)
+		delete(sb.senders, key)
 	}
 	return nil
 }
 
 // Receive subscribes for messages sent to the provided entityPath.
 func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
-	receiver, err := sb.fetchReceiver(entityPath)
+	sb.receiverMu.Lock()
+	defer sb.receiverMu.Unlock()
+
+	receiver, err := NewReceiver(sb.client, entityPath)
 	if err != nil {
 		return err
 	}
 
-	go func() {
-		for {
-			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-			// Receive next message
-			msg, err := receiver.Receive(ctx)
-			if err, ok := err.(net.Error); ok && err.Timeout() {
-				continue
-			} else if err != nil {
-				log.Fatalln(err)
-			}
-			cancel()
-
-			if msg != nil {
-				id := interface{}("null")
-				if msg.Properties != nil {
-					id = msg.Properties.MessageID
-				}
-				log.Debugf("Message received: %s, id: %s", msg.Data, id)
-
-				err = handler(ctx, msg)
-				if err != nil {
-					msg.Reject()
-					log.Debugln("Message rejected")
-				} else {
-					// Accept message
-					msg.Accept()
-					log.Debugln("Message accepted")
-				}
-			}
-		}
-	}()
+	sb.receivers = append(sb.receivers, receiver)
+	receiver.Receive(sb.context, handler)
 	return nil
-}
-
-func (sb *serviceBus) fetchReceiver(entityPath string) (*amqp.Receiver, error) {
-	sb.receiverMu.Lock()
-	defer sb.receiverMu.Unlock()
-
-	entry, ok := sb.receiverSessions[entityPath]
-	if ok {
-		log.Debugf("found receiver for entity path %s", entityPath)
-		return entry.receiver, nil
-	}
-
-	log.Debugf("creating a new receiver for entity path %s", entityPath)
-	session, err := sb.client.NewSession()
-	if err != nil {
-		return nil, err
-	}
-
-	receiver, err := session.NewReceiver(
-		amqp.LinkAddress(entityPath),
-		amqp.LinkCredit(10),
-		amqp.LinkBatching(true))
-	if err != nil {
-		return nil, err
-	}
-
-	receiverSession := &receiverSession{receiver: receiver, session: session}
-	sb.receiverSessions[entityPath] = receiverSession
-	return receiverSession.receiver, nil
 }
 
 // Send sends a message to a provided entity path.
 func (sb *serviceBus) Send(ctx context.Context, entityPath string, msg *amqp.Message) error {
-	senderSession, err := sb.fetchSender(entityPath)
+	sender, err := sb.fetchSender(entityPath)
 	if err != nil {
 		return err
 	}
 
-	return senderSession.sender.Send(ctx, msg)
+	return sender.Send(ctx, msg)
 }
 
-func (sb *serviceBus) fetchSender(entityPath string) (*senderSession, error) {
+func (sb *serviceBus) fetchSender(entityPath string) (*Sender, error) {
 	sb.senderMu.Lock()
 	defer sb.senderMu.Unlock()
 
-	entry, ok := sb.senderSessions[entityPath]
+	entry, ok := sb.senders[entityPath]
 	if ok {
 		log.Debugf("found sender for entity path %s", entityPath)
 		return entry, nil
 	}
 
 	log.Debugf("creating a new sender for entity path %s", entityPath)
-	session, err := sb.client.NewSession()
+	sender, err := NewSender(sb.client, entityPath)
 	if err != nil {
 		return nil, err
 	}
-
-	sender, err := session.NewSender(amqp.LinkAddress(entityPath))
-	if err != nil {
-		return nil, err
-	}
-
-	senderSession := &senderSession{session: session, sender: sender}
-	sb.senderSessions[entityPath] = senderSession
-	return senderSession, nil
+	sb.senders[entityPath] = sender
+	return sender, nil
 }
 
 // EnsureQueue makes sure a queue exists in the given namespace. If the queue doesn't exist, it will create it with

@@ -124,6 +124,7 @@ func testQueueSendAndReceive(t *testing.T, sb SenderReceiver, queueName string) 
 		defer wg.Done()
 	}()
 
+	// ensure in-order processing of messages from the queue
 	count := 0
 	sb.Receive(queueName, func(ctx context.Context, msg *amqp.Message) error {
 		assert.Equal(t, messages[count], string(msg.Data))

@@ -33,17 +33,18 @@ func NewReceiver(client *amqp.Client, entityPath string) (*Receiver, error) {
 
 // Close will close the AMQP session and link of the receiver
 func (r *Receiver) Close() error {
-	err := r.session.Close()
-	if err != nil {
-		return err
-	}
-
-	err = r.receiver.Close()
-	if err != nil {
-		return err
-	}
-
 	close(r.done)
+
+	err := r.receiver.Close()
+	if err != nil {
+		return err
+	}
+
+	err = r.session.Close()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -77,11 +78,12 @@ func (r *Receiver) handleMessages(messages chan *amqp.Message, handler Handler) 
 			return
 		case msg := <-messages:
 			ctx := context.Background()
-			err := handler(ctx, msg)
 			id := interface{}("null")
 			if msg.Properties != nil {
 				id = msg.Properties.MessageID
 			}
+			log.Debugf("Message id: %s is being passed to handler", id)
+			err := handler(ctx, msg)
 
 			if err != nil {
 				msg.Reject()
@@ -103,10 +105,12 @@ func (r *Receiver) listenForMessages(msgChan chan *amqp.Message) {
 			close(msgChan)
 			return
 		default:
+			log.Debug("attempting to receive messages")
 			waitCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 			msg, err := r.receiver.Receive(waitCtx)
 			cancel()
 			if err, ok := err.(net.Error); ok && err.Timeout() {
+				log.Debug("attempting to receive messages timed out")
 				continue
 			} else if err != nil {
 				log.Fatalln(err)

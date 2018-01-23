@@ -50,7 +50,6 @@ type serviceBus struct {
 	receiverMu     sync.Mutex
 	senderMu       sync.Mutex
 	Logger         *log.Logger
-	context        context.Context
 }
 
 // parsedConn is the structure of a parsed Service Bus connection string.
@@ -81,7 +80,7 @@ func newClient(connStr string) (*amqp.Client, error) {
 		return nil, errors.New("connection string was not in expected format (Endpoint=sb://XXXXX.servicebus.windows.net/;SharedAccessKeyName=XXXXX;SharedAccessKey=XXXXX)")
 	}
 
-	client, err := amqp.Dial(parsed.Host, amqp.ConnSASLPlain(parsed.KeyName, parsed.Key), amqp.ConnMaxChannels(65535))
+	client, err := amqp.Dial(parsed.Host, amqp.ConnSASLPlain(parsed.KeyName, parsed.Key), amqp.ConnMaxSessions(65535))
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +99,6 @@ func newWithConnectionString(connStr string) (*serviceBus, error) {
 	}
 	sb.Logger.SetLevel(log.WarnLevel)
 	sb.senders = make(map[string]*Sender)
-	sb.context = context.Background()
 	return sb, nil
 }
 
@@ -170,20 +168,12 @@ func newParsedConnection(host string, keyName string, key string) (*parsedConn, 
 
 // Close drains and closes all of the existing senders, receivers and connections
 func (sb *serviceBus) Close() error {
+	// TODO: add some better error handling for cleaning up on Close
+	sb.drainReceivers()
+	sb.drainSenders()
 	log.Debugf("closing sb %v", sb)
-	err := sb.drainReceivers()
-	if err != nil {
-		return err
-	}
-
-	err = sb.drainSenders()
-	if err != nil {
-		return err
-	}
-
-	log.Debug("Closing the context")
-	sb.context.Done()
-	return sb.client.Close()
+	sb.client.Close()
+	return nil
 }
 
 func (sb *serviceBus) drainReceivers() error {
@@ -192,10 +182,7 @@ func (sb *serviceBus) drainReceivers() error {
 	defer sb.receiverMu.Unlock()
 
 	for _, receiver := range sb.receivers {
-		err := receiver.Close()
-		if err != nil {
-			return err
-		}
+		receiver.Close()
 	}
 	sb.receivers = []*Receiver{}
 	return nil
@@ -207,10 +194,7 @@ func (sb *serviceBus) drainSenders() error {
 	defer sb.senderMu.Unlock()
 
 	for key, sender := range sb.senders {
-		err := sender.Close()
-		if err != nil {
-			return err
-		}
+		sender.Close()
 		delete(sb.senders, key)
 	}
 	return nil
@@ -266,11 +250,12 @@ func (sb *serviceBus) EnsureQueue(ctx context.Context, queueName string, propert
 	log.Debugf("ensuring exists queue %s", queueName)
 	queueClient := sb.getQueueMgmtClient()
 	queue, err := queueClient.Get(ctx, sb.resourceGroup, sb.namespace, queueName)
+	// TODO: check if the queue properties are the same as the requested. If not, throw error or build new queue??
 
 	if properties == nil {
 		log.Debugf("no properties specified, so using default partitioned queue for %s", queueName)
 		properties = &mgmt.SBQueueProperties{
-			EnablePartitioning: ptrBool(false),
+			EnablePartitioning: ptrBool(true),
 		}
 	}
 

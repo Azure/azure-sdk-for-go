@@ -3,15 +3,21 @@ package servicebus
 import (
 	"context"
 	"pack.ag/amqp"
+	"github.com/satori/go.uuid"
 )
 
 // Sender provides session and link handling for an sending entity path
 type Sender struct {
 	client     *amqp.Client
-	session    *amqp.Session
+	session    *Session
 	sender     *amqp.Sender
 	entityPath string
 	Name       string
+}
+
+type Session struct {
+	*amqp.Session
+	GroupID string
 }
 
 // NewSender creates a new Service Bus message sender given an AMQP client and entity path
@@ -46,12 +52,12 @@ func (s *Sender) Recover() error {
 
 // Close will close the AMQP session and link of the sender
 func (s *Sender) Close() error {
-	err := s.session.Close()
+	err := s.sender.Close()
 	if err != nil {
 		return err
 	}
 
-	err = s.sender.Close()
+	err = s.session.Close()
 	if err != nil {
 		return err
 	}
@@ -61,6 +67,7 @@ func (s *Sender) Close() error {
 // Send will send a message using the session and link
 func (s *Sender) Send(ctx context.Context, msg *amqp.Message) error {
 	// TODO: Add in recovery logic in case the link / session has gone down
+	s.prepareMessage(msg)
 	err := s.sender.Send(ctx, msg)
 	if err != nil {
 		return err
@@ -68,19 +75,32 @@ func (s *Sender) Send(ctx context.Context, msg *amqp.Message) error {
 	return nil
 }
 
+func (s *Sender) prepareMessage(msg *amqp.Message) {
+	if msg.Properties == nil {
+		msg.Properties = &amqp.MessageProperties{}
+	}
+
+	if msg.Properties.GroupID == "" {
+		msg.Properties.GroupID = s.session.GroupID
+	}
+}
+
 // newSessionAndLink will replace the existing session and link
 func (s *Sender) newSessionAndLink() error {
-	session, err := s.client.NewSession()
+	amqpSession, err := s.client.NewSession()
 	if err != nil {
 		return err
 	}
 
-	amqpSender, err := session.NewSender(amqp.LinkAddress(s.entityPath))
+	amqpSender, err := amqpSession.NewSender(amqp.LinkAddress(s.entityPath))
 	if err != nil {
 		return err
 	}
 
-	s.session = session
+	s.session = &Session{
+		Session: amqpSession,
+		GroupID: uuid.NewV4().String(),
+	}
 	s.sender = amqpSender
 	return nil
 }

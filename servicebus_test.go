@@ -78,7 +78,11 @@ func (suite *ServiceBusSuite) TestQueue() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer sb.Close()
+	defer func(){
+		log.Debug("before close")
+		sb.Close()
+		log.Debug("after close")
+	}()
 
 	for name, testFunc := range tests {
 		queueName := randomName("gosbtest", 10)
@@ -170,16 +174,6 @@ func BenchmarkSend(b *testing.B) {
 	}
 
 	b.ResetTimer()
-	//b.RunParallel(func(pb *testing.PB){
-	//	for pb.Next() {
-	//		err = sb.Send(context.Background(), queueName, &amqp.Message{
-	//			Data: []byte("Hello!"),
-	//		})
-	//		if err != nil {
-	//			b.Fail()
-	//		}
-	//	}
-	//})
 	for i := 0; i < b.N; i++ {
 		sb.Send(context.Background(), queueName, &amqp.Message{
 			Data: []byte("Hello!"),

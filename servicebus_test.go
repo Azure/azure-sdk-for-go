@@ -7,6 +7,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -69,8 +70,9 @@ func (suite *ServiceBusSuite) TearDownSuite() {
 
 func (suite *ServiceBusSuite) TestQueue() {
 	tests := map[string]func(*testing.T, SenderReceiver, string){
-		"SimpleSend":     testQueueSend,
-		"SendAndReceive": testQueueSendAndReceive,
+		"SimpleSend":         testQueueSend,
+		"SendAndReceive":     testQueueSendAndReceive,
+		"DuplicateDetection": testDuplicateDetection,
 	}
 
 	spToken := suite.servicePrincipalToken()
@@ -86,7 +88,11 @@ func (suite *ServiceBusSuite) TestQueue() {
 
 	for name, testFunc := range tests {
 		queueName := randomName("gosbtest", 10)
-		_, err := sb.EnsureQueue(context.Background(), queueName, nil)
+		_, err := sb.EnsureQueue(
+			context.Background(),
+			queueName,
+			QueueWithPartitioning(),
+			QueueWithDuplicateDetection())
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -109,8 +115,6 @@ func testQueueSendAndReceive(t *testing.T, sb SenderReceiver, queueName string) 
 	numMessages := rand.Intn(100) + 20
 	var wg sync.WaitGroup
 	wg.Add(numMessages + 1)
-	log.Debugf("SendAndReceive: sending and receiving %d messages", numMessages)
-
 	messages := make([]string, numMessages)
 	for i := 0; i < numMessages; i++ {
 		messages[i] = randomName("hello", 10)
@@ -133,6 +137,49 @@ func testQueueSendAndReceive(t *testing.T, sb SenderReceiver, queueName string) 
 	sb.Receive(queueName, func(ctx context.Context, msg *amqp.Message) error {
 		assert.Equal(t, messages[count], string(msg.Data))
 		count++
+		wg.Done()
+		return nil
+	})
+	wg.Wait()
+}
+
+func testDuplicateDetection(t *testing.T, sb SenderReceiver, queueName string) {
+	dupID := uuid.NewV4().String()
+	messages := []struct {
+		ID   string
+		Data string
+	}{
+		{
+			ID:   dupID,
+			Data: "hello 1!",
+		},
+		{
+			ID:   dupID,
+			Data: "hello duplicate!",
+		},
+		{
+			ID:   uuid.NewV4().String(),
+			Data: "hello 2!",
+		},
+	}
+
+	var wg sync.WaitGroup
+	wg.Add(3)
+	go func() {
+		for _, msg := range messages {
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			err := sb.Send(ctx, queueName, &amqp.Message{Data: []byte(msg.Data)}, SendWithMessageID(msg.ID))
+			cancel()
+			if err != nil {
+				log.Fatalln(err)
+			}
+		}
+		defer wg.Done()
+	}()
+
+	sb.Receive(queueName, func(ctx context.Context, msg *amqp.Message) error {
+		// we should get 2 messages discarding the duplicate ID
+		assert.NotEqual(t, messages[1].Data, string(msg.Data))
 		wg.Done()
 		return nil
 	})
@@ -186,37 +233,6 @@ func BenchmarkSend(b *testing.B) {
 	}
 }
 
-//func BenchmarkReceive(b *testing.B) {
-//	sbSuite := &ServiceBusSuite{}
-//	sbSuite.SetupSuite()
-//	defer sbSuite.TearDownSuite()
-//
-//	spToken := sbSuite.servicePrincipalToken()
-//	sb, err := NewWithSPToken(spToken, sbSuite.SubscriptionID, ResourceGroupName, sbSuite.Namespace, RootRuleName, sbSuite.Environment)
-//	if err != nil {
-//		log.Fatalln(err)
-//	}
-//
-//	queueName := randomName("gosbbench", 10)
-//	_, err = sb.EnsureQueue(context.Background(), queueName, nil)
-//	if err != nil {
-//		log.Fatalln(err)
-//	}
-//
-//	for i := 0; i < b.N; i++ {
-//		sb.Send(context.Background(), queueName, &amqp.Message{
-//			Data: []byte("Hello!"),
-//		})
-//	}
-//
-//	b.ResetTimer()
-//	sb.Listen(queueName, func(ctx context.Context, msg *amqp.Message) error {
-//
-//	})
-//
-//	b.StopTimer()
-//}
-
 func mustGetenv(key string) string {
 	v := os.Getenv(key)
 	if v == "" {
@@ -264,7 +280,6 @@ func (suite *ServiceBusSuite) getServiceBusNamespaceClient() *sbmgmt.NamespacesC
 }
 
 func (suite *ServiceBusSuite) ensureProvisioned(tier sbmgmt.SkuTier) error {
-	log.Debug("ensuring test resource group is provisioned")
 	groupsClient := suite.getRmGroupClient()
 	location := Location
 	_, err := groupsClient.CreateOrUpdate(context.Background(), ResourceGroupName, rm.Group{Location: &location})
@@ -275,7 +290,6 @@ func (suite *ServiceBusSuite) ensureProvisioned(tier sbmgmt.SkuTier) error {
 	nsClient := suite.getServiceBusNamespaceClient()
 	_, err = nsClient.Get(context.Background(), ResourceGroupName, suite.Namespace)
 	if err != nil {
-		log.Debug("namespace is not there, create it")
 		ns := sbmgmt.SBNamespace{
 			Sku: &sbmgmt.SBSku{
 				Name: sbmgmt.SkuName(tier),
@@ -288,10 +302,8 @@ func (suite *ServiceBusSuite) ensureProvisioned(tier sbmgmt.SkuTier) error {
 			return err
 		}
 
-		log.Debug("waiting for namespace to provision")
 		return res.WaitForCompletion(context.Background(), nsClient.Client)
 	}
 
-	log.Debug("namespace was already provisioned")
 	return nil
 }

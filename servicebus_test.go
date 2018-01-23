@@ -78,7 +78,11 @@ func (suite *ServiceBusSuite) TestQueue() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer sb.Close()
+	defer func() {
+		log.Debug("before close")
+		sb.Close()
+		log.Debug("after close")
+	}()
 
 	for name, testFunc := range tests {
 		queueName := randomName("gosbtest", 10)
@@ -102,7 +106,7 @@ func testQueueSend(t *testing.T, sb SenderReceiver, queueName string) {
 }
 
 func testQueueSendAndReceive(t *testing.T, sb SenderReceiver, queueName string) {
-	numMessages := rand.Intn(100)
+	numMessages := rand.Intn(100) + 20
 	var wg sync.WaitGroup
 	wg.Add(numMessages + 1)
 	log.Debugf("SendAndReceive: sending and receiving %d messages", numMessages)
@@ -124,6 +128,7 @@ func testQueueSendAndReceive(t *testing.T, sb SenderReceiver, queueName string) 
 		defer wg.Done()
 	}()
 
+	// ensure in-order processing of messages from the queue
 	count := 0
 	sb.Receive(queueName, func(ctx context.Context, msg *amqp.Message) error {
 		assert.Equal(t, messages[count], string(msg.Data))
@@ -169,16 +174,6 @@ func BenchmarkSend(b *testing.B) {
 	}
 
 	b.ResetTimer()
-	//b.RunParallel(func(pb *testing.PB){
-	//	for pb.Next() {
-	//		err = sb.Send(context.Background(), queueName, &amqp.Message{
-	//			Data: []byte("Hello!"),
-	//		})
-	//		if err != nil {
-	//			b.Fail()
-	//		}
-	//	}
-	//})
 	for i := 0; i < b.N; i++ {
 		sb.Send(context.Background(), queueName, &amqp.Message{
 			Data: []byte("Hello!"),
@@ -215,7 +210,7 @@ func BenchmarkSend(b *testing.B) {
 //	}
 //
 //	b.ResetTimer()
-//	sb.Receive(queueName, func(ctx context.Context, msg *amqp.Message) error {
+//	sb.Listen(queueName, func(ctx context.Context, msg *amqp.Message) error {
 //
 //	})
 //

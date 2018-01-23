@@ -3,7 +3,6 @@ package servicebus
 import (
 	"context"
 	"pack.ag/amqp"
-	"github.com/satori/go.uuid"
 )
 
 // Sender provides session and link handling for an sending entity path
@@ -13,11 +12,6 @@ type Sender struct {
 	sender     *amqp.Sender
 	entityPath string
 	Name       string
-}
-
-type Session struct {
-	*amqp.Session
-	GroupID string
 }
 
 // NewSender creates a new Service Bus message sender given an AMQP client and entity path
@@ -81,7 +75,7 @@ func (s *Sender) prepareMessage(msg *amqp.Message) {
 	}
 
 	if msg.Properties.GroupID == "" {
-		msg.Properties.GroupID = s.session.GroupID
+		msg.Properties.GroupID = s.session.SessionID
 	}
 }
 
@@ -97,10 +91,7 @@ func (s *Sender) newSessionAndLink() error {
 		return err
 	}
 
-	s.session = &Session{
-		Session: amqpSession,
-		GroupID: uuid.NewV4().String(),
-	}
+	s.session = NewSession(amqpSession)
 	s.sender = amqpSender
 	return nil
 }

@@ -78,7 +78,7 @@ func (suite *ServiceBusSuite) TestQueue() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer func(){
+	defer func() {
 		log.Debug("before close")
 		sb.Close()
 		log.Debug("after close")

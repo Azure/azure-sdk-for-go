@@ -11,7 +11,7 @@ import (
 // Receiver provides session and link handling for a receiving entity path
 type Receiver struct {
 	client     *amqp.Client
-	session    *amqp.Session
+	session    *Session
 	receiver   *amqp.Receiver
 	entityPath string
 	done       chan struct{}
@@ -129,12 +129,12 @@ func (r *Receiver) listenForMessages(msgChan chan *amqp.Message) {
 
 // newSessionAndLink will replace the session and link on the receiver
 func (r *Receiver) newSessionAndLink() error {
-	session, err := r.client.NewSession()
+	amqpSession, err := r.client.NewSession()
 	if err != nil {
 		return err
 	}
 
-	amqpReceiver, err := session.NewReceiver(
+	amqpReceiver, err := amqpSession.NewReceiver(
 		amqp.LinkAddress(r.entityPath),
 		amqp.LinkCredit(10),
 		amqp.LinkBatching(true))
@@ -142,7 +142,7 @@ func (r *Receiver) newSessionAndLink() error {
 		return err
 	}
 
-	r.session = session
+	r.session = NewSession(amqpSession)
 	r.receiver = amqpReceiver
 
 	return nil

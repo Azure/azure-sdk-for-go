@@ -19,14 +19,14 @@ var (
 
 // SenderReceiver provides the ability to send and receive messages
 type SenderReceiver interface {
-	Send(ctx context.Context, entityPath string, msg *amqp.Message) error
+	Send(ctx context.Context, entityPath string, msg *amqp.Message, opts ...SendOption) error
 	Receive(entityPath string, handler Handler) error
 	Close() error
 }
 
 // EntityManager provides the ability to manage Service Bus entities (Queues, Topics, Subscriptions, etc.)
 type EntityManager interface {
-	EnsureQueue(ctx context.Context, queueName string, properties *mgmt.SBQueueProperties) (*mgmt.SBQueue, error)
+	EnsureQueue(ctx context.Context, queueName string, opts ...QueueOption) (*mgmt.SBQueue, error)
 	DeleteQueue(ctx context.Context, queueName string) error
 }
 
@@ -215,14 +215,14 @@ func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
 	return nil
 }
 
-// Send sends a message to a provided entity path.
-func (sb *serviceBus) Send(ctx context.Context, entityPath string, msg *amqp.Message) error {
+// Send sends a message to a provided entity path with options
+func (sb *serviceBus) Send(ctx context.Context, entityPath string, msg *amqp.Message, opts ...SendOption) error {
 	sender, err := sb.fetchSender(entityPath)
 	if err != nil {
 		return err
 	}
 
-	return sender.Send(ctx, msg)
+	return sender.Send(ctx, msg, opts...)
 }
 
 func (sb *serviceBus) fetchSender(entityPath string) (*Sender, error) {
@@ -231,7 +231,6 @@ func (sb *serviceBus) fetchSender(entityPath string) (*Sender, error) {
 
 	entry, ok := sb.senders[entityPath]
 	if ok {
-		log.Debugf("found sender for entity path %s", entityPath)
 		return entry, nil
 	}
 
@@ -242,46 +241,4 @@ func (sb *serviceBus) fetchSender(entityPath string) (*Sender, error) {
 	}
 	sb.senders[entityPath] = sender
 	return sender, nil
-}
-
-// EnsureQueue makes sure a queue exists in the given namespace. If the queue doesn't exist, it will create it with
-// the specified name and properties. If properties are not specified, it will build a default partitioned queue.
-func (sb *serviceBus) EnsureQueue(ctx context.Context, queueName string, properties *mgmt.SBQueueProperties) (*mgmt.SBQueue, error) {
-	log.Debugf("ensuring exists queue %s", queueName)
-	queueClient := sb.getQueueMgmtClient()
-	queue, err := queueClient.Get(ctx, sb.resourceGroup, sb.namespace, queueName)
-	// TODO: check if the queue properties are the same as the requested. If not, throw error or build new queue??
-
-	if properties == nil {
-		log.Debugf("no properties specified, so using default partitioned queue for %s", queueName)
-		properties = &mgmt.SBQueueProperties{
-			EnablePartitioning: ptrBool(true),
-		}
-	}
-
-	if err != nil {
-		log.Debugf("building a new queue %s", queueName)
-		newQueue := mgmt.SBQueue{
-			Name:              &queueName,
-			SBQueueProperties: properties,
-		}
-		queue, err = queueClient.CreateOrUpdate(ctx, sb.resourceGroup, sb.namespace, queueName, newQueue)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return &queue, nil
-}
-
-// DeleteQueue deletes an existing queue
-func (sb *serviceBus) DeleteQueue(ctx context.Context, queueName string) error {
-	queueClient := sb.getQueueMgmtClient()
-	_, err := queueClient.Delete(ctx, sb.resourceGroup, sb.namespace, queueName)
-	return err
-}
-
-func (sb *serviceBus) getQueueMgmtClient() mgmt.QueuesClient {
-	client := mgmt.NewQueuesClientWithBaseURI(sb.environment.ResourceManagerEndpoint, sb.subscriptionID)
-	client.Authorizer = autorest.NewBearerAuthorizer(sb.token)
-	return client
 }

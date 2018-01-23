@@ -58,10 +58,14 @@ func (s *Sender) Close() error {
 	return nil
 }
 
-// Send will send a message using the session and link
-func (s *Sender) Send(ctx context.Context, msg *amqp.Message) error {
+// Send will send a message to the entity path with options
+func (s *Sender) Send(ctx context.Context, msg *amqp.Message, opts ...SendOption) error {
 	// TODO: Add in recovery logic in case the link / session has gone down
 	s.prepareMessage(msg)
+	for _, opt := range opts {
+		opt(msg)
+	}
+
 	err := s.sender.Send(ctx, msg)
 	if err != nil {
 		return err
@@ -94,4 +98,25 @@ func (s *Sender) newSessionAndLink() error {
 	s.session = NewSession(amqpSession)
 	s.sender = amqpSender
 	return nil
+}
+
+// SendOption provides a way to customize a message on sending
+type SendOption func(message *amqp.Message) error
+
+// SendWithMessageID provides an option of adding a message ID for the sent message
+func SendWithMessageID(msgID interface{}) SendOption {
+	return func(msg *amqp.Message) error {
+		msg.Properties.MessageID = msgID
+		return nil
+	}
+}
+
+// SendWithoutSessionID will set the SessionID to nil. If sending to a partitioned Service Bus queue, this will cause
+// the queue distributed the message in a round robin fashion to the next available partition with the effect of not
+// enforcing FIFO ordering of messages, but enabling more efficient distribution of messages across partitions.
+func SendWithoutSessionID() SendOption {
+	return func(msg *amqp.Message) error {
+		msg.Properties.GroupID = ""
+		return nil
+	}
 }

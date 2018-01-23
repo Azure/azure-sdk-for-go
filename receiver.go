@@ -105,15 +105,18 @@ func (r *Receiver) listenForMessages(msgChan chan *amqp.Message) {
 			close(msgChan)
 			return
 		default:
-			log.Debug("attempting to receive messages")
-			waitCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			//log.Debug("attempting to receive messages")
+			waitCtx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 			msg, err := r.receiver.Receive(waitCtx)
 			cancel()
+
+			// TODO: handle receive errors better. It's not sufficient to check only for timeout
 			if err, ok := err.(net.Error); ok && err.Timeout() {
 				log.Debug("attempting to receive messages timed out")
 				continue
 			} else if err != nil {
 				log.Fatalln(err)
+				time.Sleep(10 * time.Second)
 			}
 			if msg != nil {
 				id := interface{}("null")

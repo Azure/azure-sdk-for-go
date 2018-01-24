@@ -9,8 +9,26 @@ import (
 	"time"
 )
 
+const (
+	// Megabytes is a helper for specifying MaxSizeInMegabytes and equals 1024, thus 5 GB is 5 * Megabytes
+	Megabytes = 1024
+)
+
 // TopicOption represents an option for configuring a topic.
 type TopicOption func(*mgmt.SBTopic) error
+
+// TopicWithMaxSizeInMegabytes configures the maximum size of the topic in megabytes (1 * 1024 - 5 * 1024), which is the size of
+// the memory allocated for the topic. Default is 1 MB (1 * 1024).
+func TopicWithMaxSizeInMegabytes(size int) TopicOption {
+	return func(t *mgmt.SBTopic) error {
+		if size < 1*Megabytes || size > 5*Megabytes {
+			return errors.New("TopicWithMaxSizeInMegabytes: must be between 1 * Megabytes and 5 * Megabytes")
+		}
+		size32 := int32(size)
+		t.MaxSizeInMegabytes = &size32
+		return nil
+	}
+}
 
 // TopicWithPartitioning configures the topic to be partitioned across multiple message brokers.
 func TopicWithPartitioning() TopicOption {

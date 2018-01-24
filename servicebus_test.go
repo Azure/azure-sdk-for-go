@@ -70,9 +70,9 @@ func (suite *ServiceBusSuite) TearDownSuite() {
 
 func (suite *ServiceBusSuite) TestQueue() {
 	tests := map[string]func(*testing.T, SenderReceiver, string){
-		"SimpleSend":         testQueueSend,
-		"SendAndReceive":     testQueueSendAndReceive,
-		"DuplicateDetection": testDuplicateDetection,
+		"SimpleSend":            testQueueSend,
+		"SendAndReceiveInOrder": testQueueSendAndReceiveInOrder,
+		"DuplicateDetection":    testDuplicateDetection,
 	}
 
 	spToken := suite.servicePrincipalToken()
@@ -81,9 +81,7 @@ func (suite *ServiceBusSuite) TestQueue() {
 		log.Fatalln(err)
 	}
 	defer func() {
-		log.Debug("before close")
 		sb.Close()
-		log.Debug("after close")
 	}()
 
 	for name, testFunc := range tests {
@@ -111,7 +109,7 @@ func testQueueSend(t *testing.T, sb SenderReceiver, queueName string) {
 	assert.Nil(t, err)
 }
 
-func testQueueSendAndReceive(t *testing.T, sb SenderReceiver, queueName string) {
+func testQueueSendAndReceiveInOrder(t *testing.T, sb SenderReceiver, queueName string) {
 	numMessages := rand.Intn(100) + 20
 	var wg sync.WaitGroup
 	wg.Add(numMessages + 1)
@@ -155,7 +153,7 @@ func testDuplicateDetection(t *testing.T, sb SenderReceiver, queueName string) {
 		},
 		{
 			ID:   dupID,
-			Data: "hello duplicate!",
+			Data: "hello 1!",
 		},
 		{
 			ID:   uuid.NewV4().String(),
@@ -177,13 +175,15 @@ func testDuplicateDetection(t *testing.T, sb SenderReceiver, queueName string) {
 		defer wg.Done()
 	}()
 
+	received := make(map[interface{}]string)
 	sb.Receive(queueName, func(ctx context.Context, msg *amqp.Message) error {
 		// we should get 2 messages discarding the duplicate ID
-		assert.NotEqual(t, messages[1].Data, string(msg.Data))
+		received[msg.Properties.MessageID] = string(msg.Data)
 		wg.Done()
 		return nil
 	})
 	wg.Wait()
+	assert.Equal(t, 2, len(received), "should not have more than 2 messages", received)
 }
 
 func TestServiceBusSuite(t *testing.T) {

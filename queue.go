@@ -2,7 +2,7 @@ package servicebus
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	mgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest"
 	log "github.com/sirupsen/logrus"
@@ -27,7 +27,7 @@ the PartitionKey property as the partition key. Use the PartitionKey property to
 messages. The partition key ensures that all messages that are sent within a transaction are handled by the same
 messaging broker.
 
-MessageId. If the queue or topic has the RequiresDuplicationDetection property set to true, then the MessageId
+MessageId. If the queue has the RequiresDuplicationDetection property set to true, then the MessageId
 property serves as the partition key if the SessionId or a PartitionKey properties are not set. This ensures that
 all copies of the same message are handled by the same message broker and, thus, allows Service Bus to detect and
 eliminate duplicate messages
@@ -39,13 +39,26 @@ func QueueWithPartitioning() QueueOption {
 	}
 }
 
+// QueueWithMaxSizeInMegabytes configures the maximum size of the queue in megabytes (1 * 1024 - 5 * 1024), which is the size of
+// the memory allocated for the queue. Default is 1 MB (1 * 1024).
+func QueueWithMaxSizeInMegabytes(size int) QueueOption {
+	return func(q *mgmt.SBQueue) error {
+		if size < 1*Megabytes || size > 5*Megabytes {
+			return errors.New("QueueWithMaxSizeInMegabytes: must be between 1 * Megabytes and 5 * Megabytes")
+		}
+		size32 := int32(size)
+		q.MaxSizeInMegabytes = &size32
+		return nil
+	}
+}
+
 // QueueWithDuplicateDetection configures the queue to detect duplicates for a given time window. If window
 // is not specified, then it uses the default of 10 minutes.
 func QueueWithDuplicateDetection(window *time.Duration) QueueOption {
-	return func(queue *mgmt.SBQueue) error {
-		queue.RequiresDuplicateDetection = ptrBool(true)
+	return func(q *mgmt.SBQueue) error {
+		q.RequiresDuplicateDetection = ptrBool(true)
 		if window != nil {
-			queue.DuplicateDetectionHistoryTimeWindow = ptrString(fmt.Sprintf("P%dS", int(window.Seconds())))
+			q.DuplicateDetectionHistoryTimeWindow = durationTo8601Seconds(window)
 		}
 		return nil
 	}
@@ -53,16 +66,58 @@ func QueueWithDuplicateDetection(window *time.Duration) QueueOption {
 
 // QueueWithRequiredSessions will ensure the queue requires senders and receivers to have sessionIDs
 func QueueWithRequiredSessions() QueueOption {
-	return func(queue *mgmt.SBQueue) error {
-		queue.RequiresSession = ptrBool(true)
+	return func(q *mgmt.SBQueue) error {
+		q.RequiresSession = ptrBool(true)
 		return nil
 	}
 }
 
-// QueueWithMessageExpiration will ensure the queue sends expired messages to the dead letter queue
-func QueueWithMessageExpiration() QueueOption {
-	return func(queue *mgmt.SBQueue) error {
-		queue.DeadLetteringOnMessageExpiration = ptrBool(true)
+// QueueWithDeadLetteringOnMessageExpiration will ensure the queue sends expired messages to the dead letter queue
+func QueueWithDeadLetteringOnMessageExpiration() QueueOption {
+	return func(q *mgmt.SBQueue) error {
+		q.DeadLetteringOnMessageExpiration = ptrBool(true)
+		return nil
+	}
+}
+
+// QueueWithAutoDeleteOnIdle configures the queue to automatically delete after the specified idle interval. The
+// minimum duration is 5 minutes.
+func QueueWithAutoDeleteOnIdle(window *time.Duration) QueueOption {
+	return func(q *mgmt.SBQueue) error {
+		if window != nil {
+			if window.Minutes() < 5 {
+				return errors.New("QueueWithAutoDeleteOnIdle: window must be greater than 5 minutes")
+			}
+			q.AutoDeleteOnIdle = durationTo8601Seconds(window)
+		}
+		return nil
+	}
+}
+
+// QueueWithMessageTimeToLive configures the queue to set a time to live on messages. This is the duration after which
+// the message expires, starting from when the message is sent to Service Bus. This is the default value used when
+// TimeToLive is not set on a message itself. If nil, defaults to 14 days.
+func QueueWithMessageTimeToLive(window *time.Duration) QueueOption {
+	return func(q *mgmt.SBQueue) error {
+		if window == nil {
+			duration := time.Duration(14 * 24 * time.Hour)
+			window = &duration
+		}
+		q.DefaultMessageTimeToLive = durationTo8601Seconds(window)
+		return nil
+	}
+}
+
+// QueueWithLockDuration configures the queue to have a duration of a peek-lock; that is, the amount of time that the
+// message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
+// minute.
+func QueueWithLockDuration(window *time.Duration) QueueOption {
+	return func(q *mgmt.SBQueue) error {
+		if window == nil {
+			duration := time.Duration(14 * 24 * time.Hour)
+			window = &duration
+		}
+		q.LockDuration = durationTo8601Seconds(window)
 		return nil
 	}
 }

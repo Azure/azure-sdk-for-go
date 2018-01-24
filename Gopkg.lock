@@ -54,12 +54,6 @@
   revision = "3026ca7e18e829805b990b41e4ce28c92cb80caa"
 
 [[projects]]
-  name = "github.com/marstr/guid"
-  packages = ["."]
-  revision = "8bd9a64bf37eb297b492a4101fb28e80ac0b290f"
-  version = "v1.1.0"
-
-[[projects]]
   branch = "master"
   name = "github.com/marstr/randname"
   packages = ["."]
@@ -84,7 +78,7 @@
     "pkcs12",
     "pkcs12/internal/rc2"
   ]
-  revision = "d94f6bc902c2970500950e88ab1a54a0c26bec48"
+  revision = "3d37316aaa6bd9929127ac9a527abf408178ea7b"
 
 [[projects]]
   branch = "master"
@@ -93,7 +87,7 @@
     "go/ast/astutil",
     "imports"
   ]
-  revision = "99037e3760ed7d9c772c980caee42b17779b80ce"
+  revision = "f86b507a7e91633e9ed99e4071f91a62e78f05f6"
 
 [[projects]]
   branch = "v1"
@@ -110,6 +104,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "56c5ece551cc0fe53dfe99350acb7a705b3538e056ccb711bd8cf2950a1a4d8f"
+  inputs-digest = "a17d78d70ec53003960990755d97545a369f737a59d57f8948dd2f682753f745"
   solver-name = "gps-cdcl"
   solver-version = 1

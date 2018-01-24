@@ -54,6 +54,12 @@
   revision = "3026ca7e18e829805b990b41e4ce28c92cb80caa"
 
 [[projects]]
+  name = "github.com/marstr/guid"
+  packages = ["."]
+  revision = "8bd9a64bf37eb297b492a4101fb28e80ac0b290f"
+  version = "v1.1.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/marstr/randname"
   packages = ["."]
@@ -104,6 +110,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a17d78d70ec53003960990755d97545a369f737a59d57f8948dd2f682753f745"
+  inputs-digest = "56c5ece551cc0fe53dfe99350acb7a705b3538e056ccb711bd8cf2950a1a4d8f"
   solver-name = "gps-cdcl"
   solver-version = 1

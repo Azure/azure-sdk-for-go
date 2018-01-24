@@ -75,6 +75,7 @@ func (r *Receiver) handleMessages(messages chan *amqp.Message, handler Handler) 
 		select {
 		case <-r.done:
 			log.Debug("done handling messages")
+			close(messages)
 			return
 		case msg := <-messages:
 			ctx := context.Background()
@@ -102,7 +103,6 @@ func (r *Receiver) listenForMessages(msgChan chan *amqp.Message) {
 		select {
 		case <-r.done:
 			log.Debug("done listenting for messages")
-			close(msgChan)
 			return
 		default:
 			//log.Debug("attempting to receive messages")

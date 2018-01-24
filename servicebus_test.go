@@ -92,7 +92,7 @@ func (suite *ServiceBusSuite) TestQueue() {
 			context.Background(),
 			queueName,
 			QueueWithPartitioning(),
-			QueueWithDuplicateDetection())
+			QueueWithDuplicateDetection(nil))
 		if err != nil {
 			log.Fatalln(err)
 		}

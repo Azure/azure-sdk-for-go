@@ -80,6 +80,7 @@ func (s *Sender) prepareMessage(msg *amqp.Message) {
 
 	if msg.Properties.GroupID == "" {
 		msg.Properties.GroupID = s.session.SessionID
+		msg.Properties.GroupSequence = s.session.GetNext()
 	}
 }
 

@@ -61,7 +61,7 @@ func TopicWithBatchedOperations() TopicOption {
 func TopicWithAutoDeleteOnIdle(window *time.Duration) TopicOption {
 	return func(t *mgmt.SBTopic) error {
 		if window != nil {
-			if window.Minutes() < float64(5*time.Minute) {
+			if window.Minutes() < 5 {
 				return errors.New("TopicWithAutoDeleteOnIdle: window must be greater than 5 minutes")
 			}
 			t.AutoDeleteOnIdle = durationTo8601Seconds(window)
@@ -92,8 +92,13 @@ func (sb *serviceBus) EnsureTopic(ctx context.Context, name string, opts ...Topi
 	// TODO: check if the queue properties are the same as the requested. If not, throw error or build new queue??
 	if err != nil {
 		newTopic := &mgmt.SBTopic{
-			Name:              &name,
-			SBTopicProperties: &mgmt.SBTopicProperties{},
+			Name: &name,
+			SBTopicProperties: &mgmt.SBTopicProperties{
+				EnablePartitioning:      ptrBool(false),
+				EnableBatchedOperations: ptrBool(false),
+				EnableExpress:           ptrBool(false),
+				SupportOrdering:         ptrBool(false),
+			},
 		}
 
 		for _, opt := range opts {

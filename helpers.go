@@ -18,5 +18,5 @@ func ptrString(toPtr string) *string {
 
 // durationTo8601Seconds takes a duration and returns a string period of whole seconds (int cast of float)
 func durationTo8601Seconds(duration *time.Duration) *string {
-	return ptrString(fmt.Sprintf("P%dS", int(duration.Seconds())))
+	return ptrString(fmt.Sprintf("PT%dS", int(duration.Seconds())))
 }

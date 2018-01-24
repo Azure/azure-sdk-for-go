@@ -26,8 +26,10 @@ type SenderReceiver interface {
 
 // EntityManager provides the ability to manage Service Bus entities (Queues, Topics, Subscriptions, etc.)
 type EntityManager interface {
-	EnsureQueue(ctx context.Context, queueName string, opts ...QueueOption) (*mgmt.SBQueue, error)
-	DeleteQueue(ctx context.Context, queueName string) error
+	EnsureQueue(ctx context.Context, name string, opts ...QueueOption) (*mgmt.SBQueue, error)
+	DeleteQueue(ctx context.Context, name string) error
+	EnsureTopic(ctx context.Context, name string, opts ...TopicOption) (*mgmt.SBTopic, error)
+	DeleteTopic(ctx context.Context, name string) error
 }
 
 // SenderReceiverManager provides Service Bus entity management as well as access to send and receive messages

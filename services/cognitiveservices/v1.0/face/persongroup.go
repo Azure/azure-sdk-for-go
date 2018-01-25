@@ -366,6 +366,8 @@ func (client PersonGroupClient) ListPreparer(ctx context.Context, start string, 
 	}
 	if top != nil {
 		queryParameters["top"] = autorest.Encode("query", *top)
+	} else {
+		queryParameters["top"] = autorest.Encode("query", 1000)
 	}
 
 	preparer := autorest.CreatePreparer(

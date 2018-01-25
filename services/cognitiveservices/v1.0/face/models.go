@@ -427,6 +427,19 @@ type Landmarks struct {
 	UnderLipBottom      *Coordinate `json:"underLipBottom,omitempty"`
 }
 
+// List face list object.
+type List struct {
+	autorest.Response `json:"-"`
+	// FaceListID - FaceListId of the target face list.
+	FaceListID *string `json:"faceListId,omitempty"`
+	// PersistedFaces - Persisted faces within the face list.
+	PersistedFaces *[]PersistedFace `json:"persistedFaces,omitempty"`
+	// Name - User defined name, maximum length is 128.
+	Name *string `json:"name,omitempty"`
+	// UserData - User specified data. Length should not exceed 16KB.
+	UserData *string `json:"userData,omitempty"`
+}
+
 // ListDetectedFace ...
 type ListDetectedFace struct {
 	autorest.Response `json:"-"`
@@ -439,10 +452,10 @@ type ListIdentifyResult struct {
 	Value             *[]IdentifyResult `json:"value,omitempty"`
 }
 
-// ListListType ...
-type ListListType struct {
+// ListList ...
+type ListList struct {
 	autorest.Response `json:"-"`
-	Value             *[]ListType `json:"value,omitempty"`
+	Value             *[]List `json:"value,omitempty"`
 }
 
 // ListPerson ...
@@ -463,19 +476,6 @@ type ListSimilarFace struct {
 	Value             *[]SimilarFace `json:"value,omitempty"`
 }
 
-// ListType face list object.
-type ListType struct {
-	autorest.Response `json:"-"`
-	// Name - User defined name, maximum length is 128.
-	Name *string `json:"name,omitempty"`
-	// UserData - User specified data. Length should not exceed 16KB.
-	UserData *string `json:"userData,omitempty"`
-	// FaceListID - FaceListId of the target face list.
-	FaceListID *string `json:"faceListId,omitempty"`
-	// PersistedFaces - Persisted faces within the face list.
-	PersistedFaces *[]PersistedFace `json:"persistedFaces,omitempty"`
-}
-
 // Makeup properties describing present makeups on a given face.
 type Makeup struct {
 	// EyeMakeup - A boolean value describing whether eye makeup is present on a face.
@@ -484,8 +484,8 @@ type Makeup struct {
 	LipMakeup *bool `json:"lipMakeup,omitempty"`
 }
 
-// NameAndUserDataContract a combination of user defined name and user specified data for the person, personGroup, and
-// faceList
+// NameAndUserDataContract a combination of user defined name and user specified data for the person, personGroup,
+// and faceList
 type NameAndUserDataContract struct {
 	// Name - User defined name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
@@ -523,25 +523,25 @@ type PersistedFace struct {
 // Person person object.
 type Person struct {
 	autorest.Response `json:"-"`
-	// Name - User defined name, maximum length is 128.
-	Name *string `json:"name,omitempty"`
-	// UserData - User specified data. Length should not exceed 16KB.
-	UserData *string `json:"userData,omitempty"`
 	// PersonID - PersonId of the target face list.
 	PersonID *uuid.UUID `json:"personId,omitempty"`
 	// PersistedFaceIds - PersistedFaceIds of registered faces in the person. These persistedFaceIds are returned from Person - Add a Person Face, and will not expire.
 	PersistedFaceIds *[]uuid.UUID `json:"persistedFaceIds,omitempty"`
+	// Name - User defined name, maximum length is 128.
+	Name *string `json:"name,omitempty"`
+	// UserData - User specified data. Length should not exceed 16KB.
+	UserData *string `json:"userData,omitempty"`
 }
 
 // PersonGroup person group object.
 type PersonGroup struct {
 	autorest.Response `json:"-"`
+	// PersonGroupID - PersonGroupId of the existing person groups.
+	PersonGroupID *string `json:"personGroupId,omitempty"`
 	// Name - User defined name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
 	// UserData - User specified data. Length should not exceed 16KB.
 	UserData *string `json:"userData,omitempty"`
-	// PersonGroupID - PersonGroupId of the existing person groups.
-	PersonGroupID *string `json:"personGroupId,omitempty"`
 }
 
 // Rectangle a rectangle within which a face can be found

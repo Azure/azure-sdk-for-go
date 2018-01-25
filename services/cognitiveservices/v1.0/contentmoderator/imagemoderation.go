@@ -52,8 +52,9 @@ func NewImageModerationClient(baseURL AzureRegionBaseURL) ImageModerationClient 
 
 // EvaluateFileInput returns probabilities of the image containing racy or adult content.
 //
-// imageStream is the image file. imageStream will be closed upon successful return. Callers should ensure closure when
-// receiving an error.cacheImage is whether to retain the submitted image for future use; defaults to false if omitted.
+// imageStream is the image file. imageStream will be closed upon successful return. Callers should ensure closure
+// when receiving an error.cacheImage is whether to retain the submitted image for future use; defaults to false if
+// omitted.
 func (client ImageModerationClient) EvaluateFileInput(ctx context.Context, imageStream io.ReadCloser, cacheImage *bool) (result Evaluate, err error) {
 	req, err := client.EvaluateFileInputPreparer(ctx, imageStream, cacheImage)
 	if err != nil {
@@ -182,8 +183,8 @@ func (client ImageModerationClient) EvaluateMethodResponder(resp *http.Response)
 
 // EvaluateURLInput returns probabilities of the image containing racy or adult content.
 //
-// contentType is the content type. imageURL is the image url. cacheImage is whether to retain the submitted image for
-// future use; defaults to false if omitted.
+// contentType is the content type. imageURL is the image url. cacheImage is whether to retain the submitted image
+// for future use; defaults to false if omitted.
 func (client ImageModerationClient) EvaluateURLInput(ctx context.Context, contentType string, imageURL BodyModel, cacheImage *bool) (result Evaluate, err error) {
 	req, err := client.EvaluateURLInputPreparer(ctx, contentType, imageURL, cacheImage)
 	if err != nil {
@@ -314,8 +315,9 @@ func (client ImageModerationClient) FindFacesResponder(resp *http.Response) (res
 
 // FindFacesFileInput returns the list of faces found.
 //
-// imageStream is the image file. imageStream will be closed upon successful return. Callers should ensure closure when
-// receiving an error.cacheImage is whether to retain the submitted image for future use; defaults to false if omitted.
+// imageStream is the image file. imageStream will be closed upon successful return. Callers should ensure closure
+// when receiving an error.cacheImage is whether to retain the submitted image for future use; defaults to false if
+// omitted.
 func (client ImageModerationClient) FindFacesFileInput(ctx context.Context, imageStream io.ReadCloser, cacheImage *bool) (result FoundFaces, err error) {
 	req, err := client.FindFacesFileInputPreparer(ctx, imageStream, cacheImage)
 	if err != nil {
@@ -380,8 +382,8 @@ func (client ImageModerationClient) FindFacesFileInputResponder(resp *http.Respo
 
 // FindFacesURLInput returns the list of faces found.
 //
-// contentType is the content type. imageURL is the image url. cacheImage is whether to retain the submitted image for
-// future use; defaults to false if omitted.
+// contentType is the content type. imageURL is the image url. cacheImage is whether to retain the submitted image
+// for future use; defaults to false if omitted.
 func (client ImageModerationClient) FindFacesURLInput(ctx context.Context, contentType string, imageURL BodyModel, cacheImage *bool) (result FoundFaces, err error) {
 	req, err := client.FindFacesURLInputPreparer(ctx, contentType, imageURL, cacheImage)
 	if err != nil {
@@ -455,9 +457,9 @@ func (client ImageModerationClient) FindFacesURLInputResponder(resp *http.Respon
 // Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the
 // response.
 //
-// imageStream is the image file. imageStream will be closed upon successful return. Callers should ensure closure when
-// receiving an error.listID is the list Id. cacheImage is whether to retain the submitted image for future use;
-// defaults to false if omitted.
+// imageStream is the image file. imageStream will be closed upon successful return. Callers should ensure closure
+// when receiving an error.listID is the list Id. cacheImage is whether to retain the submitted image for future
+// use; defaults to false if omitted.
 func (client ImageModerationClient) MatchFileInput(ctx context.Context, imageStream io.ReadCloser, listID string, cacheImage *bool) (result MatchResponse, err error) {
 	req, err := client.MatchFileInputPreparer(ctx, imageStream, listID, cacheImage)
 	if err != nil {
@@ -607,8 +609,8 @@ func (client ImageModerationClient) MatchMethodResponder(resp *http.Response) (r
 // Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the
 // response.
 //
-// contentType is the content type. imageURL is the image url. listID is the list Id. cacheImage is whether to retain
-// the submitted image for future use; defaults to false if omitted.
+// contentType is the content type. imageURL is the image url. listID is the list Id. cacheImage is whether to
+// retain the submitted image for future use; defaults to false if omitted.
 func (client ImageModerationClient) MatchURLInput(ctx context.Context, contentType string, imageURL BodyModel, listID string, cacheImage *bool) (result MatchResponse, err error) {
 	req, err := client.MatchURLInputPreparer(ctx, contentType, imageURL, listID, cacheImage)
 	if err != nil {
@@ -679,10 +681,10 @@ func (client ImageModerationClient) MatchURLInputResponder(resp *http.Response) 
 // OCRFileInput returns any text found in the image for the language specified. If no language is specified in input
 // then the detection defaults to English.
 //
-// language is language of the terms. imageStream is the image file. imageStream will be closed upon successful return.
-// Callers should ensure closure when receiving an error.cacheImage is whether to retain the submitted image for future
-// use; defaults to false if omitted. enhanced is when set to True, the image goes through additional processing to
-// come with additional candidates.
+// language is language of the terms. imageStream is the image file. imageStream will be closed upon successful
+// return. Callers should ensure closure when receiving an error.cacheImage is whether to retain the submitted
+// image for future use; defaults to false if omitted. enhanced is when set to True, the image goes through
+// additional processing to come with additional candidates.
 //
 // image/tiff is not supported when enhanced is set to true
 //
@@ -723,6 +725,8 @@ func (client ImageModerationClient) OCRFileInputPreparer(ctx context.Context, la
 	}
 	if enhanced != nil {
 		queryParameters["enhanced"] = autorest.Encode("query", *enhanced)
+	} else {
+		queryParameters["enhanced"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -757,9 +761,9 @@ func (client ImageModerationClient) OCRFileInputResponder(resp *http.Response) (
 // OCRMethod returns any text found in the image for the language specified. If no language is specified in input then
 // the detection defaults to English.
 //
-// language is language of the terms. cacheImage is whether to retain the submitted image for future use; defaults to
-// false if omitted. enhanced is when set to True, the image goes through additional processing to come with additional
-// candidates.
+// language is language of the terms. cacheImage is whether to retain the submitted image for future use; defaults
+// to false if omitted. enhanced is when set to True, the image goes through additional processing to come with
+// additional candidates.
 //
 // image/tiff is not supported when enhanced is set to true
 //
@@ -800,6 +804,8 @@ func (client ImageModerationClient) OCRMethodPreparer(ctx context.Context, langu
 	}
 	if enhanced != nil {
 		queryParameters["enhanced"] = autorest.Encode("query", *enhanced)
+	} else {
+		queryParameters["enhanced"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -833,9 +839,9 @@ func (client ImageModerationClient) OCRMethodResponder(resp *http.Response) (res
 // OCRURLInput returns any text found in the image for the language specified. If no language is specified in input
 // then the detection defaults to English.
 //
-// language is language of the terms. contentType is the content type. imageURL is the image url. cacheImage is whether
-// to retain the submitted image for future use; defaults to false if omitted. enhanced is when set to True, the image
-// goes through additional processing to come with additional candidates.
+// language is language of the terms. contentType is the content type. imageURL is the image url. cacheImage is
+// whether to retain the submitted image for future use; defaults to false if omitted. enhanced is when set to
+// True, the image goes through additional processing to come with additional candidates.
 //
 // image/tiff is not supported when enhanced is set to true
 //
@@ -876,6 +882,8 @@ func (client ImageModerationClient) OCRURLInputPreparer(ctx context.Context, lan
 	}
 	if enhanced != nil {
 		queryParameters["enhanced"] = autorest.Encode("query", *enhanced)
+	} else {
+		queryParameters["enhanced"] = autorest.Encode("query", false)
 	}
 
 	preparer := autorest.CreatePreparer(

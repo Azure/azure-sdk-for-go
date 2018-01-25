@@ -42,11 +42,11 @@ func NewPersonGroupPersonClient(azureRegion AzureRegions) PersonGroupPersonClien
 //
 // personGroupID is id referencing a particular person group. personID is id referencing a particular person.
 // imageParameter is an image stream. imageParameter will be closed upon successful return. Callers should ensure
-// closure when receiving an error.userData is user-specified data about the face for any purpose. The maximum length
-// is 1KB. targetFace is a face rectangle to specify the target face to be added to a person in the format of
-// "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image,
-// targetFace is required to specify which face to add. No targetFace means there is only one face detected in the
-// entire image.
+// closure when receiving an error.userData is user-specified data about the face for any purpose. The maximum
+// length is 1KB. targetFace is a face rectangle to specify the target face to be added to a person in the format
+// of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
+// image, targetFace is required to specify which face to add. No targetFace means there is only one face detected
+// in the entire image.
 func (client PersonGroupPersonClient) AddPersonFaceFromStream(ctx context.Context, personGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32) (result PersistedFace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
@@ -129,12 +129,12 @@ func (client PersonGroupPersonClient) AddPersonFaceFromStreamResponder(resp *htt
 // AddPersonFaceFromURL add a representative face to a person for identification. The input face is specified as an
 // image with a targetFace rectangle.
 //
-// personGroupID is id referencing a particular person group. personID is id referencing a particular person. imageURL
-// is a JSON document with a URL pointing to the image that is to be analyzed. userData is user-specified data about
-// the face for any purpose. The maximum length is 1KB. targetFace is a face rectangle to specify the target face to be
-// added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is
-// more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is
-// only one face detected in the entire image.
+// personGroupID is id referencing a particular person group. personID is id referencing a particular person.
+// imageURL is a JSON document with a URL pointing to the image that is to be analyzed. userData is user-specified
+// data about the face for any purpose. The maximum length is 1KB. targetFace is a face rectangle to specify the
+// target face to be added to a person in the format of "targetFace=left,top,width,height". E.g.
+// "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which
+// face to add. No targetFace means there is only one face detected in the entire image.
 func (client PersonGroupPersonClient) AddPersonFaceFromURL(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (result PersistedFace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,
@@ -664,8 +664,8 @@ func (client PersonGroupPersonClient) ListResponder(resp *http.Response) (result
 
 // Update update name or userData of a person.
 //
-// personGroupID is id referencing a particular person group. personID is id referencing a particular person. body is
-// request body for person update operation.
+// personGroupID is id referencing a particular person group. personID is id referencing a particular person. body
+// is request body for person update operation.
 func (client PersonGroupPersonClient) Update(ctx context.Context, personGroupID string, personID uuid.UUID, body NameAndUserDataContract) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: personGroupID,

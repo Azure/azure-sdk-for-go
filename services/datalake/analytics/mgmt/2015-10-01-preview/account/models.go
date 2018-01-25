@@ -83,22 +83,30 @@ func (future AccountCreateFuture) Result(client Client) (dlaa DataLakeAnalyticsA
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "account.AccountCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return dlaa, autorest.NewError("account.AccountCreateFuture", "Result", "asynchronous operation has not completed")
+		return dlaa, azure.NewAsyncOpIncompleteError("account.AccountCreateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		dlaa, err = client.CreateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "account.AccountCreateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "account.AccountCreateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	dlaa, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "account.AccountCreateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -114,22 +122,30 @@ func (future AccountDeleteFuture) Result(client Client) (ar autorest.Response, e
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "account.AccountDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("account.AccountDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("account.AccountDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "account.AccountDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "account.AccountDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "account.AccountDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -145,22 +161,30 @@ func (future AccountUpdateFuture) Result(client Client) (dlaa DataLakeAnalyticsA
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "account.AccountUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return dlaa, autorest.NewError("account.AccountUpdateFuture", "Result", "asynchronous operation has not completed")
+		return dlaa, azure.NewAsyncOpIncompleteError("account.AccountUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		dlaa, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "account.AccountUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "account.AccountUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	dlaa, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "account.AccountUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 

@@ -196,6 +196,13 @@ type ApplicationInsightsComponentAPIKeyListResult struct {
 	Value *[]ApplicationInsightsComponentAPIKey `json:"value,omitempty"`
 }
 
+// ApplicationInsightsComponentAvailableFeatures an Application Insights component available features.
+type ApplicationInsightsComponentAvailableFeatures struct {
+	autorest.Response `json:"-"`
+	// Result - A list of Application Insigths component feature.
+	Result *[]ApplicationInsightsComponentFeature `json:"Result,omitempty"`
+}
+
 // ApplicationInsightsComponentBillingFeatures an Application Insights component billing features
 type ApplicationInsightsComponentBillingFeatures struct {
 	autorest.Response `json:"-"`
@@ -285,6 +292,81 @@ type ApplicationInsightsComponentExportRequest struct {
 	DestinationStorageLocationID *string `json:"DestinationStorageLocationId,omitempty"`
 	// DestinationAccountID - The name of destination storage account.
 	DestinationAccountID *string `json:"DestinationAccountId,omitempty"`
+}
+
+// ApplicationInsightsComponentFeature an Application Insights component daily data volume cap status
+type ApplicationInsightsComponentFeature struct {
+	// FeatureName - The pricing feature name.
+	FeatureName *string `json:"FeatureName,omitempty"`
+	// MeterID - The meter id used for the feature.
+	MeterID *string `json:"MeterId,omitempty"`
+	// MeterRateFrequency - The meter meter rate for the feature's meter.
+	MeterRateFrequency *string `json:"MeterRateFrequency,omitempty"`
+	// ResouceID - Reserved, not used now.
+	ResouceID *string `json:"ResouceId,omitempty"`
+	// IsHidden - Reserved, not used now.
+	IsHidden *bool `json:"IsHidden,omitempty"`
+	// Capabilities - A list of Application Insigths component feature capability.
+	Capabilities *[]ApplicationInsightsComponentFeatureCapability `json:"Capabilities,omitempty"`
+	// Title - Desplay name of the feature.
+	Title *string `json:"Title,omitempty"`
+	// IsMainFeature - Whether can apply addon feature on to it.
+	IsMainFeature *bool `json:"IsMainFeature,omitempty"`
+	// SupportedAddonFeatures - The add on features on main feature.
+	SupportedAddonFeatures *string `json:"SupportedAddonFeatures,omitempty"`
+}
+
+// ApplicationInsightsComponentFeatureCapabilities an Application Insights component feature capabilities
+type ApplicationInsightsComponentFeatureCapabilities struct {
+	autorest.Response `json:"-"`
+	// SupportExportData - Whether allow to use continuous export feature.
+	SupportExportData *bool `json:"SupportExportData,omitempty"`
+	// BurstThrottlePolicy - Reserved, not used now.
+	BurstThrottlePolicy *string `json:"BurstThrottlePolicy,omitempty"`
+	// MetadataClass - Reserved, not used now.
+	MetadataClass *string `json:"MetadataClass,omitempty"`
+	// LiveStreamMetrics - Reserved, not used now.
+	LiveStreamMetrics *bool `json:"LiveStreamMetrics,omitempty"`
+	// ApplicationMap - Reserved, not used now.
+	ApplicationMap *bool `json:"ApplicationMap,omitempty"`
+	// WorkItemIntegration - Whether allow to use work item integration feature.
+	WorkItemIntegration *bool `json:"WorkItemIntegration,omitempty"`
+	// PowerBIIntegration - Reserved, not used now.
+	PowerBIIntegration *bool `json:"PowerBIIntegration,omitempty"`
+	// OpenSchema - Reserved, not used now.
+	OpenSchema *bool `json:"OpenSchema,omitempty"`
+	// ProactiveDetection - Reserved, not used now.
+	ProactiveDetection *bool `json:"ProactiveDetection,omitempty"`
+	// AnalyticsIntegration - Reserved, not used now.
+	AnalyticsIntegration *bool `json:"AnalyticsIntegration,omitempty"`
+	// MultipleStepWebTest - Whether allow to use multiple steps web test feature.
+	MultipleStepWebTest *bool `json:"MultipleStepWebTest,omitempty"`
+	// APIAccessLevel - Reserved, not used now.
+	APIAccessLevel *string `json:"ApiAccessLevel,omitempty"`
+	// TrackingType - The applciation insights component used tracking type.
+	TrackingType *bool `json:"TrackingType,omitempty"`
+	// DailyCap - Daily data volume cap in GB.
+	DailyCap *float64 `json:"DailyCap,omitempty"`
+	// DailyCapResetTime - Daily data volume cap UTC reset hour.
+	DailyCapResetTime *float64 `json:"DailyCapResetTime,omitempty"`
+	// ThrottleRate - Reserved, not used now.
+	ThrottleRate *float64 `json:"ThrottleRate,omitempty"`
+}
+
+// ApplicationInsightsComponentFeatureCapability an Application Insights component feature capability
+type ApplicationInsightsComponentFeatureCapability struct {
+	// Name - The name of the capability.
+	Name *string `json:"Name,omitempty"`
+	// Description - The description of the capability.
+	Description *string `json:"Description,omitempty"`
+	// Value - The vaule of the capability.
+	Value *string `json:"Value,omitempty"`
+	// Unit - The unit of the capability.
+	Unit *string `json:"Unit,omitempty"`
+	// MeterID - The meter used for the capability.
+	MeterID *string `json:"MeterId,omitempty"`
+	// MeterRateFrequency - The meter rate of the meter.
+	MeterRateFrequency *string `json:"MeterRateFrequency,omitempty"`
 }
 
 // ApplicationInsightsComponentListResult describes the list of Application Insights Resources.

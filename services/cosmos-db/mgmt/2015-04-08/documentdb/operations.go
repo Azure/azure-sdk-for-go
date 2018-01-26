@@ -30,13 +30,13 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all of the available Cosmos DB Resource Provider operations.

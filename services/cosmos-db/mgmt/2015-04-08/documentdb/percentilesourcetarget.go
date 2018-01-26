@@ -31,23 +31,25 @@ type PercentileSourceTargetClient struct {
 }
 
 // NewPercentileSourceTargetClient creates an instance of the PercentileSourceTargetClient client.
-func NewPercentileSourceTargetClient(subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) PercentileSourceTargetClient {
-	return NewPercentileSourceTargetClientWithBaseURI(DefaultBaseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)
+func NewPercentileSourceTargetClient(subscriptionID string) PercentileSourceTargetClient {
+	return NewPercentileSourceTargetClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPercentileSourceTargetClientWithBaseURI creates an instance of the PercentileSourceTargetClient client.
-func NewPercentileSourceTargetClientWithBaseURI(baseURI string, subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) PercentileSourceTargetClient {
-	return PercentileSourceTargetClient{NewWithBaseURI(baseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)}
+func NewPercentileSourceTargetClientWithBaseURI(baseURI string, subscriptionID string) PercentileSourceTargetClient {
+	return PercentileSourceTargetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given account, source and target region.
 // This url is only for PBS and Replication Latency data
 //
-// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. filter is an
-// OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
-// name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported
-// operator is eq.
-func (client PercentileSourceTargetClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, filter string) (result PercentileMetricListResult, err error) {
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. sourceRegion
+// is source region from which data is written. Cosmos DB region, with spaces between words and each word capitalized.
+// targetRegion is target region to which data is written. Cosmos DB region, with spaces between words and each word
+// capitalized. filter is an OData filter expression that describes a subset of metrics to return. The parameters that
+// can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+// timeGrain. The supported operator is eq.
+func (client PercentileSourceTargetClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, sourceRegion string, targetRegion string, filter string) (result PercentileMetricListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -59,7 +61,7 @@ func (client PercentileSourceTargetClient) ListMetrics(ctx context.Context, reso
 		return result, validation.NewErrorWithValidationError(err, "documentdb.PercentileSourceTargetClient", "ListMetrics")
 	}
 
-	req, err := client.ListMetricsPreparer(ctx, resourceGroupName, accountName, filter)
+	req, err := client.ListMetricsPreparer(ctx, resourceGroupName, accountName, sourceRegion, targetRegion, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.PercentileSourceTargetClient", "ListMetrics", nil, "Failure preparing request")
 		return
@@ -81,13 +83,13 @@ func (client PercentileSourceTargetClient) ListMetrics(ctx context.Context, reso
 }
 
 // ListMetricsPreparer prepares the ListMetrics request.
-func (client PercentileSourceTargetClient) ListMetricsPreparer(ctx context.Context, resourceGroupName string, accountName string, filter string) (*http.Request, error) {
+func (client PercentileSourceTargetClient) ListMetricsPreparer(ctx context.Context, resourceGroupName string, accountName string, sourceRegion string, targetRegion string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"sourceRegion":      autorest.Encode("path", client.SourceRegion),
+		"sourceRegion":      autorest.Encode("path", sourceRegion),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"targetRegion":      autorest.Encode("path", client.TargetRegion),
+		"targetRegion":      autorest.Encode("path", targetRegion),
 	}
 
 	const APIVersion = "2015-04-08"

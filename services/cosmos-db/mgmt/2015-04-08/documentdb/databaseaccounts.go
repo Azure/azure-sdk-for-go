@@ -31,13 +31,13 @@ type DatabaseAccountsClient struct {
 }
 
 // NewDatabaseAccountsClient creates an instance of the DatabaseAccountsClient client.
-func NewDatabaseAccountsClient(subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) DatabaseAccountsClient {
-	return NewDatabaseAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)
+func NewDatabaseAccountsClient(subscriptionID string) DatabaseAccountsClient {
+	return NewDatabaseAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDatabaseAccountsClientWithBaseURI creates an instance of the DatabaseAccountsClient client.
-func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) DatabaseAccountsClient {
-	return DatabaseAccountsClient{NewWithBaseURI(baseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)}
+func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountsClient {
+	return DatabaseAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CheckNameExists checks that the Azure Cosmos DB account name already exists. A valid account name may contain only

@@ -31,22 +31,23 @@ type PartitionKeyRangeIDClient struct {
 }
 
 // NewPartitionKeyRangeIDClient creates an instance of the PartitionKeyRangeIDClient client.
-func NewPartitionKeyRangeIDClient(subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) PartitionKeyRangeIDClient {
-	return NewPartitionKeyRangeIDClientWithBaseURI(DefaultBaseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)
+func NewPartitionKeyRangeIDClient(subscriptionID string) PartitionKeyRangeIDClient {
+	return NewPartitionKeyRangeIDClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPartitionKeyRangeIDClientWithBaseURI creates an instance of the PartitionKeyRangeIDClient client.
-func NewPartitionKeyRangeIDClientWithBaseURI(baseURI string, subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) PartitionKeyRangeIDClient {
-	return PartitionKeyRangeIDClient{NewWithBaseURI(baseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)}
+func NewPartitionKeyRangeIDClientWithBaseURI(baseURI string, subscriptionID string) PartitionKeyRangeIDClient {
+	return PartitionKeyRangeIDClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given partition key range id.
 //
 // resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. databaseRid is
-// cosmos DB database rid. collectionRid is cosmos DB collection rid. filter is an OData filter expression that
-// describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can
-// have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
-func (client PartitionKeyRangeIDClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, collectionRid string, filter string) (result PartitionMetricListResult, err error) {
+// cosmos DB database rid. collectionRid is cosmos DB collection rid. partitionKeyRangeID is partition Key Range Id for
+// which to get data. filter is an OData filter expression that describes a subset of metrics to return. The parameters
+// that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+// timeGrain. The supported operator is eq.
+func (client PartitionKeyRangeIDClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string) (result PartitionMetricListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -58,7 +59,7 @@ func (client PartitionKeyRangeIDClient) ListMetrics(ctx context.Context, resourc
 		return result, validation.NewErrorWithValidationError(err, "documentdb.PartitionKeyRangeIDClient", "ListMetrics")
 	}
 
-	req, err := client.ListMetricsPreparer(ctx, resourceGroupName, accountName, databaseRid, collectionRid, filter)
+	req, err := client.ListMetricsPreparer(ctx, resourceGroupName, accountName, databaseRid, collectionRid, partitionKeyRangeID, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.PartitionKeyRangeIDClient", "ListMetrics", nil, "Failure preparing request")
 		return
@@ -80,12 +81,12 @@ func (client PartitionKeyRangeIDClient) ListMetrics(ctx context.Context, resourc
 }
 
 // ListMetricsPreparer prepares the ListMetrics request.
-func (client PartitionKeyRangeIDClient) ListMetricsPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, collectionRid string, filter string) (*http.Request, error) {
+func (client PartitionKeyRangeIDClient) ListMetricsPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":         autorest.Encode("path", accountName),
 		"collectionRid":       autorest.Encode("path", collectionRid),
 		"databaseRid":         autorest.Encode("path", databaseRid),
-		"partitionKeyRangeId": autorest.Encode("path", client.PartitionKeyRangeID),
+		"partitionKeyRangeId": autorest.Encode("path", partitionKeyRangeID),
 		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}

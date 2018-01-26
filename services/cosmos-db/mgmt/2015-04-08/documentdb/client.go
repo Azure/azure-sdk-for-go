@@ -32,26 +32,20 @@ const (
 // BaseClient is the base client for Documentdb.
 type BaseClient struct {
 	autorest.Client
-	BaseURI             string
-	SubscriptionID      string
-	SourceRegion        string
-	TargetRegion        string
-	PartitionKeyRangeID string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:              autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:             baseURI,
-		SubscriptionID:      subscriptionID,
-		SourceRegion:        sourceRegion,
-		TargetRegion:        targetRegion,
-		PartitionKeyRangeID: partitionKeyRangeID,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

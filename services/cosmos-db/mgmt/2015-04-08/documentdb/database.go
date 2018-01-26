@@ -31,13 +31,13 @@ type DatabaseClient struct {
 }
 
 // NewDatabaseClient creates an instance of the DatabaseClient client.
-func NewDatabaseClient(subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) DatabaseClient {
-	return NewDatabaseClientWithBaseURI(DefaultBaseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)
+func NewDatabaseClient(subscriptionID string) DatabaseClient {
+	return NewDatabaseClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDatabaseClientWithBaseURI creates an instance of the DatabaseClient client.
-func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) DatabaseClient {
-	return DatabaseClient{NewWithBaseURI(baseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)}
+func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string) DatabaseClient {
+	return DatabaseClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetricDefinitions retrieves metric defintions for the given database.

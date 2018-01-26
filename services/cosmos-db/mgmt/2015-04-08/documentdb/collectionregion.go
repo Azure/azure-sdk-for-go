@@ -31,13 +31,13 @@ type CollectionRegionClient struct {
 }
 
 // NewCollectionRegionClient creates an instance of the CollectionRegionClient client.
-func NewCollectionRegionClient(subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) CollectionRegionClient {
-	return NewCollectionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)
+func NewCollectionRegionClient(subscriptionID string) CollectionRegionClient {
+	return NewCollectionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewCollectionRegionClientWithBaseURI creates an instance of the CollectionRegionClient client.
-func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) CollectionRegionClient {
-	return CollectionRegionClient{NewWithBaseURI(baseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)}
+func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionRegionClient {
+	return CollectionRegionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given database account, collection and

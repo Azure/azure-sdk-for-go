@@ -47,11 +47,11 @@ func NewTrustedIDProvidersClientWithBaseURI(baseURI string, subscriptionID strin
 // the name of the Data Lake Store account to add or replace the trusted identity provider. trustedIDProviderName is
 // the name of the trusted identity provider. This is used for differentiation of providers in the account. parameters
 // is parameters supplied to create or replace the trusted identity provider.
-func (client TrustedIDProvidersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, parameters TrustedIDProvider) (result TrustedIDProvider, err error) {
+func (client TrustedIDProvidersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, parameters CreateOrUpdateTrustedIDProviderParameters) (result TrustedIDProvider, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.TrustedIDProviderProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.TrustedIDProviderProperties.IDProvider", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.CreateOrUpdateTrustedIDProviderProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.CreateOrUpdateTrustedIDProviderProperties.IDProvider", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "account.TrustedIDProvidersClient", "CreateOrUpdate")
 	}
 
@@ -77,7 +77,7 @@ func (client TrustedIDProvidersClient) CreateOrUpdate(ctx context.Context, resou
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client TrustedIDProvidersClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, parameters TrustedIDProvider) (*http.Request, error) {
+func (client TrustedIDProvidersClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, trustedIDProviderName string, parameters CreateOrUpdateTrustedIDProviderParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":           autorest.Encode("path", accountName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),

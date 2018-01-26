@@ -251,22 +251,30 @@ func (future ContainerServiceCreateOrUpdateFuture) Result(client Client) (cs Con
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServiceCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return cs, autorest.NewError("containerservice.ContainerServiceCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return cs, azure.NewAsyncOpIncompleteError("containerservice.ContainerServiceCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		cs, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerservice.ContainerServiceCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServiceCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	cs, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServiceCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -282,22 +290,30 @@ func (future ContainerServiceDeleteFuture) Result(client Client) (ar autorest.Re
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServiceDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("containerservice.ContainerServiceDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("containerservice.ContainerServiceDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerservice.ContainerServiceDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServiceDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServiceDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 

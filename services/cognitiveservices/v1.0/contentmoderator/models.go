@@ -173,7 +173,7 @@ type CreateVideoReviewsBodyItem struct {
 	// ContentID - Content Identifier.
 	ContentID *string `json:"ContentId,omitempty"`
 	// Status - Status of the video(Complete,Unpublished,Pending). Possible values include: 'Complete', 'Unpublished', 'Pending'
-	Status Status `json:"Status,omitempty"`
+	Status StatusEnum `json:"Status,omitempty"`
 	// Timescale - Timescale of the video.
 	Timescale *int32 `json:"Timescale,omitempty"`
 	// CallbackEndpoint - Optional CallbackEndpoint.
@@ -608,7 +608,7 @@ type Screen struct {
 // SetObject ...
 type SetObject struct {
 	autorest.Response `json:"-"`
-	Value             *map[string]interface{} `json:"value,omitempty"`
+	Value             interface{} `json:"value,omitempty"`
 }
 
 // Status status properties.

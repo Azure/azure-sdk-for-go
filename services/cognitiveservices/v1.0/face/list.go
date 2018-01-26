@@ -41,11 +41,11 @@ func NewListClient(azureRegion AzureRegions) ListClient {
 // returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
 //
 // faceListID is id referencing a particular face list. imageParameter is an image stream. imageParameter will be
-// closed upon successful return. Callers should ensure closure when receiving an error.userData is user-specified data
-// about the face for any purpose. The maximum length is 1KB. targetFace is a face rectangle to specify the target face
-// to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If
-// there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means
-// there is only one face detected in the entire image.
+// closed upon successful return. Callers should ensure closure when receiving an error.userData is user-specified
+// data about the face for any purpose. The maximum length is 1KB. targetFace is a face rectangle to specify the
+// target face to be added to a person in the format of "targetFace=left,top,width,height". E.g.
+// "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which
+// face to add. No targetFace means there is only one face detected in the entire image.
 func (client ListClient) AddFaceFromStream(ctx context.Context, faceListID string, imageParameter io.ReadCloser, userData string, targetFace []int32) (result PersistedFace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,
@@ -127,12 +127,12 @@ func (client ListClient) AddFaceFromStreamResponder(resp *http.Response) (result
 // AddFaceFromURL add a face to a face list. The input face is specified as an image with a targetFace rectangle. It
 // returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
 //
-// faceListID is id referencing a particular face list. imageURL is a JSON document with a URL pointing to the image
-// that is to be analyzed. userData is user-specified data about the face for any purpose. The maximum length is 1KB.
-// targetFace is a face rectangle to specify the target face to be added to a person in the format of
-// "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image,
-// targetFace is required to specify which face to add. No targetFace means there is only one face detected in the
-// entire image.
+// faceListID is id referencing a particular face list. imageURL is a JSON document with a URL pointing to the
+// image that is to be analyzed. userData is user-specified data about the face for any purpose. The maximum length
+// is 1KB. targetFace is a face rectangle to specify the target face to be added to a person in the format of
+// "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
+// image, targetFace is required to specify which face to add. No targetFace means there is only one face detected
+// in the entire image.
 func (client ListClient) AddFaceFromURL(ctx context.Context, faceListID string, imageURL ImageURL, userData string, targetFace []int32) (result PersistedFace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,
@@ -361,8 +361,8 @@ func (client ListClient) DeleteResponder(resp *http.Response) (result autorest.R
 // DeleteFace delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image
 // related to the face will also be deleted.
 //
-// faceListID is id referencing a particular face list. persistedFaceID is id referencing a particular persistedFaceId
-// of an existing face.
+// faceListID is id referencing a particular face list. persistedFaceID is id referencing a particular
+// persistedFaceId of an existing face.
 func (client ListClient) DeleteFace(ctx context.Context, faceListID string, persistedFaceID uuid.UUID) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,
@@ -432,7 +432,7 @@ func (client ListClient) DeleteFaceResponder(resp *http.Response) (result autore
 // Get retrieve a face list's information.
 //
 // faceListID is id referencing a particular face list.
-func (client ListClient) Get(ctx context.Context, faceListID string) (result ListType, err error) {
+func (client ListClient) Get(ctx context.Context, faceListID string) (result List, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,
 			Constraints: []validation.Constraint{{Target: "faceListID", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -487,7 +487,7 @@ func (client ListClient) GetSender(req *http.Request) (*http.Response, error) {
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ListClient) GetResponder(resp *http.Response) (result ListType, err error) {
+func (client ListClient) GetResponder(resp *http.Response) (result List, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -499,7 +499,7 @@ func (client ListClient) GetResponder(resp *http.Response) (result ListType, err
 }
 
 // List retrieve information about all existing face lists. Only faceListId, name and userData will be returned.
-func (client ListClient) List(ctx context.Context) (result ListListType, err error) {
+func (client ListClient) List(ctx context.Context) (result ListList, err error) {
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.ListClient", "List", nil, "Failure preparing request")
@@ -543,7 +543,7 @@ func (client ListClient) ListSender(req *http.Request) (*http.Response, error) {
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ListClient) ListResponder(resp *http.Response) (result ListListType, err error) {
+func (client ListClient) ListResponder(resp *http.Response) (result ListList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

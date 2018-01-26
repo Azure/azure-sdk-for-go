@@ -77,8 +77,8 @@ func NewReviewsClient(baseURL AzureRegionBaseURL) ReviewsClient {
 //
 // </p>.
 //
-// teamName is your team name. reviewID is id of the review. timescale is timescale of the video you are adding frames
-// to.
+// teamName is your team name. reviewID is id of the review. timescale is timescale of the video you are adding
+// frames to.
 func (client ReviewsClient) AddVideoFrame(ctx context.Context, teamName string, reviewID string, timescale *int32) (result autorest.Response, err error) {
 	req, err := client.AddVideoFramePreparer(ctx, teamName, reviewID, timescale)
 	if err != nil {
@@ -149,9 +149,9 @@ func (client ReviewsClient) AddVideoFrameResponder(resp *http.Response) (result 
 // Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is
 // Ticks/Second.
 //
-// contentType is the content type. teamName is your team name. reviewID is id of the review. frameImageZip is zip file
-// containing frame images. frameImageZip will be closed upon successful return. Callers should ensure closure when
-// receiving an error.frameMetadata is metadata of the frame. timescale is timescale of the video .
+// contentType is the content type. teamName is your team name. reviewID is id of the review. frameImageZip is zip
+// file containing frame images. frameImageZip will be closed upon successful return. Callers should ensure closure
+// when receiving an error.frameMetadata is metadata of the frame. timescale is timescale of the video .
 func (client ReviewsClient) AddVideoFrameStream(ctx context.Context, contentType string, teamName string, reviewID string, frameImageZip io.ReadCloser, frameMetadata string, timescale *int32) (result autorest.Response, err error) {
 	req, err := client.AddVideoFrameStreamPreparer(ctx, contentType, teamName, reviewID, frameImageZip, frameMetadata, timescale)
 	if err != nil {
@@ -229,8 +229,8 @@ func (client ReviewsClient) AddVideoFrameStreamResponder(resp *http.Response) (r
 // Moderator video media processor on the Azure Media Services platform.Timescale in the Video Moderation output is
 // Ticks/Second.
 //
-// contentType is the content type. teamName is your team name. reviewID is id of the review. videoFrameBody is body
-// for add video frames API timescale is timescale of the video.
+// contentType is the content type. teamName is your team name. reviewID is id of the review. videoFrameBody is
+// body for add video frames API timescale is timescale of the video.
 func (client ReviewsClient) AddVideoFrameURL(ctx context.Context, contentType string, teamName string, reviewID string, videoFrameBody []VideoFrameBodyItem, timescale *int32) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: videoFrameBody,
@@ -308,11 +308,10 @@ func (client ReviewsClient) AddVideoFrameURLResponder(resp *http.Response) (resu
 // AddVideoTranscript this API adds a transcript file (text version of all the words spoken in a video) to a video
 // review. The file should be a valid WebVTT format.
 //
-// teamName is your team name. reviewID is id of the review. contentType is the content type. vttfile is transcript
-// file of the video. vttfile will be closed upon successful return. Callers should ensure closure when receiving an
-// error.
-func (client ReviewsClient) AddVideoTranscript(ctx context.Context, teamName string, reviewID string, contentType string, vttfile io.ReadCloser) (result autorest.Response, err error) {
-	req, err := client.AddVideoTranscriptPreparer(ctx, teamName, reviewID, contentType, vttfile)
+// teamName is your team name. reviewID is id of the review. vttfile is transcript file of the video. vttfile will
+// be closed upon successful return. Callers should ensure closure when receiving an error.
+func (client ReviewsClient) AddVideoTranscript(ctx context.Context, teamName string, reviewID string, vttfile io.ReadCloser) (result autorest.Response, err error) {
+	req, err := client.AddVideoTranscriptPreparer(ctx, teamName, reviewID, vttfile)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoTranscript", nil, "Failure preparing request")
 		return
@@ -334,7 +333,7 @@ func (client ReviewsClient) AddVideoTranscript(ctx context.Context, teamName str
 }
 
 // AddVideoTranscriptPreparer prepares the AddVideoTranscript request.
-func (client ReviewsClient) AddVideoTranscriptPreparer(ctx context.Context, teamName string, reviewID string, contentType string, vttfile io.ReadCloser) (*http.Request, error) {
+func (client ReviewsClient) AddVideoTranscriptPreparer(ctx context.Context, teamName string, reviewID string, vttfile io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"baseUrl": client.BaseURL,
 	}
@@ -349,7 +348,7 @@ func (client ReviewsClient) AddVideoTranscriptPreparer(ctx context.Context, team
 		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
 		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/transcript", pathParameters),
 		autorest.WithFile(vttfile),
-		autorest.WithHeader("Content-Type", autorest.String(contentType)))
+		autorest.WithHeader("Content-Type", "text/plain"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -376,8 +375,8 @@ func (client ReviewsClient) AddVideoTranscriptResponder(resp *http.Response) (re
 // screen text result file is a result of Screen Text API . In order to generate transcript screen text result file , a
 // transcript file has to be screened for profanity using Screen Text API.
 //
-// contentType is the content type. teamName is your team name. reviewID is id of the review. transcriptModerationBody
-// is body for add video transcript moderation result API
+// contentType is the content type. teamName is your team name. reviewID is id of the review.
+// transcriptModerationBody is body for add video transcript moderation result API
 func (client ReviewsClient) AddVideoTranscriptModerationResult(ctx context.Context, contentType string, teamName string, reviewID string, transcriptModerationBody []TranscriptModerationBodyItem) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: transcriptModerationBody,
@@ -705,8 +704,8 @@ func (client ReviewsClient) CreateReviewsResponder(resp *http.Response) (result 
 //
 // </p>.
 //
-// contentType is the content type. teamName is your team name. createVideoReviewsBody is body for create reviews API
-// subTeam is subTeam of your team, you want to assign the created review to.
+// contentType is the content type. teamName is your team name. createVideoReviewsBody is body for create reviews
+// API subTeam is subTeam of your team, you want to assign the created review to.
 func (client ReviewsClient) CreateVideoReviews(ctx context.Context, contentType string, teamName string, createVideoReviewsBody []CreateVideoReviewsBodyItem, subTeam string) (result ListString, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: createVideoReviewsBody,
@@ -933,8 +932,9 @@ func (client ReviewsClient) GetReviewResponder(resp *http.Response) (result Revi
 //
 // </p>.
 //
-// teamName is your team name. reviewID is id of the review. startSeed is time stamp of the frame from where you want
-// to start fetching the frames. noOfRecords is number of frames to fetch. filter is get frames filtered by tags.
+// teamName is your team name. reviewID is id of the review. startSeed is time stamp of the frame from where you
+// want to start fetching the frames. noOfRecords is number of frames to fetch. filter is get frames filtered by
+// tags.
 func (client ReviewsClient) GetVideoFrames(ctx context.Context, teamName string, reviewID string, startSeed *int32, noOfRecords *int32, filter string) (result Frames, err error) {
 	req, err := client.GetVideoFramesPreparer(ctx, teamName, reviewID, startSeed, noOfRecords, filter)
 	if err != nil {

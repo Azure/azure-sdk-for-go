@@ -40,9 +40,9 @@ func NewClient(azureRegion AzureRegions) Client {
 // and attributes.
 //
 // imageParameter is an image stream. imageParameter will be closed upon successful return. Callers should ensure
-// closure when receiving an error.returnFaceID is a value indicating whether the operation should return faceIds of
-// detected faces. returnFaceLandmarks is a value indicating whether the operation should return landmarks of the
-// detected faces. returnFaceAttributes is analyze and return the one or more specified face attributes in the
+// closure when receiving an error.returnFaceID is a value indicating whether the operation should return faceIds
+// of detected faces. returnFaceLandmarks is a value indicating whether the operation should return landmarks of
+// the detected faces. returnFaceAttributes is analyze and return the one or more specified face attributes in the
 // comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender,
 // headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional
 // computational and time cost.
@@ -77,9 +77,13 @@ func (client Client) DetectWithStreamPreparer(ctx context.Context, imageParamete
 	queryParameters := map[string]interface{}{}
 	if returnFaceID != nil {
 		queryParameters["returnFaceId"] = autorest.Encode("query", *returnFaceID)
+	} else {
+		queryParameters["returnFaceId"] = autorest.Encode("query", true)
 	}
 	if returnFaceLandmarks != nil {
 		queryParameters["returnFaceLandmarks"] = autorest.Encode("query", *returnFaceLandmarks)
+	} else {
+		queryParameters["returnFaceLandmarks"] = autorest.Encode("query", false)
 	}
 	if returnFaceAttributes != nil && len(returnFaceAttributes) > 0 {
 		queryParameters["returnFaceAttributes"] = autorest.Encode("query", returnFaceAttributes, ",")
@@ -118,11 +122,11 @@ func (client Client) DetectWithStreamResponder(resp *http.Response) (result List
 // attributes.
 //
 // imageURL is a JSON document with a URL pointing to the image that is to be analyzed. returnFaceID is a value
-// indicating whether the operation should return faceIds of detected faces. returnFaceLandmarks is a value indicating
-// whether the operation should return landmarks of the detected faces. returnFaceAttributes is analyze and return the
-// one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender".
-// Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face
-// attribute analysis has additional computational and time cost.
+// indicating whether the operation should return faceIds of detected faces. returnFaceLandmarks is a value
+// indicating whether the operation should return landmarks of the detected faces. returnFaceAttributes is analyze
+// and return the one or more specified face attributes in the comma-separated string like
+// "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair,
+// glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
 func (client Client) DetectWithURL(ctx context.Context, imageURL ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType) (result ListDetectedFace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
@@ -160,9 +164,13 @@ func (client Client) DetectWithURLPreparer(ctx context.Context, imageURL ImageUR
 	queryParameters := map[string]interface{}{}
 	if returnFaceID != nil {
 		queryParameters["returnFaceId"] = autorest.Encode("query", *returnFaceID)
+	} else {
+		queryParameters["returnFaceId"] = autorest.Encode("query", true)
 	}
 	if returnFaceLandmarks != nil {
 		queryParameters["returnFaceLandmarks"] = autorest.Encode("query", *returnFaceLandmarks)
+	} else {
+		queryParameters["returnFaceLandmarks"] = autorest.Encode("query", false)
 	}
 	if returnFaceAttributes != nil && len(returnFaceAttributes) > 0 {
 		queryParameters["returnFaceAttributes"] = autorest.Encode("query", returnFaceAttributes, ",")

@@ -42,7 +42,7 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 
 // CheckNameAvailability checks whether the specified account name is available or taken.
 //
-// location is the Resource location without whitespace. parameters is parameters supplied to check the Data Lake
+// location is the resource location without whitespace. parameters is parameters supplied to check the Data Lake
 // Analytics account name availability.
 func (client Client) CheckNameAvailability(ctx context.Context, location string, parameters CheckNameAvailabilityParameters) (result NameAvailabilityInformation, err error) {
 	if err := validation.Validate([]validation.Validation{

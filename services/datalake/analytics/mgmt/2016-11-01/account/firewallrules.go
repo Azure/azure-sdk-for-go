@@ -46,12 +46,12 @@ func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) Fi
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName
 // is the name of the Data Lake Analytics account to add or replace the firewall rule. firewallRuleName is the name of
 // the firewall rule to create or update. parameters is parameters supplied to create or update the firewall rule.
-func (client FirewallRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, parameters FirewallRule) (result FirewallRule, err error) {
+func (client FirewallRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, parameters CreateOrUpdateFirewallRuleParameters) (result FirewallRule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.FirewallRuleProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.FirewallRuleProperties.StartIPAddress", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.FirewallRuleProperties.EndIPAddress", Name: validation.Null, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "parameters.CreateOrUpdateFirewallRuleProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.CreateOrUpdateFirewallRuleProperties.StartIPAddress", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.CreateOrUpdateFirewallRuleProperties.EndIPAddress", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "account.FirewallRulesClient", "CreateOrUpdate")
 	}
@@ -78,7 +78,7 @@ func (client FirewallRulesClient) CreateOrUpdate(ctx context.Context, resourceGr
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client FirewallRulesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, parameters FirewallRule) (*http.Request, error) {
+func (client FirewallRulesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string, parameters CreateOrUpdateFirewallRuleParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"firewallRuleName":  autorest.Encode("path", firewallRuleName),

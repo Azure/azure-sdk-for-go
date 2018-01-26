@@ -49,8 +49,8 @@ func NewStorageAccountsClientWithBaseURI(baseURI string, subscriptionID string) 
 func (client StorageAccountsClient) Add(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.StorageAccountProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.StorageAccountProperties.AccessKey", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.AddStorageAccountProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.AddStorageAccountProperties.AccessKey", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewErrorWithValidationError(err, "account.StorageAccountsClient", "Add")
 	}
 

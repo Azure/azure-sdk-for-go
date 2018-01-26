@@ -114,6 +114,12 @@ const (
 	Seconds UnitType = "Seconds"
 )
 
+// Capability cosmos DB capability object
+type Capability struct {
+	// Name - Name of the Cosmos DB capability
+	Name *string `json:"name,omitempty"`
+}
+
 // ConsistencyPolicy the consistency policy for the Cosmos DB database account.
 type ConsistencyPolicy struct {
 	// DefaultConsistencyLevel - The default consistency level and configuration settings of the Cosmos DB account. Possible values include: 'Eventual', 'Session', 'BoundedStaleness', 'Strong', 'ConsistentPrefix'
@@ -340,6 +346,8 @@ type DatabaseAccountCreateUpdateProperties struct {
 	IPRangeFilter *string `json:"ipRangeFilter,omitempty"`
 	// EnableAutomaticFailover - Enables automatic failover of the write region in the rare event that the region is unavailable due to an outage. Automatic failover will result in a new write region for the account and is chosen based on the failover priorities configured for the account.
 	EnableAutomaticFailover *bool `json:"enableAutomaticFailover,omitempty"`
+	// Capabilities - List of Cosmos DB capabilities for the account
+	Capabilities *[]Capability `json:"capabilities,omitempty"`
 }
 
 // DatabaseAccountListConnectionStringsResult the connection strings for the given database account.
@@ -413,6 +421,8 @@ type DatabaseAccountListReadOnlyKeysResult struct {
 // DatabaseAccountPatchParameters parameters for patching Azure Cosmos DB database account properties.
 type DatabaseAccountPatchParameters struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
+	// Capabilities - List of Cosmos DB capabilities for the account
+	Capabilities *[]Capability `json:"capabilities,omitempty"`
 }
 
 // DatabaseAccountProperties properties for the database account.
@@ -428,6 +438,8 @@ type DatabaseAccountProperties struct {
 	EnableAutomaticFailover *bool `json:"enableAutomaticFailover,omitempty"`
 	// ConsistencyPolicy - The consistency policy for the Cosmos DB database account.
 	ConsistencyPolicy *ConsistencyPolicy `json:"consistencyPolicy,omitempty"`
+	// Capabilities - List of Cosmos DB capabilities for the account
+	Capabilities *[]Capability `json:"capabilities,omitempty"`
 	// WriteLocations - An array that contains the write location for the Cosmos DB account.
 	WriteLocations *[]Location `json:"writeLocations,omitempty"`
 	// ReadLocations - An array that contains of the read locations enabled for the Cosmos DB account.
@@ -455,22 +467,30 @@ func (future DatabaseAccountsCreateOrUpdateFuture) Result(client DatabaseAccount
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return da, autorest.NewError("documentdb.DatabaseAccountsCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return da, azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		da, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	da, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -486,22 +506,30 @@ func (future DatabaseAccountsDeleteFuture) Result(client DatabaseAccountsClient)
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("documentdb.DatabaseAccountsDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -518,22 +546,30 @@ func (future DatabaseAccountsFailoverPriorityChangeFuture) Result(client Databas
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsFailoverPriorityChangeFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("documentdb.DatabaseAccountsFailoverPriorityChangeFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsFailoverPriorityChangeFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.FailoverPriorityChangeResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsFailoverPriorityChangeFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsFailoverPriorityChangeFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.FailoverPriorityChangeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsFailoverPriorityChangeFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -556,22 +592,30 @@ func (future DatabaseAccountsPatchFuture) Result(client DatabaseAccountsClient) 
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsPatchFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return da, autorest.NewError("documentdb.DatabaseAccountsPatchFuture", "Result", "asynchronous operation has not completed")
+		return da, azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsPatchFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		da, err = client.PatchResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsPatchFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsPatchFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	da, err = client.PatchResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsPatchFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -588,22 +632,30 @@ func (future DatabaseAccountsRegenerateKeyFuture) Result(client DatabaseAccounts
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsRegenerateKeyFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("documentdb.DatabaseAccountsRegenerateKeyFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsRegenerateKeyFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.RegenerateKeyResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsRegenerateKeyFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsRegenerateKeyFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.RegenerateKeyResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsRegenerateKeyFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -833,6 +885,111 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// PartitionMetric the metric values for a single partition.
+type PartitionMetric struct {
+	// StartTime - The start time for the metric (ISO-8601 format).
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - The end time for the metric (ISO-8601 format).
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// TimeGrain - The time grain to be used to summarize the metric values.
+	TimeGrain *string `json:"timeGrain,omitempty"`
+	// Unit - The unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'
+	Unit UnitType `json:"unit,omitempty"`
+	// Name - The name information for the metric.
+	Name *MetricName `json:"name,omitempty"`
+	// MetricValues - The metric values for the specified time window and timestep.
+	MetricValues *[]MetricValue `json:"metricValues,omitempty"`
+	// PartitionID - The parition id (GUID identifier) of the metric values.
+	PartitionID *string `json:"partitionId,omitempty"`
+	// PartitionKeyRangeID - The partition key range id (integer identifier) of the metric values.
+	PartitionKeyRangeID *string `json:"partitionKeyRangeId,omitempty"`
+}
+
+// PartitionMetricListResult the response to a list partition metrics request.
+type PartitionMetricListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of partition-level metrics for the account.
+	Value *[]PartitionMetric `json:"value,omitempty"`
+}
+
+// PartitionUsage the partition level usage data for a usage request.
+type PartitionUsage struct {
+	// Unit - The unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'
+	Unit UnitType `json:"unit,omitempty"`
+	// Name - The name information for the metric.
+	Name *MetricName `json:"name,omitempty"`
+	// QuotaPeriod - The quota period used to summarize the usage values.
+	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
+	// Limit - Maximum value for this metric
+	Limit *int32 `json:"limit,omitempty"`
+	// CurrentValue - Current value for this metric
+	CurrentValue *int32 `json:"currentValue,omitempty"`
+	// PartitionID - The parition id (GUID identifier) of the usages.
+	PartitionID *string `json:"partitionId,omitempty"`
+	// PartitionKeyRangeID - The partition key range id (integer identifier) of the usages.
+	PartitionKeyRangeID *string `json:"partitionKeyRangeId,omitempty"`
+}
+
+// PartitionUsagesResult the response to a list partition level usage request.
+type PartitionUsagesResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of partition-level usages for the database. A usage is a point in time metric
+	Value *[]PartitionUsage `json:"value,omitempty"`
+}
+
+// PercentileMetric percentile Metric data
+type PercentileMetric struct {
+	// StartTime - The start time for the metric (ISO-8601 format).
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - The end time for the metric (ISO-8601 format).
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// TimeGrain - The time grain to be used to summarize the metric values.
+	TimeGrain *string `json:"timeGrain,omitempty"`
+	// Unit - The unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'
+	Unit UnitType `json:"unit,omitempty"`
+	// Name - The name information for the metric.
+	Name *MetricName `json:"name,omitempty"`
+	// MetricValues - The percentile metric values for the specified time window and timestep.
+	MetricValues *[]PercentileMetricValue `json:"metricValues,omitempty"`
+}
+
+// PercentileMetricListResult the response to a list percentile metrics request.
+type PercentileMetricListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of percentile metrics for the account.
+	Value *[]PercentileMetric `json:"value,omitempty"`
+}
+
+// PercentileMetricValue represents percentile metrics values.
+type PercentileMetricValue struct {
+	// Count - The number of values for the metric.
+	Count *float64 `json:"_count,omitempty"`
+	// Average - The average value of the metric.
+	Average *float64 `json:"average,omitempty"`
+	// Maximum - The max value of the metric.
+	Maximum *float64 `json:"maximum,omitempty"`
+	// Minimum - The min value of the metric.
+	Minimum *float64 `json:"minimum,omitempty"`
+	// Timestamp - The metric timestamp (ISO-8601 format).
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Total - The total value of the metric.
+	Total *float64 `json:"total,omitempty"`
+	// P10 - The 10th percentile value for the metric.
+	P10 *float64 `json:"P10,omitempty"`
+	// P25 - The 25th percentile value for the metric.
+	P25 *float64 `json:"P25,omitempty"`
+	// P50 - The 50th percentile value for the metric.
+	P50 *float64 `json:"P50,omitempty"`
+	// P75 - The 75th percentile value for the metric.
+	P75 *float64 `json:"P75,omitempty"`
+	// P90 - The 90th percentile value for the metric.
+	P90 *float64 `json:"P90,omitempty"`
+	// P95 - The 95th percentile value for the metric.
+	P95 *float64 `json:"P95,omitempty"`
+	// P99 - The 99th percentile value for the metric.
+	P99 *float64 `json:"P99,omitempty"`
 }
 
 // Resource a database account resource.

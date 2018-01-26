@@ -25,30 +25,29 @@ import (
 	"net/http"
 )
 
-// CollectionRegionClient is the azure Cosmos DB Database Service Resource Provider REST API
-type CollectionRegionClient struct {
+// PartitionKeyRangeIDRegionClient is the azure Cosmos DB Database Service Resource Provider REST API
+type PartitionKeyRangeIDRegionClient struct {
 	BaseClient
 }
 
-// NewCollectionRegionClient creates an instance of the CollectionRegionClient client.
-func NewCollectionRegionClient(subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) CollectionRegionClient {
-	return NewCollectionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)
+// NewPartitionKeyRangeIDRegionClient creates an instance of the PartitionKeyRangeIDRegionClient client.
+func NewPartitionKeyRangeIDRegionClient(subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) PartitionKeyRangeIDRegionClient {
+	return NewPartitionKeyRangeIDRegionClientWithBaseURI(DefaultBaseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)
 }
 
-// NewCollectionRegionClientWithBaseURI creates an instance of the CollectionRegionClient client.
-func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) CollectionRegionClient {
-	return CollectionRegionClient{NewWithBaseURI(baseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)}
+// NewPartitionKeyRangeIDRegionClientWithBaseURI creates an instance of the PartitionKeyRangeIDRegionClient client.
+func NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI string, subscriptionID string, sourceRegion string, targetRegion string, partitionKeyRangeID string) PartitionKeyRangeIDRegionClient {
+	return PartitionKeyRangeIDRegionClient{NewWithBaseURI(baseURI, subscriptionID, sourceRegion, targetRegion, partitionKeyRangeID)}
 }
 
-// ListMetrics retrieves the metrics determined by the given filter for the given database account, collection and
-// region.
+// ListMetrics retrieves the metrics determined by the given filter for the given partition key range id and region.
 //
 // resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. region is
 // cosmos DB region, with spaces between words and each word capitalized. databaseRid is cosmos DB database rid.
 // collectionRid is cosmos DB collection rid. filter is an OData filter expression that describes a subset of metrics
 // to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple
 // names), startTime, endTime, and timeGrain. The supported operator is eq.
-func (client CollectionRegionClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string) (result MetricListResult, err error) {
+func (client PartitionKeyRangeIDRegionClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string) (result PartitionMetricListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -57,39 +56,40 @@ func (client CollectionRegionClient) ListMetrics(ctx context.Context, resourceGr
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "documentdb.CollectionRegionClient", "ListMetrics")
+		return result, validation.NewErrorWithValidationError(err, "documentdb.PartitionKeyRangeIDRegionClient", "ListMetrics")
 	}
 
 	req, err := client.ListMetricsPreparer(ctx, resourceGroupName, accountName, region, databaseRid, collectionRid, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CollectionRegionClient", "ListMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.PartitionKeyRangeIDRegionClient", "ListMetrics", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.CollectionRegionClient", "ListMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.PartitionKeyRangeIDRegionClient", "ListMetrics", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CollectionRegionClient", "ListMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "documentdb.PartitionKeyRangeIDRegionClient", "ListMetrics", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListMetricsPreparer prepares the ListMetrics request.
-func (client CollectionRegionClient) ListMetricsPreparer(ctx context.Context, resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string) (*http.Request, error) {
+func (client PartitionKeyRangeIDRegionClient) ListMetricsPreparer(ctx context.Context, resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"collectionRid":     autorest.Encode("path", collectionRid),
-		"databaseRid":       autorest.Encode("path", databaseRid),
-		"region":            autorest.Encode("path", region),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"accountName":         autorest.Encode("path", accountName),
+		"collectionRid":       autorest.Encode("path", collectionRid),
+		"databaseRid":         autorest.Encode("path", databaseRid),
+		"partitionKeyRangeId": autorest.Encode("path", client.PartitionKeyRangeID),
+		"region":              autorest.Encode("path", region),
+		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
+		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2015-04-08"
@@ -101,21 +101,21 @@ func (client CollectionRegionClient) ListMetricsPreparer(ctx context.Context, re
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/region/{region}/databases/{databaseRid}/collections/{collectionRid}/metrics", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/region/{region}/databases/{databaseRid}/collections/{collectionRid}/partitionKeyRangeId/{partitionKeyRangeId}/metrics", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListMetricsSender sends the ListMetrics request. The method will close the
 // http.Response Body if it receives an error.
-func (client CollectionRegionClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
+func (client PartitionKeyRangeIDRegionClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricsResponder handles the response to the ListMetrics request. The method always
 // closes the http.Response Body.
-func (client CollectionRegionClient) ListMetricsResponder(resp *http.Response) (result MetricListResult, err error) {
+func (client PartitionKeyRangeIDRegionClient) ListMetricsResponder(resp *http.Response) (result PartitionMetricListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

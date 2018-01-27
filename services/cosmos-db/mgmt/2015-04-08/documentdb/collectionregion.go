@@ -31,20 +31,24 @@ type CollectionRegionClient struct {
 }
 
 // NewCollectionRegionClient creates an instance of the CollectionRegionClient client.
-func NewCollectionRegionClient(subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) CollectionRegionClient {
-	return NewCollectionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID, filter, filter1, databaseRid, collectionRid, region)
+func NewCollectionRegionClient(subscriptionID string) CollectionRegionClient {
+	return NewCollectionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewCollectionRegionClientWithBaseURI creates an instance of the CollectionRegionClient client.
-func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string, filter string, filter1 string, databaseRid string, collectionRid string, region string) CollectionRegionClient {
-	return CollectionRegionClient{NewWithBaseURI(baseURI, subscriptionID, filter, filter1, databaseRid, collectionRid, region)}
+func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionRegionClient {
+	return CollectionRegionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given database account, collection and
 // region.
 //
-// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
-func (client CollectionRegionClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string) (result MetricListResult, err error) {
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. region is
+// cosmos DB region, with spaces between words and each word capitalized. databaseRid is cosmos DB database rid.
+// collectionRid is cosmos DB collection rid. filter is an OData filter expression that describes a subset of metrics
+// to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple
+// names), startTime, endTime, and timeGrain. The supported operator is eq.
+func (client CollectionRegionClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string) (result MetricListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -56,7 +60,7 @@ func (client CollectionRegionClient) ListMetrics(ctx context.Context, resourceGr
 		return result, validation.NewErrorWithValidationError(err, "documentdb.CollectionRegionClient", "ListMetrics")
 	}
 
-	req, err := client.ListMetricsPreparer(ctx, resourceGroupName, accountName)
+	req, err := client.ListMetricsPreparer(ctx, resourceGroupName, accountName, region, databaseRid, collectionRid, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.CollectionRegionClient", "ListMetrics", nil, "Failure preparing request")
 		return
@@ -78,19 +82,19 @@ func (client CollectionRegionClient) ListMetrics(ctx context.Context, resourceGr
 }
 
 // ListMetricsPreparer prepares the ListMetrics request.
-func (client CollectionRegionClient) ListMetricsPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+func (client CollectionRegionClient) ListMetricsPreparer(ctx context.Context, resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
-		"collectionRid":     autorest.Encode("path", client.CollectionRid),
-		"databaseRid":       autorest.Encode("path", client.DatabaseRid),
-		"region":            autorest.Encode("path", client.Region),
+		"collectionRid":     autorest.Encode("path", collectionRid),
+		"databaseRid":       autorest.Encode("path", databaseRid),
+		"region":            autorest.Encode("path", region),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2015-04-08"
 	queryParameters := map[string]interface{}{
-		"$filter":     autorest.Encode("query", client.Filter),
+		"$filter":     autorest.Encode("query", filter),
 		"api-version": APIVersion,
 	}
 

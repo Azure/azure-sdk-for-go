@@ -25,28 +25,30 @@ import (
 	"net/http"
 )
 
-// DatabaseAccountRegionClient is the azure Cosmos DB Database Service Resource Provider REST API
-type DatabaseAccountRegionClient struct {
+// PercentileTargetClient is the azure Cosmos DB Database Service Resource Provider REST API
+type PercentileTargetClient struct {
 	BaseClient
 }
 
-// NewDatabaseAccountRegionClient creates an instance of the DatabaseAccountRegionClient client.
-func NewDatabaseAccountRegionClient(subscriptionID string) DatabaseAccountRegionClient {
-	return NewDatabaseAccountRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewPercentileTargetClient creates an instance of the PercentileTargetClient client.
+func NewPercentileTargetClient(subscriptionID string) PercentileTargetClient {
+	return NewPercentileTargetClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDatabaseAccountRegionClientWithBaseURI creates an instance of the DatabaseAccountRegionClient client.
-func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountRegionClient {
-	return DatabaseAccountRegionClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewPercentileTargetClientWithBaseURI creates an instance of the PercentileTargetClient client.
+func NewPercentileTargetClientWithBaseURI(baseURI string, subscriptionID string) PercentileTargetClient {
+	return PercentileTargetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListMetrics retrieves the metrics determined by the given filter for the given database account and region.
+// ListMetrics retrieves the metrics determined by the given filter for the given account target region. This url is
+// only for PBS and Replication Latency data
 //
-// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. region is
-// cosmos DB region, with spaces between words and each word capitalized. filter is an OData filter expression that
-// describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can
-// have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
-func (client DatabaseAccountRegionClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, region string, filter string) (result MetricListResult, err error) {
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. targetRegion
+// is target region to which data is written. Cosmos DB region, with spaces between words and each word capitalized.
+// filter is an OData filter expression that describes a subset of metrics to return. The parameters that can be
+// filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain.
+// The supported operator is eq.
+func (client PercentileTargetClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, targetRegion string, filter string) (result PercentileMetricListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -55,37 +57,37 @@ func (client DatabaseAccountRegionClient) ListMetrics(ctx context.Context, resou
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "documentdb.DatabaseAccountRegionClient", "ListMetrics")
+		return result, validation.NewErrorWithValidationError(err, "documentdb.PercentileTargetClient", "ListMetrics")
 	}
 
-	req, err := client.ListMetricsPreparer(ctx, resourceGroupName, accountName, region, filter)
+	req, err := client.ListMetricsPreparer(ctx, resourceGroupName, accountName, targetRegion, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountRegionClient", "ListMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.PercentileTargetClient", "ListMetrics", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountRegionClient", "ListMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.PercentileTargetClient", "ListMetrics", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountRegionClient", "ListMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "documentdb.PercentileTargetClient", "ListMetrics", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListMetricsPreparer prepares the ListMetrics request.
-func (client DatabaseAccountRegionClient) ListMetricsPreparer(ctx context.Context, resourceGroupName string, accountName string, region string, filter string) (*http.Request, error) {
+func (client PercentileTargetClient) ListMetricsPreparer(ctx context.Context, resourceGroupName string, accountName string, targetRegion string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
-		"region":            autorest.Encode("path", region),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"targetRegion":      autorest.Encode("path", targetRegion),
 	}
 
 	const APIVersion = "2015-04-08"
@@ -97,21 +99,21 @@ func (client DatabaseAccountRegionClient) ListMetricsPreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/region/{region}/metrics", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/targetRegion/{targetRegion}/percentile/metrics", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListMetricsSender sends the ListMetrics request. The method will close the
 // http.Response Body if it receives an error.
-func (client DatabaseAccountRegionClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
+func (client PercentileTargetClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListMetricsResponder handles the response to the ListMetrics request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountRegionClient) ListMetricsResponder(resp *http.Response) (result MetricListResult, err error) {
+func (client PercentileTargetClient) ListMetricsResponder(resp *http.Response) (result PercentileMetricListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

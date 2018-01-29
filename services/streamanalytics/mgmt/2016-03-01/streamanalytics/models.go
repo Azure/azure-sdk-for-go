@@ -479,7 +479,7 @@ type AzureMachineLearningWebServiceFunctionBindingRetrievalProperties struct {
 // AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters the parameters needed to retrieve the
 // default function definition for an Azure Machine Learning web service function.
 type AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters struct {
-	// BindingType - Possible values include: 'BindingTypeFunctionRetrieveDefaultDefinitionParameters', 'BindingTypeMicrosoftStreamAnalyticsJavascriptUdf', 'BindingTypeMicrosoftMachineLearningWebService'
+	// BindingType - Possible values include: 'BindingTypeFunctionRetrieveDefaultDefinitionParameters', 'BindingTypeMicrosoftMachineLearningWebService', 'BindingTypeMicrosoftStreamAnalyticsJavascriptUdf'
 	BindingType BindingType `json:"bindingType,omitempty"`
 	// AzureMachineLearningWebServiceFunctionBindingRetrievalProperties - The binding retrieval properties associated with an Azure Machine learning web service.
 	*AzureMachineLearningWebServiceFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
@@ -496,14 +496,14 @@ func (amlwsfrddp AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinition
 	})
 }
 
-// AsJavaScriptFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.
-func (amlwsfrddp AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters) AsJavaScriptFunctionRetrieveDefaultDefinitionParameters() (*JavaScriptFunctionRetrieveDefaultDefinitionParameters, bool) {
-	return nil, false
-}
-
 // AsAzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.
 func (amlwsfrddp AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters) AsAzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters() (*AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters, bool) {
 	return &amlwsfrddp, true
+}
+
+// AsJavaScriptFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.
+func (amlwsfrddp AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters) AsJavaScriptFunctionRetrieveDefaultDefinitionParameters() (*JavaScriptFunctionRetrieveDefaultDefinitionParameters, bool) {
+	return nil, false
 }
 
 // AsFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.
@@ -1944,15 +1944,15 @@ func (fp FunctionProperties) AsBasicFunctionProperties() (BasicFunctionPropertie
 // BasicFunctionRetrieveDefaultDefinitionParameters parameters used to specify the type of function to retrieve the
 // default definition for.
 type BasicFunctionRetrieveDefaultDefinitionParameters interface {
-	AsJavaScriptFunctionRetrieveDefaultDefinitionParameters() (*JavaScriptFunctionRetrieveDefaultDefinitionParameters, bool)
 	AsAzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters() (*AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters, bool)
+	AsJavaScriptFunctionRetrieveDefaultDefinitionParameters() (*JavaScriptFunctionRetrieveDefaultDefinitionParameters, bool)
 	AsFunctionRetrieveDefaultDefinitionParameters() (*FunctionRetrieveDefaultDefinitionParameters, bool)
 }
 
 // FunctionRetrieveDefaultDefinitionParameters parameters used to specify the type of function to retrieve the default
 // definition for.
 type FunctionRetrieveDefaultDefinitionParameters struct {
-	// BindingType - Possible values include: 'BindingTypeFunctionRetrieveDefaultDefinitionParameters', 'BindingTypeMicrosoftStreamAnalyticsJavascriptUdf', 'BindingTypeMicrosoftMachineLearningWebService'
+	// BindingType - Possible values include: 'BindingTypeFunctionRetrieveDefaultDefinitionParameters', 'BindingTypeMicrosoftMachineLearningWebService', 'BindingTypeMicrosoftStreamAnalyticsJavascriptUdf'
 	BindingType BindingType `json:"bindingType,omitempty"`
 }
 
@@ -1964,14 +1964,14 @@ func unmarshalBasicFunctionRetrieveDefaultDefinitionParameters(body []byte) (Bas
 	}
 
 	switch m["bindingType"] {
-	case string(BindingTypeMicrosoftStreamAnalyticsJavascriptUdf):
-		var jsfrddp JavaScriptFunctionRetrieveDefaultDefinitionParameters
-		err := json.Unmarshal(body, &jsfrddp)
-		return jsfrddp, err
 	case string(BindingTypeMicrosoftMachineLearningWebService):
 		var amlwsfrddp AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters
 		err := json.Unmarshal(body, &amlwsfrddp)
 		return amlwsfrddp, err
+	case string(BindingTypeMicrosoftStreamAnalyticsJavascriptUdf):
+		var jsfrddp JavaScriptFunctionRetrieveDefaultDefinitionParameters
+		err := json.Unmarshal(body, &jsfrddp)
+		return jsfrddp, err
 	default:
 		var frddp FunctionRetrieveDefaultDefinitionParameters
 		err := json.Unmarshal(body, &frddp)
@@ -2008,13 +2008,13 @@ func (frddp FunctionRetrieveDefaultDefinitionParameters) MarshalJSON() ([]byte, 
 	})
 }
 
-// AsJavaScriptFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for FunctionRetrieveDefaultDefinitionParameters.
-func (frddp FunctionRetrieveDefaultDefinitionParameters) AsJavaScriptFunctionRetrieveDefaultDefinitionParameters() (*JavaScriptFunctionRetrieveDefaultDefinitionParameters, bool) {
+// AsAzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for FunctionRetrieveDefaultDefinitionParameters.
+func (frddp FunctionRetrieveDefaultDefinitionParameters) AsAzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters() (*AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters, bool) {
 	return nil, false
 }
 
-// AsAzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for FunctionRetrieveDefaultDefinitionParameters.
-func (frddp FunctionRetrieveDefaultDefinitionParameters) AsAzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters() (*AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters, bool) {
+// AsJavaScriptFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for FunctionRetrieveDefaultDefinitionParameters.
+func (frddp FunctionRetrieveDefaultDefinitionParameters) AsJavaScriptFunctionRetrieveDefaultDefinitionParameters() (*JavaScriptFunctionRetrieveDefaultDefinitionParameters, bool) {
 	return nil, false
 }
 
@@ -2040,22 +2040,30 @@ func (future FunctionsTestFuture) Result(client FunctionsClient) (rts ResourceTe
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsTestFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return rts, autorest.NewError("streamanalytics.FunctionsTestFuture", "Result", "asynchronous operation has not completed")
+		return rts, azure.NewAsyncOpIncompleteError("streamanalytics.FunctionsTestFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		rts, err = client.TestResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsTestFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsTestFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	rts, err = client.TestResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.FunctionsTestFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -2380,22 +2388,30 @@ func (future InputsTestFuture) Result(client InputsClient) (rts ResourceTestStat
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.InputsTestFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return rts, autorest.NewError("streamanalytics.InputsTestFuture", "Result", "asynchronous operation has not completed")
+		return rts, azure.NewAsyncOpIncompleteError("streamanalytics.InputsTestFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		rts, err = client.TestResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.InputsTestFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.InputsTestFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	rts, err = client.TestResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.InputsTestFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -2578,7 +2594,7 @@ type JavaScriptFunctionBindingRetrievalProperties struct {
 // JavaScriptFunctionRetrieveDefaultDefinitionParameters the parameters needed to retrieve the default function
 // definition for a JavaScript function.
 type JavaScriptFunctionRetrieveDefaultDefinitionParameters struct {
-	// BindingType - Possible values include: 'BindingTypeFunctionRetrieveDefaultDefinitionParameters', 'BindingTypeMicrosoftStreamAnalyticsJavascriptUdf', 'BindingTypeMicrosoftMachineLearningWebService'
+	// BindingType - Possible values include: 'BindingTypeFunctionRetrieveDefaultDefinitionParameters', 'BindingTypeMicrosoftMachineLearningWebService', 'BindingTypeMicrosoftStreamAnalyticsJavascriptUdf'
 	BindingType BindingType `json:"bindingType,omitempty"`
 	// JavaScriptFunctionBindingRetrievalProperties - The binding retrieval properties associated with a JavaScript function.
 	*JavaScriptFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
@@ -2595,14 +2611,14 @@ func (jsfrddp JavaScriptFunctionRetrieveDefaultDefinitionParameters) MarshalJSON
 	})
 }
 
-// AsJavaScriptFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for JavaScriptFunctionRetrieveDefaultDefinitionParameters.
-func (jsfrddp JavaScriptFunctionRetrieveDefaultDefinitionParameters) AsJavaScriptFunctionRetrieveDefaultDefinitionParameters() (*JavaScriptFunctionRetrieveDefaultDefinitionParameters, bool) {
-	return &jsfrddp, true
-}
-
 // AsAzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for JavaScriptFunctionRetrieveDefaultDefinitionParameters.
 func (jsfrddp JavaScriptFunctionRetrieveDefaultDefinitionParameters) AsAzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters() (*AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters, bool) {
 	return nil, false
+}
+
+// AsJavaScriptFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for JavaScriptFunctionRetrieveDefaultDefinitionParameters.
+func (jsfrddp JavaScriptFunctionRetrieveDefaultDefinitionParameters) AsJavaScriptFunctionRetrieveDefaultDefinitionParameters() (*JavaScriptFunctionRetrieveDefaultDefinitionParameters, bool) {
+	return &jsfrddp, true
 }
 
 // AsFunctionRetrieveDefaultDefinitionParameters is the BasicFunctionRetrieveDefaultDefinitionParameters implementation for JavaScriptFunctionRetrieveDefaultDefinitionParameters.
@@ -3263,22 +3279,30 @@ func (future OutputsTestFuture) Result(client OutputsClient) (rts ResourceTestSt
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.OutputsTestFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return rts, autorest.NewError("streamanalytics.OutputsTestFuture", "Result", "asynchronous operation has not completed")
+		return rts, azure.NewAsyncOpIncompleteError("streamanalytics.OutputsTestFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		rts, err = client.TestResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.OutputsTestFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.OutputsTestFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	rts, err = client.TestResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.OutputsTestFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4353,22 +4377,30 @@ func (future StreamingJobsCreateOrReplaceFuture) Result(client StreamingJobsClie
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsCreateOrReplaceFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return sj, autorest.NewError("streamanalytics.StreamingJobsCreateOrReplaceFuture", "Result", "asynchronous operation has not completed")
+		return sj, azure.NewAsyncOpIncompleteError("streamanalytics.StreamingJobsCreateOrReplaceFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		sj, err = client.CreateOrReplaceResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsCreateOrReplaceFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsCreateOrReplaceFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	sj, err = client.CreateOrReplaceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsCreateOrReplaceFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4384,22 +4416,30 @@ func (future StreamingJobsDeleteFuture) Result(client StreamingJobsClient) (ar a
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("streamanalytics.StreamingJobsDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("streamanalytics.StreamingJobsDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4415,22 +4455,30 @@ func (future StreamingJobsStartFuture) Result(client StreamingJobsClient) (ar au
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsStartFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("streamanalytics.StreamingJobsStartFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("streamanalytics.StreamingJobsStartFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.StartResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsStartFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsStartFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.StartResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsStartFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4446,22 +4494,30 @@ func (future StreamingJobsStopFuture) Result(client StreamingJobsClient) (ar aut
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsStopFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("streamanalytics.StreamingJobsStopFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("streamanalytics.StreamingJobsStopFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.StopResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsStopFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsStopFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.StopResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.StreamingJobsStopFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 

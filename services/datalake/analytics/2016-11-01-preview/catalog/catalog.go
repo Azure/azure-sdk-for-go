@@ -1596,7 +1596,7 @@ func (client Client) GrantACLToDatabaseResponder(resp *http.Response) (result au
 // values sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is the Boolean value of true or false to
 // request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true.
 // Optional.
-func (client Client) ListAcls(ctx context.Context, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result ACLList, err error) {
+func (client Client) ListAcls(ctx context.Context, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result ACLListPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -1607,6 +1607,7 @@ func (client Client) ListAcls(ctx context.Context, accountName string, filter st
 		return result, validation.NewErrorWithValidationError(err, "catalog.Client", "ListAcls")
 	}
 
+	result.fn = client.listAclsNextResults
 	req, err := client.ListAclsPreparer(ctx, accountName, filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "ListAcls", nil, "Failure preparing request")
@@ -1615,12 +1616,12 @@ func (client Client) ListAcls(ctx context.Context, accountName string, filter st
 
 	resp, err := client.ListAclsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.al.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "catalog.Client", "ListAcls", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListAclsResponder(resp)
+	result.al, err = client.ListAclsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "ListAcls", resp, "Failure responding to request")
 	}
@@ -1686,6 +1687,33 @@ func (client Client) ListAclsResponder(resp *http.Response) (result ACLList, err
 	return
 }
 
+// listAclsNextResults retrieves the next set of results, if any.
+func (client Client) listAclsNextResults(lastResults ACLList) (result ACLList, err error) {
+	req, err := lastResults.aCLListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.Client", "listAclsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListAclsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.Client", "listAclsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListAclsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.Client", "listAclsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListAclsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client Client) ListAclsComplete(ctx context.Context, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result ACLListIterator, err error) {
+	result.page, err = client.ListAcls(ctx, accountName, filter, top, skip, selectParameter, orderby, count)
+	return
+}
+
 // ListAclsByDatabase retrieves the list of access control list (ACL) entries for the database from the Data Lake
 // Analytics catalog.
 //
@@ -1697,7 +1725,7 @@ func (client Client) ListAclsResponder(resp *http.Response) (result ACLList, err
 // depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is
 // the Boolean value of true or false to request a count of the matching resources included with the resources in the
 // response, e.g. Categories?$count=true. Optional.
-func (client Client) ListAclsByDatabase(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result ACLList, err error) {
+func (client Client) ListAclsByDatabase(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result ACLListPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -1708,6 +1736,7 @@ func (client Client) ListAclsByDatabase(ctx context.Context, accountName string,
 		return result, validation.NewErrorWithValidationError(err, "catalog.Client", "ListAclsByDatabase")
 	}
 
+	result.fn = client.listAclsByDatabaseNextResults
 	req, err := client.ListAclsByDatabasePreparer(ctx, accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "ListAclsByDatabase", nil, "Failure preparing request")
@@ -1716,12 +1745,12 @@ func (client Client) ListAclsByDatabase(ctx context.Context, accountName string,
 
 	resp, err := client.ListAclsByDatabaseSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.al.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "catalog.Client", "ListAclsByDatabase", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListAclsByDatabaseResponder(resp)
+	result.al, err = client.ListAclsByDatabaseResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "catalog.Client", "ListAclsByDatabase", resp, "Failure responding to request")
 	}
@@ -1788,6 +1817,33 @@ func (client Client) ListAclsByDatabaseResponder(resp *http.Response) (result AC
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listAclsByDatabaseNextResults retrieves the next set of results, if any.
+func (client Client) listAclsByDatabaseNextResults(lastResults ACLList) (result ACLList, err error) {
+	req, err := lastResults.aCLListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.Client", "listAclsByDatabaseNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListAclsByDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.Client", "listAclsByDatabaseNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListAclsByDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.Client", "listAclsByDatabaseNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListAclsByDatabaseComplete enumerates all values, automatically crossing page boundaries as required.
+func (client Client) ListAclsByDatabaseComplete(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result ACLListIterator, err error) {
+	result.page, err = client.ListAclsByDatabase(ctx, accountName, databaseName, filter, top, skip, selectParameter, orderby, count)
 	return
 }
 

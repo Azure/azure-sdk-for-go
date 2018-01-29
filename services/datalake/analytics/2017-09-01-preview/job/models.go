@@ -1152,22 +1152,30 @@ func (future JobCancelFuture) Result(client Client) (ar autorest.Response, err e
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "job.JobCancelFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("job.JobCancelFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("job.JobCancelFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.CancelResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "job.JobCancelFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "job.JobCancelFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.CancelResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "job.JobCancelFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1183,22 +1191,30 @@ func (future JobUpdateFuture) Result(client Client) (i Information, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "job.JobUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return i, autorest.NewError("job.JobUpdateFuture", "Result", "asynchronous operation has not completed")
+		return i, azure.NewAsyncOpIncompleteError("job.JobUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		i, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "job.JobUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "job.JobUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	i, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "job.JobUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1214,22 +1230,30 @@ func (future JobYieldFuture) Result(client Client) (ar autorest.Response, err er
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "job.JobYieldFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("job.JobYieldFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("job.JobYieldFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.YieldResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "job.JobYieldFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "job.JobYieldFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.YieldResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "job.JobYieldFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 

@@ -104,8 +104,103 @@ type ACLDeleteParameters struct {
 // ACLList a Data Lake Analytics catalog access control list (ACL).
 type ACLList struct {
 	autorest.Response `json:"-"`
+	// NextLink - the link to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the access control list (ACL).
 	Value *[]ACL `json:"value,omitempty"`
+}
+
+// ACLListIterator provides access to a complete listing of ACL values.
+type ACLListIterator struct {
+	i    int
+	page ACLListPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ACLListIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ACLListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ACLListIterator) Response() ACLList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ACLListIterator) Value() ACL {
+	if !iter.page.NotDone() {
+		return ACL{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (al ACLList) IsEmpty() bool {
+	return al.Value == nil || len(*al.Value) == 0
+}
+
+// aCLListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (al ACLList) aCLListPreparer() (*http.Request, error) {
+	if al.NextLink == nil || len(to.String(al.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(al.NextLink)))
+}
+
+// ACLListPage contains a page of ACL values.
+type ACLListPage struct {
+	fn func(ACLList) (ACLList, error)
+	al ACLList
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ACLListPage) Next() error {
+	next, err := page.fn(page.al)
+	if err != nil {
+		return err
+	}
+	page.al = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ACLListPage) NotDone() bool {
+	return !page.al.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ACLListPage) Response() ACLList {
+	return page.al
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ACLListPage) Values() []ACL {
+	if page.al.IsEmpty() {
+		return nil
+	}
+	return *page.al.Value
 }
 
 // DataLakeAnalyticsCatalogCredentialCreateParameters data Lake Analytics catalog credential creation parameters.

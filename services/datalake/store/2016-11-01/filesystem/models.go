@@ -1179,8 +1179,6 @@ type FileStatusProperties struct {
 	AccessTime *int64 `json:"accessTime,omitempty"`
 	// BlockSize - the block size for the file.
 	BlockSize *int64 `json:"blockSize,omitempty"`
-	// ChildrenNum - the number of children in the directory.
-	ChildrenNum *int64 `json:"childrenNum,omitempty"`
 	// ExpirationTime - Gets the expiration time, if any, as ticks since the epoch. If the value is 0 or DateTime.MaxValue there is no expiration.
 	ExpirationTime *int64 `json:"msExpirationTime,omitempty"`
 	// Group - the group owner.

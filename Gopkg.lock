@@ -4,8 +4,8 @@
 [[projects]]
   name = "github.com/Azure/go-autorest"
   packages = ["autorest","autorest/adal","autorest/azure","autorest/date","autorest/to","autorest/validation"]
-  revision = "809ed2ef5c4c9a60c3c2f3aa9cc11f3a7c2ce59d"
-  version = "v9.6.0"
+  revision = "d4e6b95c12a08b4de2d48b45d5b4d594e5d32fab"
+  version = "v9.9.0"
 
 [[projects]]
   name = "github.com/dgrijalva/jwt-go"
@@ -45,20 +45,20 @@
 [[projects]]
   name = "github.com/satori/go.uuid"
   packages = ["."]
-  revision = "879c5887cd475cd7864858769793b2ceb0d44feb"
-  version = "v1.1.0"
+  revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
+  version = "v1.2.0"
 
 [[projects]]
   branch = "master"
   name = "github.com/shopspring/decimal"
   packages = ["."]
-  revision = "9ca7f51822d222ae4e246f070f9aad863599bd1a"
+  revision = "e3482495ff4cba75613e4177ed79825c890058a9"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["pkcs12","pkcs12/internal/rc2"]
-  revision = "94eea52f7b742c7cbe0b03b22f0c4c8631ece122"
+  revision = "1875d0a70c90e57f11972aefd42276df65e895b9"
 
 [[projects]]
   branch = "v1"
@@ -76,11 +76,11 @@
   branch = "v2"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "287cf08546ab5e7e37d55a84f7ed3fd1db036de5"
+  revision = "d670f9405373e636a5a2765eea47fac0c9bc91a4"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "db9074210af478934e87ee6c2b68492578d7c186d94b8f81d82e810b2956cc07"
+  inputs-digest = "25b644f9483e9a97a5bc10479513a83eb0d865915323f8c7cfc06caa15c947bb"
   solver-name = "gps-cdcl"
   solver-version = 1

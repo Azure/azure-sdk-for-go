@@ -83,6 +83,7 @@ func (client RunbookDraftClient) CreateOrUpdatePreparer(ctx context.Context, aut
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/content", pathParameters),

@@ -978,6 +978,8 @@ type Certificate struct {
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the certificate.
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// CertificateProperties - Gets or sets the properties of the certificate.
 	*CertificateProperties `json:"properties,omitempty"`
 }
@@ -1009,6 +1011,16 @@ func (c *Certificate) UnmarshalJSON(body []byte) error {
 			return err
 		}
 		c.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		c.Type = &typeVar
 	}
 
 	v = m["properties"]
@@ -1248,6 +1260,8 @@ type Connection struct {
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the connection.
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// ConnectionProperties - Gets or sets the properties of the connection.
 	*ConnectionProperties `json:"properties,omitempty"`
 }
@@ -1279,6 +1293,16 @@ func (c *Connection) UnmarshalJSON(body []byte) error {
 			return err
 		}
 		c.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		c.Type = &typeVar
 	}
 
 	v = m["properties"]
@@ -1467,6 +1491,8 @@ type ConnectionType struct {
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the connection type.
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// ConnectionTypeProperties - Gets or sets the properties of the connection type.
 	*ConnectionTypeProperties `json:"properties,omitempty"`
 }
@@ -1498,6 +1524,16 @@ func (ct *ConnectionType) UnmarshalJSON(body []byte) error {
 			return err
 		}
 		ct.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ct.Type = &typeVar
 	}
 
 	v = m["properties"]
@@ -1768,6 +1804,8 @@ type Credential struct {
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the credential.
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// CredentialProperties - Gets or sets the properties of the credential.
 	*CredentialProperties `json:"properties,omitempty"`
 }
@@ -1799,6 +1837,16 @@ func (c *Credential) UnmarshalJSON(body []byte) error {
 			return err
 		}
 		c.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		c.Type = &typeVar
 	}
 
 	v = m["properties"]
@@ -3490,8 +3538,12 @@ type JobProperties struct {
 // JobSchedule definition of the job schedule.
 type JobSchedule struct {
 	autorest.Response `json:"-"`
-	// ID - Gets or sets the id of the resource.
+	// ID - Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
+	// Name - Gets the name of the variable.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// JobScheduleProperties - Gets or sets the properties of the job schedule.
 	*JobScheduleProperties `json:"properties,omitempty"`
 }
@@ -3513,6 +3565,26 @@ func (js *JobSchedule) UnmarshalJSON(body []byte) error {
 			return err
 		}
 		js.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		js.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		js.Type = &typeVar
 	}
 
 	v = m["properties"]
@@ -4510,22 +4582,30 @@ func (future RunbookDraftCreateOrUpdateFuture) Result(client RunbookDraftClient)
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("automation.RunbookDraftCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("automation.RunbookDraftCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automation.RunbookDraftCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4541,22 +4621,30 @@ func (future RunbookDraftPublishFuture) Result(client RunbookDraftClient) (r Run
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return r, autorest.NewError("automation.RunbookDraftPublishFuture", "Result", "asynchronous operation has not completed")
+		return r, azure.NewAsyncOpIncompleteError("automation.RunbookDraftPublishFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		r, err = client.PublishResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	r, err = client.PublishResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4795,10 +4883,12 @@ type RunbookUpdateProperties struct {
 // Schedule definition of the schedule.
 type Schedule struct {
 	autorest.Response `json:"-"`
-	// ID - Gets or sets the id of the resource.
+	// ID - Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Gets or sets the name of the schedule.
+	// Name - Gets name of the schedule.
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// ScheduleProperties - Gets or sets the properties of the schedule.
 	*ScheduleProperties `json:"properties,omitempty"`
 }
@@ -4830,6 +4920,16 @@ func (s *Schedule) UnmarshalJSON(body []byte) error {
 			return err
 		}
 		s.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		s.Type = &typeVar
 	}
 
 	v = m["properties"]
@@ -5218,10 +5318,12 @@ type UsageListResult struct {
 // Variable definition of the varible.
 type Variable struct {
 	autorest.Response `json:"-"`
-	// ID - Gets or sets the id of the resource.
+	// ID - Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Gets or sets the name of the variable.
+	// Name - Gets the name of the variable.
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// VariableProperties - Gets or sets the properties of the variable.
 	*VariableProperties `json:"properties,omitempty"`
 }
@@ -5253,6 +5355,16 @@ func (vVar *Variable) UnmarshalJSON(body []byte) error {
 			return err
 		}
 		vVar.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		vVar.Type = &typeVar
 	}
 
 	v = m["properties"]

@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## `v12.3.0-beta`
+
+### Changes
+
+- Updated event grid dataplane with latest swagger changes.
+- Added latest event grid management plane API version.
+
 ## `v12.2.0-beta`
 
 ### Changes

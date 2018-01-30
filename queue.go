@@ -9,8 +9,10 @@ import (
 	"time"
 )
 
-// QueueOption represents named options for assisting queue creation
-type QueueOption func(queue *mgmt.SBQueue) error
+type (
+	// QueueOption represents named options for assisting queue creation
+	QueueOption func(queue *mgmt.SBQueue) error
+)
 
 /*
 QueueWithPartitioning ensure the created queue will be a partitioned queue. Partitioned queues offer increased
@@ -114,7 +116,7 @@ func QueueWithMessageTimeToLive(window *time.Duration) QueueOption {
 func QueueWithLockDuration(window *time.Duration) QueueOption {
 	return func(q *mgmt.SBQueue) error {
 		if window == nil {
-			duration := time.Duration(14 * 24 * time.Hour)
+			duration := time.Duration(1 * time.Minute)
 			window = &duration
 		}
 		q.LockDuration = durationTo8601Seconds(window)

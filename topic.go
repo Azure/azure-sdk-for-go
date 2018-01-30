@@ -14,8 +14,10 @@ const (
 	Megabytes = 1024
 )
 
-// TopicOption represents an option for configuring a topic.
-type TopicOption func(*mgmt.SBTopic) error
+type (
+	// TopicOption represents an option for configuring a topic.
+	TopicOption func(*mgmt.SBTopic) error
+)
 
 // TopicWithMaxSizeInMegabytes configures the maximum size of the topic in megabytes (1 * 1024 - 5 * 1024), which is the size of
 // the memory allocated for the topic. Default is 1 MB (1 * 1024).
@@ -102,12 +104,12 @@ func TopicWithMessageTimeToLive(window *time.Duration) TopicOption {
 	}
 }
 
+// EnsureTopic creates a topic if an existing topic does not exist
 func (sb *serviceBus) EnsureTopic(ctx context.Context, name string, opts ...TopicOption) (*mgmt.SBTopic, error) {
-	log.Debugf("ensuring exists topic %s", name)
+	log.Debugf("ensuring topic %s exists", name)
 	topicClient := sb.getTopicMgmtClient()
 	topic, err := topicClient.Get(ctx, sb.resourceGroup, sb.namespace, name)
 
-	// TODO: check if the queue properties are the same as the requested. If not, throw error or build new queue??
 	if err != nil {
 		newTopic := &mgmt.SBTopic{
 			Name: &name,
@@ -134,10 +136,10 @@ func (sb *serviceBus) EnsureTopic(ctx context.Context, name string, opts ...Topi
 	return &topic, nil
 }
 
-// DeleteQueue deletes an existing queue
-func (sb *serviceBus) DeleteTopic(ctx context.Context, queueName string) error {
-	queueClient := sb.getQueueMgmtClient()
-	_, err := queueClient.Delete(ctx, sb.resourceGroup, sb.namespace, queueName)
+// DeleteTopic deletes an existing topic
+func (sb *serviceBus) DeleteTopic(ctx context.Context, topicName string) error {
+	topicClient := sb.getTopicMgmtClient()
+	_, err := topicClient.Delete(ctx, sb.resourceGroup, sb.namespace, topicName)
 	return err
 }
 

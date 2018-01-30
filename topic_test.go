@@ -106,3 +106,26 @@ func buildTopic(t *testing.T, sb SenderReceiverManager, name string, opts ...Top
 	}
 	return topic
 }
+
+func (suite *ServiceBusSuite) TestTopicSend() {
+	tests := map[string]func(*testing.T, SenderReceiverManager, string){}
+
+	spToken := suite.servicePrincipalToken()
+	sb, err := NewWithSPToken(spToken, suite.SubscriptionID, ResourceGroupName, suite.Namespace, RootRuleName, suite.Environment)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer func() {
+		sb.Close()
+	}()
+
+	for name, testFunc := range tests {
+		entityName := randomName("gosbtest", 10)
+		sb.EnsureTopic(context.Background(), entityName)
+		suite.T().Run(name, func(t *testing.T) { testFunc(t, sb, entityName) })
+		err = sb.DeleteTopic(context.Background(), entityName)
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}
+}

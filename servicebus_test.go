@@ -33,17 +33,19 @@ func init() {
 	rand.Seed(time.Now().Unix())
 }
 
-// ServiceBusSuite encapsulates a end to end test of Service Bus with build up and tear down of all SB resources
-type ServiceBusSuite struct {
-	suite.Suite
-	TenantID       string
-	SubscriptionID string
-	ClientID       string
-	ClientSecret   string
-	Namespace      string
-	Token          *adal.ServicePrincipalToken
-	Environment    azure.Environment
-}
+type (
+	// ServiceBusSuite encapsulates a end to end test of Service Bus with build up and tear down of all SB resources
+	ServiceBusSuite struct {
+		suite.Suite
+		TenantID       string
+		SubscriptionID string
+		ClientID       string
+		ClientSecret   string
+		Namespace      string
+		Token          *adal.ServicePrincipalToken
+		Environment    azure.Environment
+	}
+)
 
 func (suite *ServiceBusSuite) SetupSuite() {
 	if testing.Verbose() {
@@ -86,11 +88,13 @@ func (suite *ServiceBusSuite) TestQueue() {
 
 	for name, testFunc := range tests {
 		queueName := randomName("gosbtest", 10)
+		window := 3 * time.Minute
 		_, err := sb.EnsureQueue(
 			context.Background(),
 			queueName,
 			QueueWithPartitioning(),
-			QueueWithDuplicateDetection(nil))
+			QueueWithDuplicateDetection(nil),
+			QueueWithLockDuration(&window))
 		if err != nil {
 			log.Fatalln(err)
 		}

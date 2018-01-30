@@ -32,7 +32,6 @@ func (suite *ServiceBusSuite) TestQueueManagement() {
 		sb.Close()
 	}()
 
-	suite.T().Parallel()
 	for name, testFunc := range tests {
 		entityName := randomName("gosbtest", 10)
 		suite.T().Run(name, func(t *testing.T) { testFunc(t, sb, entityName) })

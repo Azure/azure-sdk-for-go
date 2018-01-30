@@ -59,19 +59,19 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  revision = "3d37316aaa6bd9929127ac9a527abf408178ea7b"
+  revision = "1875d0a70c90e57f11972aefd42276df65e895b9"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix","windows"]
-  revision = "af50095a40f9041b3b38960738837185c26e9419"
+  revision = "ff2a66f350cefa5c93a634eadb5d25bb60c85a9c"
 
 [[projects]]
   branch = "master"
   name = "pack.ag/amqp"
   packages = [".","internal/testconn"]
-  revision = "088f4614c25ad6a01446c0636e5747a8a3261d83"
+  revision = "746c1d6d9c9af8074e67fb9173f57cf59aa48a5f"
 
 [solve-meta]
   analyzer-name = "dep"

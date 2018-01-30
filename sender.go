@@ -5,32 +5,34 @@ import (
 	"pack.ag/amqp"
 )
 
-// Sender provides session and link handling for an sending entity path
-type Sender struct {
-	client     *amqp.Client
-	session    *Session
-	sender     *amqp.Sender
-	entityPath string
-	Name       string
-}
+// sender provides session and link handling for an sending entity path
+type (
+	sender struct {
+		client     *amqp.Client
+		session    *session
+		sender     *amqp.Sender
+		entityPath string
+		Name       string
+	}
+)
 
-// NewSender creates a new Service Bus message sender given an AMQP client and entity path
-func NewSender(client *amqp.Client, entityPath string) (*Sender, error) {
-	sender := &Sender{
+// newSender creates a new Service Bus message sender given an AMQP client and entity path
+func newSender(client *amqp.Client, entityPath string) (*sender, error) {
+	s := &sender{
 		client:     client,
 		entityPath: entityPath,
 	}
 
-	err := sender.newSessionAndLink()
+	err := s.newSessionAndLink()
 	if err != nil {
 		return nil, err
 	}
 
-	return sender, nil
+	return s, nil
 }
 
 // Recover will attempt to close the current session and link, then rebuild them
-func (s *Sender) Recover() error {
+func (s *sender) Recover() error {
 	err := s.Close()
 	if err != nil {
 		return err
@@ -45,7 +47,7 @@ func (s *Sender) Recover() error {
 }
 
 // Close will close the AMQP session and link of the sender
-func (s *Sender) Close() error {
+func (s *sender) Close() error {
 	err := s.sender.Close()
 	if err != nil {
 		return err
@@ -59,7 +61,7 @@ func (s *Sender) Close() error {
 }
 
 // Send will send a message to the entity path with options
-func (s *Sender) Send(ctx context.Context, msg *amqp.Message, opts ...SendOption) error {
+func (s *sender) Send(ctx context.Context, msg *amqp.Message, opts ...SendOption) error {
 	// TODO: Add in recovery logic in case the link / session has gone down
 	s.prepareMessage(msg)
 	for _, opt := range opts {
@@ -73,19 +75,19 @@ func (s *Sender) Send(ctx context.Context, msg *amqp.Message, opts ...SendOption
 	return nil
 }
 
-func (s *Sender) prepareMessage(msg *amqp.Message) {
+func (s *sender) prepareMessage(msg *amqp.Message) {
 	if msg.Properties == nil {
 		msg.Properties = &amqp.MessageProperties{}
 	}
 
 	if msg.Properties.GroupID == "" {
 		msg.Properties.GroupID = s.session.SessionID
-		msg.Properties.GroupSequence = s.session.GetNext()
+		msg.Properties.GroupSequence = s.session.getNext()
 	}
 }
 
 // newSessionAndLink will replace the existing session and link
-func (s *Sender) newSessionAndLink() error {
+func (s *sender) newSessionAndLink() error {
 	amqpSession, err := s.client.NewSession()
 	if err != nil {
 		return err
@@ -96,7 +98,7 @@ func (s *Sender) newSessionAndLink() error {
 		return err
 	}
 
-	s.session = NewSession(amqpSession)
+	s.session = newSession(amqpSession)
 	s.sender = amqpSender
 	return nil
 }

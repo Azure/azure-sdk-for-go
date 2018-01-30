@@ -33,12 +33,18 @@ func (suite *ServiceBusSuite) TestQueueManagement() {
 	}()
 
 	for name, testFunc := range tests {
-		entityName := randomName("gosbtest", 10)
-		suite.T().Run(name, func(t *testing.T) { testFunc(t, sb, entityName) })
-		err = sb.DeleteTopic(context.Background(), entityName)
-		if err != nil {
-			log.Fatalln(err)
+		setupTestTeardown := func(t *testing.T) {
+			entityName := randomName("gosbtest", 10)
+			defer func(name string) {
+				err := sb.DeleteQueue(context.Background(), name)
+				if err != nil {
+					log.Fatalln(err)
+				}
+			}(entityName)
+			testFunc(t, sb, entityName)
+
 		}
+		suite.T().Run(name, setupTestTeardown)
 	}
 }
 

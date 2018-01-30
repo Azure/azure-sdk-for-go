@@ -2,6 +2,7 @@ package servicebus
 
 import (
 	"context"
+	"flag"
 	rm "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources"
 	sbmgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest"
@@ -21,6 +22,7 @@ import (
 
 var (
 	letterRunes = []rune("abcdefghijklmnopqrstuvwxyz123456789")
+	debug       = flag.Bool("debug", false, "output debug level logging")
 )
 
 const (
@@ -48,7 +50,8 @@ type (
 )
 
 func (suite *ServiceBusSuite) SetupSuite() {
-	if testing.Verbose() {
+	flag.Parse()
+	if *debug {
 		log.SetLevel(log.DebugLevel)
 	}
 

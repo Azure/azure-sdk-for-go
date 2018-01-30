@@ -17,7 +17,7 @@ DEP   	= dep
 V = 0
 Q = $(if $(filter 1,$V),,@)
 M = $(shell printf "\033[34;1m▶\033[0m")
-TIMEOUT = 100
+TIMEOUT = 300
 
 .PHONY: all
 all: fmt vendor lint vet | $(BASE) ; $(info $(M) building library…) @ ## Build program
@@ -41,30 +41,16 @@ GOLINT = $(BIN)/golint
 $(BIN)/golint: | $(BASE) ; $(info $(M) building golint…)
 	$Q go get github.com/golang/lint/golint
 
-GOCOVMERGE = $(BIN)/gocovmerge
-$(BIN)/gocovmerge: | $(BASE) ; $(info $(M) building gocovmerge…)
-	$Q go get github.com/wadey/gocovmerge
-
-GOCOV = $(BIN)/gocov
-$(BIN)/gocov: | $(BASE) ; $(info $(M) building gocov…)
-	$Q go get github.com/axw/gocov/...
-
-GOCOVXML = $(BIN)/gocov-xml
-$(BIN)/gocov-xml: | $(BASE) ; $(info $(M) building gocov-xml…)
-	$Q go get github.com/AlekSi/gocov-xml
-
-GO2XUNIT = $(BIN)/go2xunit
-$(BIN)/go2xunit: | $(BASE) ; $(info $(M) building go2xunit…)
-	$Q go get github.com/tebeka/go2xunit
-
 # Tests
 
 TEST_TARGETS := test-default test-bench test-short test-verbose test-race
 .PHONY: $(TEST_TARGETS) test-xml check test tests
 test-bench:   ARGS=-run=__absolutelynothing__ -bench=. ## Run benchmarks
 test-short:   ARGS=-short        ## Run only short tests
-test-verbose: ARGS=-v            ## Run tests in verbose mode with coverage reporting
+test-verbose: ARGS=-v            ## Run tests in verbose mode
+test-debug:   ARGS=-v -debug     ## Run tests in verbose mode with debug output
 test-race:    ARGS=-race         ## Run tests with race detector
+test-cover:   ARGS=-v -cover     ## Run tests in verbose mode with coverage
 $(TEST_TARGETS): NAME=$(MAKECMDGOALS:test-%=%)
 $(TEST_TARGETS): test
 check test tests: cyclo lint vet vendor | $(BASE) ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests

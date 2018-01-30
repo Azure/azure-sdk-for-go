@@ -3,20 +3,20 @@ language: go
 go:
   - 1.9
   - 1.10
-  - master
+  - tip
 
 matrix:
-  # It's ok if our code fails on unstable development versions of Go.
   allow_failures:
-      - go: master
-    # Don't wait for tip tests to finish. Mark the test run green if the
-    # tests pass on the stable versions of Go.
+      - go: top
     fast_finish: true
 
-before_script:
+before_install:
   - go get github.com/golang/lint/golint
   - go get github.com/fzipp/gocyclo
   - go get github.com/golang/lint/golint
+  - go get github.com/mattn/goveralls
+  - go get golang.org/x/tools/cmd/cover
 
 script:
-  make test
+  - make test-cover
+  - goveralls -coverprofile=cover.out -service=travis-ci

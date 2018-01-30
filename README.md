@@ -108,7 +108,7 @@ var (
 )
 
 func getServicePrincipalToken() (adal.OAuthTokenProvider, error) {
-	config, err := adal.NewOAuthConfig(azure.PublicCloud.ActiveDirectoryEndpoint, tenantID)
+	oauthConfig, err := adal.NewOAuthConfig(azure.PublicCloud.ActiveDirectoryEndpoint, tenantID)
 	return adal.NewServicePrincipalToken(
 		*oauthConfig,
 		clientID,

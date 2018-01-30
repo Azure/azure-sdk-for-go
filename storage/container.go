@@ -294,9 +294,7 @@ func (c *Container) create(options *CreateContainerOptions) (*storageResponse, e
 func (c *Container) Exists() (bool, error) {
 	q := url.Values{"restype": {"container"}}
 	var uri string
-	uri = c.bsc.client.getEndpoint(blobServiceName, c.buildPath(), q)
 	headers := c.bsc.client.getStandardHeaders()
-
 	resp, err := c.bsc.client.exec(http.MethodHead, uri, headers, nil, c.bsc.auth)
 	if resp != nil {
 		defer readAndCloseBody(resp.body)
@@ -478,9 +476,6 @@ func (c *Container) ListBlobs(params ListBlobsParameters) (BlobListResponse, err
 		newURI.RawQuery = q.Encode()
 		uri = newURI.String()
 	} else {
-		if c.bsc.client.isAccountSASClient() {
-			q = mergeParams(q, c.bsc.client.accountSASToken)
-		}
 		uri = c.bsc.client.getEndpoint(blobServiceName, c.buildPath(), q)
 	}
 

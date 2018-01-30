@@ -91,6 +91,7 @@ func (client Client) AppendPreparer(ctx context.Context, accountName string, dir
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{accountName}.{adlsFileSystemDnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/webhdfs/v1/{directFilePath}", pathParameters),
@@ -326,6 +327,7 @@ func (client Client) ConcurrentAppendPreparer(ctx context.Context, accountName s
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{accountName}.{adlsFileSystemDnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/WebHdfsExt/{filePath}", pathParameters),
@@ -406,13 +408,14 @@ func (client Client) CreatePreparer(ctx context.Context, accountName string, dir
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("https://{accountName}.{adlsFileSystemDnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/webhdfs/v1/{directFilePath}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if streamContents != nil {
 		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(streamContents))
+			autorest.WithFile(streamContents))
 	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1086,6 +1089,7 @@ func (client Client) MsConcatPreparer(ctx context.Context, accountName string, m
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{accountName}.{adlsFileSystemDnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/webhdfs/v1/{msConcatDestinationPath}", pathParameters),

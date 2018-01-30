@@ -65,13 +65,13 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix","windows"]
-  revision = "ff2a66f350cefa5c93a634eadb5d25bb60c85a9c"
+  revision = "3dbebcf8efb6a5011a60c2b4591c1022a759af8a"
 
 [[projects]]
   branch = "master"
   name = "pack.ag/amqp"
   packages = [".","internal/testconn"]
-  revision = "746c1d6d9c9af8074e67fb9173f57cf59aa48a5f"
+  revision = "156a96cbd71de6a80dd774d60de212f31c7272c7"
 
 [solve-meta]
   analyzer-name = "dep"

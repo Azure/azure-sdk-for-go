@@ -8,18 +8,20 @@ import (
 	"time"
 )
 
-// Receiver provides session and link handling for a receiving entity path
-type Receiver struct {
-	client     *amqp.Client
-	session    *Session
-	receiver   *amqp.Receiver
-	entityPath string
-	done       chan struct{}
-}
+// receiver provides session and link handling for a receiving entity path
+type (
+	receiver struct {
+		client     *amqp.Client
+		session    *session
+		receiver   *amqp.Receiver
+		entityPath string
+		done       chan struct{}
+	}
+)
 
-// NewReceiver creates a new Service Bus message listener given an AMQP client and an entity path
-func NewReceiver(client *amqp.Client, entityPath string) (*Receiver, error) {
-	receiver := &Receiver{
+// newReceiver creates a new Service Bus message listener given an AMQP client and an entity path
+func newReceiver(client *amqp.Client, entityPath string) (*receiver, error) {
+	receiver := &receiver{
 		client:     client,
 		entityPath: entityPath,
 		done:       make(chan struct{}),
@@ -32,7 +34,7 @@ func NewReceiver(client *amqp.Client, entityPath string) (*Receiver, error) {
 }
 
 // Close will close the AMQP session and link of the receiver
-func (r *Receiver) Close() error {
+func (r *receiver) Close() error {
 	close(r.done)
 
 	err := r.receiver.Close()
@@ -49,7 +51,7 @@ func (r *Receiver) Close() error {
 }
 
 // Recover will attempt to close the current session and link, then rebuild them
-func (r *Receiver) Recover() error {
+func (r *receiver) Recover() error {
 	err := r.Close()
 	if err != nil {
 		return err
@@ -64,17 +66,18 @@ func (r *Receiver) Recover() error {
 }
 
 // Listen start a listener for messages sent to the entity path
-func (r *Receiver) Listen(handler Handler) {
+func (r *receiver) Listen(handler Handler) {
 	messages := make(chan *amqp.Message)
 	go r.listenForMessages(messages)
 	go r.handleMessages(messages, handler)
 }
 
-func (r *Receiver) handleMessages(messages chan *amqp.Message, handler Handler) {
+func (r *receiver) handleMessages(messages chan *amqp.Message, handler Handler) {
 	for {
 		select {
 		case <-r.done:
 			log.Debug("done handling messages")
+			close(messages)
 			return
 		case msg := <-messages:
 			ctx := context.Background()
@@ -97,12 +100,11 @@ func (r *Receiver) handleMessages(messages chan *amqp.Message, handler Handler) 
 	}
 }
 
-func (r *Receiver) listenForMessages(msgChan chan *amqp.Message) {
+func (r *receiver) listenForMessages(msgChan chan *amqp.Message) {
 	for {
 		select {
 		case <-r.done:
 			log.Debug("done listenting for messages")
-			close(msgChan)
 			return
 		default:
 			//log.Debug("attempting to receive messages")
@@ -131,7 +133,7 @@ func (r *Receiver) listenForMessages(msgChan chan *amqp.Message) {
 }
 
 // newSessionAndLink will replace the session and link on the receiver
-func (r *Receiver) newSessionAndLink() error {
+func (r *receiver) newSessionAndLink() error {
 	amqpSession, err := r.client.NewSession()
 	if err != nil {
 		return err
@@ -140,12 +142,13 @@ func (r *Receiver) newSessionAndLink() error {
 	amqpReceiver, err := amqpSession.NewReceiver(
 		amqp.LinkAddress(r.entityPath),
 		amqp.LinkCredit(10),
-		amqp.LinkBatching(true))
+		amqp.LinkBatching(true),
+		amqp.LinkReceiverSettle(amqp.ReceiverSettleMode(amqp.ModeSecond)))
 	if err != nil {
 		return err
 	}
 
-	r.session = NewSession(amqpSession)
+	r.session = newSession(amqpSession)
 	r.receiver = amqpReceiver
 
 	return nil

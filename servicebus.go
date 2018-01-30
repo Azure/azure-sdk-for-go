@@ -13,54 +13,71 @@ import (
 	"sync"
 )
 
+const (
+	banner = `
+   _____                 _               ____            
+  / ___/___  ______   __(_)________     / __ )__  _______
+  \__ \/ _ \/ ___/ | / / // ___/ _ \   / __  / / / / ___/
+ ___/ /  __/ /   | |/ / // /__/  __/  / /_/ / /_/ (__  ) 
+/____/\___/_/    |___/_/ \___/\___/  /_____/\__,_/____/
+
+`
+)
+
 var (
 	connStrRegex = regexp.MustCompile(`Endpoint=sb:\/\/(?P<Host>.+?);SharedAccessKeyName=(?P<KeyName>.+?);SharedAccessKey=(?P<Key>.+)`)
 )
 
 // SenderReceiver provides the ability to send and receive messages
-type SenderReceiver interface {
-	Send(ctx context.Context, entityPath string, msg *amqp.Message, opts ...SendOption) error
-	Receive(entityPath string, handler Handler) error
-	Close() error
-}
+type (
+	SenderReceiver interface {
+		Send(ctx context.Context, entityPath string, msg *amqp.Message, opts ...SendOption) error
+		Receive(entityPath string, handler Handler) error
+		Close() error
+	}
 
-// EntityManager provides the ability to manage Service Bus entities (Queues, Topics, Subscriptions, etc.)
-type EntityManager interface {
-	EnsureQueue(ctx context.Context, queueName string, opts ...QueueOption) (*mgmt.SBQueue, error)
-	DeleteQueue(ctx context.Context, queueName string) error
-}
+	// EntityManager provides the ability to manage Service Bus entities (Queues, Topics, Subscriptions, etc.)
+	EntityManager interface {
+		EnsureQueue(ctx context.Context, name string, opts ...QueueOption) (*mgmt.SBQueue, error)
+		DeleteQueue(ctx context.Context, name string) error
+		EnsureTopic(ctx context.Context, name string, opts ...TopicOption) (*mgmt.SBTopic, error)
+		DeleteTopic(ctx context.Context, name string) error
+		EnsureSubscription(ctx context.Context, topicName, name string, opts ...SubscriptionOption) (*mgmt.SBSubscription, error)
+		DeleteSubscription(ctx context.Context, topicName, name string) error
+	}
 
-// SenderReceiverManager provides Service Bus entity management as well as access to send and receive messages
-type SenderReceiverManager interface {
-	SenderReceiver
-	EntityManager
-}
+	// SenderReceiverManager provides Service Bus entity management as well as access to send and receive messages
+	SenderReceiverManager interface {
+		SenderReceiver
+		EntityManager
+	}
 
-// serviceBus provides a simplified facade over the AMQP implementation of Azure Service Bus.
-type serviceBus struct {
-	client         *amqp.Client
-	token          *adal.ServicePrincipalToken
-	environment    azure.Environment
-	subscriptionID string
-	resourceGroup  string
-	namespace      string
-	primaryKey     string
-	receivers      []*Receiver
-	senders        map[string]*Sender
-	receiverMu     sync.Mutex
-	senderMu       sync.Mutex
-	Logger         *log.Logger
-}
+	// serviceBus provides a simplified facade over the AMQP implementation of Azure Service Bus.
+	serviceBus struct {
+		client         *amqp.Client
+		token          *adal.ServicePrincipalToken
+		environment    azure.Environment
+		subscriptionID string
+		resourceGroup  string
+		namespace      string
+		primaryKey     string
+		receivers      []*receiver
+		senders        map[string]*sender
+		receiverMu     sync.Mutex
+		senderMu       sync.Mutex
+		Logger         *log.Logger
+	}
 
-// parsedConn is the structure of a parsed Service Bus connection string.
-type parsedConn struct {
-	Host    string
-	KeyName string
-	Key     string
-}
+	// parsedConn is the structure of a parsed Service Bus connection string.
+	parsedConn struct {
+		Host    string
+		KeyName string
+		Key     string
+	}
 
-// Handler is the function signature for any receiver of AMQP messages
-type Handler func(context.Context, *amqp.Message) error
+	// Handler is the function signature for any receiver of AMQP messages
+	Handler func(context.Context, *amqp.Message) error
+)
 
 // NewWithConnectionString creates a new connected instance of an Azure Service Bus given a connection string with the
 // same format as the Azure portal
@@ -98,7 +115,7 @@ func newWithConnectionString(connStr string) (*serviceBus, error) {
 		client: client,
 	}
 	sb.Logger.SetLevel(log.WarnLevel)
-	sb.senders = make(map[string]*Sender)
+	sb.senders = make(map[string]*sender)
 	return sb, nil
 }
 
@@ -166,6 +183,11 @@ func newParsedConnection(host string, keyName string, key string) (*parsedConn, 
 	}, nil
 }
 
+func (sb *serviceBus) Start() error {
+	log.Println(banner)
+	return nil
+}
+
 // Close drains and closes all of the existing senders, receivers and connections
 func (sb *serviceBus) Close() error {
 	// TODO: add some better error handling for cleaning up on Close
@@ -184,7 +206,7 @@ func (sb *serviceBus) drainReceivers() error {
 	for _, receiver := range sb.receivers {
 		receiver.Close()
 	}
-	sb.receivers = []*Receiver{}
+	sb.receivers = []*receiver{}
 	return nil
 }
 
@@ -205,7 +227,7 @@ func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
 	sb.receiverMu.Lock()
 	defer sb.receiverMu.Unlock()
 
-	receiver, err := NewReceiver(sb.client, entityPath)
+	receiver, err := newReceiver(sb.client, entityPath)
 	if err != nil {
 		return err
 	}
@@ -225,7 +247,7 @@ func (sb *serviceBus) Send(ctx context.Context, entityPath string, msg *amqp.Mes
 	return sender.Send(ctx, msg, opts...)
 }
 
-func (sb *serviceBus) fetchSender(entityPath string) (*Sender, error) {
+func (sb *serviceBus) fetchSender(entityPath string) (*sender, error) {
 	sb.senderMu.Lock()
 	defer sb.senderMu.Unlock()
 
@@ -235,7 +257,7 @@ func (sb *serviceBus) fetchSender(entityPath string) (*Sender, error) {
 	}
 
 	log.Debugf("creating a new sender for entity path %s", entityPath)
-	sender, err := NewSender(sb.client, entityPath)
+	sender, err := newSender(sb.client, entityPath)
 	if err != nil {
 		return nil, err
 	}

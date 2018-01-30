@@ -2,6 +2,7 @@ package servicebus
 
 import (
 	"context"
+	"flag"
 	rm "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources"
 	sbmgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest"
@@ -21,6 +22,7 @@ import (
 
 var (
 	letterRunes = []rune("abcdefghijklmnopqrstuvwxyz123456789")
+	debug       = flag.Bool("debug", false, "output debug level logging")
 )
 
 const (
@@ -33,20 +35,23 @@ func init() {
 	rand.Seed(time.Now().Unix())
 }
 
-// ServiceBusSuite encapsulates a end to end test of Service Bus with build up and tear down of all SB resources
-type ServiceBusSuite struct {
-	suite.Suite
-	TenantID       string
-	SubscriptionID string
-	ClientID       string
-	ClientSecret   string
-	Namespace      string
-	Token          *adal.ServicePrincipalToken
-	Environment    azure.Environment
-}
+type (
+	// ServiceBusSuite encapsulates a end to end test of Service Bus with build up and tear down of all SB resources
+	ServiceBusSuite struct {
+		suite.Suite
+		TenantID       string
+		SubscriptionID string
+		ClientID       string
+		ClientSecret   string
+		Namespace      string
+		Token          *adal.ServicePrincipalToken
+		Environment    azure.Environment
+	}
+)
 
 func (suite *ServiceBusSuite) SetupSuite() {
-	if testing.Verbose() {
+	flag.Parse()
+	if *debug {
 		log.SetLevel(log.DebugLevel)
 	}
 
@@ -70,9 +75,9 @@ func (suite *ServiceBusSuite) TearDownSuite() {
 
 func (suite *ServiceBusSuite) TestQueue() {
 	tests := map[string]func(*testing.T, SenderReceiver, string){
-		"SimpleSend":         testQueueSend,
-		"SendAndReceive":     testQueueSendAndReceive,
-		"DuplicateDetection": testDuplicateDetection,
+		"SimpleSend":            testQueueSend,
+		"SendAndReceiveInOrder": testQueueSendAndReceiveInOrder,
+		"DuplicateDetection":    testDuplicateDetection,
 	}
 
 	spToken := suite.servicePrincipalToken()
@@ -81,18 +86,18 @@ func (suite *ServiceBusSuite) TestQueue() {
 		log.Fatalln(err)
 	}
 	defer func() {
-		log.Debug("before close")
 		sb.Close()
-		log.Debug("after close")
 	}()
 
 	for name, testFunc := range tests {
 		queueName := randomName("gosbtest", 10)
+		window := 3 * time.Minute
 		_, err := sb.EnsureQueue(
 			context.Background(),
 			queueName,
 			QueueWithPartitioning(),
-			QueueWithDuplicateDetection())
+			QueueWithDuplicateDetection(nil),
+			QueueWithLockDuration(&window))
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -111,7 +116,7 @@ func testQueueSend(t *testing.T, sb SenderReceiver, queueName string) {
 	assert.Nil(t, err)
 }
 
-func testQueueSendAndReceive(t *testing.T, sb SenderReceiver, queueName string) {
+func testQueueSendAndReceiveInOrder(t *testing.T, sb SenderReceiver, queueName string) {
 	numMessages := rand.Intn(100) + 20
 	var wg sync.WaitGroup
 	wg.Add(numMessages + 1)
@@ -155,7 +160,7 @@ func testDuplicateDetection(t *testing.T, sb SenderReceiver, queueName string) {
 		},
 		{
 			ID:   dupID,
-			Data: "hello duplicate!",
+			Data: "hello 1!",
 		},
 		{
 			ID:   uuid.NewV4().String(),
@@ -177,13 +182,15 @@ func testDuplicateDetection(t *testing.T, sb SenderReceiver, queueName string) {
 		defer wg.Done()
 	}()
 
+	received := make(map[interface{}]string)
 	sb.Receive(queueName, func(ctx context.Context, msg *amqp.Message) error {
 		// we should get 2 messages discarding the duplicate ID
-		assert.NotEqual(t, messages[1].Data, string(msg.Data))
+		received[msg.Properties.MessageID] = string(msg.Data)
 		wg.Done()
 		return nil
 	})
 	wg.Wait()
+	assert.Equal(t, 2, len(received), "should not have more than 2 messages", received)
 }
 
 func TestServiceBusSuite(t *testing.T) {

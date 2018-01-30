@@ -85,7 +85,7 @@ func (client EnvironmentsClient) CreateOrUpdatePreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2017-02-28-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -162,7 +162,7 @@ func (client EnvironmentsClient) DeletePreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2017-02-28-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -197,10 +197,9 @@ func (client EnvironmentsClient) DeleteResponder(resp *http.Response) (result au
 // Get gets the environment with the specified name in the specified subscription and resource group.
 //
 // resourceGroupName is name of an Azure Resource group. environmentName is the name of the Time Series Insights
-// environment associated with the specified resource group. expand is setting $expand=status will include the status
-// of the internal services of the environment in the Time Series Insights service.
-func (client EnvironmentsClient) Get(ctx context.Context, resourceGroupName string, environmentName string, expand string) (result EnvironmentResource, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, environmentName, expand)
+// environment associated with the specified resource group.
+func (client EnvironmentsClient) Get(ctx context.Context, resourceGroupName string, environmentName string) (result EnvironmentResource, err error) {
+	req, err := client.GetPreparer(ctx, resourceGroupName, environmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsClient", "Get", nil, "Failure preparing request")
 		return
@@ -222,19 +221,16 @@ func (client EnvironmentsClient) Get(ctx context.Context, resourceGroupName stri
 }
 
 // GetPreparer prepares the Get request.
-func (client EnvironmentsClient) GetPreparer(ctx context.Context, resourceGroupName string, environmentName string, expand string) (*http.Request, error) {
+func (client EnvironmentsClient) GetPreparer(ctx context.Context, resourceGroupName string, environmentName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"environmentName":   autorest.Encode("path", environmentName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2017-02-28-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -298,7 +294,7 @@ func (client EnvironmentsClient) ListByResourceGroupPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2017-02-28-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -360,7 +356,7 @@ func (client EnvironmentsClient) ListBySubscriptionPreparer(ctx context.Context)
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2017-02-28-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -422,7 +418,7 @@ func (client EnvironmentsClient) UpdatePreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2017-02-28-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

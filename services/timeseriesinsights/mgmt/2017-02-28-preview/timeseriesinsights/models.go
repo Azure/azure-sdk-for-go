@@ -37,22 +37,6 @@ const (
 	Reader AccessPolicyRole = "Reader"
 )
 
-// IngressState enumerates the values for ingress state.
-type IngressState string
-
-const (
-	// Disabled ...
-	Disabled IngressState = "Disabled"
-	// Paused ...
-	Paused IngressState = "Paused"
-	// Ready ...
-	Ready IngressState = "Ready"
-	// Running ...
-	Running IngressState = "Running"
-	// Unknown ...
-	Unknown IngressState = "Unknown"
-)
-
 // Kind enumerates the values for kind.
 type Kind string
 
@@ -300,7 +284,6 @@ type AzureEventSourceProperties struct {
 
 // CloudError contains information about an API error.
 type CloudError struct {
-	// Error - Describes a particular API error with an error code and a message.
 	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
@@ -330,9 +313,8 @@ type EnvironmentCreateOrUpdateParameters struct {
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Key-value pairs of additional properties for the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// Sku - The sku determines the capacity of the environment, the SLA (in queries-per-minute and total capacity), and the billing rate.
-	Sku                            *Sku `json:"sku,omitempty"`
+	Tags                           *map[string]*string `json:"tags,omitempty"`
+	Sku                            *Sku                `json:"sku,omitempty"`
 	*EnvironmentCreationProperties `json:"properties,omitempty"`
 }
 
@@ -407,8 +389,6 @@ type EnvironmentListResponse struct {
 type EnvironmentMutableProperties struct {
 	// DataRetentionTime - ISO8601 timespan specifying the minimum number of days the environment's events will be available for query.
 	DataRetentionTime *string `json:"dataRetentionTime,omitempty"`
-	// StorageLimitExceededBehavior - The behavior the Time Series Insights service should take when the environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted from the environment. The default behavior is PurgeOldData. Possible values include: 'PurgeOldData', 'PauseIngress'
-	StorageLimitExceededBehavior StorageLimitExceededBehavior `json:"storageLimitExceededBehavior,omitempty"`
 }
 
 // EnvironmentResource an environment is a set of time-series data avaliable for query, and is the top level Azure Time
@@ -424,9 +404,8 @@ type EnvironmentResource struct {
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// Sku - The sku determines the capacity of the environment, the SLA (in queries-per-minute and total capacity), and the billing rate.
-	Sku                            *Sku `json:"sku,omitempty"`
+	Tags                           *map[string]*string `json:"tags,omitempty"`
+	Sku                            *Sku                `json:"sku,omitempty"`
 	*EnvironmentResourceProperties `json:"properties,omitempty"`
 }
 
@@ -526,8 +505,6 @@ type EnvironmentResourceProperties struct {
 	DataAccessID *uuid.UUID `json:"dataAccessId,omitempty"`
 	// DataAccessFqdn - The fully qualified domain name used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
 	DataAccessFqdn *string `json:"dataAccessFqdn,omitempty"`
-	// Status - An object that represents the status of the environment, and its internal state in the Time Series Insights service.
-	Status *EnvironmentStatus `json:"status,omitempty"`
 }
 
 // EnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -568,21 +545,6 @@ func (future EnvironmentsCreateOrUpdateFuture) Result(client EnvironmentsClient)
 		err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
-}
-
-// EnvironmentStateDetails an object that contains the details about an environment's state.
-type EnvironmentStateDetails struct {
-	// Code - Contains the code that represents the reason of an environment being in a particular state. Can be used to programatically handle specific cases.
-	Code *string `json:"code,omitempty"`
-	// Message - A message that describes the state in detail.
-	Message *string `json:"message,omitempty"`
-}
-
-// EnvironmentStatus an object that represents the status of the environment, and its internal state in the Time Series
-// Insights service.
-type EnvironmentStatus struct {
-	// Ingress - An object that represents the status of ingress on an environment.
-	Ingress *IngressEnvironmentStatus `json:"ingress,omitempty"`
 }
 
 // EnvironmentsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -828,9 +790,8 @@ type EventHubEventSourceCreationProperties struct {
 // properties.
 type EventHubEventSourceMutableProperties struct {
 	// TimestampPropertyName - The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used.
-	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
-	// LocalTimestamp - An object that represents the local timestamp property. It contains the format of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
-	LocalTimestamp *LocalTimestamp `json:"localTimestamp,omitempty"`
+	TimestampPropertyName *string         `json:"timestampPropertyName,omitempty"`
+	LocalTimestamp        *LocalTimestamp `json:"localTimestamp,omitempty"`
 	// SharedAccessKey - The value of the shared access key that grants the Time Series Insights service read access to the event hub. This property is not shown in event source responses.
 	SharedAccessKey *string `json:"sharedAccessKey,omitempty"`
 }
@@ -1176,9 +1137,8 @@ func (eslr *EventSourceListResponse) UnmarshalJSON(body []byte) error {
 // EventSourceMutableProperties an object that represents a set of mutable event source resource properties.
 type EventSourceMutableProperties struct {
 	// TimestampPropertyName - The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used.
-	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
-	// LocalTimestamp - An object that represents the local timestamp property. It contains the format of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
-	LocalTimestamp *LocalTimestamp `json:"localTimestamp,omitempty"`
+	TimestampPropertyName *string         `json:"timestampPropertyName,omitempty"`
+	LocalTimestamp        *LocalTimestamp `json:"localTimestamp,omitempty"`
 }
 
 // BasicEventSourceResource an environment receives data from one or more event sources. Each event source has
@@ -1312,14 +1272,6 @@ func (esrm *EventSourceResourceModel) UnmarshalJSON(body []byte) error {
 type EventSourceUpdateParameters struct {
 	// Tags - Key-value pairs of additional properties for the event source.
 	Tags *map[string]*string `json:"tags,omitempty"`
-}
-
-// IngressEnvironmentStatus an object that represents the status of ingress on an environment.
-type IngressEnvironmentStatus struct {
-	// State - This string represents the state of ingress operations on an environment. It can be "Disabled", "Ready", "Running", "Paused" or "Unknown". Possible values include: 'Disabled', 'Ready', 'Running', 'Paused', 'Unknown'
-	State IngressState `json:"state,omitempty"`
-	// StateDetails - An object that contains the details about an environment's state.
-	StateDetails *EnvironmentStateDetails `json:"stateDetails,omitempty"`
 }
 
 // IoTHubEventSourceCommonProperties properties of the IoTHub event source.
@@ -1470,9 +1422,8 @@ type IoTHubEventSourceCreationProperties struct {
 // properties.
 type IoTHubEventSourceMutableProperties struct {
 	// TimestampPropertyName - The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used.
-	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
-	// LocalTimestamp - An object that represents the local timestamp property. It contains the format of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
-	LocalTimestamp *LocalTimestamp `json:"localTimestamp,omitempty"`
+	TimestampPropertyName *string         `json:"timestampPropertyName,omitempty"`
+	LocalTimestamp        *LocalTimestamp `json:"localTimestamp,omitempty"`
 	// SharedAccessKey - The value of the shared access key that grants the Time Series Insights service read access to the iot hub. This property is not shown in event source responses.
 	SharedAccessKey *string `json:"sharedAccessKey,omitempty"`
 }

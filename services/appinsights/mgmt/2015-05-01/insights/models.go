@@ -344,7 +344,7 @@ type ApplicationInsightsComponentFeatureCapabilities struct {
 	// APIAccessLevel - Reserved, not used now.
 	APIAccessLevel *string `json:"ApiAccessLevel,omitempty"`
 	// TrackingType - The applciation insights component used tracking type.
-	TrackingType *bool `json:"TrackingType,omitempty"`
+	TrackingType *string `json:"TrackingType,omitempty"`
 	// DailyCap - Daily data volume cap in GB.
 	DailyCap *float64 `json:"DailyCap,omitempty"`
 	// DailyCapResetTime - Daily data volume cap UTC reset hour.

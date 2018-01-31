@@ -49,9 +49,9 @@ const (
 // CoreSummary the core summary of a search.
 type CoreSummary struct {
 	// Status - The status of a core summary.
-	Status *string `json:"Status,omitempty"`
+	Status *string `json:"status,omitempty"`
 	// NumberOfDocuments - The number of documents of a core summary.
-	NumberOfDocuments *int64 `json:"NumberOfDocuments,omitempty"`
+	NumberOfDocuments *int64 `json:"numberOfDocuments,omitempty"`
 }
 
 // LinkTarget metadata for a workspace that isn't linked to an Azure subscription.
@@ -70,6 +70,31 @@ type LinkTarget struct {
 type ListLinkTarget struct {
 	autorest.Response `json:"-"`
 	Value             *[]LinkTarget `json:"value,omitempty"`
+}
+
+// Operation supported operation of OperationsManagement resource provider.
+type Operation struct {
+	// Name - Operation name: {provider}/{resource}/{operation}
+	Name *string `json:"name,omitempty"`
+	// Display - Display metadata associated with the operation.
+	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// OperationDisplay display metadata associated with the operation.
+type OperationDisplay struct {
+	// Provider - Service provider: Microsoft OperationsManagement.
+	Provider *string `json:"provider,omitempty"`
+	// Resource - Resource on which the operation is performed etc.
+	Resource *string `json:"resource,omitempty"`
+	// Operation - Type of operation: get, read, delete, etc.
+	Operation *string `json:"operation,omitempty"`
+}
+
+// OperationListResult result of the request to list solution operations.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - List of solution operations supported by the OperationsManagement resource provider.
+	Value *[]Operation `json:"value,omitempty"`
 }
 
 // ProxyResource common properties of proxy resource.
@@ -103,8 +128,12 @@ type SavedSearch struct {
 	autorest.Response `json:"-"`
 	// ID - The id of the saved search.
 	ID *string `json:"id,omitempty"`
-	// Etag - The etag of the saved search.
-	Etag *string `json:"etag,omitempty"`
+	// Name - The name of the saved search.
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the saved search.
+	Type *string `json:"type,omitempty"`
+	// ETag - The etag of the saved search.
+	ETag *string `json:"eTag,omitempty"`
 	// SavedSearchProperties - Gets or sets properties of the saved search.
 	*SavedSearchProperties `json:"properties,omitempty"`
 }
@@ -128,14 +157,34 @@ func (ss *SavedSearch) UnmarshalJSON(body []byte) error {
 		ss.ID = &ID
 	}
 
-	v = m["etag"]
+	v = m["name"]
 	if v != nil {
-		var etag string
-		err = json.Unmarshal(*m["etag"], &etag)
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
 		if err != nil {
 			return err
 		}
-		ss.Etag = &etag
+		ss.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		ss.Type = &typeVar
+	}
+
+	v = m["eTag"]
+	if v != nil {
+		var eTag string
+		err = json.Unmarshal(*m["eTag"], &eTag)
+		if err != nil {
+			return err
+		}
+		ss.ETag = &eTag
 	}
 
 	v = m["properties"]
@@ -155,7 +204,7 @@ func (ss *SavedSearch) UnmarshalJSON(body []byte) error {
 type SavedSearchesListResult struct {
 	autorest.Response `json:"-"`
 	// Metadata - The metadata from search results.
-	Metadata *SearchMetadata `json:"__metadata,omitempty"`
+	Metadata *SearchMetadata `json:"metaData,omitempty"`
 	// Value - The array of result values.
 	Value *[]SavedSearch `json:"value,omitempty"`
 }
@@ -163,15 +212,15 @@ type SavedSearchesListResult struct {
 // SavedSearchProperties value object for saved search results.
 type SavedSearchProperties struct {
 	// Category - The category of the saved search. This helps the user to find a saved search faster.
-	Category *string `json:"Category,omitempty"`
+	Category *string `json:"category,omitempty"`
 	// DisplayName - Saved search display name.
-	DisplayName *string `json:"DisplayName,omitempty"`
+	DisplayName *string `json:"displayName,omitempty"`
 	// Query - The query expression for the saved search. Please see https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-search-reference for reference.
-	Query *string `json:"Query,omitempty"`
+	Query *string `json:"query,omitempty"`
 	// Version - The version number of the query lanuage. Only verion 1 is allowed here.
-	Version *int64 `json:"Version,omitempty"`
+	Version *int64 `json:"version,omitempty"`
 	// Tags - The tags attached to the saved search.
-	Tags *[]Tag `json:"Tags,omitempty"`
+	Tags *[]Tag `json:"tags,omitempty"`
 }
 
 // SearchError details for a search error.
@@ -186,7 +235,7 @@ type SearchError struct {
 type SearchGetSchemaResponse struct {
 	autorest.Response `json:"-"`
 	// Metadata - The metadata from search results.
-	Metadata *SearchMetadata `json:"__metadata,omitempty"`
+	Metadata *SearchMetadata `json:"metadata,omitempty"`
 	// Value - The array of result values.
 	Value *[]SearchSchemaValue `json:"value,omitempty"`
 }
@@ -202,7 +251,7 @@ type SearchHighlight struct {
 // SearchMetadata metadata for search results.
 type SearchMetadata struct {
 	// SearchID - The request id of the search.
-	SearchID *string `json:"RequestId,omitempty"`
+	SearchID *string `json:"requestId,omitempty"`
 	// ResultType - The search result type.
 	ResultType *string `json:"resultType,omitempty"`
 	// Total - The total number of search results.
@@ -212,15 +261,15 @@ type SearchMetadata struct {
 	// ID - The id of the search results request.
 	ID *string `json:"id,omitempty"`
 	// CoreSummaries - The core summaries.
-	CoreSummaries *[]CoreSummary `json:"CoreSummaries,omitempty"`
+	CoreSummaries *[]CoreSummary `json:"coreSummaries,omitempty"`
 	// Status - The status of the search results.
-	Status *string `json:"Status,omitempty"`
+	Status *string `json:"status,omitempty"`
 	// StartTime - The start time for the search.
-	StartTime *date.Time `json:"StartTime,omitempty"`
+	StartTime *date.Time `json:"startTime,omitempty"`
 	// LastUpdated - The time of last update.
-	LastUpdated *date.Time `json:"LastUpdated,omitempty"`
+	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
 	// ETag - The ETag of the search results.
-	ETag *string `json:"ETag,omitempty"`
+	ETag *string `json:"eTag,omitempty"`
 	// Sort - How the results are sorted.
 	Sort *[]SearchSort `json:"sort,omitempty"`
 	// RequestTime - The request time.
@@ -265,7 +314,7 @@ type SearchResultsResponse struct {
 	// ID - The id of the search, which includes the full url.
 	ID *string `json:"id,omitempty"`
 	// Metadata - The metadata from search results.
-	Metadata *SearchMetadata `json:"__metadata,omitempty"`
+	Metadata *SearchMetadata `json:"metaData,omitempty"`
 	// Value - The array of result values.
 	Value *[]map[string]interface{} `json:"value,omitempty"`
 	// Error - The error.
@@ -520,9 +569,9 @@ type StorageInsightStatus struct {
 // Tag a tag of a saved search.
 type Tag struct {
 	// Name - The tag name.
-	Name *string `json:"Name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// Value - The tag value.
-	Value *string `json:"Value,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 
 // WorkspacesGetSearchResultsFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -538,21 +587,29 @@ func (future WorkspacesGetSearchResultsFuture) Result(client WorkspacesClient) (
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesGetSearchResultsFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return srr, autorest.NewError("operationalinsights.WorkspacesGetSearchResultsFuture", "Result", "asynchronous operation has not completed")
+		return srr, azure.NewAsyncOpIncompleteError("operationalinsights.WorkspacesGetSearchResultsFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		srr, err = client.GetSearchResultsResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesGetSearchResultsFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesGetSearchResultsFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	srr, err = client.GetSearchResultsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesGetSearchResultsFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }

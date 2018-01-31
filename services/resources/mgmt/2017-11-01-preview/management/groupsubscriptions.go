@@ -32,20 +32,21 @@ type GroupSubscriptionsClient struct {
 }
 
 // NewGroupSubscriptionsClient creates an instance of the GroupSubscriptionsClient client.
-func NewGroupSubscriptionsClient(subscriptionID string) GroupSubscriptionsClient {
-	return NewGroupSubscriptionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewGroupSubscriptionsClient() GroupSubscriptionsClient {
+	return NewGroupSubscriptionsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewGroupSubscriptionsClientWithBaseURI creates an instance of the GroupSubscriptionsClient client.
-func NewGroupSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) GroupSubscriptionsClient {
-	return GroupSubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewGroupSubscriptionsClientWithBaseURI(baseURI string) GroupSubscriptionsClient {
+	return GroupSubscriptionsClient{NewWithBaseURI(baseURI)}
 }
 
 // Create associates existing subscription with the management group.
 //
-// groupID is management Group ID. cacheControl is indicates that the request shouldn't utilize any caches.
-func (client GroupSubscriptionsClient) Create(ctx context.Context, groupID string, cacheControl string) (result autorest.Response, err error) {
-	req, err := client.CreatePreparer(ctx, groupID, cacheControl)
+// groupID is management Group ID. subscriptionID is subscription ID. cacheControl is indicates that the request
+// shouldn't utilize any caches.
+func (client GroupSubscriptionsClient) Create(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error) {
+	req, err := client.CreatePreparer(ctx, groupID, subscriptionID, cacheControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "management.GroupSubscriptionsClient", "Create", nil, "Failure preparing request")
 		return
@@ -67,10 +68,10 @@ func (client GroupSubscriptionsClient) Create(ctx context.Context, groupID strin
 }
 
 // CreatePreparer prepares the Create request.
-func (client GroupSubscriptionsClient) CreatePreparer(ctx context.Context, groupID string, cacheControl string) (*http.Request, error) {
+func (client GroupSubscriptionsClient) CreatePreparer(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId":        autorest.Encode("path", groupID),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2017-11-01-preview"
@@ -111,9 +112,10 @@ func (client GroupSubscriptionsClient) CreateResponder(resp *http.Response) (res
 
 // Delete de-associates subscription from the management group.
 //
-// groupID is management Group ID. cacheControl is indicates that the request shouldn't utilize any caches.
-func (client GroupSubscriptionsClient) Delete(ctx context.Context, groupID string, cacheControl string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(ctx, groupID, cacheControl)
+// groupID is management Group ID. subscriptionID is subscription ID. cacheControl is indicates that the request
+// shouldn't utilize any caches.
+func (client GroupSubscriptionsClient) Delete(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(ctx, groupID, subscriptionID, cacheControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "management.GroupSubscriptionsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -135,10 +137,10 @@ func (client GroupSubscriptionsClient) Delete(ctx context.Context, groupID strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client GroupSubscriptionsClient) DeletePreparer(ctx context.Context, groupID string, cacheControl string) (*http.Request, error) {
+func (client GroupSubscriptionsClient) DeletePreparer(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId":        autorest.Encode("path", groupID),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2017-11-01-preview"

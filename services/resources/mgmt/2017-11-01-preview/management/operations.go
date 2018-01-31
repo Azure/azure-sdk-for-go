@@ -32,13 +32,13 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewOperationsClient() OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI)}
 }
 
 // List lists all of the available Management REST API operations.

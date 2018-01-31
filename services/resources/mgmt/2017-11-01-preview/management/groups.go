@@ -32,13 +32,13 @@ type GroupsClient struct {
 }
 
 // NewGroupsClient creates an instance of the GroupsClient client.
-func NewGroupsClient(subscriptionID string) GroupsClient {
-	return NewGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewGroupsClient() GroupsClient {
+	return NewGroupsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewGroupsClientWithBaseURI creates an instance of the GroupsClient client.
-func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string) GroupsClient {
-	return GroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewGroupsClientWithBaseURI(baseURI string) GroupsClient {
+	return GroupsClient{NewWithBaseURI(baseURI)}
 }
 
 // CreateOrUpdate create or update a management group.

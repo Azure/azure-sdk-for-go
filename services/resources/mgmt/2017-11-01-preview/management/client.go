@@ -30,31 +30,23 @@ import (
 const (
 	// DefaultBaseURI is the default URI used for the service Management
 	DefaultBaseURI = "https://management.azure.com"
-	// DefaultCacheControl is the default value for cache control
-	DefaultCacheControl = "no-cache"
 )
 
 // BaseClient is the base client for Management.
 type BaseClient struct {
 	autorest.Client
-	BaseURI        string
-	GroupID        string
-	SubscriptionID string
-	CacheControl   string
+	BaseURI string
 }
 
 // New creates an instance of the BaseClient client.
-func New(groupID string, subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, groupID, subscriptionID)
+func New() BaseClient {
+	return NewWithBaseURI(DefaultBaseURI)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, groupID string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string) BaseClient {
 	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		GroupID:        groupID,
-		SubscriptionID: subscriptionID,
-		CacheControl:   DefaultCacheControl,
+		Client:  autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI: baseURI,
 	}
 }

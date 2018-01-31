@@ -32,18 +32,21 @@ type GroupSubscriptionsClient struct {
 }
 
 // NewGroupSubscriptionsClient creates an instance of the GroupSubscriptionsClient client.
-func NewGroupSubscriptionsClient(groupID string, subscriptionID string) GroupSubscriptionsClient {
-	return NewGroupSubscriptionsClientWithBaseURI(DefaultBaseURI, groupID, subscriptionID)
+func NewGroupSubscriptionsClient() GroupSubscriptionsClient {
+	return NewGroupSubscriptionsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewGroupSubscriptionsClientWithBaseURI creates an instance of the GroupSubscriptionsClient client.
-func NewGroupSubscriptionsClientWithBaseURI(baseURI string, groupID string, subscriptionID string) GroupSubscriptionsClient {
-	return GroupSubscriptionsClient{NewWithBaseURI(baseURI, groupID, subscriptionID)}
+func NewGroupSubscriptionsClientWithBaseURI(baseURI string) GroupSubscriptionsClient {
+	return GroupSubscriptionsClient{NewWithBaseURI(baseURI)}
 }
 
 // Create associates existing subscription with the management group.
-func (client GroupSubscriptionsClient) Create(ctx context.Context) (result autorest.Response, err error) {
-	req, err := client.CreatePreparer(ctx)
+//
+// groupID is management Group ID. subscriptionID is subscription ID. cacheControl is indicates that the request
+// shouldn't utilize any caches.
+func (client GroupSubscriptionsClient) Create(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error) {
+	req, err := client.CreatePreparer(ctx, groupID, subscriptionID, cacheControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "management.GroupSubscriptionsClient", "Create", nil, "Failure preparing request")
 		return
@@ -65,10 +68,10 @@ func (client GroupSubscriptionsClient) Create(ctx context.Context) (result autor
 }
 
 // CreatePreparer prepares the Create request.
-func (client GroupSubscriptionsClient) CreatePreparer(ctx context.Context) (*http.Request, error) {
+func (client GroupSubscriptionsClient) CreatePreparer(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"groupId":        autorest.Encode("path", client.GroupID),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"groupId":        autorest.Encode("path", groupID),
+		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2017-11-01-preview"
@@ -81,9 +84,9 @@ func (client GroupSubscriptionsClient) CreatePreparer(ctx context.Context) (*htt
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{groupId}/subscriptions/{subscriptionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	if len(client.CacheControl) > 0 {
+	if len(cacheControl) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithHeader("Cache-Control", autorest.String(client.CacheControl)))
+			autorest.WithHeader("Cache-Control", autorest.String(cacheControl)))
 	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -108,8 +111,11 @@ func (client GroupSubscriptionsClient) CreateResponder(resp *http.Response) (res
 }
 
 // Delete de-associates subscription from the management group.
-func (client GroupSubscriptionsClient) Delete(ctx context.Context) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(ctx)
+//
+// groupID is management Group ID. subscriptionID is subscription ID. cacheControl is indicates that the request
+// shouldn't utilize any caches.
+func (client GroupSubscriptionsClient) Delete(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(ctx, groupID, subscriptionID, cacheControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "management.GroupSubscriptionsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -131,10 +137,10 @@ func (client GroupSubscriptionsClient) Delete(ctx context.Context) (result autor
 }
 
 // DeletePreparer prepares the Delete request.
-func (client GroupSubscriptionsClient) DeletePreparer(ctx context.Context) (*http.Request, error) {
+func (client GroupSubscriptionsClient) DeletePreparer(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"groupId":        autorest.Encode("path", client.GroupID),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"groupId":        autorest.Encode("path", groupID),
+		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2017-11-01-preview"
@@ -147,9 +153,9 @@ func (client GroupSubscriptionsClient) DeletePreparer(ctx context.Context) (*htt
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{groupId}/subscriptions/{subscriptionId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	if len(client.CacheControl) > 0 {
+	if len(cacheControl) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithHeader("Cache-Control", autorest.String(client.CacheControl)))
+			autorest.WithHeader("Cache-Control", autorest.String(cacheControl)))
 	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

@@ -1,6 +1,3 @@
-// Package compute implements the Azure ARM Compute service API version 2016-03-30.
-//
-// Compute Client
 package compute
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -21,31 +18,46 @@ package compute
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"net/url"
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Compute
-	DefaultBaseURI = "https://management.azure.com"
+	// ServiceVersion specifies the version of the operations used in this package.
+	ServiceVersion = "2016-03-30"
+	// DefaultBaseURL is the default URL used for the service Compute
+	DefaultBaseURL = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Compute.
-type BaseClient struct {
-	autorest.Client
-	BaseURI        string
-	SubscriptionID string
+// ManagementClient is the base client for Compute.
+type ManagementClient struct {
+	url url.URL
+	p   pipeline.Pipeline
 }
 
-// New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
-}
-
-// NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
+// NewManagementClient creates an instance of the ManagementClient client.
+func NewManagementClient(p pipeline.Pipeline) ManagementClient {
+	u, err := url.Parse(DefaultBaseURL)
+	if err != nil {
+		panic(err)
 	}
+	return NewManagementClientWithURL(*u, p)
+}
+
+// NewManagementClientWithURL creates an instance of the ManagementClient client.
+func NewManagementClientWithURL(url url.URL, p pipeline.Pipeline) ManagementClient {
+	return ManagementClient{
+		url: url,
+		p:   p,
+	}
+}
+
+// URL returns a copy of the URL for this client.
+func (mc ManagementClient) URL() url.URL {
+	return mc.url
+}
+
+// Pipeline returns the pipeline for this client.
+func (mc ManagementClient) Pipeline() pipeline.Pipeline {
+	return mc.p
 }

@@ -18,258 +18,299 @@ package compute
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"encoding/json"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
+	"time"
 )
 
-// CachingTypes enumerates the values for caching types.
-type CachingTypes string
+// Marker represents an opaque value used in paged responses.
+type Marker struct {
+	val *string
+}
+
+// NotDone returns true if the list enumeration should be started or is not yet complete. Specifically, NotDone returns true
+// for a just-initialized (zero value) Marker indicating that you should make an initial request to get a result portion from
+// the service. NotDone also returns true whenever the service returns an interim result portion. NotDone returns false only
+// after the service has returned the final result portion.
+func (m Marker) NotDone() bool {
+	return m.val == nil || *m.val != ""
+}
+
+// UnmarshalXML implements the xml.Unmarshaler interface for Marker.
+func (m *Marker) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var out string
+	err := d.DecodeElement(&out, &start)
+	m.val = &out
+	return err
+}
+
+// CachingTypesType enumerates the values for caching types.
+type CachingTypesType string
 
 const (
-	// None ...
-	None CachingTypes = "None"
-	// ReadOnly ...
-	ReadOnly CachingTypes = "ReadOnly"
-	// ReadWrite ...
-	ReadWrite CachingTypes = "ReadWrite"
+	// CachingTypesNone ...
+	CachingTypesNone CachingTypesType = "None"
+	// CachingTypesNone represents an empty CachingTypesType.
+	CachingTypesNone CachingTypesType = ""
+	// CachingTypesReadOnly ...
+	CachingTypesReadOnly CachingTypesType = "ReadOnly"
+	// CachingTypesReadWrite ...
+	CachingTypesReadWrite CachingTypesType = "ReadWrite"
 )
 
-// ComponentNames enumerates the values for component names.
-type ComponentNames string
+// ComponentNamesType enumerates the values for component names.
+type ComponentNamesType string
 
 const (
-	// MicrosoftWindowsShellSetup ...
-	MicrosoftWindowsShellSetup ComponentNames = "Microsoft-Windows-Shell-Setup"
+	// ComponentNamesMicrosoftWindowsShellSetup ...
+	ComponentNamesMicrosoftWindowsShellSetup ComponentNamesType = "Microsoft-Windows-Shell-Setup"
+	// ComponentNamesNone represents an empty ComponentNamesType.
+	ComponentNamesNone ComponentNamesType = ""
 )
 
-// DiskCreateOptionTypes enumerates the values for disk create option types.
-type DiskCreateOptionTypes string
+// DiskCreateOptionTypesType enumerates the values for disk create option types.
+type DiskCreateOptionTypesType string
 
 const (
-	// Attach ...
-	Attach DiskCreateOptionTypes = "Attach"
-	// Empty ...
-	Empty DiskCreateOptionTypes = "Empty"
-	// FromImage ...
-	FromImage DiskCreateOptionTypes = "FromImage"
+	// DiskCreateOptionTypesAttach ...
+	DiskCreateOptionTypesAttach DiskCreateOptionTypesType = "Attach"
+	// DiskCreateOptionTypesEmpty ...
+	DiskCreateOptionTypesEmpty DiskCreateOptionTypesType = "Empty"
+	// DiskCreateOptionTypesFromImage ...
+	DiskCreateOptionTypesFromImage DiskCreateOptionTypesType = "FromImage"
+	// DiskCreateOptionTypesNone represents an empty DiskCreateOptionTypesType.
+	DiskCreateOptionTypesNone DiskCreateOptionTypesType = ""
 )
 
-// InstanceViewTypes enumerates the values for instance view types.
-type InstanceViewTypes string
+// InstanceViewTypesType enumerates the values for instance view types.
+type InstanceViewTypesType string
 
 const (
-	// InstanceView ...
-	InstanceView InstanceViewTypes = "instanceView"
+	// InstanceViewTypesInstanceView ...
+	InstanceViewTypesInstanceView InstanceViewTypesType = "instanceView"
+	// InstanceViewTypesNone represents an empty InstanceViewTypesType.
+	InstanceViewTypesNone InstanceViewTypesType = ""
 )
 
-// OperatingSystemTypes enumerates the values for operating system types.
-type OperatingSystemTypes string
+// OperatingSystemTypesType enumerates the values for operating system types.
+type OperatingSystemTypesType string
 
 const (
-	// Linux ...
-	Linux OperatingSystemTypes = "Linux"
-	// Windows ...
-	Windows OperatingSystemTypes = "Windows"
+	// OperatingSystemTypesLinux ...
+	OperatingSystemTypesLinux OperatingSystemTypesType = "Linux"
+	// OperatingSystemTypesNone represents an empty OperatingSystemTypesType.
+	OperatingSystemTypesNone OperatingSystemTypesType = ""
+	// OperatingSystemTypesWindows ...
+	OperatingSystemTypesWindows OperatingSystemTypesType = "Windows"
 )
 
-// PassNames enumerates the values for pass names.
-type PassNames string
+// PassNamesType enumerates the values for pass names.
+type PassNamesType string
 
 const (
-	// OobeSystem ...
-	OobeSystem PassNames = "OobeSystem"
+	// PassNamesNone represents an empty PassNamesType.
+	PassNamesNone PassNamesType = ""
+	// PassNamesOobeSystem ...
+	PassNamesOobeSystem PassNamesType = "OobeSystem"
 )
 
-// ProtocolTypes enumerates the values for protocol types.
-type ProtocolTypes string
+// ProtocolTypesType enumerates the values for protocol types.
+type ProtocolTypesType string
 
 const (
-	// HTTP ...
-	HTTP ProtocolTypes = "Http"
-	// HTTPS ...
-	HTTPS ProtocolTypes = "Https"
+	// ProtocolTypesHTTP ...
+	ProtocolTypesHTTP ProtocolTypesType = "Http"
+	// ProtocolTypesHTTPS ...
+	ProtocolTypesHTTPS ProtocolTypesType = "Https"
+	// ProtocolTypesNone represents an empty ProtocolTypesType.
+	ProtocolTypesNone ProtocolTypesType = ""
 )
 
-// SettingNames enumerates the values for setting names.
-type SettingNames string
+// SettingNamesType enumerates the values for setting names.
+type SettingNamesType string
 
 const (
-	// AutoLogon ...
-	AutoLogon SettingNames = "AutoLogon"
-	// FirstLogonCommands ...
-	FirstLogonCommands SettingNames = "FirstLogonCommands"
+	// SettingNamesAutoLogon ...
+	SettingNamesAutoLogon SettingNamesType = "AutoLogon"
+	// SettingNamesFirstLogonCommands ...
+	SettingNamesFirstLogonCommands SettingNamesType = "FirstLogonCommands"
+	// SettingNamesNone represents an empty SettingNamesType.
+	SettingNamesNone SettingNamesType = ""
 )
 
-// StatusLevelTypes enumerates the values for status level types.
-type StatusLevelTypes string
+// StatusLevelTypesType enumerates the values for status level types.
+type StatusLevelTypesType string
 
 const (
-	// Error ...
-	Error StatusLevelTypes = "Error"
-	// Info ...
-	Info StatusLevelTypes = "Info"
-	// Warning ...
-	Warning StatusLevelTypes = "Warning"
+	// StatusLevelTypesError ...
+	StatusLevelTypesError StatusLevelTypesType = "Error"
+	// StatusLevelTypesInfo ...
+	StatusLevelTypesInfo StatusLevelTypesType = "Info"
+	// StatusLevelTypesNone represents an empty StatusLevelTypesType.
+	StatusLevelTypesNone StatusLevelTypesType = ""
+	// StatusLevelTypesWarning ...
+	StatusLevelTypesWarning StatusLevelTypesType = "Warning"
 )
 
-// UpgradeMode enumerates the values for upgrade mode.
-type UpgradeMode string
+// UpgradeModeType enumerates the values for upgrade mode.
+type UpgradeModeType string
 
 const (
-	// Automatic ...
-	Automatic UpgradeMode = "Automatic"
-	// Manual ...
-	Manual UpgradeMode = "Manual"
+	// UpgradeModeAutomatic ...
+	UpgradeModeAutomatic UpgradeModeType = "Automatic"
+	// UpgradeModeManual ...
+	UpgradeModeManual UpgradeModeType = "Manual"
+	// UpgradeModeNone represents an empty UpgradeModeType.
+	UpgradeModeNone UpgradeModeType = ""
 )
 
 // VirtualMachineScaleSetSkuScaleType enumerates the values for virtual machine scale set sku scale type.
 type VirtualMachineScaleSetSkuScaleType string
 
 const (
-	// VirtualMachineScaleSetSkuScaleTypeAutomatic ...
-	VirtualMachineScaleSetSkuScaleTypeAutomatic VirtualMachineScaleSetSkuScaleType = "Automatic"
-	// VirtualMachineScaleSetSkuScaleTypeNone ...
-	VirtualMachineScaleSetSkuScaleTypeNone VirtualMachineScaleSetSkuScaleType = "None"
+	// VirtualMachineScaleSetSkuScaleAutomatic ...
+	VirtualMachineScaleSetSkuScaleAutomatic VirtualMachineScaleSetSkuScaleType = "Automatic"
+	// VirtualMachineScaleSetSkuScaleNone ...
+	VirtualMachineScaleSetSkuScaleNone VirtualMachineScaleSetSkuScaleType = "None"
+	// VirtualMachineScaleSetSkuScaleNone represents an empty VirtualMachineScaleSetSkuScaleType.
+	VirtualMachineScaleSetSkuScaleNone VirtualMachineScaleSetSkuScaleType = ""
 )
 
-// VirtualMachineSizeTypes enumerates the values for virtual machine size types.
-type VirtualMachineSizeTypes string
+// VirtualMachineSizeTypesType enumerates the values for virtual machine size types.
+type VirtualMachineSizeTypesType string
 
 const (
-	// BasicA0 ...
-	BasicA0 VirtualMachineSizeTypes = "Basic_A0"
-	// BasicA1 ...
-	BasicA1 VirtualMachineSizeTypes = "Basic_A1"
-	// BasicA2 ...
-	BasicA2 VirtualMachineSizeTypes = "Basic_A2"
-	// BasicA3 ...
-	BasicA3 VirtualMachineSizeTypes = "Basic_A3"
-	// BasicA4 ...
-	BasicA4 VirtualMachineSizeTypes = "Basic_A4"
-	// StandardA0 ...
-	StandardA0 VirtualMachineSizeTypes = "Standard_A0"
-	// StandardA1 ...
-	StandardA1 VirtualMachineSizeTypes = "Standard_A1"
-	// StandardA10 ...
-	StandardA10 VirtualMachineSizeTypes = "Standard_A10"
-	// StandardA11 ...
-	StandardA11 VirtualMachineSizeTypes = "Standard_A11"
-	// StandardA2 ...
-	StandardA2 VirtualMachineSizeTypes = "Standard_A2"
-	// StandardA3 ...
-	StandardA3 VirtualMachineSizeTypes = "Standard_A3"
-	// StandardA4 ...
-	StandardA4 VirtualMachineSizeTypes = "Standard_A4"
-	// StandardA5 ...
-	StandardA5 VirtualMachineSizeTypes = "Standard_A5"
-	// StandardA6 ...
-	StandardA6 VirtualMachineSizeTypes = "Standard_A6"
-	// StandardA7 ...
-	StandardA7 VirtualMachineSizeTypes = "Standard_A7"
-	// StandardA8 ...
-	StandardA8 VirtualMachineSizeTypes = "Standard_A8"
-	// StandardA9 ...
-	StandardA9 VirtualMachineSizeTypes = "Standard_A9"
-	// StandardD1 ...
-	StandardD1 VirtualMachineSizeTypes = "Standard_D1"
-	// StandardD11 ...
-	StandardD11 VirtualMachineSizeTypes = "Standard_D11"
-	// StandardD11V2 ...
-	StandardD11V2 VirtualMachineSizeTypes = "Standard_D11_v2"
-	// StandardD12 ...
-	StandardD12 VirtualMachineSizeTypes = "Standard_D12"
-	// StandardD12V2 ...
-	StandardD12V2 VirtualMachineSizeTypes = "Standard_D12_v2"
-	// StandardD13 ...
-	StandardD13 VirtualMachineSizeTypes = "Standard_D13"
-	// StandardD13V2 ...
-	StandardD13V2 VirtualMachineSizeTypes = "Standard_D13_v2"
-	// StandardD14 ...
-	StandardD14 VirtualMachineSizeTypes = "Standard_D14"
-	// StandardD14V2 ...
-	StandardD14V2 VirtualMachineSizeTypes = "Standard_D14_v2"
-	// StandardD1V2 ...
-	StandardD1V2 VirtualMachineSizeTypes = "Standard_D1_v2"
-	// StandardD2 ...
-	StandardD2 VirtualMachineSizeTypes = "Standard_D2"
-	// StandardD2V2 ...
-	StandardD2V2 VirtualMachineSizeTypes = "Standard_D2_v2"
-	// StandardD3 ...
-	StandardD3 VirtualMachineSizeTypes = "Standard_D3"
-	// StandardD3V2 ...
-	StandardD3V2 VirtualMachineSizeTypes = "Standard_D3_v2"
-	// StandardD4 ...
-	StandardD4 VirtualMachineSizeTypes = "Standard_D4"
-	// StandardD4V2 ...
-	StandardD4V2 VirtualMachineSizeTypes = "Standard_D4_v2"
-	// StandardD5V2 ...
-	StandardD5V2 VirtualMachineSizeTypes = "Standard_D5_v2"
-	// StandardDS1 ...
-	StandardDS1 VirtualMachineSizeTypes = "Standard_DS1"
-	// StandardDS11 ...
-	StandardDS11 VirtualMachineSizeTypes = "Standard_DS11"
-	// StandardDS12 ...
-	StandardDS12 VirtualMachineSizeTypes = "Standard_DS12"
-	// StandardDS13 ...
-	StandardDS13 VirtualMachineSizeTypes = "Standard_DS13"
-	// StandardDS14 ...
-	StandardDS14 VirtualMachineSizeTypes = "Standard_DS14"
-	// StandardDS2 ...
-	StandardDS2 VirtualMachineSizeTypes = "Standard_DS2"
-	// StandardDS3 ...
-	StandardDS3 VirtualMachineSizeTypes = "Standard_DS3"
-	// StandardDS4 ...
-	StandardDS4 VirtualMachineSizeTypes = "Standard_DS4"
-	// StandardG1 ...
-	StandardG1 VirtualMachineSizeTypes = "Standard_G1"
-	// StandardG2 ...
-	StandardG2 VirtualMachineSizeTypes = "Standard_G2"
-	// StandardG3 ...
-	StandardG3 VirtualMachineSizeTypes = "Standard_G3"
-	// StandardG4 ...
-	StandardG4 VirtualMachineSizeTypes = "Standard_G4"
-	// StandardG5 ...
-	StandardG5 VirtualMachineSizeTypes = "Standard_G5"
-	// StandardGS1 ...
-	StandardGS1 VirtualMachineSizeTypes = "Standard_GS1"
-	// StandardGS2 ...
-	StandardGS2 VirtualMachineSizeTypes = "Standard_GS2"
-	// StandardGS3 ...
-	StandardGS3 VirtualMachineSizeTypes = "Standard_GS3"
-	// StandardGS4 ...
-	StandardGS4 VirtualMachineSizeTypes = "Standard_GS4"
-	// StandardGS5 ...
-	StandardGS5 VirtualMachineSizeTypes = "Standard_GS5"
+	// VirtualMachineSizeTypesBasicA0 ...
+	VirtualMachineSizeTypesBasicA0 VirtualMachineSizeTypesType = "Basic_A0"
+	// VirtualMachineSizeTypesBasicA1 ...
+	VirtualMachineSizeTypesBasicA1 VirtualMachineSizeTypesType = "Basic_A1"
+	// VirtualMachineSizeTypesBasicA2 ...
+	VirtualMachineSizeTypesBasicA2 VirtualMachineSizeTypesType = "Basic_A2"
+	// VirtualMachineSizeTypesBasicA3 ...
+	VirtualMachineSizeTypesBasicA3 VirtualMachineSizeTypesType = "Basic_A3"
+	// VirtualMachineSizeTypesBasicA4 ...
+	VirtualMachineSizeTypesBasicA4 VirtualMachineSizeTypesType = "Basic_A4"
+	// VirtualMachineSizeTypesNone represents an empty VirtualMachineSizeTypesType.
+	VirtualMachineSizeTypesNone VirtualMachineSizeTypesType = ""
+	// VirtualMachineSizeTypesStandardA0 ...
+	VirtualMachineSizeTypesStandardA0 VirtualMachineSizeTypesType = "Standard_A0"
+	// VirtualMachineSizeTypesStandardA1 ...
+	VirtualMachineSizeTypesStandardA1 VirtualMachineSizeTypesType = "Standard_A1"
+	// VirtualMachineSizeTypesStandardA10 ...
+	VirtualMachineSizeTypesStandardA10 VirtualMachineSizeTypesType = "Standard_A10"
+	// VirtualMachineSizeTypesStandardA11 ...
+	VirtualMachineSizeTypesStandardA11 VirtualMachineSizeTypesType = "Standard_A11"
+	// VirtualMachineSizeTypesStandardA2 ...
+	VirtualMachineSizeTypesStandardA2 VirtualMachineSizeTypesType = "Standard_A2"
+	// VirtualMachineSizeTypesStandardA3 ...
+	VirtualMachineSizeTypesStandardA3 VirtualMachineSizeTypesType = "Standard_A3"
+	// VirtualMachineSizeTypesStandardA4 ...
+	VirtualMachineSizeTypesStandardA4 VirtualMachineSizeTypesType = "Standard_A4"
+	// VirtualMachineSizeTypesStandardA5 ...
+	VirtualMachineSizeTypesStandardA5 VirtualMachineSizeTypesType = "Standard_A5"
+	// VirtualMachineSizeTypesStandardA6 ...
+	VirtualMachineSizeTypesStandardA6 VirtualMachineSizeTypesType = "Standard_A6"
+	// VirtualMachineSizeTypesStandardA7 ...
+	VirtualMachineSizeTypesStandardA7 VirtualMachineSizeTypesType = "Standard_A7"
+	// VirtualMachineSizeTypesStandardA8 ...
+	VirtualMachineSizeTypesStandardA8 VirtualMachineSizeTypesType = "Standard_A8"
+	// VirtualMachineSizeTypesStandardA9 ...
+	VirtualMachineSizeTypesStandardA9 VirtualMachineSizeTypesType = "Standard_A9"
+	// VirtualMachineSizeTypesStandardD1 ...
+	VirtualMachineSizeTypesStandardD1 VirtualMachineSizeTypesType = "Standard_D1"
+	// VirtualMachineSizeTypesStandardD11 ...
+	VirtualMachineSizeTypesStandardD11 VirtualMachineSizeTypesType = "Standard_D11"
+	// VirtualMachineSizeTypesStandardD11V2 ...
+	VirtualMachineSizeTypesStandardD11V2 VirtualMachineSizeTypesType = "Standard_D11_v2"
+	// VirtualMachineSizeTypesStandardD12 ...
+	VirtualMachineSizeTypesStandardD12 VirtualMachineSizeTypesType = "Standard_D12"
+	// VirtualMachineSizeTypesStandardD12V2 ...
+	VirtualMachineSizeTypesStandardD12V2 VirtualMachineSizeTypesType = "Standard_D12_v2"
+	// VirtualMachineSizeTypesStandardD13 ...
+	VirtualMachineSizeTypesStandardD13 VirtualMachineSizeTypesType = "Standard_D13"
+	// VirtualMachineSizeTypesStandardD13V2 ...
+	VirtualMachineSizeTypesStandardD13V2 VirtualMachineSizeTypesType = "Standard_D13_v2"
+	// VirtualMachineSizeTypesStandardD14 ...
+	VirtualMachineSizeTypesStandardD14 VirtualMachineSizeTypesType = "Standard_D14"
+	// VirtualMachineSizeTypesStandardD14V2 ...
+	VirtualMachineSizeTypesStandardD14V2 VirtualMachineSizeTypesType = "Standard_D14_v2"
+	// VirtualMachineSizeTypesStandardD1V2 ...
+	VirtualMachineSizeTypesStandardD1V2 VirtualMachineSizeTypesType = "Standard_D1_v2"
+	// VirtualMachineSizeTypesStandardD2 ...
+	VirtualMachineSizeTypesStandardD2 VirtualMachineSizeTypesType = "Standard_D2"
+	// VirtualMachineSizeTypesStandardD2V2 ...
+	VirtualMachineSizeTypesStandardD2V2 VirtualMachineSizeTypesType = "Standard_D2_v2"
+	// VirtualMachineSizeTypesStandardD3 ...
+	VirtualMachineSizeTypesStandardD3 VirtualMachineSizeTypesType = "Standard_D3"
+	// VirtualMachineSizeTypesStandardD3V2 ...
+	VirtualMachineSizeTypesStandardD3V2 VirtualMachineSizeTypesType = "Standard_D3_v2"
+	// VirtualMachineSizeTypesStandardD4 ...
+	VirtualMachineSizeTypesStandardD4 VirtualMachineSizeTypesType = "Standard_D4"
+	// VirtualMachineSizeTypesStandardD4V2 ...
+	VirtualMachineSizeTypesStandardD4V2 VirtualMachineSizeTypesType = "Standard_D4_v2"
+	// VirtualMachineSizeTypesStandardD5V2 ...
+	VirtualMachineSizeTypesStandardD5V2 VirtualMachineSizeTypesType = "Standard_D5_v2"
+	// VirtualMachineSizeTypesStandardDS1 ...
+	VirtualMachineSizeTypesStandardDS1 VirtualMachineSizeTypesType = "Standard_DS1"
+	// VirtualMachineSizeTypesStandardDS11 ...
+	VirtualMachineSizeTypesStandardDS11 VirtualMachineSizeTypesType = "Standard_DS11"
+	// VirtualMachineSizeTypesStandardDS12 ...
+	VirtualMachineSizeTypesStandardDS12 VirtualMachineSizeTypesType = "Standard_DS12"
+	// VirtualMachineSizeTypesStandardDS13 ...
+	VirtualMachineSizeTypesStandardDS13 VirtualMachineSizeTypesType = "Standard_DS13"
+	// VirtualMachineSizeTypesStandardDS14 ...
+	VirtualMachineSizeTypesStandardDS14 VirtualMachineSizeTypesType = "Standard_DS14"
+	// VirtualMachineSizeTypesStandardDS2 ...
+	VirtualMachineSizeTypesStandardDS2 VirtualMachineSizeTypesType = "Standard_DS2"
+	// VirtualMachineSizeTypesStandardDS3 ...
+	VirtualMachineSizeTypesStandardDS3 VirtualMachineSizeTypesType = "Standard_DS3"
+	// VirtualMachineSizeTypesStandardDS4 ...
+	VirtualMachineSizeTypesStandardDS4 VirtualMachineSizeTypesType = "Standard_DS4"
+	// VirtualMachineSizeTypesStandardG1 ...
+	VirtualMachineSizeTypesStandardG1 VirtualMachineSizeTypesType = "Standard_G1"
+	// VirtualMachineSizeTypesStandardG2 ...
+	VirtualMachineSizeTypesStandardG2 VirtualMachineSizeTypesType = "Standard_G2"
+	// VirtualMachineSizeTypesStandardG3 ...
+	VirtualMachineSizeTypesStandardG3 VirtualMachineSizeTypesType = "Standard_G3"
+	// VirtualMachineSizeTypesStandardG4 ...
+	VirtualMachineSizeTypesStandardG4 VirtualMachineSizeTypesType = "Standard_G4"
+	// VirtualMachineSizeTypesStandardG5 ...
+	VirtualMachineSizeTypesStandardG5 VirtualMachineSizeTypesType = "Standard_G5"
+	// VirtualMachineSizeTypesStandardGS1 ...
+	VirtualMachineSizeTypesStandardGS1 VirtualMachineSizeTypesType = "Standard_GS1"
+	// VirtualMachineSizeTypesStandardGS2 ...
+	VirtualMachineSizeTypesStandardGS2 VirtualMachineSizeTypesType = "Standard_GS2"
+	// VirtualMachineSizeTypesStandardGS3 ...
+	VirtualMachineSizeTypesStandardGS3 VirtualMachineSizeTypesType = "Standard_GS3"
+	// VirtualMachineSizeTypesStandardGS4 ...
+	VirtualMachineSizeTypesStandardGS4 VirtualMachineSizeTypesType = "Standard_GS4"
+	// VirtualMachineSizeTypesStandardGS5 ...
+	VirtualMachineSizeTypesStandardGS5 VirtualMachineSizeTypesType = "Standard_GS5"
 )
 
-// AdditionalUnattendContent specifies additional XML formatted information that can be included in the Unattend.xml
+// AdditionalUnattendContent - Specifies additional XML formatted information that can be included in the Unattend.xml
 // file, which is used by Windows Setup. Contents are defined by setting name, component name, and the pass in which
 // the content is applied.
 type AdditionalUnattendContent struct {
-	// PassName - The pass name. Currently, the only allowable value is OobeSystem. Possible values include: 'OobeSystem'
-	PassName PassNames `json:"passName,omitempty"`
-	// ComponentName - The component name. Currently, the only allowable value is Microsoft-Windows-Shell-Setup. Possible values include: 'MicrosoftWindowsShellSetup'
-	ComponentName ComponentNames `json:"componentName,omitempty"`
-	// SettingName - Specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands and AutoLogon. Possible values include: 'AutoLogon', 'FirstLogonCommands'
-	SettingName SettingNames `json:"settingName,omitempty"`
+	// PassName - The pass name. Currently, the only allowable value is OobeSystem. Possible values include: 'OobeSystem', 'None'
+	PassName PassNamesType `json:"passName,omitempty"`
+	// ComponentName - The component name. Currently, the only allowable value is Microsoft-Windows-Shell-Setup. Possible values include: 'MicrosoftWindowsShellSetup', 'None'
+	ComponentName ComponentNamesType `json:"componentName,omitempty"`
+	// SettingName - Specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands and AutoLogon. Possible values include: 'AutoLogon', 'FirstLogonCommands', 'None'
+	SettingName SettingNamesType `json:"settingName,omitempty"`
 	// Content - Specifies the XML formatted content that is added to the unattend.xml file for the specified path and component. The XML must be less than 4KB and must include the root element for the setting or feature that is being inserted.
 	Content *string `json:"content,omitempty"`
 }
 
-// APIEntityReference the API entity reference.
+// APIEntityReference - The API entity reference.
 type APIEntityReference struct {
 	// ID - The ARM resource id in the form of /subscriptions/{SubcriptionId}/resourceGroups/{ResourceGroupName}/...
 	ID *string `json:"id,omitempty"`
 }
 
-// APIError api error.
+// APIError - Api error.
 type APIError struct {
 	// Details - The Api error details
-	Details *[]APIErrorBase `json:"details,omitempty"`
+	Details []APIErrorBase `json:"details,omitempty"`
 	// Innererror - The Api inner error
 	Innererror *InnerError `json:"innererror,omitempty"`
 	// Code - The error code.
@@ -280,7 +321,7 @@ type APIError struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// APIErrorBase api error base.
+// APIErrorBase - Api error base.
 type APIErrorBase struct {
 	// Code - The error code.
 	Code *string `json:"code,omitempty"`
@@ -290,7 +331,7 @@ type APIErrorBase struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// AvailabilitySet specifies information about the availability set that the virtual machine should be assigned to.
+// AvailabilitySet - Specifies information about the availability set that the virtual machine should be assigned to.
 // Virtual machines specified in the same availability set are allocated to different nodes to maximize availability.
 // For more information about availability sets, see [Manage the availability of virtual
 // machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
@@ -299,7 +340,7 @@ type APIErrorBase struct {
 // <br><br> Currently, a VM can only be added to availability set at creation time. An existing VM cannot be added to
 // an availability set.
 type AvailabilitySet struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -307,104 +348,62 @@ type AvailabilitySet struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags                       *map[string]*string `json:"tags,omitempty"`
+	Tags                       map[string]string `json:"tags,omitempty"`
 	*AvailabilitySetProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for AvailabilitySet struct.
-func (as *AvailabilitySet) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties AvailabilitySetProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		as.AvailabilitySetProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		as.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		as.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		as.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		as.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		as.Tags = &tags
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (as AvailabilitySet) Response() *http.Response {
+	return as.rawResponse
 }
 
-// AvailabilitySetListResult the List Availability Set operation response.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (as AvailabilitySet) StatusCode() int {
+	return as.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (as AvailabilitySet) Status() string {
+	return as.rawResponse.Status
+}
+
+// AvailabilitySetListResult - The List Availability Set operation response.
 type AvailabilitySetListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of availability sets
-	Value *[]AvailabilitySet `json:"value,omitempty"`
+	Value []AvailabilitySet `json:"value,omitempty"`
 }
 
-// AvailabilitySetProperties the instance view of a resource.
+// Response returns the raw HTTP response object.
+func (aslr AvailabilitySetListResult) Response() *http.Response {
+	return aslr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (aslr AvailabilitySetListResult) StatusCode() int {
+	return aslr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (aslr AvailabilitySetListResult) Status() string {
+	return aslr.rawResponse.Status
+}
+
+// AvailabilitySetProperties - The instance view of a resource.
 type AvailabilitySetProperties struct {
 	// PlatformUpdateDomainCount - Update Domain count.
 	PlatformUpdateDomainCount *int32 `json:"platformUpdateDomainCount,omitempty"`
 	// PlatformFaultDomainCount - Fault Domain count.
 	PlatformFaultDomainCount *int32 `json:"platformFaultDomainCount,omitempty"`
 	// VirtualMachines - A list of references to all virtual machines in the availability set.
-	VirtualMachines *[]SubResource `json:"virtualMachines,omitempty"`
+	VirtualMachines []SubResource `json:"virtualMachines,omitempty"`
 	// Statuses - The resource status information.
-	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
+	Statuses []InstanceViewStatus `json:"statuses,omitempty"`
 }
 
-// BootDiagnostics boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to
+// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to
 // diagnose VM status. <br><br> For Linux Virtual Machines, you can easily view the output of your console log.
 // <br><br> For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the
 // hypervisor.
@@ -415,7 +414,7 @@ type BootDiagnostics struct {
 	StorageURI *string `json:"storageUri,omitempty"`
 }
 
-// BootDiagnosticsInstanceView the instance view of a virtual machine boot diagnostics.
+// BootDiagnosticsInstanceView - The instance view of a virtual machine boot diagnostics.
 type BootDiagnosticsInstanceView struct {
 	// ConsoleScreenshotBlobURI - The console screenshot blob URI.
 	ConsoleScreenshotBlobURI *string `json:"consoleScreenshotBlobUri,omitempty"`
@@ -423,61 +422,61 @@ type BootDiagnosticsInstanceView struct {
 	SerialConsoleLogBlobURI *string `json:"serialConsoleLogBlobUri,omitempty"`
 }
 
-// DataDisk describes a data disk.
+// DataDisk - Describes a data disk.
 type DataDisk struct {
 	// Lun - Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
-	Lun *int32 `json:"lun,omitempty"`
+	Lun int32 `json:"lun,omitempty"`
 	// Name - The disk name.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 	// Vhd - The virtual hard disk.
-	Vhd *VirtualHardDisk `json:"vhd,omitempty"`
+	Vhd VirtualHardDisk `json:"vhd,omitempty"`
 	// Image - The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist.
 	Image *VirtualHardDisk `json:"image,omitempty"`
-	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
-	Caching CachingTypes `json:"caching,omitempty"`
-	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'FromImage', 'Empty', 'Attach'
-	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
+	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite', 'None'
+	Caching CachingTypesType `json:"caching,omitempty"`
+	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'FromImage', 'Empty', 'Attach', 'None'
+	CreateOption DiskCreateOptionTypesType `json:"createOption,omitempty"`
 	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 }
 
-// DataDiskImage contains the data disk images information.
+// DataDiskImage - Contains the data disk images information.
 type DataDiskImage struct {
 	// Lun - Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
 	Lun *int32 `json:"lun,omitempty"`
 }
 
-// DiagnosticsProfile specifies the boot diagnostic settings state. <br><br>Minimum api-version: 2015-06-15.
+// DiagnosticsProfile - Specifies the boot diagnostic settings state. <br><br>Minimum api-version: 2015-06-15.
 type DiagnosticsProfile struct {
 	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br><br> For Linux Virtual Machines, you can easily view the output of your console log. <br><br> For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
 	BootDiagnostics *BootDiagnostics `json:"bootDiagnostics,omitempty"`
 }
 
-// DiskEncryptionSettings describes a Encryption Settings for a Disk
+// DiskEncryptionSettings - Describes a Encryption Settings for a Disk
 type DiskEncryptionSettings struct {
 	// DiskEncryptionKey - Specifies the location of the disk encryption key, which is a Key Vault Secret.
-	DiskEncryptionKey *KeyVaultSecretReference `json:"diskEncryptionKey,omitempty"`
+	DiskEncryptionKey KeyVaultSecretReference `json:"diskEncryptionKey,omitempty"`
 	// KeyEncryptionKey - Specifies the location of the key encryption key in Key Vault.
 	KeyEncryptionKey *KeyVaultKeyReference `json:"keyEncryptionKey,omitempty"`
 	// Enabled - Specifies whether disk encryption should be enabled on the virtual machine.
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// DiskInstanceView the instance view of the disk.
+// DiskInstanceView - The instance view of the disk.
 type DiskInstanceView struct {
 	// Name - The disk name.
 	Name *string `json:"name,omitempty"`
 	// Statuses - The resource status information.
-	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
+	Statuses []InstanceViewStatus `json:"statuses,omitempty"`
 }
 
-// HardwareProfile specifies the hardware settings for the virtual machine.
+// HardwareProfile - Specifies the hardware settings for the virtual machine.
 type HardwareProfile struct {
-	// VMSize - Specifies the size of the virtual machine. For more information about virtual machine sizes, see [Sizes for virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-sizes?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json). <br><br> The available VM sizes depend on region and availability set. For a list of available sizes use these APIs:  <br><br> [List all available virtual machine sizes in an availability set](virtualmachines-list-sizes-availability-set.md) <br><br> [List all available virtual machine sizes in a region](virtualmachines-list-sizes-region.md) <br><br> [List all available virtual machine sizes for resizing](virtualmachines-list-sizes-for-resizing.md). Possible values include: 'BasicA0', 'BasicA1', 'BasicA2', 'BasicA3', 'BasicA4', 'StandardA0', 'StandardA1', 'StandardA2', 'StandardA3', 'StandardA4', 'StandardA5', 'StandardA6', 'StandardA7', 'StandardA8', 'StandardA9', 'StandardA10', 'StandardA11', 'StandardD1', 'StandardD2', 'StandardD3', 'StandardD4', 'StandardD11', 'StandardD12', 'StandardD13', 'StandardD14', 'StandardD1V2', 'StandardD2V2', 'StandardD3V2', 'StandardD4V2', 'StandardD5V2', 'StandardD11V2', 'StandardD12V2', 'StandardD13V2', 'StandardD14V2', 'StandardDS1', 'StandardDS2', 'StandardDS3', 'StandardDS4', 'StandardDS11', 'StandardDS12', 'StandardDS13', 'StandardDS14', 'StandardG1', 'StandardG2', 'StandardG3', 'StandardG4', 'StandardG5', 'StandardGS1', 'StandardGS2', 'StandardGS3', 'StandardGS4', 'StandardGS5'
-	VMSize VirtualMachineSizeTypes `json:"vmSize,omitempty"`
+	// VMSize - Specifies the size of the virtual machine. For more information about virtual machine sizes, see [Sizes for virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-sizes?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json). <br><br> The available VM sizes depend on region and availability set. For a list of available sizes use these APIs:  <br><br> [List all available virtual machine sizes in an availability set](virtualmachines-list-sizes-availability-set.md) <br><br> [List all available virtual machine sizes in a region](virtualmachines-list-sizes-region.md) <br><br> [List all available virtual machine sizes for resizing](virtualmachines-list-sizes-for-resizing.md). Possible values include: 'BasicA0', 'BasicA1', 'BasicA2', 'BasicA3', 'BasicA4', 'StandardA0', 'StandardA1', 'StandardA2', 'StandardA3', 'StandardA4', 'StandardA5', 'StandardA6', 'StandardA7', 'StandardA8', 'StandardA9', 'StandardA10', 'StandardA11', 'StandardD1', 'StandardD2', 'StandardD3', 'StandardD4', 'StandardD11', 'StandardD12', 'StandardD13', 'StandardD14', 'StandardD1V2', 'StandardD2V2', 'StandardD3V2', 'StandardD4V2', 'StandardD5V2', 'StandardD11V2', 'StandardD12V2', 'StandardD13V2', 'StandardD14V2', 'StandardDS1', 'StandardDS2', 'StandardDS3', 'StandardDS4', 'StandardDS11', 'StandardDS12', 'StandardDS13', 'StandardDS14', 'StandardG1', 'StandardG2', 'StandardG3', 'StandardG4', 'StandardG5', 'StandardGS1', 'StandardGS2', 'StandardGS3', 'StandardGS4', 'StandardGS5', 'None'
+	VMSize VirtualMachineSizeTypesType `json:"vmSize,omitempty"`
 }
 
-// ImageReference specifies information about the image to use. You can specify information about platform images,
+// ImageReference - Specifies information about the image to use. You can specify information about platform images,
 // marketplace images, or virtual machine images. This element is required when you want to use a platform image,
 // marketplace image, or virtual machine image, but is not used in other creation operations.
 type ImageReference struct {
@@ -491,7 +490,7 @@ type ImageReference struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// InnerError inner error details.
+// InnerError - Inner error details.
 type InnerError struct {
 	// Exceptiontype - The exception type.
 	Exceptiontype *string `json:"exceptiontype,omitempty"`
@@ -499,37 +498,37 @@ type InnerError struct {
 	Errordetail *string `json:"errordetail,omitempty"`
 }
 
-// InstanceViewStatus instance view status.
+// InstanceViewStatus - Instance view status.
 type InstanceViewStatus struct {
 	// Code - The status code.
 	Code *string `json:"code,omitempty"`
-	// Level - The level code. Possible values include: 'Info', 'Warning', 'Error'
-	Level StatusLevelTypes `json:"level,omitempty"`
+	// Level - The level code. Possible values include: 'Info', 'Warning', 'Error', 'None'
+	Level StatusLevelTypesType `json:"level,omitempty"`
 	// DisplayStatus - The short localizable label for the status.
 	DisplayStatus *string `json:"displayStatus,omitempty"`
 	// Message - The detailed status message, including for alerts and error messages.
 	Message *string `json:"message,omitempty"`
 	// Time - The time of the status.
-	Time *date.Time `json:"time,omitempty"`
+	Time *time.Time `json:"time,omitempty"`
 }
 
-// KeyVaultKeyReference describes a reference to Key Vault Key
+// KeyVaultKeyReference - Describes a reference to Key Vault Key
 type KeyVaultKeyReference struct {
 	// KeyURL - The URL referencing a key encryption key in Key Vault.
-	KeyURL *string `json:"keyUrl,omitempty"`
+	KeyURL string `json:"keyUrl,omitempty"`
 	// SourceVault - The relative URL of the Key Vault containing the key.
-	SourceVault *SubResource `json:"sourceVault,omitempty"`
+	SourceVault SubResource `json:"sourceVault,omitempty"`
 }
 
-// KeyVaultSecretReference describes a reference to Key Vault Secret
+// KeyVaultSecretReference - Describes a reference to Key Vault Secret
 type KeyVaultSecretReference struct {
 	// SecretURL - The URL referencing a secret in a Key Vault.
-	SecretURL *string `json:"secretUrl,omitempty"`
+	SecretURL string `json:"secretUrl,omitempty"`
 	// SourceVault - The relative URL of the Key Vault containing the secret.
-	SourceVault *SubResource `json:"sourceVault,omitempty"`
+	SourceVault SubResource `json:"sourceVault,omitempty"`
 }
 
-// LinuxConfiguration specifies the Linux operating system settings on the virtual machine. <br><br>For a list of
+// LinuxConfiguration - Specifies the Linux operating system settings on the virtual machine. <br><br>For a list of
 // supported Linux distributions, see [Linux on Azure-Endorsed
 // Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-endorsed-distros?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
 // <br><br> For running non-endorsed distributions, see [Information for Non-Endorsed
@@ -541,221 +540,240 @@ type LinuxConfiguration struct {
 	SSH *SSHConfiguration `json:"ssh,omitempty"`
 }
 
-// ListUsagesResult the List Usages operation response.
+// ListOffersResponse ...
+type ListOffersResponse struct {
+	rawResponse *http.Response
+	Value       []VirtualMachineImageResource `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (lor ListOffersResponse) Response() *http.Response {
+	return lor.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (lor ListOffersResponse) StatusCode() int {
+	return lor.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (lor ListOffersResponse) Status() string {
+	return lor.rawResponse.Status
+}
+
+// ListPublishersResponse ...
+type ListPublishersResponse struct {
+	rawResponse *http.Response
+	Value       []VirtualMachineImageResource `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (lpr ListPublishersResponse) Response() *http.Response {
+	return lpr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (lpr ListPublishersResponse) StatusCode() int {
+	return lpr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (lpr ListPublishersResponse) Status() string {
+	return lpr.rawResponse.Status
+}
+
+// ListResponse ...
+type ListResponse struct {
+	rawResponse *http.Response
+	Value       []VirtualMachineImageResource `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (lr ListResponse) Response() *http.Response {
+	return lr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (lr ListResponse) StatusCode() int {
+	return lr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (lr ListResponse) Status() string {
+	return lr.rawResponse.Status
+}
+
+// ListSkusResponse ...
+type ListSkusResponse struct {
+	rawResponse *http.Response
+	Value       []VirtualMachineImageResource `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (lsr ListSkusResponse) Response() *http.Response {
+	return lsr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (lsr ListSkusResponse) StatusCode() int {
+	return lsr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (lsr ListSkusResponse) Status() string {
+	return lsr.rawResponse.Status
+}
+
+// ListTypesResponse ...
+type ListTypesResponse struct {
+	rawResponse *http.Response
+	Value       []VirtualMachineExtensionImage `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (ltr ListTypesResponse) Response() *http.Response {
+	return ltr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ltr ListTypesResponse) StatusCode() int {
+	return ltr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ltr ListTypesResponse) Status() string {
+	return ltr.rawResponse.Status
+}
+
+// ListUsagesResult - The List Usages operation response.
 type ListUsagesResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of compute resource usages.
-	Value *[]Usage `json:"value,omitempty"`
+	Value []Usage `json:"value,omitempty"`
 	// NextLink - The URI to fetch the next page of compute resource usage information. Call ListNext() with this to fetch the next page of compute resource usage information.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// ListUsagesResultIterator provides access to a complete listing of Usage values.
-type ListUsagesResultIterator struct {
-	i    int
-	page ListUsagesResultPage
+// Response returns the raw HTTP response object.
+func (lur ListUsagesResult) Response() *http.Response {
+	return lur.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ListUsagesResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (lur ListUsagesResult) StatusCode() int {
+	return lur.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ListUsagesResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (lur ListUsagesResult) Status() string {
+	return lur.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter ListUsagesResultIterator) Response() ListUsagesResult {
-	return iter.page.Response()
+// ListVersionsResponse ...
+type ListVersionsResponse struct {
+	rawResponse *http.Response
+	Value       []VirtualMachineExtensionImage `json:"value,omitempty"`
 }
 
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ListUsagesResultIterator) Value() Usage {
-	if !iter.page.NotDone() {
-		return Usage{}
-	}
-	return iter.page.Values()[iter.i]
+// Response returns the raw HTTP response object.
+func (lvr ListVersionsResponse) Response() *http.Response {
+	return lvr.rawResponse
 }
 
-// IsEmpty returns true if the ListResult contains no values.
-func (lur ListUsagesResult) IsEmpty() bool {
-	return lur.Value == nil || len(*lur.Value) == 0
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (lvr ListVersionsResponse) StatusCode() int {
+	return lvr.rawResponse.StatusCode
 }
 
-// listUsagesResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (lur ListUsagesResult) listUsagesResultPreparer() (*http.Request, error) {
-	if lur.NextLink == nil || len(to.String(lur.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(lur.NextLink)))
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (lvr ListVersionsResponse) Status() string {
+	return lvr.rawResponse.Status
 }
 
-// ListUsagesResultPage contains a page of Usage values.
-type ListUsagesResultPage struct {
-	fn  func(ListUsagesResult) (ListUsagesResult, error)
-	lur ListUsagesResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ListUsagesResultPage) Next() error {
-	next, err := page.fn(page.lur)
-	if err != nil {
-		return err
-	}
-	page.lur = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ListUsagesResultPage) NotDone() bool {
-	return !page.lur.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ListUsagesResultPage) Response() ListUsagesResult {
-	return page.lur
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ListUsagesResultPage) Values() []Usage {
-	if page.lur.IsEmpty() {
-		return nil
-	}
-	return *page.lur.Value
-}
-
-// ListVirtualMachineExtensionImage ...
-type ListVirtualMachineExtensionImage struct {
-	autorest.Response `json:"-"`
-	Value             *[]VirtualMachineExtensionImage `json:"value,omitempty"`
-}
-
-// ListVirtualMachineImageResource ...
-type ListVirtualMachineImageResource struct {
-	autorest.Response `json:"-"`
-	Value             *[]VirtualMachineImageResource `json:"value,omitempty"`
-}
-
-// LongRunningOperationProperties compute-specific operation properties, including output
+// LongRunningOperationProperties - Compute-specific operation properties, including output
 type LongRunningOperationProperties struct {
 	// Output - Operation output data (raw JSON)
-	Output *map[string]interface{} `json:"output,omitempty"`
+	Output map[string]interface{} `json:"output,omitempty"`
 }
 
-// NetworkInterfaceReference describes a network interface reference.
+// NetworkInterfaceReference - Describes a network interface reference.
 type NetworkInterfaceReference struct {
 	// ID - Resource Id
 	ID                                   *string `json:"id,omitempty"`
 	*NetworkInterfaceReferenceProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for NetworkInterfaceReference struct.
-func (nir *NetworkInterfaceReference) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties NetworkInterfaceReferenceProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		nir.NetworkInterfaceReferenceProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		nir.ID = &ID
-	}
-
-	return nil
-}
-
-// NetworkInterfaceReferenceProperties describes a network interface reference properties.
+// NetworkInterfaceReferenceProperties - Describes a network interface reference properties.
 type NetworkInterfaceReferenceProperties struct {
 	// Primary - Specifies the primary network interface in case the virtual machine has more than 1 network interface.
 	Primary *bool `json:"primary,omitempty"`
 }
 
-// NetworkProfile specifies the network interfaces of the virtual machine.
+// NetworkProfile - Specifies the network interfaces of the virtual machine.
 type NetworkProfile struct {
 	// NetworkInterfaces - Specifies the list of resource Ids for the network interfaces associated with the virtual machine.
-	NetworkInterfaces *[]NetworkInterfaceReference `json:"networkInterfaces,omitempty"`
+	NetworkInterfaces []NetworkInterfaceReference `json:"networkInterfaces,omitempty"`
 }
 
-// OperationStatusResponse operation status response
+// OperationStatusResponse - Operation status response
 type OperationStatusResponse struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Name - Operation ID
 	Name *string `json:"name,omitempty"`
 	// Status - Operation status
 	Status *string `json:"status,omitempty"`
 	// StartTime - Start time of the operation
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime *time.Time `json:"startTime,omitempty"`
 	// EndTime - End time of the operation
-	EndTime *date.Time `json:"endTime,omitempty"`
+	EndTime *time.Time `json:"endTime,omitempty"`
 	// Error - Api error
 	Error *APIError `json:"error,omitempty"`
 }
 
-// OSDisk specifies information about the operating system disk used by the virtual machine. <br><br> For more
+// Response returns the raw HTTP response object.
+func (osr OperationStatusResponse) Response() *http.Response {
+	return osr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (osr OperationStatusResponse) StatusCode() int {
+	return osr.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (osr OperationStatusResponse) HTTPStatus() string {
+	return osr.rawResponse.Status
+}
+
+// OSDisk - Specifies information about the operating system disk used by the virtual machine. <br><br> For more
 // information about disks, see [About disks and VHDs for Azure virtual
 // machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
 type OSDisk struct {
-	// OsType - This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
-	OsType OperatingSystemTypes `json:"osType,omitempty"`
+	// OsType - This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux', 'None'
+	OsType OperatingSystemTypesType `json:"osType,omitempty"`
 	// EncryptionSettings - Specifies the encryption settings for the OS Disk. <br><br> Minimum api-version: 2015-06-15
 	EncryptionSettings *DiskEncryptionSettings `json:"encryptionSettings,omitempty"`
 	// Name - The disk name.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 	// Vhd - The virtual hard disk.
-	Vhd *VirtualHardDisk `json:"vhd,omitempty"`
+	Vhd VirtualHardDisk `json:"vhd,omitempty"`
 	// Image - The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist.
 	Image *VirtualHardDisk `json:"image,omitempty"`
-	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
-	Caching CachingTypes `json:"caching,omitempty"`
-	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'FromImage', 'Empty', 'Attach'
-	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
+	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite', 'None'
+	Caching CachingTypesType `json:"caching,omitempty"`
+	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'FromImage', 'Empty', 'Attach', 'None'
+	CreateOption DiskCreateOptionTypesType `json:"createOption,omitempty"`
 	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 }
 
-// OSDiskImage contains the os disk image information.
+// OSDiskImage - Contains the os disk image information.
 type OSDiskImage struct {
-	// OperatingSystem - The operating system of the osDiskImage. Possible values include: 'Windows', 'Linux'
-	OperatingSystem OperatingSystemTypes `json:"operatingSystem,omitempty"`
+	// OperatingSystem - The operating system of the osDiskImage. Possible values include: 'Windows', 'Linux', 'None'
+	OperatingSystem OperatingSystemTypesType `json:"operatingSystem,omitempty"`
 }
 
-// OSProfile specifies the operating system settings for the virtual machine.
+// OSProfile - Specifies the operating system settings for the virtual machine.
 type OSProfile struct {
 	// ComputerName - Specifies the host OS name of the virtual machine. <br><br> **Max-length (Windows):** 15 characters <br><br> **Max-length (Linux):** 64 characters. <br><br> For naming conventions and restrictions see [Azure infrastructure services implementation guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
 	ComputerName *string `json:"computerName,omitempty"`
@@ -770,11 +788,11 @@ type OSProfile struct {
 	// LinuxConfiguration - Specifies the Linux operating system settings on the virtual machine. <br><br>For a list of supported Linux distributions, see [Linux on Azure-Endorsed Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-endorsed-distros?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json) <br><br> For running non-endorsed distributions, see [Information for Non-Endorsed Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-create-upload-generic?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
 	LinuxConfiguration *LinuxConfiguration `json:"linuxConfiguration,omitempty"`
 	// Secrets - Specifies set of certificates that should be installed onto the virtual machine.
-	Secrets *[]VaultSecretGroup `json:"secrets,omitempty"`
+	Secrets []VaultSecretGroup `json:"secrets,omitempty"`
 }
 
-// Plan specifies information about the marketplace image used to create the virtual machine. This element is only used
-// for marketplace images. Before you can use a marketplace image from an API, you must enable the image for
+// Plan - Specifies information about the marketplace image used to create the virtual machine. This element is only
+// used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for
 // programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to
 // deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
 type Plan struct {
@@ -788,17 +806,17 @@ type Plan struct {
 	PromotionCode *string `json:"promotionCode,omitempty"`
 }
 
-// PurchasePlan used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
+// PurchasePlan - Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
 type PurchasePlan struct {
 	// Publisher - The publisher ID.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher string `json:"publisher,omitempty"`
 	// Name - The plan ID.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 	// Product - Specifies the product of the image from the marketplace. This is the same value as Offer under the imageReference element.
-	Product *string `json:"product,omitempty"`
+	Product string `json:"product,omitempty"`
 }
 
-// Resource the Resource model definition.
+// Resource - The Resource model definition.
 type Resource struct {
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
@@ -807,12 +825,12 @@ type Resource struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// Sku describes a virtual machine scale set sku.
+// Sku - Describes a virtual machine scale set sku.
 type Sku struct {
 	// Name - The sku name.
 	Name *string `json:"name,omitempty"`
@@ -822,14 +840,14 @@ type Sku struct {
 	Capacity *int64 `json:"capacity,omitempty"`
 }
 
-// SSHConfiguration SSH configuration for Linux based VMs running on Azure
+// SSHConfiguration - SSH configuration for Linux based VMs running on Azure
 type SSHConfiguration struct {
 	// PublicKeys - The list of SSH public keys used to authenticate with linux based VMs.
-	PublicKeys *[]SSHPublicKey `json:"publicKeys,omitempty"`
+	PublicKeys []SSHPublicKey `json:"publicKeys,omitempty"`
 }
 
-// SSHPublicKey contains information about SSH certificate public key and the path on the Linux VM where the public key
-// is placed.
+// SSHPublicKey - Contains information about SSH certificate public key and the path on the Linux VM where the public
+// key is placed.
 type SSHPublicKey struct {
 	// Path - Specifies the full path on the created VM where ssh public key is stored. If the file already exists, the specified key is appended to the file. Example: /home/user/.ssh/authorized_keys
 	Path *string `json:"path,omitempty"`
@@ -837,14 +855,14 @@ type SSHPublicKey struct {
 	KeyData *string `json:"keyData,omitempty"`
 }
 
-// StorageProfile specifies the storage settings for the virtual machine disks.
+// StorageProfile - Specifies the storage settings for the virtual machine disks.
 type StorageProfile struct {
 	// ImageReference - Specifies information about the image to use. You can specify information about platform images, marketplace images, or virtual machine images. This element is required when you want to use a platform image, marketplace image, or virtual machine image, but is not used in other creation operations.
 	ImageReference *ImageReference `json:"imageReference,omitempty"`
 	// OsDisk - Specifies information about the operating system disk used by the virtual machine. <br><br> For more information about disks, see [About disks and VHDs for Azure virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
 	OsDisk *OSDisk `json:"osDisk,omitempty"`
 	// DataDisks - Specifies the parameters that are used to add a data disk to a virtual machine. <br><br> For more information about disks, see [About disks and VHDs for Azure virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-	DataDisks *[]DataDisk `json:"dataDisks,omitempty"`
+	DataDisks []DataDisk `json:"dataDisks,omitempty"`
 }
 
 // SubResource ...
@@ -853,25 +871,25 @@ type SubResource struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// UpgradePolicy describes an upgrade policy - automatic or manual.
+// UpgradePolicy - Describes an upgrade policy - automatic or manual.
 type UpgradePolicy struct {
-	// Mode - Specifies the mode of an upgrade to virtual machines in the scale set.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are  automatically updated at the same time. Possible values include: 'Automatic', 'Manual'
-	Mode UpgradeMode `json:"mode,omitempty"`
+	// Mode - Specifies the mode of an upgrade to virtual machines in the scale set.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are  automatically updated at the same time. Possible values include: 'Automatic', 'Manual', 'None'
+	Mode UpgradeModeType `json:"mode,omitempty"`
 }
 
-// Usage describes Compute Resource Usage.
+// Usage - Describes Compute Resource Usage.
 type Usage struct {
 	// Unit - An enum describing the unit of usage measurement.
-	Unit *string `json:"unit,omitempty"`
+	Unit string `json:"unit,omitempty"`
 	// CurrentValue - The current usage of the resource.
-	CurrentValue *int32 `json:"currentValue,omitempty"`
+	CurrentValue int32 `json:"currentValue,omitempty"`
 	// Limit - The maximum permitted usage of the resource.
-	Limit *int64 `json:"limit,omitempty"`
+	Limit int64 `json:"limit,omitempty"`
 	// Name - The name of the type of usage.
-	Name *UsageName `json:"name,omitempty"`
+	Name UsageName `json:"name,omitempty"`
 }
 
-// UsageName the Usage Names.
+// UsageName - The Usage Names.
 type UsageName struct {
 	// Value - The name of the resource.
 	Value *string `json:"value,omitempty"`
@@ -879,8 +897,8 @@ type UsageName struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
-// VaultCertificate describes a single certificate reference in a Key Vault, and where the certificate should reside on
-// the VM.
+// VaultCertificate - Describes a single certificate reference in a Key Vault, and where the certificate should reside
+// on the VM.
 type VaultCertificate struct {
 	// CertificateURL - This is the URL of a certificate that has been uploaded to Key Vault as a secret. For adding a secret to the Key Vault, see [Add a key or secret to the key vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add). In this case, your certificate needs to be It is the Base64 encoding of the following JSON Object which is encoded in UTF-8: <br><br> {<br>  "data":"<Base64-encoded-certificate>",<br>  "dataType":"pfx",<br>  "password":"<pfx-file-password>"<br>}
 	CertificateURL *string `json:"certificateUrl,omitempty"`
@@ -888,23 +906,23 @@ type VaultCertificate struct {
 	CertificateStore *string `json:"certificateStore,omitempty"`
 }
 
-// VaultSecretGroup describes a set of certificates which are all in the same Key Vault.
+// VaultSecretGroup - Describes a set of certificates which are all in the same Key Vault.
 type VaultSecretGroup struct {
 	// SourceVault - The relative URL of the Key Vault containing all of the certificates in VaultCertificates.
 	SourceVault *SubResource `json:"sourceVault,omitempty"`
 	// VaultCertificates - The list of key vault references in SourceVault which contain certificates.
-	VaultCertificates *[]VaultCertificate `json:"vaultCertificates,omitempty"`
+	VaultCertificates []VaultCertificate `json:"vaultCertificates,omitempty"`
 }
 
-// VirtualHardDisk describes the uri of a disk.
+// VirtualHardDisk - Describes the uri of a disk.
 type VirtualHardDisk struct {
 	// URI - Specifies the virtual hard disk's uri.
 	URI *string `json:"uri,omitempty"`
 }
 
-// VirtualMachine describes a Virtual Machine.
+// VirtualMachine - Describes a Virtual Machine.
 type VirtualMachine struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -912,177 +930,83 @@ type VirtualMachine struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 	// Plan - Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
 	Plan                      *Plan `json:"plan,omitempty"`
 	*VirtualMachineProperties `json:"properties,omitempty"`
 	// Resources - The virtual machine child extension resources.
-	Resources *[]VirtualMachineExtension `json:"resources,omitempty"`
+	Resources []VirtualMachineExtension `json:"resources,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for VirtualMachine struct.
-func (VM *VirtualMachine) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["plan"]
-	if v != nil {
-		var plan Plan
-		err = json.Unmarshal(*m["plan"], &plan)
-		if err != nil {
-			return err
-		}
-		VM.Plan = &plan
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties VirtualMachineProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		VM.VirtualMachineProperties = &properties
-	}
-
-	v = m["resources"]
-	if v != nil {
-		var resources []VirtualMachineExtension
-		err = json.Unmarshal(*m["resources"], &resources)
-		if err != nil {
-			return err
-		}
-		VM.Resources = &resources
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		VM.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		VM.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		VM.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		VM.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		VM.Tags = &tags
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (VM VirtualMachine) Response() *http.Response {
+	return VM.rawResponse
 }
 
-// VirtualMachineAgentInstanceView the instance view of the VM Agent running on the virtual machine.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (VM VirtualMachine) StatusCode() int {
+	return VM.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (VM VirtualMachine) Status() string {
+	return VM.rawResponse.Status
+}
+
+// VirtualMachineAgentInstanceView - The instance view of the VM Agent running on the virtual machine.
 type VirtualMachineAgentInstanceView struct {
 	// VMAgentVersion - The VM Agent full version.
 	VMAgentVersion *string `json:"vmAgentVersion,omitempty"`
 	// ExtensionHandlers - The virtual machine extension handler instance view.
-	ExtensionHandlers *[]VirtualMachineExtensionHandlerInstanceView `json:"extensionHandlers,omitempty"`
+	ExtensionHandlers []VirtualMachineExtensionHandlerInstanceView `json:"extensionHandlers,omitempty"`
 	// Statuses - The resource status information.
-	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
+	Statuses []InstanceViewStatus `json:"statuses,omitempty"`
 }
 
-// VirtualMachineCaptureParameters capture Virtual Machine parameters.
+// VirtualMachineCaptureParameters - Capture Virtual Machine parameters.
 type VirtualMachineCaptureParameters struct {
 	// VhdPrefix - The captured virtual hard disk's name prefix.
-	VhdPrefix *string `json:"vhdPrefix,omitempty"`
+	VhdPrefix string `json:"vhdPrefix,omitempty"`
 	// DestinationContainerName - The destination container name.
-	DestinationContainerName *string `json:"destinationContainerName,omitempty"`
+	DestinationContainerName string `json:"destinationContainerName,omitempty"`
 	// OverwriteVhds - Specifies whether to overwrite the destination virtual hard disk, in case of conflict.
-	OverwriteVhds *bool `json:"overwriteVhds,omitempty"`
+	OverwriteVhds bool `json:"overwriteVhds,omitempty"`
 }
 
-// VirtualMachineCaptureResult resource Id.
+// VirtualMachineCaptureResult - Resource Id.
 type VirtualMachineCaptureResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID                                     *string `json:"id,omitempty"`
 	*VirtualMachineCaptureResultProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for VirtualMachineCaptureResult struct.
-func (vmcr *VirtualMachineCaptureResult) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties VirtualMachineCaptureResultProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		vmcr.VirtualMachineCaptureResultProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		vmcr.ID = &ID
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (vmcr VirtualMachineCaptureResult) Response() *http.Response {
+	return vmcr.rawResponse
 }
 
-// VirtualMachineCaptureResultProperties compute-specific operation properties, including output
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmcr VirtualMachineCaptureResult) StatusCode() int {
+	return vmcr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmcr VirtualMachineCaptureResult) Status() string {
+	return vmcr.rawResponse.Status
+}
+
+// VirtualMachineCaptureResultProperties - Compute-specific operation properties, including output
 type VirtualMachineCaptureResultProperties struct {
 	// Output - Operation output data (raw JSON)
-	Output *map[string]interface{} `json:"output,omitempty"`
+	Output map[string]interface{} `json:"output,omitempty"`
 }
 
-// VirtualMachineExtension describes a Virtual Machine Extension.
+// VirtualMachineExtension - Describes a Virtual Machine Extension.
 type VirtualMachineExtension struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -1090,85 +1014,28 @@ type VirtualMachineExtension struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags                               *map[string]*string `json:"tags,omitempty"`
+	Tags                               map[string]string `json:"tags,omitempty"`
 	*VirtualMachineExtensionProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for VirtualMachineExtension struct.
-func (vme *VirtualMachineExtension) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties VirtualMachineExtensionProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		vme.VirtualMachineExtensionProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		vme.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		vme.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		vme.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		vme.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		vme.Tags = &tags
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (vme VirtualMachineExtension) Response() *http.Response {
+	return vme.rawResponse
 }
 
-// VirtualMachineExtensionHandlerInstanceView the instance view of a virtual machine extension handler.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vme VirtualMachineExtension) StatusCode() int {
+	return vme.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vme VirtualMachineExtension) Status() string {
+	return vme.rawResponse.Status
+}
+
+// VirtualMachineExtensionHandlerInstanceView - The instance view of a virtual machine extension handler.
 type VirtualMachineExtensionHandlerInstanceView struct {
 	// Type - Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
@@ -1178,9 +1045,9 @@ type VirtualMachineExtensionHandlerInstanceView struct {
 	Status *InstanceViewStatus `json:"status,omitempty"`
 }
 
-// VirtualMachineExtensionImage describes a Virtual Machine Extension Image.
+// VirtualMachineExtensionImage - Describes a Virtual Machine Extension Image.
 type VirtualMachineExtensionImage struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -1188,99 +1055,42 @@ type VirtualMachineExtensionImage struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags                                    *map[string]*string `json:"tags,omitempty"`
+	Tags                                    map[string]string `json:"tags,omitempty"`
 	*VirtualMachineExtensionImageProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for VirtualMachineExtensionImage struct.
-func (vmei *VirtualMachineExtensionImage) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties VirtualMachineExtensionImageProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		vmei.VirtualMachineExtensionImageProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		vmei.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		vmei.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		vmei.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		vmei.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		vmei.Tags = &tags
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (vmei VirtualMachineExtensionImage) Response() *http.Response {
+	return vmei.rawResponse
 }
 
-// VirtualMachineExtensionImageProperties describes the properties of a Virtual Machine Extension Image.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmei VirtualMachineExtensionImage) StatusCode() int {
+	return vmei.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmei VirtualMachineExtensionImage) Status() string {
+	return vmei.rawResponse.Status
+}
+
+// VirtualMachineExtensionImageProperties - Describes the properties of a Virtual Machine Extension Image.
 type VirtualMachineExtensionImageProperties struct {
 	// OperatingSystem - The operating system this extension supports.
-	OperatingSystem *string `json:"operatingSystem,omitempty"`
+	OperatingSystem string `json:"operatingSystem,omitempty"`
 	// ComputeRole - The type of role (IaaS or PaaS) this extension supports.
-	ComputeRole *string `json:"computeRole,omitempty"`
+	ComputeRole string `json:"computeRole,omitempty"`
 	// HandlerSchema - The schema defined by publisher, where extension consumers should provide settings in a matching schema.
-	HandlerSchema *string `json:"handlerSchema,omitempty"`
+	HandlerSchema string `json:"handlerSchema,omitempty"`
 	// VMScaleSetEnabled - Whether the extension can be used on xRP VMScaleSets. By default existing extensions are usable on scalesets, but there might be cases where a publisher wants to explicitly indicate the extension is only enabled for CRP VMs but not VMSS.
 	VMScaleSetEnabled *bool `json:"vmScaleSetEnabled,omitempty"`
 	// SupportsMultipleExtensions - Whether the handler can support multiple extensions.
 	SupportsMultipleExtensions *bool `json:"supportsMultipleExtensions,omitempty"`
 }
 
-// VirtualMachineExtensionInstanceView the instance view of a virtual machine extension.
+// VirtualMachineExtensionInstanceView - The instance view of a virtual machine extension.
 type VirtualMachineExtensionInstanceView struct {
 	// Name - The virtual machine extension name.
 	Name *string `json:"name,omitempty"`
@@ -1289,12 +1099,12 @@ type VirtualMachineExtensionInstanceView struct {
 	// TypeHandlerVersion - Specifies the version of the script handler.
 	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`
 	// Substatuses - The resource status information.
-	Substatuses *[]InstanceViewStatus `json:"substatuses,omitempty"`
+	Substatuses []InstanceViewStatus `json:"substatuses,omitempty"`
 	// Statuses - The resource status information.
-	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
+	Statuses []InstanceViewStatus `json:"statuses,omitempty"`
 }
 
-// VirtualMachineExtensionProperties describes the properties of a Virtual Machine Extension.
+// VirtualMachineExtensionProperties - Describes the properties of a Virtual Machine Extension.
 type VirtualMachineExtensionProperties struct {
 	// ForceUpdateTag - How the extension handler should be forced to update even if the extension configuration has not changed.
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
@@ -1307,191 +1117,64 @@ type VirtualMachineExtensionProperties struct {
 	// AutoUpgradeMinorVersion - Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.
 	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
 	// Settings - Json formatted public settings for the extension.
-	Settings *map[string]interface{} `json:"settings,omitempty"`
+	Settings map[string]interface{} `json:"settings,omitempty"`
 	// ProtectedSettings - The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings *map[string]interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings map[string]interface{} `json:"protectedSettings,omitempty"`
 	// ProvisioningState - The provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// InstanceView - The virtual machine extension instance view.
 	InstanceView *VirtualMachineExtensionInstanceView `json:"instanceView,omitempty"`
 }
 
-// VirtualMachineExtensionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type VirtualMachineExtensionsCreateOrUpdateFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineExtensionsCreateOrUpdateFuture) Result(client VirtualMachineExtensionsClient) (vme VirtualMachineExtension, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return vme, azure.NewAsyncOpIncompleteError("compute.VirtualMachineExtensionsCreateOrUpdateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		vme, err = client.CreateOrUpdateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	vme, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineExtensionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineExtensionsDeleteFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineExtensionsDeleteFuture) Result(client VirtualMachineExtensionsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineExtensionsDeleteFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.DeleteResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsDeleteFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsDeleteFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsDeleteFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineImage describes a Virtual Machine Image.
+// VirtualMachineImage - Describes a Virtual Machine Image.
 type VirtualMachineImage struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 	// Location - The supported Azure location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Specifies the tags that are assigned to the virtual machine. For more information about using tags, see [Using tags to organize your Azure resources](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md).
-	Tags                           *map[string]*string `json:"tags,omitempty"`
+	Tags                           map[string]string `json:"tags,omitempty"`
 	*VirtualMachineImageProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for VirtualMachineImage struct.
-func (vmi *VirtualMachineImage) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties VirtualMachineImageProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		vmi.VirtualMachineImageProperties = &properties
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		vmi.Name = &name
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		vmi.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		vmi.Tags = &tags
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		vmi.ID = &ID
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (vmi VirtualMachineImage) Response() *http.Response {
+	return vmi.rawResponse
 }
 
-// VirtualMachineImageProperties describes the properties of a Virtual Machine Image.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmi VirtualMachineImage) StatusCode() int {
+	return vmi.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmi VirtualMachineImage) Status() string {
+	return vmi.rawResponse.Status
+}
+
+// VirtualMachineImageProperties - Describes the properties of a Virtual Machine Image.
 type VirtualMachineImageProperties struct {
-	Plan           *PurchasePlan    `json:"plan,omitempty"`
-	OsDiskImage    *OSDiskImage     `json:"osDiskImage,omitempty"`
-	DataDiskImages *[]DataDiskImage `json:"dataDiskImages,omitempty"`
+	Plan           *PurchasePlan   `json:"plan,omitempty"`
+	OsDiskImage    *OSDiskImage    `json:"osDiskImage,omitempty"`
+	DataDiskImages []DataDiskImage `json:"dataDiskImages,omitempty"`
 }
 
-// VirtualMachineImageResource virtual machine image resource information.
+// VirtualMachineImageResource - Virtual machine image resource information.
 type VirtualMachineImageResource struct {
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 	// Location - The supported Azure location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Specifies the tags that are assigned to the virtual machine. For more information about using tags, see [Using tags to organize your Azure resources](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md).
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// VirtualMachineInstanceView the instance view of a virtual machine.
+// VirtualMachineInstanceView - The instance view of a virtual machine.
 type VirtualMachineInstanceView struct {
 	// PlatformUpdateDomain - Specifies the update domain of the virtual machine.
 	PlatformUpdateDomain *int32 `json:"platformUpdateDomain,omitempty"`
@@ -1502,118 +1185,40 @@ type VirtualMachineInstanceView struct {
 	// VMAgent - The VM Agent running on the virtual machine.
 	VMAgent *VirtualMachineAgentInstanceView `json:"vmAgent,omitempty"`
 	// Disks - The virtual machine disk information.
-	Disks *[]DiskInstanceView `json:"disks,omitempty"`
+	Disks []DiskInstanceView `json:"disks,omitempty"`
 	// Extensions - The extensions information.
-	Extensions *[]VirtualMachineExtensionInstanceView `json:"extensions,omitempty"`
+	Extensions []VirtualMachineExtensionInstanceView `json:"extensions,omitempty"`
 	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br><br> For Linux Virtual Machines, you can easily view the output of your console log. <br><br> For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
 	BootDiagnostics *BootDiagnosticsInstanceView `json:"bootDiagnostics,omitempty"`
 	// Statuses - The resource status information.
-	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
+	Statuses []InstanceViewStatus `json:"statuses,omitempty"`
 }
 
-// VirtualMachineListResult the List Virtual Machine operation response.
+// VirtualMachineListResult - The List Virtual Machine operation response.
 type VirtualMachineListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of virtual machines.
-	Value *[]VirtualMachine `json:"value,omitempty"`
+	Value []VirtualMachine `json:"value,omitempty"`
 	// NextLink - The URI to fetch the next page of VMs. Call ListNext() with this URI to fetch the next page of Virtual Machines.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// VirtualMachineListResultIterator provides access to a complete listing of VirtualMachine values.
-type VirtualMachineListResultIterator struct {
-	i    int
-	page VirtualMachineListResultPage
+// Response returns the raw HTTP response object.
+func (vmlr VirtualMachineListResult) Response() *http.Response {
+	return vmlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *VirtualMachineListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmlr VirtualMachineListResult) StatusCode() int {
+	return vmlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter VirtualMachineListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmlr VirtualMachineListResult) Status() string {
+	return vmlr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter VirtualMachineListResultIterator) Response() VirtualMachineListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter VirtualMachineListResultIterator) Value() VirtualMachine {
-	if !iter.page.NotDone() {
-		return VirtualMachine{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (vmlr VirtualMachineListResult) IsEmpty() bool {
-	return vmlr.Value == nil || len(*vmlr.Value) == 0
-}
-
-// virtualMachineListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (vmlr VirtualMachineListResult) virtualMachineListResultPreparer() (*http.Request, error) {
-	if vmlr.NextLink == nil || len(to.String(vmlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(vmlr.NextLink)))
-}
-
-// VirtualMachineListResultPage contains a page of VirtualMachine values.
-type VirtualMachineListResultPage struct {
-	fn   func(VirtualMachineListResult) (VirtualMachineListResult, error)
-	vmlr VirtualMachineListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *VirtualMachineListResultPage) Next() error {
-	next, err := page.fn(page.vmlr)
-	if err != nil {
-		return err
-	}
-	page.vmlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page VirtualMachineListResultPage) NotDone() bool {
-	return !page.vmlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page VirtualMachineListResultPage) Response() VirtualMachineListResult {
-	return page.vmlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page VirtualMachineListResultPage) Values() []VirtualMachine {
-	if page.vmlr.IsEmpty() {
-		return nil
-	}
-	return *page.vmlr.Value
-}
-
-// VirtualMachineProperties describes the properties of a Virtual Machine.
+// VirtualMachineProperties - Describes the properties of a Virtual Machine.
 type VirtualMachineProperties struct {
 	// HardwareProfile - Specifies the hardware settings for the virtual machine.
 	HardwareProfile *HardwareProfile `json:"hardwareProfile,omitempty"`
@@ -1635,9 +1240,9 @@ type VirtualMachineProperties struct {
 	LicenseType *string `json:"licenseType,omitempty"`
 }
 
-// VirtualMachineScaleSet describes a Virtual Machine Scale Set.
+// VirtualMachineScaleSet - Describes a Virtual Machine Scale Set.
 type VirtualMachineScaleSet struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -1645,97 +1250,30 @@ type VirtualMachineScaleSet struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 	// Sku - The virtual machine scale set sku.
 	Sku                               *Sku `json:"sku,omitempty"`
 	*VirtualMachineScaleSetProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSet struct.
-func (vmss *VirtualMachineScaleSet) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["sku"]
-	if v != nil {
-		var sku Sku
-		err = json.Unmarshal(*m["sku"], &sku)
-		if err != nil {
-			return err
-		}
-		vmss.Sku = &sku
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties VirtualMachineScaleSetProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		vmss.VirtualMachineScaleSetProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		vmss.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		vmss.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		vmss.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		vmss.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		vmss.Tags = &tags
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (vmss VirtualMachineScaleSet) Response() *http.Response {
+	return vmss.rawResponse
 }
 
-// VirtualMachineScaleSetExtension describes a Virtual Machine Scale Set Extension.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmss VirtualMachineScaleSet) StatusCode() int {
+	return vmss.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmss VirtualMachineScaleSet) Status() string {
+	return vmss.rawResponse.Status
+}
+
+// VirtualMachineScaleSetExtension - Describes a Virtual Machine Scale Set Extension.
 type VirtualMachineScaleSetExtension struct {
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
@@ -1744,55 +1282,13 @@ type VirtualMachineScaleSetExtension struct {
 	*VirtualMachineScaleSetExtensionProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetExtension struct.
-func (vmsse *VirtualMachineScaleSetExtension) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		vmsse.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties VirtualMachineScaleSetExtensionProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		vmsse.VirtualMachineScaleSetExtensionProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		vmsse.ID = &ID
-	}
-
-	return nil
-}
-
-// VirtualMachineScaleSetExtensionProfile describes a virtual machine scale set extension profile.
+// VirtualMachineScaleSetExtensionProfile - Describes a virtual machine scale set extension profile.
 type VirtualMachineScaleSetExtensionProfile struct {
 	// Extensions - The virtual machine scale set child extension resources.
-	Extensions *[]VirtualMachineScaleSetExtension `json:"extensions,omitempty"`
+	Extensions []VirtualMachineScaleSetExtension `json:"extensions,omitempty"`
 }
 
-// VirtualMachineScaleSetExtensionProperties describes the properties of a Virtual Machine Scale Set Extension.
+// VirtualMachineScaleSetExtensionProperties - Describes the properties of a Virtual Machine Scale Set Extension.
 type VirtualMachineScaleSetExtensionProperties struct {
 	// Publisher - The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
@@ -1803,485 +1299,180 @@ type VirtualMachineScaleSetExtensionProperties struct {
 	// AutoUpgradeMinorVersion - Whether the extension handler should be automatically upgraded across minor versions.
 	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
 	// Settings - Json formatted public settings for the extension.
-	Settings *map[string]interface{} `json:"settings,omitempty"`
+	Settings map[string]interface{} `json:"settings,omitempty"`
 	// ProtectedSettings - Json formatted protected settings for the extension.
-	ProtectedSettings *map[string]interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings map[string]interface{} `json:"protectedSettings,omitempty"`
 	// ProvisioningState - The provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// VirtualMachineScaleSetInstanceView the instance view of a virtual machine scale set.
+// VirtualMachineScaleSetInstanceView - The instance view of a virtual machine scale set.
 type VirtualMachineScaleSetInstanceView struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// VirtualMachine - The instance view status summary for the virtual machine scale set.
 	VirtualMachine *VirtualMachineScaleSetInstanceViewStatusesSummary `json:"virtualMachine,omitempty"`
 	// Extensions - The extensions information.
-	Extensions *[]VirtualMachineScaleSetVMExtensionsSummary `json:"extensions,omitempty"`
+	Extensions []VirtualMachineScaleSetVMExtensionsSummary `json:"extensions,omitempty"`
 	// Statuses - The resource status information.
-	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
+	Statuses []InstanceViewStatus `json:"statuses,omitempty"`
 }
 
-// VirtualMachineScaleSetInstanceViewStatusesSummary instance view statuses summary for virtual machines of a virtual
+// Response returns the raw HTTP response object.
+func (vmssiv VirtualMachineScaleSetInstanceView) Response() *http.Response {
+	return vmssiv.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmssiv VirtualMachineScaleSetInstanceView) StatusCode() int {
+	return vmssiv.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmssiv VirtualMachineScaleSetInstanceView) Status() string {
+	return vmssiv.rawResponse.Status
+}
+
+// VirtualMachineScaleSetInstanceViewStatusesSummary - Instance view statuses summary for virtual machines of a virtual
 // machine scale set.
 type VirtualMachineScaleSetInstanceViewStatusesSummary struct {
 	// StatusesSummary - The extensions information.
-	StatusesSummary *[]VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
+	StatusesSummary []VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
 }
 
-// VirtualMachineScaleSetIPConfiguration describes a virtual machine scale set network profile's IP configuration.
+// VirtualMachineScaleSetIPConfiguration - Describes a virtual machine scale set network profile's IP configuration.
 type VirtualMachineScaleSetIPConfiguration struct {
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - The IP configuration name.
-	Name                                             *string `json:"name,omitempty"`
+	Name                                             string `json:"name,omitempty"`
 	*VirtualMachineScaleSetIPConfigurationProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetIPConfiguration struct.
-func (vmssic *VirtualMachineScaleSetIPConfiguration) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		vmssic.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties VirtualMachineScaleSetIPConfigurationProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		vmssic.VirtualMachineScaleSetIPConfigurationProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		vmssic.ID = &ID
-	}
-
-	return nil
-}
-
-// VirtualMachineScaleSetIPConfigurationProperties describes a virtual machine scale set network profile's IP
+// VirtualMachineScaleSetIPConfigurationProperties - Describes a virtual machine scale set network profile's IP
 // configuration properties.
 type VirtualMachineScaleSetIPConfigurationProperties struct {
 	// Subnet - The subnet.
-	Subnet *APIEntityReference `json:"subnet,omitempty"`
+	Subnet APIEntityReference `json:"subnet,omitempty"`
 	// LoadBalancerBackendAddressPools - The load balancer backend address pools.
-	LoadBalancerBackendAddressPools *[]SubResource `json:"loadBalancerBackendAddressPools,omitempty"`
+	LoadBalancerBackendAddressPools []SubResource `json:"loadBalancerBackendAddressPools,omitempty"`
 	// LoadBalancerInboundNatPools - The load balancer inbound nat pools.
-	LoadBalancerInboundNatPools *[]SubResource `json:"loadBalancerInboundNatPools,omitempty"`
+	LoadBalancerInboundNatPools []SubResource `json:"loadBalancerInboundNatPools,omitempty"`
 }
 
-// VirtualMachineScaleSetListResult the List Virtual Machine operation response.
+// VirtualMachineScaleSetListResult - The List Virtual Machine operation response.
 type VirtualMachineScaleSetListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of virtual machine scale sets.
-	Value *[]VirtualMachineScaleSet `json:"value,omitempty"`
+	Value []VirtualMachineScaleSet `json:"value,omitempty"`
 	// NextLink - The URI to fetch the next page of virtual machine scale sets. Call ListNext() with this to fetch the next page of virtual machine scale sets.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// VirtualMachineScaleSetListResultIterator provides access to a complete listing of VirtualMachineScaleSet values.
-type VirtualMachineScaleSetListResultIterator struct {
-	i    int
-	page VirtualMachineScaleSetListResultPage
+// Response returns the raw HTTP response object.
+func (vmsslr VirtualMachineScaleSetListResult) Response() *http.Response {
+	return vmsslr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *VirtualMachineScaleSetListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmsslr VirtualMachineScaleSetListResult) StatusCode() int {
+	return vmsslr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter VirtualMachineScaleSetListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmsslr VirtualMachineScaleSetListResult) Status() string {
+	return vmsslr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter VirtualMachineScaleSetListResultIterator) Response() VirtualMachineScaleSetListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter VirtualMachineScaleSetListResultIterator) Value() VirtualMachineScaleSet {
-	if !iter.page.NotDone() {
-		return VirtualMachineScaleSet{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (vmsslr VirtualMachineScaleSetListResult) IsEmpty() bool {
-	return vmsslr.Value == nil || len(*vmsslr.Value) == 0
-}
-
-// virtualMachineScaleSetListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (vmsslr VirtualMachineScaleSetListResult) virtualMachineScaleSetListResultPreparer() (*http.Request, error) {
-	if vmsslr.NextLink == nil || len(to.String(vmsslr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(vmsslr.NextLink)))
-}
-
-// VirtualMachineScaleSetListResultPage contains a page of VirtualMachineScaleSet values.
-type VirtualMachineScaleSetListResultPage struct {
-	fn     func(VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error)
-	vmsslr VirtualMachineScaleSetListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *VirtualMachineScaleSetListResultPage) Next() error {
-	next, err := page.fn(page.vmsslr)
-	if err != nil {
-		return err
-	}
-	page.vmsslr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page VirtualMachineScaleSetListResultPage) NotDone() bool {
-	return !page.vmsslr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page VirtualMachineScaleSetListResultPage) Response() VirtualMachineScaleSetListResult {
-	return page.vmsslr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page VirtualMachineScaleSetListResultPage) Values() []VirtualMachineScaleSet {
-	if page.vmsslr.IsEmpty() {
-		return nil
-	}
-	return *page.vmsslr.Value
-}
-
-// VirtualMachineScaleSetListSkusResult the Virtual Machine Scale Set List Skus operation response.
+// VirtualMachineScaleSetListSkusResult - The Virtual Machine Scale Set List Skus operation response.
 type VirtualMachineScaleSetListSkusResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of skus available for the virtual machine scale set.
-	Value *[]VirtualMachineScaleSetSku `json:"value,omitempty"`
+	Value []VirtualMachineScaleSetSku `json:"value,omitempty"`
 	// NextLink - The URI to fetch the next page of skus available for the virtual machine scale set. Call ListNext() with this to fetch the next page of skus available for the virtual machine scale set.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// VirtualMachineScaleSetListSkusResultIterator provides access to a complete listing of VirtualMachineScaleSetSku
-// values.
-type VirtualMachineScaleSetListSkusResultIterator struct {
-	i    int
-	page VirtualMachineScaleSetListSkusResultPage
+// Response returns the raw HTTP response object.
+func (vmsslsr VirtualMachineScaleSetListSkusResult) Response() *http.Response {
+	return vmsslsr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *VirtualMachineScaleSetListSkusResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmsslsr VirtualMachineScaleSetListSkusResult) StatusCode() int {
+	return vmsslsr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter VirtualMachineScaleSetListSkusResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmsslsr VirtualMachineScaleSetListSkusResult) Status() string {
+	return vmsslsr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter VirtualMachineScaleSetListSkusResultIterator) Response() VirtualMachineScaleSetListSkusResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter VirtualMachineScaleSetListSkusResultIterator) Value() VirtualMachineScaleSetSku {
-	if !iter.page.NotDone() {
-		return VirtualMachineScaleSetSku{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (vmsslsr VirtualMachineScaleSetListSkusResult) IsEmpty() bool {
-	return vmsslsr.Value == nil || len(*vmsslsr.Value) == 0
-}
-
-// virtualMachineScaleSetListSkusResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (vmsslsr VirtualMachineScaleSetListSkusResult) virtualMachineScaleSetListSkusResultPreparer() (*http.Request, error) {
-	if vmsslsr.NextLink == nil || len(to.String(vmsslsr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(vmsslsr.NextLink)))
-}
-
-// VirtualMachineScaleSetListSkusResultPage contains a page of VirtualMachineScaleSetSku values.
-type VirtualMachineScaleSetListSkusResultPage struct {
-	fn      func(VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error)
-	vmsslsr VirtualMachineScaleSetListSkusResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *VirtualMachineScaleSetListSkusResultPage) Next() error {
-	next, err := page.fn(page.vmsslsr)
-	if err != nil {
-		return err
-	}
-	page.vmsslsr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page VirtualMachineScaleSetListSkusResultPage) NotDone() bool {
-	return !page.vmsslsr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page VirtualMachineScaleSetListSkusResultPage) Response() VirtualMachineScaleSetListSkusResult {
-	return page.vmsslsr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page VirtualMachineScaleSetListSkusResultPage) Values() []VirtualMachineScaleSetSku {
-	if page.vmsslsr.IsEmpty() {
-		return nil
-	}
-	return *page.vmsslsr.Value
-}
-
-// VirtualMachineScaleSetListWithLinkResult the List Virtual Machine operation response.
+// VirtualMachineScaleSetListWithLinkResult - The List Virtual Machine operation response.
 type VirtualMachineScaleSetListWithLinkResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of virtual machine scale sets.
-	Value *[]VirtualMachineScaleSet `json:"value,omitempty"`
+	Value []VirtualMachineScaleSet `json:"value,omitempty"`
 	// NextLink - The uri to fetch the next page of Virtual Machine Scale Sets. Call ListNext() with this to fetch the next page of Virtual Machine Scale Sets.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// VirtualMachineScaleSetListWithLinkResultIterator provides access to a complete listing of VirtualMachineScaleSet
-// values.
-type VirtualMachineScaleSetListWithLinkResultIterator struct {
-	i    int
-	page VirtualMachineScaleSetListWithLinkResultPage
+// Response returns the raw HTTP response object.
+func (vmsslwlr VirtualMachineScaleSetListWithLinkResult) Response() *http.Response {
+	return vmsslwlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *VirtualMachineScaleSetListWithLinkResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmsslwlr VirtualMachineScaleSetListWithLinkResult) StatusCode() int {
+	return vmsslwlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter VirtualMachineScaleSetListWithLinkResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmsslwlr VirtualMachineScaleSetListWithLinkResult) Status() string {
+	return vmsslwlr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter VirtualMachineScaleSetListWithLinkResultIterator) Response() VirtualMachineScaleSetListWithLinkResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter VirtualMachineScaleSetListWithLinkResultIterator) Value() VirtualMachineScaleSet {
-	if !iter.page.NotDone() {
-		return VirtualMachineScaleSet{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (vmsslwlr VirtualMachineScaleSetListWithLinkResult) IsEmpty() bool {
-	return vmsslwlr.Value == nil || len(*vmsslwlr.Value) == 0
-}
-
-// virtualMachineScaleSetListWithLinkResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (vmsslwlr VirtualMachineScaleSetListWithLinkResult) virtualMachineScaleSetListWithLinkResultPreparer() (*http.Request, error) {
-	if vmsslwlr.NextLink == nil || len(to.String(vmsslwlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(vmsslwlr.NextLink)))
-}
-
-// VirtualMachineScaleSetListWithLinkResultPage contains a page of VirtualMachineScaleSet values.
-type VirtualMachineScaleSetListWithLinkResultPage struct {
-	fn       func(VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error)
-	vmsslwlr VirtualMachineScaleSetListWithLinkResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *VirtualMachineScaleSetListWithLinkResultPage) Next() error {
-	next, err := page.fn(page.vmsslwlr)
-	if err != nil {
-		return err
-	}
-	page.vmsslwlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page VirtualMachineScaleSetListWithLinkResultPage) NotDone() bool {
-	return !page.vmsslwlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page VirtualMachineScaleSetListWithLinkResultPage) Response() VirtualMachineScaleSetListWithLinkResult {
-	return page.vmsslwlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page VirtualMachineScaleSetListWithLinkResultPage) Values() []VirtualMachineScaleSet {
-	if page.vmsslwlr.IsEmpty() {
-		return nil
-	}
-	return *page.vmsslwlr.Value
-}
-
-// VirtualMachineScaleSetNetworkConfiguration describes a virtual machine scale set network profile's network
+// VirtualMachineScaleSetNetworkConfiguration - Describes a virtual machine scale set network profile's network
 // configurations.
 type VirtualMachineScaleSetNetworkConfiguration struct {
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - The network configuration name.
-	Name                                                  *string `json:"name,omitempty"`
+	Name                                                  string `json:"name,omitempty"`
 	*VirtualMachineScaleSetNetworkConfigurationProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetNetworkConfiguration struct.
-func (vmssnc *VirtualMachineScaleSetNetworkConfiguration) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		vmssnc.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties VirtualMachineScaleSetNetworkConfigurationProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		vmssnc.VirtualMachineScaleSetNetworkConfigurationProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		vmssnc.ID = &ID
-	}
-
-	return nil
-}
-
-// VirtualMachineScaleSetNetworkConfigurationProperties describes a virtual machine scale set network profile's IP
+// VirtualMachineScaleSetNetworkConfigurationProperties - Describes a virtual machine scale set network profile's IP
 // configuration.
 type VirtualMachineScaleSetNetworkConfigurationProperties struct {
 	// Primary - Whether this is a primary NIC on a virtual machine.
 	Primary *bool `json:"primary,omitempty"`
 	// IPConfigurations - The virtual machine scale set IP Configuration.
-	IPConfigurations *[]VirtualMachineScaleSetIPConfiguration `json:"ipConfigurations,omitempty"`
+	IPConfigurations []VirtualMachineScaleSetIPConfiguration `json:"ipConfigurations,omitempty"`
 }
 
-// VirtualMachineScaleSetNetworkProfile describes a virtual machine scale set network profile.
+// VirtualMachineScaleSetNetworkProfile - Describes a virtual machine scale set network profile.
 type VirtualMachineScaleSetNetworkProfile struct {
 	// NetworkInterfaceConfigurations - The list of network configurations.
-	NetworkInterfaceConfigurations *[]VirtualMachineScaleSetNetworkConfiguration `json:"networkInterfaceConfigurations,omitempty"`
+	NetworkInterfaceConfigurations []VirtualMachineScaleSetNetworkConfiguration `json:"networkInterfaceConfigurations,omitempty"`
 }
 
-// VirtualMachineScaleSetOSDisk describes a virtual machine scale set operating system disk.
+// VirtualMachineScaleSetOSDisk - Describes a virtual machine scale set operating system disk.
 type VirtualMachineScaleSetOSDisk struct {
 	// Name - The disk name.
-	Name *string `json:"name,omitempty"`
-	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
-	Caching CachingTypes `json:"caching,omitempty"`
-	// CreateOption - Specifies how the virtual machines in the scale set should be created.<br><br> The only allowed value is: **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'FromImage', 'Empty', 'Attach'
-	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
-	// OsType - This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
-	OsType OperatingSystemTypes `json:"osType,omitempty"`
+	Name string `json:"name,omitempty"`
+	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite', 'None'
+	Caching CachingTypesType `json:"caching,omitempty"`
+	// CreateOption - Specifies how the virtual machines in the scale set should be created.<br><br> The only allowed value is: **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'FromImage', 'Empty', 'Attach', 'None'
+	CreateOption DiskCreateOptionTypesType `json:"createOption,omitempty"`
+	// OsType - This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux', 'None'
+	OsType OperatingSystemTypesType `json:"osType,omitempty"`
 	// Image - The Source User Image VirtualHardDisk. This VirtualHardDisk will be copied before using it to attach to the Virtual Machine. If SourceImage is provided, the destination VirtualHardDisk should not exist.
 	Image *VirtualHardDisk `json:"image,omitempty"`
 	// VhdContainers - The list of virtual hard disk container uris.
-	VhdContainers *[]string `json:"vhdContainers,omitempty"`
+	VhdContainers []string `json:"vhdContainers,omitempty"`
 }
 
-// VirtualMachineScaleSetOSProfile describes a virtual machine scale set OS profile.
+// VirtualMachineScaleSetOSProfile - Describes a virtual machine scale set OS profile.
 type VirtualMachineScaleSetOSProfile struct {
 	// ComputerNamePrefix - Specifies the computer name prefix for all of the virtual machines in the scale set. Computer name prefixes must be 1 to 15 characters long.
 	ComputerNamePrefix *string `json:"computerNamePrefix,omitempty"`
@@ -2296,10 +1487,10 @@ type VirtualMachineScaleSetOSProfile struct {
 	// LinuxConfiguration - The Linux Configuration of the OS profile.
 	LinuxConfiguration *LinuxConfiguration `json:"linuxConfiguration,omitempty"`
 	// Secrets - The List of certificates for addition to the VM.
-	Secrets *[]VaultSecretGroup `json:"secrets,omitempty"`
+	Secrets []VaultSecretGroup `json:"secrets,omitempty"`
 }
 
-// VirtualMachineScaleSetProperties describes the properties of a Virtual Machine Scale Set.
+// VirtualMachineScaleSetProperties - Describes the properties of a Virtual Machine Scale Set.
 type VirtualMachineScaleSetProperties struct {
 	// UpgradePolicy - The upgrade policy.
 	UpgradePolicy *UpgradePolicy `json:"upgradePolicy,omitempty"`
@@ -2311,167 +1502,7 @@ type VirtualMachineScaleSetProperties struct {
 	OverProvision *bool `json:"overProvision,omitempty"`
 }
 
-// VirtualMachineScaleSetsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type VirtualMachineScaleSetsCreateOrUpdateFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetsCreateOrUpdateFuture) Result(client VirtualMachineScaleSetsClient) (vmss VirtualMachineScaleSet, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return vmss, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsCreateOrUpdateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		vmss, err = client.CreateOrUpdateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	vmss, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetsDeallocateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineScaleSetsDeallocateFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetsDeallocateFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeallocateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsDeallocateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.DeallocateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeallocateFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeallocateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.DeallocateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeallocateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineScaleSetsDeleteFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetsDeleteFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsDeleteFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.DeleteResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeleteFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeleteFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeleteFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetsDeleteInstancesFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type VirtualMachineScaleSetsDeleteInstancesFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetsDeleteInstancesFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeleteInstancesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsDeleteInstancesFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.DeleteInstancesResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeleteInstancesFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeleteInstancesFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.DeleteInstancesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsDeleteInstancesFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetSku describes an available virtual machine scale set sku.
+// VirtualMachineScaleSetSku - Describes an available virtual machine scale set sku.
 type VirtualMachineScaleSetSku struct {
 	// ResourceType - The type of resource the sku applies to.
 	ResourceType *string `json:"resourceType,omitempty"`
@@ -2481,7 +1512,7 @@ type VirtualMachineScaleSetSku struct {
 	Capacity *VirtualMachineScaleSetSkuCapacity `json:"capacity,omitempty"`
 }
 
-// VirtualMachineScaleSetSkuCapacity describes scaling information of a sku.
+// VirtualMachineScaleSetSkuCapacity - Describes scaling information of a sku.
 type VirtualMachineScaleSetSkuCapacity struct {
 	// Minimum - The minimum capacity.
 	Minimum *int64 `json:"minimum,omitempty"`
@@ -2489,171 +1520,11 @@ type VirtualMachineScaleSetSkuCapacity struct {
 	Maximum *int64 `json:"maximum,omitempty"`
 	// DefaultCapacity - The default capacity.
 	DefaultCapacity *int64 `json:"defaultCapacity,omitempty"`
-	// ScaleType - The scale type applicable to the sku. Possible values include: 'VirtualMachineScaleSetSkuScaleTypeAutomatic', 'VirtualMachineScaleSetSkuScaleTypeNone'
+	// ScaleType - The scale type applicable to the sku. Possible values include: 'Automatic', 'None', 'None'
 	ScaleType VirtualMachineScaleSetSkuScaleType `json:"scaleType,omitempty"`
 }
 
-// VirtualMachineScaleSetsPowerOffFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineScaleSetsPowerOffFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetsPowerOffFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsPowerOffFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsPowerOffFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.PowerOffResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsPowerOffFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsPowerOffFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.PowerOffResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsPowerOffFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetsReimageFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineScaleSetsReimageFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetsReimageFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsReimageFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsReimageFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.ReimageResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsReimageFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsReimageFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.ReimageResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsReimageFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetsRestartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineScaleSetsRestartFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetsRestartFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsRestartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsRestartFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.RestartResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsRestartFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsRestartFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.RestartResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsRestartFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetsStartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineScaleSetsStartFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetsStartFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsStartFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.StartResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsStartFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsStartFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.StartResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsStartFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetStorageProfile describes a virtual machine scale set storage profile.
+// VirtualMachineScaleSetStorageProfile - Describes a virtual machine scale set storage profile.
 type VirtualMachineScaleSetStorageProfile struct {
 	// ImageReference - The image reference.
 	ImageReference *ImageReference `json:"imageReference,omitempty"`
@@ -2661,49 +1532,9 @@ type VirtualMachineScaleSetStorageProfile struct {
 	OsDisk *VirtualMachineScaleSetOSDisk `json:"osDisk,omitempty"`
 }
 
-// VirtualMachineScaleSetsUpdateInstancesFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type VirtualMachineScaleSetsUpdateInstancesFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetsUpdateInstancesFuture) Result(client VirtualMachineScaleSetsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsUpdateInstancesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsUpdateInstancesFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.UpdateInstancesResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsUpdateInstancesFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsUpdateInstancesFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.UpdateInstancesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsUpdateInstancesFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetVM describes a virtual machine scale set virtual machine.
+// VirtualMachineScaleSetVM - Describes a virtual machine scale set virtual machine.
 type VirtualMachineScaleSetVM struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -2711,9 +1542,9 @@ type VirtualMachineScaleSetVM struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 	// InstanceID - The virtual machine instance ID.
 	InstanceID *string `json:"instanceId,omitempty"`
 	// Sku - The virtual machine SKU.
@@ -2722,144 +1553,48 @@ type VirtualMachineScaleSetVM struct {
 	// Plan - Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
 	Plan *Plan `json:"plan,omitempty"`
 	// Resources - The virtual machine child extension resources.
-	Resources *[]VirtualMachineExtension `json:"resources,omitempty"`
+	Resources []VirtualMachineExtension `json:"resources,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetVM struct.
-func (vmssv *VirtualMachineScaleSetVM) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["instanceId"]
-	if v != nil {
-		var instanceID string
-		err = json.Unmarshal(*m["instanceId"], &instanceID)
-		if err != nil {
-			return err
-		}
-		vmssv.InstanceID = &instanceID
-	}
-
-	v = m["sku"]
-	if v != nil {
-		var sku Sku
-		err = json.Unmarshal(*m["sku"], &sku)
-		if err != nil {
-			return err
-		}
-		vmssv.Sku = &sku
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties VirtualMachineScaleSetVMProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		vmssv.VirtualMachineScaleSetVMProperties = &properties
-	}
-
-	v = m["plan"]
-	if v != nil {
-		var plan Plan
-		err = json.Unmarshal(*m["plan"], &plan)
-		if err != nil {
-			return err
-		}
-		vmssv.Plan = &plan
-	}
-
-	v = m["resources"]
-	if v != nil {
-		var resources []VirtualMachineExtension
-		err = json.Unmarshal(*m["resources"], &resources)
-		if err != nil {
-			return err
-		}
-		vmssv.Resources = &resources
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		vmssv.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		vmssv.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		vmssv.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		vmssv.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		vmssv.Tags = &tags
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (vmssv VirtualMachineScaleSetVM) Response() *http.Response {
+	return vmssv.rawResponse
 }
 
-// VirtualMachineScaleSetVMExtensionsSummary extensions summary for virtual machines of a virtual machine scale set.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmssv VirtualMachineScaleSetVM) StatusCode() int {
+	return vmssv.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmssv VirtualMachineScaleSetVM) Status() string {
+	return vmssv.rawResponse.Status
+}
+
+// VirtualMachineScaleSetVMExtensionsSummary - Extensions summary for virtual machines of a virtual machine scale set.
 type VirtualMachineScaleSetVMExtensionsSummary struct {
 	// Name - The extension name.
 	Name *string `json:"name,omitempty"`
 	// StatusesSummary - The extensions information.
-	StatusesSummary *[]VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
+	StatusesSummary []VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
 }
 
-// VirtualMachineScaleSetVMInstanceIDs specifies a list of virtual machine instance IDs from the VM scale set.
+// VirtualMachineScaleSetVMInstanceIDs - Specifies a list of virtual machine instance IDs from the VM scale set.
 type VirtualMachineScaleSetVMInstanceIDs struct {
 	// InstanceIds - The virtual machine scale set instance ids. Omitting the virtual machine scale set instance ids will result in the operation being performed on all virtual machines in the virtual machine scale set.
-	InstanceIds *[]string `json:"instanceIds,omitempty"`
+	InstanceIds []string `json:"instanceIds,omitempty"`
 }
 
-// VirtualMachineScaleSetVMInstanceRequiredIDs specifies a list of virtual machine instance IDs from the VM scale set.
+// VirtualMachineScaleSetVMInstanceRequiredIDs - Specifies a list of virtual machine instance IDs from the VM scale
+// set.
 type VirtualMachineScaleSetVMInstanceRequiredIDs struct {
 	// InstanceIds - The virtual machine scale set instance ids.
-	InstanceIds *[]string `json:"instanceIds,omitempty"`
+	InstanceIds []string `json:"instanceIds,omitempty"`
 }
 
-// VirtualMachineScaleSetVMInstanceView the instance view of a virtual machine scale set VM.
+// VirtualMachineScaleSetVMInstanceView - The instance view of a virtual machine scale set VM.
 type VirtualMachineScaleSetVMInstanceView struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// PlatformUpdateDomain - The Update Domain count.
 	PlatformUpdateDomain *int32 `json:"platformUpdateDomain,omitempty"`
 	// PlatformFaultDomain - The Fault Domain count.
@@ -2869,118 +1604,55 @@ type VirtualMachineScaleSetVMInstanceView struct {
 	// VMAgent - The VM Agent running on the virtual machine.
 	VMAgent *VirtualMachineAgentInstanceView `json:"vmAgent,omitempty"`
 	// Disks - The disks information.
-	Disks *[]DiskInstanceView `json:"disks,omitempty"`
+	Disks []DiskInstanceView `json:"disks,omitempty"`
 	// Extensions - The extensions information.
-	Extensions *[]VirtualMachineExtensionInstanceView `json:"extensions,omitempty"`
+	Extensions []VirtualMachineExtensionInstanceView `json:"extensions,omitempty"`
 	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br><br> For Linux Virtual Machines, you can easily view the output of your console log. <br><br> For both Windows and Linux virtual machines, Azure also enables you to see a screenshot of the VM from the hypervisor.
 	BootDiagnostics *BootDiagnosticsInstanceView `json:"bootDiagnostics,omitempty"`
 	// Statuses - The resource status information.
-	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
+	Statuses []InstanceViewStatus `json:"statuses,omitempty"`
 }
 
-// VirtualMachineScaleSetVMListResult the List Virtual Machine Scale Set VMs operation response.
+// Response returns the raw HTTP response object.
+func (vmssviv VirtualMachineScaleSetVMInstanceView) Response() *http.Response {
+	return vmssviv.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmssviv VirtualMachineScaleSetVMInstanceView) StatusCode() int {
+	return vmssviv.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmssviv VirtualMachineScaleSetVMInstanceView) Status() string {
+	return vmssviv.rawResponse.Status
+}
+
+// VirtualMachineScaleSetVMListResult - The List Virtual Machine Scale Set VMs operation response.
 type VirtualMachineScaleSetVMListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of virtual machine scale sets VMs.
-	Value *[]VirtualMachineScaleSetVM `json:"value,omitempty"`
+	Value []VirtualMachineScaleSetVM `json:"value,omitempty"`
 	// NextLink - The URI to fetch the next page of virtual machine scale sets VMs. Call ListNext() with this to fetch the next page of virtual machine scale sets VMs.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// VirtualMachineScaleSetVMListResultIterator provides access to a complete listing of VirtualMachineScaleSetVM values.
-type VirtualMachineScaleSetVMListResultIterator struct {
-	i    int
-	page VirtualMachineScaleSetVMListResultPage
+// Response returns the raw HTTP response object.
+func (vmssvlr VirtualMachineScaleSetVMListResult) Response() *http.Response {
+	return vmssvlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *VirtualMachineScaleSetVMListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmssvlr VirtualMachineScaleSetVMListResult) StatusCode() int {
+	return vmssvlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter VirtualMachineScaleSetVMListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmssvlr VirtualMachineScaleSetVMListResult) Status() string {
+	return vmssvlr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter VirtualMachineScaleSetVMListResultIterator) Response() VirtualMachineScaleSetVMListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter VirtualMachineScaleSetVMListResultIterator) Value() VirtualMachineScaleSetVM {
-	if !iter.page.NotDone() {
-		return VirtualMachineScaleSetVM{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (vmssvlr VirtualMachineScaleSetVMListResult) IsEmpty() bool {
-	return vmssvlr.Value == nil || len(*vmssvlr.Value) == 0
-}
-
-// virtualMachineScaleSetVMListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (vmssvlr VirtualMachineScaleSetVMListResult) virtualMachineScaleSetVMListResultPreparer() (*http.Request, error) {
-	if vmssvlr.NextLink == nil || len(to.String(vmssvlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(vmssvlr.NextLink)))
-}
-
-// VirtualMachineScaleSetVMListResultPage contains a page of VirtualMachineScaleSetVM values.
-type VirtualMachineScaleSetVMListResultPage struct {
-	fn      func(VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error)
-	vmssvlr VirtualMachineScaleSetVMListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *VirtualMachineScaleSetVMListResultPage) Next() error {
-	next, err := page.fn(page.vmssvlr)
-	if err != nil {
-		return err
-	}
-	page.vmssvlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page VirtualMachineScaleSetVMListResultPage) NotDone() bool {
-	return !page.vmssvlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page VirtualMachineScaleSetVMListResultPage) Response() VirtualMachineScaleSetVMListResult {
-	return page.vmssvlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page VirtualMachineScaleSetVMListResultPage) Values() []VirtualMachineScaleSetVM {
-	if page.vmssvlr.IsEmpty() {
-		return nil
-	}
-	return *page.vmssvlr.Value
-}
-
-// VirtualMachineScaleSetVMProfile describes a virtual machine scale set virtual machine profile.
+// VirtualMachineScaleSetVMProfile - Describes a virtual machine scale set virtual machine profile.
 type VirtualMachineScaleSetVMProfile struct {
 	// OsProfile - The virtual machine scale set OS profile.
 	OsProfile *VirtualMachineScaleSetOSProfile `json:"osProfile,omitempty"`
@@ -2992,7 +1664,7 @@ type VirtualMachineScaleSetVMProfile struct {
 	ExtensionProfile *VirtualMachineScaleSetExtensionProfile `json:"extensionProfile,omitempty"`
 }
 
-// VirtualMachineScaleSetVMProperties describes the properties of a virtual machine scale set virtual machine.
+// VirtualMachineScaleSetVMProperties - Describes the properties of a virtual machine scale set virtual machine.
 type VirtualMachineScaleSetVMProperties struct {
 	// LatestModelApplied - Specifies whether the latest model has been applied to the virtual machine.
 	LatestModelApplied *bool `json:"latestModelApplied,omitempty"`
@@ -3016,405 +1688,7 @@ type VirtualMachineScaleSetVMProperties struct {
 	LicenseType *string `json:"licenseType,omitempty"`
 }
 
-// VirtualMachineScaleSetVMsDeallocateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineScaleSetVMsDeallocateFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetVMsDeallocateFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeallocateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsDeallocateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.DeallocateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeallocateFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeallocateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.DeallocateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeallocateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetVMsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineScaleSetVMsDeleteFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetVMsDeleteFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsDeleteFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.DeleteResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeleteFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeleteFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsDeleteFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetVMsPowerOffFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineScaleSetVMsPowerOffFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetVMsPowerOffFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPowerOffFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsPowerOffFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.PowerOffResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPowerOffFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPowerOffFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.PowerOffResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPowerOffFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetVMsReimageFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineScaleSetVMsReimageFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetVMsReimageFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsReimageFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsReimageFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.ReimageResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsReimageFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsReimageFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.ReimageResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsReimageFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetVMsRestartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineScaleSetVMsRestartFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetVMsRestartFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRestartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsRestartFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.RestartResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRestartFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRestartFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.RestartResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRestartFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineScaleSetVMsStartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineScaleSetVMsStartFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachineScaleSetVMsStartFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsStartFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.StartResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsStartFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsStartFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.StartResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsStartFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachinesCaptureFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type VirtualMachinesCaptureFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachinesCaptureFuture) Result(client VirtualMachinesClient) (vmcr VirtualMachineCaptureResult, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesCaptureFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return vmcr, azure.NewAsyncOpIncompleteError("compute.VirtualMachinesCaptureFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		vmcr, err = client.CaptureResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesCaptureFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesCaptureFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	vmcr, err = client.CaptureResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesCaptureFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachinesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachinesCreateOrUpdateFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachinesCreateOrUpdateFuture) Result(client VirtualMachinesClient) (VM VirtualMachine, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return VM, azure.NewAsyncOpIncompleteError("compute.VirtualMachinesCreateOrUpdateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		VM, err = client.CreateOrUpdateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	VM, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachinesDeallocateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachinesDeallocateFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachinesDeallocateFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesDeallocateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachinesDeallocateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.DeallocateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesDeallocateFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesDeallocateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.DeallocateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesDeallocateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachinesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type VirtualMachinesDeleteFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachinesDeleteFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachinesDeleteFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.DeleteResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesDeleteFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesDeleteFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesDeleteFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineSize describes the properties of a VM size.
+// VirtualMachineSize - Describes the properties of a VM size.
 type VirtualMachineSize struct {
 	// Name - The name of the virtual machine size.
 	Name *string `json:"name,omitempty"`
@@ -3430,170 +1704,29 @@ type VirtualMachineSize struct {
 	MaxDataDiskCount *int32 `json:"maxDataDiskCount,omitempty"`
 }
 
-// VirtualMachineSizeListResult the List Virtual Machine operation response.
+// VirtualMachineSizeListResult - The List Virtual Machine operation response.
 type VirtualMachineSizeListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of virtual machine sizes.
-	Value *[]VirtualMachineSize `json:"value,omitempty"`
+	Value []VirtualMachineSize `json:"value,omitempty"`
 }
 
-// VirtualMachinesPowerOffFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type VirtualMachinesPowerOffFuture struct {
-	azure.Future
-	req *http.Request
+// Response returns the raw HTTP response object.
+func (vmslr VirtualMachineSizeListResult) Response() *http.Response {
+	return vmslr.rawResponse
 }
 
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachinesPowerOffFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesPowerOffFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachinesPowerOffFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.PowerOffResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesPowerOffFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesPowerOffFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.PowerOffResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesPowerOffFuture", "Result", resp, "Failure responding to request")
-	}
-	return
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vmslr VirtualMachineSizeListResult) StatusCode() int {
+	return vmslr.rawResponse.StatusCode
 }
 
-// VirtualMachinesRedeployFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type VirtualMachinesRedeployFuture struct {
-	azure.Future
-	req *http.Request
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vmslr VirtualMachineSizeListResult) Status() string {
+	return vmslr.rawResponse.Status
 }
 
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachinesRedeployFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesRedeployFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachinesRedeployFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.RedeployResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesRedeployFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesRedeployFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.RedeployResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesRedeployFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachinesRestartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type VirtualMachinesRestartFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachinesRestartFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesRestartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachinesRestartFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.RestartResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesRestartFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesRestartFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.RestartResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesRestartFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachinesStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type VirtualMachinesStartFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualMachinesStartFuture) Result(client VirtualMachinesClient) (osr OperationStatusResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachinesStartFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.StartResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachinesStartFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesStartFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	osr, err = client.StartResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesStartFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualMachineStatusCodeCount the status code and count of the virtual machine scale set instance view status
+// VirtualMachineStatusCodeCount - The status code and count of the virtual machine scale set instance view status
 // summary.
 type VirtualMachineStatusCodeCount struct {
 	// Code - The instance view status code.
@@ -3602,7 +1735,7 @@ type VirtualMachineStatusCodeCount struct {
 	Count *int32 `json:"count,omitempty"`
 }
 
-// WindowsConfiguration specifies Windows operating system settings on the virtual machine.
+// WindowsConfiguration - Specifies Windows operating system settings on the virtual machine.
 type WindowsConfiguration struct {
 	// ProvisionVMAgent - Indicates whether virtual machine agent should be provisioned on the virtual machine. <br><br> When this property is not specified in the request body, default behavior is to set it to true.  This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.
 	ProvisionVMAgent *bool `json:"provisionVMAgent,omitempty"`
@@ -3611,21 +1744,21 @@ type WindowsConfiguration struct {
 	// TimeZone - Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time"
 	TimeZone *string `json:"timeZone,omitempty"`
 	// AdditionalUnattendContent - Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup.
-	AdditionalUnattendContent *[]AdditionalUnattendContent `json:"additionalUnattendContent,omitempty"`
+	AdditionalUnattendContent []AdditionalUnattendContent `json:"additionalUnattendContent,omitempty"`
 	// WinRM - Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell.
 	WinRM *WinRMConfiguration `json:"winRM,omitempty"`
 }
 
-// WinRMConfiguration describes Windows Remote Management configuration of the VM
+// WinRMConfiguration - Describes Windows Remote Management configuration of the VM
 type WinRMConfiguration struct {
 	// Listeners - The list of Windows Remote Management listeners
-	Listeners *[]WinRMListener `json:"listeners,omitempty"`
+	Listeners []WinRMListener `json:"listeners,omitempty"`
 }
 
-// WinRMListener describes Protocol and thumbprint of Windows Remote Management listener
+// WinRMListener - Describes Protocol and thumbprint of Windows Remote Management listener
 type WinRMListener struct {
-	// Protocol - Specifies the protocol of listener. <br><br> Possible values are: <br>**http** <br><br> **https**. Possible values include: 'HTTP', 'HTTPS'
-	Protocol ProtocolTypes `json:"protocol,omitempty"`
+	// Protocol - Specifies the protocol of listener. <br><br> Possible values are: <br>**http** <br><br> **https**. Possible values include: 'HTTP', 'HTTPS', 'None'
+	Protocol ProtocolTypesType `json:"protocol,omitempty"`
 	// CertificateURL - This is the URL of a certificate that has been uploaded to Key Vault as a secret. For adding a secret to the Key Vault, see [Add a key or secret to the key vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add). In this case, your certificate needs to be It is the Base64 encoding of the following JSON Object which is encoded in UTF-8: <br><br> {<br>  "data":"<Base64-encoded-certificate>",<br>  "dataType":"pfx",<br>  "password":"<pfx-file-password>"<br>}
 	CertificateURL *string `json:"certificateUrl,omitempty"`
 }

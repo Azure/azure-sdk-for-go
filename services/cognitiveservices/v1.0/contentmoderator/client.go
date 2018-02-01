@@ -1,21 +1,3 @@
-// Package contentmoderator implements the Azure ARM Contentmoderator service API version 1.0.
-//
-// You use the API to scan your content as it is generated. Content Moderator then processes your content and sends the
-// results along with relevant information either back to your systems or to the built-in review tool. You can use this
-// information to take decisions e.g. take it down, send to human judge, etc.
-//
-// When using the API, images need to have a minimum of 128 pixels and a maximum file size of 4MB.
-// Text can be at most 1024 characters long.
-// If the content passed to the text API or the image API exceeds the size limits, the API will return an error code
-// that informs about the issue.
-//
-// This API is currently available in:
-//
-// * West US - westus.api.cognitive.microsoft.com
-// * East US 2 - eastus2.api.cognitive.microsoft.com
-// * West Central US - westcentralus.api.cognitive.microsoft.com
-// * West Europe - westeurope.api.cognitive.microsoft.com
-// * Southeast Asia - southeastasia.api.cognitive.microsoft.com .
 package contentmoderator
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -36,24 +18,35 @@ package contentmoderator
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"net/url"
 )
 
-// BaseClient is the base client for Contentmoderator.
-type BaseClient struct {
-	autorest.Client
-	BaseURL AzureRegionBaseURL
+const (
+	// ServiceVersion specifies the version of the operations used in this package.
+	ServiceVersion = "1.0"
+)
+
+// ManagementClient is the base client for Contentmoderator.
+type ManagementClient struct {
+	url url.URL
+	p   pipeline.Pipeline
 }
 
-// New creates an instance of the BaseClient client.
-func New(baseURL AzureRegionBaseURL) BaseClient {
-	return NewWithoutDefaults(baseURL)
-}
-
-// NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults(baseURL AzureRegionBaseURL) BaseClient {
-	return BaseClient{
-		Client:  autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURL: baseURL,
+// NewManagementClient creates an instance of the ManagementClient client.
+func NewManagementClient(url url.URL, p pipeline.Pipeline) ManagementClient {
+	return ManagementClient{
+		url: url,
+		p:   p,
 	}
+}
+
+// URL returns a copy of the URL for this client.
+func (mc ManagementClient) URL() url.URL {
+	return mc.url
+}
+
+// Pipeline returns the pipeline for this client.
+func (mc ManagementClient) Pipeline() pipeline.Pipeline {
+	return mc.p
 }

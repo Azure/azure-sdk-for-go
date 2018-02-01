@@ -18,12 +18,15 @@ package contentmoderator
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"fmt"
+	"github.com/Azure/azure-pipeline-go/pipeline"
 	"io"
+	"io/ioutil"
 	"net/http"
+	"net/url"
 )
 
 // ReviewsClient is the you use the API to scan your content as it is generated. Content Moderator then processes your
@@ -43,12 +46,12 @@ import (
 // * West Europe - westeurope.api.cognitive.microsoft.com
 // * Southeast Asia - southeastasia.api.cognitive.microsoft.com .
 type ReviewsClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewReviewsClient creates an instance of the ReviewsClient client.
-func NewReviewsClient(baseURL AzureRegionBaseURL) ReviewsClient {
-	return ReviewsClient{New(baseURL)}
+func NewReviewsClient(url url.URL, p pipeline.Pipeline) ReviewsClient {
+	return ReviewsClient{NewManagementClient(url, p)}
 }
 
 // AddVideoFrame the reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results
@@ -79,69 +82,39 @@ func NewReviewsClient(baseURL AzureRegionBaseURL) ReviewsClient {
 //
 // teamName is your team name. reviewID is id of the review. timescale is timescale of the video you are adding frames
 // to.
-func (client ReviewsClient) AddVideoFrame(ctx context.Context, teamName string, reviewID string, timescale *int32) (result autorest.Response, err error) {
-	req, err := client.AddVideoFramePreparer(ctx, teamName, reviewID, timescale)
+func (client ReviewsClient) AddVideoFrame(ctx context.Context, teamName string, reviewID string, timescale *int32) (*http.Response, error) {
+	req, err := client.addVideoFramePreparer(teamName, reviewID, timescale)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoFrame", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.AddVideoFrameSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.addVideoFrameResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoFrame", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.AddVideoFrameResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoFrame", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// AddVideoFramePreparer prepares the AddVideoFrame request.
-func (client ReviewsClient) AddVideoFramePreparer(ctx context.Context, teamName string, reviewID string, timescale *int32) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"baseUrl": client.BaseURL,
+// addVideoFramePreparer prepares the AddVideoFrame request.
+func (client ReviewsClient) addVideoFramePreparer(teamName string, reviewID string, timescale *int32) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("POST", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"reviewId": autorest.Encode("path", reviewID),
-		"teamName": autorest.Encode("path", teamName),
-	}
-
-	queryParameters := map[string]interface{}{}
+	params := req.URL.Query()
 	if timescale != nil {
-		queryParameters["timescale"] = autorest.Encode("query", *timescale)
+		params.Set("timescale", fmt.Sprintf("%v", *timescale))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
-		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/frames", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// AddVideoFrameSender sends the AddVideoFrame request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReviewsClient) AddVideoFrameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// AddVideoFrameResponder handles the response to the AddVideoFrame request. The method always
-// closes the http.Response Body.
-func (client ReviewsClient) AddVideoFrameResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// addVideoFrameResponder handles the response to the AddVideoFrame request.
+func (client ReviewsClient) addVideoFrameResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // AddVideoFrameStream use this method to add frames for a video review.Timescale: This parameter is a factor which is
@@ -152,76 +125,45 @@ func (client ReviewsClient) AddVideoFrameResponder(resp *http.Response) (result 
 // contentType is the content type. teamName is your team name. reviewID is id of the review. frameImageZip is zip file
 // containing frame images. frameImageZip will be closed upon successful return. Callers should ensure closure when
 // receiving an error.frameMetadata is metadata of the frame. timescale is timescale of the video .
-func (client ReviewsClient) AddVideoFrameStream(ctx context.Context, contentType string, teamName string, reviewID string, frameImageZip io.ReadCloser, frameMetadata string, timescale *int32) (result autorest.Response, err error) {
-	req, err := client.AddVideoFrameStreamPreparer(ctx, contentType, teamName, reviewID, frameImageZip, frameMetadata, timescale)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoFrameStream", nil, "Failure preparing request")
-		return
+func (client ReviewsClient) AddVideoFrameStream(ctx context.Context, contentType string, teamName string, reviewID string, body io.ReadSeeker, frameMetadata string, timescale *int32) (*http.Response, error) {
+	if err := validate([]validation{
+		{targetValue: frameImageZip,
+			constraints: []constraint{{target: "frameImageZip", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	resp, err := client.AddVideoFrameStreamSender(req)
+	req, err := client.addVideoFrameStreamPreparer(contentType, teamName, reviewID, body, frameMetadata, timescale)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoFrameStream", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.AddVideoFrameStreamResponder(resp)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.addVideoFrameStreamResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoFrameStream", resp, "Failure responding to request")
+		return nil, err
 	}
-
-	return
+	return resp.Response(), err
 }
 
-// AddVideoFrameStreamPreparer prepares the AddVideoFrameStream request.
-func (client ReviewsClient) AddVideoFrameStreamPreparer(ctx context.Context, contentType string, teamName string, reviewID string, frameImageZip io.ReadCloser, frameMetadata string, timescale *int32) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"baseUrl": client.BaseURL,
+// addVideoFrameStreamPreparer prepares the AddVideoFrameStream request.
+func (client ReviewsClient) addVideoFrameStreamPreparer(contentType string, teamName string, reviewID string, body io.ReadSeeker, frameMetadata string, timescale *int32) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("POST", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"reviewId": autorest.Encode("path", reviewID),
-		"teamName": autorest.Encode("path", teamName),
-	}
-
-	queryParameters := map[string]interface{}{}
+	params := req.URL.Query()
 	if timescale != nil {
-		queryParameters["timescale"] = autorest.Encode("query", *timescale)
+		params.Set("timescale", fmt.Sprintf("%v", *timescale))
 	}
-
-	formDataParameters := map[string]interface{}{
-		"frameImageZip": frameImageZip,
-		"frameMetadata": frameMetadata,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
-		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/frames", pathParameters),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithMultiPartFormData(formDataParameters),
-		autorest.WithHeader("Content-Type", autorest.String(contentType)))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.URL.RawQuery = params.Encode()
+	req.Header.Set("Content-Type", contentType)
+	return req, nil
 }
 
-// AddVideoFrameStreamSender sends the AddVideoFrameStream request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReviewsClient) AddVideoFrameStreamSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// AddVideoFrameStreamResponder handles the response to the AddVideoFrameStream request. The method always
-// closes the http.Response Body.
-func (client ReviewsClient) AddVideoFrameStreamResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// addVideoFrameStreamResponder handles the response to the AddVideoFrameStream request.
+func (client ReviewsClient) addVideoFrameStreamResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // AddVideoFrameURL use this method to add frames for a video review.Timescale: This parameter is a factor which is
@@ -231,78 +173,54 @@ func (client ReviewsClient) AddVideoFrameStreamResponder(resp *http.Response) (r
 //
 // contentType is the content type. teamName is your team name. reviewID is id of the review. videoFrameBody is body
 // for add video frames API timescale is timescale of the video.
-func (client ReviewsClient) AddVideoFrameURL(ctx context.Context, contentType string, teamName string, reviewID string, videoFrameBody []VideoFrameBodyItem, timescale *int32) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: videoFrameBody,
-			Constraints: []validation.Constraint{{Target: "videoFrameBody", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "contentmoderator.ReviewsClient", "AddVideoFrameURL")
+func (client ReviewsClient) AddVideoFrameURL(ctx context.Context, contentType string, teamName string, reviewID string, videoFrameBody []VideoFrameBodyItem, timescale *int32) (*http.Response, error) {
+	if err := validate([]validation{
+		{targetValue: videoFrameBody,
+			constraints: []constraint{{target: "videoFrameBody", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.AddVideoFrameURLPreparer(ctx, contentType, teamName, reviewID, videoFrameBody, timescale)
+	req, err := client.addVideoFrameURLPreparer(contentType, teamName, reviewID, videoFrameBody, timescale)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoFrameURL", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.AddVideoFrameURLSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.addVideoFrameURLResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoFrameURL", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.AddVideoFrameURLResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoFrameURL", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// AddVideoFrameURLPreparer prepares the AddVideoFrameURL request.
-func (client ReviewsClient) AddVideoFrameURLPreparer(ctx context.Context, contentType string, teamName string, reviewID string, videoFrameBody []VideoFrameBodyItem, timescale *int32) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"baseUrl": client.BaseURL,
+// addVideoFrameURLPreparer prepares the AddVideoFrameURL request.
+func (client ReviewsClient) addVideoFrameURLPreparer(contentType string, teamName string, reviewID string, videoFrameBody []VideoFrameBodyItem, timescale *int32) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("POST", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"reviewId": autorest.Encode("path", reviewID),
-		"teamName": autorest.Encode("path", teamName),
-	}
-
-	queryParameters := map[string]interface{}{}
+	params := req.URL.Query()
 	if timescale != nil {
-		queryParameters["timescale"] = autorest.Encode("query", *timescale)
+		params.Set("timescale", fmt.Sprintf("%v", *timescale))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
-		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/frames", pathParameters),
-		autorest.WithJSON(videoFrameBody),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Content-Type", autorest.String(contentType)))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.URL.RawQuery = params.Encode()
+	req.Header.Set("Content-Type", contentType)
+	b, err := json.Marshal(videoFrameBody)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// AddVideoFrameURLSender sends the AddVideoFrameURL request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReviewsClient) AddVideoFrameURLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// AddVideoFrameURLResponder handles the response to the AddVideoFrameURL request. The method always
-// closes the http.Response Body.
-func (client ReviewsClient) AddVideoFrameURLResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// addVideoFrameURLResponder handles the response to the AddVideoFrameURL request.
+func (client ReviewsClient) addVideoFrameURLResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // AddVideoTranscript this API adds a transcript file (text version of all the words spoken in a video) to a video
@@ -311,65 +229,42 @@ func (client ReviewsClient) AddVideoFrameURLResponder(resp *http.Response) (resu
 // teamName is your team name. reviewID is id of the review. contentType is the content type. vttfile is transcript
 // file of the video. vttfile will be closed upon successful return. Callers should ensure closure when receiving an
 // error.
-func (client ReviewsClient) AddVideoTranscript(ctx context.Context, teamName string, reviewID string, contentType string, vttfile io.ReadCloser) (result autorest.Response, err error) {
-	req, err := client.AddVideoTranscriptPreparer(ctx, teamName, reviewID, contentType, vttfile)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoTranscript", nil, "Failure preparing request")
-		return
+func (client ReviewsClient) AddVideoTranscript(ctx context.Context, teamName string, reviewID string, contentType string, body io.ReadSeeker) (*http.Response, error) {
+	if err := validate([]validation{
+		{targetValue: vttfile,
+			constraints: []constraint{{target: "vttfile", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	resp, err := client.AddVideoTranscriptSender(req)
+	req, err := client.addVideoTranscriptPreparer(teamName, reviewID, contentType, body)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoTranscript", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.AddVideoTranscriptResponder(resp)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.addVideoTranscriptResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoTranscript", resp, "Failure responding to request")
+		return nil, err
 	}
-
-	return
+	return resp.Response(), err
 }
 
-// AddVideoTranscriptPreparer prepares the AddVideoTranscript request.
-func (client ReviewsClient) AddVideoTranscriptPreparer(ctx context.Context, teamName string, reviewID string, contentType string, vttfile io.ReadCloser) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"baseUrl": client.BaseURL,
+// addVideoTranscriptPreparer prepares the AddVideoTranscript request.
+func (client ReviewsClient) addVideoTranscriptPreparer(teamName string, reviewID string, contentType string, body io.ReadSeeker) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("PUT", client.url, body)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"reviewId": autorest.Encode("path", reviewID),
-		"teamName": autorest.Encode("path", teamName),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPut(),
-		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
-		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/transcript", pathParameters),
-		autorest.WithFile(vttfile),
-		autorest.WithHeader("Content-Type", autorest.String(contentType)))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	req.URL.RawQuery = params.Encode()
+	req.Header.Set("Content-Type", contentType)
+	return req, nil
 }
 
-// AddVideoTranscriptSender sends the AddVideoTranscript request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReviewsClient) AddVideoTranscriptSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// AddVideoTranscriptResponder handles the response to the AddVideoTranscript request. The method always
-// closes the http.Response Body.
-func (client ReviewsClient) AddVideoTranscriptResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// addVideoTranscriptResponder handles the response to the AddVideoTranscript request.
+func (client ReviewsClient) addVideoTranscriptResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // AddVideoTranscriptModerationResult this API adds a transcript screen text result file for a video review. Transcript
@@ -378,72 +273,51 @@ func (client ReviewsClient) AddVideoTranscriptResponder(resp *http.Response) (re
 //
 // contentType is the content type. teamName is your team name. reviewID is id of the review. transcriptModerationBody
 // is body for add video transcript moderation result API
-func (client ReviewsClient) AddVideoTranscriptModerationResult(ctx context.Context, contentType string, teamName string, reviewID string, transcriptModerationBody []TranscriptModerationBodyItem) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: transcriptModerationBody,
-			Constraints: []validation.Constraint{{Target: "transcriptModerationBody", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "contentmoderator.ReviewsClient", "AddVideoTranscriptModerationResult")
+func (client ReviewsClient) AddVideoTranscriptModerationResult(ctx context.Context, contentType string, teamName string, reviewID string, transcriptModerationBody []TranscriptModerationBodyItem) (*http.Response, error) {
+	if err := validate([]validation{
+		{targetValue: transcriptModerationBody,
+			constraints: []constraint{{target: "transcriptModerationBody", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.AddVideoTranscriptModerationResultPreparer(ctx, contentType, teamName, reviewID, transcriptModerationBody)
+	req, err := client.addVideoTranscriptModerationResultPreparer(contentType, teamName, reviewID, transcriptModerationBody)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoTranscriptModerationResult", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.AddVideoTranscriptModerationResultSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.addVideoTranscriptModerationResultResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoTranscriptModerationResult", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.AddVideoTranscriptModerationResultResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "AddVideoTranscriptModerationResult", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// AddVideoTranscriptModerationResultPreparer prepares the AddVideoTranscriptModerationResult request.
-func (client ReviewsClient) AddVideoTranscriptModerationResultPreparer(ctx context.Context, contentType string, teamName string, reviewID string, transcriptModerationBody []TranscriptModerationBodyItem) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"baseUrl": client.BaseURL,
+// addVideoTranscriptModerationResultPreparer prepares the AddVideoTranscriptModerationResult request.
+func (client ReviewsClient) addVideoTranscriptModerationResultPreparer(contentType string, teamName string, reviewID string, transcriptModerationBody []TranscriptModerationBodyItem) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("PUT", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"reviewId": autorest.Encode("path", reviewID),
-		"teamName": autorest.Encode("path", teamName),
+	params := req.URL.Query()
+	req.URL.RawQuery = params.Encode()
+	req.Header.Set("Content-Type", contentType)
+	b, err := json.Marshal(transcriptModerationBody)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
-		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/transcriptmoderationresult", pathParameters),
-		autorest.WithJSON(transcriptModerationBody),
-		autorest.WithHeader("Content-Type", autorest.String(contentType)))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// AddVideoTranscriptModerationResultSender sends the AddVideoTranscriptModerationResult request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReviewsClient) AddVideoTranscriptModerationResultSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// AddVideoTranscriptModerationResultResponder handles the response to the AddVideoTranscriptModerationResult request. The method always
-// closes the http.Response Body.
-func (client ReviewsClient) AddVideoTranscriptModerationResultResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// addVideoTranscriptModerationResultResponder handles the response to the AddVideoTranscriptModerationResult request.
+func (client ReviewsClient) addVideoTranscriptModerationResultResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // CreateJob a job Id will be returned for the content posted on this endpoint.
@@ -499,82 +373,72 @@ func (client ReviewsClient) AddVideoTranscriptModerationResultResponder(resp *ht
 // teamName is your team name. contentType is image, Text or Video. contentID is id/Name to identify the content
 // submitted. workflowName is workflow Name that you want to invoke. jobContentType is the content type. content is
 // content to evaluate. callBackEndpoint is callback endpoint for posting the create job result.
-func (client ReviewsClient) CreateJob(ctx context.Context, teamName string, contentType string, contentID string, workflowName string, jobContentType string, content Content, callBackEndpoint string) (result JobID, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: content,
-			Constraints: []validation.Constraint{{Target: "content.ContentValue", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "contentmoderator.ReviewsClient", "CreateJob")
+func (client ReviewsClient) CreateJob(ctx context.Context, teamName string, contentType string, contentID string, workflowName string, jobContentType string, content Content, callBackEndpoint *string) (*JobID, error) {
+	if err := validate([]validation{
+		{targetValue: content,
+			constraints: []constraint{{target: "content.ContentValue", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.CreateJobPreparer(ctx, teamName, contentType, contentID, workflowName, jobContentType, content, callBackEndpoint)
+	req, err := client.createJobPreparer(teamName, contentType, contentID, workflowName, jobContentType, content, callBackEndpoint)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "CreateJob", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.CreateJobSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createJobResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "CreateJob", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateJobResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "CreateJob", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*JobID), err
 }
 
-// CreateJobPreparer prepares the CreateJob request.
-func (client ReviewsClient) CreateJobPreparer(ctx context.Context, teamName string, contentType string, contentID string, workflowName string, jobContentType string, content Content, callBackEndpoint string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"baseUrl": client.BaseURL,
+// createJobPreparer prepares the CreateJob request.
+func (client ReviewsClient) createJobPreparer(teamName string, contentType string, contentID string, workflowName string, jobContentType string, content Content, callBackEndpoint *string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("POST", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"teamName": autorest.Encode("path", teamName),
+	params := req.URL.Query()
+	params.Set("ContentType", fmt.Sprintf("%v", contentType))
+	params.Set("ContentId", contentID)
+	params.Set("WorkflowName", workflowName)
+	if callBackEndpoint != nil {
+		params.Set("CallBackEndpoint", *callBackEndpoint)
 	}
-
-	queryParameters := map[string]interface{}{
-		"ContentId":    autorest.Encode("query", contentID),
-		"ContentType":  autorest.Encode("query", contentType),
-		"WorkflowName": autorest.Encode("query", workflowName),
+	req.URL.RawQuery = params.Encode()
+	req.Header.Set("Content-Type", fmt.Sprintf("%v", jobContentType))
+	b, err := json.Marshal(content)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-	if len(callBackEndpoint) > 0 {
-		queryParameters["CallBackEndpoint"] = autorest.Encode("query", callBackEndpoint)
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
-		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/jobs", pathParameters),
-		autorest.WithJSON(content),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Content-Type", autorest.String(jobContentType)))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	return req, nil
 }
 
-// CreateJobSender sends the CreateJob request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReviewsClient) CreateJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// CreateJobResponder handles the response to the CreateJob request. The method always
-// closes the http.Response Body.
-func (client ReviewsClient) CreateJobResponder(resp *http.Response) (result JobID, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createJobResponder handles the response to the CreateJob request.
+func (client ReviewsClient) createJobResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &JobID{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // CreateReviews the reviews created would show up for Reviewers on your team. As Reviewers complete reviewing, results
@@ -605,78 +469,69 @@ func (client ReviewsClient) CreateJobResponder(resp *http.Response) (result JobI
 //
 // URLContentType is the content type. teamName is your team name. createReviewBody is body for create reviews API
 // subTeam is subTeam of your team, you want to assign the created review to.
-func (client ReviewsClient) CreateReviews(ctx context.Context, URLContentType string, teamName string, createReviewBody []CreateReviewBodyItem, subTeam string) (result ListString, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: createReviewBody,
-			Constraints: []validation.Constraint{{Target: "createReviewBody", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "contentmoderator.ReviewsClient", "CreateReviews")
+func (client ReviewsClient) CreateReviews(ctx context.Context, URLContentType string, teamName string, createReviewBody []CreateReviewBodyItem, subTeam *string) (*CreateReviewsResponse, error) {
+	if err := validate([]validation{
+		{targetValue: createReviewBody,
+			constraints: []constraint{{target: "createReviewBody", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.CreateReviewsPreparer(ctx, URLContentType, teamName, createReviewBody, subTeam)
+	req, err := client.createReviewsPreparer(URLContentType, teamName, createReviewBody, subTeam)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "CreateReviews", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.CreateReviewsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createReviewsResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "CreateReviews", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateReviewsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "CreateReviews", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*CreateReviewsResponse), err
 }
 
-// CreateReviewsPreparer prepares the CreateReviews request.
-func (client ReviewsClient) CreateReviewsPreparer(ctx context.Context, URLContentType string, teamName string, createReviewBody []CreateReviewBodyItem, subTeam string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"baseUrl": client.BaseURL,
+// createReviewsPreparer prepares the CreateReviews request.
+func (client ReviewsClient) createReviewsPreparer(URLContentType string, teamName string, createReviewBody []CreateReviewBodyItem, subTeam *string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("POST", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"teamName": autorest.Encode("path", teamName),
+	params := req.URL.Query()
+	if subTeam != nil {
+		params.Set("subTeam", *subTeam)
 	}
-
-	queryParameters := map[string]interface{}{}
-	if len(subTeam) > 0 {
-		queryParameters["subTeam"] = autorest.Encode("query", subTeam)
+	req.URL.RawQuery = params.Encode()
+	req.Header.Set("UrlContentType", URLContentType)
+	b, err := json.Marshal(createReviewBody)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
-		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/reviews", pathParameters),
-		autorest.WithJSON(createReviewBody),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("UrlContentType", autorest.String(URLContentType)))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateReviewsSender sends the CreateReviews request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReviewsClient) CreateReviewsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// CreateReviewsResponder handles the response to the CreateReviews request. The method always
-// closes the http.Response Body.
-func (client ReviewsClient) CreateReviewsResponder(resp *http.Response) (result ListString, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createReviewsResponder handles the response to the CreateReviews request.
+func (client ReviewsClient) createReviewsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &CreateReviewsResponse{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, &result.Value)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // CreateVideoReviews the reviews created would show up for Reviewers on your team. As Reviewers complete reviewing,
@@ -707,204 +562,169 @@ func (client ReviewsClient) CreateReviewsResponder(resp *http.Response) (result 
 //
 // contentType is the content type. teamName is your team name. createVideoReviewsBody is body for create reviews API
 // subTeam is subTeam of your team, you want to assign the created review to.
-func (client ReviewsClient) CreateVideoReviews(ctx context.Context, contentType string, teamName string, createVideoReviewsBody []CreateVideoReviewsBodyItem, subTeam string) (result ListString, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: createVideoReviewsBody,
-			Constraints: []validation.Constraint{{Target: "createVideoReviewsBody", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "contentmoderator.ReviewsClient", "CreateVideoReviews")
+func (client ReviewsClient) CreateVideoReviews(ctx context.Context, contentType string, teamName string, createVideoReviewsBody []CreateVideoReviewsBodyItem, subTeam *string) (*CreateVideoReviewsResponse, error) {
+	if err := validate([]validation{
+		{targetValue: createVideoReviewsBody,
+			constraints: []constraint{{target: "createVideoReviewsBody", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.CreateVideoReviewsPreparer(ctx, contentType, teamName, createVideoReviewsBody, subTeam)
+	req, err := client.createVideoReviewsPreparer(contentType, teamName, createVideoReviewsBody, subTeam)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "CreateVideoReviews", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.CreateVideoReviewsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createVideoReviewsResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "CreateVideoReviews", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateVideoReviewsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "CreateVideoReviews", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*CreateVideoReviewsResponse), err
 }
 
-// CreateVideoReviewsPreparer prepares the CreateVideoReviews request.
-func (client ReviewsClient) CreateVideoReviewsPreparer(ctx context.Context, contentType string, teamName string, createVideoReviewsBody []CreateVideoReviewsBodyItem, subTeam string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"baseUrl": client.BaseURL,
+// createVideoReviewsPreparer prepares the CreateVideoReviews request.
+func (client ReviewsClient) createVideoReviewsPreparer(contentType string, teamName string, createVideoReviewsBody []CreateVideoReviewsBodyItem, subTeam *string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("POST", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"teamName": autorest.Encode("path", teamName),
+	params := req.URL.Query()
+	if subTeam != nil {
+		params.Set("subTeam", *subTeam)
 	}
-
-	queryParameters := map[string]interface{}{}
-	if len(subTeam) > 0 {
-		queryParameters["subTeam"] = autorest.Encode("query", subTeam)
+	req.URL.RawQuery = params.Encode()
+	req.Header.Set("Content-Type", contentType)
+	b, err := json.Marshal(createVideoReviewsBody)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
-		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/reviews", pathParameters),
-		autorest.WithJSON(createVideoReviewsBody),
-		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("Content-Type", autorest.String(contentType)))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateVideoReviewsSender sends the CreateVideoReviews request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReviewsClient) CreateVideoReviewsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// CreateVideoReviewsResponder handles the response to the CreateVideoReviews request. The method always
-// closes the http.Response Body.
-func (client ReviewsClient) CreateVideoReviewsResponder(resp *http.Response) (result ListString, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createVideoReviewsResponder handles the response to the CreateVideoReviews request.
+func (client ReviewsClient) createVideoReviewsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &CreateVideoReviewsResponse{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, &result.Value)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetJobDetails get the Job Details for a Job Id.
 //
 // teamName is your Team Name. jobID is id of the job.
-func (client ReviewsClient) GetJobDetails(ctx context.Context, teamName string, jobID string) (result Job, err error) {
-	req, err := client.GetJobDetailsPreparer(ctx, teamName, jobID)
+func (client ReviewsClient) GetJobDetails(ctx context.Context, teamName string, jobID string) (*Job, error) {
+	req, err := client.getJobDetailsPreparer(teamName, jobID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "GetJobDetails", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetJobDetailsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getJobDetailsResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "GetJobDetails", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetJobDetailsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "GetJobDetails", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Job), err
 }
 
-// GetJobDetailsPreparer prepares the GetJobDetails request.
-func (client ReviewsClient) GetJobDetailsPreparer(ctx context.Context, teamName string, jobID string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"baseUrl": client.BaseURL,
+// getJobDetailsPreparer prepares the GetJobDetails request.
+func (client ReviewsClient) getJobDetailsPreparer(teamName string, jobID string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"JobId":    autorest.Encode("path", jobID),
-		"teamName": autorest.Encode("path", teamName),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
-		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/jobs/{JobId}", pathParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetJobDetailsSender sends the GetJobDetails request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReviewsClient) GetJobDetailsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetJobDetailsResponder handles the response to the GetJobDetails request. The method always
-// closes the http.Response Body.
-func (client ReviewsClient) GetJobDetailsResponder(resp *http.Response) (result Job, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getJobDetailsResponder handles the response to the GetJobDetails request.
+func (client ReviewsClient) getJobDetailsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Job{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetReview returns review details for the review Id passed.
 //
 // teamName is your Team Name. reviewID is id of the review.
-func (client ReviewsClient) GetReview(ctx context.Context, teamName string, reviewID string) (result Review, err error) {
-	req, err := client.GetReviewPreparer(ctx, teamName, reviewID)
+func (client ReviewsClient) GetReview(ctx context.Context, teamName string, reviewID string) (*Review, error) {
+	req, err := client.getReviewPreparer(teamName, reviewID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "GetReview", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetReviewSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getReviewResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "GetReview", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetReviewResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "GetReview", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Review), err
 }
 
-// GetReviewPreparer prepares the GetReview request.
-func (client ReviewsClient) GetReviewPreparer(ctx context.Context, teamName string, reviewID string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"baseUrl": client.BaseURL,
+// getReviewPreparer prepares the GetReview request.
+func (client ReviewsClient) getReviewPreparer(teamName string, reviewID string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"reviewId": autorest.Encode("path", reviewID),
-		"teamName": autorest.Encode("path", teamName),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
-		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}", pathParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetReviewSender sends the GetReview request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReviewsClient) GetReviewSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetReviewResponder handles the response to the GetReview request. The method always
-// closes the http.Response Body.
-func (client ReviewsClient) GetReviewResponder(resp *http.Response) (result Review, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getReviewResponder handles the response to the GetReview request.
+func (client ReviewsClient) getReviewResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Review{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetVideoFrames the reviews created would show up for Reviewers on your team. As Reviewers complete reviewing,
@@ -935,136 +755,93 @@ func (client ReviewsClient) GetReviewResponder(resp *http.Response) (result Revi
 //
 // teamName is your team name. reviewID is id of the review. startSeed is time stamp of the frame from where you want
 // to start fetching the frames. noOfRecords is number of frames to fetch. filter is get frames filtered by tags.
-func (client ReviewsClient) GetVideoFrames(ctx context.Context, teamName string, reviewID string, startSeed *int32, noOfRecords *int32, filter string) (result Frames, err error) {
-	req, err := client.GetVideoFramesPreparer(ctx, teamName, reviewID, startSeed, noOfRecords, filter)
+func (client ReviewsClient) GetVideoFrames(ctx context.Context, teamName string, reviewID string, startSeed *int32, noOfRecords *int32, filter *string) (*Frames, error) {
+	req, err := client.getVideoFramesPreparer(teamName, reviewID, startSeed, noOfRecords, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "GetVideoFrames", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetVideoFramesSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getVideoFramesResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "GetVideoFrames", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetVideoFramesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "GetVideoFrames", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Frames), err
 }
 
-// GetVideoFramesPreparer prepares the GetVideoFrames request.
-func (client ReviewsClient) GetVideoFramesPreparer(ctx context.Context, teamName string, reviewID string, startSeed *int32, noOfRecords *int32, filter string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"baseUrl": client.BaseURL,
+// getVideoFramesPreparer prepares the GetVideoFrames request.
+func (client ReviewsClient) getVideoFramesPreparer(teamName string, reviewID string, startSeed *int32, noOfRecords *int32, filter *string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"reviewId": autorest.Encode("path", reviewID),
-		"teamName": autorest.Encode("path", teamName),
-	}
-
-	queryParameters := map[string]interface{}{}
+	params := req.URL.Query()
 	if startSeed != nil {
-		queryParameters["startSeed"] = autorest.Encode("query", *startSeed)
+		params.Set("startSeed", fmt.Sprintf("%v", *startSeed))
 	}
 	if noOfRecords != nil {
-		queryParameters["noOfRecords"] = autorest.Encode("query", *noOfRecords)
+		params.Set("noOfRecords", fmt.Sprintf("%v", *noOfRecords))
 	}
-	if len(filter) > 0 {
-		queryParameters["filter"] = autorest.Encode("query", filter)
+	if filter != nil {
+		params.Set("filter", *filter)
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
-		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/frames", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetVideoFramesSender sends the GetVideoFrames request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReviewsClient) GetVideoFramesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetVideoFramesResponder handles the response to the GetVideoFrames request. The method always
-// closes the http.Response Body.
-func (client ReviewsClient) GetVideoFramesResponder(resp *http.Response) (result Frames, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getVideoFramesResponder handles the response to the GetVideoFrames request.
+func (client ReviewsClient) getVideoFramesResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Frames{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // PublishVideoReview publish video review to make it available for review.
 //
 // teamName is your team name. reviewID is id of the review.
-func (client ReviewsClient) PublishVideoReview(ctx context.Context, teamName string, reviewID string) (result autorest.Response, err error) {
-	req, err := client.PublishVideoReviewPreparer(ctx, teamName, reviewID)
+func (client ReviewsClient) PublishVideoReview(ctx context.Context, teamName string, reviewID string) (*http.Response, error) {
+	req, err := client.publishVideoReviewPreparer(teamName, reviewID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "PublishVideoReview", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.PublishVideoReviewSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.publishVideoReviewResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "PublishVideoReview", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.PublishVideoReviewResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "contentmoderator.ReviewsClient", "PublishVideoReview", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// PublishVideoReviewPreparer prepares the PublishVideoReview request.
-func (client ReviewsClient) PublishVideoReviewPreparer(ctx context.Context, teamName string, reviewID string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"baseUrl": client.BaseURL,
+// publishVideoReviewPreparer prepares the PublishVideoReview request.
+func (client ReviewsClient) publishVideoReviewPreparer(teamName string, reviewID string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("POST", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"reviewId": autorest.Encode("path", reviewID),
-		"teamName": autorest.Encode("path", teamName),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
-		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/publish", pathParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// PublishVideoReviewSender sends the PublishVideoReview request. The method will close the
-// http.Response Body if it receives an error.
-func (client ReviewsClient) PublishVideoReviewSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// PublishVideoReviewResponder handles the response to the PublishVideoReview request. The method always
-// closes the http.Response Body.
-func (client ReviewsClient) PublishVideoReviewResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// publishVideoReviewResponder handles the response to the PublishVideoReview request.
+func (client ReviewsClient) publishVideoReviewResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }

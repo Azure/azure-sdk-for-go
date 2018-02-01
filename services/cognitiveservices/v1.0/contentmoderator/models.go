@@ -18,64 +18,74 @@ package contentmoderator
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"net/http"
 )
 
-// AzureRegionBaseURL enumerates the values for azure region base url.
-type AzureRegionBaseURL string
+// AzureRegionBaseURLType enumerates the values for azure region base url.
+type AzureRegionBaseURLType string
 
 const (
-	// Australiaeastapicognitivemicrosoftcom ...
-	Australiaeastapicognitivemicrosoftcom AzureRegionBaseURL = "australiaeast.api.cognitive.microsoft.com"
-	// Brazilsouthapicognitivemicrosoftcom ...
-	Brazilsouthapicognitivemicrosoftcom AzureRegionBaseURL = "brazilsouth.api.cognitive.microsoft.com"
-	// ContentmoderatortestazureApinet ...
-	ContentmoderatortestazureApinet AzureRegionBaseURL = "contentmoderatortest.azure-api.net"
-	// Eastasiaapicognitivemicrosoftcom ...
-	Eastasiaapicognitivemicrosoftcom AzureRegionBaseURL = "eastasia.api.cognitive.microsoft.com"
-	// Eastus2apicognitivemicrosoftcom ...
-	Eastus2apicognitivemicrosoftcom AzureRegionBaseURL = "eastus2.api.cognitive.microsoft.com"
-	// Eastusapicognitivemicrosoftcom ...
-	Eastusapicognitivemicrosoftcom AzureRegionBaseURL = "eastus.api.cognitive.microsoft.com"
-	// Northeuropeapicognitivemicrosoftcom ...
-	Northeuropeapicognitivemicrosoftcom AzureRegionBaseURL = "northeurope.api.cognitive.microsoft.com"
-	// Southcentralusapicognitivemicrosoftcom ...
-	Southcentralusapicognitivemicrosoftcom AzureRegionBaseURL = "southcentralus.api.cognitive.microsoft.com"
-	// Southeastasiaapicognitivemicrosoftcom ...
-	Southeastasiaapicognitivemicrosoftcom AzureRegionBaseURL = "southeastasia.api.cognitive.microsoft.com"
-	// Westcentralusapicognitivemicrosoftcom ...
-	Westcentralusapicognitivemicrosoftcom AzureRegionBaseURL = "westcentralus.api.cognitive.microsoft.com"
-	// Westeuropeapicognitivemicrosoftcom ...
-	Westeuropeapicognitivemicrosoftcom AzureRegionBaseURL = "westeurope.api.cognitive.microsoft.com"
-	// Westus2apicognitivemicrosoftcom ...
-	Westus2apicognitivemicrosoftcom AzureRegionBaseURL = "westus2.api.cognitive.microsoft.com"
-	// Westusapicognitivemicrosoftcom ...
-	Westusapicognitivemicrosoftcom AzureRegionBaseURL = "westus.api.cognitive.microsoft.com"
+	// AzureRegionBaseURLAustraliaeastapicognitivemicrosoftcom ...
+	AzureRegionBaseURLAustraliaeastapicognitivemicrosoftcom AzureRegionBaseURLType = "australiaeast.api.cognitive.microsoft.com"
+	// AzureRegionBaseURLBrazilsouthapicognitivemicrosoftcom ...
+	AzureRegionBaseURLBrazilsouthapicognitivemicrosoftcom AzureRegionBaseURLType = "brazilsouth.api.cognitive.microsoft.com"
+	// AzureRegionBaseURLContentmoderatortestazureApinet ...
+	AzureRegionBaseURLContentmoderatortestazureApinet AzureRegionBaseURLType = "contentmoderatortest.azure-api.net"
+	// AzureRegionBaseURLEastasiaapicognitivemicrosoftcom ...
+	AzureRegionBaseURLEastasiaapicognitivemicrosoftcom AzureRegionBaseURLType = "eastasia.api.cognitive.microsoft.com"
+	// AzureRegionBaseURLEastus2apicognitivemicrosoftcom ...
+	AzureRegionBaseURLEastus2apicognitivemicrosoftcom AzureRegionBaseURLType = "eastus2.api.cognitive.microsoft.com"
+	// AzureRegionBaseURLEastusapicognitivemicrosoftcom ...
+	AzureRegionBaseURLEastusapicognitivemicrosoftcom AzureRegionBaseURLType = "eastus.api.cognitive.microsoft.com"
+	// AzureRegionBaseURLNone represents an empty AzureRegionBaseURLType.
+	AzureRegionBaseURLNone AzureRegionBaseURLType = ""
+	// AzureRegionBaseURLNortheuropeapicognitivemicrosoftcom ...
+	AzureRegionBaseURLNortheuropeapicognitivemicrosoftcom AzureRegionBaseURLType = "northeurope.api.cognitive.microsoft.com"
+	// AzureRegionBaseURLSouthcentralusapicognitivemicrosoftcom ...
+	AzureRegionBaseURLSouthcentralusapicognitivemicrosoftcom AzureRegionBaseURLType = "southcentralus.api.cognitive.microsoft.com"
+	// AzureRegionBaseURLSoutheastasiaapicognitivemicrosoftcom ...
+	AzureRegionBaseURLSoutheastasiaapicognitivemicrosoftcom AzureRegionBaseURLType = "southeastasia.api.cognitive.microsoft.com"
+	// AzureRegionBaseURLWestcentralusapicognitivemicrosoftcom ...
+	AzureRegionBaseURLWestcentralusapicognitivemicrosoftcom AzureRegionBaseURLType = "westcentralus.api.cognitive.microsoft.com"
+	// AzureRegionBaseURLWesteuropeapicognitivemicrosoftcom ...
+	AzureRegionBaseURLWesteuropeapicognitivemicrosoftcom AzureRegionBaseURLType = "westeurope.api.cognitive.microsoft.com"
+	// AzureRegionBaseURLWestus2apicognitivemicrosoftcom ...
+	AzureRegionBaseURLWestus2apicognitivemicrosoftcom AzureRegionBaseURLType = "westus2.api.cognitive.microsoft.com"
+	// AzureRegionBaseURLWestusapicognitivemicrosoftcom ...
+	AzureRegionBaseURLWestusapicognitivemicrosoftcom AzureRegionBaseURLType = "westus.api.cognitive.microsoft.com"
 )
 
-// StatusEnum enumerates the values for status enum.
-type StatusEnum string
+// StatusType enumerates the values for status.
+type StatusType string
 
 const (
-	// Complete ...
-	Complete StatusEnum = "Complete"
-	// Pending ...
-	Pending StatusEnum = "Pending"
-	// Unpublished ...
-	Unpublished StatusEnum = "Unpublished"
+	// StatusComplete ...
+	StatusComplete StatusType = "Complete"
+	// StatusPending ...
+	StatusPending StatusType = "Pending"
+	// StatusUnpublished ...
+	StatusUnpublished StatusType = "Unpublished"
 )
 
 // Type enumerates the values for type.
 type Type string
 
 const (
-	// TypeImage ...
-	TypeImage Type = "Image"
-	// TypeText ...
-	TypeText Type = "Text"
+	// Video ...
+	Video Type = "Video"
 )
 
-// Address address details.
+// Type1Type enumerates the values for type 1.
+type Type1Type string
+
+const (
+	// Type1Image ...
+	Type1Image Type1Type = "Image"
+	// Type1Text ...
+	Type1Text Type1Type = "Text"
+)
+
+// Address - Address details.
 type Address struct {
 	// Text - Detected Address.
 	Text *string `json:"Text,omitempty"`
@@ -83,7 +93,28 @@ type Address struct {
 	Index *int32 `json:"Index,omitempty"`
 }
 
-// APIError error information returned by the API
+// AddTermResponse ...
+type AddTermResponse struct {
+	rawResponse *http.Response
+	Value       map[string]interface{} `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (atr AddTermResponse) Response() *http.Response {
+	return atr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (atr AddTermResponse) StatusCode() int {
+	return atr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (atr AddTermResponse) Status() string {
+	return atr.rawResponse.Status
+}
+
+// APIError - Error information returned by the API
 type APIError struct {
 	Error *Error `json:"Error,omitempty"`
 }
@@ -98,7 +129,7 @@ type Body struct {
 	Metadata *BodyMetadata `json:"Metadata,omitempty"`
 }
 
-// BodyMetadata metadata of the list.
+// BodyMetadata - Metadata of the list.
 type BodyMetadata struct {
 	// KeyOne - Optional key value pair to describe your list.
 	KeyOne *string `json:"Key One,omitempty"`
@@ -106,13 +137,7 @@ type BodyMetadata struct {
 	KeyTwo *string `json:"Key Two,omitempty"`
 }
 
-// BodyModel ...
-type BodyModel struct {
-	DataRepresentation *string `json:"DataRepresentation,omitempty"`
-	Value              *string `json:"Value,omitempty"`
-}
-
-// Candidate OCR candidate text.
+// Candidate - OCR candidate text.
 type Candidate struct {
 	// Text - The text found.
 	Text *string `json:"Text,omitempty"`
@@ -120,14 +145,11 @@ type Candidate struct {
 	Confidence *float64 `json:"Confidence,omitempty"`
 }
 
-// Classification the classification details of the text.
+// Classification - The classification details of the text.
 type Classification struct {
-	// AdultScore - The adult score.
-	AdultScore *float64 `json:"AdultScore,omitempty"`
-	// RacyScore - The racy score.
-	RacyScore *float64 `json:"RacyScore,omitempty"`
-	// OffensiveScore - The offensive score.
-	OffensiveScore *float64 `json:"OffensiveScore,omitempty"`
+	Category1 *Score `json:"Category1,omitempty"`
+	Category2 *Score `json:"Category2,omitempty"`
+	Category3 *Score `json:"Category3,omitempty"`
 	// ReviewRecommended - The review recommended flag.
 	ReviewRecommended *bool `json:"ReviewRecommended,omitempty"`
 }
@@ -135,12 +157,12 @@ type Classification struct {
 // Content ...
 type Content struct {
 	// ContentValue - Content to evaluate for a job.
-	ContentValue *string `json:"ContentValue,omitempty"`
+	ContentValue string `json:"ContentValue,omitempty"`
 }
 
-// CreateReviewBodyItem schema items of the body.
+// CreateReviewBodyItem - Schema items of the body.
 type CreateReviewBodyItem struct {
-	// Type - Type of the content. Possible values include: 'TypeImage', 'TypeText'
+	// Type - Type of the content. Possible values include: 'Image', 'Text'
 	Type Type `json:"Type,omitempty"`
 	// Content - Content to review.
 	Content *string `json:"Content,omitempty"`
@@ -149,7 +171,7 @@ type CreateReviewBodyItem struct {
 	// CallbackEndpoint - Optional CallbackEndpoint.
 	CallbackEndpoint *string `json:"CallbackEndpoint,omitempty"`
 	// Metadata - Optional metadata details.
-	Metadata *[]CreateReviewBodyItemMetadataItem `json:"Metadata,omitempty"`
+	Metadata []CreateReviewBodyItemMetadataItem `json:"Metadata,omitempty"`
 }
 
 // CreateReviewBodyItemMetadataItem ...
@@ -160,20 +182,41 @@ type CreateReviewBodyItemMetadataItem struct {
 	Value *string `json:"Value,omitempty"`
 }
 
-// CreateVideoReviewsBodyItem schema items of the body.
+// CreateReviewsResponse ...
+type CreateReviewsResponse struct {
+	rawResponse *http.Response
+	Value       []string `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (crr CreateReviewsResponse) Response() *http.Response {
+	return crr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (crr CreateReviewsResponse) StatusCode() int {
+	return crr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (crr CreateReviewsResponse) Status() string {
+	return crr.rawResponse.Status
+}
+
+// CreateVideoReviewsBodyItem - Schema items of the body.
 type CreateVideoReviewsBodyItem struct {
 	// VideoFrames - Optional metadata details.
-	VideoFrames *[]CreateVideoReviewsBodyItemVideoFramesItem `json:"VideoFrames,omitempty"`
+	VideoFrames []CreateVideoReviewsBodyItemVideoFramesItem `json:"VideoFrames,omitempty"`
 	// Metadata - Optional metadata details.
-	Metadata *[]CreateVideoReviewsBodyItemMetadataItem `json:"Metadata,omitempty"`
-	// Type - Type of the content.
-	Type *string `json:"Type,omitempty"`
+	Metadata []CreateVideoReviewsBodyItemMetadataItem `json:"Metadata,omitempty"`
+	// Type - Type of the content. Possible values include: 'Video'
+	Type Type `json:"Type,omitempty"`
 	// Content - Video content url to review.
 	Content *string `json:"Content,omitempty"`
 	// ContentID - Content Identifier.
 	ContentID *string `json:"ContentId,omitempty"`
 	// Status - Status of the video(Complete,Unpublished,Pending). Possible values include: 'Complete', 'Unpublished', 'Pending'
-	Status Status `json:"Status,omitempty"`
+	Status StatusType `json:"Status,omitempty"`
 	// Timescale - Timescale of the video.
 	Timescale *int32 `json:"Timescale,omitempty"`
 	// CallbackEndpoint - Optional CallbackEndpoint.
@@ -195,10 +238,10 @@ type CreateVideoReviewsBodyItemVideoFramesItem struct {
 	// Timestamp - Timestamp of the frame.
 	Timestamp *int32 `json:"Timestamp,omitempty"`
 	// FrameImage - Frame image Url.
-	FrameImage         *string                                                            `json:"FrameImage,omitempty"`
-	ReviewerResultTags *[]CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem `json:"ReviewerResultTags,omitempty"`
+	FrameImage         *string                                                           `json:"FrameImage,omitempty"`
+	ReviewerResultTags []CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem `json:"ReviewerResultTags,omitempty"`
 	// Metadata - Optional metadata details.
-	Metadata *[]CreateVideoReviewsBodyItemVideoFramesItemMetadataItem `json:"Metadata,omitempty"`
+	Metadata []CreateVideoReviewsBodyItemVideoFramesItemMetadataItem `json:"Metadata,omitempty"`
 }
 
 // CreateVideoReviewsBodyItemVideoFramesItemMetadataItem ...
@@ -217,9 +260,135 @@ type CreateVideoReviewsBodyItemVideoFramesItemReviewerResultTagsItem struct {
 	Value *string `json:"Value,omitempty"`
 }
 
-// DetectedLanguage detect language result.
+// CreateVideoReviewsResponse ...
+type CreateVideoReviewsResponse struct {
+	rawResponse *http.Response
+	Value       []string `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (cvrr CreateVideoReviewsResponse) Response() *http.Response {
+	return cvrr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (cvrr CreateVideoReviewsResponse) StatusCode() int {
+	return cvrr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (cvrr CreateVideoReviewsResponse) Status() string {
+	return cvrr.rawResponse.Status
+}
+
+// DeleteAllImagesResponse ...
+type DeleteAllImagesResponse struct {
+	rawResponse *http.Response
+	Value       *string `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (dair DeleteAllImagesResponse) Response() *http.Response {
+	return dair.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dair DeleteAllImagesResponse) StatusCode() int {
+	return dair.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dair DeleteAllImagesResponse) Status() string {
+	return dair.rawResponse.Status
+}
+
+// DeleteAllTermsResponse ...
+type DeleteAllTermsResponse struct {
+	rawResponse *http.Response
+	Value       *string `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (datr DeleteAllTermsResponse) Response() *http.Response {
+	return datr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (datr DeleteAllTermsResponse) StatusCode() int {
+	return datr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (datr DeleteAllTermsResponse) Status() string {
+	return datr.rawResponse.Status
+}
+
+// DeleteImageResponse ...
+type DeleteImageResponse struct {
+	rawResponse *http.Response
+	Value       *string `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (dir DeleteImageResponse) Response() *http.Response {
+	return dir.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dir DeleteImageResponse) StatusCode() int {
+	return dir.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dir DeleteImageResponse) Status() string {
+	return dir.rawResponse.Status
+}
+
+// DeleteResponse ...
+type DeleteResponse struct {
+	rawResponse *http.Response
+	Value       *string `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (dr DeleteResponse) Response() *http.Response {
+	return dr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dr DeleteResponse) StatusCode() int {
+	return dr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dr DeleteResponse) Status() string {
+	return dr.rawResponse.Status
+}
+
+// DeleteTermResponse ...
+type DeleteTermResponse struct {
+	rawResponse *http.Response
+	Value       *string `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (dtr DeleteTermResponse) Response() *http.Response {
+	return dtr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dtr DeleteTermResponse) StatusCode() int {
+	return dtr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dtr DeleteTermResponse) Status() string {
+	return dtr.rawResponse.Status
+}
+
+// DetectedLanguage - Detect language result.
 type DetectedLanguage struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// DetectedLanguage - The detected language.
 	DetectedLanguage *string `json:"DetectedLanguage,omitempty"`
 	// Status - The detect language status
@@ -228,7 +397,22 @@ type DetectedLanguage struct {
 	TrackingID *string `json:"TrackingId,omitempty"`
 }
 
-// DetectedTerms detected Terms details.
+// Response returns the raw HTTP response object.
+func (dl DetectedLanguage) Response() *http.Response {
+	return dl.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dl DetectedLanguage) StatusCode() int {
+	return dl.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (dl DetectedLanguage) HTTPStatus() string {
+	return dl.rawResponse.Status
+}
+
+// DetectedTerms - Detected Terms details.
 type DetectedTerms struct {
 	// Index - Index(Location) of the detected profanity term in the input text content.
 	Index *int32 `json:"Index,omitempty"`
@@ -240,7 +424,7 @@ type DetectedTerms struct {
 	Term *string `json:"Term,omitempty"`
 }
 
-// Email email Address details.
+// Email - Email Address details.
 type Email struct {
 	// Detected - Detected Email Address from the input text content.
 	Detected *string `json:"Detected,omitempty"`
@@ -252,15 +436,15 @@ type Email struct {
 	Index *int32 `json:"Index,omitempty"`
 }
 
-// Error error body.
+// Error - Error body.
 type Error struct {
 	Code    *string `json:"Code,omitempty"`
 	Message *string `json:"Message,omitempty"`
 }
 
-// Evaluate evaluate response object.
+// Evaluate - Evaluate response object.
 type Evaluate struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// CacheID - The cache id.
 	CacheID *string `json:"CacheID,omitempty"`
 	// Result - Evaluate result.
@@ -276,12 +460,27 @@ type Evaluate struct {
 	// IsImageRacyClassified - Indicates if the image is classified as racy.
 	IsImageRacyClassified *bool `json:"IsImageRacyClassified,omitempty"`
 	// AdvancedInfo - The advanced info.
-	AdvancedInfo *[]KeyValuePair `json:"AdvancedInfo,omitempty"`
+	AdvancedInfo []KeyValuePair `json:"AdvancedInfo,omitempty"`
 	// Status - The evaluate status
 	Status *Status `json:"Status,omitempty"`
 }
 
-// Face coordinates to the found face.
+// Response returns the raw HTTP response object.
+func (e Evaluate) Response() *http.Response {
+	return e.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (e Evaluate) StatusCode() int {
+	return e.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (e Evaluate) HTTPStatus() string {
+	return e.rawResponse.Status
+}
+
+// Face - Coordinates to the found face.
 type Face struct {
 	// Bottom - The bottom coordinate.
 	Bottom *int32 `json:"Bottom,omitempty"`
@@ -293,9 +492,9 @@ type Face struct {
 	Top *int32 `json:"Top,omitempty"`
 }
 
-// FoundFaces request object the contains found faces.
+// FoundFaces - Request object the contains found faces.
 type FoundFaces struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Status - The evaluate status
 	Status *Status `json:"Status,omitempty"`
 	// TrackingID - The tracking id.
@@ -307,42 +506,129 @@ type FoundFaces struct {
 	// Count - Number of faces found.
 	Count *int32 `json:"Count,omitempty"`
 	// AdvancedInfo - The advanced info.
-	AdvancedInfo *[]KeyValuePair `json:"AdvancedInfo,omitempty"`
+	AdvancedInfo []KeyValuePair `json:"AdvancedInfo,omitempty"`
 	// Faces - The list of faces.
-	Faces *[]Face `json:"Faces,omitempty"`
+	Faces []Face `json:"Faces,omitempty"`
 }
 
-// Frame video frame property details.
+// Response returns the raw HTTP response object.
+func (ff FoundFaces) Response() *http.Response {
+	return ff.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ff FoundFaces) StatusCode() int {
+	return ff.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (ff FoundFaces) HTTPStatus() string {
+	return ff.rawResponse.Status
+}
+
+// Frame - Video frame property details.
 type Frame struct {
 	// Timestamp - Timestamp of the frame.
 	Timestamp *string `json:"Timestamp,omitempty"`
 	// FrameImage - Frame image.
 	FrameImage *string `json:"FrameImage,omitempty"`
 	// Metadata - Array of KeyValue.
-	Metadata *[]KeyValuePair `json:"Metadata,omitempty"`
+	Metadata []KeyValuePair `json:"Metadata,omitempty"`
 	// ReviewerResultTags - Reviewer result tags.
-	ReviewerResultTags *[]Tag `json:"ReviewerResultTags,omitempty"`
+	ReviewerResultTags []Tag `json:"ReviewerResultTags,omitempty"`
 }
 
-// Frames the response for a Get Frames request.
+// Frames - The response for a Get Frames request.
 type Frames struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ReviewID - Id of the review.
-	ReviewID    *string  `json:"ReviewId,omitempty"`
-	VideoFrames *[]Frame `json:"VideoFrames,omitempty"`
+	ReviewID    *string `json:"ReviewId,omitempty"`
+	VideoFrames []Frame `json:"VideoFrames,omitempty"`
 }
 
-// Image image Properties.
+// Response returns the raw HTTP response object.
+func (f Frames) Response() *http.Response {
+	return f.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (f Frames) StatusCode() int {
+	return f.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (f Frames) Status() string {
+	return f.rawResponse.Status
+}
+
+// GetAllImageListsResponse ...
+type GetAllImageListsResponse struct {
+	rawResponse *http.Response
+	Value       []ImageList `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (gailr GetAllImageListsResponse) Response() *http.Response {
+	return gailr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (gailr GetAllImageListsResponse) StatusCode() int {
+	return gailr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (gailr GetAllImageListsResponse) Status() string {
+	return gailr.rawResponse.Status
+}
+
+// GetAllTermListsResponse ...
+type GetAllTermListsResponse struct {
+	rawResponse *http.Response
+	Value       []TermList `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (gatlr GetAllTermListsResponse) Response() *http.Response {
+	return gatlr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (gatlr GetAllTermListsResponse) StatusCode() int {
+	return gatlr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (gatlr GetAllTermListsResponse) Status() string {
+	return gatlr.rawResponse.Status
+}
+
+// Image - Image Properties.
 type Image struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ContentID - Content Id.
 	ContentID *string `json:"ContentId,omitempty"`
 	// AdditionalInfo - Advanced info list.
-	AdditionalInfo *[]ImageAdditionalInfoItem `json:"AdditionalInfo,omitempty"`
+	AdditionalInfo []ImageAdditionalInfoItem `json:"AdditionalInfo,omitempty"`
 	// Status - Status details.
 	Status *Status `json:"Status,omitempty"`
 	// TrackingID - Tracking Id.
 	TrackingID *string `json:"TrackingId,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (i Image) Response() *http.Response {
+	return i.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (i Image) StatusCode() int {
+	return i.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (i Image) HTTPStatus() string {
+	return i.rawResponse.Status
 }
 
 // ImageAdditionalInfoItem ...
@@ -353,22 +639,37 @@ type ImageAdditionalInfoItem struct {
 	Value *string `json:"Value,omitempty"`
 }
 
-// ImageIds image Id properties.
+// ImageIds - Image Id properties.
 type ImageIds struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ContentSource - Source of the content.
 	ContentSource *string `json:"ContentSource,omitempty"`
 	// ContentIds - Id of the contents.
-	ContentIds *[]int32 `json:"ContentIds,omitempty"`
+	ContentIds []int32 `json:"ContentIds,omitempty"`
 	// Status - Get Image status.
 	Status *Status `json:"Status,omitempty"`
 	// TrackingID - Tracking Id.
 	TrackingID *string `json:"TrackingId,omitempty"`
 }
 
-// ImageList image List Properties.
+// Response returns the raw HTTP response object.
+func (ii ImageIds) Response() *http.Response {
+	return ii.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ii ImageIds) StatusCode() int {
+	return ii.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (ii ImageIds) HTTPStatus() string {
+	return ii.rawResponse.Status
+}
+
+// ImageList - Image List Properties.
 type ImageList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Image List Id.
 	ID *int32 `json:"Id,omitempty"`
 	// Name - Image List Name.
@@ -379,7 +680,22 @@ type ImageList struct {
 	Metadata *ImageListMetadata `json:"Metadata,omitempty"`
 }
 
-// ImageListMetadata image List Metadata.
+// Response returns the raw HTTP response object.
+func (il ImageList) Response() *http.Response {
+	return il.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (il ImageList) StatusCode() int {
+	return il.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (il ImageList) Status() string {
+	return il.rawResponse.Status
+}
+
+// ImageListMetadata - Image List Metadata.
 type ImageListMetadata struct {
 	// KeyOne - Optional Key value pair to describe your list.
 	KeyOne *string `json:"Key One,omitempty"`
@@ -387,7 +703,13 @@ type ImageListMetadata struct {
 	KeyTwo *string `json:"Key Two,omitempty"`
 }
 
-// IPA IP Address details.
+// ImageURL ...
+type ImageURL struct {
+	DataRepresentation *string `json:"DataRepresentation,omitempty"`
+	Value              *string `json:"Value,omitempty"`
+}
+
+// IPA - IP Address details.
 type IPA struct {
 	// SubType - Subtype of the detected IP Address.
 	SubType *string `json:"SubType,omitempty"`
@@ -397,9 +719,9 @@ type IPA struct {
 	Index *int32 `json:"Index,omitempty"`
 }
 
-// Job the Job object.
+// Job - The Job object.
 type Job struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - The job id.
 	ID *string `json:"Id,omitempty"`
 	// TeamName - The team name associated with the job.
@@ -415,12 +737,27 @@ type Job struct {
 	// ReviewID - Review Id if one is created.
 	ReviewID *string `json:"ReviewId,omitempty"`
 	// ResultMetaData - Array of KeyValue pairs.
-	ResultMetaData *[]KeyValuePair `json:"ResultMetaData,omitempty"`
+	ResultMetaData []KeyValuePair `json:"ResultMetaData,omitempty"`
 	// JobExecutionReport - Job execution report- Array of KeyValue pairs object.
-	JobExecutionReport *[]JobExecutionReportDetails `json:"JobExecutionReport,omitempty"`
+	JobExecutionReport []JobExecutionReportDetails `json:"JobExecutionReport,omitempty"`
 }
 
-// JobExecutionReportDetails job Execution Report Values.
+// Response returns the raw HTTP response object.
+func (j Job) Response() *http.Response {
+	return j.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (j Job) StatusCode() int {
+	return j.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (j Job) HTTPStatus() string {
+	return j.rawResponse.Status
+}
+
+// JobExecutionReportDetails - Job Execution Report Values.
 type JobExecutionReportDetails struct {
 	// Ts - Time details.
 	Ts *string `json:"Ts,omitempty"`
@@ -430,18 +767,33 @@ type JobExecutionReportDetails struct {
 
 // JobID ...
 type JobID struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// JobID - Id of the created job.
 	JobID *string `json:"JobId,omitempty"`
 }
 
-// JobListResult the list of job ids.
-type JobListResult struct {
-	// Value - The job id.
-	Value *[]string `json:"Value,omitempty"`
+// Response returns the raw HTTP response object.
+func (ji JobID) Response() *http.Response {
+	return ji.rawResponse
 }
 
-// KeyValuePair the key value pair object properties.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ji JobID) StatusCode() int {
+	return ji.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ji JobID) Status() string {
+	return ji.rawResponse.Status
+}
+
+// JobListResult - The list of job ids.
+type JobListResult struct {
+	// Value - The job id.
+	Value []string `json:"Value,omitempty"`
+}
+
+// KeyValuePair - The key value pair object properties.
 type KeyValuePair struct {
 	// Key - The key parameter.
 	Key *string `json:"Key,omitempty"`
@@ -449,25 +801,7 @@ type KeyValuePair struct {
 	Value *string `json:"Value,omitempty"`
 }
 
-// ListImageList ...
-type ListImageList struct {
-	autorest.Response `json:"-"`
-	Value             *[]ImageList `json:"value,omitempty"`
-}
-
-// ListString ...
-type ListString struct {
-	autorest.Response `json:"-"`
-	Value             *[]string `json:"value,omitempty"`
-}
-
-// ListTermList ...
-type ListTermList struct {
-	autorest.Response `json:"-"`
-	Value             *[]TermList `json:"value,omitempty"`
-}
-
-// Match the match details.
+// Match - The match details.
 type Match struct {
 	// Score - Confidence score of the image match.
 	Score *float64 `json:"Score,omitempty"`
@@ -476,14 +810,14 @@ type Match struct {
 	// Source - The source.
 	Source *string `json:"Source,omitempty"`
 	// Tags - The tags for match details.
-	Tags *[]int32 `json:"Tags,omitempty"`
+	Tags []int32 `json:"Tags,omitempty"`
 	// Label - The label.
 	Label *string `json:"Label,omitempty"`
 }
 
-// MatchResponse the response for a Match request.
+// MatchResponse - The response for a Match request.
 type MatchResponse struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// TrackingID - The tracking id.
 	TrackingID *string `json:"TrackingId,omitempty"`
 	// CacheID - The cache id.
@@ -491,18 +825,33 @@ type MatchResponse struct {
 	// IsMatch - Indicates if there is a match.
 	IsMatch *bool `json:"IsMatch,omitempty"`
 	// Matches - The match details.
-	Matches *[]Match `json:"Matches,omitempty"`
+	Matches []Match `json:"Matches,omitempty"`
 	// Status - The evaluate status
 	Status *Status `json:"Status,omitempty"`
 }
 
-// OCR contains the text found in image for the language specified.
+// Response returns the raw HTTP response object.
+func (mr MatchResponse) Response() *http.Response {
+	return mr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (mr MatchResponse) StatusCode() int {
+	return mr.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (mr MatchResponse) HTTPStatus() string {
+	return mr.rawResponse.Status
+}
+
+// OCR - Contains the text found in image for the language specified.
 type OCR struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Status - The evaluate status
 	Status *Status `json:"Status,omitempty"`
 	// Metadata - Array of KeyValue.
-	Metadata *[]KeyValuePair `json:"Metadata,omitempty"`
+	Metadata []KeyValuePair `json:"Metadata,omitempty"`
 	// TrackingID - The tracking id.
 	TrackingID *string `json:"TrackingId,omitempty"`
 	// CacheID - The cache id.
@@ -512,10 +861,25 @@ type OCR struct {
 	// Text - The found text.
 	Text *string `json:"Text,omitempty"`
 	// Candidates - The list of candidate text.
-	Candidates *[]Candidate `json:"Candidates,omitempty"`
+	Candidates []Candidate `json:"Candidates,omitempty"`
 }
 
-// Phone phone Property details.
+// Response returns the raw HTTP response object.
+func (o OCR) Response() *http.Response {
+	return o.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (o OCR) StatusCode() int {
+	return o.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (o OCR) HTTPStatus() string {
+	return o.rawResponse.Status
+}
+
+// Phone - Phone Property details.
 type Phone struct {
 	// CountryCode - CountryCode of the detected Phone number.
 	CountryCode *string `json:"CountryCode,omitempty"`
@@ -525,27 +889,42 @@ type Phone struct {
 	Index *int32 `json:"Index,omitempty"`
 }
 
-// PII personal Identifier Information details.
+// PII - Personal Identifier Information details.
 type PII struct {
-	Email   *[]Email   `json:"Email,omitempty"`
-	IPA     *[]IPA     `json:"IPA,omitempty"`
-	Phone   *[]Phone   `json:"Phone,omitempty"`
-	Address *[]Address `json:"Address,omitempty"`
+	Email   []Email   `json:"Email,omitempty"`
+	IPA     []IPA     `json:"IPA,omitempty"`
+	Phone   []Phone   `json:"Phone,omitempty"`
+	Address []Address `json:"Address,omitempty"`
 }
 
-// RefreshIndex refresh Index Response.
+// RefreshIndex - Refresh Index Response.
 type RefreshIndex struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ContentSourceID - Content source Id.
 	ContentSourceID *string `json:"ContentSourceId,omitempty"`
 	// IsUpdateSuccess - Update success status.
 	IsUpdateSuccess *bool `json:"IsUpdateSuccess,omitempty"`
 	// AdvancedInfo - Advanced info list.
-	AdvancedInfo *[]RefreshIndexAdvancedInfoItem `json:"AdvancedInfo,omitempty"`
+	AdvancedInfo []RefreshIndexAdvancedInfoItem `json:"AdvancedInfo,omitempty"`
 	// Status - Refresh index status.
 	Status *Status `json:"Status,omitempty"`
 	// TrackingID - Tracking Id.
 	TrackingID *string `json:"TrackingId,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (ri RefreshIndex) Response() *http.Response {
+	return ri.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ri RefreshIndex) StatusCode() int {
+	return ri.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (ri RefreshIndex) HTTPStatus() string {
+	return ri.rawResponse.Status
 }
 
 // RefreshIndexAdvancedInfoItem ...
@@ -556,9 +935,9 @@ type RefreshIndexAdvancedInfoItem struct {
 	KeyTwo *string `json:"Key Two,omitempty"`
 }
 
-// Review the Review object.
+// Review - The Review object.
 type Review struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ReviewID - Id of the review.
 	ReviewID *string `json:"ReviewId,omitempty"`
 	// SubTeam - Name of the subteam.
@@ -566,11 +945,11 @@ type Review struct {
 	// Status - The status string (<Pending, Complete>).
 	Status *string `json:"Status,omitempty"`
 	// ReviewerResultTags - Array of KeyValue with Reviewer set Tags.
-	ReviewerResultTags *[]KeyValuePair `json:"ReviewerResultTags,omitempty"`
+	ReviewerResultTags []KeyValuePair `json:"ReviewerResultTags,omitempty"`
 	// CreatedBy - The reviewer name.
 	CreatedBy *string `json:"CreatedBy,omitempty"`
 	// Metadata - Array of KeyValue.
-	Metadata *[]KeyValuePair `json:"Metadata,omitempty"`
+	Metadata []KeyValuePair `json:"Metadata,omitempty"`
 	// Type - The type of content.
 	Type *string `json:"Type,omitempty"`
 	// Content - The content value.
@@ -581,9 +960,31 @@ type Review struct {
 	CallbackEndpoint *string `json:"CallbackEndpoint,omitempty"`
 }
 
-// Screen the response for a Screen text request.
+// Response returns the raw HTTP response object.
+func (r Review) Response() *http.Response {
+	return r.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (r Review) StatusCode() int {
+	return r.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (r Review) HTTPStatus() string {
+	return r.rawResponse.Status
+}
+
+// Score - The classification score details of the text. <a href="https://aka.ms/textClassifyCategories">Click here</a>
+// for more details on category classification.
+type Score struct {
+	// Score - The category score.
+	Score *float64 `json:"Score,omitempty"`
+}
+
+// Screen - The response for a Screen text request.
 type Screen struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// OriginalText - The original text.
 	OriginalText *string `json:"OriginalText,omitempty"`
 	// NormalizedText - The normalized text.
@@ -591,7 +992,7 @@ type Screen struct {
 	// AutoCorrectedText - The autocorrected text
 	AutoCorrectedText *string `json:"AutoCorrectedText,omitempty"`
 	// Misrepresentation - The misrepresentation text.
-	Misrepresentation *[]string `json:"Misrepresentation,omitempty"`
+	Misrepresentation []string `json:"Misrepresentation,omitempty"`
 	// Classification - The classification details of the text.
 	Classification *Classification `json:"Classification,omitempty"`
 	// Status - The evaluate status.
@@ -599,19 +1000,28 @@ type Screen struct {
 	// PII - Personal Identifier Information details.
 	PII *PII `json:"PII,omitempty"`
 	// Language - Language of the input text content.
-	Language *string          `json:"Language,omitempty"`
-	Terms    *[]DetectedTerms `json:"Terms,omitempty"`
+	Language *string         `json:"Language,omitempty"`
+	Terms    []DetectedTerms `json:"Terms,omitempty"`
 	// TrackingID - Unique Content Moderator transaction Id.
 	TrackingID *string `json:"TrackingId,omitempty"`
 }
 
-// SetObject ...
-type SetObject struct {
-	autorest.Response `json:"-"`
-	Value             *map[string]interface{} `json:"value,omitempty"`
+// Response returns the raw HTTP response object.
+func (s Screen) Response() *http.Response {
+	return s.rawResponse
 }
 
-// Status status properties.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (s Screen) StatusCode() int {
+	return s.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (s Screen) HTTPStatus() string {
+	return s.rawResponse.Status
+}
+
+// Status - Status properties.
 type Status struct {
 	// Code - Status code.
 	Code *int32 `json:"Code,omitempty"`
@@ -621,13 +1031,7 @@ type Status struct {
 	Exception *string `json:"Exception,omitempty"`
 }
 
-// String ...
-type String struct {
-	autorest.Response `json:"-"`
-	Value             *string `json:"value,omitempty"`
-}
-
-// Tag tag details.
+// Tag - Tag details.
 type Tag struct {
 	// Key - The key parameter.
 	Key *string `json:"Key,omitempty"`
@@ -635,9 +1039,9 @@ type Tag struct {
 	Value *string `json:"Value,omitempty"`
 }
 
-// TermList term List  Properties.
+// TermList - Term List  Properties.
 type TermList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Term list Id.
 	ID *int32 `json:"Id,omitempty"`
 	// Name - Term list name.
@@ -648,7 +1052,22 @@ type TermList struct {
 	Metadata *TermListMetadata `json:"Metadata,omitempty"`
 }
 
-// TermListMetadata term list metadata.
+// Response returns the raw HTTP response object.
+func (tl TermList) Response() *http.Response {
+	return tl.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (tl TermList) StatusCode() int {
+	return tl.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (tl TermList) Status() string {
+	return tl.rawResponse.Status
+}
+
+// TermListMetadata - Term list metadata.
 type TermListMetadata struct {
 	// KeyOne - Optional Key value pair to describe your list.
 	KeyOne *string `json:"Key One,omitempty"`
@@ -656,34 +1075,49 @@ type TermListMetadata struct {
 	KeyTwo *string `json:"Key Two,omitempty"`
 }
 
-// Terms terms properties.
+// Terms - Terms properties.
 type Terms struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Data - Term data details.
 	Data *TermsData `json:"Data,omitempty"`
 	// Paging - Paging details.
 	Paging *TermsPaging `json:"Paging,omitempty"`
 }
 
-// TermsData all term Id response properties.
+// Response returns the raw HTTP response object.
+func (t Terms) Response() *http.Response {
+	return t.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (t Terms) StatusCode() int {
+	return t.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (t Terms) Status() string {
+	return t.rawResponse.Status
+}
+
+// TermsData - All term Id response properties.
 type TermsData struct {
 	// Language - Language of the terms.
 	Language *string `json:"Language,omitempty"`
 	// Terms - List of terms.
-	Terms *[]TermsInList `json:"Terms,omitempty"`
+	Terms []TermsInList `json:"Terms,omitempty"`
 	// Status - Term Status.
 	Status *Status `json:"Status,omitempty"`
 	// TrackingID - Tracking Id.
 	TrackingID *string `json:"TrackingId,omitempty"`
 }
 
-// TermsInList terms in list Id passed.
+// TermsInList - Terms in list Id passed.
 type TermsInList struct {
 	// Term - Added term details.
 	Term *string `json:"Term,omitempty"`
 }
 
-// TermsPaging paging details.
+// TermsPaging - Paging details.
 type TermsPaging struct {
 	// Total - Total details.
 	Total *int32 `json:"Total,omitempty"`
@@ -695,12 +1129,12 @@ type TermsPaging struct {
 	Returned *int32 `json:"Returned,omitempty"`
 }
 
-// TranscriptModerationBodyItem schema items of the body.
+// TranscriptModerationBodyItem - Schema items of the body.
 type TranscriptModerationBodyItem struct {
 	// Timestamp - Timestamp of the image.
 	Timestamp *string `json:"Timestamp,omitempty"`
 	// Terms - Optional metadata details.
-	Terms *[]TranscriptModerationBodyItemTermsItem `json:"Terms,omitempty"`
+	Terms []TranscriptModerationBodyItemTermsItem `json:"Terms,omitempty"`
 }
 
 // TranscriptModerationBodyItemTermsItem ...
@@ -711,15 +1145,15 @@ type TranscriptModerationBodyItemTermsItem struct {
 	Term *string `json:"Term,omitempty"`
 }
 
-// VideoFrameBodyItem schema items of the body.
+// VideoFrameBodyItem - Schema items of the body.
 type VideoFrameBodyItem struct {
 	// Timestamp - Timestamp of the frame.
 	Timestamp *string `json:"Timestamp,omitempty"`
 	// FrameImage - Content to review.
-	FrameImage         *string                                     `json:"FrameImage,omitempty"`
-	ReviewerResultTags *[]VideoFrameBodyItemReviewerResultTagsItem `json:"ReviewerResultTags,omitempty"`
+	FrameImage         *string                                    `json:"FrameImage,omitempty"`
+	ReviewerResultTags []VideoFrameBodyItemReviewerResultTagsItem `json:"ReviewerResultTags,omitempty"`
 	// Metadata - Optional metadata details.
-	Metadata *[]VideoFrameBodyItemMetadataItem `json:"Metadata,omitempty"`
+	Metadata []VideoFrameBodyItemMetadataItem `json:"Metadata,omitempty"`
 }
 
 // VideoFrameBodyItemMetadataItem ...

@@ -420,7 +420,44 @@ type DatabaseAccountListReadOnlyKeysResult struct {
 
 // DatabaseAccountPatchParameters parameters for patching Azure Cosmos DB database account properties.
 type DatabaseAccountPatchParameters struct {
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags                            *map[string]*string `json:"tags,omitempty"`
+	*DatabaseAccountPatchProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for DatabaseAccountPatchParameters struct.
+func (dapp *DatabaseAccountPatchParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["tags"]
+	if v != nil {
+		var tags map[string]*string
+		err = json.Unmarshal(*m["tags"], &tags)
+		if err != nil {
+			return err
+		}
+		dapp.Tags = &tags
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties DatabaseAccountPatchProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		dapp.DatabaseAccountPatchProperties = &properties
+	}
+
+	return nil
+}
+
+// DatabaseAccountPatchProperties properties to update Azure Cosmos DB database accounts.
+type DatabaseAccountPatchProperties struct {
 	// Capabilities - List of Cosmos DB capabilities for the account
 	Capabilities *[]Capability `json:"capabilities,omitempty"`
 }

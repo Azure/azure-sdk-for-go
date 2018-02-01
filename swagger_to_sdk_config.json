@@ -9,8 +9,8 @@
       "verbose": "",
       "sdkrel:go-sdk-folder": ".",
       "multiapi": "",
-      "package-version": "v12.2.1-beta",
-      "user-agent": "Azure-SDK-For-Go/v12.2.1-beta services"
+      "package-version": "v12.3.1-beta",
+      "user-agent": "Azure-SDK-For-Go/v12.3.1-beta services"
     },
     "version": "0.2.0"
   }

@@ -18,426 +18,308 @@ package compute
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // ImagesClient is the compute Client
 type ImagesClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewImagesClient creates an instance of the ImagesClient client.
-func NewImagesClient(subscriptionID string) ImagesClient {
-	return NewImagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewImagesClient(p pipeline.Pipeline) ImagesClient {
+	return ImagesClient{NewManagementClient(p)}
 }
 
-// NewImagesClientWithBaseURI creates an instance of the ImagesClient client.
-func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
-	return ImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
-
-// CreateOrUpdate create or update an image.
+// CreateOrUpdate create or update an image. This method may poll for completion. Polling can be canceled by passing
+// the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. imageName is the name of the image. parameters is parameters
 // supplied to the Create Image operation.
-func (client ImagesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image) (result ImagesCreateOrUpdateFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.ImageProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.ImageProperties.StorageProfile", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.ImageProperties.StorageProfile.OsDisk", Name: validation.Null, Rule: true, Chain: nil}}},
+func (client ImagesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image) (*Image, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.ImageProperties", name: null, rule: false,
+				chain: []constraint{{target: "parameters.ImageProperties.StorageProfile", name: null, rule: false,
+					chain: []constraint{{target: "parameters.ImageProperties.StorageProfile.OsDisk", name: null, rule: true, chain: nil}}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.ImagesClient", "CreateOrUpdate")
+		return nil, err
 	}
-
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, imageName, parameters)
+	req, err := client.createOrUpdatePreparer(resourceGroupName, imageName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "CreateOrUpdate", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateOrUpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createOrUpdateResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*Image), err
 }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ImagesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, imageName string, parameters Image) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"imageName":         autorest.Encode("path", imageName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client ImagesClient) CreateOrUpdateSender(req *http.Request) (future ImagesCreateOrUpdateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// createOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client ImagesClient) createOrUpdatePreparer(resourceGroupName string, imageName string, parameters Image) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
-// closes the http.Response Body.
-func (client ImagesClient) CreateOrUpdateResponder(resp *http.Response) (result Image, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createOrUpdateResponder handles the response to the CreateOrUpdate request.
+func (client ImagesClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusCreated)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Image{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// Delete deletes an Image.
+// Delete deletes an Image. This method may poll for completion. Polling can be canceled by passing the cancel channel
+// argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. imageName is the name of the image.
-func (client ImagesClient) Delete(ctx context.Context, resourceGroupName string, imageName string) (result ImagesDeleteFuture, err error) {
-	req, err := client.DeletePreparer(ctx, resourceGroupName, imageName)
+func (client ImagesClient) Delete(ctx context.Context, resourceGroupName string, imageName string) (*OperationStatusResponse, error) {
+	req, err := client.deletePreparer(resourceGroupName, imageName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "Delete", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "Delete", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*OperationStatusResponse), err
 }
 
-// DeletePreparer prepares the Delete request.
-func (client ImagesClient) DeletePreparer(ctx context.Context, resourceGroupName string, imageName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"imageName":         autorest.Encode("path", imageName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client ImagesClient) DeleteSender(req *http.Request) (future ImagesDeleteFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// deletePreparer prepares the Delete request.
+func (client ImagesClient) deletePreparer(resourceGroupName string, imageName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client ImagesClient) DeleteResponder(resp *http.Response) (result OperationStatusResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// deleteResponder handles the response to the Delete request.
+func (client ImagesClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	result := &OperationStatusResponse{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Get gets an image.
 //
 // resourceGroupName is the name of the resource group. imageName is the name of the image. expand is the expand
 // expression to apply on the operation.
-func (client ImagesClient) Get(ctx context.Context, resourceGroupName string, imageName string, expand string) (result Image, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, imageName, expand)
+func (client ImagesClient) Get(ctx context.Context, resourceGroupName string, imageName string, expand *string) (*Image, error) {
+	req, err := client.getPreparer(resourceGroupName, imageName, expand)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Image), err
 }
 
-// GetPreparer prepares the Get request.
-func (client ImagesClient) GetPreparer(ctx context.Context, resourceGroupName string, imageName string, expand string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"imageName":         autorest.Encode("path", imageName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// getPreparer prepares the Get request.
+func (client ImagesClient) getPreparer(resourceGroupName string, imageName string, expand *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client ImagesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client ImagesClient) GetResponder(resp *http.Response) (result Image, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getResponder handles the response to the Get request.
+func (client ImagesClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Image{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // List gets the list of Images in the subscription. Use nextLink property in the response to get the next page of
 // Images. Do this till nextLink is null to fetch all the Images.
-func (client ImagesClient) List(ctx context.Context) (result ImageListResultPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx)
+func (client ImagesClient) List(ctx context.Context) (*ImageListResult, error) {
+	req, err := client.listPreparer()
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "List", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
 	if err != nil {
-		result.ilr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "List", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.ilr, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "List", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*ImageListResult), err
 }
 
-// ListPreparer prepares the List request.
-func (client ImagesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/images", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client ImagesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client ImagesClient) ListResponder(resp *http.Response) (result ImageListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listNextResults retrieves the next set of results, if any.
-func (client ImagesClient) listNextResults(lastResults ImageListResult) (result ImageListResult, err error) {
-	req, err := lastResults.imageListResultPreparer()
+// listPreparer prepares the List request.
+func (client ImagesClient) listPreparer() (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/images"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.ImagesClient", "listNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute.ImagesClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ImagesClient) ListComplete(ctx context.Context) (result ImageListResultIterator, err error) {
-	result.page, err = client.List(ctx)
-	return
+// listResponder handles the response to the List request.
+func (client ImagesClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &ImageListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListByResourceGroup gets the list of images under a resource group.
 //
 // resourceGroupName is the name of the resource group.
-func (client ImagesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ImageListResultPage, err error) {
-	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+func (client ImagesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (*ImageListResult, error) {
+	req, err := client.listByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "ListByResourceGroup", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListByResourceGroupSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByResourceGroupResponder}, req)
 	if err != nil {
-		result.ilr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "ListByResourceGroup", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.ilr, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "ListByResourceGroup", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*ImageListResult), err
 }
 
-// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client ImagesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
-// http.Response Body if it receives an error.
-func (client ImagesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
-// closes the http.Response Body.
-func (client ImagesClient) ListByResourceGroupResponder(resp *http.Response) (result ImageListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client ImagesClient) listByResourceGroupNextResults(lastResults ImageListResult) (result ImageListResult, err error) {
-	req, err := lastResults.imageListResultPreparer()
+// listByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client ImagesClient) listByResourceGroupPreparer(resourceGroupName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.ImagesClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListByResourceGroupSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute.ImagesClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ImagesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ImagesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ImageListResultIterator, err error) {
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
-	return
+// listByResourceGroupResponder handles the response to the ListByResourceGroup request.
+func (client ImagesClient) listByResourceGroupResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &ImageListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

@@ -18,189 +18,163 @@ package compute
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // SnapshotsClient is the compute Client
 type SnapshotsClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewSnapshotsClient creates an instance of the SnapshotsClient client.
-func NewSnapshotsClient(subscriptionID string) SnapshotsClient {
-	return NewSnapshotsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewSnapshotsClient(p pipeline.Pipeline) SnapshotsClient {
+	return SnapshotsClient{NewManagementClient(p)}
 }
 
-// NewSnapshotsClientWithBaseURI creates an instance of the SnapshotsClient client.
-func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) SnapshotsClient {
-	return SnapshotsClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
-
-// CreateOrUpdate creates or updates a snapshot.
+// CreateOrUpdate creates or updates a snapshot. This method may poll for completion. Polling can be canceled by
+// passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot that is being created.
 // The name can't be changed after the snapshot is created. Supported characters for the name are a-z, A-Z, 0-9 and _.
 // The max name length is 80 characters. snapshot is snapshot object supplied in the body of the Put disk operation.
-func (client SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot) (result SnapshotsCreateOrUpdateFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: snapshot,
-			Constraints: []validation.Constraint{{Target: "snapshot.DiskProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "snapshot.DiskProperties.CreationData", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "snapshot.DiskProperties.CreationData.ImageReference", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "snapshot.DiskProperties.CreationData.ImageReference.ID", Name: validation.Null, Rule: true, Chain: nil}}},
+func (client SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot) (*Snapshot, error) {
+	if err := validate([]validation{
+		{targetValue: snapshot,
+			constraints: []constraint{{target: "snapshot.DiskProperties", name: null, rule: false,
+				chain: []constraint{{target: "snapshot.DiskProperties.CreationData", name: null, rule: true,
+					chain: []constraint{{target: "snapshot.DiskProperties.CreationData.ImageReference", name: null, rule: false,
+						chain: []constraint{{target: "snapshot.DiskProperties.CreationData.ImageReference.ID", name: null, rule: true, chain: nil}}},
 					}},
-					{Target: "snapshot.DiskProperties.EncryptionSettings", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "snapshot.DiskProperties.EncryptionSettings.DiskEncryptionKey", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "snapshot.DiskProperties.EncryptionSettings.DiskEncryptionKey.SourceVault", Name: validation.Null, Rule: true, Chain: nil},
-								{Target: "snapshot.DiskProperties.EncryptionSettings.DiskEncryptionKey.SecretURL", Name: validation.Null, Rule: true, Chain: nil},
+					{target: "snapshot.DiskProperties.EncryptionSettings", name: null, rule: false,
+						chain: []constraint{{target: "snapshot.DiskProperties.EncryptionSettings.DiskEncryptionKey", name: null, rule: false,
+							chain: []constraint{{target: "snapshot.DiskProperties.EncryptionSettings.DiskEncryptionKey.SourceVault", name: null, rule: true, chain: nil},
+								{target: "snapshot.DiskProperties.EncryptionSettings.DiskEncryptionKey.SecretURL", name: null, rule: true, chain: nil},
 							}},
-							{Target: "snapshot.DiskProperties.EncryptionSettings.KeyEncryptionKey", Name: validation.Null, Rule: false,
-								Chain: []validation.Constraint{{Target: "snapshot.DiskProperties.EncryptionSettings.KeyEncryptionKey.SourceVault", Name: validation.Null, Rule: true, Chain: nil},
-									{Target: "snapshot.DiskProperties.EncryptionSettings.KeyEncryptionKey.KeyURL", Name: validation.Null, Rule: true, Chain: nil},
+							{target: "snapshot.DiskProperties.EncryptionSettings.KeyEncryptionKey", name: null, rule: false,
+								chain: []constraint{{target: "snapshot.DiskProperties.EncryptionSettings.KeyEncryptionKey.SourceVault", name: null, rule: true, chain: nil},
+									{target: "snapshot.DiskProperties.EncryptionSettings.KeyEncryptionKey.KeyURL", name: null, rule: true, chain: nil},
 								}},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.SnapshotsClient", "CreateOrUpdate")
+		return nil, err
 	}
-
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, snapshotName, snapshot)
+	req, err := client.createOrUpdatePreparer(resourceGroupName, snapshotName, snapshot)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "CreateOrUpdate", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateOrUpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createOrUpdateResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*Snapshot), err
 }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client SnapshotsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"snapshotName":      autorest.Encode("path", snapshotName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}", pathParameters),
-		autorest.WithJSON(snapshot),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client SnapshotsClient) CreateOrUpdateSender(req *http.Request) (future SnapshotsCreateOrUpdateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// createOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client SnapshotsClient) createOrUpdatePreparer(resourceGroupName string, snapshotName string, snapshot Snapshot) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(snapshot)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
-// closes the http.Response Body.
-func (client SnapshotsClient) CreateOrUpdateResponder(resp *http.Response) (result Snapshot, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createOrUpdateResponder handles the response to the CreateOrUpdate request.
+func (client SnapshotsClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Snapshot{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// Delete deletes a snapshot.
+// Delete deletes a snapshot. This method may poll for completion. Polling can be canceled by passing the cancel
+// channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot that is being created.
 // The name can't be changed after the snapshot is created. Supported characters for the name are a-z, A-Z, 0-9 and _.
 // The max name length is 80 characters.
-func (client SnapshotsClient) Delete(ctx context.Context, resourceGroupName string, snapshotName string) (result SnapshotsDeleteFuture, err error) {
-	req, err := client.DeletePreparer(ctx, resourceGroupName, snapshotName)
+func (client SnapshotsClient) Delete(ctx context.Context, resourceGroupName string, snapshotName string) (*OperationStatusResponse, error) {
+	req, err := client.deletePreparer(resourceGroupName, snapshotName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "Delete", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "Delete", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*OperationStatusResponse), err
 }
 
-// DeletePreparer prepares the Delete request.
-func (client SnapshotsClient) DeletePreparer(ctx context.Context, resourceGroupName string, snapshotName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"snapshotName":      autorest.Encode("path", snapshotName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client SnapshotsClient) DeleteSender(req *http.Request) (future SnapshotsDeleteFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// deletePreparer prepares the Delete request.
+func (client SnapshotsClient) deletePreparer(resourceGroupName string, snapshotName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client SnapshotsClient) DeleteResponder(resp *http.Response) (result OperationStatusResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// deleteResponder handles the response to the Delete request.
+func (client SnapshotsClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	result := &OperationStatusResponse{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Get gets information about a snapshot.
@@ -208,470 +182,349 @@ func (client SnapshotsClient) DeleteResponder(resp *http.Response) (result Opera
 // resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot that is being created.
 // The name can't be changed after the snapshot is created. Supported characters for the name are a-z, A-Z, 0-9 and _.
 // The max name length is 80 characters.
-func (client SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string) (result Snapshot, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, snapshotName)
+func (client SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string) (*Snapshot, error) {
+	req, err := client.getPreparer(resourceGroupName, snapshotName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
+	return resp.(*Snapshot), err
+}
 
-	result, err = client.GetResponder(resp)
+// getPreparer prepares the Get request.
+func (client SnapshotsClient) getPreparer(resourceGroupName string, snapshotName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "Get", resp, "Failure responding to request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetPreparer prepares the Get request.
-func (client SnapshotsClient) GetPreparer(ctx context.Context, resourceGroupName string, snapshotName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"snapshotName":      autorest.Encode("path", snapshotName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// getResponder handles the response to the Get request.
+func (client SnapshotsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
 	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	result := &Snapshot{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client SnapshotsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client SnapshotsClient) GetResponder(resp *http.Response) (result Snapshot, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GrantAccess grants access to a snapshot.
+// GrantAccess grants access to a snapshot. This method may poll for completion. Polling can be canceled by passing the
+// cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot that is being created.
 // The name can't be changed after the snapshot is created. Supported characters for the name are a-z, A-Z, 0-9 and _.
 // The max name length is 80 characters. grantAccessData is access data object supplied in the body of the get snapshot
 // access operation.
-func (client SnapshotsClient) GrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData) (result SnapshotsGrantAccessFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: grantAccessData,
-			Constraints: []validation.Constraint{{Target: "grantAccessData.DurationInSeconds", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.SnapshotsClient", "GrantAccess")
+func (client SnapshotsClient) GrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData) (*AccessURI, error) {
+	if err := validate([]validation{
+		{targetValue: grantAccessData,
+			constraints: []constraint{{target: "grantAccessData.DurationInSeconds", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.GrantAccessPreparer(ctx, resourceGroupName, snapshotName, grantAccessData)
+	req, err := client.grantAccessPreparer(resourceGroupName, snapshotName, grantAccessData)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "GrantAccess", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GrantAccessSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.grantAccessResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "GrantAccess", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*AccessURI), err
 }
 
-// GrantAccessPreparer prepares the GrantAccess request.
-func (client SnapshotsClient) GrantAccessPreparer(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"snapshotName":      autorest.Encode("path", snapshotName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/beginGetAccess", pathParameters),
-		autorest.WithJSON(grantAccessData),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GrantAccessSender sends the GrantAccess request. The method will close the
-// http.Response Body if it receives an error.
-func (client SnapshotsClient) GrantAccessSender(req *http.Request) (future SnapshotsGrantAccessFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// grantAccessPreparer prepares the GrantAccess request.
+func (client SnapshotsClient) grantAccessPreparer(resourceGroupName string, snapshotName string, grantAccessData GrantAccessData) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/beginGetAccess"
+	req, err := pipeline.NewRequest("POST", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(grantAccessData)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// GrantAccessResponder handles the response to the GrantAccess request. The method always
-// closes the http.Response Body.
-func (client SnapshotsClient) GrantAccessResponder(resp *http.Response) (result AccessURI, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// grantAccessResponder handles the response to the GrantAccess request.
+func (client SnapshotsClient) grantAccessResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted)
+	if resp == nil {
+		return nil, err
+	}
+	result := &AccessURI{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // List lists snapshots under a subscription.
-func (client SnapshotsClient) List(ctx context.Context) (result SnapshotListPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx)
+func (client SnapshotsClient) List(ctx context.Context) (*SnapshotList, error) {
+	req, err := client.listPreparer()
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "List", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
 	if err != nil {
-		result.sl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "List", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.sl, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "List", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*SnapshotList), err
 }
 
-// ListPreparer prepares the List request.
-func (client SnapshotsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client SnapshotsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client SnapshotsClient) ListResponder(resp *http.Response) (result SnapshotList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listNextResults retrieves the next set of results, if any.
-func (client SnapshotsClient) listNextResults(lastResults SnapshotList) (result SnapshotList, err error) {
-	req, err := lastResults.snapshotListPreparer()
+// listPreparer prepares the List request.
+func (client SnapshotsClient) listPreparer() (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.SnapshotsClient", "listNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute.SnapshotsClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SnapshotsClient) ListComplete(ctx context.Context) (result SnapshotListIterator, err error) {
-	result.page, err = client.List(ctx)
-	return
+// listResponder handles the response to the List request.
+func (client SnapshotsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &SnapshotList{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListByResourceGroup lists snapshots under a resource group.
 //
 // resourceGroupName is the name of the resource group.
-func (client SnapshotsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result SnapshotListPage, err error) {
-	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+func (client SnapshotsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (*SnapshotList, error) {
+	req, err := client.listByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "ListByResourceGroup", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListByResourceGroupSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByResourceGroupResponder}, req)
 	if err != nil {
-		result.sl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "ListByResourceGroup", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.sl, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "ListByResourceGroup", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*SnapshotList), err
 }
 
-// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client SnapshotsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
-// http.Response Body if it receives an error.
-func (client SnapshotsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
-// closes the http.Response Body.
-func (client SnapshotsClient) ListByResourceGroupResponder(resp *http.Response) (result SnapshotList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client SnapshotsClient) listByResourceGroupNextResults(lastResults SnapshotList) (result SnapshotList, err error) {
-	req, err := lastResults.snapshotListPreparer()
+// listByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client SnapshotsClient) listByResourceGroupPreparer(resourceGroupName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.SnapshotsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListByResourceGroupSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute.SnapshotsClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SnapshotsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result SnapshotListIterator, err error) {
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
-	return
+// listByResourceGroupResponder handles the response to the ListByResourceGroup request.
+func (client SnapshotsClient) listByResourceGroupResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &SnapshotList{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// RevokeAccess revokes access to a snapshot.
+// RevokeAccess revokes access to a snapshot. This method may poll for completion. Polling can be canceled by passing
+// the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot that is being created.
 // The name can't be changed after the snapshot is created. Supported characters for the name are a-z, A-Z, 0-9 and _.
 // The max name length is 80 characters.
-func (client SnapshotsClient) RevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string) (result SnapshotsRevokeAccessFuture, err error) {
-	req, err := client.RevokeAccessPreparer(ctx, resourceGroupName, snapshotName)
+func (client SnapshotsClient) RevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string) (*OperationStatusResponse, error) {
+	req, err := client.revokeAccessPreparer(resourceGroupName, snapshotName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "RevokeAccess", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.RevokeAccessSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.revokeAccessResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "RevokeAccess", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*OperationStatusResponse), err
 }
 
-// RevokeAccessPreparer prepares the RevokeAccess request.
-func (client SnapshotsClient) RevokeAccessPreparer(ctx context.Context, resourceGroupName string, snapshotName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"snapshotName":      autorest.Encode("path", snapshotName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/endGetAccess", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// RevokeAccessSender sends the RevokeAccess request. The method will close the
-// http.Response Body if it receives an error.
-func (client SnapshotsClient) RevokeAccessSender(req *http.Request) (future SnapshotsRevokeAccessFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// revokeAccessPreparer prepares the RevokeAccess request.
+func (client SnapshotsClient) revokeAccessPreparer(resourceGroupName string, snapshotName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/endGetAccess"
+	req, err := pipeline.NewRequest("POST", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// RevokeAccessResponder handles the response to the RevokeAccess request. The method always
-// closes the http.Response Body.
-func (client SnapshotsClient) RevokeAccessResponder(resp *http.Response) (result OperationStatusResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// revokeAccessResponder handles the response to the RevokeAccess request.
+func (client SnapshotsClient) revokeAccessResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted)
+	if resp == nil {
+		return nil, err
+	}
+	result := &OperationStatusResponse{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// Update updates (patches) a snapshot.
+// Update updates (patches) a snapshot. This method may poll for completion. Polling can be canceled by passing the
+// cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot that is being created.
 // The name can't be changed after the snapshot is created. Supported characters for the name are a-z, A-Z, 0-9 and _.
 // The max name length is 80 characters. snapshot is snapshot object supplied in the body of the Patch snapshot
 // operation.
-func (client SnapshotsClient) Update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate) (result SnapshotsUpdateFuture, err error) {
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, snapshotName, snapshot)
+func (client SnapshotsClient) Update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate) (*Snapshot, error) {
+	req, err := client.updatePreparer(resourceGroupName, snapshotName, snapshot)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "Update", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.UpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "Update", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*Snapshot), err
 }
 
-// UpdatePreparer prepares the Update request.
-func (client SnapshotsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"snapshotName":      autorest.Encode("path", snapshotName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}", pathParameters),
-		autorest.WithJSON(snapshot),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UpdateSender sends the Update request. The method will close the
-// http.Response Body if it receives an error.
-func (client SnapshotsClient) UpdateSender(req *http.Request) (future SnapshotsUpdateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// updatePreparer prepares the Update request.
+func (client SnapshotsClient) updatePreparer(resourceGroupName string, snapshotName string, snapshot SnapshotUpdate) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
+	req, err := pipeline.NewRequest("PATCH", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(snapshot)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// UpdateResponder handles the response to the Update request. The method always
-// closes the http.Response Body.
-func (client SnapshotsClient) UpdateResponder(resp *http.Response) (result Snapshot, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// updateResponder handles the response to the Update request.
+func (client SnapshotsClient) updateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Snapshot{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

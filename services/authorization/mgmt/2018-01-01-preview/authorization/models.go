@@ -51,7 +51,7 @@ type ClassicAdministrator struct {
 	// Type - The type of the administrator.
 	Type *string `json:"type,omitempty"`
 	// Properties - Properties for the classic administrator.
-	Properties *ClassicAdministratorProperties `json:"properties,omitempty"`
+	*ClassicAdministratorProperties `json:"properties,omitempty"`
 }
 
 // ClassicAdministratorListResult - ClassicAdministrator list result information.
@@ -92,6 +92,10 @@ type Permission struct {
 	Actions []string `json:"actions,omitempty"`
 	// NotActions - Denied actions.
 	NotActions []string `json:"notActions,omitempty"`
+	// DataActions - Allowed Data actions.
+	DataActions []string `json:"dataActions,omitempty"`
+	// NotDataActions - Denied Data actions.
+	NotDataActions []string `json:"notDataActions,omitempty"`
 }
 
 // PermissionGetResult - Permissions information.
@@ -130,6 +134,8 @@ type ProviderOperation struct {
 	Origin *string `json:"origin,omitempty"`
 	// Properties - The operation properties.
 	Properties map[string]interface{} `json:"properties,omitempty"`
+	// IsDataAction - The dataAction flag to specify the operation type.
+	IsDataAction *bool `json:"isDataAction,omitempty"`
 }
 
 // ProviderOperationsMetadata - Provider Operations metadata
@@ -208,7 +214,7 @@ type RoleAssignment struct {
 	// Type - The role assignment type.
 	Type *string `json:"type,omitempty"`
 	// Properties - Role assignment properties.
-	Properties *RoleAssignmentPropertiesWithScope `json:"properties,omitempty"`
+	*RoleAssignmentPropertiesWithScope `json:"properties,omitempty"`
 }
 
 // Response returns the raw HTTP response object.
@@ -229,13 +235,15 @@ func (ra RoleAssignment) Status() string {
 // RoleAssignmentCreateParameters - Role assignment create parameters.
 type RoleAssignmentCreateParameters struct {
 	// Properties - Role assignment properties.
-	Properties *RoleAssignmentProperties `json:"properties,omitempty"`
+	*RoleAssignmentProperties `json:"properties,omitempty"`
 }
 
 // RoleAssignmentFilter - Role Assignments filter
 type RoleAssignmentFilter struct {
 	// PrincipalID - Returns role assignment of the specific principal.
 	PrincipalID *string `json:"principalId,omitempty"`
+	// CanDelegate - The Delegation flag for the roleassignment
+	CanDelegate *bool `json:"canDelegate,omitempty"`
 }
 
 // RoleAssignmentListResult - Role assignment list operation result.
@@ -268,6 +276,8 @@ type RoleAssignmentProperties struct {
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 	// PrincipalID - The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user, service principal, or security group.
 	PrincipalID *string `json:"principalId,omitempty"`
+	// CanDelegate - The delgation flag used for creating a role assignment
+	CanDelegate *bool `json:"canDelegate,omitempty"`
 }
 
 // RoleAssignmentPropertiesWithScope - Role assignment properties with scope.
@@ -278,6 +288,8 @@ type RoleAssignmentPropertiesWithScope struct {
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 	// PrincipalID - The principal ID.
 	PrincipalID *string `json:"principalId,omitempty"`
+	// CanDelegate - The Delegation flag for the roleassignment
+	CanDelegate *bool `json:"canDelegate,omitempty"`
 }
 
 // RoleDefinition - Role definition.
@@ -290,7 +302,7 @@ type RoleDefinition struct {
 	// Type - The role definition type.
 	Type *string `json:"type,omitempty"`
 	// Properties - Role definition properties.
-	Properties *RoleDefinitionProperties `json:"properties,omitempty"`
+	*RoleDefinitionProperties `json:"properties,omitempty"`
 }
 
 // Response returns the raw HTTP response object.
@@ -344,8 +356,8 @@ type RoleDefinitionProperties struct {
 	RoleName *string `json:"roleName,omitempty"`
 	// Description - The role definition description.
 	Description *string `json:"description,omitempty"`
-	// Type - The role type.
-	Type *string `json:"type,omitempty"`
+	// RoleType - The role type.
+	RoleType *string `json:"type,omitempty"`
 	// Permissions - Role definition permissions.
 	Permissions []Permission `json:"permissions,omitempty"`
 	// AssignableScopes - Role definition assignable scopes.

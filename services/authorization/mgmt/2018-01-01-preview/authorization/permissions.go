@@ -40,12 +40,10 @@ func NewPermissionsClient(p pipeline.Pipeline) PermissionsClient {
 
 // ListForResource gets all permissions the caller has for a resource.
 //
-// resourceGroupName is the name of the resource group containing the resource. The name is case insensitive.
-// resourceProviderNamespace is the namespace of the resource provider. parentResourcePath is the parent resource
-// identity. resourceType is the resource type of the resource. resourceName is the name of the resource to get the
-// permissions for.
-func (client PermissionsClient) ListForResource(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (*PermissionGetResult, error) {
-	req, err := client.listForResourcePreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
+// parentResourcePath is the parent resource identity. resourceType is the resource type of the resource. resourceName
+// is the name of the resource to get the permissions for.
+func (client PermissionsClient) ListForResource(ctx context.Context, parentResourcePath string, resourceType string, resourceName string) (*PermissionGetResult, error) {
+	req, err := client.listForResourcePreparer(parentResourcePath, resourceType, resourceName)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +55,7 @@ func (client PermissionsClient) ListForResource(ctx context.Context, resourceGro
 }
 
 // listForResourcePreparer prepares the ListForResource request.
-func (client PermissionsClient) listForResourcePreparer(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (pipeline.Request, error) {
+func (client PermissionsClient) listForResourcePreparer(parentResourcePath string, resourceType string, resourceName string) (pipeline.Request, error) {
 	u := client.url
 	u.Path = "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/permissions"
 	req, err := pipeline.NewRequest("GET", u, nil)
@@ -65,7 +63,7 @@ func (client PermissionsClient) listForResourcePreparer(resourceGroupName string
 		return req, pipeline.NewError(err, "failed to create request")
 	}
 	params := req.URL.Query()
-	params.Set("api-version", APIVersion)
+	params.Set("api-version", "2018-01-01-preview")
 	req.URL.RawQuery = params.Encode()
 	return req, nil
 }
@@ -95,10 +93,8 @@ func (client PermissionsClient) listForResourceResponder(resp pipeline.Response)
 }
 
 // ListForResourceGroup gets all permissions the caller has for a resource group.
-//
-// resourceGroupName is the name of the resource group to get the permissions for. The name is case insensitive.
-func (client PermissionsClient) ListForResourceGroup(ctx context.Context, resourceGroupName string) (*PermissionGetResult, error) {
-	req, err := client.listForResourceGroupPreparer(resourceGroupName)
+func (client PermissionsClient) ListForResourceGroup(ctx context.Context) (*PermissionGetResult, error) {
+	req, err := client.listForResourceGroupPreparer()
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +106,7 @@ func (client PermissionsClient) ListForResourceGroup(ctx context.Context, resour
 }
 
 // listForResourceGroupPreparer prepares the ListForResourceGroup request.
-func (client PermissionsClient) listForResourceGroupPreparer(resourceGroupName string) (pipeline.Request, error) {
+func (client PermissionsClient) listForResourceGroupPreparer() (pipeline.Request, error) {
 	u := client.url
 	u.Path = "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Authorization/permissions"
 	req, err := pipeline.NewRequest("GET", u, nil)
@@ -118,7 +114,7 @@ func (client PermissionsClient) listForResourceGroupPreparer(resourceGroupName s
 		return req, pipeline.NewError(err, "failed to create request")
 	}
 	params := req.URL.Query()
-	params.Set("api-version", APIVersion)
+	params.Set("api-version", "2018-01-01-preview")
 	req.URL.RawQuery = params.Encode()
 	return req, nil
 }

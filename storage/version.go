@@ -15,5 +15,5 @@ package storage
 //  limitations under the License.
 
 var (
-	sdkVersion = "v12.3.0-beta"
+	sdkVersion = "v12.4.0-beta"
 )

@@ -18,236 +18,191 @@ package graphrbac
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/to"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // ObjectsClient is the the Graph RBAC Management Client
 type ObjectsClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewObjectsClient creates an instance of the ObjectsClient client.
-func NewObjectsClient(tenantID string) ObjectsClient {
-	return NewObjectsClientWithBaseURI(DefaultBaseURI, tenantID)
-}
-
-// NewObjectsClientWithBaseURI creates an instance of the ObjectsClient client.
-func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient {
-	return ObjectsClient{NewWithBaseURI(baseURI, tenantID)}
+func NewObjectsClient(p pipeline.Pipeline) ObjectsClient {
+	return ObjectsClient{NewManagementClient(p)}
 }
 
 // GetCurrentUser gets the details for the currently logged-in user.
-func (client ObjectsClient) GetCurrentUser(ctx context.Context) (result AADObject, err error) {
-	req, err := client.GetCurrentUserPreparer(ctx)
+func (client ObjectsClient) GetCurrentUser(ctx context.Context) (*AADObject, error) {
+	req, err := client.getCurrentUserPreparer()
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetCurrentUser", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetCurrentUserSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getCurrentUserResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetCurrentUser", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetCurrentUserResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetCurrentUser", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*AADObject), err
 }
 
-// GetCurrentUserPreparer prepares the GetCurrentUser request.
-func (client ObjectsClient) GetCurrentUserPreparer(ctx context.Context) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID": autorest.Encode("path", client.TenantID),
+// getCurrentUserPreparer prepares the GetCurrentUser request.
+func (client ObjectsClient) getCurrentUserPreparer() (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/me"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/me", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetCurrentUserSender sends the GetCurrentUser request. The method will close the
-// http.Response Body if it receives an error.
-func (client ObjectsClient) GetCurrentUserSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetCurrentUserResponder handles the response to the GetCurrentUser request. The method always
-// closes the http.Response Body.
-func (client ObjectsClient) GetCurrentUserResponder(resp *http.Response) (result AADObject, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getCurrentUserResponder handles the response to the GetCurrentUser request.
+func (client ObjectsClient) getCurrentUserResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &AADObject{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetObjectsByObjectIds gets AD group membership for the specified AD object IDs.
 //
 // parameters is objects filtering parameters.
-func (client ObjectsClient) GetObjectsByObjectIds(ctx context.Context, parameters GetObjectsParameters) (result GetObjectsResultPage, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.IncludeDirectoryObjectReferences", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIds")
+func (client ObjectsClient) GetObjectsByObjectIds(ctx context.Context, parameters GetObjectsParameters) (*GetObjectsResult, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.IncludeDirectoryObjectReferences", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
+	req, err := client.getObjectsByObjectIdsPreparer(parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getObjectsByObjectIdsResponder}, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*GetObjectsResult), err
+}
 
-	result.fn = func(lastResult GetObjectsResult) (GetObjectsResult, error) {
-		if lastResult.OdataNextLink == nil || len(to.String(lastResult.OdataNextLink)) < 1 {
-			return GetObjectsResult{}, nil
+// getObjectsByObjectIdsPreparer prepares the GetObjectsByObjectIds request.
+func (client ObjectsClient) getObjectsByObjectIdsPreparer(parameters GetObjectsParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/getObjectsByObjectIds"
+	req, err := pipeline.NewRequest("POST", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
+	}
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
+}
+
+// getObjectsByObjectIdsResponder handles the response to the GetObjectsByObjectIds request.
+func (client ObjectsClient) getObjectsByObjectIdsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &GetObjectsResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
 		}
-		return client.GetObjectsByObjectIdsNext(ctx, *lastResult.OdataNextLink)
 	}
-	req, err := client.GetObjectsByObjectIdsPreparer(ctx, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIds", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetObjectsByObjectIdsSender(req)
-	if err != nil {
-		result.gor.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIds", resp, "Failure sending request")
-		return
-	}
-
-	result.gor, err = client.GetObjectsByObjectIdsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIds", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetObjectsByObjectIdsPreparer prepares the GetObjectsByObjectIds request.
-func (client ObjectsClient) GetObjectsByObjectIdsPreparer(ctx context.Context, parameters GetObjectsParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID": autorest.Encode("path", client.TenantID),
-	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/getObjectsByObjectIds", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetObjectsByObjectIdsSender sends the GetObjectsByObjectIds request. The method will close the
-// http.Response Body if it receives an error.
-func (client ObjectsClient) GetObjectsByObjectIdsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetObjectsByObjectIdsResponder handles the response to the GetObjectsByObjectIds request. The method always
-// closes the http.Response Body.
-func (client ObjectsClient) GetObjectsByObjectIdsResponder(resp *http.Response) (result GetObjectsResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetObjectsByObjectIdsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ObjectsClient) GetObjectsByObjectIdsComplete(ctx context.Context, parameters GetObjectsParameters) (result GetObjectsResultIterator, err error) {
-	result.page, err = client.GetObjectsByObjectIds(ctx, parameters)
-	return
+	return result, nil
 }
 
 // GetObjectsByObjectIdsNext gets AD group membership for the specified AD object IDs.
 //
 // nextLink is next link for the list operation.
-func (client ObjectsClient) GetObjectsByObjectIdsNext(ctx context.Context, nextLink string) (result GetObjectsResult, err error) {
-	req, err := client.GetObjectsByObjectIdsNextPreparer(ctx, nextLink)
+func (client ObjectsClient) GetObjectsByObjectIdsNext(ctx context.Context, nextLink string) (*GetObjectsResult, error) {
+	req, err := client.getObjectsByObjectIdsNextPreparer(nextLink)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIdsNext", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetObjectsByObjectIdsNextSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getObjectsByObjectIdsNextResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIdsNext", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetObjectsByObjectIdsNextResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.ObjectsClient", "GetObjectsByObjectIdsNext", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*GetObjectsResult), err
 }
 
-// GetObjectsByObjectIdsNextPreparer prepares the GetObjectsByObjectIdsNext request.
-func (client ObjectsClient) GetObjectsByObjectIdsNextPreparer(ctx context.Context, nextLink string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"nextLink": nextLink,
-		"tenantID": autorest.Encode("path", client.TenantID),
+// getObjectsByObjectIdsNextPreparer prepares the GetObjectsByObjectIdsNext request.
+func (client ObjectsClient) getObjectsByObjectIdsNextPreparer(nextLink string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/{nextLink}"
+	req, err := pipeline.NewRequest("POST", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/{nextLink}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetObjectsByObjectIdsNextSender sends the GetObjectsByObjectIdsNext request. The method will close the
-// http.Response Body if it receives an error.
-func (client ObjectsClient) GetObjectsByObjectIdsNextSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetObjectsByObjectIdsNextResponder handles the response to the GetObjectsByObjectIdsNext request. The method always
-// closes the http.Response Body.
-func (client ObjectsClient) GetObjectsByObjectIdsNextResponder(resp *http.Response) (result GetObjectsResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getObjectsByObjectIdsNextResponder handles the response to the GetObjectsByObjectIdsNext request.
+func (client ObjectsClient) getObjectsByObjectIdsNextResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &GetObjectsResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

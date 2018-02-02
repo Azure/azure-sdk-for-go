@@ -26,79 +26,24 @@ import (
 	"net/http"
 )
 
-// ApplicationsClient is the the Graph RBAC Management Client
-type ApplicationsClient struct {
+// ServicePrincipalsClient is the the Graph RBAC Management Client
+type ServicePrincipalsClient struct {
 	ManagementClient
 }
 
-// NewApplicationsClient creates an instance of the ApplicationsClient client.
-func NewApplicationsClient(p pipeline.Pipeline) ApplicationsClient {
-	return ApplicationsClient{NewManagementClient(p)}
+// NewServicePrincipalsClient creates an instance of the ServicePrincipalsClient client.
+func NewServicePrincipalsClient(p pipeline.Pipeline) ServicePrincipalsClient {
+	return ServicePrincipalsClient{NewManagementClient(p)}
 }
 
-// AddOwner add an owner to an application.
+// Create creates a service principal in the directory.
 //
-// applicationObjectID is the object ID of the application to which to add the owner. parameters is the URL of the
-// owner object, such as
-// https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
-func (client ApplicationsClient) AddOwner(ctx context.Context, applicationObjectID string, parameters ApplicationAddOwnerParameters) (*http.Response, error) {
+// parameters is parameters to create a service principal.
+func (client ServicePrincipalsClient) Create(ctx context.Context, parameters ServicePrincipalCreateParameters) (*ServicePrincipal, error) {
 	if err := validate([]validation{
 		{targetValue: parameters,
-			constraints: []constraint{{target: "parameters.URL", name: null, rule: true, chain: nil}}}}); err != nil {
-		return nil, err
-	}
-	req, err := client.addOwnerPreparer(applicationObjectID, parameters)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.addOwnerResponder}, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp.Response(), err
-}
-
-// addOwnerPreparer prepares the AddOwner request.
-func (client ApplicationsClient) addOwnerPreparer(applicationObjectID string, parameters ApplicationAddOwnerParameters) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/{tenantID}/applications/{applicationObjectId}/$links/owners"
-	req, err := pipeline.NewRequest("POST", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
-	}
-	params := req.URL.Query()
-	params.Set("api-version", APIVersion)
-	req.URL.RawQuery = params.Encode()
-	b, err := json.Marshal(parameters)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to marshal request body")
-	}
-	req.Header.Set("Content-Type", "application/json")
-	err = req.SetBody(bytes.NewReader(b))
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to set request body")
-	}
-	return req, nil
-}
-
-// addOwnerResponder handles the response to the AddOwner request.
-func (client ApplicationsClient) addOwnerResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
-	if resp == nil {
-		return nil, err
-	}
-	return resp, err
-}
-
-// Create create a new application.
-//
-// parameters is the parameters for creating an application.
-func (client ApplicationsClient) Create(ctx context.Context, parameters ApplicationCreateParameters) (*Application, error) {
-	if err := validate([]validation{
-		{targetValue: parameters,
-			constraints: []constraint{{target: "parameters.AvailableToOtherTenants", name: null, rule: true, chain: nil},
-				{target: "parameters.DisplayName", name: null, rule: true, chain: nil},
-				{target: "parameters.IdentifierUris", name: null, rule: true, chain: nil}}}}); err != nil {
+			constraints: []constraint{{target: "parameters.AppID", name: null, rule: true, chain: nil},
+				{target: "parameters.AccountEnabled", name: null, rule: true, chain: nil}}}}); err != nil {
 		return nil, err
 	}
 	req, err := client.createPreparer(parameters)
@@ -109,13 +54,13 @@ func (client ApplicationsClient) Create(ctx context.Context, parameters Applicat
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*Application), err
+	return resp.(*ServicePrincipal), err
 }
 
 // createPreparer prepares the Create request.
-func (client ApplicationsClient) createPreparer(parameters ApplicationCreateParameters) (pipeline.Request, error) {
+func (client ServicePrincipalsClient) createPreparer(parameters ServicePrincipalCreateParameters) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/{tenantID}/applications"
+	u.Path = "/{tenantID}/servicePrincipals"
 	req, err := pipeline.NewRequest("POST", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -136,12 +81,12 @@ func (client ApplicationsClient) createPreparer(parameters ApplicationCreatePara
 }
 
 // createResponder handles the response to the Create request.
-func (client ApplicationsClient) createResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client ServicePrincipalsClient) createResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK, http.StatusCreated)
 	if resp == nil {
 		return nil, err
 	}
-	result := &Application{rawResponse: resp.Response()}
+	result := &ServicePrincipal{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -159,11 +104,11 @@ func (client ApplicationsClient) createResponder(resp pipeline.Response) (pipeli
 	return result, nil
 }
 
-// Delete delete an application.
+// Delete deletes a service principal from the directory.
 //
-// applicationObjectID is application object ID.
-func (client ApplicationsClient) Delete(ctx context.Context, applicationObjectID string) (*http.Response, error) {
-	req, err := client.deletePreparer(applicationObjectID)
+// objectID is the object ID of the service principal to delete.
+func (client ServicePrincipalsClient) Delete(ctx context.Context, objectID string) (*http.Response, error) {
+	req, err := client.deletePreparer(objectID)
 	if err != nil {
 		return nil, err
 	}
@@ -175,9 +120,9 @@ func (client ApplicationsClient) Delete(ctx context.Context, applicationObjectID
 }
 
 // deletePreparer prepares the Delete request.
-func (client ApplicationsClient) deletePreparer(applicationObjectID string) (pipeline.Request, error) {
+func (client ServicePrincipalsClient) deletePreparer(objectID string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/{tenantID}/applications/{applicationObjectId}"
+	u.Path = "/{tenantID}/servicePrincipals/{objectId}"
 	req, err := pipeline.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -189,7 +134,7 @@ func (client ApplicationsClient) deletePreparer(applicationObjectID string) (pip
 }
 
 // deleteResponder handles the response to the Delete request.
-func (client ApplicationsClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client ServicePrincipalsClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
 	if resp == nil {
 		return nil, err
@@ -197,11 +142,11 @@ func (client ApplicationsClient) deleteResponder(resp pipeline.Response) (pipeli
 	return resp, err
 }
 
-// Get get an application by object ID.
+// Get gets service principal information from the directory.
 //
-// applicationObjectID is application object ID.
-func (client ApplicationsClient) Get(ctx context.Context, applicationObjectID string) (*Application, error) {
-	req, err := client.getPreparer(applicationObjectID)
+// objectID is the object ID of the service principal to get.
+func (client ServicePrincipalsClient) Get(ctx context.Context, objectID string) (*ServicePrincipal, error) {
+	req, err := client.getPreparer(objectID)
 	if err != nil {
 		return nil, err
 	}
@@ -209,13 +154,13 @@ func (client ApplicationsClient) Get(ctx context.Context, applicationObjectID st
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*Application), err
+	return resp.(*ServicePrincipal), err
 }
 
 // getPreparer prepares the Get request.
-func (client ApplicationsClient) getPreparer(applicationObjectID string) (pipeline.Request, error) {
+func (client ServicePrincipalsClient) getPreparer(objectID string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/{tenantID}/applications/{applicationObjectId}"
+	u.Path = "/{tenantID}/servicePrincipals/{objectId}"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -227,12 +172,12 @@ func (client ApplicationsClient) getPreparer(applicationObjectID string) (pipeli
 }
 
 // getResponder handles the response to the Get request.
-func (client ApplicationsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client ServicePrincipalsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &Application{rawResponse: resp.Response()}
+	result := &ServicePrincipal{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -250,10 +195,10 @@ func (client ApplicationsClient) getResponder(resp pipeline.Response) (pipeline.
 	return result, nil
 }
 
-// List lists applications by filter parameters.
+// List gets a list of service principals from the current tenant.
 //
-// filter is the filters to apply to the operation.
-func (client ApplicationsClient) List(ctx context.Context, filter *string) (*ApplicationListResult, error) {
+// filter is the filter to apply to the operation.
+func (client ServicePrincipalsClient) List(ctx context.Context, filter *string) (*ServicePrincipalListResult, error) {
 	req, err := client.listPreparer(filter)
 	if err != nil {
 		return nil, err
@@ -262,13 +207,13 @@ func (client ApplicationsClient) List(ctx context.Context, filter *string) (*App
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*ApplicationListResult), err
+	return resp.(*ServicePrincipalListResult), err
 }
 
 // listPreparer prepares the List request.
-func (client ApplicationsClient) listPreparer(filter *string) (pipeline.Request, error) {
+func (client ServicePrincipalsClient) listPreparer(filter *string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/{tenantID}/applications"
+	u.Path = "/{tenantID}/servicePrincipals"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -283,12 +228,12 @@ func (client ApplicationsClient) listPreparer(filter *string) (pipeline.Request,
 }
 
 // listResponder handles the response to the List request.
-func (client ApplicationsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client ServicePrincipalsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &ApplicationListResult{rawResponse: resp.Response()}
+	result := &ServicePrincipalListResult{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -306,11 +251,11 @@ func (client ApplicationsClient) listResponder(resp pipeline.Response) (pipeline
 	return result, nil
 }
 
-// ListKeyCredentials get the keyCredentials associated with an application.
+// ListKeyCredentials get the keyCredentials associated with the specified service principal.
 //
-// applicationObjectID is application object ID.
-func (client ApplicationsClient) ListKeyCredentials(ctx context.Context, applicationObjectID string) (*KeyCredentialListResult, error) {
-	req, err := client.listKeyCredentialsPreparer(applicationObjectID)
+// objectID is the object ID of the service principal for which to get keyCredentials.
+func (client ServicePrincipalsClient) ListKeyCredentials(ctx context.Context, objectID string) (*KeyCredentialListResult, error) {
+	req, err := client.listKeyCredentialsPreparer(objectID)
 	if err != nil {
 		return nil, err
 	}
@@ -322,9 +267,9 @@ func (client ApplicationsClient) ListKeyCredentials(ctx context.Context, applica
 }
 
 // listKeyCredentialsPreparer prepares the ListKeyCredentials request.
-func (client ApplicationsClient) listKeyCredentialsPreparer(applicationObjectID string) (pipeline.Request, error) {
+func (client ServicePrincipalsClient) listKeyCredentialsPreparer(objectID string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/{tenantID}/applications/{applicationObjectId}/keyCredentials"
+	u.Path = "/{tenantID}/servicePrincipals/{objectId}/keyCredentials"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -336,7 +281,7 @@ func (client ApplicationsClient) listKeyCredentialsPreparer(applicationObjectID 
 }
 
 // listKeyCredentialsResponder handles the response to the ListKeyCredentials request.
-func (client ApplicationsClient) listKeyCredentialsResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client ServicePrincipalsClient) listKeyCredentialsResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
@@ -359,10 +304,10 @@ func (client ApplicationsClient) listKeyCredentialsResponder(resp pipeline.Respo
 	return result, nil
 }
 
-// ListNext gets a list of applications from the current tenant.
+// ListNext gets a list of service principals from the current tenant.
 //
 // nextLink is next link for the list operation.
-func (client ApplicationsClient) ListNext(ctx context.Context, nextLink string) (*ApplicationListResult, error) {
+func (client ServicePrincipalsClient) ListNext(ctx context.Context, nextLink string) (*ServicePrincipalListResult, error) {
 	req, err := client.listNextPreparer(nextLink)
 	if err != nil {
 		return nil, err
@@ -371,11 +316,11 @@ func (client ApplicationsClient) ListNext(ctx context.Context, nextLink string) 
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*ApplicationListResult), err
+	return resp.(*ServicePrincipalListResult), err
 }
 
 // listNextPreparer prepares the ListNext request.
-func (client ApplicationsClient) listNextPreparer(nextLink string) (pipeline.Request, error) {
+func (client ServicePrincipalsClient) listNextPreparer(nextLink string) (pipeline.Request, error) {
 	u := client.url
 	u.Path = "/{tenantID}/{nextLink}"
 	req, err := pipeline.NewRequest("GET", u, nil)
@@ -389,12 +334,12 @@ func (client ApplicationsClient) listNextPreparer(nextLink string) (pipeline.Req
 }
 
 // listNextResponder handles the response to the ListNext request.
-func (client ApplicationsClient) listNextResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client ServicePrincipalsClient) listNextResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &ApplicationListResult{rawResponse: resp.Response()}
+	result := &ServicePrincipalListResult{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -414,9 +359,9 @@ func (client ApplicationsClient) listNextResponder(resp pipeline.Response) (pipe
 
 // ListOwners the owners are a set of non-admin users who are allowed to modify this object.
 //
-// applicationObjectID is the object ID of the application for which to get owners.
-func (client ApplicationsClient) ListOwners(ctx context.Context, applicationObjectID string) (*DirectoryObjectListResult, error) {
-	req, err := client.listOwnersPreparer(applicationObjectID)
+// objectID is the object ID of the service principal for which to get owners.
+func (client ServicePrincipalsClient) ListOwners(ctx context.Context, objectID string) (*DirectoryObjectListResult, error) {
+	req, err := client.listOwnersPreparer(objectID)
 	if err != nil {
 		return nil, err
 	}
@@ -428,9 +373,9 @@ func (client ApplicationsClient) ListOwners(ctx context.Context, applicationObje
 }
 
 // listOwnersPreparer prepares the ListOwners request.
-func (client ApplicationsClient) listOwnersPreparer(applicationObjectID string) (pipeline.Request, error) {
+func (client ServicePrincipalsClient) listOwnersPreparer(objectID string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/{tenantID}/applications/{applicationObjectId}/owners"
+	u.Path = "/{tenantID}/servicePrincipals/{objectId}/owners"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -442,7 +387,7 @@ func (client ApplicationsClient) listOwnersPreparer(applicationObjectID string) 
 }
 
 // listOwnersResponder handles the response to the ListOwners request.
-func (client ApplicationsClient) listOwnersResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client ServicePrincipalsClient) listOwnersResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
@@ -465,11 +410,11 @@ func (client ApplicationsClient) listOwnersResponder(resp pipeline.Response) (pi
 	return result, nil
 }
 
-// ListPasswordCredentials get the passwordCredentials associated with an application.
+// ListPasswordCredentials gets the passwordCredentials associated with a service principal.
 //
-// applicationObjectID is application object ID.
-func (client ApplicationsClient) ListPasswordCredentials(ctx context.Context, applicationObjectID string) (*PasswordCredentialListResult, error) {
-	req, err := client.listPasswordCredentialsPreparer(applicationObjectID)
+// objectID is the object ID of the service principal.
+func (client ServicePrincipalsClient) ListPasswordCredentials(ctx context.Context, objectID string) (*PasswordCredentialListResult, error) {
+	req, err := client.listPasswordCredentialsPreparer(objectID)
 	if err != nil {
 		return nil, err
 	}
@@ -481,9 +426,9 @@ func (client ApplicationsClient) ListPasswordCredentials(ctx context.Context, ap
 }
 
 // listPasswordCredentialsPreparer prepares the ListPasswordCredentials request.
-func (client ApplicationsClient) listPasswordCredentialsPreparer(applicationObjectID string) (pipeline.Request, error) {
+func (client ServicePrincipalsClient) listPasswordCredentialsPreparer(objectID string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/{tenantID}/applications/{applicationObjectId}/passwordCredentials"
+	u.Path = "/{tenantID}/servicePrincipals/{objectId}/passwordCredentials"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -495,7 +440,7 @@ func (client ApplicationsClient) listPasswordCredentialsPreparer(applicationObje
 }
 
 // listPasswordCredentialsResponder handles the response to the ListPasswordCredentials request.
-func (client ApplicationsClient) listPasswordCredentialsResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client ServicePrincipalsClient) listPasswordCredentialsResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
@@ -518,59 +463,12 @@ func (client ApplicationsClient) listPasswordCredentialsResponder(resp pipeline.
 	return result, nil
 }
 
-// Patch update an existing application.
+// UpdateKeyCredentials update the keyCredentials associated with a service principal.
 //
-// applicationObjectID is application object ID. parameters is parameters to update an existing application.
-func (client ApplicationsClient) Patch(ctx context.Context, applicationObjectID string, parameters ApplicationUpdateParameters) (*http.Response, error) {
-	req, err := client.patchPreparer(applicationObjectID, parameters)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.patchResponder}, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp.Response(), err
-}
-
-// patchPreparer prepares the Patch request.
-func (client ApplicationsClient) patchPreparer(applicationObjectID string, parameters ApplicationUpdateParameters) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/{tenantID}/applications/{applicationObjectId}"
-	req, err := pipeline.NewRequest("PATCH", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
-	}
-	params := req.URL.Query()
-	params.Set("api-version", APIVersion)
-	req.URL.RawQuery = params.Encode()
-	b, err := json.Marshal(parameters)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to marshal request body")
-	}
-	req.Header.Set("Content-Type", "application/json")
-	err = req.SetBody(bytes.NewReader(b))
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to set request body")
-	}
-	return req, nil
-}
-
-// patchResponder handles the response to the Patch request.
-func (client ApplicationsClient) patchResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
-	if resp == nil {
-		return nil, err
-	}
-	return resp, err
-}
-
-// UpdateKeyCredentials update the keyCredentials associated with an application.
-//
-// applicationObjectID is application object ID. parameters is parameters to update the keyCredentials of an existing
-// application.
-func (client ApplicationsClient) UpdateKeyCredentials(ctx context.Context, applicationObjectID string, parameters KeyCredentialsUpdateParameters) (*http.Response, error) {
-	req, err := client.updateKeyCredentialsPreparer(applicationObjectID, parameters)
+// objectID is the object ID for which to get service principal information. parameters is parameters to update the
+// keyCredentials of an existing service principal.
+func (client ServicePrincipalsClient) UpdateKeyCredentials(ctx context.Context, objectID string, parameters KeyCredentialsUpdateParameters) (*http.Response, error) {
+	req, err := client.updateKeyCredentialsPreparer(objectID, parameters)
 	if err != nil {
 		return nil, err
 	}
@@ -582,9 +480,9 @@ func (client ApplicationsClient) UpdateKeyCredentials(ctx context.Context, appli
 }
 
 // updateKeyCredentialsPreparer prepares the UpdateKeyCredentials request.
-func (client ApplicationsClient) updateKeyCredentialsPreparer(applicationObjectID string, parameters KeyCredentialsUpdateParameters) (pipeline.Request, error) {
+func (client ServicePrincipalsClient) updateKeyCredentialsPreparer(objectID string, parameters KeyCredentialsUpdateParameters) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/{tenantID}/applications/{applicationObjectId}/keyCredentials"
+	u.Path = "/{tenantID}/servicePrincipals/{objectId}/keyCredentials"
 	req, err := pipeline.NewRequest("PATCH", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -605,7 +503,7 @@ func (client ApplicationsClient) updateKeyCredentialsPreparer(applicationObjectI
 }
 
 // updateKeyCredentialsResponder handles the response to the UpdateKeyCredentials request.
-func (client ApplicationsClient) updateKeyCredentialsResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client ServicePrincipalsClient) updateKeyCredentialsResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
 	if resp == nil {
 		return nil, err
@@ -613,12 +511,12 @@ func (client ApplicationsClient) updateKeyCredentialsResponder(resp pipeline.Res
 	return resp, err
 }
 
-// UpdatePasswordCredentials update passwordCredentials associated with an application.
+// UpdatePasswordCredentials updates the passwordCredentials associated with a service principal.
 //
-// applicationObjectID is application object ID. parameters is parameters to update passwordCredentials of an existing
-// application.
-func (client ApplicationsClient) UpdatePasswordCredentials(ctx context.Context, applicationObjectID string, parameters PasswordCredentialsUpdateParameters) (*http.Response, error) {
-	req, err := client.updatePasswordCredentialsPreparer(applicationObjectID, parameters)
+// objectID is the object ID of the service principal. parameters is parameters to update the passwordCredentials of an
+// existing service principal.
+func (client ServicePrincipalsClient) UpdatePasswordCredentials(ctx context.Context, objectID string, parameters PasswordCredentialsUpdateParameters) (*http.Response, error) {
+	req, err := client.updatePasswordCredentialsPreparer(objectID, parameters)
 	if err != nil {
 		return nil, err
 	}
@@ -630,9 +528,9 @@ func (client ApplicationsClient) UpdatePasswordCredentials(ctx context.Context, 
 }
 
 // updatePasswordCredentialsPreparer prepares the UpdatePasswordCredentials request.
-func (client ApplicationsClient) updatePasswordCredentialsPreparer(applicationObjectID string, parameters PasswordCredentialsUpdateParameters) (pipeline.Request, error) {
+func (client ServicePrincipalsClient) updatePasswordCredentialsPreparer(objectID string, parameters PasswordCredentialsUpdateParameters) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/{tenantID}/applications/{applicationObjectId}/passwordCredentials"
+	u.Path = "/{tenantID}/servicePrincipals/{objectId}/passwordCredentials"
 	req, err := pipeline.NewRequest("PATCH", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -653,7 +551,7 @@ func (client ApplicationsClient) updatePasswordCredentialsPreparer(applicationOb
 }
 
 // updatePasswordCredentialsResponder handles the response to the UpdatePasswordCredentials request.
-func (client ApplicationsClient) updatePasswordCredentialsResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client ServicePrincipalsClient) updatePasswordCredentialsResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
 	if resp == nil {
 		return nil, err

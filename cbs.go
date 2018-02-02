@@ -5,6 +5,7 @@ import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"pack.ag/amqp"
+	"sync"
 	"time"
 )
 
@@ -27,11 +28,16 @@ type (
 		receiver      *amqp.Receiver
 		sender        *amqp.Sender
 		clientAddress string
+		negotiateMu   sync.Mutex
 	}
 )
 
 func (sb *serviceBus) newCbsLink() (*cbsLink, error) {
-	authSession, err := sb.client.NewSession()
+	conn, err := sb.connection()
+	if err != nil {
+		return nil, err
+	}
+	authSession, err := conn.NewSession()
 	if err != nil {
 		return nil, err
 	}
@@ -57,9 +63,24 @@ func (sb *serviceBus) newCbsLink() (*cbsLink, error) {
 	}, nil
 }
 
-func (sb *serviceBus) negotiateClaim(entityPath string) error {
+func (sb *serviceBus) ensureCbsLink() error {
 	sb.cbsMu.Lock()
 	defer sb.cbsMu.Unlock()
+
+	if sb.cbsLink == nil {
+		link, err := sb.newCbsLink()
+		if err != nil {
+			return err
+		}
+		sb.cbsLink = link
+	}
+	return nil
+}
+
+func (sb *serviceBus) negotiateClaim(entityPath string) error {
+	sb.ensureCbsLink()
+	sb.cbsLink.negotiateMu.Lock()
+	defer sb.cbsLink.negotiateMu.Unlock()
 
 	name := "amqp://" + sb.namespace + ".servicebus.windows.net/" + entityPath
 	log.Debugf("sending to: %s, expiring on: %q, via: %s", name, sb.sbToken.ExpiresOn, sb.cbsLink.clientAddress)

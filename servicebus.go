@@ -63,22 +63,24 @@ type (
 
 	// serviceBus provides a simplified facade over the AMQP implementation of Azure Service Bus.
 	serviceBus struct {
-		name           uuid.UUID
-		client         *amqp.Client
-		armToken       *adal.ServicePrincipalToken
-		sbToken        *adal.ServicePrincipalToken
-		environment    azure.Environment
-		subscriptionID string
-		resourceGroup  string
-		namespace      string
-		primaryKey     string
-		receivers      []*receiver
-		senders        map[string]*sender
-		receiverMu     sync.Mutex
-		senderMu       sync.Mutex
-		Logger         *log.Logger
-		cbsMu          sync.Mutex
-		cbsLink        *cbsLink
+		name             uuid.UUID
+		client           *amqp.Client
+		clientMu         sync.Mutex
+		armToken         *adal.ServicePrincipalToken
+		sbToken          *adal.ServicePrincipalToken
+		connectionString string
+		environment      azure.Environment
+		subscriptionID   string
+		resourceGroup    string
+		namespace        string
+		primaryKey       string
+		receivers        []*receiver
+		senders          map[string]*sender
+		receiverMu       sync.Mutex
+		senderMu         sync.Mutex
+		Logger           *log.Logger
+		cbsMu            sync.Mutex
+		cbsLink          *cbsLink
 	}
 
 	// parsedConn is the structure of a parsed Service Bus connection string.
@@ -101,19 +103,6 @@ func NewWithConnectionString(connStr string) (SenderReceiver, error) {
 	return newWithConnectionString(connStr)
 }
 
-// NewWithMSI creates a new connected instance of an Azure Service Bus given a subscription Id, resource group,
-// Service Bus namespace, and Service Bus authorization rule name.
-//func NewWithMSI(subscriptionID, resourceGroup, namespace, ruleName string, environment azure.Environment) (SenderReceiverManager, error) {
-//	msiEndpoint, err := adal.GetMSIVMEndpoint()
-//	spToken, err := adal.NewServicePrincipalTokenFromMSI(msiEndpoint, environment.ResourceManagerEndpoint)
-//
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	return NewWithSPToken(spToken, subscriptionID, resourceGroup, namespace, "foo", environment)
-//}
-
 // NewWithServicePrincipal builds a Service Bus SenderReceiverManager which authenticates with Azure Active Directory
 // using Claims-based Security
 func NewWithServicePrincipal(subscriptionID, namespace string, credentials ServicePrincipalCredentials, env azure.Environment) (SenderReceiverManager, error) {
@@ -127,9 +116,15 @@ func NewWithServicePrincipal(subscriptionID, namespace string, credentials Servi
 		return nil, err
 	}
 
+	return NewWithTokenProviders(subscriptionID, namespace, armToken, sbToken, env)
+}
+
+// NewWithTokenProviders builds a Service Bus SenderReceiverManager which authenticates with Azure Active Directory
+// using Claims-based Security using Azure Active Directory token providers
+func NewWithTokenProviders(subscriptionID, namespace string, armToken, serviceBusToken *adal.ServicePrincipalToken, env azure.Environment) (SenderReceiverManager, error) {
 	sb := &serviceBus{
 		name:           uuid.NewV4(),
-		sbToken:        sbToken,
+		sbToken:        serviceBusToken,
 		armToken:       armToken,
 		namespace:      namespace,
 		subscriptionID: subscriptionID,
@@ -150,15 +145,6 @@ func NewWithServicePrincipal(subscriptionID, namespace string, credentials Servi
 	}
 	sb.resourceGroup = parsedID.ResourceGroup
 
-	host := getHostName(namespace)
-	// TODO: Probably should delay dialing until I understand claims due to 20s timeout on anon connections
-	client, err := amqp.Dial(host, amqp.ConnSASLAnonymous(), amqp.ConnMaxSessions(65535))
-	if err != nil {
-		return nil, err
-	}
-	sb.client = client
-	sb.buildCbsLink()
-
 	return sb, nil
 }
 
@@ -172,8 +158,10 @@ func (sb *serviceBus) Close() error {
 	// TODO: add some better error handling for cleaning up on Close
 	sb.drainReceivers()
 	sb.drainSenders()
-	log.Debugf("closing sb %v", sb)
-	sb.client.Close()
+	if sb.client != nil {
+		log.Debugf("closing sb amqp connection %v", sb)
+		sb.client.Close()
+	}
 	return nil
 }
 
@@ -202,8 +190,27 @@ func (sb *serviceBus) Send(ctx context.Context, entityPath string, msg *amqp.Mes
 	return sender.Send(ctx, msg, opts...)
 }
 
+func (sb *serviceBus) connection() (*amqp.Client, error) {
+	sb.clientMu.Lock()
+	defer sb.clientMu.Unlock()
+
+	if sb.client == nil && sb.claimsBasedSecurityEnabled() {
+		host := getHostName(sb.namespace)
+		client, err := amqp.Dial(host, amqp.ConnSASLAnonymous(), amqp.ConnMaxSessions(65535))
+		if err != nil {
+			return nil, err
+		}
+		sb.client = client
+	}
+	return sb.client, nil
+}
+
 func (sb *serviceBus) newSession() (*amqp.Session, error) {
-	return sb.client.NewSession()
+	conn, err := sb.connection()
+	if err != nil {
+		return nil, err
+	}
+	return conn.NewSession()
 }
 
 func (sb *serviceBus) fetchSender(entityPath string) (*sender, error) {
@@ -246,9 +253,10 @@ func newWithConnectionString(connStr string) (*serviceBus, error) {
 	}
 
 	sb := &serviceBus{
-		name:   uuid.NewV4(),
-		Logger: log.New(),
-		client: client,
+		name:             uuid.NewV4(),
+		Logger:           log.New(),
+		client:           client,
+		connectionString: connStr,
 	}
 	sb.Logger.SetLevel(log.WarnLevel)
 	sb.senders = make(map[string]*sender)
@@ -334,22 +342,5 @@ func (sb *serviceBus) drainSenders() error {
 		sender.Close()
 		delete(sb.senders, key)
 	}
-	return nil
-}
-
-func (sb *serviceBus) buildCbsLink() error {
-	sb.cbsMu.Lock()
-	defer sb.cbsMu.Unlock()
-
-	if sb.cbsLink != nil {
-		sb.cbsLink.forceClose()
-	}
-
-	link, err := sb.newCbsLink()
-	if err != nil {
-		return err
-	}
-	sb.cbsLink = link
-
 	return nil
 }

@@ -162,6 +162,6 @@ func (sb *serviceBus) DeleteQueue(ctx context.Context, queueName string) error {
 
 func (sb *serviceBus) getQueueMgmtClient() mgmt.QueuesClient {
 	client := mgmt.NewQueuesClientWithBaseURI(sb.environment.ResourceManagerEndpoint, sb.subscriptionID)
-	client.Authorizer = autorest.NewBearerAuthorizer(sb.token)
+	client.Authorizer = autorest.NewBearerAuthorizer(sb.armToken)
 	return client
 }

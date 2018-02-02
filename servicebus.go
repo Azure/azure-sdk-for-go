@@ -3,10 +3,11 @@ package servicebus
 import (
 	"context"
 	"errors"
+	"fmt"
 	mgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
-	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
 	"pack.ag/amqp"
 	"regexp"
@@ -52,20 +53,34 @@ type (
 		EntityManager
 	}
 
+	// ServicePrincipalCredentials contains the details needed to authenticate to Azure Active Directory with a Service
+	// Principal. For more info on Service Principals see: https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-create-service-principal-portal
+	ServicePrincipalCredentials struct {
+		TenantID      string
+		ApplicationID string
+		Secret        string
+	}
+
 	// serviceBus provides a simplified facade over the AMQP implementation of Azure Service Bus.
 	serviceBus struct {
-		client         *amqp.Client
-		token          *adal.ServicePrincipalToken
-		environment    azure.Environment
-		subscriptionID string
-		resourceGroup  string
-		namespace      string
-		primaryKey     string
-		receivers      []*receiver
-		senders        map[string]*sender
-		receiverMu     sync.Mutex
-		senderMu       sync.Mutex
-		Logger         *log.Logger
+		name             uuid.UUID
+		client           *amqp.Client
+		clientMu         sync.Mutex
+		armToken         *adal.ServicePrincipalToken
+		sbToken          *adal.ServicePrincipalToken
+		connectionString string
+		environment      azure.Environment
+		subscriptionID   string
+		resourceGroup    string
+		namespace        string
+		primaryKey       string
+		receivers        []*receiver
+		senders          map[string]*sender
+		receiverMu       sync.Mutex
+		senderMu         sync.Mutex
+		Logger           *log.Logger
+		cbsMu            sync.Mutex
+		cbsLink          *cbsLink
 	}
 
 	// parsedConn is the structure of a parsed Service Bus connection string.
@@ -88,7 +103,134 @@ func NewWithConnectionString(connStr string) (SenderReceiver, error) {
 	return newWithConnectionString(connStr)
 }
 
-func newClient(connStr string) (*amqp.Client, error) {
+// NewWithServicePrincipal builds a Service Bus SenderReceiverManager which authenticates with Azure Active Directory
+// using Claims-based Security
+func NewWithServicePrincipal(subscriptionID, namespace string, credentials ServicePrincipalCredentials, env azure.Environment) (SenderReceiverManager, error) {
+	armToken, err := getArmTokenProvider(credentials, env)
+	if err != nil {
+		return nil, err
+	}
+
+	sbToken, err := getServiceBusTokenProvider(credentials, env)
+	if err != nil {
+		return nil, err
+	}
+
+	return NewWithTokenProviders(subscriptionID, namespace, armToken, sbToken, env)
+}
+
+// NewWithTokenProviders builds a Service Bus SenderReceiverManager which authenticates with Azure Active Directory
+// using Claims-based Security using Azure Active Directory token providers
+func NewWithTokenProviders(subscriptionID, namespace string, armToken, serviceBusToken *adal.ServicePrincipalToken, env azure.Environment) (SenderReceiverManager, error) {
+	sb := &serviceBus{
+		name:           uuid.NewV4(),
+		sbToken:        serviceBusToken,
+		armToken:       armToken,
+		namespace:      namespace,
+		subscriptionID: subscriptionID,
+		environment:    env,
+		Logger:         log.New(),
+		senders:        make(map[string]*sender),
+	}
+	sb.Logger.SetLevel(log.WarnLevel)
+
+	ns, err := sb.GetNamespace(context.Background())
+	if err != nil {
+		return nil, err
+	}
+
+	parsedID, err := parseAzureResourceID(*ns.ID)
+	if err != nil {
+		return nil, err
+	}
+	sb.resourceGroup = parsedID.ResourceGroup
+
+	return sb, nil
+}
+
+func (sb *serviceBus) Start() error {
+	log.Println(banner)
+	return nil
+}
+
+// Close drains and closes all of the existing senders, receivers and connections
+func (sb *serviceBus) Close() error {
+	// TODO: add some better error handling for cleaning up on Close
+	sb.drainReceivers()
+	sb.drainSenders()
+	if sb.client != nil {
+		log.Debugf("closing sb amqp connection %v", sb)
+		sb.client.Close()
+	}
+	return nil
+}
+
+// Listen subscribes for messages sent to the provided entityPath.
+func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
+	sb.receiverMu.Lock()
+	defer sb.receiverMu.Unlock()
+
+	receiver, err := sb.newReceiver(entityPath)
+	if err != nil {
+		return err
+	}
+
+	sb.receivers = append(sb.receivers, receiver)
+	receiver.Listen(handler)
+	return nil
+}
+
+// Send sends a message to a provided entity path with options
+func (sb *serviceBus) Send(ctx context.Context, entityPath string, msg *amqp.Message, opts ...SendOption) error {
+	sender, err := sb.fetchSender(entityPath)
+	if err != nil {
+		return err
+	}
+
+	return sender.Send(ctx, msg, opts...)
+}
+
+func (sb *serviceBus) connection() (*amqp.Client, error) {
+	sb.clientMu.Lock()
+	defer sb.clientMu.Unlock()
+
+	if sb.client == nil && sb.claimsBasedSecurityEnabled() {
+		host := getHostName(sb.namespace)
+		client, err := amqp.Dial(host, amqp.ConnSASLAnonymous(), amqp.ConnMaxSessions(65535))
+		if err != nil {
+			return nil, err
+		}
+		sb.client = client
+	}
+	return sb.client, nil
+}
+
+func (sb *serviceBus) newSession() (*amqp.Session, error) {
+	conn, err := sb.connection()
+	if err != nil {
+		return nil, err
+	}
+	return conn.NewSession()
+}
+
+func (sb *serviceBus) fetchSender(entityPath string) (*sender, error) {
+	sb.senderMu.Lock()
+	defer sb.senderMu.Unlock()
+
+	entry, ok := sb.senders[entityPath]
+	if ok {
+		return entry, nil
+	}
+
+	sender, err := sb.newSender(entityPath)
+	if err != nil {
+		return nil, err
+	}
+	sb.senders[entityPath] = sender
+	return sender, nil
+}
+
+func newClientWithConnectionString(connStr string) (*amqp.Client, error) {
 	if connStr == "" {
 		return nil, errors.New("connection string can not be null")
 	}
@@ -105,60 +247,20 @@ func newClient(connStr string) (*amqp.Client, error) {
 }
 
 func newWithConnectionString(connStr string) (*serviceBus, error) {
-	client, err := newClient(connStr)
+	client, err := newClientWithConnectionString(connStr)
 	if err != nil {
 		return nil, err
 	}
 
 	sb := &serviceBus{
-		Logger: log.New(),
-		client: client,
+		name:             uuid.NewV4(),
+		Logger:           log.New(),
+		client:           client,
+		connectionString: connStr,
 	}
 	sb.Logger.SetLevel(log.WarnLevel)
 	sb.senders = make(map[string]*sender)
 	return sb, nil
-}
-
-// NewWithMSI creates a new connected instance of an Azure Service Bus given a subscription Id, resource group,
-// Service Bus namespace, and Service Bus authorization rule name.
-func NewWithMSI(subscriptionID, resourceGroup, namespace, ruleName string, environment azure.Environment) (SenderReceiverManager, error) {
-	msiEndpoint, err := adal.GetMSIVMEndpoint()
-	spToken, err := adal.NewServicePrincipalTokenFromMSI(msiEndpoint, environment.ResourceManagerEndpoint)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return NewWithSPToken(spToken, subscriptionID, resourceGroup, namespace, ruleName, environment)
-}
-
-// NewWithSPToken creates a new connected instance of an Azure Service Bus given a, Azure Active Directory service
-// principal token subscription Id, resource group, Service Bus namespace, and Service Bus authorization rule name.
-func NewWithSPToken(spToken *adal.ServicePrincipalToken, subscriptionID, resourceGroup, namespace, ruleName string, environment azure.Environment) (SenderReceiverManager, error) {
-	authorizer := autorest.NewBearerAuthorizer(spToken)
-
-	nsClient := mgmt.NewNamespacesClientWithBaseURI(environment.ResourceManagerEndpoint, subscriptionID)
-	nsClient.Authorizer = authorizer
-	nsClient.AddToUserAgent("dataplane-servicebus")
-
-	result, err := nsClient.ListKeys(context.Background(), resourceGroup, namespace, ruleName)
-	if err != nil {
-		return nil, err
-	}
-
-	primary := *result.PrimaryConnectionString
-	sb, err := newWithConnectionString(primary)
-	if err != nil {
-		return nil, err
-	}
-
-	sb.token = spToken
-	sb.environment = environment
-	sb.subscriptionID = subscriptionID
-	sb.resourceGroup = resourceGroup
-	sb.namespace = namespace
-	sb.primaryKey = primary
-	return sb, err
 }
 
 // parsedConnectionFromStr takes a string connection string from the Azure portal and returns the parsed representation.
@@ -183,19 +285,40 @@ func newParsedConnection(host string, keyName string, key string) (*parsedConn, 
 	}, nil
 }
 
-func (sb *serviceBus) Start() error {
-	log.Println(banner)
-	return nil
+func getHostName(namespace string) string {
+	return fmt.Sprintf("amqps://%s.%s", namespace, "servicebus.windows.net")
 }
 
-// Close drains and closes all of the existing senders, receivers and connections
-func (sb *serviceBus) Close() error {
-	// TODO: add some better error handling for cleaning up on Close
-	sb.drainReceivers()
-	sb.drainSenders()
-	log.Debugf("closing sb %v", sb)
-	sb.client.Close()
-	return nil
+// claimsBasedSecurityEnabled indicates that the connection will use AAD JWT RBAC to authenticate in connections
+func (sb *serviceBus) claimsBasedSecurityEnabled() bool {
+	return sb.sbToken != nil
+}
+
+func getArmTokenProvider(credential ServicePrincipalCredentials, env azure.Environment) (*adal.ServicePrincipalToken, error) {
+	return getTokenProvider(azure.PublicCloud.ResourceManagerEndpoint, credential, env)
+}
+
+func getServiceBusTokenProvider(credential ServicePrincipalCredentials, env azure.Environment) (*adal.ServicePrincipalToken, error) {
+	return getTokenProvider("https://servicebus.azure.net/", credential, env)
+}
+
+func getTokenProvider(resourceURI string, cred ServicePrincipalCredentials, env azure.Environment) (*adal.ServicePrincipalToken, error) {
+	oauthConfig, err := adal.NewOAuthConfig(env.ActiveDirectoryEndpoint, cred.TenantID)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	tokenProvider, err := adal.NewServicePrincipalToken(*oauthConfig, cred.ApplicationID, cred.Secret, resourceURI)
+	if err != nil {
+		return nil, err
+	}
+
+	err = tokenProvider.Refresh()
+	if err != nil {
+		return nil, err
+	}
+
+	return tokenProvider, nil
 }
 
 func (sb *serviceBus) drainReceivers() error {
@@ -220,47 +343,4 @@ func (sb *serviceBus) drainSenders() error {
 		delete(sb.senders, key)
 	}
 	return nil
-}
-
-// Listen subscribes for messages sent to the provided entityPath.
-func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
-	sb.receiverMu.Lock()
-	defer sb.receiverMu.Unlock()
-
-	receiver, err := newReceiver(sb.client, entityPath)
-	if err != nil {
-		return err
-	}
-
-	sb.receivers = append(sb.receivers, receiver)
-	receiver.Listen(handler)
-	return nil
-}
-
-// Send sends a message to a provided entity path with options
-func (sb *serviceBus) Send(ctx context.Context, entityPath string, msg *amqp.Message, opts ...SendOption) error {
-	sender, err := sb.fetchSender(entityPath)
-	if err != nil {
-		return err
-	}
-
-	return sender.Send(ctx, msg, opts...)
-}
-
-func (sb *serviceBus) fetchSender(entityPath string) (*sender, error) {
-	sb.senderMu.Lock()
-	defer sb.senderMu.Unlock()
-
-	entry, ok := sb.senders[entityPath]
-	if ok {
-		return entry, nil
-	}
-
-	log.Debugf("creating a new sender for entity path %s", entityPath)
-	sender, err := newSender(sb.client, entityPath)
-	if err != nil {
-		return nil, err
-	}
-	sb.senders[entityPath] = sender
-	return sender, nil
 }

@@ -59,7 +59,7 @@ func (suite *ServiceBusSuite) SetupSuite() {
 	suite.SubscriptionID = mustGetenv("AZURE_SUBSCRIPTION_ID")
 	suite.ClientID = mustGetenv("AZURE_CLIENT_ID")
 	suite.ClientSecret = mustGetenv("AZURE_CLIENT_SECRET")
-	suite.Namespace = mustGetenv("SERVICEBUS_NAMESPACE")
+	suite.Namespace = "something" //mustGetenv("SERVICEBUS_NAMESPACE")
 	suite.Token = suite.servicePrincipalToken()
 	suite.Environment = azure.PublicCloud
 
@@ -80,32 +80,31 @@ func (suite *ServiceBusSuite) TestQueue() {
 		"DuplicateDetection":    testDuplicateDetection,
 	}
 
-	spToken := suite.servicePrincipalToken()
-	sb, err := NewWithSPToken(spToken, suite.SubscriptionID, ResourceGroupName, suite.Namespace, RootRuleName, suite.Environment)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	sb := suite.getNewInstance()
 	defer func() {
 		sb.Close()
 	}()
 
 	for name, testFunc := range tests {
-		queueName := randomName("gosbtest", 10)
-		window := 3 * time.Minute
-		_, err := sb.EnsureQueue(
-			context.Background(),
-			queueName,
-			QueueWithPartitioning(),
-			QueueWithDuplicateDetection(nil),
-			QueueWithLockDuration(&window))
-		if err != nil {
-			log.Fatalln(err)
+		setupTestTeardown := func(t *testing.T) {
+			queueName := randomName("gosbtest", 10)
+			defer sb.DeleteQueue(context.Background(), queueName)
+
+			window := 3 * time.Minute
+			_, err := sb.EnsureQueue(
+				context.Background(),
+				queueName,
+				QueueWithPartitioning(),
+				QueueWithDuplicateDetection(nil),
+				QueueWithLockDuration(&window))
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			testFunc(t, sb, queueName)
 		}
-		suite.T().Run(name, func(t *testing.T) { testFunc(t, sb, queueName) })
-		err = sb.DeleteQueue(context.Background(), queueName)
-		if err != nil {
-			log.Fatalln(err)
-		}
+
+		suite.T().Run(name, setupTestTeardown)
 	}
 }
 
@@ -209,20 +208,16 @@ func BenchmarkSend(b *testing.B) {
 	sbSuite.SetupSuite()
 	defer sbSuite.TearDownSuite()
 
-	spToken := sbSuite.servicePrincipalToken()
-	sb, err := NewWithSPToken(spToken, sbSuite.SubscriptionID, ResourceGroupName, sbSuite.Namespace, RootRuleName, sbSuite.Environment)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	sb := sbSuite.getNewInstance()
 	defer func() {
-		err = sb.Close()
+		err := sb.Close()
 		if err != nil {
 			log.Fatalln(err)
 		}
 	}()
 
 	queueName := randomName("gosbbench", 10)
-	_, err = sb.EnsureQueue(context.Background(), queueName, nil)
+	_, err := sb.EnsureQueue(context.Background(), queueName, nil)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -313,4 +308,21 @@ func (suite *ServiceBusSuite) ensureProvisioned(tier sbmgmt.SkuTier) error {
 	}
 
 	return nil
+}
+
+func (suite *ServiceBusSuite) getNewInstance() SenderReceiverManager {
+	return getNewInstance(suite.TenantID, suite.SubscriptionID, suite.Namespace, suite.ClientID, suite.ClientSecret, suite.Environment)
+}
+
+func getNewInstance(tenantID, subscriptionID, namespace, appID, secret string, env azure.Environment) SenderReceiverManager {
+	cred := ServicePrincipalCredentials{
+		TenantID:      tenantID,
+		ApplicationID: appID,
+		Secret:        secret,
+	}
+	sb, err := NewWithServicePrincipal(subscriptionID, namespace, cred, env)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return sb
 }

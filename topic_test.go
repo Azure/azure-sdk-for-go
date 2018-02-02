@@ -23,11 +23,7 @@ func (suite *ServiceBusSuite) TestTopicManagement() {
 		"TopicWithMaxSizeInMegabytes": testTopicWithMaxSizeInMegabytes,
 	}
 
-	spToken := suite.servicePrincipalToken()
-	sb, err := NewWithSPToken(spToken, suite.SubscriptionID, ResourceGroupName, suite.Namespace, RootRuleName, suite.Environment)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	sb := suite.getNewInstance()
 	defer func() {
 		sb.Close()
 	}()
@@ -116,11 +112,7 @@ func buildTopic(t *testing.T, sb SenderReceiverManager, name string, opts ...Top
 func (suite *ServiceBusSuite) TestTopicSend() {
 	tests := map[string]func(*testing.T, SenderReceiverManager, string){}
 
-	spToken := suite.servicePrincipalToken()
-	sb, err := NewWithSPToken(spToken, suite.SubscriptionID, ResourceGroupName, suite.Namespace, RootRuleName, suite.Environment)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	sb := suite.getNewInstance()
 	defer func() {
 		sb.Close()
 	}()
@@ -129,7 +121,7 @@ func (suite *ServiceBusSuite) TestTopicSend() {
 		entityName := randomName("gosbtest", 10)
 		sb.EnsureTopic(context.Background(), entityName)
 		suite.T().Run(name, func(t *testing.T) { testFunc(t, sb, entityName) })
-		err = sb.DeleteTopic(context.Background(), entityName)
+		err := sb.DeleteTopic(context.Background(), entityName)
 		if err != nil {
 			log.Fatalln(err)
 		}

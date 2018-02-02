@@ -119,6 +119,6 @@ func (sb *serviceBus) DeleteSubscription(ctx context.Context, topicName, name st
 
 func (sb *serviceBus) getSubscriptionMgmtClient() *mgmt.SubscriptionsClient {
 	client := mgmt.NewSubscriptionsClientWithBaseURI(sb.environment.ResourceManagerEndpoint, sb.subscriptionID)
-	client.Authorizer = autorest.NewBearerAuthorizer(sb.token)
+	client.Authorizer = autorest.NewBearerAuthorizer(sb.armToken)
 	return &client
 }

@@ -2,13 +2,14 @@ package servicebus
 
 import (
 	"context"
+	log "github.com/sirupsen/logrus"
 	"pack.ag/amqp"
 )
 
 // sender provides session and link handling for an sending entity path
 type (
 	sender struct {
-		client     *amqp.Client
+		sb         *serviceBus
 		session    *session
 		sender     *amqp.Sender
 		entityPath string
@@ -17,12 +18,13 @@ type (
 )
 
 // newSender creates a new Service Bus message sender given an AMQP client and entity path
-func newSender(client *amqp.Client, entityPath string) (*sender, error) {
+func (sb *serviceBus) newSender(entityPath string) (*sender, error) {
 	s := &sender{
-		client:     client,
+		sb:         sb,
 		entityPath: entityPath,
 	}
 
+	log.Debugf("creating a new sender for entity path %s", entityPath)
 	err := s.newSessionAndLink()
 	if err != nil {
 		return nil, err
@@ -68,11 +70,16 @@ func (s *sender) Send(ctx context.Context, msg *amqp.Message, opts ...SendOption
 		opt(msg)
 	}
 
+	log.Debugf("sending message...")
 	err := s.sender.Send(ctx, msg)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (s *sender) String() string {
+	return s.Name
 }
 
 func (s *sender) prepareMessage(msg *amqp.Message) {
@@ -81,19 +88,26 @@ func (s *sender) prepareMessage(msg *amqp.Message) {
 	}
 
 	if msg.Properties.GroupID == "" {
-		msg.Properties.GroupID = s.session.SessionID
+		msg.Properties.GroupID = s.session.String()
 		msg.Properties.GroupSequence = s.session.getNext()
 	}
 }
 
 // newSessionAndLink will replace the existing session and link
 func (s *sender) newSessionAndLink() error {
-	amqpSession, err := s.client.NewSession()
+	if s.sb.claimsBasedSecurityEnabled() {
+		err := s.sb.negotiateClaim(s.entityPath)
+		if err != nil {
+			return err
+		}
+	}
+
+	amqpSession, err := s.sb.newSession()
 	if err != nil {
 		return err
 	}
 
-	amqpSender, err := amqpSession.NewSender(amqp.LinkAddress(s.entityPath))
+	amqpSender, err := amqpSession.NewSender(amqp.LinkTargetAddress(s.entityPath))
 	if err != nil {
 		return err
 	}

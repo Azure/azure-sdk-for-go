@@ -23,11 +23,7 @@ func (suite *ServiceBusSuite) TestQueueManagement() {
 		"TestQueueWithLockDuration":                     testQueueWithLockDuration,
 	}
 
-	spToken := suite.servicePrincipalToken()
-	sb, err := NewWithSPToken(spToken, suite.SubscriptionID, ResourceGroupName, suite.Namespace, RootRuleName, suite.Environment)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	sb := suite.getNewInstance()
 	defer func() {
 		sb.Close()
 	}()

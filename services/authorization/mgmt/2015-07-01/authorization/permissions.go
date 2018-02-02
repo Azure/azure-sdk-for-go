@@ -19,8 +19,9 @@ package authorization
 
 import (
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -29,17 +30,12 @@ import (
 // assignments. A role definition describes the set of actions that can be performed on resources. A role assignment
 // grants access to Azure Active Directory users.
 type PermissionsClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewPermissionsClient creates an instance of the PermissionsClient client.
-func NewPermissionsClient(subscriptionID string) PermissionsClient {
-	return NewPermissionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
-}
-
-// NewPermissionsClientWithBaseURI creates an instance of the PermissionsClient client.
-func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) PermissionsClient {
-	return PermissionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewPermissionsClient(p pipeline.Pipeline) PermissionsClient {
+	return PermissionsClient{NewManagementClient(p)}
 }
 
 // ListForResource gets all permissions the caller has for a resource.
@@ -48,189 +44,105 @@ func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) Perm
 // resourceProviderNamespace is the namespace of the resource provider. parentResourcePath is the parent resource
 // identity. resourceType is the resource type of the resource. resourceName is the name of the resource to get the
 // permissions for.
-func (client PermissionsClient) ListForResource(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (result PermissionGetResultPage, err error) {
-	result.fn = client.listForResourceNextResults
-	req, err := client.ListForResourcePreparer(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
+func (client PermissionsClient) ListForResource(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (*PermissionGetResult, error) {
+	req, err := client.listForResourcePreparer(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListForResourceSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listForResourceResponder}, req)
 	if err != nil {
-		result.pgr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.pgr, err = client.ListForResourceResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResource", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*PermissionGetResult), err
 }
 
-// ListForResourcePreparer prepares the ListForResource request.
-func (client PermissionsClient) ListForResourcePreparer(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"parentResourcePath":        parentResourcePath,
-		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
-		"resourceName":              autorest.Encode("path", resourceName),
-		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
-		"resourceType":              resourceType,
-		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-07-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/permissions", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListForResourceSender sends the ListForResource request. The method will close the
-// http.Response Body if it receives an error.
-func (client PermissionsClient) ListForResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListForResourceResponder handles the response to the ListForResource request. The method always
-// closes the http.Response Body.
-func (client PermissionsClient) ListForResourceResponder(resp *http.Response) (result PermissionGetResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listForResourceNextResults retrieves the next set of results, if any.
-func (client PermissionsClient) listForResourceNextResults(lastResults PermissionGetResult) (result PermissionGetResult, err error) {
-	req, err := lastResults.permissionGetResultPreparer()
+// listForResourcePreparer prepares the ListForResource request.
+func (client PermissionsClient) listForResourcePreparer(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/permissions"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "listForResourceNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListForResourceSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "listForResourceNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListForResourceResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "listForResourceNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListForResourceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client PermissionsClient) ListForResourceComplete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (result PermissionGetResultIterator, err error) {
-	result.page, err = client.ListForResource(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
-	return
+// listForResourceResponder handles the response to the ListForResource request.
+func (client PermissionsClient) listForResourceResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &PermissionGetResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListForResourceGroup gets all permissions the caller has for a resource group.
 //
 // resourceGroupName is the name of the resource group to get the permissions for. The name is case insensitive.
-func (client PermissionsClient) ListForResourceGroup(ctx context.Context, resourceGroupName string) (result PermissionGetResultPage, err error) {
-	result.fn = client.listForResourceGroupNextResults
-	req, err := client.ListForResourceGroupPreparer(ctx, resourceGroupName)
+func (client PermissionsClient) ListForResourceGroup(ctx context.Context, resourceGroupName string) (*PermissionGetResult, error) {
+	req, err := client.listForResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListForResourceGroupSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listForResourceGroupResponder}, req)
 	if err != nil {
-		result.pgr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.pgr, err = client.ListForResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "ListForResourceGroup", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*PermissionGetResult), err
 }
 
-// ListForResourceGroupPreparer prepares the ListForResourceGroup request.
-func (client PermissionsClient) ListForResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-07-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Authorization/permissions", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListForResourceGroupSender sends the ListForResourceGroup request. The method will close the
-// http.Response Body if it receives an error.
-func (client PermissionsClient) ListForResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListForResourceGroupResponder handles the response to the ListForResourceGroup request. The method always
-// closes the http.Response Body.
-func (client PermissionsClient) ListForResourceGroupResponder(resp *http.Response) (result PermissionGetResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listForResourceGroupNextResults retrieves the next set of results, if any.
-func (client PermissionsClient) listForResourceGroupNextResults(lastResults PermissionGetResult) (result PermissionGetResult, err error) {
-	req, err := lastResults.permissionGetResultPreparer()
+// listForResourceGroupPreparer prepares the ListForResourceGroup request.
+func (client PermissionsClient) listForResourceGroupPreparer(resourceGroupName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Authorization/permissions"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "listForResourceGroupNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListForResourceGroupSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.PermissionsClient", "listForResourceGroupNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListForResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.PermissionsClient", "listForResourceGroupNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListForResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client PermissionsClient) ListForResourceGroupComplete(ctx context.Context, resourceGroupName string) (result PermissionGetResultIterator, err error) {
-	result.page, err = client.ListForResourceGroup(ctx, resourceGroupName)
-	return
+// listForResourceGroupResponder handles the response to the ListForResourceGroup request.
+func (client PermissionsClient) listForResourceGroupResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &PermissionGetResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

@@ -18,32 +18,53 @@ package catalog
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/Azure/go-autorest/autorest/to"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 	"net/http"
+	"time"
 )
+
+// Marker represents an opaque value used in paged responses.
+type Marker struct {
+	val *string
+}
+
+// NotDone returns true if the list enumeration should be started or is not yet complete. Specifically, NotDone returns true
+// for a just-initialized (zero value) Marker indicating that you should make an initial request to get a result portion from
+// the service. NotDone also returns true whenever the service returns an interim result portion. NotDone returns false only
+// after the service has returned the final result portion.
+func (m Marker) NotDone() bool {
+	return m.val == nil || *m.val != ""
+}
+
+// UnmarshalXML implements the xml.Unmarshaler interface for Marker.
+func (m *Marker) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var out string
+	err := d.DecodeElement(&out, &start)
+	m.val = &out
+	return err
+}
 
 // FileType enumerates the values for file type.
 type FileType string
 
 const (
-	// Assembly ...
-	Assembly FileType = "Assembly"
-	// Resource ...
-	Resource FileType = "Resource"
+	// FileAssembly ...
+	FileAssembly FileType = "Assembly"
+	// FileNone represents an empty FileType.
+	FileNone FileType = ""
+	// FileResource ...
+	FileResource FileType = "Resource"
 )
 
-// DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters dataLakeAnalytics DataLakeAnalyticsAccount information.
+// DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters - DataLakeAnalytics DataLakeAnalyticsAccount information.
 type DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters struct {
 	// Password - the password for the secret to pass in
-	Password *string `json:"password,omitempty"`
+	Password string `json:"password,omitempty"`
 	// URI - the URI identifier for the secret in the format <hostname>:<port>
 	URI *string `json:"uri,omitempty"`
 }
 
-// DdlName a Data Lake Analytics DDL name item.
+// DdlName - A Data Lake Analytics DDL name item.
 type DdlName struct {
 	// FirstPart - the name of the table associated with this database and schema.
 	FirstPart *string `json:"firstPart,omitempty"`
@@ -55,7 +76,7 @@ type DdlName struct {
 	Server *string `json:"server,omitempty"`
 }
 
-// EntityID a Data Lake Analytics catalog entity identifier object.
+// EntityID - A Data Lake Analytics catalog entity identifier object.
 type EntityID struct {
 	// Name - the name of the external table associated with this database, schema and table.
 	Name *DdlName `json:"name,omitempty"`
@@ -63,7 +84,7 @@ type EntityID struct {
 	Version *uuid.UUID `json:"version,omitempty"`
 }
 
-// ExternalTable a Data Lake Analytics catalog external table item.
+// ExternalTable - A Data Lake Analytics catalog external table item.
 type ExternalTable struct {
 	// TableName - the name of the table associated with this database and schema.
 	TableName *string `json:"tableName,omitempty"`
@@ -71,7 +92,7 @@ type ExternalTable struct {
 	DataSource *EntityID `json:"dataSource,omitempty"`
 }
 
-// Item a Data Lake Analytics catalog item.
+// Item - A Data Lake Analytics catalog item.
 type Item struct {
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
@@ -79,7 +100,7 @@ type Item struct {
 	Version *uuid.UUID `json:"version,omitempty"`
 }
 
-// ItemList a Data Lake Analytics catalog item list.
+// ItemList - A Data Lake Analytics catalog item list.
 type ItemList struct {
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
@@ -87,7 +108,7 @@ type ItemList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// TypeFieldInfo a Data Lake Analytics catalog type field information item.
+// TypeFieldInfo - A Data Lake Analytics catalog type field information item.
 type TypeFieldInfo struct {
 	// Name - the name of the field associated with this type.
 	Name *string `json:"name,omitempty"`
@@ -95,9 +116,9 @@ type TypeFieldInfo struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// USQLAssembly a Data Lake Analytics catalog U-SQL Assembly.
+// USQLAssembly - A Data Lake Analytics catalog U-SQL Assembly.
 type USQLAssembly struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -113,12 +134,27 @@ type USQLAssembly struct {
 	// IsUserDefined - the switch indicating if this assembly is user defined or not.
 	IsUserDefined *bool `json:"isUserDefined,omitempty"`
 	// Files - the list of files associated with the assembly
-	Files *[]USQLAssemblyFileInfo `json:"files,omitempty"`
+	Files []USQLAssemblyFileInfo `json:"files,omitempty"`
 	// Dependencies - the list of dependencies associated with the assembly
-	Dependencies *[]USQLAssemblyDependencyInfo `json:"dependencies,omitempty"`
+	Dependencies []USQLAssemblyDependencyInfo `json:"dependencies,omitempty"`
 }
 
-// USQLAssemblyClr a Data Lake Analytics catalog U-SQL assembly CLR item.
+// Response returns the raw HTTP response object.
+func (ua USQLAssembly) Response() *http.Response {
+	return ua.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ua USQLAssembly) StatusCode() int {
+	return ua.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ua USQLAssembly) Status() string {
+	return ua.rawResponse.Status
+}
+
+// USQLAssemblyClr - A Data Lake Analytics catalog U-SQL assembly CLR item.
 type USQLAssemblyClr struct {
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
@@ -132,15 +168,15 @@ type USQLAssemblyClr struct {
 	ClrName *string `json:"clrName,omitempty"`
 }
 
-// USQLAssemblyDependencyInfo a Data Lake Analytics catalog U-SQL dependency information item.
+// USQLAssemblyDependencyInfo - A Data Lake Analytics catalog U-SQL dependency information item.
 type USQLAssemblyDependencyInfo struct {
 	// EntityID - the EntityId of the dependency.
 	EntityID *EntityID `json:"entityId,omitempty"`
 }
 
-// USQLAssemblyFileInfo a Data Lake Analytics catalog U-SQL assembly file information item.
+// USQLAssemblyFileInfo - A Data Lake Analytics catalog U-SQL assembly file information item.
 type USQLAssemblyFileInfo struct {
-	// Type - the assembly file type. Possible values include: 'Assembly', 'Resource'
+	// Type - the assembly file type. Possible values include: 'Assembly', 'Resource', 'None'
 	Type FileType `json:"type,omitempty"`
 	// OriginalPath - the the original path to the assembly file.
 	OriginalPath *string `json:"originalPath,omitempty"`
@@ -148,113 +184,35 @@ type USQLAssemblyFileInfo struct {
 	ContentPath *string `json:"contentPath,omitempty"`
 }
 
-// USQLAssemblyList a Data Lake Analytics catalog U-SQL assembly CLR item list.
+// USQLAssemblyList - A Data Lake Analytics catalog U-SQL assembly CLR item list.
 type USQLAssemblyList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of assemblies in the database
-	Value *[]USQLAssemblyClr `json:"value,omitempty"`
+	Value []USQLAssemblyClr `json:"value,omitempty"`
 }
 
-// USQLAssemblyListIterator provides access to a complete listing of USQLAssemblyClr values.
-type USQLAssemblyListIterator struct {
-	i    int
-	page USQLAssemblyListPage
+// Response returns the raw HTTP response object.
+func (ual USQLAssemblyList) Response() *http.Response {
+	return ual.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLAssemblyListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ual USQLAssemblyList) StatusCode() int {
+	return ual.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLAssemblyListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ual USQLAssemblyList) Status() string {
+	return ual.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter USQLAssemblyListIterator) Response() USQLAssemblyList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLAssemblyListIterator) Value() USQLAssemblyClr {
-	if !iter.page.NotDone() {
-		return USQLAssemblyClr{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (usal USQLAssemblyList) IsEmpty() bool {
-	return usal.Value == nil || len(*usal.Value) == 0
-}
-
-// uSQLAssemblyListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (usal USQLAssemblyList) uSQLAssemblyListPreparer() (*http.Request, error) {
-	if usal.NextLink == nil || len(to.String(usal.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(usal.NextLink)))
-}
-
-// USQLAssemblyListPage contains a page of USQLAssemblyClr values.
-type USQLAssemblyListPage struct {
-	fn  func(USQLAssemblyList) (USQLAssemblyList, error)
-	ual USQLAssemblyList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLAssemblyListPage) Next() error {
-	next, err := page.fn(page.ual)
-	if err != nil {
-		return err
-	}
-	page.ual = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLAssemblyListPage) NotDone() bool {
-	return !page.ual.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLAssemblyListPage) Response() USQLAssemblyList {
-	return page.ual
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLAssemblyListPage) Values() []USQLAssemblyClr {
-	if page.ual.IsEmpty() {
-		return nil
-	}
-	return *page.ual.Value
-}
-
-// USQLCredential a Data Lake Analytics catalog U-SQL credential item.
+// USQLCredential - A Data Lake Analytics catalog U-SQL credential item.
 type USQLCredential struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -269,113 +227,50 @@ type USQLCredential struct {
 	UserName *string `json:"userName,omitempty"`
 }
 
-// USQLCredentialList a Data Lake Analytics catalog U-SQL credential item list.
+// Response returns the raw HTTP response object.
+func (uc USQLCredential) Response() *http.Response {
+	return uc.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (uc USQLCredential) StatusCode() int {
+	return uc.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (uc USQLCredential) Status() string {
+	return uc.rawResponse.Status
+}
+
+// USQLCredentialList - A Data Lake Analytics catalog U-SQL credential item list.
 type USQLCredentialList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of credentials in the database
-	Value *[]USQLCredential `json:"value,omitempty"`
+	Value []USQLCredential `json:"value,omitempty"`
 }
 
-// USQLCredentialListIterator provides access to a complete listing of USQLCredential values.
-type USQLCredentialListIterator struct {
-	i    int
-	page USQLCredentialListPage
+// Response returns the raw HTTP response object.
+func (ucl USQLCredentialList) Response() *http.Response {
+	return ucl.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLCredentialListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ucl USQLCredentialList) StatusCode() int {
+	return ucl.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLCredentialListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ucl USQLCredentialList) Status() string {
+	return ucl.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter USQLCredentialListIterator) Response() USQLCredentialList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLCredentialListIterator) Value() USQLCredential {
-	if !iter.page.NotDone() {
-		return USQLCredential{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (uscl USQLCredentialList) IsEmpty() bool {
-	return uscl.Value == nil || len(*uscl.Value) == 0
-}
-
-// uSQLCredentialListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (uscl USQLCredentialList) uSQLCredentialListPreparer() (*http.Request, error) {
-	if uscl.NextLink == nil || len(to.String(uscl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(uscl.NextLink)))
-}
-
-// USQLCredentialListPage contains a page of USQLCredential values.
-type USQLCredentialListPage struct {
-	fn  func(USQLCredentialList) (USQLCredentialList, error)
-	ucl USQLCredentialList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLCredentialListPage) Next() error {
-	next, err := page.fn(page.ucl)
-	if err != nil {
-		return err
-	}
-	page.ucl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLCredentialListPage) NotDone() bool {
-	return !page.ucl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLCredentialListPage) Response() USQLCredentialList {
-	return page.ucl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLCredentialListPage) Values() []USQLCredential {
-	if page.ucl.IsEmpty() {
-		return nil
-	}
-	return *page.ucl.Value
-}
-
-// USQLDatabase a Data Lake Analytics catalog U-SQL database item.
+// USQLDatabase - A Data Lake Analytics catalog U-SQL database item.
 type USQLDatabase struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -384,111 +279,48 @@ type USQLDatabase struct {
 	Name *string `json:"databaseName,omitempty"`
 }
 
-// USQLDatabaseList a Data Lake Analytics catalog U-SQL database item list.
+// Response returns the raw HTTP response object.
+func (ud USQLDatabase) Response() *http.Response {
+	return ud.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ud USQLDatabase) StatusCode() int {
+	return ud.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ud USQLDatabase) Status() string {
+	return ud.rawResponse.Status
+}
+
+// USQLDatabaseList - A Data Lake Analytics catalog U-SQL database item list.
 type USQLDatabaseList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of databases
-	Value *[]USQLDatabase `json:"value,omitempty"`
+	Value []USQLDatabase `json:"value,omitempty"`
 }
 
-// USQLDatabaseListIterator provides access to a complete listing of USQLDatabase values.
-type USQLDatabaseListIterator struct {
-	i    int
-	page USQLDatabaseListPage
+// Response returns the raw HTTP response object.
+func (udl USQLDatabaseList) Response() *http.Response {
+	return udl.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLDatabaseListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (udl USQLDatabaseList) StatusCode() int {
+	return udl.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLDatabaseListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (udl USQLDatabaseList) Status() string {
+	return udl.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter USQLDatabaseListIterator) Response() USQLDatabaseList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLDatabaseListIterator) Value() USQLDatabase {
-	if !iter.page.NotDone() {
-		return USQLDatabase{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (usdl USQLDatabaseList) IsEmpty() bool {
-	return usdl.Value == nil || len(*usdl.Value) == 0
-}
-
-// uSQLDatabaseListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (usdl USQLDatabaseList) uSQLDatabaseListPreparer() (*http.Request, error) {
-	if usdl.NextLink == nil || len(to.String(usdl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(usdl.NextLink)))
-}
-
-// USQLDatabaseListPage contains a page of USQLDatabase values.
-type USQLDatabaseListPage struct {
-	fn  func(USQLDatabaseList) (USQLDatabaseList, error)
-	udl USQLDatabaseList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLDatabaseListPage) Next() error {
-	next, err := page.fn(page.udl)
-	if err != nil {
-		return err
-	}
-	page.udl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLDatabaseListPage) NotDone() bool {
-	return !page.udl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLDatabaseListPage) Response() USQLDatabaseList {
-	return page.udl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLDatabaseListPage) Values() []USQLDatabase {
-	if page.udl.IsEmpty() {
-		return nil
-	}
-	return *page.udl.Value
-}
-
-// USQLDirectedColumn a Data Lake Analytics catalog U-SQL directed column item.
+// USQLDirectedColumn - A Data Lake Analytics catalog U-SQL directed column item.
 type USQLDirectedColumn struct {
 	// Name - the name of the index in the table.
 	Name *string `json:"name,omitempty"`
@@ -496,21 +328,21 @@ type USQLDirectedColumn struct {
 	Descending *bool `json:"descending,omitempty"`
 }
 
-// USQLDistributionInfo a Data Lake Analytics catalog U-SQL distribution information object.
+// USQLDistributionInfo - A Data Lake Analytics catalog U-SQL distribution information object.
 type USQLDistributionInfo struct {
 	// Type - the type of this distribution.
 	Type *int32 `json:"type,omitempty"`
 	// Keys - the list of directed columns in the distribution
-	Keys *[]USQLDirectedColumn `json:"keys,omitempty"`
+	Keys []USQLDirectedColumn `json:"keys,omitempty"`
 	// Count - the count of indices using this distribution.
 	Count *int32 `json:"count,omitempty"`
 	// DynamicCount - the dynamic count of indices using this distribution.
 	DynamicCount *int32 `json:"dynamicCount,omitempty"`
 }
 
-// USQLExternalDataSource a Data Lake Analytics catalog U-SQL external datasource item.
+// USQLExternalDataSource - A Data Lake Analytics catalog U-SQL external datasource item.
 type USQLExternalDataSource struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -524,129 +356,66 @@ type USQLExternalDataSource struct {
 	// ProviderString - the name of the provider string for the external data source.
 	ProviderString *string `json:"providerString,omitempty"`
 	// PushdownTypes - the list of types to push down from the external data source.
-	PushdownTypes *[]string `json:"pushdownTypes,omitempty"`
+	PushdownTypes []string `json:"pushdownTypes,omitempty"`
 }
 
-// USQLExternalDataSourceList a Data Lake Analytics catalog U-SQL external datasource item list.
+// Response returns the raw HTTP response object.
+func (ueds USQLExternalDataSource) Response() *http.Response {
+	return ueds.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ueds USQLExternalDataSource) StatusCode() int {
+	return ueds.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ueds USQLExternalDataSource) Status() string {
+	return ueds.rawResponse.Status
+}
+
+// USQLExternalDataSourceList - A Data Lake Analytics catalog U-SQL external datasource item list.
 type USQLExternalDataSourceList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of external data sources in the database
-	Value *[]USQLExternalDataSource `json:"value,omitempty"`
+	Value []USQLExternalDataSource `json:"value,omitempty"`
 }
 
-// USQLExternalDataSourceListIterator provides access to a complete listing of USQLExternalDataSource values.
-type USQLExternalDataSourceListIterator struct {
-	i    int
-	page USQLExternalDataSourceListPage
+// Response returns the raw HTTP response object.
+func (uedsl USQLExternalDataSourceList) Response() *http.Response {
+	return uedsl.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLExternalDataSourceListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (uedsl USQLExternalDataSourceList) StatusCode() int {
+	return uedsl.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLExternalDataSourceListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (uedsl USQLExternalDataSourceList) Status() string {
+	return uedsl.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter USQLExternalDataSourceListIterator) Response() USQLExternalDataSourceList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLExternalDataSourceListIterator) Value() USQLExternalDataSource {
-	if !iter.page.NotDone() {
-		return USQLExternalDataSource{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (usedsl USQLExternalDataSourceList) IsEmpty() bool {
-	return usedsl.Value == nil || len(*usedsl.Value) == 0
-}
-
-// uSQLExternalDataSourceListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (usedsl USQLExternalDataSourceList) uSQLExternalDataSourceListPreparer() (*http.Request, error) {
-	if usedsl.NextLink == nil || len(to.String(usedsl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(usedsl.NextLink)))
-}
-
-// USQLExternalDataSourceListPage contains a page of USQLExternalDataSource values.
-type USQLExternalDataSourceListPage struct {
-	fn    func(USQLExternalDataSourceList) (USQLExternalDataSourceList, error)
-	uedsl USQLExternalDataSourceList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLExternalDataSourceListPage) Next() error {
-	next, err := page.fn(page.uedsl)
-	if err != nil {
-		return err
-	}
-	page.uedsl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLExternalDataSourceListPage) NotDone() bool {
-	return !page.uedsl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLExternalDataSourceListPage) Response() USQLExternalDataSourceList {
-	return page.uedsl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLExternalDataSourceListPage) Values() []USQLExternalDataSource {
-	if page.uedsl.IsEmpty() {
-		return nil
-	}
-	return *page.uedsl.Value
-}
-
-// USQLIndex a Data Lake Analytics catalog U-SQL table index item.
+// USQLIndex - A Data Lake Analytics catalog U-SQL table index item.
 type USQLIndex struct {
 	// Name - the name of the index in the table.
 	Name *string `json:"name,omitempty"`
 	// IndexKeys - the list of directed columns in the index
-	IndexKeys *[]USQLDirectedColumn `json:"indexKeys,omitempty"`
+	IndexKeys []USQLDirectedColumn `json:"indexKeys,omitempty"`
 	// Columns - the list of columns in the index
-	Columns *[]string `json:"columns,omitempty"`
+	Columns []string `json:"columns,omitempty"`
 	// DistributionInfo - the distributions info of the index
 	DistributionInfo *USQLDistributionInfo `json:"distributionInfo,omitempty"`
 	// PartitionFunction - partition function ID for the index.
 	PartitionFunction *uuid.UUID `json:"partitionFunction,omitempty"`
 	// PartitionKeyList - the list of partion keys in the index
-	PartitionKeyList *[]string `json:"partitionKeyList,omitempty"`
+	PartitionKeyList []string `json:"partitionKeyList,omitempty"`
 	// StreamNames - the list of full paths to the streams that contain this index in the DataLake account.
-	StreamNames *[]string `json:"streamNames,omitempty"`
+	StreamNames []string `json:"streamNames,omitempty"`
 	// IsColumnstore - the switch indicating if this index is a columnstore index.
 	IsColumnstore *bool `json:"isColumnstore,omitempty"`
 	// IndexID - the ID of this index within the table.
@@ -655,9 +424,9 @@ type USQLIndex struct {
 	IsUnique *bool `json:"isUnique,omitempty"`
 }
 
-// USQLProcedure a Data Lake Analytics catalog U-SQL procedure item.
+// USQLProcedure - A Data Lake Analytics catalog U-SQL procedure item.
 type USQLProcedure struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -672,113 +441,50 @@ type USQLProcedure struct {
 	Definition *string `json:"definition,omitempty"`
 }
 
-// USQLProcedureList a Data Lake Analytics catalog U-SQL procedure item list.
+// Response returns the raw HTTP response object.
+func (up USQLProcedure) Response() *http.Response {
+	return up.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (up USQLProcedure) StatusCode() int {
+	return up.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (up USQLProcedure) Status() string {
+	return up.rawResponse.Status
+}
+
+// USQLProcedureList - A Data Lake Analytics catalog U-SQL procedure item list.
 type USQLProcedureList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of procedure in the database and schema combination
-	Value *[]USQLProcedure `json:"value,omitempty"`
+	Value []USQLProcedure `json:"value,omitempty"`
 }
 
-// USQLProcedureListIterator provides access to a complete listing of USQLProcedure values.
-type USQLProcedureListIterator struct {
-	i    int
-	page USQLProcedureListPage
+// Response returns the raw HTTP response object.
+func (upl USQLProcedureList) Response() *http.Response {
+	return upl.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLProcedureListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (upl USQLProcedureList) StatusCode() int {
+	return upl.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLProcedureListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (upl USQLProcedureList) Status() string {
+	return upl.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter USQLProcedureListIterator) Response() USQLProcedureList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLProcedureListIterator) Value() USQLProcedure {
-	if !iter.page.NotDone() {
-		return USQLProcedure{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (uspl USQLProcedureList) IsEmpty() bool {
-	return uspl.Value == nil || len(*uspl.Value) == 0
-}
-
-// uSQLProcedureListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (uspl USQLProcedureList) uSQLProcedureListPreparer() (*http.Request, error) {
-	if uspl.NextLink == nil || len(to.String(uspl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(uspl.NextLink)))
-}
-
-// USQLProcedureListPage contains a page of USQLProcedure values.
-type USQLProcedureListPage struct {
-	fn  func(USQLProcedureList) (USQLProcedureList, error)
-	upl USQLProcedureList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLProcedureListPage) Next() error {
-	next, err := page.fn(page.upl)
-	if err != nil {
-		return err
-	}
-	page.upl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLProcedureListPage) NotDone() bool {
-	return !page.upl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLProcedureListPage) Response() USQLProcedureList {
-	return page.upl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLProcedureListPage) Values() []USQLProcedure {
-	if page.upl.IsEmpty() {
-		return nil
-	}
-	return *page.upl.Value
-}
-
-// USQLSchema a Data Lake Analytics catalog U-SQL schema item.
+// USQLSchema - A Data Lake Analytics catalog U-SQL schema item.
 type USQLSchema struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -789,113 +495,50 @@ type USQLSchema struct {
 	Name *string `json:"schemaName,omitempty"`
 }
 
-// USQLSchemaList a Data Lake Analytics catalog U-SQL schema item list.
+// Response returns the raw HTTP response object.
+func (us USQLSchema) Response() *http.Response {
+	return us.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (us USQLSchema) StatusCode() int {
+	return us.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (us USQLSchema) Status() string {
+	return us.rawResponse.Status
+}
+
+// USQLSchemaList - A Data Lake Analytics catalog U-SQL schema item list.
 type USQLSchemaList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of schemas in the database
-	Value *[]USQLSchema `json:"value,omitempty"`
+	Value []USQLSchema `json:"value,omitempty"`
 }
 
-// USQLSchemaListIterator provides access to a complete listing of USQLSchema values.
-type USQLSchemaListIterator struct {
-	i    int
-	page USQLSchemaListPage
+// Response returns the raw HTTP response object.
+func (usl USQLSchemaList) Response() *http.Response {
+	return usl.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLSchemaListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (usl USQLSchemaList) StatusCode() int {
+	return usl.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLSchemaListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (usl USQLSchemaList) Status() string {
+	return usl.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter USQLSchemaListIterator) Response() USQLSchemaList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLSchemaListIterator) Value() USQLSchema {
-	if !iter.page.NotDone() {
-		return USQLSchema{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (ussl USQLSchemaList) IsEmpty() bool {
-	return ussl.Value == nil || len(*ussl.Value) == 0
-}
-
-// uSQLSchemaListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (ussl USQLSchemaList) uSQLSchemaListPreparer() (*http.Request, error) {
-	if ussl.NextLink == nil || len(to.String(ussl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ussl.NextLink)))
-}
-
-// USQLSchemaListPage contains a page of USQLSchema values.
-type USQLSchemaListPage struct {
-	fn  func(USQLSchemaList) (USQLSchemaList, error)
-	usl USQLSchemaList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLSchemaListPage) Next() error {
-	next, err := page.fn(page.usl)
-	if err != nil {
-		return err
-	}
-	page.usl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLSchemaListPage) NotDone() bool {
-	return !page.usl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLSchemaListPage) Response() USQLSchemaList {
-	return page.usl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLSchemaListPage) Values() []USQLSchema {
-	if page.usl.IsEmpty() {
-		return nil
-	}
-	return *page.usl.Value
-}
-
-// USQLSecret a Data Lake Analytics catalog U-SQL secret item.
+// USQLSecret - A Data Lake Analytics catalog U-SQL secret item.
 type USQLSecret struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -905,16 +548,31 @@ type USQLSecret struct {
 	// Name - the name of the secret.
 	Name *string `json:"secretName,omitempty"`
 	// CreationTime - the creation time of the credential object. This is the only information returned about a secret from a GET.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// URI - the URI identifier for the secret in the format <hostname>:<port>
 	URI *string `json:"uri,omitempty"`
 	// Password - the password for the secret to pass in
 	Password *string `json:"password,omitempty"`
 }
 
-// USQLTable a Data Lake Analytics catalog U-SQL table item.
+// Response returns the raw HTTP response object.
+func (us USQLSecret) Response() *http.Response {
+	return us.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (us USQLSecret) StatusCode() int {
+	return us.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (us USQLSecret) Status() string {
+	return us.rawResponse.Status
+}
+
+// USQLTable - A Data Lake Analytics catalog U-SQL table item.
 type USQLTable struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -926,18 +584,33 @@ type USQLTable struct {
 	// Name - the name of the table.
 	Name *string `json:"tableName,omitempty"`
 	// ColumnList - the list of columns in this table
-	ColumnList *[]USQLTableColumn `json:"columnList,omitempty"`
+	ColumnList []USQLTableColumn `json:"columnList,omitempty"`
 	// IndexList - the list of indices in this table
-	IndexList *[]USQLIndex `json:"indexList,omitempty"`
+	IndexList []USQLIndex `json:"indexList,omitempty"`
 	// PartitionKeyList - the list of partition keys in the table
-	PartitionKeyList *[]string `json:"partitionKeyList,omitempty"`
+	PartitionKeyList []string `json:"partitionKeyList,omitempty"`
 	// ExternalTable - the external table associated with the table.
 	ExternalTable *ExternalTable `json:"externalTable,omitempty"`
 	// DistributionInfo - the distributions info of the table
 	DistributionInfo *USQLDistributionInfo `json:"distributionInfo,omitempty"`
 }
 
-// USQLTableColumn a Data Lake Analytics catalog U-SQL table column item.
+// Response returns the raw HTTP response object.
+func (ut USQLTable) Response() *http.Response {
+	return ut.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ut USQLTable) StatusCode() int {
+	return ut.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ut USQLTable) Status() string {
+	return ut.rawResponse.Status
+}
+
+// USQLTableColumn - A Data Lake Analytics catalog U-SQL table column item.
 type USQLTableColumn struct {
 	// Name - the name of the column in the table.
 	Name *string `json:"name,omitempty"`
@@ -945,113 +618,35 @@ type USQLTableColumn struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// USQLTableList a Data Lake Analytics catalog U-SQL table item list.
+// USQLTableList - A Data Lake Analytics catalog U-SQL table item list.
 type USQLTableList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of tables in the database and schema combination
-	Value *[]USQLTable `json:"value,omitempty"`
+	Value []USQLTable `json:"value,omitempty"`
 }
 
-// USQLTableListIterator provides access to a complete listing of USQLTable values.
-type USQLTableListIterator struct {
-	i    int
-	page USQLTableListPage
+// Response returns the raw HTTP response object.
+func (utl USQLTableList) Response() *http.Response {
+	return utl.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLTableListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (utl USQLTableList) StatusCode() int {
+	return utl.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLTableListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (utl USQLTableList) Status() string {
+	return utl.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter USQLTableListIterator) Response() USQLTableList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLTableListIterator) Value() USQLTable {
-	if !iter.page.NotDone() {
-		return USQLTable{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (ustl USQLTableList) IsEmpty() bool {
-	return ustl.Value == nil || len(*ustl.Value) == 0
-}
-
-// uSQLTableListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (ustl USQLTableList) uSQLTableListPreparer() (*http.Request, error) {
-	if ustl.NextLink == nil || len(to.String(ustl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ustl.NextLink)))
-}
-
-// USQLTableListPage contains a page of USQLTable values.
-type USQLTableListPage struct {
-	fn  func(USQLTableList) (USQLTableList, error)
-	utl USQLTableList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLTableListPage) Next() error {
-	next, err := page.fn(page.utl)
-	if err != nil {
-		return err
-	}
-	page.utl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLTableListPage) NotDone() bool {
-	return !page.utl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLTableListPage) Response() USQLTableList {
-	return page.utl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLTableListPage) Values() []USQLTable {
-	if page.utl.IsEmpty() {
-		return nil
-	}
-	return *page.utl.Value
-}
-
-// USQLTablePartition a Data Lake Analytics catalog U-SQL table partition item.
+// USQLTablePartition - A Data Lake Analytics catalog U-SQL table partition item.
 type USQLTablePartition struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -1067,118 +662,55 @@ type USQLTablePartition struct {
 	// IndexID - the index ID for this partition.
 	IndexID *int32 `json:"indexId,omitempty"`
 	// Label - the list of labels associated with this partition.
-	Label *[]string `json:"label,omitempty"`
+	Label []string `json:"label,omitempty"`
 	// CreateDate - the creation time of the partition
-	CreateDate *date.Time `json:"createDate,omitempty"`
+	CreateDate *time.Time `json:"createDate,omitempty"`
 }
 
-// USQLTablePartitionList a Data Lake Analytics catalog U-SQL table partition item list.
+// Response returns the raw HTTP response object.
+func (utp USQLTablePartition) Response() *http.Response {
+	return utp.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (utp USQLTablePartition) StatusCode() int {
+	return utp.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (utp USQLTablePartition) Status() string {
+	return utp.rawResponse.Status
+}
+
+// USQLTablePartitionList - A Data Lake Analytics catalog U-SQL table partition item list.
 type USQLTablePartitionList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of table partitions in the database, schema and table combination
-	Value *[]USQLTablePartition `json:"value,omitempty"`
+	Value []USQLTablePartition `json:"value,omitempty"`
 }
 
-// USQLTablePartitionListIterator provides access to a complete listing of USQLTablePartition values.
-type USQLTablePartitionListIterator struct {
-	i    int
-	page USQLTablePartitionListPage
+// Response returns the raw HTTP response object.
+func (utpl USQLTablePartitionList) Response() *http.Response {
+	return utpl.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLTablePartitionListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (utpl USQLTablePartitionList) StatusCode() int {
+	return utpl.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLTablePartitionListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (utpl USQLTablePartitionList) Status() string {
+	return utpl.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter USQLTablePartitionListIterator) Response() USQLTablePartitionList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLTablePartitionListIterator) Value() USQLTablePartition {
-	if !iter.page.NotDone() {
-		return USQLTablePartition{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (ustpl USQLTablePartitionList) IsEmpty() bool {
-	return ustpl.Value == nil || len(*ustpl.Value) == 0
-}
-
-// uSQLTablePartitionListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (ustpl USQLTablePartitionList) uSQLTablePartitionListPreparer() (*http.Request, error) {
-	if ustpl.NextLink == nil || len(to.String(ustpl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ustpl.NextLink)))
-}
-
-// USQLTablePartitionListPage contains a page of USQLTablePartition values.
-type USQLTablePartitionListPage struct {
-	fn   func(USQLTablePartitionList) (USQLTablePartitionList, error)
-	utpl USQLTablePartitionList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLTablePartitionListPage) Next() error {
-	next, err := page.fn(page.utpl)
-	if err != nil {
-		return err
-	}
-	page.utpl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLTablePartitionListPage) NotDone() bool {
-	return !page.utpl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLTablePartitionListPage) Response() USQLTablePartitionList {
-	return page.utpl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLTablePartitionListPage) Values() []USQLTablePartition {
-	if page.utpl.IsEmpty() {
-		return nil
-	}
-	return *page.utpl.Value
-}
-
-// USQLTableStatistics a Data Lake Analytics catalog U-SQL table statistics item.
+// USQLTableStatistics - A Data Lake Analytics catalog U-SQL table statistics item.
 type USQLTableStatistics struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -1196,9 +728,9 @@ type USQLTableStatistics struct {
 	// StatDataPath - the path to the statistics data.
 	StatDataPath *string `json:"statDataPath,omitempty"`
 	// CreateTime - the creation time of the statistics.
-	CreateTime *date.Time `json:"createTime,omitempty"`
+	CreateTime *time.Time `json:"createTime,omitempty"`
 	// UpdateTime - the last time the statistics were updated.
-	UpdateTime *date.Time `json:"updateTime,omitempty"`
+	UpdateTime *time.Time `json:"updateTime,omitempty"`
 	// IsUserCreated - the switch indicating if these statistics are user created.
 	IsUserCreated *bool `json:"isUserCreated,omitempty"`
 	// IsAutoCreated - the switch indicating if these statistics are automatically created.
@@ -1208,116 +740,53 @@ type USQLTableStatistics struct {
 	// FilterDefinition - the filter definition for the statistics.
 	FilterDefinition *string `json:"filterDefinition,omitempty"`
 	// ColNames - the list of column names associated with these statistics.
-	ColNames *[]string `json:"colNames,omitempty"`
+	ColNames []string `json:"colNames,omitempty"`
 }
 
-// USQLTableStatisticsList a Data Lake Analytics catalog U-SQL table statistics item list.
+// Response returns the raw HTTP response object.
+func (uts USQLTableStatistics) Response() *http.Response {
+	return uts.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (uts USQLTableStatistics) StatusCode() int {
+	return uts.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (uts USQLTableStatistics) Status() string {
+	return uts.rawResponse.Status
+}
+
+// USQLTableStatisticsList - A Data Lake Analytics catalog U-SQL table statistics item list.
 type USQLTableStatisticsList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of table statistics in the database, schema and table combination
-	Value *[]USQLTableStatistics `json:"value,omitempty"`
+	Value []USQLTableStatistics `json:"value,omitempty"`
 }
 
-// USQLTableStatisticsListIterator provides access to a complete listing of USQLTableStatistics values.
-type USQLTableStatisticsListIterator struct {
-	i    int
-	page USQLTableStatisticsListPage
+// Response returns the raw HTTP response object.
+func (utsl USQLTableStatisticsList) Response() *http.Response {
+	return utsl.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLTableStatisticsListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (utsl USQLTableStatisticsList) StatusCode() int {
+	return utsl.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLTableStatisticsListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (utsl USQLTableStatisticsList) Status() string {
+	return utsl.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter USQLTableStatisticsListIterator) Response() USQLTableStatisticsList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLTableStatisticsListIterator) Value() USQLTableStatistics {
-	if !iter.page.NotDone() {
-		return USQLTableStatistics{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (ustsl USQLTableStatisticsList) IsEmpty() bool {
-	return ustsl.Value == nil || len(*ustsl.Value) == 0
-}
-
-// uSQLTableStatisticsListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (ustsl USQLTableStatisticsList) uSQLTableStatisticsListPreparer() (*http.Request, error) {
-	if ustsl.NextLink == nil || len(to.String(ustsl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ustsl.NextLink)))
-}
-
-// USQLTableStatisticsListPage contains a page of USQLTableStatistics values.
-type USQLTableStatisticsListPage struct {
-	fn   func(USQLTableStatisticsList) (USQLTableStatisticsList, error)
-	utsl USQLTableStatisticsList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLTableStatisticsListPage) Next() error {
-	next, err := page.fn(page.utsl)
-	if err != nil {
-		return err
-	}
-	page.utsl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLTableStatisticsListPage) NotDone() bool {
-	return !page.utsl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLTableStatisticsListPage) Response() USQLTableStatisticsList {
-	return page.utsl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLTableStatisticsListPage) Values() []USQLTableStatistics {
-	if page.utsl.IsEmpty() {
-		return nil
-	}
-	return *page.utsl.Value
-}
-
-// USQLTableType a Data Lake Analytics catalog U-SQL table type item.
+// USQLTableType - A Data Lake Analytics catalog U-SQL table type item.
 type USQLTableType struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -1353,116 +822,53 @@ type USQLTableType struct {
 	// IsComplexType - the the switch indicating if this type is a complex type.
 	IsComplexType *bool `json:"isComplexType,omitempty"`
 	// Columns - the type field information associated with this table type.
-	Columns *[]TypeFieldInfo `json:"columns,omitempty"`
+	Columns []TypeFieldInfo `json:"columns,omitempty"`
 }
 
-// USQLTableTypeList a Data Lake Analytics catalog U-SQL table type item list.
+// Response returns the raw HTTP response object.
+func (utt USQLTableType) Response() *http.Response {
+	return utt.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (utt USQLTableType) StatusCode() int {
+	return utt.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (utt USQLTableType) Status() string {
+	return utt.rawResponse.Status
+}
+
+// USQLTableTypeList - A Data Lake Analytics catalog U-SQL table type item list.
 type USQLTableTypeList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of table types in the database and schema combination
-	Value *[]USQLTableType `json:"value,omitempty"`
+	Value []USQLTableType `json:"value,omitempty"`
 }
 
-// USQLTableTypeListIterator provides access to a complete listing of USQLTableType values.
-type USQLTableTypeListIterator struct {
-	i    int
-	page USQLTableTypeListPage
+// Response returns the raw HTTP response object.
+func (uttl USQLTableTypeList) Response() *http.Response {
+	return uttl.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLTableTypeListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (uttl USQLTableTypeList) StatusCode() int {
+	return uttl.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLTableTypeListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (uttl USQLTableTypeList) Status() string {
+	return uttl.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter USQLTableTypeListIterator) Response() USQLTableTypeList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLTableTypeListIterator) Value() USQLTableType {
-	if !iter.page.NotDone() {
-		return USQLTableType{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (usttl USQLTableTypeList) IsEmpty() bool {
-	return usttl.Value == nil || len(*usttl.Value) == 0
-}
-
-// uSQLTableTypeListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (usttl USQLTableTypeList) uSQLTableTypeListPreparer() (*http.Request, error) {
-	if usttl.NextLink == nil || len(to.String(usttl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(usttl.NextLink)))
-}
-
-// USQLTableTypeListPage contains a page of USQLTableType values.
-type USQLTableTypeListPage struct {
-	fn   func(USQLTableTypeList) (USQLTableTypeList, error)
-	uttl USQLTableTypeList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLTableTypeListPage) Next() error {
-	next, err := page.fn(page.uttl)
-	if err != nil {
-		return err
-	}
-	page.uttl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLTableTypeListPage) NotDone() bool {
-	return !page.uttl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLTableTypeListPage) Response() USQLTableTypeList {
-	return page.uttl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLTableTypeListPage) Values() []USQLTableType {
-	if page.uttl.IsEmpty() {
-		return nil
-	}
-	return *page.uttl.Value
-}
-
-// USQLTableValuedFunction a Data Lake Analytics catalog U-SQL table valued function item.
+// USQLTableValuedFunction - A Data Lake Analytics catalog U-SQL table valued function item.
 type USQLTableValuedFunction struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -1477,111 +883,48 @@ type USQLTableValuedFunction struct {
 	Definition *string `json:"definition,omitempty"`
 }
 
-// USQLTableValuedFunctionList a Data Lake Analytics catalog U-SQL table valued function item list.
+// Response returns the raw HTTP response object.
+func (utvf USQLTableValuedFunction) Response() *http.Response {
+	return utvf.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (utvf USQLTableValuedFunction) StatusCode() int {
+	return utvf.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (utvf USQLTableValuedFunction) Status() string {
+	return utvf.rawResponse.Status
+}
+
+// USQLTableValuedFunctionList - A Data Lake Analytics catalog U-SQL table valued function item list.
 type USQLTableValuedFunctionList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of table valued functions in the database and schema combination
-	Value *[]USQLTableValuedFunction `json:"value,omitempty"`
+	Value []USQLTableValuedFunction `json:"value,omitempty"`
 }
 
-// USQLTableValuedFunctionListIterator provides access to a complete listing of USQLTableValuedFunction values.
-type USQLTableValuedFunctionListIterator struct {
-	i    int
-	page USQLTableValuedFunctionListPage
+// Response returns the raw HTTP response object.
+func (utvfl USQLTableValuedFunctionList) Response() *http.Response {
+	return utvfl.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLTableValuedFunctionListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (utvfl USQLTableValuedFunctionList) StatusCode() int {
+	return utvfl.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLTableValuedFunctionListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (utvfl USQLTableValuedFunctionList) Status() string {
+	return utvfl.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter USQLTableValuedFunctionListIterator) Response() USQLTableValuedFunctionList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLTableValuedFunctionListIterator) Value() USQLTableValuedFunction {
-	if !iter.page.NotDone() {
-		return USQLTableValuedFunction{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (ustvfl USQLTableValuedFunctionList) IsEmpty() bool {
-	return ustvfl.Value == nil || len(*ustvfl.Value) == 0
-}
-
-// uSQLTableValuedFunctionListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (ustvfl USQLTableValuedFunctionList) uSQLTableValuedFunctionListPreparer() (*http.Request, error) {
-	if ustvfl.NextLink == nil || len(to.String(ustvfl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ustvfl.NextLink)))
-}
-
-// USQLTableValuedFunctionListPage contains a page of USQLTableValuedFunction values.
-type USQLTableValuedFunctionListPage struct {
-	fn    func(USQLTableValuedFunctionList) (USQLTableValuedFunctionList, error)
-	utvfl USQLTableValuedFunctionList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLTableValuedFunctionListPage) Next() error {
-	next, err := page.fn(page.utvfl)
-	if err != nil {
-		return err
-	}
-	page.utvfl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLTableValuedFunctionListPage) NotDone() bool {
-	return !page.utvfl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLTableValuedFunctionListPage) Response() USQLTableValuedFunctionList {
-	return page.utvfl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLTableValuedFunctionListPage) Values() []USQLTableValuedFunction {
-	if page.utvfl.IsEmpty() {
-		return nil
-	}
-	return *page.utvfl.Value
-}
-
-// USQLType a Data Lake Analytics catalog U-SQL type item.
+// USQLType - A Data Lake Analytics catalog U-SQL type item.
 type USQLType struct {
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
@@ -1619,113 +962,35 @@ type USQLType struct {
 	IsComplexType *bool `json:"isComplexType,omitempty"`
 }
 
-// USQLTypeList a Data Lake Analytics catalog U-SQL type item list.
+// USQLTypeList - A Data Lake Analytics catalog U-SQL type item list.
 type USQLTypeList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of types in the database and schema combination
-	Value *[]USQLType `json:"value,omitempty"`
+	Value []USQLType `json:"value,omitempty"`
 }
 
-// USQLTypeListIterator provides access to a complete listing of USQLType values.
-type USQLTypeListIterator struct {
-	i    int
-	page USQLTypeListPage
+// Response returns the raw HTTP response object.
+func (utl USQLTypeList) Response() *http.Response {
+	return utl.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLTypeListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (utl USQLTypeList) StatusCode() int {
+	return utl.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLTypeListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (utl USQLTypeList) Status() string {
+	return utl.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter USQLTypeListIterator) Response() USQLTypeList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLTypeListIterator) Value() USQLType {
-	if !iter.page.NotDone() {
-		return USQLType{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (ustl USQLTypeList) IsEmpty() bool {
-	return ustl.Value == nil || len(*ustl.Value) == 0
-}
-
-// uSQLTypeListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (ustl USQLTypeList) uSQLTypeListPreparer() (*http.Request, error) {
-	if ustl.NextLink == nil || len(to.String(ustl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ustl.NextLink)))
-}
-
-// USQLTypeListPage contains a page of USQLType values.
-type USQLTypeListPage struct {
-	fn  func(USQLTypeList) (USQLTypeList, error)
-	utl USQLTypeList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLTypeListPage) Next() error {
-	next, err := page.fn(page.utl)
-	if err != nil {
-		return err
-	}
-	page.utl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLTypeListPage) NotDone() bool {
-	return !page.utl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLTypeListPage) Response() USQLTypeList {
-	return page.utl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLTypeListPage) Values() []USQLType {
-	if page.utl.IsEmpty() {
-		return nil
-	}
-	return *page.utl.Value
-}
-
-// USQLView a Data Lake Analytics catalog U-SQL view item.
+// USQLView - A Data Lake Analytics catalog U-SQL view item.
 type USQLView struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -1740,106 +1005,43 @@ type USQLView struct {
 	Definition *string `json:"definition,omitempty"`
 }
 
-// USQLViewList a Data Lake Analytics catalog U-SQL view item list.
+// Response returns the raw HTTP response object.
+func (uv USQLView) Response() *http.Response {
+	return uv.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (uv USQLView) StatusCode() int {
+	return uv.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (uv USQLView) Status() string {
+	return uv.rawResponse.Status
+}
+
+// USQLViewList - A Data Lake Analytics catalog U-SQL view item list.
 type USQLViewList struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Count - the count of items in the list.
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - the list of view in the database and schema combination
-	Value *[]USQLView `json:"value,omitempty"`
+	Value []USQLView `json:"value,omitempty"`
 }
 
-// USQLViewListIterator provides access to a complete listing of USQLView values.
-type USQLViewListIterator struct {
-	i    int
-	page USQLViewListPage
+// Response returns the raw HTTP response object.
+func (uvl USQLViewList) Response() *http.Response {
+	return uvl.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLViewListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (uvl USQLViewList) StatusCode() int {
+	return uvl.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLViewListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter USQLViewListIterator) Response() USQLViewList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLViewListIterator) Value() USQLView {
-	if !iter.page.NotDone() {
-		return USQLView{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (usvl USQLViewList) IsEmpty() bool {
-	return usvl.Value == nil || len(*usvl.Value) == 0
-}
-
-// uSQLViewListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (usvl USQLViewList) uSQLViewListPreparer() (*http.Request, error) {
-	if usvl.NextLink == nil || len(to.String(usvl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(usvl.NextLink)))
-}
-
-// USQLViewListPage contains a page of USQLView values.
-type USQLViewListPage struct {
-	fn  func(USQLViewList) (USQLViewList, error)
-	uvl USQLViewList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLViewListPage) Next() error {
-	next, err := page.fn(page.uvl)
-	if err != nil {
-		return err
-	}
-	page.uvl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLViewListPage) NotDone() bool {
-	return !page.uvl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLViewListPage) Response() USQLViewList {
-	return page.uvl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLViewListPage) Values() []USQLView {
-	if page.uvl.IsEmpty() {
-		return nil
-	}
-	return *page.uvl.Value
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (uvl USQLViewList) Status() string {
+	return uvl.rawResponse.Status
 }

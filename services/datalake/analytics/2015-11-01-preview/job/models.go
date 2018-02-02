@@ -19,83 +19,113 @@ package job
 
 import (
 	"encoding/json"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/Azure/go-autorest/autorest/to"
-	"github.com/satori/go.uuid"
+	"errors"
+	uuid "github.com/satori/go.uuid"
 	"net/http"
+	"time"
 )
 
-// CompileMode enumerates the values for compile mode.
-type CompileMode string
+// Marker represents an opaque value used in paged responses.
+type Marker struct {
+	val *string
+}
+
+// NotDone returns true if the list enumeration should be started or is not yet complete. Specifically, NotDone returns true
+// for a just-initialized (zero value) Marker indicating that you should make an initial request to get a result portion from
+// the service. NotDone also returns true whenever the service returns an interim result portion. NotDone returns false only
+// after the service has returned the final result portion.
+func (m Marker) NotDone() bool {
+	return m.val == nil || *m.val != ""
+}
+
+// UnmarshalXML implements the xml.Unmarshaler interface for Marker.
+func (m *Marker) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var out string
+	err := d.DecodeElement(&out, &start)
+	m.val = &out
+	return err
+}
+
+// CompileModeType enumerates the values for compile mode.
+type CompileModeType string
 
 const (
-	// Full ...
-	Full CompileMode = "Full"
-	// Semantic ...
-	Semantic CompileMode = "Semantic"
-	// SingleBox ...
-	SingleBox CompileMode = "SingleBox"
+	// CompileModeFull ...
+	CompileModeFull CompileModeType = "Full"
+	// CompileModeNone represents an empty CompileModeType.
+	CompileModeNone CompileModeType = ""
+	// CompileModeSemantic ...
+	CompileModeSemantic CompileModeType = "Semantic"
+	// CompileModeSingleBox ...
+	CompileModeSingleBox CompileModeType = "SingleBox"
 )
 
 // ResourceType enumerates the values for resource type.
 type ResourceType string
 
 const (
-	// StatisticsResource ...
-	StatisticsResource ResourceType = "StatisticsResource"
-	// VertexResource ...
-	VertexResource ResourceType = "VertexResource"
+	// ResourceNone represents an empty ResourceType.
+	ResourceNone ResourceType = ""
+	// ResourceStatisticsResource ...
+	ResourceStatisticsResource ResourceType = "StatisticsResource"
+	// ResourceVertexResource ...
+	ResourceVertexResource ResourceType = "VertexResource"
 )
 
-// Result enumerates the values for result.
-type Result string
+// ResultType enumerates the values for result type.
+type ResultType string
 
 const (
-	// Cancelled ...
-	Cancelled Result = "Cancelled"
-	// Failed ...
-	Failed Result = "Failed"
-	// None ...
-	None Result = "None"
-	// Succeeded ...
-	Succeeded Result = "Succeeded"
+	// ResultCancelled ...
+	ResultCancelled ResultType = "Cancelled"
+	// ResultFailed ...
+	ResultFailed ResultType = "Failed"
+	// ResultNone ...
+	ResultNone ResultType = "None"
+	// ResultNone represents an empty ResultType.
+	ResultNone ResultType = ""
+	// ResultSucceeded ...
+	ResultSucceeded ResultType = "Succeeded"
 )
 
-// SeverityTypes enumerates the values for severity types.
-type SeverityTypes string
+// SeverityTypesType enumerates the values for severity types.
+type SeverityTypesType string
 
 const (
-	// Error ...
-	Error SeverityTypes = "Error"
-	// Warning ...
-	Warning SeverityTypes = "Warning"
+	// SeverityTypesError ...
+	SeverityTypesError SeverityTypesType = "Error"
+	// SeverityTypesNone represents an empty SeverityTypesType.
+	SeverityTypesNone SeverityTypesType = ""
+	// SeverityTypesWarning ...
+	SeverityTypesWarning SeverityTypesType = "Warning"
 )
 
-// State enumerates the values for state.
-type State string
+// StateType enumerates the values for state type.
+type StateType string
 
 const (
 	// StateAccepted ...
-	StateAccepted State = "Accepted"
+	StateAccepted StateType = "Accepted"
 	// StateCompiling ...
-	StateCompiling State = "Compiling"
+	StateCompiling StateType = "Compiling"
 	// StateEnded ...
-	StateEnded State = "Ended"
+	StateEnded StateType = "Ended"
 	// StateNew ...
-	StateNew State = "New"
+	StateNew StateType = "New"
+	// StateNone represents an empty StateType.
+	StateNone StateType = ""
 	// StatePaused ...
-	StatePaused State = "Paused"
+	StatePaused StateType = "Paused"
 	// StateQueued ...
-	StateQueued State = "Queued"
+	StateQueued StateType = "Queued"
 	// StateRunning ...
-	StateRunning State = "Running"
+	StateRunning StateType = "Running"
 	// StateScheduling ...
-	StateScheduling State = "Scheduling"
+	StateScheduling StateType = "Scheduling"
 	// StateStarting ...
-	StateStarting State = "Starting"
+	StateStarting StateType = "Starting"
 	// StateWaitingForCapacity ...
-	StateWaitingForCapacity State = "WaitingForCapacity"
+	StateWaitingForCapacity StateType = "WaitingForCapacity"
 )
 
 // Type enumerates the values for type.
@@ -104,34 +134,39 @@ type Type string
 const (
 	// Hive ...
 	Hive Type = "Hive"
+	// None represents an empty Type.
+	None Type = ""
 	// USQL ...
 	USQL Type = "USql"
 )
 
-// TypeBasicProperties enumerates the values for type basic properties.
-type TypeBasicProperties string
-
-const (
-	// TypeHive ...
-	TypeHive TypeBasicProperties = "Hive"
-	// TypeJobProperties ...
-	TypeJobProperties TypeBasicProperties = "JobProperties"
-	// TypeUSQL ...
-	TypeUSQL TypeBasicProperties = "USql"
-)
-
-// DataPath a Data Lake Analytics U-SQL job data path item.
+// DataPath - A Data Lake Analytics U-SQL job data path item.
 type DataPath struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// JobID - Gets the id of the job this data is for.
 	JobID *uuid.UUID `json:"jobId,omitempty"`
 	// Command - Gets the command that this job data relates to.
 	Command *string `json:"command,omitempty"`
 	// Paths - Gets the list of paths to all of the job data.
-	Paths *[]string `json:"paths,omitempty"`
+	Paths []string `json:"paths,omitempty"`
 }
 
-// ErrorDetails the Data Lake Analytics job error details.
+// Response returns the raw HTTP response object.
+func (dp DataPath) Response() *http.Response {
+	return dp.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dp DataPath) StatusCode() int {
+	return dp.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dp DataPath) Status() string {
+	return dp.rawResponse.Status
+}
+
+// ErrorDetails - The Data Lake Analytics job error details.
 type ErrorDetails struct {
 	// Description - Gets the error message description
 	Description *string `json:"description,omitempty"`
@@ -155,8 +190,8 @@ type ErrorDetails struct {
 	Resolution *string `json:"resolution,omitempty"`
 	// InnerError - Gets the inner error of this specific job error message, if any.
 	InnerError *InnerError `json:"InnerError,omitempty"`
-	// Severity - Gets the severity level of the failure. Possible values include: 'Warning', 'Error'
-	Severity SeverityTypes `json:"severity,omitempty"`
+	// Severity - Gets the severity level of the failure. Possible values include: 'Warning', 'Error', 'None'
+	Severity SeverityTypesType `json:"severity,omitempty"`
 	// Source - Gets the ultimate source of the failure (usually either SYSTEM or USER).
 	Source *string `json:"source,omitempty"`
 	// StartOffset - Gets the start offset in the job where the error was found
@@ -168,11 +203,11 @@ type HiveJobProperties struct {
 	// RuntimeVersion - Gets or sets the runtime version of the U-SQL engine to use
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
 	// Script - Gets or sets the U-SQL script to run
-	Script *string `json:"script,omitempty"`
-	// Type - Possible values include: 'TypeJobProperties', 'TypeUSQL', 'TypeHive'
-	Type TypeBasicProperties `json:"type,omitempty"`
+	Script string `json:"script,omitempty"`
+	// Type - Possible values include: 'USQL', 'Hive', 'None'
+	Type Type `json:"type,omitempty"`
 	// StatementInfo - Gets or sets the statement information for each statement in the script
-	StatementInfo *[]HiveJobStatementInfo `json:"statementInfo,omitempty"`
+	StatementInfo []HiveJobStatementInfo `json:"statementInfo,omitempty"`
 	// LogsLocation - Gets or sets the Hive logs location
 	LogsLocation *string `json:"logsLocation,omitempty"`
 	// WarehouseLocation - Gets or sets the runtime version of the U-SQL engine to use
@@ -185,7 +220,7 @@ type HiveJobProperties struct {
 
 // MarshalJSON is the custom marshaler for HiveJobProperties.
 func (hjp HiveJobProperties) MarshalJSON() ([]byte, error) {
-	hjp.Type = TypeHive
+	hjp.Type = Hive
 	type Alias HiveJobProperties
 	return json.Marshal(&struct {
 		Alias
@@ -194,23 +229,13 @@ func (hjp HiveJobProperties) MarshalJSON() ([]byte, error) {
 	})
 }
 
-// AsUSQLJobProperties is the BasicProperties implementation for HiveJobProperties.
+// AsUSQLJobProperties is the Properties implementation for HiveJobProperties.
 func (hjp HiveJobProperties) AsUSQLJobProperties() (*USQLJobProperties, bool) {
 	return nil, false
 }
 
-// AsHiveJobProperties is the BasicProperties implementation for HiveJobProperties.
+// AsHiveJobProperties is the Properties implementation for HiveJobProperties.
 func (hjp HiveJobProperties) AsHiveJobProperties() (*HiveJobProperties, bool) {
-	return &hjp, true
-}
-
-// AsProperties is the BasicProperties implementation for HiveJobProperties.
-func (hjp HiveJobProperties) AsProperties() (*Properties, bool) {
-	return nil, false
-}
-
-// AsBasicProperties is the BasicProperties implementation for HiveJobProperties.
-func (hjp HiveJobProperties) AsBasicProperties() (BasicProperties, bool) {
 	return &hjp, true
 }
 
@@ -226,141 +251,62 @@ type HiveJobStatementInfo struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
-// InfoListResult list of jobInfo items.
+// InfoListResult - List of jobInfo items.
 type InfoListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets the list of jobInfo items.
-	Value *[]Information `json:"value,omitempty"`
+	Value []Information `json:"value,omitempty"`
 	// NextLink - Gets the link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
-	// Count - Gets the total count of results that are available, but might not be returned in the current page.
-	Count *int64 `json:"count,omitempty"`
+	NextLink Marker `json:"NextLink"` // Count - Gets the total count of results that are available, but might not be returned in the current page.
+	Count    *int64 `json:"count,omitempty"`
 }
 
-// InfoListResultIterator provides access to a complete listing of Information values.
-type InfoListResultIterator struct {
-	i    int
-	page InfoListResultPage
+// Response returns the raw HTTP response object.
+func (ilr InfoListResult) Response() *http.Response {
+	return ilr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *InfoListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ilr InfoListResult) StatusCode() int {
+	return ilr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter InfoListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ilr InfoListResult) Status() string {
+	return ilr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter InfoListResultIterator) Response() InfoListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter InfoListResultIterator) Value() Information {
-	if !iter.page.NotDone() {
-		return Information{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (ilr InfoListResult) IsEmpty() bool {
-	return ilr.Value == nil || len(*ilr.Value) == 0
-}
-
-// infoListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (ilr InfoListResult) infoListResultPreparer() (*http.Request, error) {
-	if ilr.NextLink == nil || len(to.String(ilr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ilr.NextLink)))
-}
-
-// InfoListResultPage contains a page of Information values.
-type InfoListResultPage struct {
-	fn  func(InfoListResult) (InfoListResult, error)
-	ilr InfoListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *InfoListResultPage) Next() error {
-	next, err := page.fn(page.ilr)
-	if err != nil {
-		return err
-	}
-	page.ilr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page InfoListResultPage) NotDone() bool {
-	return !page.ilr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page InfoListResultPage) Response() InfoListResult {
-	return page.ilr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page InfoListResultPage) Values() []Information {
-	if page.ilr.IsEmpty() {
-		return nil
-	}
-	return *page.ilr.Value
-}
-
-// Information the common Data Lake Analytics job information properties.
+// Information - The common Data Lake Analytics job information properties.
 type Information struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// JobID - Gets or sets the job's unique identifier (a GUID).
 	JobID *uuid.UUID `json:"jobId,omitempty"`
 	// Name - Gets or sets the friendly name of the job.
-	Name *string `json:"name,omitempty"`
-	// Type - Gets or sets the job type of the current job (Hive or USql). Possible values include: 'USQL', 'Hive'
+	Name string `json:"name,omitempty"`
+	// Type - Gets or sets the job type of the current job (Hive or USql). Possible values include: 'USQL', 'Hive', 'None'
 	Type Type `json:"type,omitempty"`
 	// Submitter - Gets or sets the user or account that submitted the job.
 	Submitter *string `json:"submitter,omitempty"`
 	// ErrorMessage - Gets the error message details for the job, if the job failed.
-	ErrorMessage *[]ErrorDetails `json:"errorMessage,omitempty"`
+	ErrorMessage []ErrorDetails `json:"errorMessage,omitempty"`
 	// DegreeOfParallelism - Gets or sets the degree of parallelism used for this job. This must be greater than 0.
 	DegreeOfParallelism *int32 `json:"degreeOfParallelism,omitempty"`
 	// Priority - Gets or sets the priority value for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
 	Priority *int32 `json:"priority,omitempty"`
 	// SubmitTime - Gets the time the job was submitted to the service.
-	SubmitTime *date.Time `json:"submitTime,omitempty"`
+	SubmitTime *time.Time `json:"submitTime,omitempty"`
 	// StartTime - Gets the start time of the job.
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime *time.Time `json:"startTime,omitempty"`
 	// EndTime - Gets the completion time of the job.
-	EndTime *date.Time `json:"endTime,omitempty"`
-	// State - Gets the job state. When the job is in the Ended state, refer to Result and ErrorMessage for details. Possible values include: 'StateAccepted', 'StateCompiling', 'StateEnded', 'StateNew', 'StateQueued', 'StateRunning', 'StateScheduling', 'StateStarting', 'StatePaused', 'StateWaitingForCapacity'
-	State State `json:"state,omitempty"`
-	// Result - Gets the result of job execution or the current result of the running job. Possible values include: 'None', 'Succeeded', 'Cancelled', 'Failed'
-	Result Result `json:"result,omitempty"`
+	EndTime *time.Time `json:"endTime,omitempty"`
+	// State - Gets the job state. When the job is in the Ended state, refer to Result and ErrorMessage for details. Possible values include: 'Accepted', 'Compiling', 'Ended', 'New', 'Queued', 'Running', 'Scheduling', 'Starting', 'Paused', 'WaitingForCapacity', 'None'
+	State StateType `json:"state,omitempty"`
+	// Result - Gets the result of job execution or the current result of the running job. Possible values include: 'None', 'Succeeded', 'Cancelled', 'Failed', 'None'
+	Result ResultType `json:"result,omitempty"`
 	// StateAuditRecords - Gets the job state audit records, indicating when various operations have been performed on this job.
-	StateAuditRecords *[]StateAuditRecord `json:"stateAuditRecords,omitempty"`
+	StateAuditRecords []StateAuditRecord `json:"stateAuditRecords,omitempty"`
 	// Properties - Gets or sets the job specific properties.
-	Properties BasicProperties `json:"properties,omitempty"`
+	Properties Properties `json:"properties,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for Information struct.
@@ -444,7 +390,7 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 
 	v = m["submitTime"]
 	if v != nil {
-		var submitTime date.Time
+		var submitTime time.Time
 		err = json.Unmarshal(*m["submitTime"], &submitTime)
 		if err != nil {
 			return err
@@ -454,7 +400,7 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 
 	v = m["startTime"]
 	if v != nil {
-		var startTime date.Time
+		var startTime time.Time
 		err = json.Unmarshal(*m["startTime"], &startTime)
 		if err != nil {
 			return err
@@ -464,7 +410,7 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 
 	v = m["endTime"]
 	if v != nil {
-		var endTime date.Time
+		var endTime time.Time
 		err = json.Unmarshal(*m["endTime"], &endTime)
 		if err != nil {
 			return err
@@ -474,7 +420,7 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 
 	v = m["state"]
 	if v != nil {
-		var state State
+		var state StateType
 		err = json.Unmarshal(*m["state"], &state)
 		if err != nil {
 			return err
@@ -484,7 +430,7 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 
 	v = m["result"]
 	if v != nil {
-		var resultVar Result
+		var resultVar ResultType
 		err = json.Unmarshal(*m["result"], &resultVar)
 		if err != nil {
 			return err
@@ -504,7 +450,7 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 
 	v = m["properties"]
 	if v != nil {
-		properties, err := unmarshalBasicProperties(*m["properties"])
+		properties, err := unmarshalProperties(*m["properties"])
 		if err != nil {
 			return err
 		}
@@ -514,12 +460,27 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// InnerError the Data Lake Analytics job error details.
+// Response returns the raw HTTP response object.
+func (i Information) Response() *http.Response {
+	return i.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (i Information) StatusCode() int {
+	return i.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (i Information) Status() string {
+	return i.rawResponse.Status
+}
+
+// InnerError - The Data Lake Analytics job error details.
 type InnerError struct {
 	// DiagnosticCode - Gets the diagnostic error code.
 	DiagnosticCode *int32 `json:"diagnosticCode,omitempty"`
-	// Severity - Gets the severity level of the failure. Possible values include: 'Warning', 'Error'
-	Severity SeverityTypes `json:"severity,omitempty"`
+	// Severity - Gets the severity level of the failure. Possible values include: 'Warning', 'Error', 'None'
+	Severity SeverityTypesType `json:"severity,omitempty"`
 	// Details - Gets the details of the error message.
 	Details *string `json:"details,omitempty"`
 	// Component - Gets the component that failed.
@@ -540,24 +501,12 @@ type InnerError struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// BasicProperties the common Data Lake Analytics job properties.
-type BasicProperties interface {
+type Properties interface {
 	AsUSQLJobProperties() (*USQLJobProperties, bool)
 	AsHiveJobProperties() (*HiveJobProperties, bool)
-	AsProperties() (*Properties, bool)
 }
 
-// Properties the common Data Lake Analytics job properties.
-type Properties struct {
-	// RuntimeVersion - Gets or sets the runtime version of the U-SQL engine to use
-	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
-	// Script - Gets or sets the U-SQL script to run
-	Script *string `json:"script,omitempty"`
-	// Type - Possible values include: 'TypeJobProperties', 'TypeUSQL', 'TypeHive'
-	Type TypeBasicProperties `json:"type,omitempty"`
-}
-
-func unmarshalBasicProperties(body []byte) (BasicProperties, error) {
+func unmarshalProperties(body []byte) (Properties, error) {
 	var m map[string]interface{}
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -565,31 +514,29 @@ func unmarshalBasicProperties(body []byte) (BasicProperties, error) {
 	}
 
 	switch m["type"] {
-	case string(TypeUSQL):
+	case string(USQL):
 		var usjp USQLJobProperties
 		err := json.Unmarshal(body, &usjp)
 		return usjp, err
-	case string(TypeHive):
+	case string(Hive):
 		var hjp HiveJobProperties
 		err := json.Unmarshal(body, &hjp)
 		return hjp, err
 	default:
-		var p Properties
-		err := json.Unmarshal(body, &p)
-		return p, err
+		return nil, errors.New("Unsupported type")
 	}
 }
-func unmarshalBasicPropertiesArray(body []byte) ([]BasicProperties, error) {
+func unmarshalPropertiesArray(body []byte) ([]Properties, error) {
 	var rawMessages []*json.RawMessage
 	err := json.Unmarshal(body, &rawMessages)
 	if err != nil {
 		return nil, err
 	}
 
-	pArray := make([]BasicProperties, len(rawMessages))
+	pArray := make([]Properties, len(rawMessages))
 
 	for index, rawMessage := range rawMessages {
-		p, err := unmarshalBasicProperties(*rawMessage)
+		p, err := unmarshalProperties(*rawMessage)
 		if err != nil {
 			return nil, err
 		}
@@ -598,69 +545,53 @@ func unmarshalBasicPropertiesArray(body []byte) ([]BasicProperties, error) {
 	return pArray, nil
 }
 
-// MarshalJSON is the custom marshaler for Properties.
-func (p Properties) MarshalJSON() ([]byte, error) {
-	p.Type = TypeJobProperties
-	type Alias Properties
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(p),
-	})
-}
-
-// AsUSQLJobProperties is the BasicProperties implementation for Properties.
-func (p Properties) AsUSQLJobProperties() (*USQLJobProperties, bool) {
-	return nil, false
-}
-
-// AsHiveJobProperties is the BasicProperties implementation for Properties.
-func (p Properties) AsHiveJobProperties() (*HiveJobProperties, bool) {
-	return nil, false
-}
-
-// AsProperties is the BasicProperties implementation for Properties.
-func (p Properties) AsProperties() (*Properties, bool) {
-	return &p, true
-}
-
-// AsBasicProperties is the BasicProperties implementation for Properties.
-func (p Properties) AsBasicProperties() (BasicProperties, bool) {
-	return &p, true
-}
-
-// Resource the Data Lake Analytics U-SQL job resources.
+// Resource - The Data Lake Analytics U-SQL job resources.
 type Resource struct {
 	// Name - Gets or set the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// ResourcePath - Gets or sets the path to the resource.
 	ResourcePath *string `json:"resourcePath,omitempty"`
-	// Type - Gets or sets the job resource type. Possible values include: 'VertexResource', 'StatisticsResource'
+	// Type - Gets or sets the job resource type. Possible values include: 'VertexResource', 'StatisticsResource', 'None'
 	Type ResourceType `json:"type,omitempty"`
 }
 
-// StateAuditRecord the Data Lake Analytics U-SQL job state audit records for tracking the lifecycle of a job.
+// StateAuditRecord - The Data Lake Analytics U-SQL job state audit records for tracking the lifecycle of a job.
 type StateAuditRecord struct {
 	// NewState - Gets the new state the job is in.
 	NewState *string `json:"newState,omitempty"`
 	// TimeStamp - Gets the time stamp that the state change took place.
-	TimeStamp *date.Time `json:"timeStamp,omitempty"`
+	TimeStamp *time.Time `json:"timeStamp,omitempty"`
 	// RequestedByUser - Gets the user who requests the change.
 	RequestedByUser *string `json:"requestedByUser,omitempty"`
 	// Details - Gets  the details of the audit log.
 	Details *string `json:"details,omitempty"`
 }
 
-// Statistics the Data Lake Analytics U-SQL job execution statistics.
+// Statistics - The Data Lake Analytics U-SQL job execution statistics.
 type Statistics struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// LastUpdateTimeUtc - Gets the last update time for the statistics.
-	LastUpdateTimeUtc *date.Time `json:"lastUpdateTimeUtc,omitempty"`
+	LastUpdateTimeUtc *time.Time `json:"lastUpdateTimeUtc,omitempty"`
 	// Stages - Gets the list of stages for the job.
-	Stages *[]StatisticsVertexStage `json:"stages,omitempty"`
+	Stages []StatisticsVertexStage `json:"stages,omitempty"`
 }
 
-// StatisticsVertexStage the Data Lake Analytics U-SQL job statistics vertex stage information.
+// Response returns the raw HTTP response object.
+func (s Statistics) Response() *http.Response {
+	return s.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (s Statistics) StatusCode() int {
+	return s.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (s Statistics) Status() string {
+	return s.rawResponse.Status
+}
+
+// StatisticsVertexStage - The Data Lake Analytics U-SQL job statistics vertex stage information.
 type StatisticsVertexStage struct {
 	// DataRead - Gets the amount of data read, in bytes.
 	DataRead *int64 `json:"dataRead,omitempty"`
@@ -709,11 +640,11 @@ type USQLJobProperties struct {
 	// RuntimeVersion - Gets or sets the runtime version of the U-SQL engine to use
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
 	// Script - Gets or sets the U-SQL script to run
-	Script *string `json:"script,omitempty"`
-	// Type - Possible values include: 'TypeJobProperties', 'TypeUSQL', 'TypeHive'
-	Type TypeBasicProperties `json:"type,omitempty"`
+	Script string `json:"script,omitempty"`
+	// Type - Possible values include: 'USQL', 'Hive', 'None'
+	Type Type `json:"type,omitempty"`
 	// Resources - Gets or sets the list of resources that are required by the job
-	Resources *[]Resource `json:"resources,omitempty"`
+	Resources []Resource `json:"resources,omitempty"`
 	// Statistics - Gets or sets the job specific statistics.
 	Statistics *Statistics `json:"statistics,omitempty"`
 	// DebugData - Gets or sets the job specific debug data locations.
@@ -734,13 +665,13 @@ type USQLJobProperties struct {
 	YarnApplicationID *string `json:"yarnApplicationId,omitempty"`
 	// YarnApplicationTimeStamp - Gets the timestamp (in ticks) for the yarn application executing the job. This value should not be set by the user and will be ignored if it is.
 	YarnApplicationTimeStamp *int64 `json:"yarnApplicationTimeStamp,omitempty"`
-	// CompileMode - Gets or sets the compile mode for the job. Possible values include: 'Semantic', 'Full', 'SingleBox'
-	CompileMode CompileMode `json:"compileMode,omitempty"`
+	// CompileMode - Gets or sets the compile mode for the job. Possible values include: 'Semantic', 'Full', 'SingleBox', 'None'
+	CompileMode CompileModeType `json:"compileMode,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for USQLJobProperties.
 func (usjp USQLJobProperties) MarshalJSON() ([]byte, error) {
-	usjp.Type = TypeUSQL
+	usjp.Type = USQL
 	type Alias USQLJobProperties
 	return json.Marshal(&struct {
 		Alias
@@ -749,22 +680,12 @@ func (usjp USQLJobProperties) MarshalJSON() ([]byte, error) {
 	})
 }
 
-// AsUSQLJobProperties is the BasicProperties implementation for USQLJobProperties.
+// AsUSQLJobProperties is the Properties implementation for USQLJobProperties.
 func (usjp USQLJobProperties) AsUSQLJobProperties() (*USQLJobProperties, bool) {
 	return &usjp, true
 }
 
-// AsHiveJobProperties is the BasicProperties implementation for USQLJobProperties.
+// AsHiveJobProperties is the Properties implementation for USQLJobProperties.
 func (usjp USQLJobProperties) AsHiveJobProperties() (*HiveJobProperties, bool) {
 	return nil, false
-}
-
-// AsProperties is the BasicProperties implementation for USQLJobProperties.
-func (usjp USQLJobProperties) AsProperties() (*Properties, bool) {
-	return nil, false
-}
-
-// AsBasicProperties is the BasicProperties implementation for USQLJobProperties.
-func (usjp USQLJobProperties) AsBasicProperties() (BasicProperties, bool) {
-	return &usjp, true
 }

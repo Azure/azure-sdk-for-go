@@ -2,8 +2,8 @@ package servicebus
 
 import (
 	"context"
-	"pack.ag/amqp"
 	log "github.com/sirupsen/logrus"
+	"pack.ag/amqp"
 )
 
 // sender provides session and link handling for an sending entity path
@@ -70,6 +70,7 @@ func (s *sender) Send(ctx context.Context, msg *amqp.Message, opts ...SendOption
 		opt(msg)
 	}
 
+	log.Debugf("sending message...")
 	err := s.sender.Send(ctx, msg)
 	if err != nil {
 		return err

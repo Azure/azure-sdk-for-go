@@ -149,10 +149,8 @@ func (r *receiver) newSessionAndLink() error {
 	}
 
 	amqpReceiver, err := amqpSession.NewReceiver(
-		amqp.LinkTargetAddress(r.entityPath),
-		amqp.LinkCredit(10),
-		amqp.LinkBatching(true),
-		amqp.LinkReceiverSettle(amqp.ReceiverSettleMode(amqp.ModeSecond)))
+		amqp.LinkSourceAddress(r.entityPath),
+		amqp.LinkCredit(10))
 	if err != nil {
 		return err
 	}

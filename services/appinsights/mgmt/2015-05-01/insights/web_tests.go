@@ -26,28 +26,32 @@ import (
 	"net/http"
 )
 
-// ComponentsClient is the composite Swagger for Application Insights Management Client
-type ComponentsClient struct {
+// WebTestsClient is the composite Swagger for Application Insights Management Client
+type WebTestsClient struct {
 	ManagementClient
 }
 
-// NewComponentsClient creates an instance of the ComponentsClient client.
-func NewComponentsClient(p pipeline.Pipeline) ComponentsClient {
-	return ComponentsClient{NewManagementClient(p)}
+// NewWebTestsClient creates an instance of the WebTestsClient client.
+func NewWebTestsClient(p pipeline.Pipeline) WebTestsClient {
+	return WebTestsClient{NewManagementClient(p)}
 }
 
-// CreateOrUpdate creates (or updates) an Application Insights component. Note: You cannot specify a different value
-// for InstrumentationKey nor AppId in the Put operation.
+// CreateOrUpdate creates or updates an Application Insights web test definition.
 //
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights component
-// resource. insightProperties is properties that need to be specified to create an Application Insights component.
-func (client ComponentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, insightProperties ApplicationInsightsComponent) (*ApplicationInsightsComponent, error) {
+// resourceGroupName is the name of the resource group. webTestName is the name of the Application Insights webtest
+// resource. webTestDefinition is properties that need to be specified to create or update an Application Insights web
+// test definition.
+func (client WebTestsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, webTestName string, webTestDefinition WebTest) (*WebTest, error) {
 	if err := validate([]validation{
-		{targetValue: insightProperties,
-			constraints: []constraint{{target: "insightProperties.Kind", name: null, rule: true, chain: nil}}}}); err != nil {
+		{targetValue: webTestDefinition,
+			constraints: []constraint{{target: "webTestDefinition.WebTestProperties", name: null, rule: false,
+				chain: []constraint{{target: "webTestDefinition.WebTestProperties.SyntheticMonitorID", name: null, rule: true, chain: nil},
+					{target: "webTestDefinition.WebTestProperties.WebTestName", name: null, rule: true, chain: nil},
+					{target: "webTestDefinition.WebTestProperties.Locations", name: null, rule: true, chain: nil},
+				}}}}}); err != nil {
 		return nil, err
 	}
-	req, err := client.createOrUpdatePreparer(resourceGroupName, resourceName, insightProperties)
+	req, err := client.createOrUpdatePreparer(resourceGroupName, webTestName, webTestDefinition)
 	if err != nil {
 		return nil, err
 	}
@@ -55,13 +59,13 @@ func (client ComponentsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*ApplicationInsightsComponent), err
+	return resp.(*WebTest), err
 }
 
 // createOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ComponentsClient) createOrUpdatePreparer(resourceGroupName string, resourceName string, insightProperties ApplicationInsightsComponent) (pipeline.Request, error) {
+func (client WebTestsClient) createOrUpdatePreparer(resourceGroupName string, webTestName string, webTestDefinition WebTest) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/webtests/{webTestName}"
 	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -69,7 +73,7 @@ func (client ComponentsClient) createOrUpdatePreparer(resourceGroupName string, 
 	params := req.URL.Query()
 	params.Set("api-version", APIVersion)
 	req.URL.RawQuery = params.Encode()
-	b, err := json.Marshal(insightProperties)
+	b, err := json.Marshal(webTestDefinition)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
@@ -82,12 +86,12 @@ func (client ComponentsClient) createOrUpdatePreparer(resourceGroupName string, 
 }
 
 // createOrUpdateResponder handles the response to the CreateOrUpdate request.
-func (client ComponentsClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client WebTestsClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &ApplicationInsightsComponent{rawResponse: resp.Response()}
+	result := &WebTest{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -105,12 +109,12 @@ func (client ComponentsClient) createOrUpdateResponder(resp pipeline.Response) (
 	return result, nil
 }
 
-// Delete deletes an Application Insights component.
+// Delete deletes an Application Insights web test.
 //
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights component
+// resourceGroupName is the name of the resource group. webTestName is the name of the Application Insights webtest
 // resource.
-func (client ComponentsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (*http.Response, error) {
-	req, err := client.deletePreparer(resourceGroupName, resourceName)
+func (client WebTestsClient) Delete(ctx context.Context, resourceGroupName string, webTestName string) (*http.Response, error) {
+	req, err := client.deletePreparer(resourceGroupName, webTestName)
 	if err != nil {
 		return nil, err
 	}
@@ -122,9 +126,9 @@ func (client ComponentsClient) Delete(ctx context.Context, resourceGroupName str
 }
 
 // deletePreparer prepares the Delete request.
-func (client ComponentsClient) deletePreparer(resourceGroupName string, resourceName string) (pipeline.Request, error) {
+func (client WebTestsClient) deletePreparer(resourceGroupName string, webTestName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/webtests/{webTestName}"
 	req, err := pipeline.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -136,20 +140,20 @@ func (client ComponentsClient) deletePreparer(resourceGroupName string, resource
 }
 
 // deleteResponder handles the response to the Delete request.
-func (client ComponentsClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+func (client WebTestsClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusNoContent, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
 	return resp, err
 }
 
-// Get returns an Application Insights component.
+// Get get a specific Application Insights web test definition.
 //
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights component
+// resourceGroupName is the name of the resource group. webTestName is the name of the Application Insights webtest
 // resource.
-func (client ComponentsClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (*ApplicationInsightsComponent, error) {
-	req, err := client.getPreparer(resourceGroupName, resourceName)
+func (client WebTestsClient) Get(ctx context.Context, resourceGroupName string, webTestName string) (*WebTest, error) {
+	req, err := client.getPreparer(resourceGroupName, webTestName)
 	if err != nil {
 		return nil, err
 	}
@@ -157,13 +161,13 @@ func (client ComponentsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*ApplicationInsightsComponent), err
+	return resp.(*WebTest), err
 }
 
 // getPreparer prepares the Get request.
-func (client ComponentsClient) getPreparer(resourceGroupName string, resourceName string) (pipeline.Request, error) {
+func (client WebTestsClient) getPreparer(resourceGroupName string, webTestName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/webtests/{webTestName}"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -175,12 +179,12 @@ func (client ComponentsClient) getPreparer(resourceGroupName string, resourceNam
 }
 
 // getResponder handles the response to the Get request.
-func (client ComponentsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client WebTestsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &ApplicationInsightsComponent{rawResponse: resp.Response()}
+	result := &WebTest{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -198,8 +202,8 @@ func (client ComponentsClient) getResponder(resp pipeline.Response) (pipeline.Re
 	return result, nil
 }
 
-// List gets a list of all Application Insights components within a subscription.
-func (client ComponentsClient) List(ctx context.Context) (*ApplicationInsightsComponentListResult, error) {
+// List get all Application Insights web test alerts definitioned within a subscription.
+func (client WebTestsClient) List(ctx context.Context) (*WebTestListResult, error) {
 	req, err := client.listPreparer()
 	if err != nil {
 		return nil, err
@@ -208,13 +212,13 @@ func (client ComponentsClient) List(ctx context.Context) (*ApplicationInsightsCo
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*ApplicationInsightsComponentListResult), err
+	return resp.(*WebTestListResult), err
 }
 
 // listPreparer prepares the List request.
-func (client ComponentsClient) listPreparer() (pipeline.Request, error) {
+func (client WebTestsClient) listPreparer() (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/providers/microsoft.insights/components"
+	u.Path = "/subscriptions/{subscriptionId}/providers/microsoft.insights/webtests"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -226,12 +230,12 @@ func (client ComponentsClient) listPreparer() (pipeline.Request, error) {
 }
 
 // listResponder handles the response to the List request.
-func (client ComponentsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client WebTestsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &ApplicationInsightsComponentListResult{rawResponse: resp.Response()}
+	result := &WebTestListResult{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -249,10 +253,10 @@ func (client ComponentsClient) listResponder(resp pipeline.Response) (pipeline.R
 	return result, nil
 }
 
-// ListByResourceGroup gets a list of Application Insights components within a resource group.
+// ListByResourceGroup get all Application Insights web tests defined within a specified resource group.
 //
 // resourceGroupName is the name of the resource group.
-func (client ComponentsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (*ApplicationInsightsComponentListResult, error) {
+func (client WebTestsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (*WebTestListResult, error) {
 	req, err := client.listByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
 		return nil, err
@@ -261,13 +265,13 @@ func (client ComponentsClient) ListByResourceGroup(ctx context.Context, resource
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*ApplicationInsightsComponentListResult), err
+	return resp.(*WebTestListResult), err
 }
 
 // listByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client ComponentsClient) listByResourceGroupPreparer(resourceGroupName string) (pipeline.Request, error) {
+func (client WebTestsClient) listByResourceGroupPreparer(resourceGroupName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/webtests"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -279,12 +283,12 @@ func (client ComponentsClient) listByResourceGroupPreparer(resourceGroupName str
 }
 
 // listByResourceGroupResponder handles the response to the ListByResourceGroup request.
-func (client ComponentsClient) listByResourceGroupResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client WebTestsClient) listByResourceGroupResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &ApplicationInsightsComponentListResult{rawResponse: resp.Response()}
+	result := &WebTestListResult{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -302,12 +306,12 @@ func (client ComponentsClient) listByResourceGroupResponder(resp pipeline.Respon
 	return result, nil
 }
 
-// UpdateTags updates an existing component's tags. To update other fields use the CreateOrUpdate method.
+// UpdateTags creates or updates an Application Insights web test definition.
 //
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights component
-// resource. componentTags is updated tag information to set into the component instance.
-func (client ComponentsClient) UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, componentTags TagsResource) (*ApplicationInsightsComponent, error) {
-	req, err := client.updateTagsPreparer(resourceGroupName, resourceName, componentTags)
+// resourceGroupName is the name of the resource group. webTestName is the name of the Application Insights webtest
+// resource. webTestTags is updated tag information to set into the web test instance.
+func (client WebTestsClient) UpdateTags(ctx context.Context, resourceGroupName string, webTestName string, webTestTags TagsResource) (*WebTest, error) {
+	req, err := client.updateTagsPreparer(resourceGroupName, webTestName, webTestTags)
 	if err != nil {
 		return nil, err
 	}
@@ -315,13 +319,13 @@ func (client ComponentsClient) UpdateTags(ctx context.Context, resourceGroupName
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*ApplicationInsightsComponent), err
+	return resp.(*WebTest), err
 }
 
 // updateTagsPreparer prepares the UpdateTags request.
-func (client ComponentsClient) updateTagsPreparer(resourceGroupName string, resourceName string, componentTags TagsResource) (pipeline.Request, error) {
+func (client WebTestsClient) updateTagsPreparer(resourceGroupName string, webTestName string, webTestTags TagsResource) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/webtests/{webTestName}"
 	req, err := pipeline.NewRequest("PATCH", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -329,7 +333,7 @@ func (client ComponentsClient) updateTagsPreparer(resourceGroupName string, reso
 	params := req.URL.Query()
 	params.Set("api-version", APIVersion)
 	req.URL.RawQuery = params.Encode()
-	b, err := json.Marshal(componentTags)
+	b, err := json.Marshal(webTestTags)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
@@ -342,12 +346,12 @@ func (client ComponentsClient) updateTagsPreparer(resourceGroupName string, reso
 }
 
 // updateTagsResponder handles the response to the UpdateTags request.
-func (client ComponentsClient) updateTagsResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client WebTestsClient) updateTagsResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &ApplicationInsightsComponent{rawResponse: resp.Response()}
+	result := &WebTest{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}

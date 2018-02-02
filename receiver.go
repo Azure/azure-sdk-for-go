@@ -2,6 +2,7 @@ package servicebus
 
 import (
 	"context"
+	"github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
 	"net"
 	"pack.ag/amqp"
@@ -11,18 +12,19 @@ import (
 // receiver provides session and link handling for a receiving entity path
 type (
 	receiver struct {
-		client     *amqp.Client
+		sb         *serviceBus
 		session    *session
 		receiver   *amqp.Receiver
 		entityPath string
 		done       chan struct{}
+		Name       uuid.UUID
 	}
 )
 
 // newReceiver creates a new Service Bus message listener given an AMQP client and an entity path
-func newReceiver(client *amqp.Client, entityPath string) (*receiver, error) {
+func (sb *serviceBus) newReceiver(entityPath string) (*receiver, error) {
 	receiver := &receiver{
-		client:     client,
+		sb:         sb,
 		entityPath: entityPath,
 		done:       make(chan struct{}),
 	}
@@ -134,13 +136,20 @@ func (r *receiver) listenForMessages(msgChan chan *amqp.Message) {
 
 // newSessionAndLink will replace the session and link on the receiver
 func (r *receiver) newSessionAndLink() error {
-	amqpSession, err := r.client.NewSession()
+	if r.sb.claimsBasedSecurityEnabled() {
+		err := r.sb.negotiateClaim(r.entityPath)
+		if err != nil {
+			return err
+		}
+	}
+
+	amqpSession, err := r.sb.newSession()
 	if err != nil {
 		return err
 	}
 
 	amqpReceiver, err := amqpSession.NewReceiver(
-		amqp.LinkAddress(r.entityPath),
+		amqp.LinkTargetAddress(r.entityPath),
 		amqp.LinkCredit(10),
 		amqp.LinkBatching(true),
 		amqp.LinkReceiverSettle(amqp.ReceiverSettleMode(amqp.ModeSecond)))

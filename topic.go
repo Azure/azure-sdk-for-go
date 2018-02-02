@@ -145,6 +145,6 @@ func (sb *serviceBus) DeleteTopic(ctx context.Context, topicName string) error {
 
 func (sb *serviceBus) getTopicMgmtClient() *mgmt.TopicsClient {
 	client := mgmt.NewTopicsClientWithBaseURI(sb.environment.ResourceManagerEndpoint, sb.subscriptionID)
-	client.Authorizer = autorest.NewBearerAuthorizer(sb.token)
+	client.Authorizer = autorest.NewBearerAuthorizer(sb.armToken)
 	return &client
 }

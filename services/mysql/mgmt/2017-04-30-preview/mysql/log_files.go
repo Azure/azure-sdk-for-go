@@ -25,34 +25,37 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the the Microsoft Azure management API provides create, read, update, and delete functionality
-// for Azure MySQL resources including servers, databases, firewall rules, log files and configurations.
-type OperationsClient struct {
+// LogFilesClient is the the Microsoft Azure management API provides create, read, update, and delete functionality for
+// Azure MySQL resources including servers, databases, firewall rules, log files and configurations.
+type LogFilesClient struct {
 	ManagementClient
 }
 
-// NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(p pipeline.Pipeline) OperationsClient {
-	return OperationsClient{NewManagementClient(p)}
+// NewLogFilesClient creates an instance of the LogFilesClient client.
+func NewLogFilesClient(p pipeline.Pipeline) LogFilesClient {
+	return LogFilesClient{NewManagementClient(p)}
 }
 
-// List lists all of the available REST API operations.
-func (client OperationsClient) List(ctx context.Context) (*OperationListResult, error) {
-	req, err := client.listPreparer()
+// ListByServer list all the log files in a given server.
+//
+// resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
+// Azure Resource Manager API or the portal. serverName is the name of the server.
+func (client LogFilesClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (*LogFileListResult, error) {
+	req, err := client.listByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByServerResponder}, req)
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*OperationListResult), err
+	return resp.(*LogFileListResult), err
 }
 
-// listPreparer prepares the List request.
-func (client OperationsClient) listPreparer() (pipeline.Request, error) {
+// listByServerPreparer prepares the ListByServer request.
+func (client LogFilesClient) listByServerPreparer(resourceGroupName string, serverName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/providers/Microsoft.DBforMySQL/operations"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/logFiles"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -63,13 +66,13 @@ func (client OperationsClient) listPreparer() (pipeline.Request, error) {
 	return req, nil
 }
 
-// listResponder handles the response to the List request.
-func (client OperationsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+// listByServerResponder handles the response to the ListByServer request.
+func (client LogFilesClient) listByServerResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &OperationListResult{rawResponse: resp.Response()}
+	result := &LogFileListResult{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}

@@ -18,100 +18,88 @@ package mysql
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // ConfigurationsClient is the the Microsoft Azure management API provides create, read, update, and delete
-// functionality for Azure MySQL resources including servers, databases, firewall rules, VNET rules, log files and
-// configurations.
+// functionality for Azure MySQL resources including servers, databases, firewall rules, log files and configurations.
 type ConfigurationsClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewConfigurationsClient creates an instance of the ConfigurationsClient client.
-func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
-	return NewConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewConfigurationsClient(p pipeline.Pipeline) ConfigurationsClient {
+	return ConfigurationsClient{NewManagementClient(p)}
 }
 
-// NewConfigurationsClientWithBaseURI creates an instance of the ConfigurationsClient client.
-func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
-	return ConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
-
-// CreateOrUpdate updates a configuration of a server.
+// CreateOrUpdate updates a configuration of a server. This method may poll for completion. Polling can be canceled by
+// passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server. configurationName is the name of the
 // server configuration. parameters is the required parameters for updating a server configuration.
-func (client ConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration) (result ConfigurationsCreateOrUpdateFuture, err error) {
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serverName, configurationName, parameters)
+func (client ConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration) (*Configuration, error) {
+	req, err := client.createOrUpdatePreparer(resourceGroupName, serverName, configurationName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.ConfigurationsClient", "CreateOrUpdate", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateOrUpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createOrUpdateResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.ConfigurationsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*Configuration), err
 }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ConfigurationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"configurationName": autorest.Encode("path", configurationName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serverName":        autorest.Encode("path", serverName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-04-30-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/configurations/{configurationName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client ConfigurationsClient) CreateOrUpdateSender(req *http.Request) (future ConfigurationsCreateOrUpdateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// createOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client ConfigurationsClient) createOrUpdatePreparer(resourceGroupName string, serverName string, configurationName string, parameters Configuration) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/configurations/{configurationName}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
-// closes the http.Response Body.
-func (client ConfigurationsClient) CreateOrUpdateResponder(resp *http.Response) (result Configuration, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createOrUpdateResponder handles the response to the CreateOrUpdate request.
+func (client ConfigurationsClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Configuration{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Get gets information about a configuration of server.
@@ -119,133 +107,106 @@ func (client ConfigurationsClient) CreateOrUpdateResponder(resp *http.Response) 
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server. configurationName is the name of the
 // server configuration.
-func (client ConfigurationsClient) Get(ctx context.Context, resourceGroupName string, serverName string, configurationName string) (result Configuration, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, serverName, configurationName)
+func (client ConfigurationsClient) Get(ctx context.Context, resourceGroupName string, serverName string, configurationName string) (*Configuration, error) {
+	req, err := client.getPreparer(resourceGroupName, serverName, configurationName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.ConfigurationsClient", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "mysql.ConfigurationsClient", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.ConfigurationsClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Configuration), err
 }
 
-// GetPreparer prepares the Get request.
-func (client ConfigurationsClient) GetPreparer(ctx context.Context, resourceGroupName string, serverName string, configurationName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"configurationName": autorest.Encode("path", configurationName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serverName":        autorest.Encode("path", serverName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// getPreparer prepares the Get request.
+func (client ConfigurationsClient) getPreparer(resourceGroupName string, serverName string, configurationName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/configurations/{configurationName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2017-04-30-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/configurations/{configurationName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client ConfigurationsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client ConfigurationsClient) GetResponder(resp *http.Response) (result Configuration, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getResponder handles the response to the Get request.
+func (client ConfigurationsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Configuration{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListByServer list all the configurations in a given server.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
-func (client ConfigurationsClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result ConfigurationListResult, err error) {
-	req, err := client.ListByServerPreparer(ctx, resourceGroupName, serverName)
+func (client ConfigurationsClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (*ConfigurationListResult, error) {
+	req, err := client.listByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.ConfigurationsClient", "ListByServer", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListByServerSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByServerResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "mysql.ConfigurationsClient", "ListByServer", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.ListByServerResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.ConfigurationsClient", "ListByServer", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*ConfigurationListResult), err
 }
 
-// ListByServerPreparer prepares the ListByServer request.
-func (client ConfigurationsClient) ListByServerPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serverName":        autorest.Encode("path", serverName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// listByServerPreparer prepares the ListByServer request.
+func (client ConfigurationsClient) listByServerPreparer(resourceGroupName string, serverName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/configurations"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2017-04-30-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/configurations", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListByServerSender sends the ListByServer request. The method will close the
-// http.Response Body if it receives an error.
-func (client ConfigurationsClient) ListByServerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListByServerResponder handles the response to the ListByServer request. The method always
-// closes the http.Response Body.
-func (client ConfigurationsClient) ListByServerResponder(resp *http.Response) (result ConfigurationListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// listByServerResponder handles the response to the ListByServer request.
+func (client ConfigurationsClient) listByServerResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &ConfigurationListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

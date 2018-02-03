@@ -18,447 +18,365 @@ package postgresql
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // ServersClient is the the Microsoft Azure management API provides create, read, update, and delete functionality for
-// Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, log files and configurations.
+// Azure PostgreSQL resources including servers, databases, firewall rules, log files and configurations.
 type ServersClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewServersClient creates an instance of the ServersClient client.
-func NewServersClient(subscriptionID string) ServersClient {
-	return NewServersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewServersClient(p pipeline.Pipeline) ServersClient {
+	return ServersClient{NewManagementClient(p)}
 }
 
-// NewServersClientWithBaseURI creates an instance of the ServersClient client.
-func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
-	return ServersClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
-
-// Create creates a new server, or will overwrite an existing server.
+// Create creates a new server, or will overwrite an existing server. This method may poll for completion. Polling can
+// be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding
+// HTTP requests.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server. parameters is the required
 // parameters for creating or updating a server.
-func (client ServersClient) Create(ctx context.Context, resourceGroupName string, serverName string, parameters ServerForCreate) (result ServersCreateFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Sku", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Sku.Capacity", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.Sku.Capacity", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}},
+func (client ServersClient) Create(ctx context.Context, resourceGroupName string, serverName string, parameters ServerForCreate) (*Server, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.Sku", name: null, rule: false,
+				chain: []constraint{{target: "parameters.Sku.Capacity", name: null, rule: false,
+					chain: []constraint{{target: "parameters.Sku.Capacity", name: inclusiveMinimum, rule: 0, chain: nil}}},
 				}},
-				{Target: "parameters.Properties", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.Properties.StorageMB", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.Properties.StorageMB", Name: validation.InclusiveMinimum, Rule: 1024, Chain: nil}}},
+				{target: "parameters.Properties", name: null, rule: true,
+					chain: []constraint{{target: "parameters.Properties.StorageMB", name: null, rule: false,
+						chain: []constraint{{target: "parameters.Properties.StorageMB", name: inclusiveMinimum, rule: 1024, chain: nil}}},
 					}},
-				{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "postgresql.ServersClient", "Create")
+				{target: "parameters.Location", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.CreatePreparer(ctx, resourceGroupName, serverName, parameters)
+	req, err := client.createPreparer(resourceGroupName, serverName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "Create", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "Create", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*Server), err
 }
 
-// CreatePreparer prepares the Create request.
-func (client ServersClient) CreatePreparer(ctx context.Context, resourceGroupName string, serverName string, parameters ServerForCreate) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serverName":        autorest.Encode("path", serverName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-04-30-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateSender sends the Create request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServersClient) CreateSender(req *http.Request) (future ServersCreateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// createPreparer prepares the Create request.
+func (client ServersClient) createPreparer(resourceGroupName string, serverName string, parameters ServerForCreate) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateResponder handles the response to the Create request. The method always
-// closes the http.Response Body.
-func (client ServersClient) CreateResponder(resp *http.Response) (result Server, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createResponder handles the response to the Create request.
+func (client ServersClient) createResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Server{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// Delete deletes a server.
+// Delete deletes a server. This method may poll for completion. Polling can be canceled by passing the cancel channel
+// argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
-func (client ServersClient) Delete(ctx context.Context, resourceGroupName string, serverName string) (result ServersDeleteFuture, err error) {
-	req, err := client.DeletePreparer(ctx, resourceGroupName, serverName)
+func (client ServersClient) Delete(ctx context.Context, resourceGroupName string, serverName string) (*http.Response, error) {
+	req, err := client.deletePreparer(resourceGroupName, serverName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "Delete", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "Delete", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeletePreparer prepares the Delete request.
-func (client ServersClient) DeletePreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serverName":        autorest.Encode("path", serverName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-04-30-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServersClient) DeleteSender(req *http.Request) (future ServersDeleteFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// deletePreparer prepares the Delete request.
+func (client ServersClient) deletePreparer(resourceGroupName string, serverName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client ServersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteResponder handles the response to the Delete request.
+func (client ServersClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // Get gets information about a server.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
-func (client ServersClient) Get(ctx context.Context, resourceGroupName string, serverName string) (result Server, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, serverName)
+func (client ServersClient) Get(ctx context.Context, resourceGroupName string, serverName string) (*Server, error) {
+	req, err := client.getPreparer(resourceGroupName, serverName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Server), err
 }
 
-// GetPreparer prepares the Get request.
-func (client ServersClient) GetPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serverName":        autorest.Encode("path", serverName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// getPreparer prepares the Get request.
+func (client ServersClient) getPreparer(resourceGroupName string, serverName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2017-04-30-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServersClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client ServersClient) GetResponder(resp *http.Response) (result Server, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getResponder handles the response to the Get request.
+func (client ServersClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Server{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // List list all the servers in a given subscription.
-func (client ServersClient) List(ctx context.Context) (result ServerListResult, err error) {
-	req, err := client.ListPreparer(ctx)
+func (client ServersClient) List(ctx context.Context) (*ServerListResult, error) {
+	req, err := client.listPreparer()
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "List", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "List", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "List", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*ServerListResult), err
 }
 
-// ListPreparer prepares the List request.
-func (client ServersClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+// listPreparer prepares the List request.
+func (client ServersClient) listPreparer() (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/servers"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2017-04-30-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/servers", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServersClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client ServersClient) ListResponder(resp *http.Response) (result ServerListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// listResponder handles the response to the List request.
+func (client ServersClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &ServerListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListByResourceGroup list all the servers in a given resource group.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal.
-func (client ServersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ServerListResult, err error) {
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+func (client ServersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (*ServerListResult, error) {
+	req, err := client.listByResourceGroupPreparer(resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "ListByResourceGroup", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListByResourceGroupSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByResourceGroupResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "ListByResourceGroup", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "ListByResourceGroup", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*ServerListResult), err
 }
 
-// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client ServersClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// listByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client ServersClient) listByResourceGroupPreparer(resourceGroupName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2017-04-30-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServersClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
-// closes the http.Response Body.
-func (client ServersClient) ListByResourceGroupResponder(resp *http.Response) (result ServerListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// listByResourceGroupResponder handles the response to the ListByResourceGroup request.
+func (client ServersClient) listByResourceGroupResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &ServerListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Update updates an existing server. The request body can contain one to many of the properties present in the normal
-// server definition.
+// server definition. This method may poll for completion. Polling can be canceled by passing the cancel channel
+// argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server. parameters is the required
 // parameters for updating a server.
-func (client ServersClient) Update(ctx context.Context, resourceGroupName string, serverName string, parameters ServerUpdateParameters) (result ServersUpdateFuture, err error) {
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, serverName, parameters)
+func (client ServersClient) Update(ctx context.Context, resourceGroupName string, serverName string, parameters ServerUpdateParameters) (*Server, error) {
+	req, err := client.updatePreparer(resourceGroupName, serverName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "Update", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.UpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "postgresql.ServersClient", "Update", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*Server), err
 }
 
-// UpdatePreparer prepares the Update request.
-func (client ServersClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, parameters ServerUpdateParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serverName":        autorest.Encode("path", serverName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-04-30-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UpdateSender sends the Update request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServersClient) UpdateSender(req *http.Request) (future ServersUpdateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// updatePreparer prepares the Update request.
+func (client ServersClient) updatePreparer(resourceGroupName string, serverName string, parameters ServerUpdateParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}"
+	req, err := pipeline.NewRequest("PATCH", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// UpdateResponder handles the response to the Update request. The method always
-// closes the http.Response Body.
-func (client ServersClient) UpdateResponder(resp *http.Response) (result Server, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// updateResponder handles the response to the Update request.
+func (client ServersClient) updateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Server{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

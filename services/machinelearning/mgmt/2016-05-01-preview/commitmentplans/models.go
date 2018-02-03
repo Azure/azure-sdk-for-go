@@ -43,6 +43,30 @@ func (m *Marker) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	return err
 }
 
+// ResourceSkuRestrictionsReasonCodeType enumerates the values for resource sku restrictions reason code.
+type ResourceSkuRestrictionsReasonCodeType string
+
+const (
+	// ResourceSkuRestrictionsReasonCodeNone represents an empty ResourceSkuRestrictionsReasonCodeType.
+	ResourceSkuRestrictionsReasonCodeNone ResourceSkuRestrictionsReasonCodeType = ""
+	// ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription ...
+	ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription ResourceSkuRestrictionsReasonCodeType = "NotAvailableForSubscription"
+	// ResourceSkuRestrictionsReasonCodeQuotaID ...
+	ResourceSkuRestrictionsReasonCodeQuotaID ResourceSkuRestrictionsReasonCodeType = "QuotaId"
+)
+
+// ResourceSkuRestrictionsType enumerates the values for resource sku restrictions type.
+type ResourceSkuRestrictionsType string
+
+const (
+	// ResourceSkuRestrictionsLocation ...
+	ResourceSkuRestrictionsLocation ResourceSkuRestrictionsType = "location"
+	// ResourceSkuRestrictionsNone represents an empty ResourceSkuRestrictionsType.
+	ResourceSkuRestrictionsNone ResourceSkuRestrictionsType = ""
+	// ResourceSkuRestrictionsZone ...
+	ResourceSkuRestrictionsZone ResourceSkuRestrictionsType = "zone"
+)
+
 // SkuCapacityScaleType enumerates the values for sku capacity scale type.
 type SkuCapacityScaleType string
 
@@ -59,6 +83,8 @@ const (
 
 // CatalogSku - Details of a commitment plan SKU.
 type CatalogSku struct {
+	// ResourceType - Resource type name
+	ResourceType *string `json:"resourceType,omitempty"`
 	// Name - SKU name
 	Name *string `json:"name,omitempty"`
 	// Tier - SKU tier
@@ -71,6 +97,8 @@ type CatalogSku struct {
 	Capabilities []SkuCapability `json:"capabilities,omitempty"`
 	// Costs - The cost information for the specified SKU.
 	Costs []SkuCost `json:"costs,omitempty"`
+	// Restrictions - Restrictions which would prevent a SKU from being used. This is empty if there are no restrictions.
+	Restrictions []SkuRestrictions `json:"restrictions,omitempty"`
 }
 
 // CommitmentAssociation - Represents the association between a commitment plan and some other resource, such as a
@@ -365,4 +393,14 @@ func (slr SkuListResult) StatusCode() int {
 // Status returns the HTTP status message of the response, e.g. "200 OK".
 func (slr SkuListResult) Status() string {
 	return slr.rawResponse.Status
+}
+
+// SkuRestrictions - Describes restrictions which would prevent a SKU from being used.
+type SkuRestrictions struct {
+	// Type - The type of restrictions. Possible values include: 'Location', 'Zone', 'None'
+	Type ResourceSkuRestrictionsType `json:"type,omitempty"`
+	// Values - The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
+	Values []string `json:"values,omitempty"`
+	// ReasonCode - The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription', 'None'
+	ReasonCode ResourceSkuRestrictionsReasonCodeType `json:"reasonCode,omitempty"`
 }

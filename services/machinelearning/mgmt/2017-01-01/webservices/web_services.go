@@ -50,7 +50,7 @@ func NewClient(p pipeline.Pipeline) Client {
 func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName string, webServiceName string, createOrUpdatePayload WebService) (*WebService, error) {
 	if err := validate([]validation{
 		{targetValue: createOrUpdatePayload,
-			constraints: []constraint{{target: "createOrUpdatePayload.Properties", name: null, rule: true,
+			constraints: []constraint{{target: "createOrUpdatePayload.Properties", name: null, rule: false,
 				chain: []constraint{{target: "createOrUpdatePayload.Properties.RealtimeConfiguration", name: null, rule: false,
 					chain: []constraint{{target: "createOrUpdatePayload.Properties.RealtimeConfiguration.MaxConcurrentCalls", name: null, rule: false,
 						chain: []constraint{{target: "createOrUpdatePayload.Properties.RealtimeConfiguration.MaxConcurrentCalls", name: inclusiveMaximum, rule: 200, chain: nil},
@@ -233,59 +233,6 @@ func (client Client) getResponder(resp pipeline.Response) (pipeline.Response, er
 		return nil, err
 	}
 	result := &WebService{rawResponse: resp.Response()}
-	if err != nil {
-		return result, err
-	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
-	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
-	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
-	}
-	return result, nil
-}
-
-// GetOperationStatus get the status of an operation.
-//
-// location is the region in which the operation was created. operationID is the operation Id.
-func (client Client) GetOperationStatus(ctx context.Context, location string, operationID string) (*AsyncOperationStatus, error) {
-	req, err := client.getOperationStatusPreparer(location, operationID)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getOperationStatusResponder}, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp.(*AsyncOperationStatus), err
-}
-
-// getOperationStatusPreparer prepares the GetOperationStatus request.
-func (client Client) getOperationStatusPreparer(location string, operationID string) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearning/locations/{location}/operationsStatus/{operationId}"
-	req, err := pipeline.NewRequest("GET", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
-	}
-	params := req.URL.Query()
-	params.Set("api-version", APIVersion)
-	req.URL.RawQuery = params.Encode()
-	return req, nil
-}
-
-// getOperationStatusResponder handles the response to the GetOperationStatus request.
-func (client Client) getOperationStatusResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK, http.StatusAccepted)
-	if resp == nil {
-		return nil, err
-	}
-	result := &AsyncOperationStatus{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}

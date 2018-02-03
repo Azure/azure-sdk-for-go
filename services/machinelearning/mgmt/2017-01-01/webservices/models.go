@@ -450,6 +450,48 @@ type ModuleAssetParameter struct {
 	ModeValuesInfo map[string]ModeValueInfo `json:"modeValuesInfo,omitempty"`
 }
 
+// OperationDisplayInfo - The API operation info.
+type OperationDisplayInfo struct {
+	// Description - The description of the operation.
+	Description *string `json:"description,omitempty"`
+	// Operation - The action that users can perform, based on their permission level.
+	Operation *string `json:"operation,omitempty"`
+	// Provider - The service provider.
+	Provider *string `json:"provider,omitempty"`
+	// Resource - The resource on which the operation is performed.
+	Resource *string `json:"resource,omitempty"`
+}
+
+// OperationEntity - An API operation.
+type OperationEntity struct {
+	// Name - Operation name: {provider}/{resource}/{operation}.
+	Name *string `json:"name,omitempty"`
+	// Display - The API operation info.
+	Display *OperationDisplayInfo `json:"display,omitempty"`
+}
+
+// OperationEntityListResult - The list of REST API operations.
+type OperationEntityListResult struct {
+	rawResponse *http.Response
+	// Value - The list of operations.
+	Value []OperationEntity `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (oelr OperationEntityListResult) Response() *http.Response {
+	return oelr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (oelr OperationEntityListResult) StatusCode() int {
+	return oelr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (oelr OperationEntityListResult) Status() string {
+	return oelr.rawResponse.Status
+}
+
 // OutputPort - Asset output port
 type OutputPort struct {
 	// Type - Port data type. Possible values include: 'Dataset', 'None'
@@ -606,7 +648,7 @@ type Resource struct {
 	// Name - Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Specifies the location of the resource.
-	Location string `json:"location,omitempty"`
+	Location *string `json:"location,omitempty"`
 	// Type - Specifies the type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Tags - Contains resource tags defined as key/value pairs.
@@ -657,7 +699,7 @@ type WebService struct {
 	// Name - Specifies the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Specifies the location of the resource.
-	Location string `json:"location,omitempty"`
+	Location *string `json:"location,omitempty"`
 	// Type - Specifies the type of the resource.
 	Type *string `json:"type,omitempty"`
 	// Tags - Contains resource tags defined as key/value pairs.

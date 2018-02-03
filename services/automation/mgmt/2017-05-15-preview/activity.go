@@ -19,199 +19,135 @@ package automation
 
 import (
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // ActivityClient is the automation Client
 type ActivityClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewActivityClient creates an instance of the ActivityClient client.
-func NewActivityClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) ActivityClient {
-	return NewActivityClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
-}
-
-// NewActivityClientWithBaseURI creates an instance of the ActivityClient client.
-func NewActivityClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) ActivityClient {
-	return ActivityClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)}
+func NewActivityClient(p pipeline.Pipeline) ActivityClient {
+	return ActivityClient{NewManagementClient(p)}
 }
 
 // Get retrieve the activity in the module identified by module name and activity name.
 //
 // automationAccountName is the automation account name. moduleName is the name of module. activityName is the name of
 // activity.
-func (client ActivityClient) Get(ctx context.Context, automationAccountName string, moduleName string, activityName string) (result Activity, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.ActivityClient", "Get")
+func (client ActivityClient) Get(ctx context.Context, automationAccountName string, moduleName string, activityName string) (*Activity, error) {
+	if err := validate([]validation{
+		{targetValue: client.ResourceGroupName,
+			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.GetPreparer(ctx, automationAccountName, moduleName, activityName)
+	req, err := client.getPreparer(automationAccountName, moduleName, activityName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Activity), err
 }
 
-// GetPreparer prepares the Get request.
-func (client ActivityClient) GetPreparer(ctx context.Context, automationAccountName string, moduleName string, activityName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"activityName":          autorest.Encode("path", activityName),
-		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"moduleName":            autorest.Encode("path", moduleName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+// getPreparer prepares the Get request.
+func (client ActivityClient) getPreparer(automationAccountName string, moduleName string, activityName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/activities/{activityName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-31"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/activities/{activityName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", "2015-10-31")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client ActivityClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client ActivityClient) GetResponder(resp *http.Response) (result Activity, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getResponder handles the response to the Get request.
+func (client ActivityClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Activity{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListByModule retrieve a list of activities in the module identified by module name.
 //
 // automationAccountName is the automation account name. moduleName is the name of module.
-func (client ActivityClient) ListByModule(ctx context.Context, automationAccountName string, moduleName string) (result ActivityListResultPage, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.ActivityClient", "ListByModule")
+func (client ActivityClient) ListByModule(ctx context.Context, automationAccountName string, moduleName string) (*ActivityListResult, error) {
+	if err := validate([]validation{
+		{targetValue: client.ResourceGroupName,
+			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	result.fn = client.listByModuleNextResults
-	req, err := client.ListByModulePreparer(ctx, automationAccountName, moduleName)
+	req, err := client.listByModulePreparer(automationAccountName, moduleName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "ListByModule", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListByModuleSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByModuleResponder}, req)
 	if err != nil {
-		result.alr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "ListByModule", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.alr, err = client.ListByModuleResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "ListByModule", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*ActivityListResult), err
 }
 
-// ListByModulePreparer prepares the ListByModule request.
-func (client ActivityClient) ListByModulePreparer(ctx context.Context, automationAccountName string, moduleName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"moduleName":            autorest.Encode("path", moduleName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-10-31"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/activities", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListByModuleSender sends the ListByModule request. The method will close the
-// http.Response Body if it receives an error.
-func (client ActivityClient) ListByModuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListByModuleResponder handles the response to the ListByModule request. The method always
-// closes the http.Response Body.
-func (client ActivityClient) ListByModuleResponder(resp *http.Response) (result ActivityListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listByModuleNextResults retrieves the next set of results, if any.
-func (client ActivityClient) listByModuleNextResults(lastResults ActivityListResult) (result ActivityListResult, err error) {
-	req, err := lastResults.activityListResultPreparer()
+// listByModulePreparer prepares the ListByModule request.
+func (client ActivityClient) listByModulePreparer(automationAccountName string, moduleName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/activities"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "automation.ActivityClient", "listByModuleNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListByModuleSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "automation.ActivityClient", "listByModuleNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListByModuleResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "listByModuleNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2015-10-31")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListByModuleComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ActivityClient) ListByModuleComplete(ctx context.Context, automationAccountName string, moduleName string) (result ActivityListResultIterator, err error) {
-	result.page, err = client.ListByModule(ctx, automationAccountName, moduleName)
-	return
+// listByModuleResponder handles the response to the ListByModule request.
+func (client ActivityClient) listByModuleResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &ActivityListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

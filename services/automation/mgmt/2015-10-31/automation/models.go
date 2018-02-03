@@ -18,345 +18,392 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"encoding/json"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/Azure/go-autorest/autorest/to"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 	"io"
 	"net/http"
+	"time"
 )
 
-// AccountState enumerates the values for account state.
-type AccountState string
+// Marker represents an opaque value used in paged responses.
+type Marker struct {
+	val *string
+}
+
+// NotDone returns true if the list enumeration should be started or is not yet complete. Specifically, NotDone returns true
+// for a just-initialized (zero value) Marker indicating that you should make an initial request to get a result portion from
+// the service. NotDone also returns true whenever the service returns an interim result portion. NotDone returns false only
+// after the service has returned the final result portion.
+func (m Marker) NotDone() bool {
+	return m.val == nil || *m.val != ""
+}
+
+// UnmarshalXML implements the xml.Unmarshaler interface for Marker.
+func (m *Marker) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var out string
+	err := d.DecodeElement(&out, &start)
+	m.val = &out
+	return err
+}
+
+// AccountStateType enumerates the values for account state type.
+type AccountStateType string
 
 const (
-	// Ok ...
-	Ok AccountState = "Ok"
-	// Suspended ...
-	Suspended AccountState = "Suspended"
-	// Unavailable ...
-	Unavailable AccountState = "Unavailable"
+	// AccountStateNone represents an empty AccountStateType.
+	AccountStateNone AccountStateType = ""
+	// AccountStateOk ...
+	AccountStateOk AccountStateType = "Ok"
+	// AccountStateSuspended ...
+	AccountStateSuspended AccountStateType = "Suspended"
+	// AccountStateUnavailable ...
+	AccountStateUnavailable AccountStateType = "Unavailable"
 )
 
-// AgentRegistrationKeyName enumerates the values for agent registration key name.
-type AgentRegistrationKeyName string
+// AgentRegistrationKeyNameType enumerates the values for agent registration key name.
+type AgentRegistrationKeyNameType string
 
 const (
-	// Primary ...
-	Primary AgentRegistrationKeyName = "Primary"
-	// Secondary ...
-	Secondary AgentRegistrationKeyName = "Secondary"
+	// AgentRegistrationKeyNameNone represents an empty AgentRegistrationKeyNameType.
+	AgentRegistrationKeyNameNone AgentRegistrationKeyNameType = ""
+	// AgentRegistrationKeyNamePrimary ...
+	AgentRegistrationKeyNamePrimary AgentRegistrationKeyNameType = "Primary"
+	// AgentRegistrationKeyNameSecondary ...
+	AgentRegistrationKeyNameSecondary AgentRegistrationKeyNameType = "Secondary"
 )
 
 // ContentSourceType enumerates the values for content source type.
 type ContentSourceType string
 
 const (
-	// EmbeddedContent ...
-	EmbeddedContent ContentSourceType = "embeddedContent"
-	// URI ...
-	URI ContentSourceType = "uri"
+	// ContentSourceEmbeddedContent ...
+	ContentSourceEmbeddedContent ContentSourceType = "embeddedContent"
+	// ContentSourceNone represents an empty ContentSourceType.
+	ContentSourceNone ContentSourceType = ""
+	// ContentSourceURI ...
+	ContentSourceURI ContentSourceType = "uri"
 )
 
-// DscConfigurationProvisioningState enumerates the values for dsc configuration provisioning state.
-type DscConfigurationProvisioningState string
+// DscConfigurationProvisioningStateType enumerates the values for dsc configuration provisioning state.
+type DscConfigurationProvisioningStateType string
 
 const (
-	// Succeeded ...
-	Succeeded DscConfigurationProvisioningState = "Succeeded"
+	// DscConfigurationProvisioningStateNone represents an empty DscConfigurationProvisioningStateType.
+	DscConfigurationProvisioningStateNone DscConfigurationProvisioningStateType = ""
+	// DscConfigurationProvisioningStateSucceeded ...
+	DscConfigurationProvisioningStateSucceeded DscConfigurationProvisioningStateType = "Succeeded"
 )
 
-// DscConfigurationState enumerates the values for dsc configuration state.
-type DscConfigurationState string
+// DscConfigurationStateType enumerates the values for dsc configuration state.
+type DscConfigurationStateType string
 
 const (
 	// DscConfigurationStateEdit ...
-	DscConfigurationStateEdit DscConfigurationState = "Edit"
+	DscConfigurationStateEdit DscConfigurationStateType = "Edit"
 	// DscConfigurationStateNew ...
-	DscConfigurationStateNew DscConfigurationState = "New"
+	DscConfigurationStateNew DscConfigurationStateType = "New"
+	// DscConfigurationStateNone represents an empty DscConfigurationStateType.
+	DscConfigurationStateNone DscConfigurationStateType = ""
 	// DscConfigurationStatePublished ...
-	DscConfigurationStatePublished DscConfigurationState = "Published"
+	DscConfigurationStatePublished DscConfigurationStateType = "Published"
 )
 
-// HTTPStatusCode enumerates the values for http status code.
-type HTTPStatusCode string
+// HTTPStatusCodeType enumerates the values for http status code.
+type HTTPStatusCodeType string
 
 const (
-	// Accepted ...
-	Accepted HTTPStatusCode = "Accepted"
-	// Ambiguous ...
-	Ambiguous HTTPStatusCode = "Ambiguous"
-	// BadGateway ...
-	BadGateway HTTPStatusCode = "BadGateway"
-	// BadRequest ...
-	BadRequest HTTPStatusCode = "BadRequest"
-	// Conflict ...
-	Conflict HTTPStatusCode = "Conflict"
-	// Continue ...
-	Continue HTTPStatusCode = "Continue"
-	// Created ...
-	Created HTTPStatusCode = "Created"
-	// ExpectationFailed ...
-	ExpectationFailed HTTPStatusCode = "ExpectationFailed"
-	// Forbidden ...
-	Forbidden HTTPStatusCode = "Forbidden"
-	// Found ...
-	Found HTTPStatusCode = "Found"
-	// GatewayTimeout ...
-	GatewayTimeout HTTPStatusCode = "GatewayTimeout"
-	// Gone ...
-	Gone HTTPStatusCode = "Gone"
-	// HTTPVersionNotSupported ...
-	HTTPVersionNotSupported HTTPStatusCode = "HttpVersionNotSupported"
-	// InternalServerError ...
-	InternalServerError HTTPStatusCode = "InternalServerError"
-	// LengthRequired ...
-	LengthRequired HTTPStatusCode = "LengthRequired"
-	// MethodNotAllowed ...
-	MethodNotAllowed HTTPStatusCode = "MethodNotAllowed"
-	// Moved ...
-	Moved HTTPStatusCode = "Moved"
-	// MovedPermanently ...
-	MovedPermanently HTTPStatusCode = "MovedPermanently"
-	// MultipleChoices ...
-	MultipleChoices HTTPStatusCode = "MultipleChoices"
-	// NoContent ...
-	NoContent HTTPStatusCode = "NoContent"
-	// NonAuthoritativeInformation ...
-	NonAuthoritativeInformation HTTPStatusCode = "NonAuthoritativeInformation"
-	// NotAcceptable ...
-	NotAcceptable HTTPStatusCode = "NotAcceptable"
-	// NotFound ...
-	NotFound HTTPStatusCode = "NotFound"
-	// NotImplemented ...
-	NotImplemented HTTPStatusCode = "NotImplemented"
-	// NotModified ...
-	NotModified HTTPStatusCode = "NotModified"
-	// OK ...
-	OK HTTPStatusCode = "OK"
-	// PartialContent ...
-	PartialContent HTTPStatusCode = "PartialContent"
-	// PaymentRequired ...
-	PaymentRequired HTTPStatusCode = "PaymentRequired"
-	// PreconditionFailed ...
-	PreconditionFailed HTTPStatusCode = "PreconditionFailed"
-	// ProxyAuthenticationRequired ...
-	ProxyAuthenticationRequired HTTPStatusCode = "ProxyAuthenticationRequired"
-	// Redirect ...
-	Redirect HTTPStatusCode = "Redirect"
-	// RedirectKeepVerb ...
-	RedirectKeepVerb HTTPStatusCode = "RedirectKeepVerb"
-	// RedirectMethod ...
-	RedirectMethod HTTPStatusCode = "RedirectMethod"
-	// RequestedRangeNotSatisfiable ...
-	RequestedRangeNotSatisfiable HTTPStatusCode = "RequestedRangeNotSatisfiable"
-	// RequestEntityTooLarge ...
-	RequestEntityTooLarge HTTPStatusCode = "RequestEntityTooLarge"
-	// RequestTimeout ...
-	RequestTimeout HTTPStatusCode = "RequestTimeout"
-	// RequestURITooLong ...
-	RequestURITooLong HTTPStatusCode = "RequestUriTooLong"
-	// ResetContent ...
-	ResetContent HTTPStatusCode = "ResetContent"
-	// SeeOther ...
-	SeeOther HTTPStatusCode = "SeeOther"
-	// ServiceUnavailable ...
-	ServiceUnavailable HTTPStatusCode = "ServiceUnavailable"
-	// SwitchingProtocols ...
-	SwitchingProtocols HTTPStatusCode = "SwitchingProtocols"
-	// TemporaryRedirect ...
-	TemporaryRedirect HTTPStatusCode = "TemporaryRedirect"
-	// Unauthorized ...
-	Unauthorized HTTPStatusCode = "Unauthorized"
-	// UnsupportedMediaType ...
-	UnsupportedMediaType HTTPStatusCode = "UnsupportedMediaType"
-	// Unused ...
-	Unused HTTPStatusCode = "Unused"
-	// UpgradeRequired ...
-	UpgradeRequired HTTPStatusCode = "UpgradeRequired"
-	// UseProxy ...
-	UseProxy HTTPStatusCode = "UseProxy"
+	// HTTPStatusCodeAccepted ...
+	HTTPStatusCodeAccepted HTTPStatusCodeType = "Accepted"
+	// HTTPStatusCodeAmbiguous ...
+	HTTPStatusCodeAmbiguous HTTPStatusCodeType = "Ambiguous"
+	// HTTPStatusCodeBadGateway ...
+	HTTPStatusCodeBadGateway HTTPStatusCodeType = "BadGateway"
+	// HTTPStatusCodeBadRequest ...
+	HTTPStatusCodeBadRequest HTTPStatusCodeType = "BadRequest"
+	// HTTPStatusCodeConflict ...
+	HTTPStatusCodeConflict HTTPStatusCodeType = "Conflict"
+	// HTTPStatusCodeContinue ...
+	HTTPStatusCodeContinue HTTPStatusCodeType = "Continue"
+	// HTTPStatusCodeCreated ...
+	HTTPStatusCodeCreated HTTPStatusCodeType = "Created"
+	// HTTPStatusCodeExpectationFailed ...
+	HTTPStatusCodeExpectationFailed HTTPStatusCodeType = "ExpectationFailed"
+	// HTTPStatusCodeForbidden ...
+	HTTPStatusCodeForbidden HTTPStatusCodeType = "Forbidden"
+	// HTTPStatusCodeFound ...
+	HTTPStatusCodeFound HTTPStatusCodeType = "Found"
+	// HTTPStatusCodeGatewayTimeout ...
+	HTTPStatusCodeGatewayTimeout HTTPStatusCodeType = "GatewayTimeout"
+	// HTTPStatusCodeGone ...
+	HTTPStatusCodeGone HTTPStatusCodeType = "Gone"
+	// HTTPStatusCodeHTTPVersionNotSupported ...
+	HTTPStatusCodeHTTPVersionNotSupported HTTPStatusCodeType = "HttpVersionNotSupported"
+	// HTTPStatusCodeInternalServerError ...
+	HTTPStatusCodeInternalServerError HTTPStatusCodeType = "InternalServerError"
+	// HTTPStatusCodeLengthRequired ...
+	HTTPStatusCodeLengthRequired HTTPStatusCodeType = "LengthRequired"
+	// HTTPStatusCodeMethodNotAllowed ...
+	HTTPStatusCodeMethodNotAllowed HTTPStatusCodeType = "MethodNotAllowed"
+	// HTTPStatusCodeMoved ...
+	HTTPStatusCodeMoved HTTPStatusCodeType = "Moved"
+	// HTTPStatusCodeMovedPermanently ...
+	HTTPStatusCodeMovedPermanently HTTPStatusCodeType = "MovedPermanently"
+	// HTTPStatusCodeMultipleChoices ...
+	HTTPStatusCodeMultipleChoices HTTPStatusCodeType = "MultipleChoices"
+	// HTTPStatusCodeNoContent ...
+	HTTPStatusCodeNoContent HTTPStatusCodeType = "NoContent"
+	// HTTPStatusCodeNonAuthoritativeInformation ...
+	HTTPStatusCodeNonAuthoritativeInformation HTTPStatusCodeType = "NonAuthoritativeInformation"
+	// HTTPStatusCodeNone represents an empty HTTPStatusCodeType.
+	HTTPStatusCodeNone HTTPStatusCodeType = ""
+	// HTTPStatusCodeNotAcceptable ...
+	HTTPStatusCodeNotAcceptable HTTPStatusCodeType = "NotAcceptable"
+	// HTTPStatusCodeNotFound ...
+	HTTPStatusCodeNotFound HTTPStatusCodeType = "NotFound"
+	// HTTPStatusCodeNotImplemented ...
+	HTTPStatusCodeNotImplemented HTTPStatusCodeType = "NotImplemented"
+	// HTTPStatusCodeNotModified ...
+	HTTPStatusCodeNotModified HTTPStatusCodeType = "NotModified"
+	// HTTPStatusCodeOK ...
+	HTTPStatusCodeOK HTTPStatusCodeType = "OK"
+	// HTTPStatusCodePartialContent ...
+	HTTPStatusCodePartialContent HTTPStatusCodeType = "PartialContent"
+	// HTTPStatusCodePaymentRequired ...
+	HTTPStatusCodePaymentRequired HTTPStatusCodeType = "PaymentRequired"
+	// HTTPStatusCodePreconditionFailed ...
+	HTTPStatusCodePreconditionFailed HTTPStatusCodeType = "PreconditionFailed"
+	// HTTPStatusCodeProxyAuthenticationRequired ...
+	HTTPStatusCodeProxyAuthenticationRequired HTTPStatusCodeType = "ProxyAuthenticationRequired"
+	// HTTPStatusCodeRedirect ...
+	HTTPStatusCodeRedirect HTTPStatusCodeType = "Redirect"
+	// HTTPStatusCodeRedirectKeepVerb ...
+	HTTPStatusCodeRedirectKeepVerb HTTPStatusCodeType = "RedirectKeepVerb"
+	// HTTPStatusCodeRedirectMethod ...
+	HTTPStatusCodeRedirectMethod HTTPStatusCodeType = "RedirectMethod"
+	// HTTPStatusCodeRequestedRangeNotSatisfiable ...
+	HTTPStatusCodeRequestedRangeNotSatisfiable HTTPStatusCodeType = "RequestedRangeNotSatisfiable"
+	// HTTPStatusCodeRequestEntityTooLarge ...
+	HTTPStatusCodeRequestEntityTooLarge HTTPStatusCodeType = "RequestEntityTooLarge"
+	// HTTPStatusCodeRequestTimeout ...
+	HTTPStatusCodeRequestTimeout HTTPStatusCodeType = "RequestTimeout"
+	// HTTPStatusCodeRequestURITooLong ...
+	HTTPStatusCodeRequestURITooLong HTTPStatusCodeType = "RequestUriTooLong"
+	// HTTPStatusCodeResetContent ...
+	HTTPStatusCodeResetContent HTTPStatusCodeType = "ResetContent"
+	// HTTPStatusCodeSeeOther ...
+	HTTPStatusCodeSeeOther HTTPStatusCodeType = "SeeOther"
+	// HTTPStatusCodeServiceUnavailable ...
+	HTTPStatusCodeServiceUnavailable HTTPStatusCodeType = "ServiceUnavailable"
+	// HTTPStatusCodeSwitchingProtocols ...
+	HTTPStatusCodeSwitchingProtocols HTTPStatusCodeType = "SwitchingProtocols"
+	// HTTPStatusCodeTemporaryRedirect ...
+	HTTPStatusCodeTemporaryRedirect HTTPStatusCodeType = "TemporaryRedirect"
+	// HTTPStatusCodeUnauthorized ...
+	HTTPStatusCodeUnauthorized HTTPStatusCodeType = "Unauthorized"
+	// HTTPStatusCodeUnsupportedMediaType ...
+	HTTPStatusCodeUnsupportedMediaType HTTPStatusCodeType = "UnsupportedMediaType"
+	// HTTPStatusCodeUnused ...
+	HTTPStatusCodeUnused HTTPStatusCodeType = "Unused"
+	// HTTPStatusCodeUpgradeRequired ...
+	HTTPStatusCodeUpgradeRequired HTTPStatusCodeType = "UpgradeRequired"
+	// HTTPStatusCodeUseProxy ...
+	HTTPStatusCodeUseProxy HTTPStatusCodeType = "UseProxy"
 )
 
-// JobStatus enumerates the values for job status.
-type JobStatus string
+// JobStatusType enumerates the values for job status.
+type JobStatusType string
 
 const (
 	// JobStatusActivating ...
-	JobStatusActivating JobStatus = "Activating"
+	JobStatusActivating JobStatusType = "Activating"
 	// JobStatusBlocked ...
-	JobStatusBlocked JobStatus = "Blocked"
+	JobStatusBlocked JobStatusType = "Blocked"
 	// JobStatusCompleted ...
-	JobStatusCompleted JobStatus = "Completed"
+	JobStatusCompleted JobStatusType = "Completed"
 	// JobStatusDisconnected ...
-	JobStatusDisconnected JobStatus = "Disconnected"
+	JobStatusDisconnected JobStatusType = "Disconnected"
 	// JobStatusFailed ...
-	JobStatusFailed JobStatus = "Failed"
+	JobStatusFailed JobStatusType = "Failed"
 	// JobStatusNew ...
-	JobStatusNew JobStatus = "New"
+	JobStatusNew JobStatusType = "New"
+	// JobStatusNone represents an empty JobStatusType.
+	JobStatusNone JobStatusType = ""
 	// JobStatusRemoving ...
-	JobStatusRemoving JobStatus = "Removing"
+	JobStatusRemoving JobStatusType = "Removing"
 	// JobStatusResuming ...
-	JobStatusResuming JobStatus = "Resuming"
+	JobStatusResuming JobStatusType = "Resuming"
 	// JobStatusRunning ...
-	JobStatusRunning JobStatus = "Running"
+	JobStatusRunning JobStatusType = "Running"
 	// JobStatusStopped ...
-	JobStatusStopped JobStatus = "Stopped"
+	JobStatusStopped JobStatusType = "Stopped"
 	// JobStatusStopping ...
-	JobStatusStopping JobStatus = "Stopping"
+	JobStatusStopping JobStatusType = "Stopping"
 	// JobStatusSuspended ...
-	JobStatusSuspended JobStatus = "Suspended"
+	JobStatusSuspended JobStatusType = "Suspended"
 	// JobStatusSuspending ...
-	JobStatusSuspending JobStatus = "Suspending"
+	JobStatusSuspending JobStatusType = "Suspending"
 )
 
 // JobStreamType enumerates the values for job stream type.
 type JobStreamType string
 
 const (
-	// Any ...
-	Any JobStreamType = "Any"
-	// Debug ...
-	Debug JobStreamType = "Debug"
-	// Error ...
-	Error JobStreamType = "Error"
-	// Output ...
-	Output JobStreamType = "Output"
-	// Progress ...
-	Progress JobStreamType = "Progress"
-	// Verbose ...
-	Verbose JobStreamType = "Verbose"
-	// Warning ...
-	Warning JobStreamType = "Warning"
+	// JobStreamAny ...
+	JobStreamAny JobStreamType = "Any"
+	// JobStreamDebug ...
+	JobStreamDebug JobStreamType = "Debug"
+	// JobStreamError ...
+	JobStreamError JobStreamType = "Error"
+	// JobStreamNone represents an empty JobStreamType.
+	JobStreamNone JobStreamType = ""
+	// JobStreamOutput ...
+	JobStreamOutput JobStreamType = "Output"
+	// JobStreamProgress ...
+	JobStreamProgress JobStreamType = "Progress"
+	// JobStreamVerbose ...
+	JobStreamVerbose JobStreamType = "Verbose"
+	// JobStreamWarning ...
+	JobStreamWarning JobStreamType = "Warning"
 )
 
-// ModuleProvisioningState enumerates the values for module provisioning state.
-type ModuleProvisioningState string
+// ModuleProvisioningStateType enumerates the values for module provisioning state.
+type ModuleProvisioningStateType string
 
 const (
 	// ModuleProvisioningStateActivitiesStored ...
-	ModuleProvisioningStateActivitiesStored ModuleProvisioningState = "ActivitiesStored"
+	ModuleProvisioningStateActivitiesStored ModuleProvisioningStateType = "ActivitiesStored"
 	// ModuleProvisioningStateCancelled ...
-	ModuleProvisioningStateCancelled ModuleProvisioningState = "Cancelled"
+	ModuleProvisioningStateCancelled ModuleProvisioningStateType = "Cancelled"
 	// ModuleProvisioningStateConnectionTypeImported ...
-	ModuleProvisioningStateConnectionTypeImported ModuleProvisioningState = "ConnectionTypeImported"
+	ModuleProvisioningStateConnectionTypeImported ModuleProvisioningStateType = "ConnectionTypeImported"
 	// ModuleProvisioningStateContentDownloaded ...
-	ModuleProvisioningStateContentDownloaded ModuleProvisioningState = "ContentDownloaded"
+	ModuleProvisioningStateContentDownloaded ModuleProvisioningStateType = "ContentDownloaded"
 	// ModuleProvisioningStateContentRetrieved ...
-	ModuleProvisioningStateContentRetrieved ModuleProvisioningState = "ContentRetrieved"
+	ModuleProvisioningStateContentRetrieved ModuleProvisioningStateType = "ContentRetrieved"
 	// ModuleProvisioningStateContentStored ...
-	ModuleProvisioningStateContentStored ModuleProvisioningState = "ContentStored"
+	ModuleProvisioningStateContentStored ModuleProvisioningStateType = "ContentStored"
 	// ModuleProvisioningStateContentValidated ...
-	ModuleProvisioningStateContentValidated ModuleProvisioningState = "ContentValidated"
+	ModuleProvisioningStateContentValidated ModuleProvisioningStateType = "ContentValidated"
 	// ModuleProvisioningStateCreated ...
-	ModuleProvisioningStateCreated ModuleProvisioningState = "Created"
+	ModuleProvisioningStateCreated ModuleProvisioningStateType = "Created"
 	// ModuleProvisioningStateCreating ...
-	ModuleProvisioningStateCreating ModuleProvisioningState = "Creating"
+	ModuleProvisioningStateCreating ModuleProvisioningStateType = "Creating"
 	// ModuleProvisioningStateFailed ...
-	ModuleProvisioningStateFailed ModuleProvisioningState = "Failed"
+	ModuleProvisioningStateFailed ModuleProvisioningStateType = "Failed"
 	// ModuleProvisioningStateModuleDataStored ...
-	ModuleProvisioningStateModuleDataStored ModuleProvisioningState = "ModuleDataStored"
+	ModuleProvisioningStateModuleDataStored ModuleProvisioningStateType = "ModuleDataStored"
 	// ModuleProvisioningStateModuleImportRunbookComplete ...
-	ModuleProvisioningStateModuleImportRunbookComplete ModuleProvisioningState = "ModuleImportRunbookComplete"
+	ModuleProvisioningStateModuleImportRunbookComplete ModuleProvisioningStateType = "ModuleImportRunbookComplete"
+	// ModuleProvisioningStateNone represents an empty ModuleProvisioningStateType.
+	ModuleProvisioningStateNone ModuleProvisioningStateType = ""
 	// ModuleProvisioningStateRunningImportModuleRunbook ...
-	ModuleProvisioningStateRunningImportModuleRunbook ModuleProvisioningState = "RunningImportModuleRunbook"
+	ModuleProvisioningStateRunningImportModuleRunbook ModuleProvisioningStateType = "RunningImportModuleRunbook"
 	// ModuleProvisioningStateStartingImportModuleRunbook ...
-	ModuleProvisioningStateStartingImportModuleRunbook ModuleProvisioningState = "StartingImportModuleRunbook"
+	ModuleProvisioningStateStartingImportModuleRunbook ModuleProvisioningStateType = "StartingImportModuleRunbook"
 	// ModuleProvisioningStateSucceeded ...
-	ModuleProvisioningStateSucceeded ModuleProvisioningState = "Succeeded"
+	ModuleProvisioningStateSucceeded ModuleProvisioningStateType = "Succeeded"
 	// ModuleProvisioningStateUpdating ...
-	ModuleProvisioningStateUpdating ModuleProvisioningState = "Updating"
+	ModuleProvisioningStateUpdating ModuleProvisioningStateType = "Updating"
 )
 
-// RunbookProvisioningState enumerates the values for runbook provisioning state.
-type RunbookProvisioningState string
+// RunbookProvisioningStateType enumerates the values for runbook provisioning state.
+type RunbookProvisioningStateType string
 
 const (
+	// RunbookProvisioningStateNone represents an empty RunbookProvisioningStateType.
+	RunbookProvisioningStateNone RunbookProvisioningStateType = ""
 	// RunbookProvisioningStateSucceeded ...
-	RunbookProvisioningStateSucceeded RunbookProvisioningState = "Succeeded"
+	RunbookProvisioningStateSucceeded RunbookProvisioningStateType = "Succeeded"
 )
 
-// RunbookState enumerates the values for runbook state.
-type RunbookState string
+// RunbookStateType enumerates the values for runbook state.
+type RunbookStateType string
 
 const (
 	// RunbookStateEdit ...
-	RunbookStateEdit RunbookState = "Edit"
+	RunbookStateEdit RunbookStateType = "Edit"
 	// RunbookStateNew ...
-	RunbookStateNew RunbookState = "New"
+	RunbookStateNew RunbookStateType = "New"
+	// RunbookStateNone represents an empty RunbookStateType.
+	RunbookStateNone RunbookStateType = ""
 	// RunbookStatePublished ...
-	RunbookStatePublished RunbookState = "Published"
+	RunbookStatePublished RunbookStateType = "Published"
 )
 
-// RunbookTypeEnum enumerates the values for runbook type enum.
-type RunbookTypeEnum string
+// RunbookTypeEnumType enumerates the values for runbook type enum.
+type RunbookTypeEnumType string
 
 const (
-	// Graph ...
-	Graph RunbookTypeEnum = "Graph"
-	// GraphPowerShell ...
-	GraphPowerShell RunbookTypeEnum = "GraphPowerShell"
-	// GraphPowerShellWorkflow ...
-	GraphPowerShellWorkflow RunbookTypeEnum = "GraphPowerShellWorkflow"
-	// PowerShell ...
-	PowerShell RunbookTypeEnum = "PowerShell"
-	// PowerShellWorkflow ...
-	PowerShellWorkflow RunbookTypeEnum = "PowerShellWorkflow"
-	// Script ...
-	Script RunbookTypeEnum = "Script"
+	// RunbookTypeEnumGraph ...
+	RunbookTypeEnumGraph RunbookTypeEnumType = "Graph"
+	// RunbookTypeEnumGraphPowerShell ...
+	RunbookTypeEnumGraphPowerShell RunbookTypeEnumType = "GraphPowerShell"
+	// RunbookTypeEnumGraphPowerShellWorkflow ...
+	RunbookTypeEnumGraphPowerShellWorkflow RunbookTypeEnumType = "GraphPowerShellWorkflow"
+	// RunbookTypeEnumNone represents an empty RunbookTypeEnumType.
+	RunbookTypeEnumNone RunbookTypeEnumType = ""
+	// RunbookTypeEnumPowerShell ...
+	RunbookTypeEnumPowerShell RunbookTypeEnumType = "PowerShell"
+	// RunbookTypeEnumPowerShellWorkflow ...
+	RunbookTypeEnumPowerShellWorkflow RunbookTypeEnumType = "PowerShellWorkflow"
+	// RunbookTypeEnumScript ...
+	RunbookTypeEnumScript RunbookTypeEnumType = "Script"
 )
 
-// ScheduleDay enumerates the values for schedule day.
-type ScheduleDay string
+// ScheduleDayType enumerates the values for schedule day.
+type ScheduleDayType string
 
 const (
-	// Friday ...
-	Friday ScheduleDay = "Friday"
-	// Monday ...
-	Monday ScheduleDay = "Monday"
-	// Saturday ...
-	Saturday ScheduleDay = "Saturday"
-	// Sunday ...
-	Sunday ScheduleDay = "Sunday"
-	// Thursday ...
-	Thursday ScheduleDay = "Thursday"
-	// Tuesday ...
-	Tuesday ScheduleDay = "Tuesday"
-	// Wednesday ...
-	Wednesday ScheduleDay = "Wednesday"
+	// ScheduleDayFriday ...
+	ScheduleDayFriday ScheduleDayType = "Friday"
+	// ScheduleDayMonday ...
+	ScheduleDayMonday ScheduleDayType = "Monday"
+	// ScheduleDayNone represents an empty ScheduleDayType.
+	ScheduleDayNone ScheduleDayType = ""
+	// ScheduleDaySaturday ...
+	ScheduleDaySaturday ScheduleDayType = "Saturday"
+	// ScheduleDaySunday ...
+	ScheduleDaySunday ScheduleDayType = "Sunday"
+	// ScheduleDayThursday ...
+	ScheduleDayThursday ScheduleDayType = "Thursday"
+	// ScheduleDayTuesday ...
+	ScheduleDayTuesday ScheduleDayType = "Tuesday"
+	// ScheduleDayWednesday ...
+	ScheduleDayWednesday ScheduleDayType = "Wednesday"
 )
 
-// ScheduleFrequency enumerates the values for schedule frequency.
-type ScheduleFrequency string
+// ScheduleFrequencyType enumerates the values for schedule frequency.
+type ScheduleFrequencyType string
 
 const (
-	// Day ...
-	Day ScheduleFrequency = "Day"
-	// Hour ...
-	Hour ScheduleFrequency = "Hour"
-	// Month ...
-	Month ScheduleFrequency = "Month"
-	// OneTime ...
-	OneTime ScheduleFrequency = "OneTime"
-	// Week ...
-	Week ScheduleFrequency = "Week"
+	// ScheduleFrequencyDay ...
+	ScheduleFrequencyDay ScheduleFrequencyType = "Day"
+	// ScheduleFrequencyHour ...
+	ScheduleFrequencyHour ScheduleFrequencyType = "Hour"
+	// ScheduleFrequencyMonth ...
+	ScheduleFrequencyMonth ScheduleFrequencyType = "Month"
+	// ScheduleFrequencyNone represents an empty ScheduleFrequencyType.
+	ScheduleFrequencyNone ScheduleFrequencyType = ""
+	// ScheduleFrequencyOneTime ...
+	ScheduleFrequencyOneTime ScheduleFrequencyType = "OneTime"
+	// ScheduleFrequencyWeek ...
+	ScheduleFrequencyWeek ScheduleFrequencyType = "Week"
 )
 
-// SkuNameEnum enumerates the values for sku name enum.
-type SkuNameEnum string
+// SkuNameEnumType enumerates the values for sku name enum.
+type SkuNameEnumType string
 
 const (
-	// Basic ...
-	Basic SkuNameEnum = "Basic"
-	// Free ...
-	Free SkuNameEnum = "Free"
+	// SkuNameEnumBasic ...
+	SkuNameEnumBasic SkuNameEnumType = "Basic"
+	// SkuNameEnumFree ...
+	SkuNameEnumFree SkuNameEnumType = "Free"
+	// SkuNameEnumNone represents an empty SkuNameEnumType.
+	SkuNameEnumNone SkuNameEnumType = ""
 )
 
-// Account definition of the automation account type.
+// Account - Definition of the automation account type.
 type Account struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -364,511 +411,157 @@ type Account struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// AccountProperties - Gets or sets the automation account properties.
+	Tags map[string]string `json:"tags,omitempty"`
+	// Properties - Gets or sets the automation account properties.
 	*AccountProperties `json:"properties,omitempty"`
 	// Etag - Gets or sets the etag of the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for Account struct.
-func (a *Account) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties AccountProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		a.AccountProperties = &properties
-	}
-
-	v = m["etag"]
-	if v != nil {
-		var etag string
-		err = json.Unmarshal(*m["etag"], &etag)
-		if err != nil {
-			return err
-		}
-		a.Etag = &etag
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		a.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		a.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		a.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		a.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		a.Tags = &tags
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (a Account) Response() *http.Response {
+	return a.rawResponse
 }
 
-// AccountCreateOrUpdateParameters the parameters supplied to the create or update automation account operation.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (a Account) StatusCode() int {
+	return a.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (a Account) Status() string {
+	return a.rawResponse.Status
+}
+
+// AccountCreateOrUpdateParameters - The parameters supplied to the create or update automation account operation.
 type AccountCreateOrUpdateParameters struct {
-	// AccountCreateOrUpdateProperties - Gets or sets account create or update properties.
+	// Properties - Gets or sets account create or update properties.
 	*AccountCreateOrUpdateProperties `json:"properties,omitempty"`
 	// Name - Gets or sets name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Gets or sets the location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for AccountCreateOrUpdateParameters struct.
-func (acoup *AccountCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties AccountCreateOrUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		acoup.AccountCreateOrUpdateProperties = &properties
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		acoup.Name = &name
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		acoup.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		acoup.Tags = &tags
-	}
-
-	return nil
-}
-
-// AccountCreateOrUpdateProperties the parameters supplied to the create or update account properties.
+// AccountCreateOrUpdateProperties - The parameters supplied to the create or update account properties.
 type AccountCreateOrUpdateProperties struct {
 	// Sku - Gets or sets account SKU.
 	Sku *Sku `json:"sku,omitempty"`
 }
 
-// AccountListResult the response model for the list account operation.
+// AccountListResult - The response model for the list account operation.
 type AccountListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets list of accounts.
-	Value *[]Account `json:"value,omitempty"`
+	Value []Account `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// AccountListResultIterator provides access to a complete listing of Account values.
-type AccountListResultIterator struct {
-	i    int
-	page AccountListResultPage
+// Response returns the raw HTTP response object.
+func (alr AccountListResult) Response() *http.Response {
+	return alr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *AccountListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (alr AccountListResult) StatusCode() int {
+	return alr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter AccountListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (alr AccountListResult) Status() string {
+	return alr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter AccountListResultIterator) Response() AccountListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter AccountListResultIterator) Value() Account {
-	if !iter.page.NotDone() {
-		return Account{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (alr AccountListResult) IsEmpty() bool {
-	return alr.Value == nil || len(*alr.Value) == 0
-}
-
-// accountListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (alr AccountListResult) accountListResultPreparer() (*http.Request, error) {
-	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(alr.NextLink)))
-}
-
-// AccountListResultPage contains a page of Account values.
-type AccountListResultPage struct {
-	fn  func(AccountListResult) (AccountListResult, error)
-	alr AccountListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *AccountListResultPage) Next() error {
-	next, err := page.fn(page.alr)
-	if err != nil {
-		return err
-	}
-	page.alr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page AccountListResultPage) NotDone() bool {
-	return !page.alr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page AccountListResultPage) Response() AccountListResult {
-	return page.alr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page AccountListResultPage) Values() []Account {
-	if page.alr.IsEmpty() {
-		return nil
-	}
-	return *page.alr.Value
-}
-
-// AccountProperties definition of the account property.
+// AccountProperties - Definition of the account property.
 type AccountProperties struct {
 	// Sku - Gets or sets the SKU of account.
 	Sku *Sku `json:"sku,omitempty"`
 	// LastModifiedBy - Gets or sets the last modified by.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// State - Gets status of account. Possible values include: 'Ok', 'Unavailable', 'Suspended'
-	State AccountState `json:"state,omitempty"`
+	// State - Gets status of account. Possible values include: 'Ok', 'Unavailable', 'Suspended', 'None'
+	State AccountStateType `json:"state,omitempty"`
 	// CreationTime - Gets the creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
 }
 
-// AccountUpdateParameters the parameters supplied to the update automation account operation.
+// AccountUpdateParameters - The parameters supplied to the update automation account operation.
 type AccountUpdateParameters struct {
-	// AccountUpdateProperties - Gets or sets account update properties.
+	// Properties - Gets or sets account update properties.
 	*AccountUpdateProperties `json:"properties,omitempty"`
 	// Name - Gets or sets the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Gets or sets the location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for AccountUpdateParameters struct.
-func (aup *AccountUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties AccountUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		aup.AccountUpdateProperties = &properties
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		aup.Name = &name
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		aup.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		aup.Tags = &tags
-	}
-
-	return nil
-}
-
-// AccountUpdateProperties the parameters supplied to the update account properties.
+// AccountUpdateProperties - The parameters supplied to the update account properties.
 type AccountUpdateProperties struct {
 	// Sku - Gets or sets account SKU.
 	Sku *Sku `json:"sku,omitempty"`
 }
 
-// Activity definition of the activity.
+// Activity - Definition of the activity.
 type Activity struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets or sets the id of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the activity.
 	Name *string `json:"name,omitempty"`
-	// ActivityProperties - Gets or sets the properties of the activity.
+	// Properties - Gets or sets the properties of the activity.
 	*ActivityProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for Activity struct.
-func (a *Activity) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		a.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		a.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ActivityProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		a.ActivityProperties = &properties
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (a Activity) Response() *http.Response {
+	return a.rawResponse
 }
 
-// ActivityListResult the response model for the list activity operation.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (a Activity) StatusCode() int {
+	return a.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (a Activity) Status() string {
+	return a.rawResponse.Status
+}
+
+// ActivityListResult - The response model for the list activity operation.
 type ActivityListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of activities.
-	Value *[]Activity `json:"value,omitempty"`
+	Value []Activity `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// ActivityListResultIterator provides access to a complete listing of Activity values.
-type ActivityListResultIterator struct {
-	i    int
-	page ActivityListResultPage
+// Response returns the raw HTTP response object.
+func (alr ActivityListResult) Response() *http.Response {
+	return alr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ActivityListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (alr ActivityListResult) StatusCode() int {
+	return alr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ActivityListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (alr ActivityListResult) Status() string {
+	return alr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter ActivityListResultIterator) Response() ActivityListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ActivityListResultIterator) Value() Activity {
-	if !iter.page.NotDone() {
-		return Activity{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (alr ActivityListResult) IsEmpty() bool {
-	return alr.Value == nil || len(*alr.Value) == 0
-}
-
-// activityListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (alr ActivityListResult) activityListResultPreparer() (*http.Request, error) {
-	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(alr.NextLink)))
-}
-
-// ActivityListResultPage contains a page of Activity values.
-type ActivityListResultPage struct {
-	fn  func(ActivityListResult) (ActivityListResult, error)
-	alr ActivityListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ActivityListResultPage) Next() error {
-	next, err := page.fn(page.alr)
-	if err != nil {
-		return err
-	}
-	page.alr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ActivityListResultPage) NotDone() bool {
-	return !page.alr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ActivityListResultPage) Response() ActivityListResult {
-	return page.alr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ActivityListResultPage) Values() []Activity {
-	if page.alr.IsEmpty() {
-		return nil
-	}
-	return *page.alr.Value
-}
-
-// ActivityOutputType definition of the activity output type.
+// ActivityOutputType - Definition of the activity output type.
 type ActivityOutputType struct {
 	// Name - Gets or sets the name of the activity output type.
 	Name *string `json:"name,omitempty"`
@@ -876,7 +569,7 @@ type ActivityOutputType struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ActivityParameter definition of the activity parameter.
+// ActivityParameter - Definition of the activity parameter.
 type ActivityParameter struct {
 	// Name - Gets or sets the name of the activity parameter.
 	Name *string `json:"name,omitempty"`
@@ -896,51 +589,51 @@ type ActivityParameter struct {
 	ValueFromRemainingArguments *bool `json:"valueFromRemainingArguments,omitempty"`
 }
 
-// ActivityParameterSet definition of the activity parameter set.
+// ActivityParameterSet - Definition of the activity parameter set.
 type ActivityParameterSet struct {
 	// Name - Gets or sets the name of the activity parameter set.
 	Name *string `json:"name,omitempty"`
 	// Parameters - Gets or sets the parameters of the activity parameter set.
-	Parameters *[]ActivityParameter `json:"parameters,omitempty"`
+	Parameters []ActivityParameter `json:"parameters,omitempty"`
 }
 
-// ActivityProperties properties of the activity.
+// ActivityProperties - Properties of the activity.
 type ActivityProperties struct {
 	// Definition - Gets or sets the user name of the activity.
 	Definition *string `json:"definition,omitempty"`
 	// ParameterSets - Gets or sets the parameter sets of the activity.
-	ParameterSets *[]ActivityParameterSet `json:"parameterSets,omitempty"`
+	ParameterSets []ActivityParameterSet `json:"parameterSets,omitempty"`
 	// OutputTypes - Gets or sets the output types of the activity.
-	OutputTypes *[]ActivityOutputType `json:"outputTypes,omitempty"`
+	OutputTypes []ActivityOutputType `json:"outputTypes,omitempty"`
 	// CreationTime - Gets or sets the creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
 }
 
-// AdvancedSchedule the properties of the create Advanced Schedule.
+// AdvancedSchedule - The properties of the create Advanced Schedule.
 type AdvancedSchedule struct {
 	// WeekDays - Days of the week that the job should execute on.
-	WeekDays *[]string `json:"weekDays,omitempty"`
+	WeekDays []string `json:"weekDays,omitempty"`
 	// MonthDays - Days of the month that the job should execute on. Must be between 1 and 31.
-	MonthDays *[]int32 `json:"monthDays,omitempty"`
+	MonthDays []int32 `json:"monthDays,omitempty"`
 	// MonthlyOccurrences - Occurrences of days within a month.
-	MonthlyOccurrences *[]AdvancedScheduleMonthlyOccurrence `json:"monthlyOccurrences,omitempty"`
+	MonthlyOccurrences []AdvancedScheduleMonthlyOccurrence `json:"monthlyOccurrences,omitempty"`
 }
 
-// AdvancedScheduleMonthlyOccurrence the properties of the create advanced schedule monthly occurrence.
+// AdvancedScheduleMonthlyOccurrence - The properties of the create advanced schedule monthly occurrence.
 type AdvancedScheduleMonthlyOccurrence struct {
 	// Occurrence - Occurrence of the week within the month. Must be between 1 and 5
 	Occurrence *int32 `json:"occurrence,omitempty"`
-	// Day - Day of the occurrence. Must be one of monday, tuesday, wednesday,thursday, friday, saturday, sunday. Possible values include: 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
-	Day ScheduleDay `json:"day,omitempty"`
+	// Day - Day of the occurrence. Must be one of monday, tuesday, wednesday,thursday, friday, saturday, sunday. Possible values include: 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'None'
+	Day ScheduleDayType `json:"day,omitempty"`
 }
 
-// AgentRegistration definition of the agent registration infomration type.
+// AgentRegistration - Definition of the agent registration infomration type.
 type AgentRegistration struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// DscMetaConfiguration - Gets or sets the dsc meta configuration.
 	DscMetaConfiguration *string `json:"dscMetaConfiguration,omitempty"`
 	// Endpoint - Gets or sets the dsc server endpoint.
@@ -951,7 +644,22 @@ type AgentRegistration struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// AgentRegistrationKeys definition of the agent registration keys.
+// Response returns the raw HTTP response object.
+func (ar AgentRegistration) Response() *http.Response {
+	return ar.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ar AgentRegistration) StatusCode() int {
+	return ar.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ar AgentRegistration) Status() string {
+	return ar.rawResponse.Status
+}
+
+// AgentRegistrationKeys - Definition of the agent registration keys.
 type AgentRegistrationKeys struct {
 	// Primary - Gets or sets the primary key.
 	Primary *string `json:"primary,omitempty"`
@@ -959,116 +667,57 @@ type AgentRegistrationKeys struct {
 	Secondary *string `json:"secondary,omitempty"`
 }
 
-// AgentRegistrationRegenerateKeyParameter the parameters supplied to the regenerate keys operation.
+// AgentRegistrationRegenerateKeyParameter - The parameters supplied to the regenerate keys operation.
 type AgentRegistrationRegenerateKeyParameter struct {
-	// KeyName - Gets or sets the agent registration key name - Primary or Secondary. Possible values include: 'Primary', 'Secondary'
-	KeyName AgentRegistrationKeyName `json:"keyName,omitempty"`
+	// KeyName - Gets or sets the agent registration key name - Primary or Secondary. Possible values include: 'Primary', 'Secondary', 'None'
+	KeyName AgentRegistrationKeyNameType `json:"keyName,omitempty"`
 	// Name - Gets or sets the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Gets or sets the location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// Certificate definition of the certificate.
+// Certificate - Definition of the certificate.
 type Certificate struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the certificate.
 	Name *string `json:"name,omitempty"`
-	// CertificateProperties - Gets or sets the properties of the certificate.
+	// Properties - Gets or sets the properties of the certificate.
 	*CertificateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for Certificate struct.
-func (c *Certificate) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		c.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		c.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties CertificateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		c.CertificateProperties = &properties
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (c Certificate) Response() *http.Response {
+	return c.rawResponse
 }
 
-// CertificateCreateOrUpdateParameters the parameters supplied to the create or update or replace certificate
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (c Certificate) StatusCode() int {
+	return c.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (c Certificate) Status() string {
+	return c.rawResponse.Status
+}
+
+// CertificateCreateOrUpdateParameters - The parameters supplied to the create or update or replace certificate
 // operation.
 type CertificateCreateOrUpdateParameters struct {
 	// Name - Gets or sets the name of the certificate.
-	Name *string `json:"name,omitempty"`
-	// CertificateCreateOrUpdateProperties - Gets or sets the properties of the certificate.
+	Name string `json:"name,omitempty"`
+	// Properties - Gets or sets the properties of the certificate.
 	*CertificateCreateOrUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for CertificateCreateOrUpdateParameters struct.
-func (ccoup *CertificateCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		ccoup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties CertificateCreateOrUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		ccoup.CertificateCreateOrUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// CertificateCreateOrUpdateProperties the properties of the create certificate operation.
+// CertificateCreateOrUpdateProperties - The properties of the create certificate operation.
 type CertificateCreateOrUpdateProperties struct {
 	// Base64Value - Gets or sets the base64 encoded value of the certificate.
-	Base64Value *string `json:"base64Value,omitempty"`
+	Base64Value string `json:"base64Value,omitempty"`
 	// Description - Gets or sets the description of the certificate.
 	Description *string `json:"description,omitempty"`
 	// Thumbprint - Gets or sets the thumbprint of the certificate.
@@ -1077,669 +726,253 @@ type CertificateCreateOrUpdateProperties struct {
 	IsExportable *bool `json:"isExportable,omitempty"`
 }
 
-// CertificateListResult the response model for the list certificate operation.
+// CertificateListResult - The response model for the list certificate operation.
 type CertificateListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of certificates.
-	Value *[]Certificate `json:"value,omitempty"`
+	Value []Certificate `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// CertificateListResultIterator provides access to a complete listing of Certificate values.
-type CertificateListResultIterator struct {
-	i    int
-	page CertificateListResultPage
+// Response returns the raw HTTP response object.
+func (clr CertificateListResult) Response() *http.Response {
+	return clr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *CertificateListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (clr CertificateListResult) StatusCode() int {
+	return clr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter CertificateListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (clr CertificateListResult) Status() string {
+	return clr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter CertificateListResultIterator) Response() CertificateListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter CertificateListResultIterator) Value() Certificate {
-	if !iter.page.NotDone() {
-		return Certificate{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (clr CertificateListResult) IsEmpty() bool {
-	return clr.Value == nil || len(*clr.Value) == 0
-}
-
-// certificateListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (clr CertificateListResult) certificateListResultPreparer() (*http.Request, error) {
-	if clr.NextLink == nil || len(to.String(clr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(clr.NextLink)))
-}
-
-// CertificateListResultPage contains a page of Certificate values.
-type CertificateListResultPage struct {
-	fn  func(CertificateListResult) (CertificateListResult, error)
-	clr CertificateListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *CertificateListResultPage) Next() error {
-	next, err := page.fn(page.clr)
-	if err != nil {
-		return err
-	}
-	page.clr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page CertificateListResultPage) NotDone() bool {
-	return !page.clr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page CertificateListResultPage) Response() CertificateListResult {
-	return page.clr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page CertificateListResultPage) Values() []Certificate {
-	if page.clr.IsEmpty() {
-		return nil
-	}
-	return *page.clr.Value
-}
-
-// CertificateProperties properties of the certificate.
+// CertificateProperties - Properties of the certificate.
 type CertificateProperties struct {
 	// Thumbprint - Gets the thumbprint of the certificate.
 	Thumbprint *string `json:"thumbprint,omitempty"`
 	// ExpiryTime - Gets the expiry time of the certificate.
-	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
+	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
 	// IsExportable - Gets the is exportable flag of the certificate.
 	IsExportable *bool `json:"isExportable,omitempty"`
 	// CreationTime - Gets the creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
 }
 
-// CertificateUpdateParameters the parameters supplied to the update certificate operation.
+// CertificateUpdateParameters - The parameters supplied to the update certificate operation.
 type CertificateUpdateParameters struct {
 	// Name - Gets or sets the name of the certificate.
-	Name *string `json:"name,omitempty"`
-	// CertificateUpdateProperties - Gets or sets the properties of the certificate.
+	Name string `json:"name,omitempty"`
+	// Properties - Gets or sets the properties of the certificate.
 	*CertificateUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for CertificateUpdateParameters struct.
-func (cup *CertificateUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		cup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties CertificateUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		cup.CertificateUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// CertificateUpdateProperties the properties of the update certificate operation
+// CertificateUpdateProperties - The properties of the update certificate operation
 type CertificateUpdateProperties struct {
 	// Description - Gets or sets the description of the certificate.
 	Description *string `json:"description,omitempty"`
 }
 
-// Connection definition of the connection.
+// Connection - Definition of the connection.
 type Connection struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the connection.
 	Name *string `json:"name,omitempty"`
-	// ConnectionProperties - Gets or sets the properties of the connection.
+	// Properties - Gets or sets the properties of the connection.
 	*ConnectionProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for Connection struct.
-func (c *Connection) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		c.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		c.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ConnectionProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		c.ConnectionProperties = &properties
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (c Connection) Response() *http.Response {
+	return c.rawResponse
 }
 
-// ConnectionCreateOrUpdateParameters the parameters supplied to the create or update connection operation.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (c Connection) StatusCode() int {
+	return c.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (c Connection) Status() string {
+	return c.rawResponse.Status
+}
+
+// ConnectionCreateOrUpdateParameters - The parameters supplied to the create or update connection operation.
 type ConnectionCreateOrUpdateParameters struct {
 	// Name - Gets or sets the name of the connection.
-	Name *string `json:"name,omitempty"`
-	// ConnectionCreateOrUpdateProperties - Gets or sets the properties of the connection.
+	Name string `json:"name,omitempty"`
+	// Properties - Gets or sets the properties of the connection.
 	*ConnectionCreateOrUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for ConnectionCreateOrUpdateParameters struct.
-func (ccoup *ConnectionCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		ccoup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ConnectionCreateOrUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		ccoup.ConnectionCreateOrUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// ConnectionCreateOrUpdateProperties the properties of the create connection properties
+// ConnectionCreateOrUpdateProperties - The properties of the create connection properties
 type ConnectionCreateOrUpdateProperties struct {
 	// Description - Gets or sets the description of the connection.
 	Description *string `json:"description,omitempty"`
 	// ConnectionType - Gets or sets the connectionType of the connection.
-	ConnectionType *ConnectionTypeAssociationProperty `json:"connectionType,omitempty"`
+	ConnectionType ConnectionTypeAssociationProperty `json:"connectionType,omitempty"`
 	// FieldDefinitionValues - Gets or sets the field definition properties of the connection.
-	FieldDefinitionValues *map[string]*string `json:"fieldDefinitionValues,omitempty"`
+	FieldDefinitionValues map[string]string `json:"fieldDefinitionValues,omitempty"`
 }
 
-// ConnectionListResult the response model for the list connection operation.
+// ConnectionListResult - The response model for the list connection operation.
 type ConnectionListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of connection.
-	Value *[]Connection `json:"value,omitempty"`
+	Value []Connection `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// ConnectionListResultIterator provides access to a complete listing of Connection values.
-type ConnectionListResultIterator struct {
-	i    int
-	page ConnectionListResultPage
+// Response returns the raw HTTP response object.
+func (clr ConnectionListResult) Response() *http.Response {
+	return clr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ConnectionListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (clr ConnectionListResult) StatusCode() int {
+	return clr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ConnectionListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (clr ConnectionListResult) Status() string {
+	return clr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter ConnectionListResultIterator) Response() ConnectionListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ConnectionListResultIterator) Value() Connection {
-	if !iter.page.NotDone() {
-		return Connection{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (clr ConnectionListResult) IsEmpty() bool {
-	return clr.Value == nil || len(*clr.Value) == 0
-}
-
-// connectionListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (clr ConnectionListResult) connectionListResultPreparer() (*http.Request, error) {
-	if clr.NextLink == nil || len(to.String(clr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(clr.NextLink)))
-}
-
-// ConnectionListResultPage contains a page of Connection values.
-type ConnectionListResultPage struct {
-	fn  func(ConnectionListResult) (ConnectionListResult, error)
-	clr ConnectionListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ConnectionListResultPage) Next() error {
-	next, err := page.fn(page.clr)
-	if err != nil {
-		return err
-	}
-	page.clr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ConnectionListResultPage) NotDone() bool {
-	return !page.clr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ConnectionListResultPage) Response() ConnectionListResult {
-	return page.clr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ConnectionListResultPage) Values() []Connection {
-	if page.clr.IsEmpty() {
-		return nil
-	}
-	return *page.clr.Value
-}
-
-// ConnectionProperties definition of the connection properties.
+// ConnectionProperties - Definition of the connection properties.
 type ConnectionProperties struct {
 	// ConnectionType - Gets or sets the connectionType of the connection.
 	ConnectionType *ConnectionTypeAssociationProperty `json:"connectionType,omitempty"`
 	// FieldDefinitionValues - Gets the field definition values of the connection.
-	FieldDefinitionValues *map[string]*string `json:"fieldDefinitionValues,omitempty"`
+	FieldDefinitionValues map[string]string `json:"fieldDefinitionValues,omitempty"`
 	// CreationTime - Gets the creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
 }
 
-// ConnectionType definition of the connection type.
+// ConnectionType - Definition of the connection type.
 type ConnectionType struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the connection type.
 	Name *string `json:"name,omitempty"`
-	// ConnectionTypeProperties - Gets or sets the properties of the connection type.
+	// Properties - Gets or sets the properties of the connection type.
 	*ConnectionTypeProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for ConnectionType struct.
-func (ct *ConnectionType) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		ct.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		ct.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ConnectionTypeProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		ct.ConnectionTypeProperties = &properties
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (ct ConnectionType) Response() *http.Response {
+	return ct.rawResponse
 }
 
-// ConnectionTypeAssociationProperty the connection type property associated with the entity.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ct ConnectionType) StatusCode() int {
+	return ct.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ct ConnectionType) Status() string {
+	return ct.rawResponse.Status
+}
+
+// ConnectionTypeAssociationProperty - The connection type property associated with the entity.
 type ConnectionTypeAssociationProperty struct {
 	// Name - Gets or sets the name of the connection type.
 	Name *string `json:"name,omitempty"`
 }
 
-// ConnectionTypeCreateOrUpdateParameters the parameters supplied to the create or update connection type operation.
+// ConnectionTypeCreateOrUpdateParameters - The parameters supplied to the create or update connection type operation.
 type ConnectionTypeCreateOrUpdateParameters struct {
 	// Name - Gets or sets the name of the connection type.
-	Name *string `json:"name,omitempty"`
-	// ConnectionTypeCreateOrUpdateProperties - Gets or sets the value of the connection type.
+	Name string `json:"name,omitempty"`
+	// Properties - Gets or sets the value of the connection type.
 	*ConnectionTypeCreateOrUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for ConnectionTypeCreateOrUpdateParameters struct.
-func (ctcoup *ConnectionTypeCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		ctcoup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ConnectionTypeCreateOrUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		ctcoup.ConnectionTypeCreateOrUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// ConnectionTypeCreateOrUpdateProperties the properties of the create connection type.
+// ConnectionTypeCreateOrUpdateProperties - The properties of the create connection type.
 type ConnectionTypeCreateOrUpdateProperties struct {
 	// IsGlobal - Gets or sets a Boolean value to indicate if the connection type is global.
 	IsGlobal *bool `json:"isGlobal,omitempty"`
 	// FieldDefinitions - Gets or sets the field definitions of the connection type.
-	FieldDefinitions *map[string]*FieldDefinition `json:"fieldDefinitions,omitempty"`
+	FieldDefinitions map[string]FieldDefinition `json:"fieldDefinitions,omitempty"`
 }
 
-// ConnectionTypeListResult the response model for the list connection type operation.
+// ConnectionTypeListResult - The response model for the list connection type operation.
 type ConnectionTypeListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of connection types.
-	Value *[]ConnectionType `json:"value,omitempty"`
+	Value []ConnectionType `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// ConnectionTypeListResultIterator provides access to a complete listing of ConnectionType values.
-type ConnectionTypeListResultIterator struct {
-	i    int
-	page ConnectionTypeListResultPage
+// Response returns the raw HTTP response object.
+func (ctlr ConnectionTypeListResult) Response() *http.Response {
+	return ctlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ConnectionTypeListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ctlr ConnectionTypeListResult) StatusCode() int {
+	return ctlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ConnectionTypeListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ctlr ConnectionTypeListResult) Status() string {
+	return ctlr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter ConnectionTypeListResultIterator) Response() ConnectionTypeListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ConnectionTypeListResultIterator) Value() ConnectionType {
-	if !iter.page.NotDone() {
-		return ConnectionType{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (ctlr ConnectionTypeListResult) IsEmpty() bool {
-	return ctlr.Value == nil || len(*ctlr.Value) == 0
-}
-
-// connectionTypeListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (ctlr ConnectionTypeListResult) connectionTypeListResultPreparer() (*http.Request, error) {
-	if ctlr.NextLink == nil || len(to.String(ctlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ctlr.NextLink)))
-}
-
-// ConnectionTypeListResultPage contains a page of ConnectionType values.
-type ConnectionTypeListResultPage struct {
-	fn   func(ConnectionTypeListResult) (ConnectionTypeListResult, error)
-	ctlr ConnectionTypeListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ConnectionTypeListResultPage) Next() error {
-	next, err := page.fn(page.ctlr)
-	if err != nil {
-		return err
-	}
-	page.ctlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ConnectionTypeListResultPage) NotDone() bool {
-	return !page.ctlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ConnectionTypeListResultPage) Response() ConnectionTypeListResult {
-	return page.ctlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ConnectionTypeListResultPage) Values() []ConnectionType {
-	if page.ctlr.IsEmpty() {
-		return nil
-	}
-	return *page.ctlr.Value
-}
-
-// ConnectionTypeProperties properties of the connection type.
+// ConnectionTypeProperties - Properties of the connection type.
 type ConnectionTypeProperties struct {
 	// IsGlobal - Gets or sets a Boolean value to indicate if the connection type is global.
 	IsGlobal *bool `json:"isGlobal,omitempty"`
 	// FieldDefinitions - Gets the field definitions of the connection type.
-	FieldDefinitions *map[string]*FieldDefinition `json:"fieldDefinitions,omitempty"`
+	FieldDefinitions map[string]FieldDefinition `json:"fieldDefinitions,omitempty"`
 	// CreationTime - Gets the creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
 }
 
-// ConnectionUpdateParameters the parameters supplied to the update connection operation.
+// ConnectionUpdateParameters - The parameters supplied to the update connection operation.
 type ConnectionUpdateParameters struct {
 	// Name - Gets or sets the name of the connection.
 	Name *string `json:"name,omitempty"`
-	// ConnectionUpdateProperties - Gets or sets the properties of the connection.
+	// Properties - Gets or sets the properties of the connection.
 	*ConnectionUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for ConnectionUpdateParameters struct.
-func (cup *ConnectionUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		cup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ConnectionUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		cup.ConnectionUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// ConnectionUpdateProperties the properties of the update connection operation.
+// ConnectionUpdateProperties - The properties of the update connection operation.
 type ConnectionUpdateProperties struct {
 	// Description - Gets or sets the description of the connection.
 	Description *string `json:"description,omitempty"`
 	// FieldDefinitionValues - Gets or sets the field definition values of the connection.
-	FieldDefinitionValues *map[string]*string `json:"fieldDefinitionValues,omitempty"`
+	FieldDefinitionValues map[string]string `json:"fieldDefinitionValues,omitempty"`
 }
 
-// ContentHash definition of the runbook property type.
+// ContentHash - Definition of the runbook property type.
 type ContentHash struct {
 	// Algorithm - Gets or sets the content hash algorithm used to hash the content.
-	Algorithm *string `json:"algorithm,omitempty"`
+	Algorithm string `json:"algorithm,omitempty"`
 	// Value - Gets or sets expected hash value of the content.
-	Value *string `json:"value,omitempty"`
+	Value string `json:"value,omitempty"`
 }
 
-// ContentLink definition of the content link.
+// ContentLink - Definition of the content link.
 type ContentLink struct {
 	// URI - Gets or sets the uri of the runbook content.
 	URI *string `json:"uri,omitempty"`
@@ -1749,11 +982,11 @@ type ContentLink struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// ContentSource definition of the content source.
+// ContentSource - Definition of the content source.
 type ContentSource struct {
 	// Hash - Gets or sets the hash.
 	Hash *ContentHash `json:"hash,omitempty"`
-	// Type - Gets or sets the content source type. Possible values include: 'EmbeddedContent', 'URI'
+	// Type - Gets or sets the content source type. Possible values include: 'EmbeddedContent', 'URI', 'None'
 	Type ContentSourceType `json:"type,omitempty"`
 	// Value - Gets or sets the value of the content. This is based on the content source type.
 	Value *string `json:"value,omitempty"`
@@ -1761,264 +994,95 @@ type ContentSource struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// Credential definition of the credential.
+// Credential - Definition of the credential.
 type Credential struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the credential.
 	Name *string `json:"name,omitempty"`
-	// CredentialProperties - Gets or sets the properties of the credential.
+	// Properties - Gets or sets the properties of the credential.
 	*CredentialProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for Credential struct.
-func (c *Credential) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		c.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		c.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties CredentialProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		c.CredentialProperties = &properties
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (c Credential) Response() *http.Response {
+	return c.rawResponse
 }
 
-// CredentialCreateOrUpdateParameters the parameters supplied to the create or update credential operation.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (c Credential) StatusCode() int {
+	return c.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (c Credential) Status() string {
+	return c.rawResponse.Status
+}
+
+// CredentialCreateOrUpdateParameters - The parameters supplied to the create or update credential operation.
 type CredentialCreateOrUpdateParameters struct {
 	// Name - Gets or sets the name of the credential.
-	Name *string `json:"name,omitempty"`
-	// CredentialCreateOrUpdateProperties - Gets or sets the properties of the credential.
+	Name string `json:"name,omitempty"`
+	// Properties - Gets or sets the properties of the credential.
 	*CredentialCreateOrUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for CredentialCreateOrUpdateParameters struct.
-func (ccoup *CredentialCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		ccoup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties CredentialCreateOrUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		ccoup.CredentialCreateOrUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// CredentialCreateOrUpdateProperties the properties of the create cerdential operation.
+// CredentialCreateOrUpdateProperties - The properties of the create cerdential operation.
 type CredentialCreateOrUpdateProperties struct {
 	// UserName - Gets or sets the user name of the credential.
-	UserName *string `json:"userName,omitempty"`
+	UserName string `json:"userName,omitempty"`
 	// Password - Gets or sets the password of the credential.
-	Password *string `json:"password,omitempty"`
+	Password string `json:"password,omitempty"`
 	// Description - Gets or sets the description of the credential.
 	Description *string `json:"description,omitempty"`
 }
 
-// CredentialListResult the response model for the list credential operation.
+// CredentialListResult - The response model for the list credential operation.
 type CredentialListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of credentials.
-	Value *[]Credential `json:"value,omitempty"`
+	Value []Credential `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// CredentialListResultIterator provides access to a complete listing of Credential values.
-type CredentialListResultIterator struct {
-	i    int
-	page CredentialListResultPage
+// Response returns the raw HTTP response object.
+func (clr CredentialListResult) Response() *http.Response {
+	return clr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *CredentialListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (clr CredentialListResult) StatusCode() int {
+	return clr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter CredentialListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (clr CredentialListResult) Status() string {
+	return clr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter CredentialListResultIterator) Response() CredentialListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter CredentialListResultIterator) Value() Credential {
-	if !iter.page.NotDone() {
-		return Credential{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (clr CredentialListResult) IsEmpty() bool {
-	return clr.Value == nil || len(*clr.Value) == 0
-}
-
-// credentialListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (clr CredentialListResult) credentialListResultPreparer() (*http.Request, error) {
-	if clr.NextLink == nil || len(to.String(clr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(clr.NextLink)))
-}
-
-// CredentialListResultPage contains a page of Credential values.
-type CredentialListResultPage struct {
-	fn  func(CredentialListResult) (CredentialListResult, error)
-	clr CredentialListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *CredentialListResultPage) Next() error {
-	next, err := page.fn(page.clr)
-	if err != nil {
-		return err
-	}
-	page.clr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page CredentialListResultPage) NotDone() bool {
-	return !page.clr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page CredentialListResultPage) Response() CredentialListResult {
-	return page.clr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page CredentialListResultPage) Values() []Credential {
-	if page.clr.IsEmpty() {
-		return nil
-	}
-	return *page.clr.Value
-}
-
-// CredentialProperties definition of the credential properties
+// CredentialProperties - Definition of the credential properties
 type CredentialProperties struct {
 	// UserName - Gets the user name of the credential.
 	UserName *string `json:"userName,omitempty"`
 	// CreationTime - Gets the creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
 }
 
-// CredentialUpdateParameters the parameters supplied to the Update credential operation.
+// CredentialUpdateParameters - The parameters supplied to the Update credential operation.
 type CredentialUpdateParameters struct {
 	// Name - Gets or sets the name of the credential.
-	Name *string `json:"name,omitempty"`
-	// CredentialUpdateProperties - Gets or sets the properties of the variable.
+	Name string `json:"name,omitempty"`
+	// Properties - Gets or sets the properties of the variable.
 	*CredentialUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for CredentialUpdateParameters struct.
-func (cup *CredentialUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		cup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties CredentialUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		cup.CredentialUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// CredentialUpdateProperties the properties of the Update credential
+// CredentialUpdateProperties - The properties of the Update credential
 type CredentialUpdateProperties struct {
 	// UserName - Gets or sets the user name of the credential.
 	UserName *string `json:"userName,omitempty"`
@@ -2028,224 +1092,77 @@ type CredentialUpdateProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// DscCompilationJob definition of the Dsc Compilation job.
+// DscCompilationJob - Definition of the Dsc Compilation job.
 type DscCompilationJob struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
-	// DscCompilationJobProperties - Gets or sets the properties of the Dsc Compilation job.
+	// Properties - Gets or sets the properties of the Dsc Compilation job.
 	*DscCompilationJobProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for DscCompilationJob struct.
-func (dcj *DscCompilationJob) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		dcj.ID = &ID
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties DscCompilationJobProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		dcj.DscCompilationJobProperties = &properties
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (dcj DscCompilationJob) Response() *http.Response {
+	return dcj.rawResponse
 }
 
-// DscCompilationJobCreateParameters the parameters supplied to the create compilation job operation.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dcj DscCompilationJob) StatusCode() int {
+	return dcj.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dcj DscCompilationJob) Status() string {
+	return dcj.rawResponse.Status
+}
+
+// DscCompilationJobCreateParameters - The parameters supplied to the create compilation job operation.
 type DscCompilationJobCreateParameters struct {
-	// DscCompilationJobCreateProperties - Gets or sets the list of compilation job properties.
+	// Properties - Gets or sets the list of compilation job properties.
 	*DscCompilationJobCreateProperties `json:"properties,omitempty"`
 	// Name - Gets or sets name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Gets or sets the location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for DscCompilationJobCreateParameters struct.
-func (dcjcp *DscCompilationJobCreateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties DscCompilationJobCreateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		dcjcp.DscCompilationJobCreateProperties = &properties
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		dcjcp.Name = &name
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		dcjcp.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		dcjcp.Tags = &tags
-	}
-
-	return nil
-}
-
-// DscCompilationJobCreateProperties the parameters supplied to the create compilation job operation.
+// DscCompilationJobCreateProperties - The parameters supplied to the create compilation job operation.
 type DscCompilationJobCreateProperties struct {
 	// Configuration - Gets or sets the configuration.
-	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	Configuration DscConfigurationAssociationProperty `json:"configuration,omitempty"`
 	// Parameters - Gets or sets the parameters of the job.
-	Parameters *map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]string `json:"parameters,omitempty"`
 	// NewNodeConfigurationBuildVersionRequired - If a new build version of NodeConfiguration is required.
 	NewNodeConfigurationBuildVersionRequired *bool `json:"newNodeConfigurationBuildVersionRequired,omitempty"`
 }
 
-// DscCompilationJobListResult the response model for the list job operation.
+// DscCompilationJobListResult - The response model for the list job operation.
 type DscCompilationJobListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of Dsc Compilation jobs.
-	Value *[]DscCompilationJob `json:"value,omitempty"`
+	Value []DscCompilationJob `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// DscCompilationJobListResultIterator provides access to a complete listing of DscCompilationJob values.
-type DscCompilationJobListResultIterator struct {
-	i    int
-	page DscCompilationJobListResultPage
+// Response returns the raw HTTP response object.
+func (dcjlr DscCompilationJobListResult) Response() *http.Response {
+	return dcjlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *DscCompilationJobListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dcjlr DscCompilationJobListResult) StatusCode() int {
+	return dcjlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter DscCompilationJobListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dcjlr DscCompilationJobListResult) Status() string {
+	return dcjlr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter DscCompilationJobListResultIterator) Response() DscCompilationJobListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter DscCompilationJobListResultIterator) Value() DscCompilationJob {
-	if !iter.page.NotDone() {
-		return DscCompilationJob{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (dcjlr DscCompilationJobListResult) IsEmpty() bool {
-	return dcjlr.Value == nil || len(*dcjlr.Value) == 0
-}
-
-// dscCompilationJobListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (dcjlr DscCompilationJobListResult) dscCompilationJobListResultPreparer() (*http.Request, error) {
-	if dcjlr.NextLink == nil || len(to.String(dcjlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(dcjlr.NextLink)))
-}
-
-// DscCompilationJobListResultPage contains a page of DscCompilationJob values.
-type DscCompilationJobListResultPage struct {
-	fn    func(DscCompilationJobListResult) (DscCompilationJobListResult, error)
-	dcjlr DscCompilationJobListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *DscCompilationJobListResultPage) Next() error {
-	next, err := page.fn(page.dcjlr)
-	if err != nil {
-		return err
-	}
-	page.dcjlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page DscCompilationJobListResultPage) NotDone() bool {
-	return !page.dcjlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page DscCompilationJobListResultPage) Response() DscCompilationJobListResult {
-	return page.dcjlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page DscCompilationJobListResultPage) Values() []DscCompilationJob {
-	if page.dcjlr.IsEmpty() {
-		return nil
-	}
-	return *page.dcjlr.Value
-}
-
-// DscCompilationJobProperties definition of Dsc Compilation job properties.
+// DscCompilationJobProperties - Definition of Dsc Compilation job properties.
 type DscCompilationJobProperties struct {
 	// Configuration - Gets or sets the configuration.
 	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
@@ -2254,28 +1171,28 @@ type DscCompilationJobProperties struct {
 	// JobID - Gets the id of the job.
 	JobID *uuid.UUID `json:"jobId,omitempty"`
 	// CreationTime - Gets the creation time of the job.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// Status - Gets or sets the status of the job. Possible values include: 'JobStatusNew', 'JobStatusActivating', 'JobStatusRunning', 'JobStatusCompleted', 'JobStatusFailed', 'JobStatusStopped', 'JobStatusBlocked', 'JobStatusSuspended', 'JobStatusDisconnected', 'JobStatusSuspending', 'JobStatusStopping', 'JobStatusResuming', 'JobStatusRemoving'
-	Status JobStatus `json:"status,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
+	// Status - Gets or sets the status of the job. Possible values include: 'New', 'Activating', 'Running', 'Completed', 'Failed', 'Stopped', 'Blocked', 'Suspended', 'Disconnected', 'Suspending', 'Stopping', 'Resuming', 'Removing', 'None'
+	Status JobStatusType `json:"status,omitempty"`
 	// StatusDetails - Gets or sets the status details of the job.
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// StartTime - Gets the start time of the job.
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime *time.Time `json:"startTime,omitempty"`
 	// EndTime - Gets the end time of the job.
-	EndTime *date.Time `json:"endTime,omitempty"`
+	EndTime *time.Time `json:"endTime,omitempty"`
 	// Exception - Gets the exception of the job.
 	Exception *string `json:"exception,omitempty"`
 	// LastModifiedTime - Gets the last modified time of the job.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// LastStatusModifiedTime - Gets the last status modified time of the job.
-	LastStatusModifiedTime *date.Time `json:"lastStatusModifiedTime,omitempty"`
+	LastStatusModifiedTime *time.Time `json:"lastStatusModifiedTime,omitempty"`
 	// Parameters - Gets or sets the parameters of the job.
-	Parameters *map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]string `json:"parameters,omitempty"`
 }
 
-// DscConfiguration definition of the configuration type.
+// DscConfiguration - Definition of the configuration type.
 type DscConfiguration struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -2283,284 +1200,87 @@ type DscConfiguration struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// DscConfigurationProperties - Gets or sets the configuration properties.
+	Tags map[string]string `json:"tags,omitempty"`
+	// Properties - Gets or sets the configuration properties.
 	*DscConfigurationProperties `json:"properties,omitempty"`
 	// Etag - Gets or sets the etag of the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for DscConfiguration struct.
-func (dc *DscConfiguration) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties DscConfigurationProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		dc.DscConfigurationProperties = &properties
-	}
-
-	v = m["etag"]
-	if v != nil {
-		var etag string
-		err = json.Unmarshal(*m["etag"], &etag)
-		if err != nil {
-			return err
-		}
-		dc.Etag = &etag
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		dc.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		dc.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		dc.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		dc.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		dc.Tags = &tags
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (dc DscConfiguration) Response() *http.Response {
+	return dc.rawResponse
 }
 
-// DscConfigurationAssociationProperty the Dsc configuration property associated with the entity.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dc DscConfiguration) StatusCode() int {
+	return dc.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dc DscConfiguration) Status() string {
+	return dc.rawResponse.Status
+}
+
+// DscConfigurationAssociationProperty - The Dsc configuration property associated with the entity.
 type DscConfigurationAssociationProperty struct {
 	// Name - Gets or sets the name of the Dsc configuration.
 	Name *string `json:"name,omitempty"`
 }
 
-// DscConfigurationCreateOrUpdateParameters the parameters supplied to the create or update configuration operation.
+// DscConfigurationCreateOrUpdateParameters - The parameters supplied to the create or update configuration operation.
 type DscConfigurationCreateOrUpdateParameters struct {
-	// DscConfigurationCreateOrUpdateProperties - Gets or sets configuration create or update properties.
+	// Properties - Gets or sets configuration create or update properties.
 	*DscConfigurationCreateOrUpdateProperties `json:"properties,omitempty"`
 	// Name - Gets or sets name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Gets or sets the location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for DscConfigurationCreateOrUpdateParameters struct.
-func (dccoup *DscConfigurationCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties DscConfigurationCreateOrUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		dccoup.DscConfigurationCreateOrUpdateProperties = &properties
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		dccoup.Name = &name
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		dccoup.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		dccoup.Tags = &tags
-	}
-
-	return nil
-}
-
-// DscConfigurationCreateOrUpdateProperties the properties to create or update configuration.
+// DscConfigurationCreateOrUpdateProperties - The properties to create or update configuration.
 type DscConfigurationCreateOrUpdateProperties struct {
 	// LogVerbose - Gets or sets verbose log option.
 	LogVerbose *bool `json:"logVerbose,omitempty"`
 	// LogProgress - Gets or sets progress log option.
 	LogProgress *bool `json:"logProgress,omitempty"`
 	// Source - Gets or sets the source.
-	Source *ContentSource `json:"source,omitempty"`
+	Source ContentSource `json:"source,omitempty"`
 	// Parameters - Gets or sets the configuration parameters.
-	Parameters *map[string]*DscConfigurationParameter `json:"parameters,omitempty"`
+	Parameters map[string]DscConfigurationParameter `json:"parameters,omitempty"`
 	// Description - Gets or sets the description of the configuration.
 	Description *string `json:"description,omitempty"`
 }
 
-// DscConfigurationListResult the response model for the list configuration operation.
+// DscConfigurationListResult - The response model for the list configuration operation.
 type DscConfigurationListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of configurations.
-	Value *[]DscConfiguration `json:"value,omitempty"`
+	Value []DscConfiguration `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// DscConfigurationListResultIterator provides access to a complete listing of DscConfiguration values.
-type DscConfigurationListResultIterator struct {
-	i    int
-	page DscConfigurationListResultPage
+// Response returns the raw HTTP response object.
+func (dclr DscConfigurationListResult) Response() *http.Response {
+	return dclr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *DscConfigurationListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dclr DscConfigurationListResult) StatusCode() int {
+	return dclr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter DscConfigurationListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dclr DscConfigurationListResult) Status() string {
+	return dclr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter DscConfigurationListResultIterator) Response() DscConfigurationListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter DscConfigurationListResultIterator) Value() DscConfiguration {
-	if !iter.page.NotDone() {
-		return DscConfiguration{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (dclr DscConfigurationListResult) IsEmpty() bool {
-	return dclr.Value == nil || len(*dclr.Value) == 0
-}
-
-// dscConfigurationListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (dclr DscConfigurationListResult) dscConfigurationListResultPreparer() (*http.Request, error) {
-	if dclr.NextLink == nil || len(to.String(dclr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(dclr.NextLink)))
-}
-
-// DscConfigurationListResultPage contains a page of DscConfiguration values.
-type DscConfigurationListResultPage struct {
-	fn   func(DscConfigurationListResult) (DscConfigurationListResult, error)
-	dclr DscConfigurationListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *DscConfigurationListResultPage) Next() error {
-	next, err := page.fn(page.dclr)
-	if err != nil {
-		return err
-	}
-	page.dclr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page DscConfigurationListResultPage) NotDone() bool {
-	return !page.dclr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page DscConfigurationListResultPage) Response() DscConfigurationListResult {
-	return page.dclr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page DscConfigurationListResultPage) Values() []DscConfiguration {
-	if page.dclr.IsEmpty() {
-		return nil
-	}
-	return *page.dclr.Value
-}
-
-// DscConfigurationParameter definition of the configuration parameter type.
+// DscConfigurationParameter - Definition of the configuration parameter type.
 type DscConfigurationParameter struct {
 	// Type - Gets or sets the type of the parameter.
 	Type *string `json:"type,omitempty"`
@@ -2572,29 +1292,29 @@ type DscConfigurationParameter struct {
 	DefaultValue *string `json:"defaultValue,omitempty"`
 }
 
-// DscConfigurationProperties definition of the configuration property type.
+// DscConfigurationProperties - Definition of the configuration property type.
 type DscConfigurationProperties struct {
-	// ProvisioningState - Gets or sets the provisioning state of the configuration. Possible values include: 'Succeeded'
-	ProvisioningState DscConfigurationProvisioningState `json:"provisioningState,omitempty"`
+	// ProvisioningState - Gets or sets the provisioning state of the configuration. Possible values include: 'Succeeded', 'None'
+	ProvisioningState DscConfigurationProvisioningStateType `json:"provisioningState,omitempty"`
 	// JobCount - Gets or sets the job count of the configuration.
 	JobCount *int32 `json:"jobCount,omitempty"`
 	// Parameters - Gets or sets the configuration parameters.
-	Parameters *map[string]*DscConfigurationParameter `json:"parameters,omitempty"`
+	Parameters map[string]DscConfigurationParameter `json:"parameters,omitempty"`
 	// Source - Gets or sets the source.
 	Source *ContentSource `json:"source,omitempty"`
-	// State - Gets or sets the state of the configuration. Possible values include: 'DscConfigurationStateNew', 'DscConfigurationStateEdit', 'DscConfigurationStatePublished'
-	State DscConfigurationState `json:"state,omitempty"`
+	// State - Gets or sets the state of the configuration. Possible values include: 'New', 'Edit', 'Published', 'None'
+	State DscConfigurationStateType `json:"state,omitempty"`
 	// LogVerbose - Gets or sets verbose log option.
 	LogVerbose *bool `json:"logVerbose,omitempty"`
 	// CreationTime - Gets or sets the creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
 }
 
-// DscMetaConfiguration definition of the DSC Meta Configuration.
+// DscMetaConfiguration - Definition of the DSC Meta Configuration.
 type DscMetaConfiguration struct {
 	// ConfigurationModeFrequencyMins - Gets or sets the ConfigurationModeFrequencyMins value of the meta configuration.
 	ConfigurationModeFrequencyMins *int32 `json:"configurationModeFrequencyMins,omitempty"`
@@ -2612,9 +1332,9 @@ type DscMetaConfiguration struct {
 	AllowModuleOverwrite *bool `json:"allowModuleOverwrite,omitempty"`
 }
 
-// DscNode definition of the dsc node type.
+// DscNode - Definition of the dsc node type.
 type DscNode struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -2622,13 +1342,13 @@ type DscNode struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 	// LastSeen - Gets or sets the last seen time of the node.
-	LastSeen *date.Time `json:"lastSeen,omitempty"`
+	LastSeen *time.Time `json:"lastSeen,omitempty"`
 	// RegistrationTime - Gets or sets the registration time of the node.
-	RegistrationTime *date.Time `json:"registrationTime,omitempty"`
+	RegistrationTime *time.Time `json:"registrationTime,omitempty"`
 	// IP - Gets or sets the ip of the node.
 	IP *string `json:"ip,omitempty"`
 	// AccountID - Gets or sets the account id of the node.
@@ -2642,146 +1362,104 @@ type DscNode struct {
 	// Etag - Gets or sets the etag of the resource.
 	Etag *string `json:"etag,omitempty"`
 	// ExtensionHandler - Gets or sets the list of extensionHandler properties for a Node.
-	ExtensionHandler *[]DscNodeExtensionHandlerAssociationProperty `json:"extensionHandler,omitempty"`
+	ExtensionHandler []DscNodeExtensionHandlerAssociationProperty `json:"extensionHandler,omitempty"`
 }
 
-// DscNodeConfiguration definition of the dsc node configuration.
+// Response returns the raw HTTP response object.
+func (dn DscNode) Response() *http.Response {
+	return dn.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dn DscNode) StatusCode() int {
+	return dn.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (dn DscNode) HTTPStatus() string {
+	return dn.rawResponse.Status
+}
+
+// DscNodeConfiguration - Definition of the dsc node configuration.
 type DscNodeConfiguration struct {
-	autorest.Response `json:"-"`
-	// Name - Gets or sets the node configuration name.
+	rawResponse *http.Response
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]string `json:"tags,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// CreationTime - Gets or sets creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// Configuration - Gets or sets the configuration of the node.
 	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
-	// ID - Gets or sets the id of the resource.
-	ID *string `json:"id,omitempty"`
 }
 
-// DscNodeConfigurationAssociationProperty the dsc nodeconfiguration property associated with the entity.
+// Response returns the raw HTTP response object.
+func (dnc DscNodeConfiguration) Response() *http.Response {
+	return dnc.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dnc DscNodeConfiguration) StatusCode() int {
+	return dnc.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dnc DscNodeConfiguration) Status() string {
+	return dnc.rawResponse.Status
+}
+
+// DscNodeConfigurationAssociationProperty - The dsc nodeconfiguration property associated with the entity.
 type DscNodeConfigurationAssociationProperty struct {
 	// Name - Gets or sets the name of the dsc nodeconfiguration.
 	Name *string `json:"name,omitempty"`
 }
 
-// DscNodeConfigurationCreateOrUpdateParameters the parameters supplied to the create or update node configuration
+// DscNodeConfigurationCreateOrUpdateParameters - The parameters supplied to the create or update node configuration
 // operation.
 type DscNodeConfigurationCreateOrUpdateParameters struct {
 	// Source - Gets or sets the source.
-	Source *ContentSource `json:"source,omitempty"`
+	Source ContentSource `json:"source,omitempty"`
 	// Name - Gets or sets the type of the parameter.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 	// Configuration - Gets or sets the configuration of the node.
-	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	Configuration DscConfigurationAssociationProperty `json:"configuration,omitempty"`
 	// NewNodeConfigurationBuildVersionRequired - If a new build version of NodeConfiguration is required.
 	NewNodeConfigurationBuildVersionRequired *bool `json:"newNodeConfigurationBuildVersionRequired,omitempty"`
 }
 
-// DscNodeConfigurationListResult the response model for the list job operation.
+// DscNodeConfigurationListResult - The response model for the list job operation.
 type DscNodeConfigurationListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of Dsc node configurations.
-	Value *[]DscNodeConfiguration `json:"value,omitempty"`
+	Value []DscNodeConfiguration `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// DscNodeConfigurationListResultIterator provides access to a complete listing of DscNodeConfiguration values.
-type DscNodeConfigurationListResultIterator struct {
-	i    int
-	page DscNodeConfigurationListResultPage
+// Response returns the raw HTTP response object.
+func (dnclr DscNodeConfigurationListResult) Response() *http.Response {
+	return dnclr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *DscNodeConfigurationListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dnclr DscNodeConfigurationListResult) StatusCode() int {
+	return dnclr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter DscNodeConfigurationListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dnclr DscNodeConfigurationListResult) Status() string {
+	return dnclr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter DscNodeConfigurationListResultIterator) Response() DscNodeConfigurationListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter DscNodeConfigurationListResultIterator) Value() DscNodeConfiguration {
-	if !iter.page.NotDone() {
-		return DscNodeConfiguration{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (dnclr DscNodeConfigurationListResult) IsEmpty() bool {
-	return dnclr.Value == nil || len(*dnclr.Value) == 0
-}
-
-// dscNodeConfigurationListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (dnclr DscNodeConfigurationListResult) dscNodeConfigurationListResultPreparer() (*http.Request, error) {
-	if dnclr.NextLink == nil || len(to.String(dnclr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(dnclr.NextLink)))
-}
-
-// DscNodeConfigurationListResultPage contains a page of DscNodeConfiguration values.
-type DscNodeConfigurationListResultPage struct {
-	fn    func(DscNodeConfigurationListResult) (DscNodeConfigurationListResult, error)
-	dnclr DscNodeConfigurationListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *DscNodeConfigurationListResultPage) Next() error {
-	next, err := page.fn(page.dnclr)
-	if err != nil {
-		return err
-	}
-	page.dnclr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page DscNodeConfigurationListResultPage) NotDone() bool {
-	return !page.dnclr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page DscNodeConfigurationListResultPage) Response() DscNodeConfigurationListResult {
-	return page.dnclr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page DscNodeConfigurationListResultPage) Values() []DscNodeConfiguration {
-	if page.dnclr.IsEmpty() {
-		return nil
-	}
-	return *page.dnclr.Value
-}
-
-// DscNodeExtensionHandlerAssociationProperty the dsc extensionHandler property associated with the node
+// DscNodeExtensionHandlerAssociationProperty - The dsc extensionHandler property associated with the node
 type DscNodeExtensionHandlerAssociationProperty struct {
 	// Name - Gets or sets the name of the extension handler.
 	Name *string `json:"name,omitempty"`
@@ -2789,117 +1467,39 @@ type DscNodeExtensionHandlerAssociationProperty struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// DscNodeListResult the response model for the list dsc nodes operation.
+// DscNodeListResult - The response model for the list dsc nodes operation.
 type DscNodeListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of dsc nodes.
-	Value *[]DscNode `json:"value,omitempty"`
+	Value []DscNode `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// DscNodeListResultIterator provides access to a complete listing of DscNode values.
-type DscNodeListResultIterator struct {
-	i    int
-	page DscNodeListResultPage
+// Response returns the raw HTTP response object.
+func (dnlr DscNodeListResult) Response() *http.Response {
+	return dnlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *DscNodeListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dnlr DscNodeListResult) StatusCode() int {
+	return dnlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter DscNodeListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dnlr DscNodeListResult) Status() string {
+	return dnlr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter DscNodeListResultIterator) Response() DscNodeListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter DscNodeListResultIterator) Value() DscNode {
-	if !iter.page.NotDone() {
-		return DscNode{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (dnlr DscNodeListResult) IsEmpty() bool {
-	return dnlr.Value == nil || len(*dnlr.Value) == 0
-}
-
-// dscNodeListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (dnlr DscNodeListResult) dscNodeListResultPreparer() (*http.Request, error) {
-	if dnlr.NextLink == nil || len(to.String(dnlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(dnlr.NextLink)))
-}
-
-// DscNodeListResultPage contains a page of DscNode values.
-type DscNodeListResultPage struct {
-	fn   func(DscNodeListResult) (DscNodeListResult, error)
-	dnlr DscNodeListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *DscNodeListResultPage) Next() error {
-	next, err := page.fn(page.dnlr)
-	if err != nil {
-		return err
-	}
-	page.dnlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page DscNodeListResultPage) NotDone() bool {
-	return !page.dnlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page DscNodeListResultPage) Response() DscNodeListResult {
-	return page.dnlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page DscNodeListResultPage) Values() []DscNode {
-	if page.dnlr.IsEmpty() {
-		return nil
-	}
-	return *page.dnlr.Value
-}
-
-// DscNodeReport definition of the dsc node report type.
+// DscNodeReport - Definition of the dsc node report type.
 type DscNodeReport struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// EndTime - Gets or sets the end time of the node report.
-	EndTime *date.Time `json:"endTime,omitempty"`
+	EndTime *time.Time `json:"endTime,omitempty"`
 	// LastModifiedTime - Gets or sets the lastModifiedTime of the node report.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// StartTime - Gets or sets the start time of the node report.
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime *time.Time `json:"startTime,omitempty"`
 	// Type - Gets or sets the type of the node report.
 	Type *string `json:"type,omitempty"`
 	// ReportID - Gets or sets the id of the node report.
@@ -2917,126 +1517,63 @@ type DscNodeReport struct {
 	// ID - Gets or sets the id.
 	ID *string `json:"id,omitempty"`
 	// Errors - Gets or sets the errors for the node report.
-	Errors *[]DscReportError `json:"errors,omitempty"`
+	Errors []DscReportError `json:"errors,omitempty"`
 	// Resources - Gets or sets the resource for the node report.
-	Resources *[]DscReportResource `json:"resources,omitempty"`
+	Resources []DscReportResource `json:"resources,omitempty"`
 	// MetaConfiguration - Gets or sets the metaConfiguration of the node at the time of the report.
 	MetaConfiguration *DscMetaConfiguration `json:"metaConfiguration,omitempty"`
 	// HostName - Gets or sets the hostname of the node that sent the report.
 	HostName *string `json:"hostName,omitempty"`
 	// IPV4Addresses - Gets or sets the IPv4 address of the node that sent the report.
-	IPV4Addresses *[]string `json:"iPV4Addresses,omitempty"`
+	IPV4Addresses []string `json:"iPV4Addresses,omitempty"`
 	// IPV6Addresses - Gets or sets the IPv6 address of the node that sent the report.
-	IPV6Addresses *[]string `json:"iPV6Addresses,omitempty"`
+	IPV6Addresses []string `json:"iPV6Addresses,omitempty"`
 	// NumberOfResources - Gets or sets the number of resource in the node report.
 	NumberOfResources *int32 `json:"numberOfResources,omitempty"`
 	// RawErrors - Gets or sets the unparsed errors for the node report.
 	RawErrors *string `json:"rawErrors,omitempty"`
 }
 
-// DscNodeReportListResult the response model for the list dsc nodes operation.
+// Response returns the raw HTTP response object.
+func (dnr DscNodeReport) Response() *http.Response {
+	return dnr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dnr DscNodeReport) StatusCode() int {
+	return dnr.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (dnr DscNodeReport) HTTPStatus() string {
+	return dnr.rawResponse.Status
+}
+
+// DscNodeReportListResult - The response model for the list dsc nodes operation.
 type DscNodeReportListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of dsc node reports.
-	Value *[]DscNodeReport `json:"value,omitempty"`
+	Value []DscNodeReport `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// DscNodeReportListResultIterator provides access to a complete listing of DscNodeReport values.
-type DscNodeReportListResultIterator struct {
-	i    int
-	page DscNodeReportListResultPage
+// Response returns the raw HTTP response object.
+func (dnrlr DscNodeReportListResult) Response() *http.Response {
+	return dnrlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *DscNodeReportListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (dnrlr DscNodeReportListResult) StatusCode() int {
+	return dnrlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter DscNodeReportListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (dnrlr DscNodeReportListResult) Status() string {
+	return dnrlr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter DscNodeReportListResultIterator) Response() DscNodeReportListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter DscNodeReportListResultIterator) Value() DscNodeReport {
-	if !iter.page.NotDone() {
-		return DscNodeReport{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (dnrlr DscNodeReportListResult) IsEmpty() bool {
-	return dnrlr.Value == nil || len(*dnrlr.Value) == 0
-}
-
-// dscNodeReportListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (dnrlr DscNodeReportListResult) dscNodeReportListResultPreparer() (*http.Request, error) {
-	if dnrlr.NextLink == nil || len(to.String(dnrlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(dnrlr.NextLink)))
-}
-
-// DscNodeReportListResultPage contains a page of DscNodeReport values.
-type DscNodeReportListResultPage struct {
-	fn    func(DscNodeReportListResult) (DscNodeReportListResult, error)
-	dnrlr DscNodeReportListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *DscNodeReportListResultPage) Next() error {
-	next, err := page.fn(page.dnrlr)
-	if err != nil {
-		return err
-	}
-	page.dnrlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page DscNodeReportListResultPage) NotDone() bool {
-	return !page.dnrlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page DscNodeReportListResultPage) Response() DscNodeReportListResult {
-	return page.dnrlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page DscNodeReportListResultPage) Values() []DscNodeReport {
-	if page.dnrlr.IsEmpty() {
-		return nil
-	}
-	return *page.dnrlr.Value
-}
-
-// DscNodeUpdateParameters the parameters supplied to the update dsc node operation.
+// DscNodeUpdateParameters - The parameters supplied to the update dsc node operation.
 type DscNodeUpdateParameters struct {
 	// NodeID - Gets or sets the id of the dsc node.
 	NodeID *string `json:"nodeId,omitempty"`
@@ -3044,7 +1581,7 @@ type DscNodeUpdateParameters struct {
 	NodeConfiguration *DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
 }
 
-// DscReportError definition of the dsc node report error type.
+// DscReportError - Definition of the dsc node report error type.
 type DscReportError struct {
 	// ErrorSource - Gets or sets the source of the error.
 	ErrorSource *string `json:"errorSource,omitempty"`
@@ -3060,14 +1597,14 @@ type DscReportError struct {
 	ErrorDetails *string `json:"errorDetails,omitempty"`
 }
 
-// DscReportResource definition of the DSC Report Resource.
+// DscReportResource - Definition of the DSC Report Resource.
 type DscReportResource struct {
 	// ResourceID - Gets or sets the ID of the resource.
 	ResourceID *string `json:"resourceId,omitempty"`
 	// SourceInfo - Gets or sets the source info of the resource.
 	SourceInfo *string `json:"sourceInfo,omitempty"`
 	// DependsOn - Gets or sets the Resource Navigation values for resources the resource depends on.
-	DependsOn *[]DscReportResourceNavigation `json:"dependsOn,omitempty"`
+	DependsOn []DscReportResourceNavigation `json:"dependsOn,omitempty"`
 	// ModuleName - Gets or sets the module name of the resource.
 	ModuleName *string `json:"moduleName,omitempty"`
 	// ModuleVersion - Gets or sets the module version of the resource.
@@ -3081,16 +1618,16 @@ type DscReportResource struct {
 	// DurationInSeconds - Gets or sets the duration in seconds for the resource.
 	DurationInSeconds *float64 `json:"durationInSeconds,omitempty"`
 	// StartDate - Gets or sets the start date of the resource.
-	StartDate *date.Time `json:"startDate,omitempty"`
+	StartDate *time.Time `json:"startDate,omitempty"`
 }
 
-// DscReportResourceNavigation navigation for DSC Report Resource.
+// DscReportResourceNavigation - Navigation for DSC Report Resource.
 type DscReportResourceNavigation struct {
 	// ResourceID - Gets or sets the ID of the resource to navigate to.
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// ErrorResponse error response of an operation failure
+// ErrorResponse - Error response of an operation failure
 type ErrorResponse struct {
 	// Code - Error code
 	Code *string `json:"code,omitempty"`
@@ -3098,366 +1635,251 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// FieldDefinition definition of the connection fields.
+// FieldDefinition - Definition of the connection fields.
 type FieldDefinition struct {
 	// IsEncrypted - Gets or sets the isEncrypted flag of the connection field definition.
 	IsEncrypted *bool `json:"isEncrypted,omitempty"`
 	// IsOptional - Gets or sets the isOptional flag of the connection field definition.
 	IsOptional *bool `json:"isOptional,omitempty"`
 	// Type - Gets or sets the type of the connection field definition.
-	Type *string `json:"type,omitempty"`
+	Type string `json:"type,omitempty"`
 }
 
-// HybridRunbookWorker definition of hybrid runbook worker.
+// GenerateURIResponse ...
+type GenerateURIResponse struct {
+	rawResponse *http.Response
+	Value       *string `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (gur GenerateURIResponse) Response() *http.Response {
+	return gur.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (gur GenerateURIResponse) StatusCode() int {
+	return gur.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (gur GenerateURIResponse) Status() string {
+	return gur.rawResponse.Status
+}
+
+// GetContentResponse ...
+type GetContentResponse struct {
+	rawResponse *http.Response
+}
+
+// Response returns the raw HTTP response object.
+func (gcr GetContentResponse) Response() *http.Response {
+	return gcr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (gcr GetContentResponse) StatusCode() int {
+	return gcr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (gcr GetContentResponse) Status() string {
+	return gcr.rawResponse.Status
+}
+
+// Body returns the raw HTTP response object's Body.
+func (gcr GetContentResponse) Body() io.ReadCloser {
+	return gcr.rawResponse.Body
+}
+
+// GetOutputResponse ...
+type GetOutputResponse struct {
+	rawResponse *http.Response
+}
+
+// Response returns the raw HTTP response object.
+func (gor GetOutputResponse) Response() *http.Response {
+	return gor.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (gor GetOutputResponse) StatusCode() int {
+	return gor.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (gor GetOutputResponse) Status() string {
+	return gor.rawResponse.Status
+}
+
+// Body returns the raw HTTP response object's Body.
+func (gor GetOutputResponse) Body() io.ReadCloser {
+	return gor.rawResponse.Body
+}
+
+// GetRunbookContentResponse ...
+type GetRunbookContentResponse struct {
+	rawResponse *http.Response
+}
+
+// Response returns the raw HTTP response object.
+func (grcr GetRunbookContentResponse) Response() *http.Response {
+	return grcr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (grcr GetRunbookContentResponse) StatusCode() int {
+	return grcr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (grcr GetRunbookContentResponse) Status() string {
+	return grcr.rawResponse.Status
+}
+
+// Body returns the raw HTTP response object's Body.
+func (grcr GetRunbookContentResponse) Body() io.ReadCloser {
+	return grcr.rawResponse.Body
+}
+
+// HybridRunbookWorker - Definition of hybrid runbook worker.
 type HybridRunbookWorker struct {
 	// Name - Gets or sets the worker machine name.
 	Name *string `json:"name,omitempty"`
 	// IP - Gets or sets the assigned machine IP address.
 	IP *string `json:"ip,omitempty"`
 	// RegistrationTime - Gets or sets the registration time of the worker machine.
-	RegistrationTime *date.Time `json:"registrationTime,omitempty"`
+	RegistrationTime *time.Time `json:"registrationTime,omitempty"`
 }
 
-// HybridRunbookWorkerGroup definition of hybrid runbook worker group.
+// HybridRunbookWorkerGroup - Definition of hybrid runbook worker group.
 type HybridRunbookWorkerGroup struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets or sets the id of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Gets or sets the name of the group.
 	Name *string `json:"name,omitempty"`
 	// HybridRunbookWorkers - Gets or sets the list of hybrid runbook workers.
-	HybridRunbookWorkers *[]HybridRunbookWorker `json:"hybridRunbookWorkers,omitempty"`
+	HybridRunbookWorkers []HybridRunbookWorker `json:"hybridRunbookWorkers,omitempty"`
 	// Credential - Sets the credential of a worker group.
 	Credential *RunAsCredentialAssociationProperty `json:"credential,omitempty"`
 }
 
-// HybridRunbookWorkerGroupsListResult the response model for the list hybrid runbook worker groups.
+// Response returns the raw HTTP response object.
+func (hrwg HybridRunbookWorkerGroup) Response() *http.Response {
+	return hrwg.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (hrwg HybridRunbookWorkerGroup) StatusCode() int {
+	return hrwg.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (hrwg HybridRunbookWorkerGroup) Status() string {
+	return hrwg.rawResponse.Status
+}
+
+// HybridRunbookWorkerGroupsListResult - The response model for the list hybrid runbook worker groups.
 type HybridRunbookWorkerGroupsListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of hybrid runbook worker groups.
-	Value *[]HybridRunbookWorkerGroup `json:"value,omitempty"`
+	Value []HybridRunbookWorkerGroup `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// HybridRunbookWorkerGroupsListResultIterator provides access to a complete listing of HybridRunbookWorkerGroup
-// values.
-type HybridRunbookWorkerGroupsListResultIterator struct {
-	i    int
-	page HybridRunbookWorkerGroupsListResultPage
+// Response returns the raw HTTP response object.
+func (hrwglr HybridRunbookWorkerGroupsListResult) Response() *http.Response {
+	return hrwglr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *HybridRunbookWorkerGroupsListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (hrwglr HybridRunbookWorkerGroupsListResult) StatusCode() int {
+	return hrwglr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter HybridRunbookWorkerGroupsListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (hrwglr HybridRunbookWorkerGroupsListResult) Status() string {
+	return hrwglr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter HybridRunbookWorkerGroupsListResultIterator) Response() HybridRunbookWorkerGroupsListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter HybridRunbookWorkerGroupsListResultIterator) Value() HybridRunbookWorkerGroup {
-	if !iter.page.NotDone() {
-		return HybridRunbookWorkerGroup{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (hrwglr HybridRunbookWorkerGroupsListResult) IsEmpty() bool {
-	return hrwglr.Value == nil || len(*hrwglr.Value) == 0
-}
-
-// hybridRunbookWorkerGroupsListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (hrwglr HybridRunbookWorkerGroupsListResult) hybridRunbookWorkerGroupsListResultPreparer() (*http.Request, error) {
-	if hrwglr.NextLink == nil || len(to.String(hrwglr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(hrwglr.NextLink)))
-}
-
-// HybridRunbookWorkerGroupsListResultPage contains a page of HybridRunbookWorkerGroup values.
-type HybridRunbookWorkerGroupsListResultPage struct {
-	fn     func(HybridRunbookWorkerGroupsListResult) (HybridRunbookWorkerGroupsListResult, error)
-	hrwglr HybridRunbookWorkerGroupsListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *HybridRunbookWorkerGroupsListResultPage) Next() error {
-	next, err := page.fn(page.hrwglr)
-	if err != nil {
-		return err
-	}
-	page.hrwglr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page HybridRunbookWorkerGroupsListResultPage) NotDone() bool {
-	return !page.hrwglr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page HybridRunbookWorkerGroupsListResultPage) Response() HybridRunbookWorkerGroupsListResult {
-	return page.hrwglr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page HybridRunbookWorkerGroupsListResultPage) Values() []HybridRunbookWorkerGroup {
-	if page.hrwglr.IsEmpty() {
-		return nil
-	}
-	return *page.hrwglr.Value
-}
-
-// HybridRunbookWorkerGroupUpdateParameters parameters supplied to the update operation.
+// HybridRunbookWorkerGroupUpdateParameters - Parameters supplied to the update operation.
 type HybridRunbookWorkerGroupUpdateParameters struct {
 	// Credential - Sets the credential of a worker group.
 	Credential *RunAsCredentialAssociationProperty `json:"credential,omitempty"`
 }
 
-// Job definition of the job.
+// Job - Definition of the job.
 type Job struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets or sets the id of the resource.
 	ID *string `json:"id,omitempty"`
-	// JobProperties - Gets or sets the properties of the job.
+	// Properties - Gets or sets the properties of the job.
 	*JobProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for Job struct.
-func (j *Job) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		j.ID = &ID
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties JobProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		j.JobProperties = &properties
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (j Job) Response() *http.Response {
+	return j.rawResponse
 }
 
-// JobCreateParameters the parameters supplied to the create job operation.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (j Job) StatusCode() int {
+	return j.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (j Job) Status() string {
+	return j.rawResponse.Status
+}
+
+// JobCreateParameters - The parameters supplied to the create job operation.
 type JobCreateParameters struct {
-	// JobCreateProperties - Gets or sets the list of job properties.
+	// Properties - Gets or sets the list of job properties.
 	*JobCreateProperties `json:"properties,omitempty"`
 	// Name - Gets or sets name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Gets or sets the location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for JobCreateParameters struct.
-func (jcp *JobCreateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties JobCreateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		jcp.JobCreateProperties = &properties
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		jcp.Name = &name
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		jcp.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		jcp.Tags = &tags
-	}
-
-	return nil
-}
-
-// JobCreateProperties the parameters supplied to the create job operation.
+// JobCreateProperties - The parameters supplied to the create job operation.
 type JobCreateProperties struct {
 	// Runbook - Gets or sets the runbook.
-	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
+	Runbook RunbookAssociationProperty `json:"runbook,omitempty"`
 	// Parameters - Gets or sets the parameters of the job.
-	Parameters *map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]string `json:"parameters,omitempty"`
 	// RunOn - Gets or sets the runOn which specifies the group name where the job is to be executed.
 	RunOn *string `json:"runOn,omitempty"`
 }
 
-// JobListResult the response model for the list job operation.
+// JobListResult - The response model for the list job operation.
 type JobListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of jobs.
-	Value *[]Job `json:"value,omitempty"`
+	Value []Job `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// JobListResultIterator provides access to a complete listing of Job values.
-type JobListResultIterator struct {
-	i    int
-	page JobListResultPage
+// Response returns the raw HTTP response object.
+func (jlr JobListResult) Response() *http.Response {
+	return jlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *JobListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (jlr JobListResult) StatusCode() int {
+	return jlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter JobListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (jlr JobListResult) Status() string {
+	return jlr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter JobListResultIterator) Response() JobListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter JobListResultIterator) Value() Job {
-	if !iter.page.NotDone() {
-		return Job{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (jlr JobListResult) IsEmpty() bool {
-	return jlr.Value == nil || len(*jlr.Value) == 0
-}
-
-// jobListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (jlr JobListResult) jobListResultPreparer() (*http.Request, error) {
-	if jlr.NextLink == nil || len(to.String(jlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(jlr.NextLink)))
-}
-
-// JobListResultPage contains a page of Job values.
-type JobListResultPage struct {
-	fn  func(JobListResult) (JobListResult, error)
-	jlr JobListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *JobListResultPage) Next() error {
-	next, err := page.fn(page.jlr)
-	if err != nil {
-		return err
-	}
-	page.jlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page JobListResultPage) NotDone() bool {
-	return !page.jlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page JobListResultPage) Response() JobListResult {
-	return page.jlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page JobListResultPage) Values() []Job {
-	if page.jlr.IsEmpty() {
-		return nil
-	}
-	return *page.jlr.Value
-}
-
-// JobProperties definition of job properties.
+// JobProperties - Definition of job properties.
 type JobProperties struct {
 	// Runbook - Gets or sets the runbook.
 	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
@@ -3468,209 +1890,92 @@ type JobProperties struct {
 	// JobID - Gets or sets the id of the job.
 	JobID *uuid.UUID `json:"jobId,omitempty"`
 	// CreationTime - Gets or sets the creation time of the job.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// Status - Gets or sets the status of the job. Possible values include: 'JobStatusNew', 'JobStatusActivating', 'JobStatusRunning', 'JobStatusCompleted', 'JobStatusFailed', 'JobStatusStopped', 'JobStatusBlocked', 'JobStatusSuspended', 'JobStatusDisconnected', 'JobStatusSuspending', 'JobStatusStopping', 'JobStatusResuming', 'JobStatusRemoving'
-	Status JobStatus `json:"status,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
+	// Status - Gets or sets the status of the job. Possible values include: 'New', 'Activating', 'Running', 'Completed', 'Failed', 'Stopped', 'Blocked', 'Suspended', 'Disconnected', 'Suspending', 'Stopping', 'Resuming', 'Removing', 'None'
+	Status JobStatusType `json:"status,omitempty"`
 	// StatusDetails - Gets or sets the status details of the job.
 	StatusDetails *string `json:"statusDetails,omitempty"`
 	// StartTime - Gets or sets the start time of the job.
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime *time.Time `json:"startTime,omitempty"`
 	// EndTime - Gets or sets the end time of the job.
-	EndTime *date.Time `json:"endTime,omitempty"`
+	EndTime *time.Time `json:"endTime,omitempty"`
 	// Exception - Gets or sets the exception of the job.
 	Exception *string `json:"exception,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time of the job.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// LastStatusModifiedTime - Gets or sets the last status modified time of the job.
-	LastStatusModifiedTime *date.Time `json:"lastStatusModifiedTime,omitempty"`
+	LastStatusModifiedTime *time.Time `json:"lastStatusModifiedTime,omitempty"`
 	// Parameters - Gets or sets the parameters of the job.
-	Parameters *map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]string `json:"parameters,omitempty"`
 }
 
-// JobSchedule definition of the job schedule.
+// JobSchedule - Definition of the job schedule.
 type JobSchedule struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets or sets the id of the resource.
 	ID *string `json:"id,omitempty"`
-	// JobScheduleProperties - Gets or sets the properties of the job schedule.
+	// Properties - Gets or sets the properties of the job schedule.
 	*JobScheduleProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for JobSchedule struct.
-func (js *JobSchedule) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		js.ID = &ID
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties JobScheduleProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		js.JobScheduleProperties = &properties
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (js JobSchedule) Response() *http.Response {
+	return js.rawResponse
 }
 
-// JobScheduleCreateParameters the parameters supplied to the create job schedule operation.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (js JobSchedule) StatusCode() int {
+	return js.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (js JobSchedule) Status() string {
+	return js.rawResponse.Status
+}
+
+// JobScheduleCreateParameters - The parameters supplied to the create job schedule operation.
 type JobScheduleCreateParameters struct {
-	// JobScheduleCreateProperties - Gets or sets the list of job schedule properties.
+	// Properties - Gets or sets the list of job schedule properties.
 	*JobScheduleCreateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for JobScheduleCreateParameters struct.
-func (jscp *JobScheduleCreateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties JobScheduleCreateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		jscp.JobScheduleCreateProperties = &properties
-	}
-
-	return nil
-}
-
-// JobScheduleCreateProperties the parameters supplied to the create job schedule operation.
+// JobScheduleCreateProperties - The parameters supplied to the create job schedule operation.
 type JobScheduleCreateProperties struct {
 	// Schedule - Gets or sets the schedule.
-	Schedule *ScheduleAssociationProperty `json:"schedule,omitempty"`
+	Schedule ScheduleAssociationProperty `json:"schedule,omitempty"`
 	// Runbook - Gets or sets the runbook.
-	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
+	Runbook RunbookAssociationProperty `json:"runbook,omitempty"`
 	// RunOn - Gets or sets the hybrid worker group that the scheduled job should run on.
 	RunOn *string `json:"runOn,omitempty"`
 	// Parameters - Gets or sets a list of job properties.
-	Parameters *map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]string `json:"parameters,omitempty"`
 }
 
-// JobScheduleListResult the response model for the list job schedule operation.
+// JobScheduleListResult - The response model for the list job schedule operation.
 type JobScheduleListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of job schedules.
-	Value *[]JobSchedule `json:"value,omitempty"`
+	Value []JobSchedule `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// JobScheduleListResultIterator provides access to a complete listing of JobSchedule values.
-type JobScheduleListResultIterator struct {
-	i    int
-	page JobScheduleListResultPage
+// Response returns the raw HTTP response object.
+func (jslr JobScheduleListResult) Response() *http.Response {
+	return jslr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *JobScheduleListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (jslr JobScheduleListResult) StatusCode() int {
+	return jslr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter JobScheduleListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (jslr JobScheduleListResult) Status() string {
+	return jslr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter JobScheduleListResultIterator) Response() JobScheduleListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter JobScheduleListResultIterator) Value() JobSchedule {
-	if !iter.page.NotDone() {
-		return JobSchedule{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (jslr JobScheduleListResult) IsEmpty() bool {
-	return jslr.Value == nil || len(*jslr.Value) == 0
-}
-
-// jobScheduleListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (jslr JobScheduleListResult) jobScheduleListResultPreparer() (*http.Request, error) {
-	if jslr.NextLink == nil || len(to.String(jslr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(jslr.NextLink)))
-}
-
-// JobScheduleListResultPage contains a page of JobSchedule values.
-type JobScheduleListResultPage struct {
-	fn   func(JobScheduleListResult) (JobScheduleListResult, error)
-	jslr JobScheduleListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *JobScheduleListResultPage) Next() error {
-	next, err := page.fn(page.jslr)
-	if err != nil {
-		return err
-	}
-	page.jslr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page JobScheduleListResultPage) NotDone() bool {
-	return !page.jslr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page JobScheduleListResultPage) Response() JobScheduleListResult {
-	return page.jslr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page JobScheduleListResultPage) Values() []JobSchedule {
-	if page.jslr.IsEmpty() {
-		return nil
-	}
-	return *page.jslr.Value
-}
-
-// JobScheduleProperties definition of job schedule parameters.
+// JobScheduleProperties - Definition of job schedule parameters.
 type JobScheduleProperties struct {
 	// JobScheduleID - Gets or sets the id of job schedule.
 	JobScheduleID *string `json:"jobScheduleId,omitempty"`
@@ -3681,171 +1986,76 @@ type JobScheduleProperties struct {
 	// RunOn - Gets or sets the hybrid worker group that the scheduled job should run on.
 	RunOn *string `json:"runOn,omitempty"`
 	// Parameters - Gets or sets the parameters of the job schedule.
-	Parameters *map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]string `json:"parameters,omitempty"`
 }
 
-// JobStream definition of the job stream.
+// JobStream - Definition of the job stream.
 type JobStream struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets or sets the id of the resource.
 	ID *string `json:"id,omitempty"`
-	// JobStreamProperties - Gets or sets the id of the job stream.
+	// Properties - Gets or sets the id of the job stream.
 	*JobStreamProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for JobStream struct.
-func (js *JobStream) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		js.ID = &ID
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties JobStreamProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		js.JobStreamProperties = &properties
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (js JobStream) Response() *http.Response {
+	return js.rawResponse
 }
 
-// JobStreamListResult the response model for the list job stream operation.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (js JobStream) StatusCode() int {
+	return js.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (js JobStream) Status() string {
+	return js.rawResponse.Status
+}
+
+// JobStreamListResult - The response model for the list job stream operation.
 type JobStreamListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - A list of job streams.
-	Value *[]JobStream `json:"value,omitempty"`
+	Value []JobStream `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// JobStreamListResultIterator provides access to a complete listing of JobStream values.
-type JobStreamListResultIterator struct {
-	i    int
-	page JobStreamListResultPage
+// Response returns the raw HTTP response object.
+func (jslr JobStreamListResult) Response() *http.Response {
+	return jslr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *JobStreamListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (jslr JobStreamListResult) StatusCode() int {
+	return jslr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter JobStreamListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (jslr JobStreamListResult) Status() string {
+	return jslr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter JobStreamListResultIterator) Response() JobStreamListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter JobStreamListResultIterator) Value() JobStream {
-	if !iter.page.NotDone() {
-		return JobStream{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (jslr JobStreamListResult) IsEmpty() bool {
-	return jslr.Value == nil || len(*jslr.Value) == 0
-}
-
-// jobStreamListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (jslr JobStreamListResult) jobStreamListResultPreparer() (*http.Request, error) {
-	if jslr.NextLink == nil || len(to.String(jslr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(jslr.NextLink)))
-}
-
-// JobStreamListResultPage contains a page of JobStream values.
-type JobStreamListResultPage struct {
-	fn   func(JobStreamListResult) (JobStreamListResult, error)
-	jslr JobStreamListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *JobStreamListResultPage) Next() error {
-	next, err := page.fn(page.jslr)
-	if err != nil {
-		return err
-	}
-	page.jslr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page JobStreamListResultPage) NotDone() bool {
-	return !page.jslr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page JobStreamListResultPage) Response() JobStreamListResult {
-	return page.jslr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page JobStreamListResultPage) Values() []JobStream {
-	if page.jslr.IsEmpty() {
-		return nil
-	}
-	return *page.jslr.Value
-}
-
-// JobStreamProperties definition of the job stream.
+// JobStreamProperties - Definition of the job stream.
 type JobStreamProperties struct {
 	// JobStreamID - Gets or sets the id of the job stream.
 	JobStreamID *string `json:"jobStreamId,omitempty"`
 	// Time - Gets or sets the creation time of the job.
-	Time *date.Time `json:"time,omitempty"`
-	// StreamType - Gets or sets the stream type. Possible values include: 'Progress', 'Output', 'Warning', 'Error', 'Debug', 'Verbose', 'Any'
+	Time *time.Time `json:"time,omitempty"`
+	// StreamType - Gets or sets the stream type. Possible values include: 'Progress', 'Output', 'Warning', 'Error', 'Debug', 'Verbose', 'Any', 'None'
 	StreamType JobStreamType `json:"streamType,omitempty"`
 	// StreamText - Gets or sets the stream text.
 	StreamText *string `json:"streamText,omitempty"`
 	// Summary - Gets or sets the summary.
 	Summary *string `json:"summary,omitempty"`
 	// Value - Gets or sets the values of the job stream.
-	Value *map[string]*map[string]interface{} `json:"value,omitempty"`
+	Value map[string]map[string]interface{} `json:"value,omitempty"`
 }
 
-// Module definition of the module type.
+// Module - Definition of the module type.
 type Module struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -3853,168 +2063,49 @@ type Module struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// ModuleProperties - Gets or sets the module properties.
+	Tags map[string]string `json:"tags,omitempty"`
+	// Properties - Gets or sets the module properties.
 	*ModuleProperties `json:"properties,omitempty"`
 	// Etag - Gets or sets the etag of the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for Module struct.
-func (mVar *Module) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties ModuleProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		mVar.ModuleProperties = &properties
-	}
-
-	v = m["etag"]
-	if v != nil {
-		var etag string
-		err = json.Unmarshal(*m["etag"], &etag)
-		if err != nil {
-			return err
-		}
-		mVar.Etag = &etag
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		mVar.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		mVar.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		mVar.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		mVar.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		mVar.Tags = &tags
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (m Module) Response() *http.Response {
+	return m.rawResponse
 }
 
-// ModuleCreateOrUpdateParameters the parameters supplied to the create or update module operation.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (m Module) StatusCode() int {
+	return m.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (m Module) Status() string {
+	return m.rawResponse.Status
+}
+
+// ModuleCreateOrUpdateParameters - The parameters supplied to the create or update module operation.
 type ModuleCreateOrUpdateParameters struct {
-	// ModuleCreateOrUpdateProperties - Gets or sets the module create properties.
+	// Properties - Gets or sets the module create properties.
 	*ModuleCreateOrUpdateProperties `json:"properties,omitempty"`
 	// Name - Gets or sets name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Gets or sets the location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for ModuleCreateOrUpdateParameters struct.
-func (mcoup *ModuleCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties ModuleCreateOrUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		mcoup.ModuleCreateOrUpdateProperties = &properties
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		mcoup.Name = &name
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		mcoup.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		mcoup.Tags = &tags
-	}
-
-	return nil
-}
-
-// ModuleCreateOrUpdateProperties the parameters supplied to the create or update module properties.
+// ModuleCreateOrUpdateProperties - The parameters supplied to the create or update module properties.
 type ModuleCreateOrUpdateProperties struct {
 	// ContentLink - Gets or sets the module content link.
-	ContentLink *ContentLink `json:"contentLink,omitempty"`
+	ContentLink ContentLink `json:"contentLink,omitempty"`
 }
 
-// ModuleErrorInfo definition of the module error info type.
+// ModuleErrorInfo - Definition of the module error info type.
 type ModuleErrorInfo struct {
 	// Code - Gets or sets the error code.
 	Code *string `json:"code,omitempty"`
@@ -4022,109 +2113,31 @@ type ModuleErrorInfo struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ModuleListResult the response model for the list module operation.
+// ModuleListResult - The response model for the list module operation.
 type ModuleListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of modules.
-	Value *[]Module `json:"value,omitempty"`
+	Value []Module `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// ModuleListResultIterator provides access to a complete listing of Module values.
-type ModuleListResultIterator struct {
-	i    int
-	page ModuleListResultPage
+// Response returns the raw HTTP response object.
+func (mlr ModuleListResult) Response() *http.Response {
+	return mlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ModuleListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (mlr ModuleListResult) StatusCode() int {
+	return mlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ModuleListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (mlr ModuleListResult) Status() string {
+	return mlr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter ModuleListResultIterator) Response() ModuleListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ModuleListResultIterator) Value() Module {
-	if !iter.page.NotDone() {
-		return Module{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (mlr ModuleListResult) IsEmpty() bool {
-	return mlr.Value == nil || len(*mlr.Value) == 0
-}
-
-// moduleListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (mlr ModuleListResult) moduleListResultPreparer() (*http.Request, error) {
-	if mlr.NextLink == nil || len(to.String(mlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(mlr.NextLink)))
-}
-
-// ModuleListResultPage contains a page of Module values.
-type ModuleListResultPage struct {
-	fn  func(ModuleListResult) (ModuleListResult, error)
-	mlr ModuleListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ModuleListResultPage) Next() error {
-	next, err := page.fn(page.mlr)
-	if err != nil {
-		return err
-	}
-	page.mlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ModuleListResultPage) NotDone() bool {
-	return !page.mlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ModuleListResultPage) Response() ModuleListResult {
-	return page.mlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ModuleListResultPage) Values() []Module {
-	if page.mlr.IsEmpty() {
-		return nil
-	}
-	return *page.mlr.Value
-}
-
-// ModuleProperties definition of the module property type.
+// ModuleProperties - Definition of the module property type.
 type ModuleProperties struct {
 	// IsGlobal - Gets or sets the isGlobal flag of the module.
 	IsGlobal *bool `json:"isGlobal,omitempty"`
@@ -4134,91 +2147,39 @@ type ModuleProperties struct {
 	SizeInBytes *int64 `json:"sizeInBytes,omitempty"`
 	// ActivityCount - Gets or sets the activity count of the module.
 	ActivityCount *int32 `json:"activityCount,omitempty"`
-	// ProvisioningState - Gets or sets the provisioning state of the module. Possible values include: 'ModuleProvisioningStateCreated', 'ModuleProvisioningStateCreating', 'ModuleProvisioningStateStartingImportModuleRunbook', 'ModuleProvisioningStateRunningImportModuleRunbook', 'ModuleProvisioningStateContentRetrieved', 'ModuleProvisioningStateContentDownloaded', 'ModuleProvisioningStateContentValidated', 'ModuleProvisioningStateConnectionTypeImported', 'ModuleProvisioningStateContentStored', 'ModuleProvisioningStateModuleDataStored', 'ModuleProvisioningStateActivitiesStored', 'ModuleProvisioningStateModuleImportRunbookComplete', 'ModuleProvisioningStateSucceeded', 'ModuleProvisioningStateFailed', 'ModuleProvisioningStateCancelled', 'ModuleProvisioningStateUpdating'
-	ProvisioningState ModuleProvisioningState `json:"provisioningState,omitempty"`
+	// ProvisioningState - Gets or sets the provisioning state of the module. Possible values include: 'Created', 'Creating', 'StartingImportModuleRunbook', 'RunningImportModuleRunbook', 'ContentRetrieved', 'ContentDownloaded', 'ContentValidated', 'ConnectionTypeImported', 'ContentStored', 'ModuleDataStored', 'ActivitiesStored', 'ModuleImportRunbookComplete', 'Succeeded', 'Failed', 'Cancelled', 'Updating', 'None'
+	ProvisioningState ModuleProvisioningStateType `json:"provisioningState,omitempty"`
 	// ContentLink - Gets or sets the contentLink of the module.
 	ContentLink *ContentLink `json:"contentLink,omitempty"`
 	// Error - Gets or sets the error info of the module.
 	Error *ModuleErrorInfo `json:"error,omitempty"`
 	// CreationTime - Gets or sets the creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
 }
 
-// ModuleUpdateParameters the parameters supplied to the update module operation.
+// ModuleUpdateParameters - The parameters supplied to the update module operation.
 type ModuleUpdateParameters struct {
-	// ModuleUpdateProperties - Gets or sets the module update properties.
+	// Properties - Gets or sets the module update properties.
 	*ModuleUpdateProperties `json:"properties,omitempty"`
 	// Name - Gets or sets name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Gets or sets the location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for ModuleUpdateParameters struct.
-func (mup *ModuleUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties ModuleUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		mup.ModuleUpdateProperties = &properties
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		mup.Name = &name
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		mup.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		mup.Tags = &tags
-	}
-
-	return nil
-}
-
-// ModuleUpdateProperties the parameters supplied to the update properties.
+// ModuleUpdateProperties - The parameters supplied to the update properties.
 type ModuleUpdateProperties struct {
 	// ContentLink - Gets or sets the module content link.
 	ContentLink *ContentLink `json:"contentLink,omitempty"`
 }
 
-// Operation automation REST API operation
+// Operation - Automation REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
@@ -4226,7 +2187,7 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
-// OperationDisplay provider, Resource and Operation values
+// OperationDisplay - Provider, Resource and Operation values
 type OperationDisplay struct {
 	// Provider - Service provider: Microsoft.Automation
 	Provider *string `json:"provider,omitempty"`
@@ -4236,20 +2197,29 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult the response model for the list of Automation operations
+// OperationListResult - The response model for the list of Automation operations
 type OperationListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - List of Automation operations supported by the Automation resource provider.
-	Value *[]Operation `json:"value,omitempty"`
+	Value []Operation `json:"value,omitempty"`
 }
 
-// ReadCloser ...
-type ReadCloser struct {
-	autorest.Response `json:"-"`
-	Value             *io.ReadCloser `json:"value,omitempty"`
+// Response returns the raw HTTP response object.
+func (olr OperationListResult) Response() *http.Response {
+	return olr.rawResponse
 }
 
-// Resource the Resource definition.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (olr OperationListResult) StatusCode() int {
+	return olr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (olr OperationListResult) Status() string {
+	return olr.rawResponse.Status
+}
+
+// Resource - The Resource definition.
 type Resource struct {
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
@@ -4258,20 +2228,20 @@ type Resource struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// RunAsCredentialAssociationProperty definition of runas credential to use for hybrid worker.
+// RunAsCredentialAssociationProperty - Definition of runas credential to use for hybrid worker.
 type RunAsCredentialAssociationProperty struct {
 	// Name - Gets or sets the name of the credential.
 	Name *string `json:"name,omitempty"`
 }
 
-// Runbook definition of the runbook type.
+// Runbook - Definition of the runbook type.
 type Runbook struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name
@@ -4279,197 +2249,78 @@ type Runbook struct {
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// RunbookProperties - Gets or sets the runbook properties.
+	Tags map[string]string `json:"tags,omitempty"`
+	// Properties - Gets or sets the runbook properties.
 	*RunbookProperties `json:"properties,omitempty"`
 	// Etag - Gets or sets the etag of the resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for Runbook struct.
-func (r *Runbook) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties RunbookProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		r.RunbookProperties = &properties
-	}
-
-	v = m["etag"]
-	if v != nil {
-		var etag string
-		err = json.Unmarshal(*m["etag"], &etag)
-		if err != nil {
-			return err
-		}
-		r.Etag = &etag
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		r.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		r.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		r.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		r.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		r.Tags = &tags
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (r Runbook) Response() *http.Response {
+	return r.rawResponse
 }
 
-// RunbookAssociationProperty the runbook property associated with the entity.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (r Runbook) StatusCode() int {
+	return r.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (r Runbook) Status() string {
+	return r.rawResponse.Status
+}
+
+// RunbookAssociationProperty - The runbook property associated with the entity.
 type RunbookAssociationProperty struct {
 	// Name - Gets or sets the name of the runbook.
 	Name *string `json:"name,omitempty"`
 }
 
-// RunbookCreateOrUpdateDraftParameters the parameters supplied to the create or update runbook operation.
+// RunbookCreateOrUpdateDraftParameters - The parameters supplied to the create or update runbook operation.
 type RunbookCreateOrUpdateDraftParameters struct {
 	// RunbookContent - Content of the Runbook.
-	RunbookContent *string `json:"runbookContent,omitempty"`
+	RunbookContent string `json:"runbookContent,omitempty"`
 }
 
-// RunbookCreateOrUpdateDraftProperties the parameters supplied to the create or update dratft runbook properties.
+// RunbookCreateOrUpdateDraftProperties - The parameters supplied to the create or update dratft runbook properties.
 type RunbookCreateOrUpdateDraftProperties struct {
 	// LogVerbose - Gets or sets verbose log option.
 	LogVerbose *bool `json:"logVerbose,omitempty"`
 	// LogProgress - Gets or sets progress log option.
 	LogProgress *bool `json:"logProgress,omitempty"`
-	// RunbookType - Gets or sets the type of the runbook. Possible values include: 'Script', 'Graph', 'PowerShellWorkflow', 'PowerShell', 'GraphPowerShellWorkflow', 'GraphPowerShell'
-	RunbookType RunbookTypeEnum `json:"runbookType,omitempty"`
+	// RunbookType - Gets or sets the type of the runbook. Possible values include: 'Script', 'Graph', 'PowerShellWorkflow', 'PowerShell', 'GraphPowerShellWorkflow', 'GraphPowerShell', 'None'
+	RunbookType RunbookTypeEnumType `json:"runbookType,omitempty"`
 	// Draft - Gets or sets the draft runbook properties.
-	Draft *RunbookDraft `json:"draft,omitempty"`
+	Draft RunbookDraft `json:"draft,omitempty"`
 	// Description - Gets or sets the description of the runbook.
 	Description *string `json:"description,omitempty"`
 	// LogActivityTrace - Gets or sets the activity-level tracing options of the runbook.
 	LogActivityTrace *int32 `json:"logActivityTrace,omitempty"`
 }
 
-// RunbookCreateOrUpdateParameters the parameters supplied to the create or update runbook operation.
+// RunbookCreateOrUpdateParameters - The parameters supplied to the create or update runbook operation.
 type RunbookCreateOrUpdateParameters struct {
-	// RunbookCreateOrUpdateProperties - Gets or sets runbook create or update properties.
+	// Properties - Gets or sets runbook create or update properties.
 	*RunbookCreateOrUpdateProperties `json:"properties,omitempty"`
 	// Name - Gets or sets the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Gets or sets the location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for RunbookCreateOrUpdateParameters struct.
-func (rcoup *RunbookCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties RunbookCreateOrUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		rcoup.RunbookCreateOrUpdateProperties = &properties
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		rcoup.Name = &name
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		rcoup.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		rcoup.Tags = &tags
-	}
-
-	return nil
-}
-
-// RunbookCreateOrUpdateProperties the parameters supplied to the create or update runbook properties.
+// RunbookCreateOrUpdateProperties - The parameters supplied to the create or update runbook properties.
 type RunbookCreateOrUpdateProperties struct {
 	// LogVerbose - Gets or sets verbose log option.
 	LogVerbose *bool `json:"logVerbose,omitempty"`
 	// LogProgress - Gets or sets progress log option.
 	LogProgress *bool `json:"logProgress,omitempty"`
-	// RunbookType - Gets or sets the type of the runbook. Possible values include: 'Script', 'Graph', 'PowerShellWorkflow', 'PowerShell', 'GraphPowerShellWorkflow', 'GraphPowerShell'
-	RunbookType RunbookTypeEnum `json:"runbookType,omitempty"`
+	// RunbookType - Gets or sets the type of the runbook. Possible values include: 'Script', 'Graph', 'PowerShellWorkflow', 'PowerShell', 'GraphPowerShellWorkflow', 'GraphPowerShell', 'None'
+	RunbookType RunbookTypeEnumType `json:"runbookType,omitempty"`
 	// Draft - Gets or sets the draft runbook properties.
 	Draft *RunbookDraft `json:"draft,omitempty"`
 	// PublishContentLink - Gets or sets the published runbook content link.
@@ -4480,197 +2331,86 @@ type RunbookCreateOrUpdateProperties struct {
 	LogActivityTrace *int32 `json:"logActivityTrace,omitempty"`
 }
 
-// RunbookDraft definition of the runbook type.
+// RunbookDraft - Definition of the runbook type.
 type RunbookDraft struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// InEdit - Gets or sets whether runbook is in edit mode.
 	InEdit *bool `json:"inEdit,omitempty"`
 	// DraftContentLink - Gets or sets the draft runbook content link.
 	DraftContentLink *ContentLink `json:"draftContentLink,omitempty"`
 	// CreationTime - Gets or sets the creation time of the runbook draft.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time of the runbook draft.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Parameters - Gets or sets the runbook draft parameters.
-	Parameters *map[string]*RunbookParameter `json:"parameters,omitempty"`
+	Parameters map[string]RunbookParameter `json:"parameters,omitempty"`
 	// OutputTypes - Gets or sets the runbook output types.
-	OutputTypes *[]string `json:"outputTypes,omitempty"`
+	OutputTypes []string `json:"outputTypes,omitempty"`
 }
 
-// RunbookDraftCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type RunbookDraftCreateOrUpdateFuture struct {
-	azure.Future
-	req *http.Request
+// Response returns the raw HTTP response object.
+func (rd RunbookDraft) Response() *http.Response {
+	return rd.rawResponse
 }
 
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future RunbookDraftCreateOrUpdateFuture) Result(client RunbookDraftClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		return
-	}
-	if !done {
-		return ar, autorest.NewError("automation.RunbookDraftCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.CreateOrUpdateResponder(future.Response())
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		return
-	}
-	ar, err = client.CreateOrUpdateResponder(resp)
-	return
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (rd RunbookDraft) StatusCode() int {
+	return rd.rawResponse.StatusCode
 }
 
-// RunbookDraftPublishFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type RunbookDraftPublishFuture struct {
-	azure.Future
-	req *http.Request
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (rd RunbookDraft) Status() string {
+	return rd.rawResponse.Status
 }
 
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future RunbookDraftPublishFuture) Result(client RunbookDraftClient) (r Runbook, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		return
-	}
-	if !done {
-		return r, autorest.NewError("automation.RunbookDraftPublishFuture", "Result", "asynchronous operation has not completed")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		r, err = client.PublishResponder(future.Response())
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		return
-	}
-	r, err = client.PublishResponder(resp)
-	return
-}
-
-// RunbookDraftUndoEditResult the response model for the undoedit runbook operation.
+// RunbookDraftUndoEditResult - The response model for the undoedit runbook operation.
 type RunbookDraftUndoEditResult struct {
-	autorest.Response `json:"-"`
-	// StatusCode - Possible values include: 'Continue', 'SwitchingProtocols', 'OK', 'Created', 'Accepted', 'NonAuthoritativeInformation', 'NoContent', 'ResetContent', 'PartialContent', 'MultipleChoices', 'Ambiguous', 'MovedPermanently', 'Moved', 'Found', 'Redirect', 'SeeOther', 'RedirectMethod', 'NotModified', 'UseProxy', 'Unused', 'TemporaryRedirect', 'RedirectKeepVerb', 'BadRequest', 'Unauthorized', 'PaymentRequired', 'Forbidden', 'NotFound', 'MethodNotAllowed', 'NotAcceptable', 'ProxyAuthenticationRequired', 'RequestTimeout', 'Conflict', 'Gone', 'LengthRequired', 'PreconditionFailed', 'RequestEntityTooLarge', 'RequestURITooLong', 'UnsupportedMediaType', 'RequestedRangeNotSatisfiable', 'ExpectationFailed', 'UpgradeRequired', 'InternalServerError', 'NotImplemented', 'BadGateway', 'ServiceUnavailable', 'GatewayTimeout', 'HTTPVersionNotSupported'
-	StatusCode HTTPStatusCode `json:"statusCode,omitempty"`
-	RequestID  *string        `json:"requestId,omitempty"`
+	rawResponse *http.Response
+	// StatusCode - Possible values include: 'Continue', 'SwitchingProtocols', 'OK', 'Created', 'Accepted', 'NonAuthoritativeInformation', 'NoContent', 'ResetContent', 'PartialContent', 'MultipleChoices', 'Ambiguous', 'MovedPermanently', 'Moved', 'Found', 'Redirect', 'SeeOther', 'RedirectMethod', 'NotModified', 'UseProxy', 'Unused', 'TemporaryRedirect', 'RedirectKeepVerb', 'BadRequest', 'Unauthorized', 'PaymentRequired', 'Forbidden', 'NotFound', 'MethodNotAllowed', 'NotAcceptable', 'ProxyAuthenticationRequired', 'RequestTimeout', 'Conflict', 'Gone', 'LengthRequired', 'PreconditionFailed', 'RequestEntityTooLarge', 'RequestURITooLong', 'UnsupportedMediaType', 'RequestedRangeNotSatisfiable', 'ExpectationFailed', 'UpgradeRequired', 'InternalServerError', 'NotImplemented', 'BadGateway', 'ServiceUnavailable', 'GatewayTimeout', 'HTTPVersionNotSupported', 'None'
+	StatusCode HTTPStatusCodeType `json:"statusCode,omitempty"`
+	RequestID  *string            `json:"requestId,omitempty"`
 }
 
-// RunbookListResult the response model for the list runbook operation.
+// Response returns the raw HTTP response object.
+func (rduer RunbookDraftUndoEditResult) Response() *http.Response {
+	return rduer.rawResponse
+}
+
+// HTTPStatusCode returns the HTTP status code of the response, e.g. 200.
+func (rduer RunbookDraftUndoEditResult) HTTPStatusCode() int {
+	return rduer.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (rduer RunbookDraftUndoEditResult) Status() string {
+	return rduer.rawResponse.Status
+}
+
+// RunbookListResult - The response model for the list runbook operation.
 type RunbookListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of runbooks.
-	Value *[]Runbook `json:"value,omitempty"`
+	Value []Runbook `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// RunbookListResultIterator provides access to a complete listing of Runbook values.
-type RunbookListResultIterator struct {
-	i    int
-	page RunbookListResultPage
+// Response returns the raw HTTP response object.
+func (rlr RunbookListResult) Response() *http.Response {
+	return rlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *RunbookListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (rlr RunbookListResult) StatusCode() int {
+	return rlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter RunbookListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (rlr RunbookListResult) Status() string {
+	return rlr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter RunbookListResultIterator) Response() RunbookListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter RunbookListResultIterator) Value() Runbook {
-	if !iter.page.NotDone() {
-		return Runbook{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (rlr RunbookListResult) IsEmpty() bool {
-	return rlr.Value == nil || len(*rlr.Value) == 0
-}
-
-// runbookListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (rlr RunbookListResult) runbookListResultPreparer() (*http.Request, error) {
-	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(rlr.NextLink)))
-}
-
-// RunbookListResultPage contains a page of Runbook values.
-type RunbookListResultPage struct {
-	fn  func(RunbookListResult) (RunbookListResult, error)
-	rlr RunbookListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *RunbookListResultPage) Next() error {
-	next, err := page.fn(page.rlr)
-	if err != nil {
-		return err
-	}
-	page.rlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page RunbookListResultPage) NotDone() bool {
-	return !page.rlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page RunbookListResultPage) Response() RunbookListResult {
-	return page.rlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page RunbookListResultPage) Values() []Runbook {
-	if page.rlr.IsEmpty() {
-		return nil
-	}
-	return *page.rlr.Value
-}
-
-// RunbookParameter definition of the runbook parameter type.
+// RunbookParameter - Definition of the runbook parameter type.
 type RunbookParameter struct {
 	// Type - Gets or sets the type of the parameter.
 	Type *string `json:"type,omitempty"`
@@ -4682,14 +2422,14 @@ type RunbookParameter struct {
 	DefaultValue *string `json:"defaultValue,omitempty"`
 }
 
-// RunbookProperties definition of the runbook property type.
+// RunbookProperties - Definition of the runbook property type.
 type RunbookProperties struct {
-	// RunbookType - Gets or sets the type of the runbook. Possible values include: 'Script', 'Graph', 'PowerShellWorkflow', 'PowerShell', 'GraphPowerShellWorkflow', 'GraphPowerShell'
-	RunbookType RunbookTypeEnum `json:"runbookType,omitempty"`
+	// RunbookType - Gets or sets the type of the runbook. Possible values include: 'Script', 'Graph', 'PowerShellWorkflow', 'PowerShell', 'GraphPowerShellWorkflow', 'GraphPowerShell', 'None'
+	RunbookType RunbookTypeEnumType `json:"runbookType,omitempty"`
 	// PublishContentLink - Gets or sets the published runbook content link.
 	PublishContentLink *ContentLink `json:"publishContentLink,omitempty"`
-	// State - Gets or sets the state of the runbook. Possible values include: 'RunbookStateNew', 'RunbookStateEdit', 'RunbookStatePublished'
-	State RunbookState `json:"state,omitempty"`
+	// State - Gets or sets the state of the runbook. Possible values include: 'New', 'Edit', 'Published', 'None'
+	State RunbookStateType `json:"state,omitempty"`
 	// LogVerbose - Gets or sets verbose log option.
 	LogVerbose *bool `json:"logVerbose,omitempty"`
 	// LogProgress - Gets or sets progress log option.
@@ -4699,88 +2439,36 @@ type RunbookProperties struct {
 	// JobCount - Gets or sets the job count of the runbook.
 	JobCount *int32 `json:"jobCount,omitempty"`
 	// Parameters - Gets or sets the runbook parameters.
-	Parameters *map[string]*RunbookParameter `json:"parameters,omitempty"`
+	Parameters map[string]RunbookParameter `json:"parameters,omitempty"`
 	// OutputTypes - Gets or sets the runbook output types.
-	OutputTypes *[]string `json:"outputTypes,omitempty"`
+	OutputTypes []string `json:"outputTypes,omitempty"`
 	// Draft - Gets or sets the draft runbook properties.
 	Draft *RunbookDraft `json:"draft,omitempty"`
-	// ProvisioningState - Gets or sets the provisioning state of the runbook. Possible values include: 'RunbookProvisioningStateSucceeded'
-	ProvisioningState RunbookProvisioningState `json:"provisioningState,omitempty"`
+	// ProvisioningState - Gets or sets the provisioning state of the runbook. Possible values include: 'Succeeded', 'None'
+	ProvisioningState RunbookProvisioningStateType `json:"provisioningState,omitempty"`
 	// LastModifiedBy - Gets or sets the last modified by.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 	// CreationTime - Gets or sets the creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
 }
 
-// RunbookUpdateParameters the parameters supplied to the update runbook operation.
+// RunbookUpdateParameters - The parameters supplied to the update runbook operation.
 type RunbookUpdateParameters struct {
-	// RunbookUpdateProperties - Gets or sets the runbook update properties.
+	// Properties - Gets or sets the runbook update properties.
 	*RunbookUpdateProperties `json:"properties,omitempty"`
 	// Name - Gets or sets the name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Location - Gets or sets the location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Gets or sets the tags attached to the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for RunbookUpdateParameters struct.
-func (rup *RunbookUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties RunbookUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		rup.RunbookUpdateProperties = &properties
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		rup.Name = &name
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		rup.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		rup.Tags = &tags
-	}
-
-	return nil
-}
-
-// RunbookUpdateProperties the parameters supplied to the update runbook properties.
+// RunbookUpdateProperties - The parameters supplied to the update runbook properties.
 type RunbookUpdateProperties struct {
 	// Description - Gets or sets the description of the runbook.
 	Description *string `json:"description,omitempty"`
@@ -4792,298 +2480,129 @@ type RunbookUpdateProperties struct {
 	LogActivityTrace *int32 `json:"logActivityTrace,omitempty"`
 }
 
-// Schedule definition of the schedule.
+// Schedule - Definition of the schedule.
 type Schedule struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets or sets the id of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Gets or sets the name of the schedule.
 	Name *string `json:"name,omitempty"`
-	// ScheduleProperties - Gets or sets the properties of the schedule.
+	// Properties - Gets or sets the properties of the schedule.
 	*ScheduleProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for Schedule struct.
-func (s *Schedule) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		s.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		s.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ScheduleProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		s.ScheduleProperties = &properties
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (s Schedule) Response() *http.Response {
+	return s.rawResponse
 }
 
-// ScheduleAssociationProperty the schedule property associated with the entity.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (s Schedule) StatusCode() int {
+	return s.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (s Schedule) Status() string {
+	return s.rawResponse.Status
+}
+
+// ScheduleAssociationProperty - The schedule property associated with the entity.
 type ScheduleAssociationProperty struct {
 	// Name - Gets or sets the name of the schedule.
 	Name *string `json:"name,omitempty"`
 }
 
-// ScheduleCreateOrUpdateParameters the parameters supplied to the create or update schedule operation.
+// ScheduleCreateOrUpdateParameters - The parameters supplied to the create or update schedule operation.
 type ScheduleCreateOrUpdateParameters struct {
 	// Name - Gets or sets the name of the schedule.
-	Name *string `json:"name,omitempty"`
-	// ScheduleCreateOrUpdateProperties - Gets or sets the list of schedule properties.
+	Name string `json:"name,omitempty"`
+	// Properties - Gets or sets the list of schedule properties.
 	*ScheduleCreateOrUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for ScheduleCreateOrUpdateParameters struct.
-func (scoup *ScheduleCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		scoup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ScheduleCreateOrUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		scoup.ScheduleCreateOrUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// ScheduleCreateOrUpdateProperties the parameters supplied to the create or update schedule operation.
+// ScheduleCreateOrUpdateProperties - The parameters supplied to the create or update schedule operation.
 type ScheduleCreateOrUpdateProperties struct {
 	// Description - Gets or sets the description of the schedule.
 	Description *string `json:"description,omitempty"`
 	// StartTime - Gets or sets the start time of the schedule.
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime time.Time `json:"startTime,omitempty"`
 	// ExpiryTime - Gets or sets the end time of the schedule.
-	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
+	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
 	// Interval - Gets or sets the interval of the schedule.
-	Interval *map[string]interface{} `json:"interval,omitempty"`
-	// Frequency - Possible values include: 'OneTime', 'Day', 'Hour', 'Week', 'Month'
-	Frequency ScheduleFrequency `json:"frequency,omitempty"`
+	Interval map[string]interface{} `json:"interval,omitempty"`
+	// Frequency - Possible values include: 'OneTime', 'Day', 'Hour', 'Week', 'Month', 'None'
+	Frequency ScheduleFrequencyType `json:"frequency,omitempty"`
 	// TimeZone - Gets or sets the time zone of the schedule.
 	TimeZone *string `json:"timeZone,omitempty"`
 	// AdvancedSchedule - Gets or sets the AdvancedSchedule.
 	AdvancedSchedule *AdvancedSchedule `json:"advancedSchedule,omitempty"`
 }
 
-// ScheduleListResult the response model for the list schedule operation.
+// ScheduleListResult - The response model for the list schedule operation.
 type ScheduleListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of schedules.
-	Value *[]Schedule `json:"value,omitempty"`
+	Value []Schedule `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// ScheduleListResultIterator provides access to a complete listing of Schedule values.
-type ScheduleListResultIterator struct {
-	i    int
-	page ScheduleListResultPage
+// Response returns the raw HTTP response object.
+func (slr ScheduleListResult) Response() *http.Response {
+	return slr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ScheduleListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (slr ScheduleListResult) StatusCode() int {
+	return slr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ScheduleListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (slr ScheduleListResult) Status() string {
+	return slr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter ScheduleListResultIterator) Response() ScheduleListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ScheduleListResultIterator) Value() Schedule {
-	if !iter.page.NotDone() {
-		return Schedule{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (slr ScheduleListResult) IsEmpty() bool {
-	return slr.Value == nil || len(*slr.Value) == 0
-}
-
-// scheduleListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (slr ScheduleListResult) scheduleListResultPreparer() (*http.Request, error) {
-	if slr.NextLink == nil || len(to.String(slr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(slr.NextLink)))
-}
-
-// ScheduleListResultPage contains a page of Schedule values.
-type ScheduleListResultPage struct {
-	fn  func(ScheduleListResult) (ScheduleListResult, error)
-	slr ScheduleListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ScheduleListResultPage) Next() error {
-	next, err := page.fn(page.slr)
-	if err != nil {
-		return err
-	}
-	page.slr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ScheduleListResultPage) NotDone() bool {
-	return !page.slr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ScheduleListResultPage) Response() ScheduleListResult {
-	return page.slr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ScheduleListResultPage) Values() []Schedule {
-	if page.slr.IsEmpty() {
-		return nil
-	}
-	return *page.slr.Value
-}
-
-// ScheduleProperties definition of schedule parameters.
+// ScheduleProperties - Definition of schedule parameters.
 type ScheduleProperties struct {
 	// StartTime - Gets or sets the start time of the schedule.
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime *time.Time `json:"startTime,omitempty"`
 	// StartTimeOffsetMinutes - Gets the start time's offset in minutes.
 	StartTimeOffsetMinutes *float64 `json:"startTimeOffsetMinutes,omitempty"`
 	// ExpiryTime - Gets or sets the end time of the schedule.
-	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
+	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
 	// ExpiryTimeOffsetMinutes - Gets or sets the expiry time's offset in minutes.
 	ExpiryTimeOffsetMinutes *float64 `json:"expiryTimeOffsetMinutes,omitempty"`
 	// IsEnabled - Gets or sets a value indicating whether this schedule is enabled.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// NextRun - Gets or sets the next run time of the schedule.
-	NextRun *date.Time `json:"nextRun,omitempty"`
+	NextRun *time.Time `json:"nextRun,omitempty"`
 	// NextRunOffsetMinutes - Gets or sets the next run time's offset in minutes.
 	NextRunOffsetMinutes *float64 `json:"nextRunOffsetMinutes,omitempty"`
 	// Interval - Gets or sets the interval of the schedule.
-	Interval *map[string]interface{} `json:"interval,omitempty"`
-	// Frequency - Gets or sets the frequency of the schedule. Possible values include: 'OneTime', 'Day', 'Hour', 'Week', 'Month'
-	Frequency ScheduleFrequency `json:"frequency,omitempty"`
+	Interval map[string]interface{} `json:"interval,omitempty"`
+	// Frequency - Gets or sets the frequency of the schedule. Possible values include: 'OneTime', 'Day', 'Hour', 'Week', 'Month', 'None'
+	Frequency ScheduleFrequencyType `json:"frequency,omitempty"`
 	// TimeZone - Gets or sets the time zone of the schedule.
 	TimeZone *string `json:"timeZone,omitempty"`
 	// AdvancedSchedule - Gets or sets the advanced schedule.
 	AdvancedSchedule *AdvancedSchedule `json:"advancedSchedule,omitempty"`
 	// CreationTime - Gets or sets the creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
 }
 
-// ScheduleUpdateParameters the parameters supplied to the update schedule operation.
+// ScheduleUpdateParameters - The parameters supplied to the update schedule operation.
 type ScheduleUpdateParameters struct {
 	// Name - Gets or sets the name of the schedule.
-	Name *string `json:"name,omitempty"`
-	// ScheduleUpdateProperties - Gets or sets the list of schedule properties.
+	Name string `json:"name,omitempty"`
+	// Properties - Gets or sets the list of schedule properties.
 	*ScheduleUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for ScheduleUpdateParameters struct.
-func (sup *ScheduleUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		sup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ScheduleUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		sup.ScheduleUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// ScheduleUpdateProperties the parameters supplied to the update schedule operation.
+// ScheduleUpdateProperties - The parameters supplied to the update schedule operation.
 type ScheduleUpdateProperties struct {
 	// Description - Gets or sets the description of the schedule.
 	Description *string `json:"description,omitempty"`
@@ -5091,54 +2610,63 @@ type ScheduleUpdateProperties struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 }
 
-// Sku the account SKU.
+// Sku - The account SKU.
 type Sku struct {
-	// Name - Gets or sets the SKU name of the account. Possible values include: 'Free', 'Basic'
-	Name SkuNameEnum `json:"name,omitempty"`
+	// Name - Gets or sets the SKU name of the account. Possible values include: 'Free', 'Basic', 'None'
+	Name SkuNameEnumType `json:"name,omitempty"`
 	// Family - Gets or sets the SKU family.
 	Family *string `json:"family,omitempty"`
 	// Capacity - Gets or sets the SKU capacity.
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
-// Statistics definition of the statistic.
+// Statistics - Definition of the statistic.
 type Statistics struct {
 	// CounterProperty - Gets the property value of the statistic.
 	CounterProperty *string `json:"counterProperty,omitempty"`
 	// CounterValue - Gets the value of the statistic.
 	CounterValue *int64 `json:"counterValue,omitempty"`
 	// StartTime - Gets the startTime of the statistic.
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime *time.Time `json:"startTime,omitempty"`
 	// EndTime - Gets the endTime of the statistic.
-	EndTime *date.Time `json:"endTime,omitempty"`
+	EndTime *time.Time `json:"endTime,omitempty"`
 	// ID - Gets the id.
 	ID *string `json:"id,omitempty"`
 }
 
-// StatisticsListResult the response model for the list statistics operation.
+// StatisticsListResult - The response model for the list statistics operation.
 type StatisticsListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of statistics.
-	Value *[]Statistics `json:"value,omitempty"`
+	Value []Statistics `json:"value,omitempty"`
 }
 
-// String ...
-type String struct {
-	autorest.Response `json:"-"`
-	Value             *string `json:"value,omitempty"`
+// Response returns the raw HTTP response object.
+func (slr StatisticsListResult) Response() *http.Response {
+	return slr.rawResponse
 }
 
-// SubResource the Sub Resource definition.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (slr StatisticsListResult) StatusCode() int {
+	return slr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (slr StatisticsListResult) Status() string {
+	return slr.rawResponse.Status
+}
+
+// SubResource - The Sub Resource definition.
 type SubResource struct {
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 }
 
-// TestJob definition of the test job.
+// TestJob - Definition of the test job.
 type TestJob struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// CreationTime - Gets or sets the creation time of the test job.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// Status - Gets or sets the status of the test job.
 	Status *string `json:"status,omitempty"`
 	// StatusDetails - Gets or sets the status details of the test job.
@@ -5146,30 +2674,45 @@ type TestJob struct {
 	// RunOn - Gets or sets the runOn which specifies the group name where the job is to be executed.
 	RunOn *string `json:"runOn,omitempty"`
 	// StartTime - Gets or sets the start time of the test job.
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime *time.Time `json:"startTime,omitempty"`
 	// EndTime - Gets or sets the end time of the test job.
-	EndTime *date.Time `json:"endTime,omitempty"`
+	EndTime *time.Time `json:"endTime,omitempty"`
 	// Exception - Gets or sets the exception of the test job.
 	Exception *string `json:"exception,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time of the test job.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// LastStatusModifiedTime - Gets or sets the last status modified time of the test job.
-	LastStatusModifiedTime *date.Time `json:"lastStatusModifiedTime,omitempty"`
+	LastStatusModifiedTime *time.Time `json:"lastStatusModifiedTime,omitempty"`
 	// Parameters - Gets or sets the parameters of the test job.
-	Parameters *map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]string `json:"parameters,omitempty"`
 }
 
-// TestJobCreateParameters the parameters supplied to the create test job operation.
+// Response returns the raw HTTP response object.
+func (tj TestJob) Response() *http.Response {
+	return tj.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (tj TestJob) StatusCode() int {
+	return tj.rawResponse.StatusCode
+}
+
+// HTTPStatus returns the HTTP status message of the response, e.g. "200 OK".
+func (tj TestJob) HTTPStatus() string {
+	return tj.rawResponse.Status
+}
+
+// TestJobCreateParameters - The parameters supplied to the create test job operation.
 type TestJobCreateParameters struct {
 	// RunbookName - Gets or sets the runbook name.
-	RunbookName *string `json:"runbookName,omitempty"`
+	RunbookName string `json:"runbookName,omitempty"`
 	// Parameters - Gets or sets the parameters of the test job.
-	Parameters *map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]string `json:"parameters,omitempty"`
 	// RunOn - Gets or sets the runOn which specifies the group name where the job is to be executed.
 	RunOn *string `json:"runOn,omitempty"`
 }
 
-// TypeField information about a field of a type.
+// TypeField - Information about a field of a type.
 type TypeField struct {
 	// Name - Gets or sets the name of the field.
 	Name *string `json:"name,omitempty"`
@@ -5177,14 +2720,29 @@ type TypeField struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// TypeFieldListResult the response model for the list fields operation.
+// TypeFieldListResult - The response model for the list fields operation.
 type TypeFieldListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of fields.
-	Value *[]TypeField `json:"value,omitempty"`
+	Value []TypeField `json:"value,omitempty"`
 }
 
-// Usage definition of Usage.
+// Response returns the raw HTTP response object.
+func (tflr TypeFieldListResult) Response() *http.Response {
+	return tflr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (tflr TypeFieldListResult) StatusCode() int {
+	return tflr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (tflr TypeFieldListResult) Status() string {
+	return tflr.rawResponse.Status
+}
+
+// Usage - Definition of Usage.
 type Usage struct {
 	// ID - Gets or sets the id of the resource.
 	ID *string `json:"id,omitempty"`
@@ -5200,7 +2758,7 @@ type Usage struct {
 	ThrottleStatus *string `json:"throttleStatus,omitempty"`
 }
 
-// UsageCounterName definition of usage counter name.
+// UsageCounterName - Definition of usage counter name.
 type UsageCounterName struct {
 	// Value - Gets or sets the usage counter name.
 	Value *string `json:"value,omitempty"`
@@ -5208,107 +2766,63 @@ type UsageCounterName struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
-// UsageListResult the response model for the get usage operation.
+// UsageListResult - The response model for the get usage operation.
 type UsageListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets usage.
-	Value *[]Usage `json:"value,omitempty"`
+	Value []Usage `json:"value,omitempty"`
 }
 
-// Variable definition of the varible.
+// Response returns the raw HTTP response object.
+func (ulr UsageListResult) Response() *http.Response {
+	return ulr.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ulr UsageListResult) StatusCode() int {
+	return ulr.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ulr UsageListResult) Status() string {
+	return ulr.rawResponse.Status
+}
+
+// Variable - Definition of the varible.
 type Variable struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets or sets the id of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Gets or sets the name of the variable.
 	Name *string `json:"name,omitempty"`
-	// VariableProperties - Gets or sets the properties of the variable.
+	// Properties - Gets or sets the properties of the variable.
 	*VariableProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for Variable struct.
-func (vVar *Variable) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		vVar.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		vVar.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties VariableProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		vVar.VariableProperties = &properties
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (v Variable) Response() *http.Response {
+	return v.rawResponse
 }
 
-// VariableCreateOrUpdateParameters the parameters supplied to the create or update variable operation.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (v Variable) StatusCode() int {
+	return v.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (v Variable) Status() string {
+	return v.rawResponse.Status
+}
+
+// VariableCreateOrUpdateParameters - The parameters supplied to the create or update variable operation.
 type VariableCreateOrUpdateParameters struct {
 	// Name - Gets or sets the name of the variable.
-	Name *string `json:"name,omitempty"`
-	// VariableCreateOrUpdateProperties - Gets or sets the properties of the variable.
+	Name string `json:"name,omitempty"`
+	// Properties - Gets or sets the properties of the variable.
 	*VariableCreateOrUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for VariableCreateOrUpdateParameters struct.
-func (vcoup *VariableCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		vcoup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties VariableCreateOrUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		vcoup.VariableCreateOrUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// VariableCreateOrUpdateProperties the properties of the create variable operation.
+// VariableCreateOrUpdateProperties - The properties of the create variable operation.
 type VariableCreateOrUpdateProperties struct {
 	// Value - Gets or sets the value of the variable.
 	Value *string `json:"value,omitempty"`
@@ -5318,163 +2832,53 @@ type VariableCreateOrUpdateProperties struct {
 	IsEncrypted *bool `json:"isEncrypted,omitempty"`
 }
 
-// VariableListResult the response model for the list variables operation.
+// VariableListResult - The response model for the list variables operation.
 type VariableListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of variables.
-	Value *[]Variable `json:"value,omitempty"`
+	Value []Variable `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// VariableListResultIterator provides access to a complete listing of Variable values.
-type VariableListResultIterator struct {
-	i    int
-	page VariableListResultPage
+// Response returns the raw HTTP response object.
+func (vlr VariableListResult) Response() *http.Response {
+	return vlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *VariableListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (vlr VariableListResult) StatusCode() int {
+	return vlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter VariableListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (vlr VariableListResult) Status() string {
+	return vlr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter VariableListResultIterator) Response() VariableListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter VariableListResultIterator) Value() Variable {
-	if !iter.page.NotDone() {
-		return Variable{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (vlr VariableListResult) IsEmpty() bool {
-	return vlr.Value == nil || len(*vlr.Value) == 0
-}
-
-// variableListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (vlr VariableListResult) variableListResultPreparer() (*http.Request, error) {
-	if vlr.NextLink == nil || len(to.String(vlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(vlr.NextLink)))
-}
-
-// VariableListResultPage contains a page of Variable values.
-type VariableListResultPage struct {
-	fn  func(VariableListResult) (VariableListResult, error)
-	vlr VariableListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *VariableListResultPage) Next() error {
-	next, err := page.fn(page.vlr)
-	if err != nil {
-		return err
-	}
-	page.vlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page VariableListResultPage) NotDone() bool {
-	return !page.vlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page VariableListResultPage) Response() VariableListResult {
-	return page.vlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page VariableListResultPage) Values() []Variable {
-	if page.vlr.IsEmpty() {
-		return nil
-	}
-	return *page.vlr.Value
-}
-
-// VariableProperties definition of the varible properties
+// VariableProperties - Definition of the varible properties
 type VariableProperties struct {
 	// Value - Gets or sets the value of the variable.
 	Value *string `json:"value,omitempty"`
 	// IsEncrypted - Gets or sets the encrypted flag of the variable.
 	IsEncrypted *bool `json:"isEncrypted,omitempty"`
 	// CreationTime - Gets or sets the creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
 }
 
-// VariableUpdateParameters the parameters supplied to the update variable operation.
+// VariableUpdateParameters - The parameters supplied to the update variable operation.
 type VariableUpdateParameters struct {
 	// Name - Gets or sets the name of the variable.
-	Name *string `json:"name,omitempty"`
-	// VariableUpdateProperties - Gets or sets the value of the variable.
+	Name string `json:"name,omitempty"`
+	// Properties - Gets or sets the value of the variable.
 	*VariableUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for VariableUpdateParameters struct.
-func (vup *VariableUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		vup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties VariableUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		vup.VariableUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// VariableUpdateProperties the properties of the update variable
+// VariableUpdateProperties - The properties of the update variable
 type VariableUpdateProperties struct {
 	// Value - Gets or sets the value of the variable.
 	Value *string `json:"value,omitempty"`
@@ -5482,289 +2886,120 @@ type VariableUpdateProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// Webhook definition of the webhook type.
+// Webhook - Definition of the webhook type.
 type Webhook struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - Gets or sets the id of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Gets or sets the name of the webhook.
 	Name *string `json:"name,omitempty"`
-	// WebhookProperties - Gets or sets the webhook properties.
+	// Properties - Gets or sets the webhook properties.
 	*WebhookProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for Webhook struct.
-func (w *Webhook) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		w.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		w.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties WebhookProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		w.WebhookProperties = &properties
-	}
-
-	return nil
+// Response returns the raw HTTP response object.
+func (w Webhook) Response() *http.Response {
+	return w.rawResponse
 }
 
-// WebhookCreateOrUpdateParameters the parameters supplied to the create or update webhook operation.
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (w Webhook) StatusCode() int {
+	return w.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (w Webhook) Status() string {
+	return w.rawResponse.Status
+}
+
+// WebhookCreateOrUpdateParameters - The parameters supplied to the create or update webhook operation.
 type WebhookCreateOrUpdateParameters struct {
 	// Name - Gets or sets the name of the webhook.
-	Name *string `json:"name,omitempty"`
-	// WebhookCreateOrUpdateProperties - Gets or sets the properties of the webhook.
+	Name string `json:"name,omitempty"`
+	// Properties - Gets or sets the properties of the webhook.
 	*WebhookCreateOrUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for WebhookCreateOrUpdateParameters struct.
-func (wcoup *WebhookCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		wcoup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties WebhookCreateOrUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		wcoup.WebhookCreateOrUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// WebhookCreateOrUpdateProperties the properties of the create webhook operation.
+// WebhookCreateOrUpdateProperties - The properties of the create webhook operation.
 type WebhookCreateOrUpdateProperties struct {
 	// IsEnabled - Gets or sets the value of the enabled flag of webhook.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// URI - Gets or sets the uri.
 	URI *string `json:"uri,omitempty"`
 	// ExpiryTime - Gets or sets the expiry time.
-	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
+	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
 	// Parameters - Gets or sets the parameters of the job.
-	Parameters *map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]string `json:"parameters,omitempty"`
 	// Runbook - Gets or sets the runbook.
 	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
 	// RunOn - Gets or sets the name of the hybrid worker group the webhook job will run on.
 	RunOn *string `json:"runOn,omitempty"`
 }
 
-// WebhookListResult the response model for the list webhook operation.
+// WebhookListResult - The response model for the list webhook operation.
 type WebhookListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - Gets or sets a list of webhooks.
-	Value *[]Webhook `json:"value,omitempty"`
+	Value []Webhook `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// WebhookListResultIterator provides access to a complete listing of Webhook values.
-type WebhookListResultIterator struct {
-	i    int
-	page WebhookListResultPage
+// Response returns the raw HTTP response object.
+func (wlr WebhookListResult) Response() *http.Response {
+	return wlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *WebhookListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (wlr WebhookListResult) StatusCode() int {
+	return wlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter WebhookListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (wlr WebhookListResult) Status() string {
+	return wlr.rawResponse.Status
 }
 
-// Response returns the raw server response from the last page request.
-func (iter WebhookListResultIterator) Response() WebhookListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter WebhookListResultIterator) Value() Webhook {
-	if !iter.page.NotDone() {
-		return Webhook{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (wlr WebhookListResult) IsEmpty() bool {
-	return wlr.Value == nil || len(*wlr.Value) == 0
-}
-
-// webhookListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (wlr WebhookListResult) webhookListResultPreparer() (*http.Request, error) {
-	if wlr.NextLink == nil || len(to.String(wlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(wlr.NextLink)))
-}
-
-// WebhookListResultPage contains a page of Webhook values.
-type WebhookListResultPage struct {
-	fn  func(WebhookListResult) (WebhookListResult, error)
-	wlr WebhookListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *WebhookListResultPage) Next() error {
-	next, err := page.fn(page.wlr)
-	if err != nil {
-		return err
-	}
-	page.wlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page WebhookListResultPage) NotDone() bool {
-	return !page.wlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page WebhookListResultPage) Response() WebhookListResult {
-	return page.wlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page WebhookListResultPage) Values() []Webhook {
-	if page.wlr.IsEmpty() {
-		return nil
-	}
-	return *page.wlr.Value
-}
-
-// WebhookProperties definition of the webhook properties
+// WebhookProperties - Definition of the webhook properties
 type WebhookProperties struct {
 	// IsEnabled - Gets or sets the value of the enabled flag of the webhook.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// URI - Gets or sets the webhook uri.
 	URI *string `json:"uri,omitempty"`
 	// ExpiryTime - Gets or sets the expiry time.
-	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
+	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
 	// LastInvokedTime - Gets or sets the last invoked time.
-	LastInvokedTime *date.Time `json:"lastInvokedTime,omitempty"`
+	LastInvokedTime *time.Time `json:"lastInvokedTime,omitempty"`
 	// Parameters - Gets or sets the parameters of the job that is created when the webhook calls the runbook it is associated with.
-	Parameters *map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]string `json:"parameters,omitempty"`
 	// Runbook - Gets or sets the runbook the webhook is associated with.
 	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
 	// RunOn - Gets or sets the name of the hybrid worker group the webhook job will run on.
 	RunOn *string `json:"runOn,omitempty"`
 	// CreationTime - Gets or sets the creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
 	// Description - Gets or sets the description.
 	Description *string `json:"description,omitempty"`
 }
 
-// WebhookUpdateParameters the parameters supplied to the update webhook operation.
+// WebhookUpdateParameters - The parameters supplied to the update webhook operation.
 type WebhookUpdateParameters struct {
 	// Name - Gets or sets the name of the webhook.
-	Name *string `json:"name,omitempty"`
-	// WebhookUpdateProperties - Gets or sets the value of the webhook.
+	Name string `json:"name,omitempty"`
+	// Properties - Gets or sets the value of the webhook.
 	*WebhookUpdateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for WebhookUpdateParameters struct.
-func (wup *WebhookUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		wup.Name = &name
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties WebhookUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		wup.WebhookUpdateProperties = &properties
-	}
-
-	return nil
-}
-
-// WebhookUpdateProperties the properties of the update webhook.
+// WebhookUpdateProperties - The properties of the update webhook.
 type WebhookUpdateProperties struct {
 	// IsEnabled - Gets or sets the value of the enabled flag of webhook.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RunOn - Gets or sets the name of the hybrid worker group the webhook job will run on.
 	RunOn *string `json:"runOn,omitempty"`
 	// Parameters - Gets or sets the parameters of the job.
-	Parameters *map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]string `json:"parameters,omitempty"`
 	// Description - Gets or sets the description of the webhook.
 	Description *string `json:"description,omitempty"`
 }

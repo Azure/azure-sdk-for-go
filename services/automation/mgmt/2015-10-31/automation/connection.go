@@ -18,426 +18,334 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // ConnectionClient is the automation Client
 type ConnectionClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewConnectionClient creates an instance of the ConnectionClient client.
-func NewConnectionClient(subscriptionID string, resourceGroupName string) ConnectionClient {
-	return NewConnectionClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName)
-}
-
-// NewConnectionClientWithBaseURI creates an instance of the ConnectionClient client.
-func NewConnectionClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) ConnectionClient {
-	return ConnectionClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName)}
+func NewConnectionClient(p pipeline.Pipeline) ConnectionClient {
+	return ConnectionClient{NewManagementClient(p)}
 }
 
 // CreateOrUpdate create or update a connection.
 //
 // automationAccountName is the automation account name. connectionName is the parameters supplied to the create or
 // update connection operation. parameters is the parameters supplied to the create or update connection operation.
-func (client ConnectionClient) CreateOrUpdate(ctx context.Context, automationAccountName string, connectionName string, parameters ConnectionCreateOrUpdateParameters) (result Connection, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.ConnectionCreateOrUpdateProperties", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.ConnectionCreateOrUpdateProperties.ConnectionType", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.ConnectionClient", "CreateOrUpdate")
+func (client ConnectionClient) CreateOrUpdate(ctx context.Context, automationAccountName string, connectionName string, parameters ConnectionCreateOrUpdateParameters) (*Connection, error) {
+	if err := validate([]validation{
+		{targetValue: client.ResourceGroupName,
+			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}},
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.Name", name: null, rule: true, chain: nil},
+				{target: "parameters.ConnectionCreateOrUpdateProperties", name: null, rule: true,
+					chain: []constraint{{target: "parameters.ConnectionCreateOrUpdateProperties.ConnectionType", name: null, rule: true, chain: nil}}}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.CreateOrUpdatePreparer(ctx, automationAccountName, connectionName, parameters)
+	req, err := client.createOrUpdatePreparer(automationAccountName, connectionName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "CreateOrUpdate", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.CreateOrUpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createOrUpdateResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "CreateOrUpdate", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Connection), err
 }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ConnectionClient) CreateOrUpdatePreparer(ctx context.Context, automationAccountName string, connectionName string, parameters ConnectionCreateOrUpdateParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"connectionName":        autorest.Encode("path", connectionName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+// createOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client ConnectionClient) createOrUpdatePreparer(automationAccountName string, connectionName string, parameters ConnectionCreateOrUpdateParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/connections/{connectionName}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-31"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/connections/{connectionName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client ConnectionClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
-// closes the http.Response Body.
-func (client ConnectionClient) CreateOrUpdateResponder(resp *http.Response) (result Connection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createOrUpdateResponder handles the response to the CreateOrUpdate request.
+func (client ConnectionClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusCreated, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Connection{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Delete delete the connection.
 //
 // automationAccountName is the automation account name. connectionName is the name of connection.
-func (client ConnectionClient) Delete(ctx context.Context, automationAccountName string, connectionName string) (result Connection, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.ConnectionClient", "Delete")
+func (client ConnectionClient) Delete(ctx context.Context, automationAccountName string, connectionName string) (*Connection, error) {
+	if err := validate([]validation{
+		{targetValue: client.ResourceGroupName,
+			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.DeletePreparer(ctx, automationAccountName, connectionName)
+	req, err := client.deletePreparer(automationAccountName, connectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "Delete", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.DeleteSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "Delete", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Connection), err
 }
 
-// DeletePreparer prepares the Delete request.
-func (client ConnectionClient) DeletePreparer(ctx context.Context, automationAccountName string, connectionName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"connectionName":        autorest.Encode("path", connectionName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+// deletePreparer prepares the Delete request.
+func (client ConnectionClient) deletePreparer(automationAccountName string, connectionName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/connections/{connectionName}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-31"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/connections/{connectionName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client ConnectionClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client ConnectionClient) DeleteResponder(resp *http.Response) (result Connection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// deleteResponder handles the response to the Delete request.
+func (client ConnectionClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Connection{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Get retrieve the connection identified by connection name.
 //
 // automationAccountName is the automation account name. connectionName is the name of connection.
-func (client ConnectionClient) Get(ctx context.Context, automationAccountName string, connectionName string) (result Connection, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.ConnectionClient", "Get")
+func (client ConnectionClient) Get(ctx context.Context, automationAccountName string, connectionName string) (*Connection, error) {
+	if err := validate([]validation{
+		{targetValue: client.ResourceGroupName,
+			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.GetPreparer(ctx, automationAccountName, connectionName)
+	req, err := client.getPreparer(automationAccountName, connectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Connection), err
 }
 
-// GetPreparer prepares the Get request.
-func (client ConnectionClient) GetPreparer(ctx context.Context, automationAccountName string, connectionName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"connectionName":        autorest.Encode("path", connectionName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+// getPreparer prepares the Get request.
+func (client ConnectionClient) getPreparer(automationAccountName string, connectionName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/connections/{connectionName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-31"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/connections/{connectionName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client ConnectionClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client ConnectionClient) GetResponder(resp *http.Response) (result Connection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getResponder handles the response to the Get request.
+func (client ConnectionClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Connection{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListByAutomationAccount retrieve a list of connections.
 //
 // automationAccountName is the automation account name.
-func (client ConnectionClient) ListByAutomationAccount(ctx context.Context, automationAccountName string) (result ConnectionListResultPage, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.ConnectionClient", "ListByAutomationAccount")
+func (client ConnectionClient) ListByAutomationAccount(ctx context.Context, automationAccountName string) (*ConnectionListResult, error) {
+	if err := validate([]validation{
+		{targetValue: client.ResourceGroupName,
+			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	result.fn = client.listByAutomationAccountNextResults
-	req, err := client.ListByAutomationAccountPreparer(ctx, automationAccountName)
+	req, err := client.listByAutomationAccountPreparer(automationAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "ListByAutomationAccount", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListByAutomationAccountSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByAutomationAccountResponder}, req)
 	if err != nil {
-		result.clr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "ListByAutomationAccount", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.clr, err = client.ListByAutomationAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "ListByAutomationAccount", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*ConnectionListResult), err
 }
 
-// ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
-func (client ConnectionClient) ListByAutomationAccountPreparer(ctx context.Context, automationAccountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-10-31"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/connections", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListByAutomationAccountSender sends the ListByAutomationAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client ConnectionClient) ListByAutomationAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListByAutomationAccountResponder handles the response to the ListByAutomationAccount request. The method always
-// closes the http.Response Body.
-func (client ConnectionClient) ListByAutomationAccountResponder(resp *http.Response) (result ConnectionListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listByAutomationAccountNextResults retrieves the next set of results, if any.
-func (client ConnectionClient) listByAutomationAccountNextResults(lastResults ConnectionListResult) (result ConnectionListResult, err error) {
-	req, err := lastResults.connectionListResultPreparer()
+// listByAutomationAccountPreparer prepares the ListByAutomationAccount request.
+func (client ConnectionClient) listByAutomationAccountPreparer(automationAccountName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/connections"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "automation.ConnectionClient", "listByAutomationAccountNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListByAutomationAccountSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "automation.ConnectionClient", "listByAutomationAccountNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListByAutomationAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "listByAutomationAccountNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListByAutomationAccountComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ConnectionClient) ListByAutomationAccountComplete(ctx context.Context, automationAccountName string) (result ConnectionListResultIterator, err error) {
-	result.page, err = client.ListByAutomationAccount(ctx, automationAccountName)
-	return
+// listByAutomationAccountResponder handles the response to the ListByAutomationAccount request.
+func (client ConnectionClient) listByAutomationAccountResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &ConnectionListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Update update a connection.
 //
 // automationAccountName is the automation account name. connectionName is the parameters supplied to the update a
 // connection operation. parameters is the parameters supplied to the update a connection operation.
-func (client ConnectionClient) Update(ctx context.Context, automationAccountName string, connectionName string, parameters ConnectionUpdateParameters) (result Connection, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.ConnectionClient", "Update")
+func (client ConnectionClient) Update(ctx context.Context, automationAccountName string, connectionName string, parameters ConnectionUpdateParameters) (*Connection, error) {
+	if err := validate([]validation{
+		{targetValue: client.ResourceGroupName,
+			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.UpdatePreparer(ctx, automationAccountName, connectionName, parameters)
+	req, err := client.updatePreparer(automationAccountName, connectionName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "Update", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.UpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "Update", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.ConnectionClient", "Update", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Connection), err
 }
 
-// UpdatePreparer prepares the Update request.
-func (client ConnectionClient) UpdatePreparer(ctx context.Context, automationAccountName string, connectionName string, parameters ConnectionUpdateParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"connectionName":        autorest.Encode("path", connectionName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+// updatePreparer prepares the Update request.
+func (client ConnectionClient) updatePreparer(automationAccountName string, connectionName string, parameters ConnectionUpdateParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/connections/{connectionName}"
+	req, err := pipeline.NewRequest("PATCH", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-31"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/connections/{connectionName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// UpdateSender sends the Update request. The method will close the
-// http.Response Body if it receives an error.
-func (client ConnectionClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// UpdateResponder handles the response to the Update request. The method always
-// closes the http.Response Body.
-func (client ConnectionClient) UpdateResponder(resp *http.Response) (result Connection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// updateResponder handles the response to the Update request.
+func (client ConnectionClient) updateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Connection{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

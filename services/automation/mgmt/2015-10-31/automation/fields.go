@@ -19,98 +19,77 @@ package automation
 
 import (
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // FieldsClient is the automation Client
 type FieldsClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewFieldsClient creates an instance of the FieldsClient client.
-func NewFieldsClient(subscriptionID string, resourceGroupName string) FieldsClient {
-	return NewFieldsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName)
-}
-
-// NewFieldsClientWithBaseURI creates an instance of the FieldsClient client.
-func NewFieldsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) FieldsClient {
-	return FieldsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName)}
+func NewFieldsClient(p pipeline.Pipeline) FieldsClient {
+	return FieldsClient{NewManagementClient(p)}
 }
 
 // ListByType retrieve a list of fields of a given type identified by module name.
 //
 // automationAccountName is the automation account name. moduleName is the name of module. typeName is the name of
 // type.
-func (client FieldsClient) ListByType(ctx context.Context, automationAccountName string, moduleName string, typeName string) (result TypeFieldListResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.FieldsClient", "ListByType")
+func (client FieldsClient) ListByType(ctx context.Context, automationAccountName string, moduleName string, typeName string) (*TypeFieldListResult, error) {
+	if err := validate([]validation{
+		{targetValue: client.ResourceGroupName,
+			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.ListByTypePreparer(ctx, automationAccountName, moduleName, typeName)
+	req, err := client.listByTypePreparer(automationAccountName, moduleName, typeName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.FieldsClient", "ListByType", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListByTypeSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByTypeResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "automation.FieldsClient", "ListByType", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.ListByTypeResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.FieldsClient", "ListByType", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*TypeFieldListResult), err
 }
 
-// ListByTypePreparer prepares the ListByType request.
-func (client FieldsClient) ListByTypePreparer(ctx context.Context, automationAccountName string, moduleName string, typeName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"moduleName":            autorest.Encode("path", moduleName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
-		"typeName":              autorest.Encode("path", typeName),
+// listByTypePreparer prepares the ListByType request.
+func (client FieldsClient) listByTypePreparer(automationAccountName string, moduleName string, typeName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/types/{typeName}/fields"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-31"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/types/{typeName}/fields", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListByTypeSender sends the ListByType request. The method will close the
-// http.Response Body if it receives an error.
-func (client FieldsClient) ListByTypeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListByTypeResponder handles the response to the ListByType request. The method always
-// closes the http.Response Body.
-func (client FieldsClient) ListByTypeResponder(resp *http.Response) (result TypeFieldListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// listByTypeResponder handles the response to the ListByType request.
+func (client FieldsClient) listByTypeResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &TypeFieldListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

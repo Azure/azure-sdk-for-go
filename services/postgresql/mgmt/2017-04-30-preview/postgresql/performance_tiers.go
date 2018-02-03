@@ -1,4 +1,4 @@
-package mysql
+package postgresql
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,19 +25,20 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the the Microsoft Azure management API provides create, read, update, and delete functionality
-// for Azure MySQL resources including servers, databases, firewall rules, VNET rules, log files and configurations.
-type OperationsClient struct {
+// PerformanceTiersClient is the the Microsoft Azure management API provides create, read, update, and delete
+// functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, log files and
+// configurations.
+type PerformanceTiersClient struct {
 	ManagementClient
 }
 
-// NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(p pipeline.Pipeline) OperationsClient {
-	return OperationsClient{NewManagementClient(p)}
+// NewPerformanceTiersClient creates an instance of the PerformanceTiersClient client.
+func NewPerformanceTiersClient(p pipeline.Pipeline) PerformanceTiersClient {
+	return PerformanceTiersClient{NewManagementClient(p)}
 }
 
-// List lists all of the available REST API operations.
-func (client OperationsClient) List(ctx context.Context) (*OperationListResult, error) {
+// List list all the performance tiers in a given subscription.
+func (client PerformanceTiersClient) List(ctx context.Context) (*PerformanceTierListResult, error) {
 	req, err := client.listPreparer()
 	if err != nil {
 		return nil, err
@@ -46,13 +47,13 @@ func (client OperationsClient) List(ctx context.Context) (*OperationListResult, 
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*OperationListResult), err
+	return resp.(*PerformanceTierListResult), err
 }
 
 // listPreparer prepares the List request.
-func (client OperationsClient) listPreparer() (pipeline.Request, error) {
+func (client PerformanceTiersClient) listPreparer() (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/providers/Microsoft.DBforMySQL/operations"
+	u.Path = "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/performanceTiers"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -64,12 +65,12 @@ func (client OperationsClient) listPreparer() (pipeline.Request, error) {
 }
 
 // listResponder handles the response to the List request.
-func (client OperationsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client PerformanceTiersClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &OperationListResult{rawResponse: resp.Response()}
+	result := &PerformanceTierListResult{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}

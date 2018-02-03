@@ -26,26 +26,33 @@ import (
 	"net/http"
 )
 
-// DatabasesClient is the the Microsoft Azure management API provides create, read, update, and delete functionality
-// for Azure MySQL resources including servers, databases, firewall rules, VNET rules, log files and configurations.
-type DatabasesClient struct {
+// VirtualNetworkRulesClient is the the Microsoft Azure management API provides create, read, update, and delete
+// functionality for Azure MySQL resources including servers, databases, firewall rules, VNET rules, log files and
+// configurations.
+type VirtualNetworkRulesClient struct {
 	ManagementClient
 }
 
-// NewDatabasesClient creates an instance of the DatabasesClient client.
-func NewDatabasesClient(p pipeline.Pipeline) DatabasesClient {
-	return DatabasesClient{NewManagementClient(p)}
+// NewVirtualNetworkRulesClient creates an instance of the VirtualNetworkRulesClient client.
+func NewVirtualNetworkRulesClient(p pipeline.Pipeline) VirtualNetworkRulesClient {
+	return VirtualNetworkRulesClient{NewManagementClient(p)}
 }
 
-// CreateOrUpdate creates a new database or updates an existing database. This method may poll for completion. Polling
-// can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
-// outstanding HTTP requests.
+// CreateOrUpdate creates or updates an existing virtual network rule. This method may poll for completion. Polling can
+// be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding
+// HTTP requests.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
-// Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
-// database. parameters is the required parameters for creating or updating a database.
-func (client DatabasesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database) (*Database, error) {
-	req, err := client.createOrUpdatePreparer(resourceGroupName, serverName, databaseName, parameters)
+// Azure Resource Manager API or the portal. serverName is the name of the server. virtualNetworkRuleName is the name
+// of the virtual network rule. parameters is the requested virtual Network Rule Resource state.
+func (client VirtualNetworkRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, virtualNetworkRuleName string, parameters VirtualNetworkRule) (*VirtualNetworkRule, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.VirtualNetworkRuleProperties", name: null, rule: false,
+				chain: []constraint{{target: "parameters.VirtualNetworkRuleProperties.VirtualNetworkSubnetID", name: null, rule: true, chain: nil}}}}}}); err != nil {
+		return nil, err
+	}
+	req, err := client.createOrUpdatePreparer(resourceGroupName, serverName, virtualNetworkRuleName, parameters)
 	if err != nil {
 		return nil, err
 	}
@@ -53,13 +60,13 @@ func (client DatabasesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*Database), err
+	return resp.(*VirtualNetworkRule), err
 }
 
 // createOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DatabasesClient) createOrUpdatePreparer(resourceGroupName string, serverName string, databaseName string, parameters Database) (pipeline.Request, error) {
+func (client VirtualNetworkRulesClient) createOrUpdatePreparer(resourceGroupName string, serverName string, virtualNetworkRuleName string, parameters VirtualNetworkRule) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/databases/{databaseName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}"
 	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -80,12 +87,12 @@ func (client DatabasesClient) createOrUpdatePreparer(resourceGroupName string, s
 }
 
 // createOrUpdateResponder handles the response to the CreateOrUpdate request.
-func (client DatabasesClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+func (client VirtualNetworkRulesClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted, http.StatusCreated)
 	if resp == nil {
 		return nil, err
 	}
-	result := &Database{rawResponse: resp.Response()}
+	result := &VirtualNetworkRule{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -103,14 +110,15 @@ func (client DatabasesClient) createOrUpdateResponder(resp pipeline.Response) (p
 	return result, nil
 }
 
-// Delete deletes a database. This method may poll for completion. Polling can be canceled by passing the cancel
-// channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
+// Delete deletes the virtual network rule with the given name. This method may poll for completion. Polling can be
+// canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
+// requests.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
-// Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
-// database.
-func (client DatabasesClient) Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (*http.Response, error) {
-	req, err := client.deletePreparer(resourceGroupName, serverName, databaseName)
+// Azure Resource Manager API or the portal. serverName is the name of the server. virtualNetworkRuleName is the name
+// of the virtual network rule.
+func (client VirtualNetworkRulesClient) Delete(ctx context.Context, resourceGroupName string, serverName string, virtualNetworkRuleName string) (*http.Response, error) {
+	req, err := client.deletePreparer(resourceGroupName, serverName, virtualNetworkRuleName)
 	if err != nil {
 		return nil, err
 	}
@@ -122,9 +130,9 @@ func (client DatabasesClient) Delete(ctx context.Context, resourceGroupName stri
 }
 
 // deletePreparer prepares the Delete request.
-func (client DatabasesClient) deletePreparer(resourceGroupName string, serverName string, databaseName string) (pipeline.Request, error) {
+func (client VirtualNetworkRulesClient) deletePreparer(resourceGroupName string, serverName string, virtualNetworkRuleName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/databases/{databaseName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}"
 	req, err := pipeline.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -136,7 +144,7 @@ func (client DatabasesClient) deletePreparer(resourceGroupName string, serverNam
 }
 
 // deleteResponder handles the response to the Delete request.
-func (client DatabasesClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client VirtualNetworkRulesClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent)
 	if resp == nil {
 		return nil, err
@@ -144,13 +152,13 @@ func (client DatabasesClient) deleteResponder(resp pipeline.Response) (pipeline.
 	return resp, err
 }
 
-// Get gets information about a database.
+// Get gets a virtual network rule.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
-// Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of the
-// database.
-func (client DatabasesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (*Database, error) {
-	req, err := client.getPreparer(resourceGroupName, serverName, databaseName)
+// Azure Resource Manager API or the portal. serverName is the name of the server. virtualNetworkRuleName is the name
+// of the virtual network rule.
+func (client VirtualNetworkRulesClient) Get(ctx context.Context, resourceGroupName string, serverName string, virtualNetworkRuleName string) (*VirtualNetworkRule, error) {
+	req, err := client.getPreparer(resourceGroupName, serverName, virtualNetworkRuleName)
 	if err != nil {
 		return nil, err
 	}
@@ -158,13 +166,13 @@ func (client DatabasesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*Database), err
+	return resp.(*VirtualNetworkRule), err
 }
 
 // getPreparer prepares the Get request.
-func (client DatabasesClient) getPreparer(resourceGroupName string, serverName string, databaseName string) (pipeline.Request, error) {
+func (client VirtualNetworkRulesClient) getPreparer(resourceGroupName string, serverName string, virtualNetworkRuleName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/databases/{databaseName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -176,12 +184,12 @@ func (client DatabasesClient) getPreparer(resourceGroupName string, serverName s
 }
 
 // getResponder handles the response to the Get request.
-func (client DatabasesClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client VirtualNetworkRulesClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &Database{rawResponse: resp.Response()}
+	result := &VirtualNetworkRule{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -199,11 +207,11 @@ func (client DatabasesClient) getResponder(resp pipeline.Response) (pipeline.Res
 	return result, nil
 }
 
-// ListByServer list all the databases in a given server.
+// ListByServer gets a list of virtual network rules in a server.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from the
 // Azure Resource Manager API or the portal. serverName is the name of the server.
-func (client DatabasesClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (*DatabaseListResult, error) {
+func (client VirtualNetworkRulesClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (*VirtualNetworkRuleListResult, error) {
 	req, err := client.listByServerPreparer(resourceGroupName, serverName)
 	if err != nil {
 		return nil, err
@@ -212,13 +220,13 @@ func (client DatabasesClient) ListByServer(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*DatabaseListResult), err
+	return resp.(*VirtualNetworkRuleListResult), err
 }
 
 // listByServerPreparer prepares the ListByServer request.
-func (client DatabasesClient) listByServerPreparer(resourceGroupName string, serverName string) (pipeline.Request, error) {
+func (client VirtualNetworkRulesClient) listByServerPreparer(resourceGroupName string, serverName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/databases"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/virtualNetworkRules"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -230,12 +238,12 @@ func (client DatabasesClient) listByServerPreparer(resourceGroupName string, ser
 }
 
 // listByServerResponder handles the response to the ListByServer request.
-func (client DatabasesClient) listByServerResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client VirtualNetworkRulesClient) listByServerResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &DatabaseListResult{rawResponse: resp.Response()}
+	result := &VirtualNetworkRuleListResult{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}

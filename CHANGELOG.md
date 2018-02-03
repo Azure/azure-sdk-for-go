@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v12.4.0-beta`
+
+### Changes
+
+- Added API version 2017-12-01 for the compute package.
+
 ## `v12.3.0-beta`
 
 ### Changes

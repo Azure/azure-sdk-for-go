@@ -25,33 +25,36 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the composite Swagger for Application Insights Management Client
-type OperationsClient struct {
+// ComponentFeatureCapabilitiesClient is the composite Swagger for Application Insights Management Client
+type ComponentFeatureCapabilitiesClient struct {
 	ManagementClient
 }
 
-// NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(p pipeline.Pipeline) OperationsClient {
-	return OperationsClient{NewManagementClient(p)}
+// NewComponentFeatureCapabilitiesClient creates an instance of the ComponentFeatureCapabilitiesClient client.
+func NewComponentFeatureCapabilitiesClient(p pipeline.Pipeline) ComponentFeatureCapabilitiesClient {
+	return ComponentFeatureCapabilitiesClient{NewManagementClient(p)}
 }
 
-// List lists all of the available insights REST API operations.
-func (client OperationsClient) List(ctx context.Context) (*OperationListResult, error) {
-	req, err := client.listPreparer()
+// Get returns feature capabilites of the application insights component.
+//
+// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights component
+// resource.
+func (client ComponentFeatureCapabilitiesClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (*ApplicationInsightsComponentFeatureCapabilities, error) {
+	req, err := client.getPreparer(resourceGroupName, resourceName)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*OperationListResult), err
+	return resp.(*ApplicationInsightsComponentFeatureCapabilities), err
 }
 
-// listPreparer prepares the List request.
-func (client OperationsClient) listPreparer() (pipeline.Request, error) {
+// getPreparer prepares the Get request.
+func (client ComponentFeatureCapabilitiesClient) getPreparer(resourceGroupName string, resourceName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/providers/microsoft.insights/operations"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/featurecapabilities"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -62,13 +65,13 @@ func (client OperationsClient) listPreparer() (pipeline.Request, error) {
 	return req, nil
 }
 
-// listResponder handles the response to the List request.
-func (client OperationsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+// getResponder handles the response to the Get request.
+func (client ComponentFeatureCapabilitiesClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &OperationListResult{rawResponse: resp.Response()}
+	result := &ApplicationInsightsComponentFeatureCapabilities{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}

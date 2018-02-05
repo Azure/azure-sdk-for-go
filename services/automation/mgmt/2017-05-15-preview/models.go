@@ -768,6 +768,8 @@ type Certificate struct {
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the certificate.
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// Properties - Gets or sets the properties of the certificate.
 	*CertificateProperties `json:"properties,omitempty"`
 }
@@ -851,7 +853,7 @@ type CertificateProperties struct {
 // CertificateUpdateParameters - The parameters supplied to the update certificate operation.
 type CertificateUpdateParameters struct {
 	// Name - Gets or sets the name of the certificate.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// Properties - Gets or sets the properties of the certificate.
 	*CertificateUpdateProperties `json:"properties,omitempty"`
 }
@@ -877,6 +879,8 @@ type Connection struct {
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the connection.
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// Properties - Gets or sets the properties of the connection.
 	*ConnectionProperties `json:"properties,omitempty"`
 }
@@ -959,6 +963,8 @@ type ConnectionType struct {
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the connection type.
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// Properties - Gets or sets the properties of the connection type.
 	*ConnectionTypeProperties `json:"properties,omitempty"`
 }
@@ -1091,6 +1097,8 @@ type Credential struct {
 	ID *string `json:"id,omitempty"`
 	// Name - Gets the name of the credential.
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// Properties - Gets or sets the properties of the credential.
 	*CredentialProperties `json:"properties,omitempty"`
 }
@@ -1167,7 +1175,7 @@ type CredentialProperties struct {
 // CredentialUpdateParameters - The parameters supplied to the Update credential operation.
 type CredentialUpdateParameters struct {
 	// Name - Gets or sets the name of the credential.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// Properties - Gets or sets the properties of the variable.
 	*CredentialUpdateProperties `json:"properties,omitempty"`
 }
@@ -2008,8 +2016,12 @@ type JobProperties struct {
 // JobSchedule - Definition of the job schedule.
 type JobSchedule struct {
 	rawResponse *http.Response
-	// ID - Gets or sets the id of the resource.
+	// ID - Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
+	// Name - Gets the name of the variable.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// Properties - Gets or sets the properties of the job schedule.
 	*JobScheduleProperties `json:"properties,omitempty"`
 }
@@ -2587,10 +2599,12 @@ type RunbookUpdateProperties struct {
 // Schedule - Definition of the schedule.
 type Schedule struct {
 	rawResponse *http.Response
-	// ID - Gets or sets the id of the resource.
+	// ID - Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Gets or sets the name of the schedule.
+	// Name - Gets name of the schedule.
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// Properties - Gets or sets the properties of the schedule.
 	*ScheduleProperties `json:"properties,omitempty"`
 }
@@ -2701,7 +2715,7 @@ type ScheduleProperties struct {
 // ScheduleUpdateParameters - The parameters supplied to the update schedule operation.
 type ScheduleUpdateParameters struct {
 	// Name - Gets or sets the name of the schedule.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// Properties - Gets or sets the list of schedule properties.
 	*ScheduleUpdateProperties `json:"properties,omitempty"`
 }
@@ -3417,10 +3431,12 @@ func (ulr UsageListResult) Status() string {
 // Variable - Definition of the varible.
 type Variable struct {
 	rawResponse *http.Response
-	// ID - Gets or sets the id of the resource.
+	// ID - Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Gets or sets the name of the variable.
+	// Name - Gets the name of the variable.
 	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
 	// Properties - Gets or sets the properties of the variable.
 	*VariableProperties `json:"properties,omitempty"`
 }
@@ -3499,7 +3515,7 @@ type VariableProperties struct {
 // VariableUpdateParameters - The parameters supplied to the update variable operation.
 type VariableUpdateParameters struct {
 	// Name - Gets or sets the name of the variable.
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// Properties - Gets or sets the value of the variable.
 	*VariableUpdateProperties `json:"properties,omitempty"`
 }

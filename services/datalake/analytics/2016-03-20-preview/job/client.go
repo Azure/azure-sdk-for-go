@@ -1,6 +1,3 @@
-// Package job implements the Azure ARM Job service API version 2016-03-20-preview.
-//
-// Creates an Azure Data Lake Analytics job client.
 package job
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -21,29 +18,35 @@ package job
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"net/url"
 )
 
 const (
-	// DefaultAdlaJobDNSSuffix is the default value for adla job dns suffix
-	DefaultAdlaJobDNSSuffix = "azuredatalakeanalytics.net"
+	// ServiceVersion specifies the version of the operations used in this package.
+	ServiceVersion = "2016-03-20-preview"
 )
 
-// BaseClient is the base client for Job.
-type BaseClient struct {
-	autorest.Client
-	AdlaJobDNSSuffix string
+// ManagementClient is the base client for Job.
+type ManagementClient struct {
+	url url.URL
+	p   pipeline.Pipeline
 }
 
-// New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithoutDefaults(DefaultAdlaJobDNSSuffix)
-}
-
-// NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
-	return BaseClient{
-		Client:           autorest.NewClientWithUserAgent(UserAgent()),
-		AdlaJobDNSSuffix: adlaJobDNSSuffix,
+// NewManagementClient creates an instance of the ManagementClient client.
+func NewManagementClient(url url.URL, p pipeline.Pipeline) ManagementClient {
+	return ManagementClient{
+		url: url,
+		p:   p,
 	}
+}
+
+// URL returns a copy of the URL for this client.
+func (mc ManagementClient) URL() url.URL {
+	return mc.url
+}
+
+// Pipeline returns the pipeline for this client.
+func (mc ManagementClient) Pipeline() pipeline.Pipeline {
+	return mc.p
 }

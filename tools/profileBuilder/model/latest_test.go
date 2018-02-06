@@ -14,16 +14,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package model_test
 
 import (
 	"path/filepath"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/tools/profileBuilder/model"
 	"github.com/marstr/collection"
 )
 
-func Test_versionle(t *testing.T) {
+func Test_VersionLE(t *testing.T) {
 	const dateWithAlpha, dateWithBeta = "2016-02-01-alpha", "2016-02-01-beta"
 	const semVer1dot2, semVer1dot3 = "2018-03-03-1.2", "2018-03-03-1.3"
 	const dateAlone = "2016-12-07"
@@ -52,7 +53,7 @@ func Test_versionle(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run("", func(t *testing.T) {
-			if got, err := versionle(tc.left, tc.right); err != nil {
+			if got, err := model.VersionLE(tc.left, tc.right); err != nil {
 				t.Error(err)
 			} else if got != tc.want {
 				t.Logf("\n Left: %s\nRight: %s", tc.left, tc.right)
@@ -64,7 +65,7 @@ func Test_versionle(t *testing.T) {
 }
 
 func BenchmarkLatestStrategy_Enumerate(b *testing.B) {
-	subject := LatestStrategy{
+	subject := model.LatestStrategy{
 		Root: filepath.Join("..", "..", "service"),
 	}
 

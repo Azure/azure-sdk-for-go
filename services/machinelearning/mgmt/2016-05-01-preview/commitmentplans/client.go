@@ -1,3 +1,9 @@
+// Package commitmentplans implements the Azure ARM Commitmentplans service API version 2016-05-01-preview.
+//
+// These APIs allow end users to operate on Azure Machine Learning Commitment Plans resources and their child
+// Commitment Association resources. They support CRUD operations for commitment plans, get and list operations for
+// commitment associations, moving commitment associations between commitment plans, and retrieving commitment plan
+// usage history.
 package commitmentplans
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -18,46 +24,31 @@ package commitmentplans
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/azure-pipeline-go/pipeline"
-	"net/url"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 const (
-	// ServiceVersion specifies the version of the operations used in this package.
-	ServiceVersion = "2016-05-01-preview"
-	// DefaultBaseURL is the default URL used for the service Commitmentplans
-	DefaultBaseURL = "https://management.azure.com"
+	// DefaultBaseURI is the default URI used for the service Commitmentplans
+	DefaultBaseURI = "https://management.azure.com"
 )
 
-// ManagementClient is the base client for Commitmentplans.
-type ManagementClient struct {
-	url url.URL
-	p   pipeline.Pipeline
+// BaseClient is the base client for Commitmentplans.
+type BaseClient struct {
+	autorest.Client
+	BaseURI        string
+	SubscriptionID string
 }
 
-// NewManagementClient creates an instance of the ManagementClient client.
-func NewManagementClient(p pipeline.Pipeline) ManagementClient {
-	u, err := url.Parse(DefaultBaseURL)
-	if err != nil {
-		panic(err)
+// New creates an instance of the BaseClient client.
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewWithBaseURI creates an instance of the BaseClient client.
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return BaseClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
-	return NewManagementClientWithURL(*u, p)
-}
-
-// NewManagementClientWithURL creates an instance of the ManagementClient client.
-func NewManagementClientWithURL(url url.URL, p pipeline.Pipeline) ManagementClient {
-	return ManagementClient{
-		url: url,
-		p:   p,
-	}
-}
-
-// URL returns a copy of the URL for this client.
-func (mc ManagementClient) URL() url.URL {
-	return mc.url
-}
-
-// Pipeline returns the pipeline for this client.
-func (mc ManagementClient) Pipeline() pipeline.Pipeline {
-	return mc.p
 }

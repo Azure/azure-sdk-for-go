@@ -19,9 +19,8 @@ package webservices
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/Azure/azure-pipeline-go/pipeline"
-	"io/ioutil"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"net/http"
 )
 
@@ -30,61 +29,73 @@ import (
 // web service</li><li>Delete a web service</li><li>Get All Web Services in a Resource Group </li><li>Get All Web
 // Services in a Subscription</li><li>Get Web Services Keys</li></ul>
 type OperationsClient struct {
-	ManagementClient
+	BaseClient
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(p pipeline.Pipeline) OperationsClient {
-	return OperationsClient{NewManagementClient(p)}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all the available REST API operations.
-func (client OperationsClient) List(ctx context.Context) (*OperationEntityListResult, error) {
-	req, err := client.listPreparer()
+func (client OperationsClient) List(ctx context.Context) (result OperationEntityListResult, err error) {
+	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "webservices.OperationsClient", "List", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
+
+	resp, err := client.ListSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "webservices.OperationsClient", "List", resp, "Failure sending request")
+		return
 	}
-	return resp.(*OperationEntityListResult), err
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.OperationsClient", "List", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// listPreparer prepares the List request.
-func (client OperationsClient) listPreparer() (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/providers/Microsoft.MachineLearning/operations"
-	req, err := pipeline.NewRequest("GET", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// ListPreparer prepares the List request.
+func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+	const APIVersion = "2017-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
 	}
-	params := req.URL.Query()
-	params.Set("api-version", APIVersion)
-	req.URL.RawQuery = params.Encode()
-	return req, nil
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/providers/Microsoft.MachineLearning/operations"),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// listResponder handles the response to the List request.
-func (client OperationsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	result := &OperationEntityListResult{rawResponse: resp.Response()}
-	if err != nil {
-		return result, err
-	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
-	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
-	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
-	}
-	return result, nil
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client OperationsClient) ListResponder(resp *http.Response) (result OperationEntityListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

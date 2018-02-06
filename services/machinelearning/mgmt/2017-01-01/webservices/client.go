@@ -1,3 +1,9 @@
+// Package webservices implements the Azure ARM Webservices service API version 2017-01-01.
+//
+// These APIs allow end users to operate on Azure Machine Learning Web Services resources. They support the following
+// operations:<ul><li>Create or update a web service</li><li>Get a web service</li><li>Patch a web
+// service</li><li>Delete a web service</li><li>Get All Web Services in a Resource Group </li><li>Get All Web Services
+// in a Subscription</li><li>Get Web Services Keys</li></ul>
 package webservices
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -18,46 +24,31 @@ package webservices
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/azure-pipeline-go/pipeline"
-	"net/url"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 const (
-	// ServiceVersion specifies the version of the operations used in this package.
-	ServiceVersion = "2017-01-01"
-	// DefaultBaseURL is the default URL used for the service Webservices
-	DefaultBaseURL = "https://management.azure.com"
+	// DefaultBaseURI is the default URI used for the service Webservices
+	DefaultBaseURI = "https://management.azure.com"
 )
 
-// ManagementClient is the base client for Webservices.
-type ManagementClient struct {
-	url url.URL
-	p   pipeline.Pipeline
+// BaseClient is the base client for Webservices.
+type BaseClient struct {
+	autorest.Client
+	BaseURI        string
+	SubscriptionID string
 }
 
-// NewManagementClient creates an instance of the ManagementClient client.
-func NewManagementClient(p pipeline.Pipeline) ManagementClient {
-	u, err := url.Parse(DefaultBaseURL)
-	if err != nil {
-		panic(err)
+// New creates an instance of the BaseClient client.
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+}
+
+// NewWithBaseURI creates an instance of the BaseClient client.
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return BaseClient{
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
-	return NewManagementClientWithURL(*u, p)
-}
-
-// NewManagementClientWithURL creates an instance of the ManagementClient client.
-func NewManagementClientWithURL(url url.URL, p pipeline.Pipeline) ManagementClient {
-	return ManagementClient{
-		url: url,
-		p:   p,
-	}
-}
-
-// URL returns a copy of the URL for this client.
-func (mc ManagementClient) URL() url.URL {
-	return mc.url
-}
-
-// Pipeline returns the pipeline for this client.
-func (mc ManagementClient) Pipeline() pipeline.Pipeline {
-	return mc.p
 }

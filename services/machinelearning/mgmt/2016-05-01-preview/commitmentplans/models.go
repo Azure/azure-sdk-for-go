@@ -18,70 +18,45 @@ package commitmentplans
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
-	"time"
 )
 
-// Marker represents an opaque value used in paged responses.
-type Marker struct {
-	val *string
-}
-
-// NotDone returns true if the list enumeration should be started or is not yet complete. Specifically, NotDone returns true
-// for a just-initialized (zero value) Marker indicating that you should make an initial request to get a result portion from
-// the service. NotDone also returns true whenever the service returns an interim result portion. NotDone returns false only
-// after the service has returned the final result portion.
-func (m Marker) NotDone() bool {
-	return m.val == nil || *m.val != ""
-}
-
-// UnmarshalXML implements the xml.Unmarshaler interface for Marker.
-func (m *Marker) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	var out string
-	err := d.DecodeElement(&out, &start)
-	m.val = &out
-	return err
-}
-
-// ResourceSkuRestrictionsReasonCodeType enumerates the values for resource sku restrictions reason code.
-type ResourceSkuRestrictionsReasonCodeType string
+// ResourceSkuRestrictionsReasonCode enumerates the values for resource sku restrictions reason code.
+type ResourceSkuRestrictionsReasonCode string
 
 const (
-	// ResourceSkuRestrictionsReasonCodeNone represents an empty ResourceSkuRestrictionsReasonCodeType.
-	ResourceSkuRestrictionsReasonCodeNone ResourceSkuRestrictionsReasonCodeType = ""
-	// ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription ...
-	ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription ResourceSkuRestrictionsReasonCodeType = "NotAvailableForSubscription"
-	// ResourceSkuRestrictionsReasonCodeQuotaID ...
-	ResourceSkuRestrictionsReasonCodeQuotaID ResourceSkuRestrictionsReasonCodeType = "QuotaId"
+	// NotAvailableForSubscription ...
+	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = "NotAvailableForSubscription"
+	// QuotaID ...
+	QuotaID ResourceSkuRestrictionsReasonCode = "QuotaId"
 )
 
 // ResourceSkuRestrictionsType enumerates the values for resource sku restrictions type.
 type ResourceSkuRestrictionsType string
 
 const (
-	// ResourceSkuRestrictionsLocation ...
-	ResourceSkuRestrictionsLocation ResourceSkuRestrictionsType = "location"
-	// ResourceSkuRestrictionsNone represents an empty ResourceSkuRestrictionsType.
-	ResourceSkuRestrictionsNone ResourceSkuRestrictionsType = ""
-	// ResourceSkuRestrictionsZone ...
-	ResourceSkuRestrictionsZone ResourceSkuRestrictionsType = "zone"
+	// Location ...
+	Location ResourceSkuRestrictionsType = "location"
+	// Zone ...
+	Zone ResourceSkuRestrictionsType = "zone"
 )
 
 // SkuCapacityScaleType enumerates the values for sku capacity scale type.
 type SkuCapacityScaleType string
 
 const (
-	// SkuCapacityScaleAutomatic ...
-	SkuCapacityScaleAutomatic SkuCapacityScaleType = "Automatic"
-	// SkuCapacityScaleManual ...
-	SkuCapacityScaleManual SkuCapacityScaleType = "Manual"
-	// SkuCapacityScaleNone ...
-	SkuCapacityScaleNone SkuCapacityScaleType = "None"
-	// SkuCapacityScaleNone represents an empty SkuCapacityScaleType.
-	SkuCapacityScaleNone SkuCapacityScaleType = ""
+	// Automatic ...
+	Automatic SkuCapacityScaleType = "Automatic"
+	// Manual ...
+	Manual SkuCapacityScaleType = "Manual"
+	// None ...
+	None SkuCapacityScaleType = "None"
 )
 
-// CatalogSku - Details of a commitment plan SKU.
+// CatalogSku details of a commitment plan SKU.
 type CatalogSku struct {
 	// ResourceType - Resource type name
 	ResourceType *string `json:"resourceType,omitempty"`
@@ -90,98 +65,162 @@ type CatalogSku struct {
 	// Tier - SKU tier
 	Tier *string `json:"tier,omitempty"`
 	// Locations - Regions where the SKU is available.
-	Locations []string `json:"locations,omitempty"`
+	Locations *[]string `json:"locations,omitempty"`
 	// Capacity - SKU scaling information
 	Capacity *SkuCapacity `json:"capacity,omitempty"`
 	// Capabilities - The capability information for the specified SKU.
-	Capabilities []SkuCapability `json:"capabilities,omitempty"`
+	Capabilities *[]SkuCapability `json:"capabilities,omitempty"`
 	// Costs - The cost information for the specified SKU.
-	Costs []SkuCost `json:"costs,omitempty"`
+	Costs *[]SkuCost `json:"costs,omitempty"`
 	// Restrictions - Restrictions which would prevent a SKU from being used. This is empty if there are no restrictions.
-	Restrictions []SkuRestrictions `json:"restrictions,omitempty"`
+	Restrictions *[]SkuRestrictions `json:"restrictions,omitempty"`
 }
 
-// CommitmentAssociation - Represents the association between a commitment plan and some other resource, such as a
+// CommitmentAssociation represents the association between a commitment plan and some other resource, such as a
 // Machine Learning web service.
 type CommitmentAssociation struct {
-	rawResponse *http.Response
+	autorest.Response `json:"-"`
 	// ID - Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
-	Location string `json:"location,omitempty"`
+	Location *string `json:"location,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - User-defined tags for the resource.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
 	// Etag - An entity tag used to enforce optimistic concurrency.
 	Etag *string `json:"etag,omitempty"`
 	// Properties - The properties of the commitment association resource.
 	Properties *CommitmentAssociationProperties `json:"properties,omitempty"`
 }
 
-// Response returns the raw HTTP response object.
-func (ca CommitmentAssociation) Response() *http.Response {
-	return ca.rawResponse
-}
-
-// StatusCode returns the HTTP status code of the response, e.g. 200.
-func (ca CommitmentAssociation) StatusCode() int {
-	return ca.rawResponse.StatusCode
-}
-
-// Status returns the HTTP status message of the response, e.g. "200 OK".
-func (ca CommitmentAssociation) Status() string {
-	return ca.rawResponse.Status
-}
-
-// CommitmentAssociationListResult - A page of commitment association resources.
+// CommitmentAssociationListResult a page of commitment association resources.
 type CommitmentAssociationListResult struct {
-	rawResponse *http.Response
+	autorest.Response `json:"-"`
 	// NextLink - A URI to retrieve the next page of results.
-	NextLink Marker                  `json:"NextLink"` // Value - The set of results for this page.
-	Value    []CommitmentAssociation `json:"value,omitempty"`
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The set of results for this page.
+	Value *[]CommitmentAssociation `json:"value,omitempty"`
 }
 
-// Response returns the raw HTTP response object.
-func (calr CommitmentAssociationListResult) Response() *http.Response {
-	return calr.rawResponse
+// CommitmentAssociationListResultIterator provides access to a complete listing of CommitmentAssociation values.
+type CommitmentAssociationListResultIterator struct {
+	i    int
+	page CommitmentAssociationListResultPage
 }
 
-// StatusCode returns the HTTP status code of the response, e.g. 200.
-func (calr CommitmentAssociationListResult) StatusCode() int {
-	return calr.rawResponse.StatusCode
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CommitmentAssociationListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
 }
 
-// Status returns the HTTP status message of the response, e.g. "200 OK".
-func (calr CommitmentAssociationListResult) Status() string {
-	return calr.rawResponse.Status
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CommitmentAssociationListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
-// CommitmentAssociationProperties - Properties of an Azure ML commitment association.
+// Response returns the raw server response from the last page request.
+func (iter CommitmentAssociationListResultIterator) Response() CommitmentAssociationListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CommitmentAssociationListResultIterator) Value() CommitmentAssociation {
+	if !iter.page.NotDone() {
+		return CommitmentAssociation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (calr CommitmentAssociationListResult) IsEmpty() bool {
+	return calr.Value == nil || len(*calr.Value) == 0
+}
+
+// commitmentAssociationListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (calr CommitmentAssociationListResult) commitmentAssociationListResultPreparer() (*http.Request, error) {
+	if calr.NextLink == nil || len(to.String(calr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(calr.NextLink)))
+}
+
+// CommitmentAssociationListResultPage contains a page of CommitmentAssociation values.
+type CommitmentAssociationListResultPage struct {
+	fn   func(CommitmentAssociationListResult) (CommitmentAssociationListResult, error)
+	calr CommitmentAssociationListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CommitmentAssociationListResultPage) Next() error {
+	next, err := page.fn(page.calr)
+	if err != nil {
+		return err
+	}
+	page.calr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CommitmentAssociationListResultPage) NotDone() bool {
+	return !page.calr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CommitmentAssociationListResultPage) Response() CommitmentAssociationListResult {
+	return page.calr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CommitmentAssociationListResultPage) Values() []CommitmentAssociation {
+	if page.calr.IsEmpty() {
+		return nil
+	}
+	return *page.calr.Value
+}
+
+// CommitmentAssociationProperties properties of an Azure ML commitment association.
 type CommitmentAssociationProperties struct {
 	// AssociatedResourceID - The ID of the resource this association points to, such as the ARM ID of an Azure ML web service.
 	AssociatedResourceID *string `json:"associatedResourceId,omitempty"`
 	// CommitmentPlanID - The ARM ID of the parent Azure ML commitment plan.
 	CommitmentPlanID *string `json:"commitmentPlanId,omitempty"`
 	// CreationDate - The date at which this commitment association was created, in ISO 8601 format.
-	CreationDate *time.Time `json:"creationDate,omitempty"`
+	CreationDate *date.Time `json:"creationDate,omitempty"`
 }
 
-// CommitmentPlan - An Azure ML commitment plan resource.
+// CommitmentPlan an Azure ML commitment plan resource.
 type CommitmentPlan struct {
-	rawResponse *http.Response
+	autorest.Response `json:"-"`
 	// ID - Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
-	Location string `json:"location,omitempty"`
+	Location *string `json:"location,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - User-defined tags for the resource.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
 	// Etag - An entity tag used to enforce optimistic concurrency.
 	Etag *string `json:"etag,omitempty"`
 	// Properties - The commitment plan properties.
@@ -190,59 +229,123 @@ type CommitmentPlan struct {
 	Sku *ResourceSku `json:"sku,omitempty"`
 }
 
-// Response returns the raw HTTP response object.
-func (cp CommitmentPlan) Response() *http.Response {
-	return cp.rawResponse
-}
-
-// StatusCode returns the HTTP status code of the response, e.g. 200.
-func (cp CommitmentPlan) StatusCode() int {
-	return cp.rawResponse.StatusCode
-}
-
-// Status returns the HTTP status message of the response, e.g. "200 OK".
-func (cp CommitmentPlan) Status() string {
-	return cp.rawResponse.Status
-}
-
-// ListResult - A page of commitment plan resources.
+// ListResult a page of commitment plan resources.
 type ListResult struct {
-	rawResponse *http.Response
+	autorest.Response `json:"-"`
 	// NextLink - A URI to retrieve the next page of results.
-	NextLink Marker           `json:"NextLink"` // Value - The set of results for this page.
-	Value    []CommitmentPlan `json:"value,omitempty"`
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The set of results for this page.
+	Value *[]CommitmentPlan `json:"value,omitempty"`
 }
 
-// Response returns the raw HTTP response object.
-func (lr ListResult) Response() *http.Response {
-	return lr.rawResponse
+// ListResultIterator provides access to a complete listing of CommitmentPlan values.
+type ListResultIterator struct {
+	i    int
+	page ListResultPage
 }
 
-// StatusCode returns the HTTP status code of the response, e.g. 200.
-func (lr ListResult) StatusCode() int {
-	return lr.rawResponse.StatusCode
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
 }
 
-// Status returns the HTTP status message of the response, e.g. "200 OK".
-func (lr ListResult) Status() string {
-	return lr.rawResponse.Status
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
-// MoveCommitmentAssociationRequest - Specifies the destination Azure ML commitment plan for a move operation.
+// Response returns the raw server response from the last page request.
+func (iter ListResultIterator) Response() ListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ListResultIterator) Value() CommitmentPlan {
+	if !iter.page.NotDone() {
+		return CommitmentPlan{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (lr ListResult) IsEmpty() bool {
+	return lr.Value == nil || len(*lr.Value) == 0
+}
+
+// listResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (lr ListResult) listResultPreparer() (*http.Request, error) {
+	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(lr.NextLink)))
+}
+
+// ListResultPage contains a page of CommitmentPlan values.
+type ListResultPage struct {
+	fn func(ListResult) (ListResult, error)
+	lr ListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ListResultPage) Next() error {
+	next, err := page.fn(page.lr)
+	if err != nil {
+		return err
+	}
+	page.lr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ListResultPage) NotDone() bool {
+	return !page.lr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ListResultPage) Response() ListResult {
+	return page.lr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ListResultPage) Values() []CommitmentPlan {
+	if page.lr.IsEmpty() {
+		return nil
+	}
+	return *page.lr.Value
+}
+
+// MoveCommitmentAssociationRequest specifies the destination Azure ML commitment plan for a move operation.
 type MoveCommitmentAssociationRequest struct {
 	// DestinationPlanID - The ARM ID of the commitment plan to re-parent the commitment association to.
 	DestinationPlanID *string `json:"destinationPlanId,omitempty"`
 }
 
-// PatchPayload - The properties of a commitment plan which may be updated via PATCH.
+// PatchPayload the properties of a commitment plan which may be updated via PATCH.
 type PatchPayload struct {
 	// Tags - User-defined tags for the commitment plan.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
 	// Sku - The commitment plan SKU.
 	Sku *ResourceSku `json:"sku,omitempty"`
 }
 
-// PlanQuantity - Represents the quantity a commitment plan provides of a metered resource.
+// PlanQuantity represents the quantity a commitment plan provides of a metered resource.
 type PlanQuantity struct {
 	// Allowance - The quantity added to the commitment plan at an interval specified by its allowance frequency.
 	Allowance *float64 `json:"allowance,omitempty"`
@@ -254,58 +357,137 @@ type PlanQuantity struct {
 	OverageMeter *string `json:"overageMeter,omitempty"`
 }
 
-// PlanUsageHistory - Represents historical information about usage of the Azure resources associated with a commitment
+// PlanUsageHistory represents historical information about usage of the Azure resources associated with a commitment
 // plan.
 type PlanUsageHistory struct {
 	// PlanDeletionOverage - Overage incurred as a result of deleting a commitment plan.
-	PlanDeletionOverage map[string]float64 `json:"planDeletionOverage,omitempty"`
+	PlanDeletionOverage *map[string]*float64 `json:"planDeletionOverage,omitempty"`
 	// PlanMigrationOverage - Overage incurred as a result of migrating a commitment plan from one SKU to another.
-	PlanMigrationOverage map[string]float64 `json:"planMigrationOverage,omitempty"`
+	PlanMigrationOverage *map[string]*float64 `json:"planMigrationOverage,omitempty"`
 	// PlanQuantitiesAfterUsage - Included quantities remaining after usage against the commitment plan's associated resources was calculated.
-	PlanQuantitiesAfterUsage map[string]float64 `json:"planQuantitiesAfterUsage,omitempty"`
+	PlanQuantitiesAfterUsage *map[string]*float64 `json:"planQuantitiesAfterUsage,omitempty"`
 	// PlanQuantitiesBeforeUsage - Included quantities remaining before usage against the commitment plan's associated resources was calculated.
-	PlanQuantitiesBeforeUsage map[string]float64 `json:"planQuantitiesBeforeUsage,omitempty"`
+	PlanQuantitiesBeforeUsage *map[string]*float64 `json:"planQuantitiesBeforeUsage,omitempty"`
 	// PlanUsageOverage - Usage against the commitment plan's associated resources which was not covered by included quantities and is therefore overage.
-	PlanUsageOverage map[string]float64 `json:"planUsageOverage,omitempty"`
+	PlanUsageOverage *map[string]*float64 `json:"planUsageOverage,omitempty"`
 	// Usage - Usage against the commitment plan's associated resources.
-	Usage map[string]float64 `json:"usage,omitempty"`
+	Usage *map[string]*float64 `json:"usage,omitempty"`
 	// UsageDate - The date of usage, in ISO 8601 format.
-	UsageDate *time.Time `json:"usageDate,omitempty"`
+	UsageDate *date.Time `json:"usageDate,omitempty"`
 }
 
-// PlanUsageHistoryListResult - A page of usage history.
+// PlanUsageHistoryListResult a page of usage history.
 type PlanUsageHistoryListResult struct {
-	rawResponse *http.Response
+	autorest.Response `json:"-"`
 	// NextLink - A URI to retrieve the next page of results.
-	NextLink Marker             `json:"NextLink"` // Value - The set of results for this page.
-	Value    []PlanUsageHistory `json:"value,omitempty"`
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The set of results for this page.
+	Value *[]PlanUsageHistory `json:"value,omitempty"`
 }
 
-// Response returns the raw HTTP response object.
-func (puhlr PlanUsageHistoryListResult) Response() *http.Response {
-	return puhlr.rawResponse
+// PlanUsageHistoryListResultIterator provides access to a complete listing of PlanUsageHistory values.
+type PlanUsageHistoryListResultIterator struct {
+	i    int
+	page PlanUsageHistoryListResultPage
 }
 
-// StatusCode returns the HTTP status code of the response, e.g. 200.
-func (puhlr PlanUsageHistoryListResult) StatusCode() int {
-	return puhlr.rawResponse.StatusCode
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PlanUsageHistoryListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
 }
 
-// Status returns the HTTP status message of the response, e.g. "200 OK".
-func (puhlr PlanUsageHistoryListResult) Status() string {
-	return puhlr.rawResponse.Status
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PlanUsageHistoryListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
-// Properties - Properties of an Azure ML commitment plan.
+// Response returns the raw server response from the last page request.
+func (iter PlanUsageHistoryListResultIterator) Response() PlanUsageHistoryListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PlanUsageHistoryListResultIterator) Value() PlanUsageHistory {
+	if !iter.page.NotDone() {
+		return PlanUsageHistory{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (puhlr PlanUsageHistoryListResult) IsEmpty() bool {
+	return puhlr.Value == nil || len(*puhlr.Value) == 0
+}
+
+// planUsageHistoryListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (puhlr PlanUsageHistoryListResult) planUsageHistoryListResultPreparer() (*http.Request, error) {
+	if puhlr.NextLink == nil || len(to.String(puhlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(puhlr.NextLink)))
+}
+
+// PlanUsageHistoryListResultPage contains a page of PlanUsageHistory values.
+type PlanUsageHistoryListResultPage struct {
+	fn    func(PlanUsageHistoryListResult) (PlanUsageHistoryListResult, error)
+	puhlr PlanUsageHistoryListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PlanUsageHistoryListResultPage) Next() error {
+	next, err := page.fn(page.puhlr)
+	if err != nil {
+		return err
+	}
+	page.puhlr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PlanUsageHistoryListResultPage) NotDone() bool {
+	return !page.puhlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PlanUsageHistoryListResultPage) Response() PlanUsageHistoryListResult {
+	return page.puhlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PlanUsageHistoryListResultPage) Values() []PlanUsageHistory {
+	if page.puhlr.IsEmpty() {
+		return nil
+	}
+	return *page.puhlr.Value
+}
+
+// Properties properties of an Azure ML commitment plan.
 type Properties struct {
 	// ChargeForOverage - Indicates whether usage beyond the commitment plan's included quantities will be charged.
 	ChargeForOverage *bool `json:"chargeForOverage,omitempty"`
 	// ChargeForPlan - Indicates whether the commitment plan will incur a charge.
 	ChargeForPlan *bool `json:"chargeForPlan,omitempty"`
 	// CreationDate - The date at which this commitment plan was created, in ISO 8601 format.
-	CreationDate *time.Time `json:"creationDate,omitempty"`
+	CreationDate *date.Time `json:"creationDate,omitempty"`
 	// IncludedQuantities - The included resource quantities this plan gives you.
-	IncludedQuantities map[string]PlanQuantity `json:"includedQuantities,omitempty"`
+	IncludedQuantities *map[string]*PlanQuantity `json:"includedQuantities,omitempty"`
 	// MaxAssociationLimit - The maximum number of commitment associations that can be children of this commitment plan.
 	MaxAssociationLimit *int32 `json:"maxAssociationLimit,omitempty"`
 	// MaxCapacityLimit - The maximum scale-out capacity for this commitment plan.
@@ -320,21 +502,21 @@ type Properties struct {
 	SuspendPlanOnOverage *bool `json:"suspendPlanOnOverage,omitempty"`
 }
 
-// Resource - Common properties of an ARM resource.
+// Resource common properties of an ARM resource.
 type Resource struct {
 	// ID - Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
 	// Location - Resource location.
-	Location string `json:"location,omitempty"`
+	Location *string `json:"location,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
 	// Tags - User-defined tags for the resource.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
-// ResourceSku - The SKU of a resource.
+// ResourceSku the SKU of a resource.
 type ResourceSku struct {
 	// Capacity - The scale-out capacity of the resource. 1 is 1x, 2 is 2x, etc. This impacts the quantities and cost of any commitment plan resource.
 	Capacity *int32 `json:"capacity,omitempty"`
@@ -344,7 +526,7 @@ type ResourceSku struct {
 	Tier *string `json:"tier,omitempty"`
 }
 
-// SkuCapability - Describes The SKU capabilites object.
+// SkuCapability describes The SKU capabilites object.
 type SkuCapability struct {
 	// Name - The capability name.
 	Name *string `json:"name,omitempty"`
@@ -352,7 +534,7 @@ type SkuCapability struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// SkuCapacity - Describes scaling information of a SKU.
+// SkuCapacity describes scaling information of a SKU.
 type SkuCapacity struct {
 	// Minimum - The minimum capacity.
 	Minimum *int64 `json:"minimum,omitempty"`
@@ -360,11 +542,11 @@ type SkuCapacity struct {
 	Maximum *int64 `json:"maximum,omitempty"`
 	// Default - The default capacity.
 	Default *int64 `json:"default,omitempty"`
-	// ScaleType - The scale type applicable to the sku. Possible values include: 'Automatic', 'Manual', 'None', 'None'
+	// ScaleType - The scale type applicable to the sku. Possible values include: 'Automatic', 'Manual', 'None'
 	ScaleType SkuCapacityScaleType `json:"scaleType,omitempty"`
 }
 
-// SkuCost - Describes metadata for SKU cost info.
+// SkuCost describes metadata for SKU cost info.
 type SkuCost struct {
 	// MeterID - The meter used for this part of a SKU's cost.
 	MeterID *string `json:"meterID,omitempty"`
@@ -374,33 +556,18 @@ type SkuCost struct {
 	ExtendedUnit *string `json:"extendedUnit,omitempty"`
 }
 
-// SkuListResult - The list of commitment plan SKUs.
+// SkuListResult the list of commitment plan SKUs.
 type SkuListResult struct {
-	rawResponse *http.Response
-	Value       []CatalogSku `json:"value,omitempty"`
+	autorest.Response `json:"-"`
+	Value             *[]CatalogSku `json:"value,omitempty"`
 }
 
-// Response returns the raw HTTP response object.
-func (slr SkuListResult) Response() *http.Response {
-	return slr.rawResponse
-}
-
-// StatusCode returns the HTTP status code of the response, e.g. 200.
-func (slr SkuListResult) StatusCode() int {
-	return slr.rawResponse.StatusCode
-}
-
-// Status returns the HTTP status message of the response, e.g. "200 OK".
-func (slr SkuListResult) Status() string {
-	return slr.rawResponse.Status
-}
-
-// SkuRestrictions - Describes restrictions which would prevent a SKU from being used.
+// SkuRestrictions describes restrictions which would prevent a SKU from being used.
 type SkuRestrictions struct {
-	// Type - The type of restrictions. Possible values include: 'Location', 'Zone', 'None'
+	// Type - The type of restrictions. Possible values include: 'Location', 'Zone'
 	Type ResourceSkuRestrictionsType `json:"type,omitempty"`
 	// Values - The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
-	Values []string `json:"values,omitempty"`
-	// ReasonCode - The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription', 'None'
-	ReasonCode ResourceSkuRestrictionsReasonCodeType `json:"reasonCode,omitempty"`
+	Values *[]string `json:"values,omitempty"`
+	// ReasonCode - The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
+	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
 }

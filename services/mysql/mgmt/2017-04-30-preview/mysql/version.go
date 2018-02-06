@@ -19,7 +19,7 @@ package mysql
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v12.2.1-beta arm-mysql/2017-04-30-preview"
+	return "Azure-SDK-For-Go/v12.2.1-beta services"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

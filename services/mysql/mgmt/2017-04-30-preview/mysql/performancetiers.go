@@ -24,47 +24,51 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the the Microsoft Azure management API provides create, read, update, and delete functionality
-// for Azure MySQL resources including servers, databases, firewall rules, log files and configurations.
-type OperationsClient struct {
+// PerformanceTiersClient is the the Microsoft Azure management API provides create, read, update, and delete
+// functionality for Azure MySQL resources including servers, databases, firewall rules, log files and configurations.
+type PerformanceTiersClient struct {
 	BaseClient
 }
 
-// NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewPerformanceTiersClient creates an instance of the PerformanceTiersClient client.
+func NewPerformanceTiersClient(subscriptionID string) PerformanceTiersClient {
+	return NewPerformanceTiersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewPerformanceTiersClientWithBaseURI creates an instance of the PerformanceTiersClient client.
+func NewPerformanceTiersClientWithBaseURI(baseURI string, subscriptionID string) PerformanceTiersClient {
+	return PerformanceTiersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all of the available REST API operations.
-func (client OperationsClient) List(ctx context.Context) (result OperationListResult, err error) {
+// List list all the performance tiers in a given subscription.
+func (client PerformanceTiersClient) List(ctx context.Context) (result PerformanceTierListResult, err error) {
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.OperationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "mysql.PerformanceTiersClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "mysql.OperationsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mysql.PerformanceTiersClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.OperationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "mysql.PerformanceTiersClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client PerformanceTiersClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
 	const APIVersion = "2017-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -73,21 +77,21 @@ func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.DBforMySQL/operations"),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/performanceTiers", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client PerformanceTiersClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
+func (client PerformanceTiersClient) ListResponder(resp *http.Response) (result PerformanceTierListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

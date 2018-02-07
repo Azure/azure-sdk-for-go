@@ -18,321 +18,427 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
-	"github.com/Azure/azure-pipeline-go/pipeline"
-	"io/ioutil"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
 // CredentialClient is the automation Client
 type CredentialClient struct {
-	ManagementClient
+	BaseClient
 }
 
 // NewCredentialClient creates an instance of the CredentialClient client.
-func NewCredentialClient(p pipeline.Pipeline) CredentialClient {
-	return CredentialClient{NewManagementClient(p)}
+func NewCredentialClient(subscriptionID string, resourceGroupName string) CredentialClient {
+	return NewCredentialClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName)
+}
+
+// NewCredentialClientWithBaseURI creates an instance of the CredentialClient client.
+func NewCredentialClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) CredentialClient {
+	return CredentialClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName)}
 }
 
 // CreateOrUpdate create a credential.
 //
 // automationAccountName is the automation account name. credentialName is the parameters supplied to the create or
 // update credential operation. parameters is the parameters supplied to the create or update credential operation.
-func (client CredentialClient) CreateOrUpdate(ctx context.Context, automationAccountName string, credentialName string, parameters CredentialCreateOrUpdateParameters) (*Credential, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}},
-		{targetValue: parameters,
-			constraints: []constraint{{target: "parameters.Name", name: null, rule: true, chain: nil},
-				{target: "parameters.CredentialCreateOrUpdateProperties", name: null, rule: true,
-					chain: []constraint{{target: "parameters.CredentialCreateOrUpdateProperties.UserName", name: null, rule: true, chain: nil},
-						{target: "parameters.CredentialCreateOrUpdateProperties.Password", name: null, rule: true, chain: nil},
+func (client CredentialClient) CreateOrUpdate(ctx context.Context, automationAccountName string, credentialName string, parameters CredentialCreateOrUpdateParameters) (result Credential, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.CredentialCreateOrUpdateProperties", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.CredentialCreateOrUpdateProperties.UserName", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "parameters.CredentialCreateOrUpdateProperties.Password", Name: validation.Null, Rule: true, Chain: nil},
 					}}}}}); err != nil {
-		return nil, err
+		return result, validation.NewErrorWithValidationError(err, "automation.CredentialClient", "CreateOrUpdate")
 	}
-	req, err := client.createOrUpdatePreparer(automationAccountName, credentialName, parameters)
+
+	req, err := client.CreateOrUpdatePreparer(ctx, automationAccountName, credentialName, parameters)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createOrUpdateResponder}, req)
+
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
-	return resp.(*Credential), err
+
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// createOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client CredentialClient) createOrUpdatePreparer(automationAccountName string, credentialName string, parameters CredentialCreateOrUpdateParameters) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials/{credentialName}"
-	req, err := pipeline.NewRequest("PUT", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client CredentialClient) CreateOrUpdatePreparer(ctx context.Context, automationAccountName string, credentialName string, parameters CredentialCreateOrUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"credentialName":        autorest.Encode("path", credentialName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", APIVersion)
-	req.URL.RawQuery = params.Encode()
-	b, err := json.Marshal(parameters)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to marshal request body")
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
 	}
-	req.Header.Set("Content-Type", "application/json")
-	err = req.SetBody(bytes.NewReader(b))
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to set request body")
-	}
-	return req, nil
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials/{credentialName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// createOrUpdateResponder handles the response to the CreateOrUpdate request.
-func (client CredentialClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusCreated, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	result := &Credential{rawResponse: resp.Response()}
-	if err != nil {
-		return result, err
-	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
-	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
-	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
-	}
-	return result, nil
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client CredentialClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client CredentialClient) CreateOrUpdateResponder(resp *http.Response) (result Credential, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Delete delete the credential.
 //
 // automationAccountName is the automation account name. credentialName is the name of credential.
-func (client CredentialClient) Delete(ctx context.Context, automationAccountName string, credentialName string) (*http.Response, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client CredentialClient) Delete(ctx context.Context, automationAccountName string, credentialName string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.CredentialClient", "Delete")
 	}
-	req, err := client.deletePreparer(automationAccountName, credentialName)
+
+	req, err := client.DeletePreparer(ctx, automationAccountName, credentialName)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "Delete", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
+
+	resp, err := client.DeleteSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "Delete", resp, "Failure sending request")
+		return
 	}
-	return resp.Response(), err
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// deletePreparer prepares the Delete request.
-func (client CredentialClient) deletePreparer(automationAccountName string, credentialName string) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials/{credentialName}"
-	req, err := pipeline.NewRequest("DELETE", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// DeletePreparer prepares the Delete request.
+func (client CredentialClient) DeletePreparer(ctx context.Context, automationAccountName string, credentialName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"credentialName":        autorest.Encode("path", credentialName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", APIVersion)
-	req.URL.RawQuery = params.Encode()
-	return req, nil
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials/{credentialName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// deleteResponder handles the response to the Delete request.
-func (client CredentialClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	return resp, err
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client CredentialClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client CredentialClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Get retrieve the credential identified by credential name.
 //
 // automationAccountName is the automation account name. credentialName is the name of credential.
-func (client CredentialClient) Get(ctx context.Context, automationAccountName string, credentialName string) (*Credential, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client CredentialClient) Get(ctx context.Context, automationAccountName string, credentialName string) (result Credential, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.CredentialClient", "Get")
 	}
-	req, err := client.getPreparer(automationAccountName, credentialName)
+
+	req, err := client.GetPreparer(ctx, automationAccountName, credentialName)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "Get", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
+
+	resp, err := client.GetSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "Get", resp, "Failure sending request")
+		return
 	}
-	return resp.(*Credential), err
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "Get", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// getPreparer prepares the Get request.
-func (client CredentialClient) getPreparer(automationAccountName string, credentialName string) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials/{credentialName}"
-	req, err := pipeline.NewRequest("GET", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// GetPreparer prepares the Get request.
+func (client CredentialClient) GetPreparer(ctx context.Context, automationAccountName string, credentialName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"credentialName":        autorest.Encode("path", credentialName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", APIVersion)
-	req.URL.RawQuery = params.Encode()
-	return req, nil
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials/{credentialName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// getResponder handles the response to the Get request.
-func (client CredentialClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	result := &Credential{rawResponse: resp.Response()}
-	if err != nil {
-		return result, err
-	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
-	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
-	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
-	}
-	return result, nil
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client CredentialClient) GetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client CredentialClient) GetResponder(resp *http.Response) (result Credential, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListByAutomationAccount retrieve a list of credentials.
 //
 // automationAccountName is the automation account name.
-func (client CredentialClient) ListByAutomationAccount(ctx context.Context, automationAccountName string) (*CredentialListResult, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client CredentialClient) ListByAutomationAccount(ctx context.Context, automationAccountName string) (result CredentialListResultPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.CredentialClient", "ListByAutomationAccount")
 	}
-	req, err := client.listByAutomationAccountPreparer(automationAccountName)
+
+	result.fn = client.listByAutomationAccountNextResults
+	req, err := client.ListByAutomationAccountPreparer(ctx, automationAccountName)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "ListByAutomationAccount", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByAutomationAccountResponder}, req)
+
+	resp, err := client.ListByAutomationAccountSender(req)
 	if err != nil {
-		return nil, err
+		result.clr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "ListByAutomationAccount", resp, "Failure sending request")
+		return
 	}
-	return resp.(*CredentialListResult), err
+
+	result.clr, err = client.ListByAutomationAccountResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "ListByAutomationAccount", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// listByAutomationAccountPreparer prepares the ListByAutomationAccount request.
-func (client CredentialClient) listByAutomationAccountPreparer(automationAccountName string) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials"
-	req, err := pipeline.NewRequest("GET", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
+func (client CredentialClient) ListByAutomationAccountPreparer(ctx context.Context, automationAccountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", APIVersion)
-	req.URL.RawQuery = params.Encode()
-	return req, nil
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// listByAutomationAccountResponder handles the response to the ListByAutomationAccount request.
-func (client CredentialClient) listByAutomationAccountResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	result := &CredentialListResult{rawResponse: resp.Response()}
+// ListByAutomationAccountSender sends the ListByAutomationAccount request. The method will close the
+// http.Response Body if it receives an error.
+func (client CredentialClient) ListByAutomationAccountSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByAutomationAccountResponder handles the response to the ListByAutomationAccount request. The method always
+// closes the http.Response Body.
+func (client CredentialClient) ListByAutomationAccountResponder(resp *http.Response) (result CredentialListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByAutomationAccountNextResults retrieves the next set of results, if any.
+func (client CredentialClient) listByAutomationAccountNextResults(lastResults CredentialListResult) (result CredentialListResult, err error) {
+	req, err := lastResults.credentialListResultPreparer()
 	if err != nil {
-		return result, err
+		return result, autorest.NewErrorWithError(err, "automation.CredentialClient", "listByAutomationAccountNextResults", nil, "Failure preparing next results request")
 	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByAutomationAccountSender(req)
 	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "automation.CredentialClient", "listByAutomationAccountNextResults", resp, "Failure sending next results request")
 	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
+	result, err = client.ListByAutomationAccountResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "listByAutomationAccountNextResults", resp, "Failure responding to next results request")
 	}
-	return result, nil
+	return
+}
+
+// ListByAutomationAccountComplete enumerates all values, automatically crossing page boundaries as required.
+func (client CredentialClient) ListByAutomationAccountComplete(ctx context.Context, automationAccountName string) (result CredentialListResultIterator, err error) {
+	result.page, err = client.ListByAutomationAccount(ctx, automationAccountName)
+	return
 }
 
 // Update update a credential.
 //
 // automationAccountName is the automation account name. credentialName is the parameters supplied to the Update
 // credential operation. parameters is the parameters supplied to the Update credential operation.
-func (client CredentialClient) Update(ctx context.Context, automationAccountName string, credentialName string, parameters CredentialUpdateParameters) (*Credential, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client CredentialClient) Update(ctx context.Context, automationAccountName string, credentialName string, parameters CredentialUpdateParameters) (result Credential, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.CredentialClient", "Update")
 	}
-	req, err := client.updatePreparer(automationAccountName, credentialName, parameters)
+
+	req, err := client.UpdatePreparer(ctx, automationAccountName, credentialName, parameters)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "Update", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateResponder}, req)
+
+	resp, err := client.UpdateSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "Update", resp, "Failure sending request")
+		return
 	}
-	return resp.(*Credential), err
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.CredentialClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// updatePreparer prepares the Update request.
-func (client CredentialClient) updatePreparer(automationAccountName string, credentialName string, parameters CredentialUpdateParameters) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials/{credentialName}"
-	req, err := pipeline.NewRequest("PATCH", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// UpdatePreparer prepares the Update request.
+func (client CredentialClient) UpdatePreparer(ctx context.Context, automationAccountName string, credentialName string, parameters CredentialUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"credentialName":        autorest.Encode("path", credentialName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", APIVersion)
-	req.URL.RawQuery = params.Encode()
-	b, err := json.Marshal(parameters)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to marshal request body")
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
 	}
-	req.Header.Set("Content-Type", "application/json")
-	err = req.SetBody(bytes.NewReader(b))
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to set request body")
-	}
-	return req, nil
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/credentials/{credentialName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// updateResponder handles the response to the Update request.
-func (client CredentialClient) updateResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	result := &Credential{rawResponse: resp.Response()}
-	if err != nil {
-		return result, err
-	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
-	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
-	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
-	}
-	return result, nil
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client CredentialClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client CredentialClient) UpdateResponder(resp *http.Response) (result Credential, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

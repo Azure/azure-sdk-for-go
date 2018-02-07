@@ -18,319 +18,425 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
-	"github.com/Azure/azure-pipeline-go/pipeline"
-	"io/ioutil"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
 // ScheduleClient is the automation Client
 type ScheduleClient struct {
-	ManagementClient
+	BaseClient
 }
 
 // NewScheduleClient creates an instance of the ScheduleClient client.
-func NewScheduleClient(p pipeline.Pipeline) ScheduleClient {
-	return ScheduleClient{NewManagementClient(p)}
+func NewScheduleClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) ScheduleClient {
+	return NewScheduleClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+}
+
+// NewScheduleClientWithBaseURI creates an instance of the ScheduleClient client.
+func NewScheduleClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) ScheduleClient {
+	return ScheduleClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)}
 }
 
 // CreateOrUpdate create a schedule.
 //
 // automationAccountName is the automation account name. scheduleName is the schedule name. parameters is the
 // parameters supplied to the create or update schedule operation.
-func (client ScheduleClient) CreateOrUpdate(ctx context.Context, automationAccountName string, scheduleName string, parameters ScheduleCreateOrUpdateParameters) (*Schedule, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}},
-		{targetValue: parameters,
-			constraints: []constraint{{target: "parameters.Name", name: null, rule: true, chain: nil},
-				{target: "parameters.ScheduleCreateOrUpdateProperties", name: null, rule: true,
-					chain: []constraint{{target: "parameters.ScheduleCreateOrUpdateProperties.StartTime", name: null, rule: true, chain: nil}}}}}}); err != nil {
-		return nil, err
+func (client ScheduleClient) CreateOrUpdate(ctx context.Context, automationAccountName string, scheduleName string, parameters ScheduleCreateOrUpdateParameters) (result Schedule, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.ScheduleCreateOrUpdateProperties", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.ScheduleCreateOrUpdateProperties.StartTime", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.ScheduleClient", "CreateOrUpdate")
 	}
-	req, err := client.createOrUpdatePreparer(automationAccountName, scheduleName, parameters)
+
+	req, err := client.CreateOrUpdatePreparer(ctx, automationAccountName, scheduleName, parameters)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createOrUpdateResponder}, req)
+
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
-	return resp.(*Schedule), err
+
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// createOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ScheduleClient) createOrUpdatePreparer(automationAccountName string, scheduleName string, parameters ScheduleCreateOrUpdateParameters) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules/{scheduleName}"
-	req, err := pipeline.NewRequest("PUT", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client ScheduleClient) CreateOrUpdatePreparer(ctx context.Context, automationAccountName string, scheduleName string, parameters ScheduleCreateOrUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"scheduleName":          autorest.Encode("path", scheduleName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", "2015-10-31")
-	req.URL.RawQuery = params.Encode()
-	b, err := json.Marshal(parameters)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to marshal request body")
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
 	}
-	req.Header.Set("Content-Type", "application/json")
-	err = req.SetBody(bytes.NewReader(b))
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to set request body")
-	}
-	return req, nil
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules/{scheduleName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// createOrUpdateResponder handles the response to the CreateOrUpdate request.
-func (client ScheduleClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK, http.StatusCreated, http.StatusConflict)
-	if resp == nil {
-		return nil, err
-	}
-	result := &Schedule{rawResponse: resp.Response()}
-	if err != nil {
-		return result, err
-	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
-	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
-	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
-	}
-	return result, nil
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client ScheduleClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client ScheduleClient) CreateOrUpdateResponder(resp *http.Response) (result Schedule, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusConflict),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Delete delete the schedule identified by schedule name.
 //
 // automationAccountName is the automation account name. scheduleName is the schedule name.
-func (client ScheduleClient) Delete(ctx context.Context, automationAccountName string, scheduleName string) (*http.Response, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client ScheduleClient) Delete(ctx context.Context, automationAccountName string, scheduleName string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.ScheduleClient", "Delete")
 	}
-	req, err := client.deletePreparer(automationAccountName, scheduleName)
+
+	req, err := client.DeletePreparer(ctx, automationAccountName, scheduleName)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "Delete", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
+
+	resp, err := client.DeleteSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "Delete", resp, "Failure sending request")
+		return
 	}
-	return resp.Response(), err
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// deletePreparer prepares the Delete request.
-func (client ScheduleClient) deletePreparer(automationAccountName string, scheduleName string) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules/{scheduleName}"
-	req, err := pipeline.NewRequest("DELETE", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// DeletePreparer prepares the Delete request.
+func (client ScheduleClient) DeletePreparer(ctx context.Context, automationAccountName string, scheduleName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"scheduleName":          autorest.Encode("path", scheduleName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", "2015-10-31")
-	req.URL.RawQuery = params.Encode()
-	return req, nil
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules/{scheduleName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// deleteResponder handles the response to the Delete request.
-func (client ScheduleClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK, http.StatusNotFound)
-	if resp == nil {
-		return nil, err
-	}
-	return resp, err
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client ScheduleClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client ScheduleClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // Get retrieve the schedule identified by schedule name.
 //
 // automationAccountName is the automation account name. scheduleName is the schedule name.
-func (client ScheduleClient) Get(ctx context.Context, automationAccountName string, scheduleName string) (*Schedule, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client ScheduleClient) Get(ctx context.Context, automationAccountName string, scheduleName string) (result Schedule, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.ScheduleClient", "Get")
 	}
-	req, err := client.getPreparer(automationAccountName, scheduleName)
+
+	req, err := client.GetPreparer(ctx, automationAccountName, scheduleName)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "Get", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
+
+	resp, err := client.GetSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "Get", resp, "Failure sending request")
+		return
 	}
-	return resp.(*Schedule), err
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "Get", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// getPreparer prepares the Get request.
-func (client ScheduleClient) getPreparer(automationAccountName string, scheduleName string) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules/{scheduleName}"
-	req, err := pipeline.NewRequest("GET", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// GetPreparer prepares the Get request.
+func (client ScheduleClient) GetPreparer(ctx context.Context, automationAccountName string, scheduleName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"scheduleName":          autorest.Encode("path", scheduleName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", "2015-10-31")
-	req.URL.RawQuery = params.Encode()
-	return req, nil
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules/{scheduleName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// getResponder handles the response to the Get request.
-func (client ScheduleClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	result := &Schedule{rawResponse: resp.Response()}
-	if err != nil {
-		return result, err
-	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
-	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
-	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
-	}
-	return result, nil
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client ScheduleClient) GetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client ScheduleClient) GetResponder(resp *http.Response) (result Schedule, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListByAutomationAccount retrieve a list of schedules.
 //
 // automationAccountName is the automation account name.
-func (client ScheduleClient) ListByAutomationAccount(ctx context.Context, automationAccountName string) (*ScheduleListResult, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client ScheduleClient) ListByAutomationAccount(ctx context.Context, automationAccountName string) (result ScheduleListResultPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.ScheduleClient", "ListByAutomationAccount")
 	}
-	req, err := client.listByAutomationAccountPreparer(automationAccountName)
+
+	result.fn = client.listByAutomationAccountNextResults
+	req, err := client.ListByAutomationAccountPreparer(ctx, automationAccountName)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "ListByAutomationAccount", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByAutomationAccountResponder}, req)
+
+	resp, err := client.ListByAutomationAccountSender(req)
 	if err != nil {
-		return nil, err
+		result.slr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "ListByAutomationAccount", resp, "Failure sending request")
+		return
 	}
-	return resp.(*ScheduleListResult), err
+
+	result.slr, err = client.ListByAutomationAccountResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "ListByAutomationAccount", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// listByAutomationAccountPreparer prepares the ListByAutomationAccount request.
-func (client ScheduleClient) listByAutomationAccountPreparer(automationAccountName string) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules"
-	req, err := pipeline.NewRequest("GET", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
+func (client ScheduleClient) ListByAutomationAccountPreparer(ctx context.Context, automationAccountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", "2015-10-31")
-	req.URL.RawQuery = params.Encode()
-	return req, nil
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// listByAutomationAccountResponder handles the response to the ListByAutomationAccount request.
-func (client ScheduleClient) listByAutomationAccountResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	result := &ScheduleListResult{rawResponse: resp.Response()}
+// ListByAutomationAccountSender sends the ListByAutomationAccount request. The method will close the
+// http.Response Body if it receives an error.
+func (client ScheduleClient) ListByAutomationAccountSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByAutomationAccountResponder handles the response to the ListByAutomationAccount request. The method always
+// closes the http.Response Body.
+func (client ScheduleClient) ListByAutomationAccountResponder(resp *http.Response) (result ScheduleListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByAutomationAccountNextResults retrieves the next set of results, if any.
+func (client ScheduleClient) listByAutomationAccountNextResults(lastResults ScheduleListResult) (result ScheduleListResult, err error) {
+	req, err := lastResults.scheduleListResultPreparer()
 	if err != nil {
-		return result, err
+		return result, autorest.NewErrorWithError(err, "automation.ScheduleClient", "listByAutomationAccountNextResults", nil, "Failure preparing next results request")
 	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByAutomationAccountSender(req)
 	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "automation.ScheduleClient", "listByAutomationAccountNextResults", resp, "Failure sending next results request")
 	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
+	result, err = client.ListByAutomationAccountResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "listByAutomationAccountNextResults", resp, "Failure responding to next results request")
 	}
-	return result, nil
+	return
+}
+
+// ListByAutomationAccountComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ScheduleClient) ListByAutomationAccountComplete(ctx context.Context, automationAccountName string) (result ScheduleListResultIterator, err error) {
+	result.page, err = client.ListByAutomationAccount(ctx, automationAccountName)
+	return
 }
 
 // Update update the schedule identified by schedule name.
 //
 // automationAccountName is the automation account name. scheduleName is the schedule name. parameters is the
 // parameters supplied to the update schedule operation.
-func (client ScheduleClient) Update(ctx context.Context, automationAccountName string, scheduleName string, parameters ScheduleUpdateParameters) (*Schedule, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client ScheduleClient) Update(ctx context.Context, automationAccountName string, scheduleName string, parameters ScheduleUpdateParameters) (result Schedule, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.ScheduleClient", "Update")
 	}
-	req, err := client.updatePreparer(automationAccountName, scheduleName, parameters)
+
+	req, err := client.UpdatePreparer(ctx, automationAccountName, scheduleName, parameters)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "Update", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateResponder}, req)
+
+	resp, err := client.UpdateSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "Update", resp, "Failure sending request")
+		return
 	}
-	return resp.(*Schedule), err
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// updatePreparer prepares the Update request.
-func (client ScheduleClient) updatePreparer(automationAccountName string, scheduleName string, parameters ScheduleUpdateParameters) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules/{scheduleName}"
-	req, err := pipeline.NewRequest("PATCH", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// UpdatePreparer prepares the Update request.
+func (client ScheduleClient) UpdatePreparer(ctx context.Context, automationAccountName string, scheduleName string, parameters ScheduleUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"scheduleName":          autorest.Encode("path", scheduleName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", "2015-10-31")
-	req.URL.RawQuery = params.Encode()
-	b, err := json.Marshal(parameters)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to marshal request body")
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
 	}
-	req.Header.Set("Content-Type", "application/json")
-	err = req.SetBody(bytes.NewReader(b))
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to set request body")
-	}
-	return req, nil
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/schedules/{scheduleName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// updateResponder handles the response to the Update request.
-func (client ScheduleClient) updateResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	result := &Schedule{rawResponse: resp.Response()}
-	if err != nil {
-		return result, err
-	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
-	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
-	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
-	}
-	return result, nil
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client ScheduleClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client ScheduleClient) UpdateResponder(resp *http.Response) (result Schedule, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

@@ -18,379 +18,499 @@ package automation
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
-	"github.com/Azure/azure-pipeline-go/pipeline"
-	"io/ioutil"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
 // WebhookClient is the automation Client
 type WebhookClient struct {
-	ManagementClient
+	BaseClient
 }
 
 // NewWebhookClient creates an instance of the WebhookClient client.
-func NewWebhookClient(p pipeline.Pipeline) WebhookClient {
-	return WebhookClient{NewManagementClient(p)}
+func NewWebhookClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) WebhookClient {
+	return NewWebhookClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+}
+
+// NewWebhookClientWithBaseURI creates an instance of the WebhookClient client.
+func NewWebhookClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) WebhookClient {
+	return WebhookClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)}
 }
 
 // CreateOrUpdate create the webhook identified by webhook name.
 //
 // automationAccountName is the automation account name. webhookName is the webhook name. parameters is the create or
 // update parameters for webhook.
-func (client WebhookClient) CreateOrUpdate(ctx context.Context, automationAccountName string, webhookName string, parameters WebhookCreateOrUpdateParameters) (*Webhook, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}},
-		{targetValue: parameters,
-			constraints: []constraint{{target: "parameters.Name", name: null, rule: true, chain: nil},
-				{target: "parameters.WebhookCreateOrUpdateProperties", name: null, rule: true, chain: nil}}}}); err != nil {
-		return nil, err
+func (client WebhookClient) CreateOrUpdate(ctx context.Context, automationAccountName string, webhookName string, parameters WebhookCreateOrUpdateParameters) (result Webhook, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.WebhookCreateOrUpdateProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.WebhookClient", "CreateOrUpdate")
 	}
-	req, err := client.createOrUpdatePreparer(automationAccountName, webhookName, parameters)
+
+	req, err := client.CreateOrUpdatePreparer(ctx, automationAccountName, webhookName, parameters)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createOrUpdateResponder}, req)
+
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
 	}
-	return resp.(*Webhook), err
+
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// createOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client WebhookClient) createOrUpdatePreparer(automationAccountName string, webhookName string, parameters WebhookCreateOrUpdateParameters) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks/{webhookName}"
-	req, err := pipeline.NewRequest("PUT", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client WebhookClient) CreateOrUpdatePreparer(ctx context.Context, automationAccountName string, webhookName string, parameters WebhookCreateOrUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"webhookName":           autorest.Encode("path", webhookName),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", "2015-10-31")
-	req.URL.RawQuery = params.Encode()
-	b, err := json.Marshal(parameters)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to marshal request body")
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
 	}
-	req.Header.Set("Content-Type", "application/json")
-	err = req.SetBody(bytes.NewReader(b))
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to set request body")
-	}
-	return req, nil
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks/{webhookName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// createOrUpdateResponder handles the response to the CreateOrUpdate request.
-func (client WebhookClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK, http.StatusCreated)
-	if resp == nil {
-		return nil, err
-	}
-	result := &Webhook{rawResponse: resp.Response()}
-	if err != nil {
-		return result, err
-	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
-	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
-	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
-	}
-	return result, nil
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client WebhookClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client WebhookClient) CreateOrUpdateResponder(resp *http.Response) (result Webhook, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Delete delete the webhook by name.
 //
 // automationAccountName is the automation account name. webhookName is the webhook name.
-func (client WebhookClient) Delete(ctx context.Context, automationAccountName string, webhookName string) (*http.Response, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client WebhookClient) Delete(ctx context.Context, automationAccountName string, webhookName string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.WebhookClient", "Delete")
 	}
-	req, err := client.deletePreparer(automationAccountName, webhookName)
+
+	req, err := client.DeletePreparer(ctx, automationAccountName, webhookName)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "Delete", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
+
+	resp, err := client.DeleteSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "Delete", resp, "Failure sending request")
+		return
 	}
-	return resp.Response(), err
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// deletePreparer prepares the Delete request.
-func (client WebhookClient) deletePreparer(automationAccountName string, webhookName string) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks/{webhookName}"
-	req, err := pipeline.NewRequest("DELETE", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// DeletePreparer prepares the Delete request.
+func (client WebhookClient) DeletePreparer(ctx context.Context, automationAccountName string, webhookName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"webhookName":           autorest.Encode("path", webhookName),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", "2015-10-31")
-	req.URL.RawQuery = params.Encode()
-	return req, nil
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks/{webhookName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// deleteResponder handles the response to the Delete request.
-func (client WebhookClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	return resp, err
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client WebhookClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client WebhookClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // GenerateURI generates a Uri for use in creating a webhook.
 //
 // automationAccountName is the automation account name.
-func (client WebhookClient) GenerateURI(ctx context.Context, automationAccountName string) (*GenerateURIResponse, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client WebhookClient) GenerateURI(ctx context.Context, automationAccountName string) (result String, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.WebhookClient", "GenerateURI")
 	}
-	req, err := client.generateURIPreparer(automationAccountName)
+
+	req, err := client.GenerateURIPreparer(ctx, automationAccountName)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "GenerateURI", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.generateURIResponder}, req)
+
+	resp, err := client.GenerateURISender(req)
 	if err != nil {
-		return nil, err
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "GenerateURI", resp, "Failure sending request")
+		return
 	}
-	return resp.(*GenerateURIResponse), err
+
+	result, err = client.GenerateURIResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "GenerateURI", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// generateURIPreparer prepares the GenerateURI request.
-func (client WebhookClient) generateURIPreparer(automationAccountName string) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks/generateUri"
-	req, err := pipeline.NewRequest("POST", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// GenerateURIPreparer prepares the GenerateURI request.
+func (client WebhookClient) GenerateURIPreparer(ctx context.Context, automationAccountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", "2015-10-31")
-	req.URL.RawQuery = params.Encode()
-	return req, nil
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks/generateUri", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// generateURIResponder handles the response to the GenerateURI request.
-func (client WebhookClient) generateURIResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	result := &GenerateURIResponse{rawResponse: resp.Response()}
-	if err != nil {
-		return result, err
-	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
-	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
-	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, &result.Value)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
-	}
-	return result, nil
+// GenerateURISender sends the GenerateURI request. The method will close the
+// http.Response Body if it receives an error.
+func (client WebhookClient) GenerateURISender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GenerateURIResponder handles the response to the GenerateURI request. The method always
+// closes the http.Response Body.
+func (client WebhookClient) GenerateURIResponder(resp *http.Response) (result String, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // Get retrieve the webhook identified by webhook name.
 //
 // automationAccountName is the automation account name. webhookName is the webhook name.
-func (client WebhookClient) Get(ctx context.Context, automationAccountName string, webhookName string) (*Webhook, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client WebhookClient) Get(ctx context.Context, automationAccountName string, webhookName string) (result Webhook, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.WebhookClient", "Get")
 	}
-	req, err := client.getPreparer(automationAccountName, webhookName)
+
+	req, err := client.GetPreparer(ctx, automationAccountName, webhookName)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "Get", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
+
+	resp, err := client.GetSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "Get", resp, "Failure sending request")
+		return
 	}
-	return resp.(*Webhook), err
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "Get", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// getPreparer prepares the Get request.
-func (client WebhookClient) getPreparer(automationAccountName string, webhookName string) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks/{webhookName}"
-	req, err := pipeline.NewRequest("GET", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// GetPreparer prepares the Get request.
+func (client WebhookClient) GetPreparer(ctx context.Context, automationAccountName string, webhookName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"webhookName":           autorest.Encode("path", webhookName),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", "2015-10-31")
-	req.URL.RawQuery = params.Encode()
-	return req, nil
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks/{webhookName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// getResponder handles the response to the Get request.
-func (client WebhookClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	result := &Webhook{rawResponse: resp.Response()}
-	if err != nil {
-		return result, err
-	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
-	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
-	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
-	}
-	return result, nil
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client WebhookClient) GetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client WebhookClient) GetResponder(resp *http.Response) (result Webhook, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // ListByAutomationAccount retrieve a list of webhooks.
 //
 // automationAccountName is the automation account name. filter is the filter to apply on the operation.
-func (client WebhookClient) ListByAutomationAccount(ctx context.Context, automationAccountName string, filter *string) (*WebhookListResult, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client WebhookClient) ListByAutomationAccount(ctx context.Context, automationAccountName string, filter string) (result WebhookListResultPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.WebhookClient", "ListByAutomationAccount")
 	}
-	req, err := client.listByAutomationAccountPreparer(automationAccountName, filter)
+
+	result.fn = client.listByAutomationAccountNextResults
+	req, err := client.ListByAutomationAccountPreparer(ctx, automationAccountName, filter)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "ListByAutomationAccount", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByAutomationAccountResponder}, req)
+
+	resp, err := client.ListByAutomationAccountSender(req)
 	if err != nil {
-		return nil, err
+		result.wlr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "ListByAutomationAccount", resp, "Failure sending request")
+		return
 	}
-	return resp.(*WebhookListResult), err
+
+	result.wlr, err = client.ListByAutomationAccountResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "ListByAutomationAccount", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// listByAutomationAccountPreparer prepares the ListByAutomationAccount request.
-func (client WebhookClient) listByAutomationAccountPreparer(automationAccountName string, filter *string) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks"
-	req, err := pipeline.NewRequest("GET", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
+func (client WebhookClient) ListByAutomationAccountPreparer(ctx context.Context, automationAccountName string, filter string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
-	params := req.URL.Query()
-	if filter != nil {
-		params.Set("$filter", *filter)
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
 	}
-	params.Set("api-version", "2015-10-31")
-	req.URL.RawQuery = params.Encode()
-	return req, nil
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// listByAutomationAccountResponder handles the response to the ListByAutomationAccount request.
-func (client WebhookClient) listByAutomationAccountResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	result := &WebhookListResult{rawResponse: resp.Response()}
+// ListByAutomationAccountSender sends the ListByAutomationAccount request. The method will close the
+// http.Response Body if it receives an error.
+func (client WebhookClient) ListByAutomationAccountSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByAutomationAccountResponder handles the response to the ListByAutomationAccount request. The method always
+// closes the http.Response Body.
+func (client WebhookClient) ListByAutomationAccountResponder(resp *http.Response) (result WebhookListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByAutomationAccountNextResults retrieves the next set of results, if any.
+func (client WebhookClient) listByAutomationAccountNextResults(lastResults WebhookListResult) (result WebhookListResult, err error) {
+	req, err := lastResults.webhookListResultPreparer()
 	if err != nil {
-		return result, err
+		return result, autorest.NewErrorWithError(err, "automation.WebhookClient", "listByAutomationAccountNextResults", nil, "Failure preparing next results request")
 	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByAutomationAccountSender(req)
 	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "automation.WebhookClient", "listByAutomationAccountNextResults", resp, "Failure sending next results request")
 	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
+	result, err = client.ListByAutomationAccountResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "listByAutomationAccountNextResults", resp, "Failure responding to next results request")
 	}
-	return result, nil
+	return
+}
+
+// ListByAutomationAccountComplete enumerates all values, automatically crossing page boundaries as required.
+func (client WebhookClient) ListByAutomationAccountComplete(ctx context.Context, automationAccountName string, filter string) (result WebhookListResultIterator, err error) {
+	result.page, err = client.ListByAutomationAccount(ctx, automationAccountName, filter)
+	return
 }
 
 // Update update the webhook identified by webhook name.
 //
 // automationAccountName is the automation account name. webhookName is the webhook name. parameters is the update
 // parameters for webhook.
-func (client WebhookClient) Update(ctx context.Context, automationAccountName string, webhookName string, parameters WebhookUpdateParameters) (*Webhook, error) {
-	if err := validate([]validation{
-		{targetValue: client.ResourceGroupName,
-			constraints: []constraint{{target: "client.ResourceGroupName", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
-		return nil, err
+func (client WebhookClient) Update(ctx context.Context, automationAccountName string, webhookName string, parameters WebhookUpdateParameters) (result Webhook, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewErrorWithValidationError(err, "automation.WebhookClient", "Update")
 	}
-	req, err := client.updatePreparer(automationAccountName, webhookName, parameters)
+
+	req, err := client.UpdatePreparer(ctx, automationAccountName, webhookName, parameters)
 	if err != nil {
-		return nil, err
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "Update", nil, "Failure preparing request")
+		return
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateResponder}, req)
+
+	resp, err := client.UpdateSender(req)
 	if err != nil {
-		return nil, err
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "Update", resp, "Failure sending request")
+		return
 	}
-	return resp.(*Webhook), err
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
 }
 
-// updatePreparer prepares the Update request.
-func (client WebhookClient) updatePreparer(automationAccountName string, webhookName string, parameters WebhookUpdateParameters) (pipeline.Request, error) {
-	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks/{webhookName}"
-	req, err := pipeline.NewRequest("PATCH", u, nil)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to create request")
+// UpdatePreparer prepares the Update request.
+func (client WebhookClient) UpdatePreparer(ctx context.Context, automationAccountName string, webhookName string, parameters WebhookUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"automationAccountName": autorest.Encode("path", automationAccountName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"webhookName":           autorest.Encode("path", webhookName),
 	}
-	params := req.URL.Query()
-	params.Set("api-version", "2015-10-31")
-	req.URL.RawQuery = params.Encode()
-	b, err := json.Marshal(parameters)
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to marshal request body")
+
+	const APIVersion = "2015-10-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
 	}
-	req.Header.Set("Content-Type", "application/json")
-	err = req.SetBody(bytes.NewReader(b))
-	if err != nil {
-		return req, pipeline.NewError(err, "failed to set request body")
-	}
-	return req, nil
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks/{webhookName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// updateResponder handles the response to the Update request.
-func (client WebhookClient) updateResponder(resp pipeline.Response) (pipeline.Response, error) {
-	err := validateResponse(resp, http.StatusOK)
-	if resp == nil {
-		return nil, err
-	}
-	result := &Webhook{rawResponse: resp.Response()}
-	if err != nil {
-		return result, err
-	}
-	defer resp.Response().Body.Close()
-	b, err := ioutil.ReadAll(resp.Response().Body)
-	if err != nil {
-		return result, NewResponseError(err, resp.Response(), "failed to read response body")
-	}
-	if len(b) > 0 {
-		err = json.Unmarshal(b, result)
-		if err != nil {
-			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
-		}
-	}
-	return result, nil
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client WebhookClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client WebhookClient) UpdateResponder(resp *http.Response) (result Webhook, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

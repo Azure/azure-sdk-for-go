@@ -1,4 +1,4 @@
-PACKAGE  = github.com/azure/azure-service-bus-go
+PACKAGE  = github.com/Azure/azure-service-bus-go
 DATE    ?= $(shell date +%FT%T%z)
 VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2> /dev/null || \
 			cat $(CURDIR)/.version 2> /dev/null || echo v0)
@@ -20,51 +20,42 @@ M = $(shell printf "\033[34;1m▶\033[0m")
 TIMEOUT = 300
 
 .PHONY: all
-all: fmt vendor lint vet | $(BASE) ; $(info $(M) building library…) @ ## Build program
-	$Q cd $(BASE) && $(GO) build \
-		-tags release \
-		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION) -X $(PACKAGE)/cmd.BuildDate=$(DATE)'
-
-.PHONY: prod
-prod: vendor | $(BASE) ; $(info $(M) building library…) @ ## Build program
-	$Q cd $(BASE) && CGO_ENABLED=0 GOOS=linux $(GO) build \
-		-tags release \
-		-ldflags '-X $(PACKAGE)/cmd.Version=$(VERSION) -X $(PACKAGE)/cmd.BuildDate=$(DATE)'
-
-$(BASE): ; $(info $(M) setting GOPATH…)
-	@mkdir -p $(dir $@)
-	@ln -sf $(CURDIR) $@
+all: fmt vendor lint vet megacheck ; $(info $(M) building library…) @ ## Build program
+	$Q cd $(BASE) && $(GO) build -tags release
 
 # Tools
 
 GOLINT = $(BIN)/golint
-$(BIN)/golint: | $(BASE) ; $(info $(M) building golint…)
+$(BIN)/golint: ; $(info $(M) building golint…)
 	$Q go get github.com/golang/lint/golint
 
 # Tests
 
-TEST_TARGETS := test-default test-bench test-short test-verbose test-race
+TEST_TARGETS := test-default test-bench test-verbose test-race test-debug test-cover
 .PHONY: $(TEST_TARGETS) test-xml check test tests
-test-bench:   ARGS=-run=__absolutelynothing__ -bench=. ## Run benchmarks
-test-short:   ARGS=-short        ## Run only short tests
-test-verbose: ARGS=-v            ## Run tests in verbose mode
-test-debug:   ARGS=-v -debug     ## Run tests in verbose mode with debug output
-test-race:    ARGS=-race         ## Run tests with race detector
-test-cover:   ARGS=-v -cover     ## Run tests in verbose mode with coverage
+test-bench:   ARGS=-run=__absolutelynothing__ -bench=. 		## Run benchmarks
+test-verbose: ARGS=-v            							## Run tests in verbose mode
+test-debug:   ARGS=-v -debug     							## Run tests in verbose mode with debug output
+test-race:    ARGS=-race         							## Run tests with race detector
+test-cover:   ARGS=-cover -coverprofile=cover.out -v     	## Run tests in verbose mode with coverage
 $(TEST_TARGETS): NAME=$(MAKECMDGOALS:test-%=%)
 $(TEST_TARGETS): test
-check test tests: cyclo lint vet vendor | $(BASE) ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
+check test tests: cyclo lint vet vendor megacheck ; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
 	$Q cd $(BASE) && $(GO) test -timeout $(TIMEOUT)s $(ARGS) $(TESTPKGS)
 
 .PHONY: vet
-vet: vendor | $(BASE) $(GOLINT) ; $(info $(M) running vet…) @ ## Run vet
+vet: vendor | $(GOLINT) ; $(info $(M) running vet…) @ ## Run vet
 	$Q cd $(BASE) && $(GO) vet ./...
 
 .PHONY: lint
-lint: vendor | $(BASE) $(GOLINT) ; $(info $(M) running golint…) @ ## Run golint
+lint: vendor | $(GOLINT) ; $(info $(M) running golint…) @ ## Run golint
 	$Q cd $(BASE) && ret=0 && for pkg in $(PKGS); do \
 		test -z "$$($(GOLINT) $$pkg | tee /dev/stderr)" || ret=1 ; \
 	 done ; exit $$ret
+
+.PHONY: megacheck
+megacheck: vendor ; $(info $(M) running megacheck…) @ ## Run megacheck
+	$Q cd $(BASE) && megacheck
 
 .PHONY: fmt
 fmt: ; $(info $(M) running gofmt…) @ ## Run gofmt on all source files
@@ -75,12 +66,13 @@ fmt: ; $(info $(M) running gofmt…) @ ## Run gofmt on all source files
 .PHONY: cyclo
 cyclo: ; $(info $(M) running gocyclo...) @ ## Run gocyclo on all source files
 	$Q cd $(BASE) && $(GOCYCLO) -over 19 $$($(GO_FILES))
+
 # Dependency management
 
-Gopkg.lock: Gopkg.toml | $(BASE) ; $(info $(M) updating dependencies…)
+Gopkg.lock: Gopkg.toml | ; $(info $(M) updating dependencies…)
 	$Q cd $(BASE) && $(DEP) ensure
 	@touch $@
-vendor: Gopkg.lock | $(BASE) ; $(info $(M) retrieving dependencies…)
+vendor: Gopkg.lock | ; $(info $(M) retrieving dependencies…)
 	$Q cd $(BASE) && $(DEP) ensure
 	@touch $@
 

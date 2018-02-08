@@ -116,10 +116,8 @@ const (
 // AsyncOperationResult result of a long running operation.
 type AsyncOperationResult struct {
 	autorest.Response `json:"-"`
-	// Status - current status of a long running operation.
-	Status *string `json:"status,omitempty"`
-	// Error - Error message containing code, description and details
-	Error *ErrorMesssage `json:"error,omitempty"`
+	Status            *string        `json:"status,omitempty"`
+	Error             *ErrorMesssage `json:"error,omitempty"`
 }
 
 // CertificateBodyDescription the JSON-serialized X509 Certificate.
@@ -154,8 +152,7 @@ type CertificateProperties struct {
 // CertificateResponse the X509 Certificate.
 type CertificateResponse struct {
 	autorest.Response `json:"-"`
-	// Properties - properties of a certificate
-	Properties *CertificateProperties `json:"properties,omitempty"`
+	Properties        *CertificateProperties `json:"properties,omitempty"`
 	// ID - The resource identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the certificate.
@@ -168,10 +165,8 @@ type CertificateResponse struct {
 
 // DefinitionDescription description of the IoT hub.
 type DefinitionDescription struct {
-	// ApplyAllocationPolicy - flag for applying allocationPolicy or not for a given iot hub.
-	ApplyAllocationPolicy *bool `json:"applyAllocationPolicy,omitempty"`
-	// AllocationWeight - weight to apply for a given iot h.
-	AllocationWeight *int32 `json:"allocationWeight,omitempty"`
+	ApplyAllocationPolicy *bool  `json:"applyAllocationPolicy,omitempty"`
+	AllocationWeight      *int32 `json:"allocationWeight,omitempty"`
 	// Name - Host name of the IoT hub.
 	Name *string `json:"name,omitempty"`
 	// ConnectionString - Connection string og the IoT hub.
@@ -180,30 +175,23 @@ type DefinitionDescription struct {
 	Location *string `json:"location,omitempty"`
 }
 
-// ErrorDetails error details.
+// ErrorDetails ...
 type ErrorDetails struct {
-	// Code - The error code.
-	Code *string `json:"Code,omitempty"`
-	// HTTPStatusCode - The HTTP status code.
-	HTTPStatusCode *string `json:"HttpStatusCode,omitempty"`
-	// Message - The error message.
-	Message *string `json:"Message,omitempty"`
-	// Details - The error details.
-	Details *string `json:"Details,omitempty"`
+	// Code - error code.
+	Code           *string `json:"code,omitempty"`
+	HTTPStatusCode *string `json:"httpStatusCode,omitempty"`
+	Message        *string `json:"message,omitempty"`
+	Details        *string `json:"details,omitempty"`
 }
 
 // ErrorMesssage error response containing message and code.
 type ErrorMesssage struct {
-	// Code - standard error code
-	Code *string `json:"code,omitempty"`
-	// Message - standard error description
+	Code    *string `json:"code,omitempty"`
 	Message *string `json:"message,omitempty"`
-	// Details - detailed summary of error
 	Details *string `json:"details,omitempty"`
 }
 
-// IotDpsPropertiesDescription the service specific properties of a provisoning service, including keys, linked iot
-// hubs, current state, and system generated properties such as hostname and idScope
+// IotDpsPropertiesDescription ...
 type IotDpsPropertiesDescription struct {
 	// State - Current state of the provisioning service. Possible values include: 'Activating', 'Active', 'Deleting', 'Deleted', 'ActivationFailed', 'DeletionFailed', 'Transitioning', 'Suspending', 'Suspended', 'Resuming', 'FailingOver', 'FailoverFailed'
 	State State `json:"state,omitempty"`
@@ -218,8 +206,7 @@ type IotDpsPropertiesDescription struct {
 	// DeviceProvisioningHostName - Device endpoint for this provisioning service.
 	DeviceProvisioningHostName *string `json:"deviceProvisioningHostName,omitempty"`
 	// IDScope - Unique identifier of this provisioning service.
-	IDScope *string `json:"idScope,omitempty"`
-	// AuthorizationPolicies - List of authorization keys for a provisioning service.
+	IDScope               *string                                                          `json:"idScope,omitempty"`
 	AuthorizationPolicies *[]SharedAccessSignatureAuthorizationRuleAccessRightsDescription `json:"authorizationPolicies,omitempty"`
 }
 
@@ -302,58 +289,17 @@ func (future IotDpsResourceDeleteFuture) Result(client IotDpsResourceClient) (ar
 	return
 }
 
-// IotDpsResourceUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type IotDpsResourceUpdateFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future IotDpsResourceUpdateFuture) Result(client IotDpsResourceClient) (psd ProvisioningServiceDescription, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return psd, azure.NewAsyncOpIncompleteError("iothub.IotDpsResourceUpdateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		psd, err = client.UpdateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceUpdateFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceUpdateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	psd, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceUpdateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// IotDpsSkuDefinition available Sku's of tier and units.
+// IotDpsSkuDefinition SKU definition in terms of tier and units.
 type IotDpsSkuDefinition struct {
-	// Name - Sku name. Possible values include: 'S1'
+	// Name - Possible values include: 'S1'
 	Name IotDpsSku `json:"name,omitempty"`
 }
 
 // IotDpsSkuDefinitionListResult list of available SKUs.
 type IotDpsSkuDefinitionListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of SKU's
-	Value *[]IotDpsSkuDefinition `json:"value,omitempty"`
-	// NextLink - The next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	Value             *[]IotDpsSkuDefinition `json:"value,omitempty"`
+	NextLink          *string                `json:"nextLink,omitempty"`
 }
 
 // IotDpsSkuDefinitionListResultIterator provides access to a complete listing of IotDpsSkuDefinition values.
@@ -451,23 +397,21 @@ func (page IotDpsSkuDefinitionListResultPage) Values() []IotDpsSkuDefinition {
 
 // IotDpsSkuInfo list of possible provisoning service SKUs.
 type IotDpsSkuInfo struct {
-	// Name - Sku name. Possible values include: 'S1'
+	// Name - Possible values include: 'S1'
 	Name IotDpsSku `json:"name,omitempty"`
-	// Tier - Pricing tier name of the provisioning service.
+	// Tier - Pricing tier of the provisioning service.
 	Tier *string `json:"tier,omitempty"`
-	// Capacity - The number of units to provision
+	// Capacity - The number of services of the selected tier allowed in the subscription.
 	Capacity *int64 `json:"capacity,omitempty"`
 }
 
 // NameAvailabilityInfo description of name availability.
 type NameAvailabilityInfo struct {
 	autorest.Response `json:"-"`
-	// NameAvailable - specifies if a name is available or not
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - specifies the reason a name is unavailable. Possible values include: 'Invalid', 'AlreadyExists'
-	Reason NameUnavailabilityReason `json:"reason,omitempty"`
-	// Message - message containing a etailed reason name is unavailable
-	Message *string `json:"message,omitempty"`
+	NameAvailable     *bool `json:"nameAvailable,omitempty"`
+	// Reason - Possible values include: 'Invalid', 'AlreadyExists'
+	Reason  NameUnavailabilityReason `json:"reason,omitempty"`
+	Message *string                  `json:"message,omitempty"`
 }
 
 // Operation ioT Hub REST API operation.
@@ -611,20 +555,16 @@ type ProvisioningServiceDescription struct {
 	// Tags - The resource tags.
 	Tags *map[string]*string `json:"tags,omitempty"`
 	// Etag - The Etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal ETag convention.
-	Etag *string `json:"etag,omitempty"`
-	// Properties - Service specific properties for a provisioning service
+	Etag       *string                      `json:"etag,omitempty"`
 	Properties *IotDpsPropertiesDescription `json:"properties,omitempty"`
-	// Sku - Sku info for a provisioning Service.
-	Sku *IotDpsSkuInfo `json:"sku,omitempty"`
+	Sku        *IotDpsSkuInfo               `json:"sku,omitempty"`
 }
 
 // ProvisioningServiceDescriptionListResult list of provisioning service descriptions.
 type ProvisioningServiceDescriptionListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of provisioning service descriptions.
-	Value *[]ProvisioningServiceDescription `json:"value,omitempty"`
-	// NextLink - the next link
-	NextLink *string `json:"nextLink,omitempty"`
+	Value             *[]ProvisioningServiceDescription `json:"value,omitempty"`
+	NextLink          *string                           `json:"nextLink,omitempty"`
 }
 
 // ProvisioningServiceDescriptionListResultIterator provides access to a complete listing of
@@ -751,10 +691,8 @@ type SharedAccessSignatureAuthorizationRuleAccessRightsDescription struct {
 // SharedAccessSignatureAuthorizationRuleListResult list of shared access keys.
 type SharedAccessSignatureAuthorizationRuleListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of shared access policies.
-	Value *[]SharedAccessSignatureAuthorizationRuleAccessRightsDescription `json:"value,omitempty"`
-	// NextLink - The next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	Value             *[]SharedAccessSignatureAuthorizationRuleAccessRightsDescription `json:"value,omitempty"`
+	NextLink          *string                                                          `json:"nextLink,omitempty"`
 }
 
 // SharedAccessSignatureAuthorizationRuleListResultIterator provides access to a complete listing of
@@ -852,37 +790,20 @@ func (page SharedAccessSignatureAuthorizationRuleListResultPage) Values() []Shar
 	return *page.sasarlr.Value
 }
 
-// TagsResource a container holding only the Tags for a resource, allowing the user to update the tags on a
-// Provisioning Service instance.
-type TagsResource struct {
-	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
-}
-
-// VerificationCodeRequest the JSON-serialized leaf certificate
+// VerificationCodeRequest certificate to generate verification code for.
 type VerificationCodeRequest struct {
-	// Certificate - base-64 representation of X509 certificate .cer file or just .pem file content.
 	Certificate *string `json:"certificate,omitempty"`
 }
 
 // VerificationCodeResponse description of the response of the verification code.
 type VerificationCodeResponse struct {
 	autorest.Response `json:"-"`
+	// VerificationCode - Verification code.
+	VerificationCode *string `json:"verificationCode,omitempty"`
 	// Name - Name of certificate.
 	Name *string `json:"name,omitempty"`
 	// Etag - Request etag.
 	Etag *string `json:"etag,omitempty"`
-	// ID - The resource identifier.
-	ID *string `json:"id,omitempty"`
-	// Type - The resource type.
-	Type       *string                             `json:"type,omitempty"`
-	Properties *VerificationCodeResponseProperties `json:"properties,omitempty"`
-}
-
-// VerificationCodeResponseProperties ...
-type VerificationCodeResponseProperties struct {
-	// VerificationCode - Verification code.
-	VerificationCode *string `json:"verificationCode,omitempty"`
 	// Subject - Certificate subject.
 	Subject *string `json:"subject,omitempty"`
 	// Expiry - Code expiry.

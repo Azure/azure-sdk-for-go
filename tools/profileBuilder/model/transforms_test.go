@@ -23,7 +23,7 @@
 // that we will publish in this repository for general use. However, this tool
 // in the case that one has their own list of Services at given API Versions,
 // this may prove to be a useful tool for you.
-package main
+package model
 
 import (
 	"go/parser"
@@ -34,6 +34,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
 	"github.com/marstr/collection"
 )
 

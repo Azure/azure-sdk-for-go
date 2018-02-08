@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2017 Microsoft Corporation and contributors
+// Copyright 2018 Microsoft Corporation and contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.

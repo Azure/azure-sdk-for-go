@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright © 2018 2018 Microsoft Corporation
+// Copyright © 2018 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 
 		model.BuildProfile(
 			&model.ListStrategy{Reader: os.Stdin},
-			viper.GetString(nameLongName),
-			viper.GetString(outputLocationLongName),
+			*nameToUse,
+			*outputLocationName,
 			outputLog,
 			errLog)
 	},
@@ -74,10 +74,10 @@ func init() {
 	// is called directly, e.g.:
 	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	listCmd.Flags().StringP(outputLocationLongName, outputLocationShortName, outputLocationDefault, outputLocationDescription)
-	viper.BindPFlag(outputLocationLongName, listCmd.Flags().Lookup(outputLocationLongName))
+	outputLocationName = listCmd.Flags().StringP(outputLocationLongName, outputLocationShortName, outputLocationDefault, outputLocationDescription)
+	nameToUse = listCmd.Flags().StringP(nameLongName, nameShortName, nameDefault, nameDescription)
 
-	listCmd.Flags().StringP(nameLongName, nameShortName, nameDefault, nameDescription)
-	viper.BindPFlag(nameLongName, listCmd.Flags().Lookup(nameLongName))
+	viper.BindPFlags(listCmd.Flags())
+
 	viper.SetDefault(nameLongName, randname.Generate())
 }

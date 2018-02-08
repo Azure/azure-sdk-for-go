@@ -68,16 +68,22 @@ By default, this command ignores API versions that are in preview.`,
 
 		if viper.GetBool(previewLongName) {
 			packageStrategy.Predicate = model.AcceptAll
+			outputLog.Println("Using preview versions.")
 		}
 
 		model.BuildProfile(
 			packageStrategy,
-			viper.GetString(nameLongName),
-			viper.GetString(outputLocationLongName),
+			*nameToUse,
+			*outputLocationName,
 			outputLog,
 			errLog)
 	},
 }
+
+// This is technical debt. It is being tracked by issue:
+// https://github.com/Azure/azure-sdk-for-go/issues/1060
+var outputLocationName *string
+var nameToUse *string
 
 func init() {
 	rootCmd.AddCommand(latestCmd)
@@ -93,15 +99,13 @@ func init() {
 	// latestCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	latestCmd.Flags().BoolP(previewLongName, previewShortName, previewDefault, previewDescription)
-	viper.BindPFlag(previewLongName, latestCmd.Flags().Lookup(previewLongName))
 
-	latestCmd.Flags().StringP(outputLocationLongName, outputLocationShortName, outputLocationDefault, outputLocationDescription)
-	viper.BindPFlag(outputLocationLongName, latestCmd.Flags().Lookup(outputLocationLongName))
+	outputLocationName = latestCmd.Flags().StringP(outputLocationLongName, outputLocationShortName, outputLocationDefault, outputLocationDescription)
 
-	latestCmd.Flags().StringP(nameLongName, nameShortName, nameDefault, nameDescription)
-	viper.BindPFlag(nameLongName, latestCmd.Flags().Lookup(nameLongName))
-	viper.SetDefault(nameLongName, randname.Generate())
+	nameToUse = latestCmd.Flags().StringP(nameLongName, nameShortName, nameDefault, nameDescription)
 
 	latestCmd.Flags().StringP(rootLongName, rootShortName, rootDefault, rootDescription)
-	viper.BindPFlag(rootLongName, latestCmd.Flags().Lookup(rootLongName))
+
+	viper.BindPFlags(latestCmd.Flags())
+	viper.SetDefault(nameLongName, randname.Generate())
 }

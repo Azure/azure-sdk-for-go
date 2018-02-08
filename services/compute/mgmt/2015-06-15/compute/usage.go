@@ -19,123 +19,77 @@ package compute
 
 import (
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // UsageClient is the compute Client
 type UsageClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewUsageClient creates an instance of the UsageClient client.
-func NewUsageClient(subscriptionID string) UsageClient {
-	return NewUsageClientWithBaseURI(DefaultBaseURI, subscriptionID)
-}
-
-// NewUsageClientWithBaseURI creates an instance of the UsageClient client.
-func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
-	return UsageClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewUsageClient(p pipeline.Pipeline) UsageClient {
+	return UsageClient{NewManagementClient(p)}
 }
 
 // List gets, for the specified location, the current compute resource usage information as well as the limits for
 // compute resources under the subscription.
 //
 // location is the location for which resource usage is queried.
-func (client UsageClient) List(ctx context.Context, location string) (result ListUsagesResultPage, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: location,
-			Constraints: []validation.Constraint{{Target: "location", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "compute.UsageClient", "List")
+func (client UsageClient) List(ctx context.Context, location string) (*ListUsagesResult, error) {
+	if err := validate([]validation{
+		{targetValue: location,
+			constraints: []constraint{{target: "location", name: pattern, rule: `^[-\w\._]+$`, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, location)
+	req, err := client.listPreparer(location)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.UsageClient", "List", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
 	if err != nil {
-		result.lur.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "compute.UsageClient", "List", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.lur, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.UsageClient", "List", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*ListUsagesResult), err
 }
 
-// ListPreparer prepares the List request.
-func (client UsageClient) ListPreparer(ctx context.Context, location string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"location":       autorest.Encode("path", location),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-06-15"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/usages", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client UsageClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client UsageClient) ListResponder(resp *http.Response) (result ListUsagesResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listNextResults retrieves the next set of results, if any.
-func (client UsageClient) listNextResults(lastResults ListUsagesResult) (result ListUsagesResult, err error) {
-	req, err := lastResults.listUsagesResultPreparer()
+// listPreparer prepares the List request.
+func (client UsageClient) listPreparer(location string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/usages"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.UsageClient", "listNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute.UsageClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.UsageClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageClient) ListComplete(ctx context.Context, location string) (result ListUsagesResultIterator, err error) {
-	result.page, err = client.List(ctx, location)
-	return
+// listResponder handles the response to the List request.
+func (client UsageClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &ListUsagesResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

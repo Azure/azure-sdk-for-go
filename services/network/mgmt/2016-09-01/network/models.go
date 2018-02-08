@@ -1643,22 +1643,30 @@ func (future ApplicationGatewaysBackendHealthFuture) Result(client ApplicationGa
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysBackendHealthFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return agbh, autorest.NewError("network.ApplicationGatewaysBackendHealthFuture", "Result", "asynchronous operation has not completed")
+		return agbh, azure.NewAsyncOpIncompleteError("network.ApplicationGatewaysBackendHealthFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		agbh, err = client.BackendHealthResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysBackendHealthFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysBackendHealthFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	agbh, err = client.BackendHealthResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysBackendHealthFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1675,22 +1683,30 @@ func (future ApplicationGatewaysCreateOrUpdateFuture) Result(client ApplicationG
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ag, autorest.NewError("network.ApplicationGatewaysCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return ag, azure.NewAsyncOpIncompleteError("network.ApplicationGatewaysCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ag, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ag, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1707,22 +1723,30 @@ func (future ApplicationGatewaysDeleteFuture) Result(client ApplicationGatewaysC
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.ApplicationGatewaysDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.ApplicationGatewaysDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1829,22 +1853,30 @@ func (future ApplicationGatewaysStartFuture) Result(client ApplicationGatewaysCl
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysStartFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.ApplicationGatewaysStartFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.ApplicationGatewaysStartFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.StartResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysStartFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysStartFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.StartResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysStartFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1860,22 +1892,30 @@ func (future ApplicationGatewaysStopFuture) Result(client ApplicationGatewaysCli
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysStopFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.ApplicationGatewaysStopFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.ApplicationGatewaysStopFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.StopResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysStopFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysStopFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.StopResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysStopFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -2520,22 +2560,30 @@ func (future ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture) Result(clien
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return erca, autorest.NewError("network.ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return erca, azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		erca, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	erca, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -2552,22 +2600,30 @@ func (future ExpressRouteCircuitAuthorizationsDeleteFuture) Result(client Expres
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.ExpressRouteCircuitAuthorizationsDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitAuthorizationsDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -2900,22 +2956,30 @@ func (future ExpressRouteCircuitPeeringsCreateOrUpdateFuture) Result(client Expr
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ercp, autorest.NewError("network.ExpressRouteCircuitPeeringsCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return ercp, azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitPeeringsCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ercp, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ercp, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -2932,22 +2996,30 @@ func (future ExpressRouteCircuitPeeringsDeleteFuture) Result(client ExpressRoute
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.ExpressRouteCircuitPeeringsDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitPeeringsDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -3025,22 +3097,30 @@ func (future ExpressRouteCircuitsCreateOrUpdateFuture) Result(client ExpressRout
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return erc, autorest.NewError("network.ExpressRouteCircuitsCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return erc, azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitsCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		erc, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	erc, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -3057,22 +3137,30 @@ func (future ExpressRouteCircuitsDeleteFuture) Result(client ExpressRouteCircuit
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.ExpressRouteCircuitsDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitsDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -3109,22 +3197,30 @@ func (future ExpressRouteCircuitsListArpTableFuture) Result(client ExpressRouteC
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListArpTableFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ercatlr, autorest.NewError("network.ExpressRouteCircuitsListArpTableFuture", "Result", "asynchronous operation has not completed")
+		return ercatlr, azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitsListArpTableFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ercatlr, err = client.ListArpTableResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListArpTableFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListArpTableFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ercatlr, err = client.ListArpTableResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListArpTableFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -3141,22 +3237,30 @@ func (future ExpressRouteCircuitsListRoutesTableFuture) Result(client ExpressRou
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ercrtlr, autorest.NewError("network.ExpressRouteCircuitsListRoutesTableFuture", "Result", "asynchronous operation has not completed")
+		return ercrtlr, azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitsListRoutesTableFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ercrtlr, err = client.ListRoutesTableResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ercrtlr, err = client.ListRoutesTableResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -3173,22 +3277,30 @@ func (future ExpressRouteCircuitsListRoutesTableSummaryFuture) Result(client Exp
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableSummaryFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ercrtslr, autorest.NewError("network.ExpressRouteCircuitsListRoutesTableSummaryFuture", "Result", "asynchronous operation has not completed")
+		return ercrtslr, azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitsListRoutesTableSummaryFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ercrtslr, err = client.ListRoutesTableSummaryResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableSummaryFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableSummaryFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ercrtslr, err = client.ListRoutesTableSummaryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableSummaryFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4103,22 +4215,30 @@ func (future InterfacesCreateOrUpdateFuture) Result(client InterfacesClient) (i 
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return i, autorest.NewError("network.InterfacesCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return i, azure.NewAsyncOpIncompleteError("network.InterfacesCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		i, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.InterfacesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	i, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4134,22 +4254,30 @@ func (future InterfacesDeleteFuture) Result(client InterfacesClient) (ar autores
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.InterfacesDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.InterfacesDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.InterfacesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4166,22 +4294,30 @@ func (future InterfacesGetEffectiveRouteTableFuture) Result(client InterfacesCli
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesGetEffectiveRouteTableFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return erlr, autorest.NewError("network.InterfacesGetEffectiveRouteTableFuture", "Result", "asynchronous operation has not completed")
+		return erlr, azure.NewAsyncOpIncompleteError("network.InterfacesGetEffectiveRouteTableFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		erlr, err = client.GetEffectiveRouteTableResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.InterfacesGetEffectiveRouteTableFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesGetEffectiveRouteTableFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	erlr, err = client.GetEffectiveRouteTableResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesGetEffectiveRouteTableFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4198,22 +4334,30 @@ func (future InterfacesListEffectiveNetworkSecurityGroupsFuture) Result(client I
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesListEffectiveNetworkSecurityGroupsFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ensglr, autorest.NewError("network.InterfacesListEffectiveNetworkSecurityGroupsFuture", "Result", "asynchronous operation has not completed")
+		return ensglr, azure.NewAsyncOpIncompleteError("network.InterfacesListEffectiveNetworkSecurityGroupsFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ensglr, err = client.ListEffectiveNetworkSecurityGroupsResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.InterfacesListEffectiveNetworkSecurityGroupsFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesListEffectiveNetworkSecurityGroupsFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ensglr, err = client.ListEffectiveNetworkSecurityGroupsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.InterfacesListEffectiveNetworkSecurityGroupsFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4540,22 +4684,30 @@ func (future LoadBalancersCreateOrUpdateFuture) Result(client LoadBalancersClien
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.LoadBalancersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return lb, autorest.NewError("network.LoadBalancersCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return lb, azure.NewAsyncOpIncompleteError("network.LoadBalancersCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		lb, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.LoadBalancersCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.LoadBalancersCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	lb, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.LoadBalancersCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4571,22 +4723,30 @@ func (future LoadBalancersDeleteFuture) Result(client LoadBalancersClient) (ar a
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.LoadBalancersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.LoadBalancersDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.LoadBalancersDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.LoadBalancersDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.LoadBalancersDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.LoadBalancersDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4906,22 +5066,30 @@ func (future LocalNetworkGatewaysCreateOrUpdateFuture) Result(client LocalNetwor
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return lng, autorest.NewError("network.LocalNetworkGatewaysCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return lng, azure.NewAsyncOpIncompleteError("network.LocalNetworkGatewaysCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		lng, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	lng, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4938,22 +5106,30 @@ func (future LocalNetworkGatewaysDeleteFuture) Result(client LocalNetworkGateway
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.LocalNetworkGatewaysDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.LocalNetworkGatewaysDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -5225,22 +5401,30 @@ func (future PacketCapturesCreateFuture) Result(client PacketCapturesClient) (pc
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PacketCapturesCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return pcr, autorest.NewError("network.PacketCapturesCreateFuture", "Result", "asynchronous operation has not completed")
+		return pcr, azure.NewAsyncOpIncompleteError("network.PacketCapturesCreateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		pcr, err = client.CreateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.PacketCapturesCreateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PacketCapturesCreateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	pcr, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PacketCapturesCreateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -5256,22 +5440,30 @@ func (future PacketCapturesDeleteFuture) Result(client PacketCapturesClient) (ar
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PacketCapturesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.PacketCapturesDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.PacketCapturesDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.PacketCapturesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PacketCapturesDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PacketCapturesDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -5287,22 +5479,30 @@ func (future PacketCapturesGetStatusFuture) Result(client PacketCapturesClient) 
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PacketCapturesGetStatusFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return pcqsr, autorest.NewError("network.PacketCapturesGetStatusFuture", "Result", "asynchronous operation has not completed")
+		return pcqsr, azure.NewAsyncOpIncompleteError("network.PacketCapturesGetStatusFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		pcqsr, err = client.GetStatusResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.PacketCapturesGetStatusFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PacketCapturesGetStatusFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	pcqsr, err = client.GetStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PacketCapturesGetStatusFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -5318,22 +5518,30 @@ func (future PacketCapturesStopFuture) Result(client PacketCapturesClient) (ar a
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PacketCapturesStopFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.PacketCapturesStopFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.PacketCapturesStopFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.StopResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.PacketCapturesStopFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PacketCapturesStopFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.StopResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PacketCapturesStopFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -5551,22 +5759,30 @@ func (future PublicIPAddressesCreateOrUpdateFuture) Result(client PublicIPAddres
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return pia, autorest.NewError("network.PublicIPAddressesCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return pia, azure.NewAsyncOpIncompleteError("network.PublicIPAddressesCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		pia, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.PublicIPAddressesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	pia, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -5582,22 +5798,30 @@ func (future PublicIPAddressesDeleteFuture) Result(client PublicIPAddressesClien
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.PublicIPAddressesDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.PublicIPAddressesDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.PublicIPAddressesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -6012,22 +6236,30 @@ func (future RoutesCreateOrUpdateFuture) Result(client RoutesClient) (r Route, e
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RoutesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return r, autorest.NewError("network.RoutesCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return r, azure.NewAsyncOpIncompleteError("network.RoutesCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		r, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.RoutesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RoutesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	r, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RoutesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -6043,22 +6275,30 @@ func (future RoutesDeleteFuture) Result(client RoutesClient) (ar autorest.Respon
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RoutesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.RoutesDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.RoutesDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.RoutesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RoutesDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RoutesDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -6287,22 +6527,30 @@ func (future RouteTablesCreateOrUpdateFuture) Result(client RouteTablesClient) (
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RouteTablesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return rt, autorest.NewError("network.RouteTablesCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return rt, azure.NewAsyncOpIncompleteError("network.RouteTablesCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		rt, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.RouteTablesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RouteTablesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	rt, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RouteTablesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -6318,22 +6566,30 @@ func (future RouteTablesDeleteFuture) Result(client RouteTablesClient) (ar autor
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RouteTablesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.RouteTablesDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.RouteTablesDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.RouteTablesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RouteTablesDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RouteTablesDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -6575,22 +6831,30 @@ func (future SecurityGroupsCreateOrUpdateFuture) Result(client SecurityGroupsCli
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SecurityGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return sg, autorest.NewError("network.SecurityGroupsCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return sg, azure.NewAsyncOpIncompleteError("network.SecurityGroupsCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		sg, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.SecurityGroupsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SecurityGroupsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	sg, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SecurityGroupsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -6606,22 +6870,30 @@ func (future SecurityGroupsDeleteFuture) Result(client SecurityGroupsClient) (ar
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SecurityGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.SecurityGroupsDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.SecurityGroupsDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.SecurityGroupsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SecurityGroupsDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SecurityGroupsDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -6852,22 +7124,30 @@ func (future SecurityRulesCreateOrUpdateFuture) Result(client SecurityRulesClien
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SecurityRulesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return sr, autorest.NewError("network.SecurityRulesCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return sr, azure.NewAsyncOpIncompleteError("network.SecurityRulesCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		sr, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.SecurityRulesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SecurityRulesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	sr, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SecurityRulesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -6883,22 +7163,30 @@ func (future SecurityRulesDeleteFuture) Result(client SecurityRulesClient) (ar a
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SecurityRulesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.SecurityRulesDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.SecurityRulesDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.SecurityRulesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SecurityRulesDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SecurityRulesDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -7110,22 +7398,30 @@ func (future SubnetsCreateOrUpdateFuture) Result(client SubnetsClient) (s Subnet
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SubnetsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return s, autorest.NewError("network.SubnetsCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return s, azure.NewAsyncOpIncompleteError("network.SubnetsCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		s, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.SubnetsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SubnetsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	s, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SubnetsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -7141,22 +7437,30 @@ func (future SubnetsDeleteFuture) Result(client SubnetsClient) (ar autorest.Resp
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SubnetsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.SubnetsDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.SubnetsDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.SubnetsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SubnetsDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SubnetsDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -7904,22 +8208,30 @@ func (future VirtualNetworkGatewayConnectionsCreateOrUpdateFuture) Result(client
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return vngc, autorest.NewError("network.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return vngc, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		vngc, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	vngc, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -7936,22 +8248,30 @@ func (future VirtualNetworkGatewayConnectionsDeleteFuture) Result(client Virtual
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.VirtualNetworkGatewayConnectionsDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewayConnectionsDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -7968,22 +8288,30 @@ func (future VirtualNetworkGatewayConnectionsResetSharedKeyFuture) Result(client
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsResetSharedKeyFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return crsk, autorest.NewError("network.VirtualNetworkGatewayConnectionsResetSharedKeyFuture", "Result", "asynchronous operation has not completed")
+		return crsk, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewayConnectionsResetSharedKeyFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		crsk, err = client.ResetSharedKeyResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsResetSharedKeyFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsResetSharedKeyFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	crsk, err = client.ResetSharedKeyResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsResetSharedKeyFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -8000,22 +8328,30 @@ func (future VirtualNetworkGatewayConnectionsSetSharedKeyFuture) Result(client V
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsSetSharedKeyFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return csk, autorest.NewError("network.VirtualNetworkGatewayConnectionsSetSharedKeyFuture", "Result", "asynchronous operation has not completed")
+		return csk, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewayConnectionsSetSharedKeyFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		csk, err = client.SetSharedKeyResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsSetSharedKeyFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsSetSharedKeyFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	csk, err = client.SetSharedKeyResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsSetSharedKeyFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -8235,22 +8571,30 @@ func (future VirtualNetworkGatewaysCreateOrUpdateFuture) Result(client VirtualNe
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return vng, autorest.NewError("network.VirtualNetworkGatewaysCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return vng, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		vng, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	vng, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -8267,22 +8611,30 @@ func (future VirtualNetworkGatewaysDeleteFuture) Result(client VirtualNetworkGat
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.VirtualNetworkGatewaysDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -8299,22 +8651,30 @@ func (future VirtualNetworkGatewaysGetAdvertisedRoutesFuture) Result(client Virt
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetAdvertisedRoutesFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return grlr, autorest.NewError("network.VirtualNetworkGatewaysGetAdvertisedRoutesFuture", "Result", "asynchronous operation has not completed")
+		return grlr, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGetAdvertisedRoutesFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		grlr, err = client.GetAdvertisedRoutesResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetAdvertisedRoutesFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetAdvertisedRoutesFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	grlr, err = client.GetAdvertisedRoutesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetAdvertisedRoutesFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -8331,22 +8691,30 @@ func (future VirtualNetworkGatewaysGetBgpPeerStatusFuture) Result(client Virtual
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetBgpPeerStatusFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return bpslr, autorest.NewError("network.VirtualNetworkGatewaysGetBgpPeerStatusFuture", "Result", "asynchronous operation has not completed")
+		return bpslr, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGetBgpPeerStatusFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		bpslr, err = client.GetBgpPeerStatusResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetBgpPeerStatusFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetBgpPeerStatusFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	bpslr, err = client.GetBgpPeerStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetBgpPeerStatusFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -8363,22 +8731,30 @@ func (future VirtualNetworkGatewaysGetLearnedRoutesFuture) Result(client Virtual
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetLearnedRoutesFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return grlr, autorest.NewError("network.VirtualNetworkGatewaysGetLearnedRoutesFuture", "Result", "asynchronous operation has not completed")
+		return grlr, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGetLearnedRoutesFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		grlr, err = client.GetLearnedRoutesResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetLearnedRoutesFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetLearnedRoutesFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	grlr, err = client.GetLearnedRoutesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetLearnedRoutesFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -8405,22 +8781,30 @@ func (future VirtualNetworkGatewaysResetFuture) Result(client VirtualNetworkGate
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return vng, autorest.NewError("network.VirtualNetworkGatewaysResetFuture", "Result", "asynchronous operation has not completed")
+		return vng, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysResetFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		vng, err = client.ResetResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	vng, err = client.ResetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -8724,22 +9108,30 @@ func (future VirtualNetworkPeeringsCreateOrUpdateFuture) Result(client VirtualNe
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkPeeringsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return vnp, autorest.NewError("network.VirtualNetworkPeeringsCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return vnp, azure.NewAsyncOpIncompleteError("network.VirtualNetworkPeeringsCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		vnp, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkPeeringsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkPeeringsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	vnp, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkPeeringsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -8756,22 +9148,30 @@ func (future VirtualNetworkPeeringsDeleteFuture) Result(client VirtualNetworkPee
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkPeeringsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.VirtualNetworkPeeringsDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.VirtualNetworkPeeringsDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkPeeringsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkPeeringsDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkPeeringsDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -8804,22 +9204,30 @@ func (future VirtualNetworksCreateOrUpdateFuture) Result(client VirtualNetworksC
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return vn, autorest.NewError("network.VirtualNetworksCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return vn, azure.NewAsyncOpIncompleteError("network.VirtualNetworksCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		vn, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworksCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworksCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	vn, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworksCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -8835,22 +9243,30 @@ func (future VirtualNetworksDeleteFuture) Result(client VirtualNetworksClient) (
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworksDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.VirtualNetworksDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.VirtualNetworksDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworksDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworksDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworksDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -9137,22 +9553,30 @@ func (future WatchersDeleteFuture) Result(client WatchersClient) (ar autorest.Re
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("network.WatchersDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("network.WatchersDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -9168,22 +9592,30 @@ func (future WatchersGetFlowLogStatusFuture) Result(client WatchersClient) (fli 
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetFlowLogStatusFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return fli, autorest.NewError("network.WatchersGetFlowLogStatusFuture", "Result", "asynchronous operation has not completed")
+		return fli, azure.NewAsyncOpIncompleteError("network.WatchersGetFlowLogStatusFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		fli, err = client.GetFlowLogStatusResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersGetFlowLogStatusFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetFlowLogStatusFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	fli, err = client.GetFlowLogStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetFlowLogStatusFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -9199,22 +9631,30 @@ func (future WatchersGetNextHopFuture) Result(client WatchersClient) (nhr NextHo
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetNextHopFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return nhr, autorest.NewError("network.WatchersGetNextHopFuture", "Result", "asynchronous operation has not completed")
+		return nhr, azure.NewAsyncOpIncompleteError("network.WatchersGetNextHopFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		nhr, err = client.GetNextHopResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersGetNextHopFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetNextHopFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	nhr, err = client.GetNextHopResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetNextHopFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -9231,22 +9671,30 @@ func (future WatchersGetTroubleshootingFuture) Result(client WatchersClient) (tr
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetTroubleshootingFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return tr, autorest.NewError("network.WatchersGetTroubleshootingFuture", "Result", "asynchronous operation has not completed")
+		return tr, azure.NewAsyncOpIncompleteError("network.WatchersGetTroubleshootingFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		tr, err = client.GetTroubleshootingResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersGetTroubleshootingFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetTroubleshootingFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	tr, err = client.GetTroubleshootingResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetTroubleshootingFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -9263,22 +9711,30 @@ func (future WatchersGetTroubleshootingResultFuture) Result(client WatchersClien
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetTroubleshootingResultFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return tr, autorest.NewError("network.WatchersGetTroubleshootingResultFuture", "Result", "asynchronous operation has not completed")
+		return tr, azure.NewAsyncOpIncompleteError("network.WatchersGetTroubleshootingResultFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		tr, err = client.GetTroubleshootingResultResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersGetTroubleshootingResultFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetTroubleshootingResultFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	tr, err = client.GetTroubleshootingResultResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetTroubleshootingResultFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -9295,22 +9751,30 @@ func (future WatchersGetVMSecurityRulesFuture) Result(client WatchersClient) (sg
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetVMSecurityRulesFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return sgvr, autorest.NewError("network.WatchersGetVMSecurityRulesFuture", "Result", "asynchronous operation has not completed")
+		return sgvr, azure.NewAsyncOpIncompleteError("network.WatchersGetVMSecurityRulesFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		sgvr, err = client.GetVMSecurityRulesResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersGetVMSecurityRulesFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetVMSecurityRulesFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	sgvr, err = client.GetVMSecurityRulesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersGetVMSecurityRulesFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -9327,22 +9791,30 @@ func (future WatchersSetFlowLogConfigurationFuture) Result(client WatchersClient
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersSetFlowLogConfigurationFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return fli, autorest.NewError("network.WatchersSetFlowLogConfigurationFuture", "Result", "asynchronous operation has not completed")
+		return fli, azure.NewAsyncOpIncompleteError("network.WatchersSetFlowLogConfigurationFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		fli, err = client.SetFlowLogConfigurationResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersSetFlowLogConfigurationFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersSetFlowLogConfigurationFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	fli, err = client.SetFlowLogConfigurationResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersSetFlowLogConfigurationFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -9358,21 +9830,29 @@ func (future WatchersVerifyIPFlowFuture) Result(client WatchersClient) (vifr Ver
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersVerifyIPFlowFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return vifr, autorest.NewError("network.WatchersVerifyIPFlowFuture", "Result", "asynchronous operation has not completed")
+		return vifr, azure.NewAsyncOpIncompleteError("network.WatchersVerifyIPFlowFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		vifr, err = client.VerifyIPFlowResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersVerifyIPFlowFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersVerifyIPFlowFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	vifr, err = client.VerifyIPFlowResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WatchersVerifyIPFlowFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }

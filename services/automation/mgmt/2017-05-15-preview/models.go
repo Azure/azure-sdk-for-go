@@ -294,6 +294,18 @@ const (
 	Windows OperatingSystemType = "Windows"
 )
 
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// ProvisioningStateFailed ...
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateRunning ...
+	ProvisioningStateRunning ProvisioningState = "Running"
+	// ProvisioningStateSucceeded ...
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+)
+
 // RunbookProvisioningState enumerates the values for runbook provisioning state.
 type RunbookProvisioningState string
 
@@ -376,6 +388,18 @@ const (
 	Basic SkuNameEnum = "Basic"
 	// Free ...
 	Free SkuNameEnum = "Free"
+)
+
+// SourceType enumerates the values for source type.
+type SourceType string
+
+const (
+	// GitHub ...
+	GitHub SourceType = "GitHub"
+	// VsoGit ...
+	VsoGit SourceType = "VsoGit"
+	// VsoTfvc ...
+	VsoTfvc SourceType = "VsoTfvc"
 )
 
 // WindowsUpdateClasses enumerates the values for windows update classes.
@@ -4580,22 +4604,30 @@ func (future RunbookDraftCreateOrUpdateFuture) Result(client RunbookDraftClient)
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("automation.RunbookDraftCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("automation.RunbookDraftCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automation.RunbookDraftCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -4611,22 +4643,30 @@ func (future RunbookDraftPublishFuture) Result(client RunbookDraftClient) (r Run
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return r, autorest.NewError("automation.RunbookDraftPublishFuture", "Result", "asynchronous operation has not completed")
+		return r, azure.NewAsyncOpIncompleteError("automation.RunbookDraftPublishFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		r, err = client.PublishResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	r, err = client.PublishResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -5483,6 +5523,537 @@ type SoftwareUpdateConfigurationRunProperties struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+}
+
+// SourceControl definition of the source control.
+type SourceControl struct {
+	autorest.Response `json:"-"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// SourceControlProperties - Gets or sets the properties of the source control.
+	*SourceControlProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SourceControl struct.
+func (sc *SourceControl) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		sc.Name = &name
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		sc.ID = &ID
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		sc.Type = &typeVar
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties SourceControlProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sc.SourceControlProperties = &properties
+	}
+
+	return nil
+}
+
+// SourceControlCreateOrUpdateParameters the parameters supplied to the create or update source control operation.
+type SourceControlCreateOrUpdateParameters struct {
+	// SourceControlCreateOrUpdateProperties - Gets or sets the properties of the source control.
+	*SourceControlCreateOrUpdateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SourceControlCreateOrUpdateParameters struct.
+func (sccoup *SourceControlCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties SourceControlCreateOrUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		sccoup.SourceControlCreateOrUpdateProperties = &properties
+	}
+
+	return nil
+}
+
+// SourceControlCreateOrUpdateProperties the properties of the create source control operation.
+type SourceControlCreateOrUpdateProperties struct {
+	// RepoURL - Gets or sets the repo url of the source control.
+	RepoURL *string `json:"repoUrl,omitempty"`
+	// Branch - Gets or sets the repo branch of the source control. Include branch as empty string for VsoTfvc.
+	Branch *string `json:"branch,omitempty"`
+	// FolderPath - Gets or sets the folder path of the source control. Path must be relative.
+	FolderPath *string `json:"folderPath,omitempty"`
+	// AutoSync - Gets or sets auto async of the source control. Default is false.
+	AutoSync *bool `json:"autoSync,omitempty"`
+	// PublishRunbook - Gets or sets the auto publish of the source control. Default is true.
+	PublishRunbook *bool `json:"publishRunbook,omitempty"`
+	// SourceType - The source type. Must be one of VsoGit, VsoTfvc, GitHub, case sensitive. Possible values include: 'VsoGit', 'VsoTfvc', 'GitHub'
+	SourceType SourceType `json:"sourceType,omitempty"`
+	// SecurityToken - Gets or sets the authorization token for the repo of the source control.
+	SecurityToken *string `json:"securityToken,omitempty"`
+	// Description - Gets or sets the user description of the source control.
+	Description *string `json:"description,omitempty"`
+}
+
+// SourceControlListResult the response model for the list source controls operation.
+type SourceControlListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Gets or sets a list of souce controls.
+	Value *[]SourceControl `json:"value,omitempty"`
+	// NextLink - Gets or sets the next link.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// SourceControlListResultIterator provides access to a complete listing of SourceControl values.
+type SourceControlListResultIterator struct {
+	i    int
+	page SourceControlListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SourceControlListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SourceControlListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SourceControlListResultIterator) Response() SourceControlListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SourceControlListResultIterator) Value() SourceControl {
+	if !iter.page.NotDone() {
+		return SourceControl{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (sclr SourceControlListResult) IsEmpty() bool {
+	return sclr.Value == nil || len(*sclr.Value) == 0
+}
+
+// sourceControlListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (sclr SourceControlListResult) sourceControlListResultPreparer() (*http.Request, error) {
+	if sclr.NextLink == nil || len(to.String(sclr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(sclr.NextLink)))
+}
+
+// SourceControlListResultPage contains a page of SourceControl values.
+type SourceControlListResultPage struct {
+	fn   func(SourceControlListResult) (SourceControlListResult, error)
+	sclr SourceControlListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SourceControlListResultPage) Next() error {
+	next, err := page.fn(page.sclr)
+	if err != nil {
+		return err
+	}
+	page.sclr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SourceControlListResultPage) NotDone() bool {
+	return !page.sclr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SourceControlListResultPage) Response() SourceControlListResult {
+	return page.sclr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SourceControlListResultPage) Values() []SourceControl {
+	if page.sclr.IsEmpty() {
+		return nil
+	}
+	return *page.sclr.Value
+}
+
+// SourceControlProperties definition of the source control properties
+type SourceControlProperties struct {
+	// RepoURL - Gets or sets the repo url of the source control.
+	RepoURL *string `json:"repoUrl,omitempty"`
+	// Branch - Gets or sets the repo branch of the source control. Include branch as empty string for VsoTfvc.
+	Branch *string `json:"branch,omitempty"`
+	// FolderPath - Gets or sets the folder path of the source control.
+	FolderPath *string `json:"folderPath,omitempty"`
+	// AutoSync - Gets or sets auto async of the source control. Default is false.
+	AutoSync *bool `json:"autoSync,omitempty"`
+	// PublishRunbook - Gets or sets the auto publish of the source control. Default is true.
+	PublishRunbook *bool `json:"publishRunbook,omitempty"`
+	// SourceType - The source type. Must be one of VsoGit, VsoTfvc, GitHub. Possible values include: 'VsoGit', 'VsoTfvc', 'GitHub'
+	SourceType SourceType `json:"sourceType,omitempty"`
+	// Description - Gets or sets the description.
+	Description *string `json:"description,omitempty"`
+	// CreationTime - Gets or sets the creation time.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// LastModifiedTime - Gets or sets the last modified time.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+}
+
+// SourceControlSyncJob definition of the source control sync job.
+type SourceControlSyncJob struct {
+	autorest.Response `json:"-"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// ID - Resource id.
+	ID *string `json:"id,omitempty"`
+	// SourceControlSyncJobProperties - Gets the properties of the source control sync job.
+	*SourceControlSyncJobProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SourceControlSyncJob struct.
+func (scsj *SourceControlSyncJob) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		scsj.Name = &name
+	}
+
+	v = m["type"]
+	if v != nil {
+		var typeVar string
+		err = json.Unmarshal(*m["type"], &typeVar)
+		if err != nil {
+			return err
+		}
+		scsj.Type = &typeVar
+	}
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		scsj.ID = &ID
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties SourceControlSyncJobProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		scsj.SourceControlSyncJobProperties = &properties
+	}
+
+	return nil
+}
+
+// SourceControlSyncJobByID definition of the source control sync job.
+type SourceControlSyncJobByID struct {
+	autorest.Response `json:"-"`
+	// ID - Gets the id of the job.
+	ID *string `json:"id,omitempty"`
+	// SourceControlSyncJobByIDProperties - Gets the properties of the source control sync job.
+	*SourceControlSyncJobByIDProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SourceControlSyncJobByID struct.
+func (scsjbi *SourceControlSyncJobByID) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["id"]
+	if v != nil {
+		var ID string
+		err = json.Unmarshal(*m["id"], &ID)
+		if err != nil {
+			return err
+		}
+		scsjbi.ID = &ID
+	}
+
+	v = m["properties"]
+	if v != nil {
+		var properties SourceControlSyncJobByIDProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		scsjbi.SourceControlSyncJobByIDProperties = &properties
+	}
+
+	return nil
+}
+
+// SourceControlSyncJobByIDErrors error details of the source control sync job.
+type SourceControlSyncJobByIDErrors struct {
+	// Code - Gets the error code for the job.
+	Code *string `json:"code,omitempty"`
+	// Message - Gets the error message for the job.
+	Message *string `json:"message,omitempty"`
+}
+
+// SourceControlSyncJobByIDProperties definition of source control sync job properties.
+type SourceControlSyncJobByIDProperties struct {
+	// SourceControlSyncJobID - Gets the source control sync job id.
+	SourceControlSyncJobID *string `json:"sourceControlSyncJobId,omitempty"`
+	// CreationTime - Gets the creation time of the job.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// ProvisioningState - Gets the provisioning state of the job. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateRunning'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// StartTime - Gets the start time of the job.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - Gets the end time of the job.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// StartedBy - Gets the user who started the sync job.
+	StartedBy *string `json:"startedBy,omitempty"`
+	// Errors - Error details of the source control sync job.
+	Errors *SourceControlSyncJobByIDErrors `json:"errors,omitempty"`
+}
+
+// SourceControlSyncJobListResult the response model for the list source control sync jobs operation.
+type SourceControlSyncJobListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Gets a list of source control sync jobs.
+	Value *[]SourceControlSyncJob `json:"value,omitempty"`
+	// NextLink - Gets or sets the next link.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// SourceControlSyncJobListResultIterator provides access to a complete listing of SourceControlSyncJob values.
+type SourceControlSyncJobListResultIterator struct {
+	i    int
+	page SourceControlSyncJobListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SourceControlSyncJobListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SourceControlSyncJobListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SourceControlSyncJobListResultIterator) Response() SourceControlSyncJobListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SourceControlSyncJobListResultIterator) Value() SourceControlSyncJob {
+	if !iter.page.NotDone() {
+		return SourceControlSyncJob{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (scsjlr SourceControlSyncJobListResult) IsEmpty() bool {
+	return scsjlr.Value == nil || len(*scsjlr.Value) == 0
+}
+
+// sourceControlSyncJobListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (scsjlr SourceControlSyncJobListResult) sourceControlSyncJobListResultPreparer() (*http.Request, error) {
+	if scsjlr.NextLink == nil || len(to.String(scsjlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(scsjlr.NextLink)))
+}
+
+// SourceControlSyncJobListResultPage contains a page of SourceControlSyncJob values.
+type SourceControlSyncJobListResultPage struct {
+	fn     func(SourceControlSyncJobListResult) (SourceControlSyncJobListResult, error)
+	scsjlr SourceControlSyncJobListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SourceControlSyncJobListResultPage) Next() error {
+	next, err := page.fn(page.scsjlr)
+	if err != nil {
+		return err
+	}
+	page.scsjlr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SourceControlSyncJobListResultPage) NotDone() bool {
+	return !page.scsjlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SourceControlSyncJobListResultPage) Response() SourceControlSyncJobListResult {
+	return page.scsjlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SourceControlSyncJobListResultPage) Values() []SourceControlSyncJob {
+	if page.scsjlr.IsEmpty() {
+		return nil
+	}
+	return *page.scsjlr.Value
+}
+
+// SourceControlSyncJobProperties definition of source control sync job properties.
+type SourceControlSyncJobProperties struct {
+	// SourceControlSyncJobID - Gets the source control sync job id.
+	SourceControlSyncJobID *string `json:"sourceControlSyncJobId,omitempty"`
+	// CreationTime - Gets the creation time of the job.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// ProvisioningState - Gets the provisioning state of the job. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateRunning'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// StartTime - Gets the start time of the job.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - Gets the end time of the job.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// StartedBy - Gets the user who started the sync job.
+	StartedBy *string `json:"startedBy,omitempty"`
+}
+
+// SourceControlUpdateParameters the parameters supplied to the update source control operation.
+type SourceControlUpdateParameters struct {
+	// SourceControlUpdateProperties - Gets or sets the value of the source control.
+	*SourceControlUpdateProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SourceControlUpdateParameters struct.
+func (scup *SourceControlUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	var v *json.RawMessage
+
+	v = m["properties"]
+	if v != nil {
+		var properties SourceControlUpdateProperties
+		err = json.Unmarshal(*m["properties"], &properties)
+		if err != nil {
+			return err
+		}
+		scup.SourceControlUpdateProperties = &properties
+	}
+
+	return nil
+}
+
+// SourceControlUpdateProperties the properties of the update source control
+type SourceControlUpdateProperties struct {
+	// Branch - Gets or sets the repo branch of the source control.
+	Branch *string `json:"branch,omitempty"`
+	// FolderPath - Gets or sets the folder path of the source control. Path must be relative.
+	FolderPath *string `json:"folderPath,omitempty"`
+	// AutoSync - Gets or sets auto async of the source control. Default is false.
+	AutoSync *bool `json:"autoSync,omitempty"`
+	// PublishRunbook - Gets or sets the auto publish of the source control. Default is true.
+	PublishRunbook *bool `json:"publishRunbook,omitempty"`
+	// SecurityToken - Gets or sets the authorization token for the repo of the source control.
+	SecurityToken *string `json:"securityToken,omitempty"`
+	// Description - Gets or sets the user description of the source control.
+	Description *string `json:"description,omitempty"`
 }
 
 // Statistics definition of the statistic.

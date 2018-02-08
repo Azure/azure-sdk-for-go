@@ -390,6 +390,45 @@ func (page ApplicationInsightsComponentListResultPage) Values() []ApplicationIns
 	return *page.aiclr.Value
 }
 
+// ApplicationInsightsComponentProactiveDetectionConfiguration properties that define a ProactiveDetection
+// configuration.
+type ApplicationInsightsComponentProactiveDetectionConfiguration struct {
+	autorest.Response `json:"-"`
+	// Name - The rule name
+	Name *string `json:"Name,omitempty"`
+	// Enabled - A flag that indicates whether this rule is enabled by the user
+	Enabled *bool `json:"Enabled,omitempty"`
+	// SendEmailsToSubscriptionOwners - A flag that indicated whether notifications on this rule should be sent to subscription owners
+	SendEmailsToSubscriptionOwners *bool `json:"SendEmailsToSubscriptionOwners,omitempty"`
+	// CustomEmails - Custom email addresses for this rule notifications
+	CustomEmails *[]string `json:"CustomEmails,omitempty"`
+	// LastUpdatedTime - The last time this rule was updated
+	LastUpdatedTime *string `json:"LastUpdatedTime,omitempty"`
+	// RuleDefinitions - Static definitions of the ProactiveDetection configuration rule (same values for all components).
+	RuleDefinitions *ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions `json:"RuleDefinitions,omitempty"`
+}
+
+// ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions static definitions of the
+// ProactiveDetection configuration rule (same values for all components).
+type ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions struct {
+	// Name - The rule name
+	Name *string `json:"Name,omitempty"`
+	// DisplayName - The rule name as it is displayed in UI
+	DisplayName *string `json:"DisplayName,omitempty"`
+	// Description - The rule description
+	Description *string `json:"Description,omitempty"`
+	// HelpURL - URL which displays aditional info about the proactive detection rule
+	HelpURL *string `json:"HelpUrl,omitempty"`
+	// IsHidden - A flag indicating whether the rule is hidden (from the UI)
+	IsHidden *bool `json:"IsHidden,omitempty"`
+	// IsEnabledByDefault - A flag indicating whether the rule is enabled by default
+	IsEnabledByDefault *bool `json:"IsEnabledByDefault,omitempty"`
+	// IsInPreview - A flag indicating whether the rule is in preview
+	IsInPreview *bool `json:"IsInPreview,omitempty"`
+	// SupportsEmailNotifications - A flag indicating whether email notifications are supported for detections for this rule
+	SupportsEmailNotifications *bool `json:"SupportsEmailNotifications,omitempty"`
+}
+
 // ApplicationInsightsComponentProperties properties that define an Application Insights component resource.
 type ApplicationInsightsComponentProperties struct {
 	// ApplicationID - The unique ID of your application. This field mirrors the 'Name' field and cannot be changed.
@@ -442,6 +481,12 @@ type ErrorResponse struct {
 type ListApplicationInsightsComponentExportConfiguration struct {
 	autorest.Response `json:"-"`
 	Value             *[]ApplicationInsightsComponentExportConfiguration `json:"value,omitempty"`
+}
+
+// ListApplicationInsightsComponentProactiveDetectionConfiguration ...
+type ListApplicationInsightsComponentProactiveDetectionConfiguration struct {
+	autorest.Response `json:"-"`
+	Value             *[]ApplicationInsightsComponentProactiveDetectionConfiguration `json:"value,omitempty"`
 }
 
 // Operation CDN REST API operation

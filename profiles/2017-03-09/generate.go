@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package v20170309
 
-import "github.com/Azure/azure-sdk-for-go/tools/profileBuilder/cmd"
-
-func main() {
-	cmd.Execute()
-}
+//go:generate cat ./definition.txt | go run ../../tools/profileBuilder/main.go list --name 2017-03-09

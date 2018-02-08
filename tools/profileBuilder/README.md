@@ -1,5 +1,7 @@
 # Profile Builder
 
+> Note: This tool is related to the Azure-SDK-for-Go, but not truly part of it. As such, the SemVers associated with this repository do not extend to the packages associated with `profileBuilder`.
+
 ## Overview
 
 Azure Profiles offer a means of virtualizing the API Versions of services that should be targeted by an application or SDK.

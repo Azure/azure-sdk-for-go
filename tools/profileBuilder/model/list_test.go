@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2017 Microsoft Corporation and contributors.  All rights reserved.
+// Copyright 2018 Microsoft Corporation and contributors.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package model_test
 
 import (
 	"bytes"
@@ -25,6 +25,8 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/tools/profileBuilder/model"
 )
 
 func TestList_Enumerate(t *testing.T) {
@@ -54,7 +56,7 @@ func TestList_Enumerate(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		subject := ListStrategy{Reader: tc}
+		subject := model.ListStrategy{Reader: tc}
 		t.Run("", func(t *testing.T) {
 			done := make(chan struct{})
 			defer close(done)

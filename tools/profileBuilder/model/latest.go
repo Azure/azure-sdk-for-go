@@ -1,6 +1,6 @@
 // +build go1.9
 
-// Copyright 2017 Microsoft Corporation
+// Copyright 2018 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package model
 
 import (
 	"fmt"
@@ -48,8 +48,6 @@ func IgnorePreview(name string) (result bool) {
 	result = !strings.Contains(version, "-preview") && !strings.Contains(version, "-beta") // matches[2] is the `version` group
 	return
 }
-
-var packageName = regexp.MustCompile(`services[/\\](?P<provider>[\w\-\.\d_\\/]+)[/\\](?:(?P<arm>` + armPathModifier + `)[/\\])?(?P<version>v?\d{4}-\d{2}-\d{2}[\w\d\.\-]*|v?\d+\.\d+[\.\d\w\-]*)[/\\](?P<group>[/\\\w\d\-\._]+)`)
 
 // Enumerate scans through the known Azure SDK for Go packages and finds each
 func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumerator {
@@ -103,7 +101,7 @@ func (latest LatestStrategy) Enumerate(cancel <-chan struct{}) collection.Enumer
 				return
 			}
 
-			if le, _ := versionle(prev.version, version); le {
+			if le, _ := VersionLE(prev.version, version); le {
 				maxFound[currentGroup] = operInfo{version, currentPath}
 				latest.VerboseOutput.Printf("Updating group %q from version %q to %q", currentGroup, prev.version, version)
 			} else {
@@ -138,10 +136,10 @@ func (err ErrNotVersionString) Error() string {
 	return fmt.Sprintf("`%s` is not a recognized Azure version string", string(err))
 }
 
-// versionle takes two version strings that share a format and returns true if the one on the
+// VersionLE takes two version strings that share a format and returns true if the one on the
 // left is less than or equal to the one on the right. If the two do not match in format, or
 // are not in a well known format, this will return false and an error.
-var versionle = func() func(string, string) (bool, error) {
+var VersionLE = func() func(string, string) (bool, error) {
 	wellKnownStrategies := map[*regexp.Regexp]func([]string, []string) (bool, error){
 		// The strategy below handles Azure API Versions which have a date optionally followed by some tag.
 		regexp.MustCompile(`^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})(?:[\.\-](?P<tag>.+))?$`): func(leftMatch, rightMatch []string) (bool, error) {

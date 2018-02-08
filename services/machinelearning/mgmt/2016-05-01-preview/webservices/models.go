@@ -780,22 +780,30 @@ func (future WebServicesCreateOrUpdateFuture) Result(client Client) (ws WebServi
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ws, autorest.NewError("webservices.WebServicesCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return ws, azure.NewAsyncOpIncompleteError("webservices.WebServicesCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ws, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.WebServicesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ws, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -811,22 +819,30 @@ func (future WebServicesPatchFuture) Result(client Client) (ws WebService, err e
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesPatchFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ws, autorest.NewError("webservices.WebServicesPatchFuture", "Result", "asynchronous operation has not completed")
+		return ws, azure.NewAsyncOpIncompleteError("webservices.WebServicesPatchFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ws, err = client.PatchResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.WebServicesPatchFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesPatchFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ws, err = client.PatchResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesPatchFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -842,21 +858,29 @@ func (future WebServicesRemoveFuture) Result(client Client) (ar autorest.Respons
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesRemoveFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("webservices.WebServicesRemoveFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("webservices.WebServicesRemoveFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.RemoveResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.WebServicesRemoveFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesRemoveFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.RemoveResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesRemoveFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }

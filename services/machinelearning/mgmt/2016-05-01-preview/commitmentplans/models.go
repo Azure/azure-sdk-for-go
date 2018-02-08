@@ -24,6 +24,58 @@ import (
 	"net/http"
 )
 
+// ResourceSkuRestrictionsReasonCode enumerates the values for resource sku restrictions reason code.
+type ResourceSkuRestrictionsReasonCode string
+
+const (
+	// NotAvailableForSubscription ...
+	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = "NotAvailableForSubscription"
+	// QuotaID ...
+	QuotaID ResourceSkuRestrictionsReasonCode = "QuotaId"
+)
+
+// ResourceSkuRestrictionsType enumerates the values for resource sku restrictions type.
+type ResourceSkuRestrictionsType string
+
+const (
+	// Location ...
+	Location ResourceSkuRestrictionsType = "location"
+	// Zone ...
+	Zone ResourceSkuRestrictionsType = "zone"
+)
+
+// SkuCapacityScaleType enumerates the values for sku capacity scale type.
+type SkuCapacityScaleType string
+
+const (
+	// Automatic ...
+	Automatic SkuCapacityScaleType = "Automatic"
+	// Manual ...
+	Manual SkuCapacityScaleType = "Manual"
+	// None ...
+	None SkuCapacityScaleType = "None"
+)
+
+// CatalogSku details of a commitment plan SKU.
+type CatalogSku struct {
+	// ResourceType - Resource type name
+	ResourceType *string `json:"resourceType,omitempty"`
+	// Name - SKU name
+	Name *string `json:"name,omitempty"`
+	// Tier - SKU tier
+	Tier *string `json:"tier,omitempty"`
+	// Locations - Regions where the SKU is available.
+	Locations *[]string `json:"locations,omitempty"`
+	// Capacity - SKU scaling information
+	Capacity *SkuCapacity `json:"capacity,omitempty"`
+	// Capabilities - The capability information for the specified SKU.
+	Capabilities *[]SkuCapability `json:"capabilities,omitempty"`
+	// Costs - The cost information for the specified SKU.
+	Costs *[]SkuCost `json:"costs,omitempty"`
+	// Restrictions - Restrictions which would prevent a SKU from being used. This is empty if there are no restrictions.
+	Restrictions *[]SkuRestrictions `json:"restrictions,omitempty"`
+}
+
 // CommitmentAssociation represents the association between a commitment plan and some other resource, such as a
 // Machine Learning web service.
 type CommitmentAssociation struct {
@@ -472,4 +524,50 @@ type ResourceSku struct {
 	Name *string `json:"name,omitempty"`
 	// Tier - The SKU tier. Along with name, uniquely identifies the SKU.
 	Tier *string `json:"tier,omitempty"`
+}
+
+// SkuCapability describes The SKU capabilites object.
+type SkuCapability struct {
+	// Name - The capability name.
+	Name *string `json:"name,omitempty"`
+	// Value - The capability value.
+	Value *string `json:"value,omitempty"`
+}
+
+// SkuCapacity describes scaling information of a SKU.
+type SkuCapacity struct {
+	// Minimum - The minimum capacity.
+	Minimum *int64 `json:"minimum,omitempty"`
+	// Maximum - The maximum capacity that can be set.
+	Maximum *int64 `json:"maximum,omitempty"`
+	// Default - The default capacity.
+	Default *int64 `json:"default,omitempty"`
+	// ScaleType - The scale type applicable to the sku. Possible values include: 'Automatic', 'Manual', 'None'
+	ScaleType SkuCapacityScaleType `json:"scaleType,omitempty"`
+}
+
+// SkuCost describes metadata for SKU cost info.
+type SkuCost struct {
+	// MeterID - The meter used for this part of a SKU's cost.
+	MeterID *string `json:"meterID,omitempty"`
+	// Quantity - The multiplier for the meter ID.
+	Quantity *int64 `json:"quantity,omitempty"`
+	// ExtendedUnit - The overall duration represented by the quantity.
+	ExtendedUnit *string `json:"extendedUnit,omitempty"`
+}
+
+// SkuListResult the list of commitment plan SKUs.
+type SkuListResult struct {
+	autorest.Response `json:"-"`
+	Value             *[]CatalogSku `json:"value,omitempty"`
+}
+
+// SkuRestrictions describes restrictions which would prevent a SKU from being used.
+type SkuRestrictions struct {
+	// Type - The type of restrictions. Possible values include: 'Location', 'Zone'
+	Type ResourceSkuRestrictionsType `json:"type,omitempty"`
+	// Values - The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
+	Values *[]string `json:"values,omitempty"`
+	// ReasonCode - The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
+	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
 }

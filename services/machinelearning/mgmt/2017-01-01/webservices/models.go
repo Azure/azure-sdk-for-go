@@ -361,6 +361,33 @@ type ModuleAssetParameter struct {
 	ModeValuesInfo *map[string]*ModeValueInfo `json:"modeValuesInfo,omitempty"`
 }
 
+// OperationDisplayInfo the API operation info.
+type OperationDisplayInfo struct {
+	// Description - The description of the operation.
+	Description *string `json:"description,omitempty"`
+	// Operation - The action that users can perform, based on their permission level.
+	Operation *string `json:"operation,omitempty"`
+	// Provider - The service provider.
+	Provider *string `json:"provider,omitempty"`
+	// Resource - The resource on which the operation is performed.
+	Resource *string `json:"resource,omitempty"`
+}
+
+// OperationEntity an API operation.
+type OperationEntity struct {
+	// Name - Operation name: {provider}/{resource}/{operation}.
+	Name *string `json:"name,omitempty"`
+	// Display - The API operation info.
+	Display *OperationDisplayInfo `json:"display,omitempty"`
+}
+
+// OperationEntityListResult the list of REST API operations.
+type OperationEntityListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of operations.
+	Value *[]OperationEntity `json:"value,omitempty"`
+}
+
 // OutputPort asset output port
 type OutputPort struct {
 	// Type - Port data type. Possible values include: 'OutputPortTypeDataset'
@@ -827,22 +854,30 @@ func (future WebServicesCreateOrUpdateFuture) Result(client Client) (ws WebServi
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ws, autorest.NewError("webservices.WebServicesCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return ws, azure.NewAsyncOpIncompleteError("webservices.WebServicesCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ws, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.WebServicesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ws, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -859,22 +894,30 @@ func (future WebServicesCreateRegionalPropertiesFuture) Result(client Client) (a
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesCreateRegionalPropertiesFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return aos, autorest.NewError("webservices.WebServicesCreateRegionalPropertiesFuture", "Result", "asynchronous operation has not completed")
+		return aos, azure.NewAsyncOpIncompleteError("webservices.WebServicesCreateRegionalPropertiesFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		aos, err = client.CreateRegionalPropertiesResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.WebServicesCreateRegionalPropertiesFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesCreateRegionalPropertiesFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	aos, err = client.CreateRegionalPropertiesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesCreateRegionalPropertiesFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -890,22 +933,30 @@ func (future WebServicesPatchFuture) Result(client Client) (ws WebService, err e
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesPatchFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ws, autorest.NewError("webservices.WebServicesPatchFuture", "Result", "asynchronous operation has not completed")
+		return ws, azure.NewAsyncOpIncompleteError("webservices.WebServicesPatchFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ws, err = client.PatchResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.WebServicesPatchFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesPatchFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ws, err = client.PatchResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesPatchFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -921,21 +972,29 @@ func (future WebServicesRemoveFuture) Result(client Client) (ar autorest.Respons
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesRemoveFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("webservices.WebServicesRemoveFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("webservices.WebServicesRemoveFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.RemoveResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "webservices.WebServicesRemoveFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesRemoveFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.RemoveResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.WebServicesRemoveFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }

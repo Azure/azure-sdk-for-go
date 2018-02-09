@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v12.5.0-beta`
+
+### Changes
+
+- Added Container Instance API Versions 2017-10-01-preview, 2017-12-01-preview, and 2018-02-01-preview.
+
 ## `v12.4.0-beta`
 
 ### Changes

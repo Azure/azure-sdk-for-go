@@ -42,9 +42,8 @@ func NewContainerGroupsClientWithBaseURI(baseURI string, subscriptionID string) 
 
 // CreateOrUpdate create or update container groups with specified configurations.
 //
-// resourceGroupName is the name of the resource group to contain the container group to be created or updated.
-// containerGroupName is the name of the container group to be created or updated. containerGroup is the properties of
-// the container group to be created or updated.
+// resourceGroupName is the name of the resource group. containerGroupName is the name of the container group.
+// containerGroup is the properties of the container group to be created or updated.
 func (client ContainerGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup) (result ContainerGroup, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: containerGroup,
@@ -87,7 +86,7 @@ func (client ContainerGroupsClient) CreateOrUpdatePreparer(ctx context.Context, 
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-08-01-preview"
+	const APIVersion = "2017-10-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -125,8 +124,7 @@ func (client ContainerGroupsClient) CreateOrUpdateResponder(resp *http.Response)
 // Delete delete the specified container group in the specified subscription and resource group. The operation does not
 // delete other resources provided by the user, such as volumes.
 //
-// resourceGroupName is the name of the resource group that contains the container group. containerGroupName is the
-// name of the container group to be deleted.
+// resourceGroupName is the name of the resource group. containerGroupName is the name of the container group.
 func (client ContainerGroupsClient) Delete(ctx context.Context, resourceGroupName string, containerGroupName string) (result ContainerGroup, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, containerGroupName)
 	if err != nil {
@@ -157,7 +155,7 @@ func (client ContainerGroupsClient) DeletePreparer(ctx context.Context, resource
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-08-01-preview"
+	const APIVersion = "2017-10-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -194,8 +192,7 @@ func (client ContainerGroupsClient) DeleteResponder(resp *http.Response) (result
 // operation returns the properties of each container group including containers, image registry credentials, restart
 // policy, IP address type, OS type, state, and volumes.
 //
-// resourceGroupName is the name of the resource group that contains the container group. containerGroupName is the
-// name of the container group.
+// resourceGroupName is the name of the resource group. containerGroupName is the name of the container group.
 func (client ContainerGroupsClient) Get(ctx context.Context, resourceGroupName string, containerGroupName string) (result ContainerGroup, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, containerGroupName)
 	if err != nil {
@@ -226,7 +223,7 @@ func (client ContainerGroupsClient) GetPreparer(ctx context.Context, resourceGro
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-08-01-preview"
+	const APIVersion = "2017-10-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -291,7 +288,7 @@ func (client ContainerGroupsClient) ListPreparer(ctx context.Context) (*http.Req
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-08-01-preview"
+	const APIVersion = "2017-10-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -355,7 +352,7 @@ func (client ContainerGroupsClient) ListComplete(ctx context.Context) (result Co
 // returns properties of each container group including containers, image registry credentials, restart policy, IP
 // address type, OS type, state, and volumes.
 //
-// resourceGroupName is the name of the resource group that contains the container group.
+// resourceGroupName is the name of the resource group.
 func (client ContainerGroupsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ContainerGroupListResultPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
@@ -386,7 +383,7 @@ func (client ContainerGroupsClient) ListByResourceGroupPreparer(ctx context.Cont
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-08-01-preview"
+	const APIVersion = "2017-10-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

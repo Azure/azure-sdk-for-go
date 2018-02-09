@@ -34,12 +34,26 @@ const (
 	UDP ContainerGroupNetworkProtocol = "UDP"
 )
 
-// ContainerRestartPolicy enumerates the values for container restart policy.
-type ContainerRestartPolicy string
+// ContainerGroupRestartPolicy enumerates the values for container group restart policy.
+type ContainerGroupRestartPolicy string
 
 const (
 	// Always ...
-	Always ContainerRestartPolicy = "always"
+	Always ContainerGroupRestartPolicy = "Always"
+	// Never ...
+	Never ContainerGroupRestartPolicy = "Never"
+	// OnFailure ...
+	OnFailure ContainerGroupRestartPolicy = "OnFailure"
+)
+
+// ContainerNetworkProtocol enumerates the values for container network protocol.
+type ContainerNetworkProtocol string
+
+const (
+	// ContainerNetworkProtocolTCP ...
+	ContainerNetworkProtocolTCP ContainerNetworkProtocol = "TCP"
+	// ContainerNetworkProtocolUDP ...
+	ContainerNetworkProtocolUDP ContainerNetworkProtocol = "UDP"
 )
 
 // OperatingSystemTypes enumerates the values for operating system types.
@@ -50,6 +64,16 @@ const (
 	Linux OperatingSystemTypes = "Linux"
 	// Windows ...
 	Windows OperatingSystemTypes = "Windows"
+)
+
+// OperationsOrigin enumerates the values for operations origin.
+type OperationsOrigin string
+
+const (
+	// System ...
+	System OperationsOrigin = "System"
+	// User ...
+	User OperationsOrigin = "User"
 )
 
 // AzureFileVolume the properties of the Azure File volume. Azure File shares are mounted as volumes.
@@ -70,20 +94,6 @@ type Container struct {
 	Name *string `json:"name,omitempty"`
 	// ContainerProperties - The properties of the container instance.
 	*ContainerProperties `json:"properties,omitempty"`
-}
-
-// ContainerEvent a container instance event.
-type ContainerEvent struct {
-	// Count - The count of the event.
-	Count *int32 `json:"count,omitempty"`
-	// FirstTimestamp - The date-time of the earliest logged event.
-	FirstTimestamp *date.Time `json:"firstTimestamp,omitempty"`
-	// LastTimestamp - The date-time of the latest logged event.
-	LastTimestamp *date.Time `json:"lastTimestamp,omitempty"`
-	// Message - The event message.
-	Message *string `json:"message,omitempty"`
-	// Type - The event type.
-	Type *string `json:"type,omitempty"`
 }
 
 // ContainerGroup a container group.
@@ -212,20 +222,34 @@ type ContainerGroupProperties struct {
 	Containers *[]Container `json:"containers,omitempty"`
 	// ImageRegistryCredentials - The image registry credentials by which the container group is created from.
 	ImageRegistryCredentials *[]ImageRegistryCredential `json:"imageRegistryCredentials,omitempty"`
-	// RestartPolicy - Restart policy for all containers within the container group. Currently the only available option is `always`. Possible values include: 'Always'
-	RestartPolicy ContainerRestartPolicy `json:"restartPolicy,omitempty"`
+	// RestartPolicy - Restart policy for all containers within the container group.
+	// - `Always` Always restart
+	// - `OnFailure` Restart on failure
+	// - `Never` Never restart
+	// . Possible values include: 'Always', 'OnFailure', 'Never'
+	RestartPolicy ContainerGroupRestartPolicy `json:"restartPolicy,omitempty"`
 	// IPAddress - The IP address type of the container group.
 	IPAddress *IPAddress `json:"ipAddress,omitempty"`
 	// OsType - The operating system type required by the containers in the container group. Possible values include: 'Windows', 'Linux'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
-	// State - The current state of the container group. This is only valid for the response.
-	State *string `json:"state,omitempty"`
 	// Volumes - The list of volumes that can be mounted by containers in this container group.
 	Volumes *[]Volume `json:"volumes,omitempty"`
+	// InstanceView - The instance view of the container group. Only valid in response.
+	InstanceView *ContainerGroupPropertiesInstanceView `json:"instanceView,omitempty"`
+}
+
+// ContainerGroupPropertiesInstanceView the instance view of the container group. Only valid in response.
+type ContainerGroupPropertiesInstanceView struct {
+	// Events - The events of this container group.
+	Events *[]Event `json:"events,omitempty"`
+	// State - The state of the container group. Only valid in response.
+	State *string `json:"state,omitempty"`
 }
 
 // ContainerPort the port exposed on the container instance.
 type ContainerPort struct {
+	// Protocol - The protocol associated with the port. Possible values include: 'ContainerNetworkProtocolTCP', 'ContainerNetworkProtocolUDP'
+	Protocol ContainerNetworkProtocol `json:"protocol,omitempty"`
 	// Port - The port number exposed within the container group.
 	Port *int32 `json:"port,omitempty"`
 }
@@ -257,7 +281,7 @@ type ContainerPropertiesInstanceView struct {
 	// PreviousState - Previous container instance state.
 	PreviousState *ContainerState `json:"previousState,omitempty"`
 	// Events - The events of the container instance.
-	Events *[]ContainerEvent `json:"events,omitempty"`
+	Events *[]Event `json:"events,omitempty"`
 }
 
 // ContainerState the container instance state.
@@ -280,6 +304,22 @@ type EnvironmentVariable struct {
 	Name *string `json:"name,omitempty"`
 	// Value - The value of the environment variable.
 	Value *string `json:"value,omitempty"`
+}
+
+// Event a container group or container instance event.
+type Event struct {
+	// Count - The count of the event.
+	Count *int32 `json:"count,omitempty"`
+	// FirstTimestamp - The date-time of the earliest logged event.
+	FirstTimestamp *date.Time `json:"firstTimestamp,omitempty"`
+	// LastTimestamp - The date-time of the latest logged event.
+	LastTimestamp *date.Time `json:"lastTimestamp,omitempty"`
+	// Name - The event name.
+	Name *string `json:"name,omitempty"`
+	// Message - The event message.
+	Message *string `json:"message,omitempty"`
+	// Type - The event type.
+	Type *string `json:"type,omitempty"`
 }
 
 // ImageRegistryCredential image registry credential.
@@ -307,6 +347,35 @@ type Logs struct {
 	autorest.Response `json:"-"`
 	// Content - The content of the log.
 	Content *string `json:"content,omitempty"`
+}
+
+// Operation an operation for Azure Container Instance service.
+type Operation struct {
+	// Name - The name of the operation.
+	Name *string `json:"name,omitempty"`
+	// Display - The display information of the operation.
+	Display *OperationDisplay `json:"display,omitempty"`
+	// Origin - The intended executor of the operation. Possible values include: 'User', 'System'
+	Origin OperationsOrigin `json:"origin,omitempty"`
+}
+
+// OperationDisplay the display information of the operation.
+type OperationDisplay struct {
+	// Provider - The name of the provider of the operation.
+	Provider *string `json:"provider,omitempty"`
+	// Resource - The name of the resource type of the operation.
+	Resource *string `json:"resource,omitempty"`
+	// Operation - The friendly name of the operation.
+	Operation *string `json:"operation,omitempty"`
+	// Description - The description of the operation.
+	Description *string `json:"description,omitempty"`
+}
+
+// OperationListResult the operation list response that contains all operations for Azure Container Instance service.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of operations.
+	Value *[]Operation `json:"value,omitempty"`
 }
 
 // Port the port exposed on the container group.
@@ -361,6 +430,8 @@ type Volume struct {
 	Name *string `json:"name,omitempty"`
 	// AzureFile - The name of the Azure File volume.
 	AzureFile *AzureFileVolume `json:"azureFile,omitempty"`
+	// EmptyDir - The empty directory volume.
+	EmptyDir *map[string]interface{} `json:"emptyDir,omitempty"`
 }
 
 // VolumeMount the properties of the volume mount.

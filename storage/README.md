@@ -1,5 +1,8 @@
 # Azure Storage SDK for Go
 
+:exclamation: **NOTE:** This Storage Client Library is no longer maintained. 
+Please use the new [Storage Blob SDK for Go](https://github.com/azure/azure-storage-blob-go). New Queue and File SDKs will be available by May of 2018.
+
 The `github.com/Azure/azure-sdk-for-go/storage` package is used to perform REST operations against the [Azure Storage Service](https://docs.microsoft.com/en-us/azure/storage/). To manage your storage accounts (Azure Resource Manager / ARM), use the [github.com/Azure/azure-sdk-for-go/arm/storage](https://github.com/Azure/azure-sdk-for-go/tree/master/arm/storage) package. For your classic storage accounts (Azure Service Management / ASM), use [github.com/Azure/azure-sdk-for-go/management/storageservice](https://github.com/Azure/azure-sdk-for-go/tree/master/management/storageservice) package.
 
 This package includes support for [Azure Storage Emulator](https://azure.microsoft.com/documentation/articles/storage-use-emulator/).

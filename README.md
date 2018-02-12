@@ -183,6 +183,7 @@ import "github.com/Azure/azure-sdk-for-go/profiles/preview/compute/mgmt/compute"
 - SDK notifications are published via the [Azure update feed][].
 - Azure API docs are at [docs.microsoft.com/rest/api](https://docs.microsoft.com/rest/api/).
 - General Azure docs are at [docs.microsoft.com/azure](https://docs.microsoft.com/azure).
+- Storage SDKs are available in a separate repository: [Blob SDK](https://github.com/azure/azure-storage-blob-go), File SDK (Coming soon), Queue SDK (Coming soon)
 
 ## License
 

@@ -43,10 +43,10 @@ func NewCapacitiesClientWithBaseURI(baseURI string, subscriptionID string) Capac
 
 // Create provisions the specified Dedicated capacity based on the configuration specified in the request.
 //
-// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This
-// name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the Dedicated
-// capacity. It must be a minimum of 3 characters, and a maximum of 63. capacityParameters is contains the information
-// used to provision the Dedicated capacity.
+// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+// This name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the
+// Dedicated capacity. It must be a minimum of 3 characters, and a maximum of 63. capacityParameters is contains
+// the information used to provision the Dedicated capacity.
 func (client CapacitiesClient) Create(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityParameters DedicatedCapacity) (result CapacitiesCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -57,7 +57,7 @@ func (client CapacitiesClient) Create(ctx context.Context, resourceGroupName str
 			Constraints: []validation.Constraint{{Target: "dedicatedCapacityName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "powerbidedicated.CapacitiesClient", "Create")
+		return result, validation.NewError("powerbidedicated.CapacitiesClient", "Create", err.Error())
 	}
 
 	req, err := client.CreatePreparer(ctx, resourceGroupName, dedicatedCapacityName, capacityParameters)
@@ -128,9 +128,9 @@ func (client CapacitiesClient) CreateResponder(resp *http.Response) (result Dedi
 
 // Delete deletes the specified Dedicated capacity.
 //
-// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This
-// name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the Dedicated
-// capacity. It must be at least 3 characters in length, and no more than 63.
+// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+// This name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the
+// Dedicated capacity. It must be at least 3 characters in length, and no more than 63.
 func (client CapacitiesClient) Delete(ctx context.Context, resourceGroupName string, dedicatedCapacityName string) (result CapacitiesDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -141,7 +141,7 @@ func (client CapacitiesClient) Delete(ctx context.Context, resourceGroupName str
 			Constraints: []validation.Constraint{{Target: "dedicatedCapacityName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "powerbidedicated.CapacitiesClient", "Delete")
+		return result, validation.NewError("powerbidedicated.CapacitiesClient", "Delete", err.Error())
 	}
 
 	req, err := client.DeletePreparer(ctx, resourceGroupName, dedicatedCapacityName)
@@ -209,9 +209,9 @@ func (client CapacitiesClient) DeleteResponder(resp *http.Response) (result auto
 
 // GetDetails gets details about the specified dedicated capacity.
 //
-// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This
-// name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the dedicated
-// capacity. It must be a minimum of 3 characters, and a maximum of 63.
+// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+// This name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the
+// dedicated capacity. It must be a minimum of 3 characters, and a maximum of 63.
 func (client CapacitiesClient) GetDetails(ctx context.Context, resourceGroupName string, dedicatedCapacityName string) (result DedicatedCapacity, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -222,7 +222,7 @@ func (client CapacitiesClient) GetDetails(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "dedicatedCapacityName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "powerbidedicated.CapacitiesClient", "GetDetails")
+		return result, validation.NewError("powerbidedicated.CapacitiesClient", "GetDetails", err.Error())
 	}
 
 	req, err := client.GetDetailsPreparer(ctx, resourceGroupName, dedicatedCapacityName)
@@ -351,15 +351,15 @@ func (client CapacitiesClient) ListResponder(resp *http.Response) (result Dedica
 
 // ListByResourceGroup gets all the Dedicated capacities for the given resource group.
 //
-// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This
-// name must be at least 1 character in length, and no more than 90.
+// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+// This name must be at least 1 character in length, and no more than 90.
 func (client CapacitiesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DedicatedCapacities, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "powerbidedicated.CapacitiesClient", "ListByResourceGroup")
+		return result, validation.NewError("powerbidedicated.CapacitiesClient", "ListByResourceGroup", err.Error())
 	}
 
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
@@ -487,9 +487,9 @@ func (client CapacitiesClient) ListSkusResponder(resp *http.Response) (result Sk
 
 // ListSkusForCapacity lists eligible SKUs for a PowerBI Dedicated resource.
 //
-// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This
-// name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the Dedicated
-// capacity. It must be at least 3 characters in length, and no more than 63.
+// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+// This name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the
+// Dedicated capacity. It must be at least 3 characters in length, and no more than 63.
 func (client CapacitiesClient) ListSkusForCapacity(ctx context.Context, resourceGroupName string, dedicatedCapacityName string) (result SkuEnumerationForExistingResourceResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -500,7 +500,7 @@ func (client CapacitiesClient) ListSkusForCapacity(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "dedicatedCapacityName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "powerbidedicated.CapacitiesClient", "ListSkusForCapacity")
+		return result, validation.NewError("powerbidedicated.CapacitiesClient", "ListSkusForCapacity", err.Error())
 	}
 
 	req, err := client.ListSkusForCapacityPreparer(ctx, resourceGroupName, dedicatedCapacityName)
@@ -567,9 +567,9 @@ func (client CapacitiesClient) ListSkusForCapacityResponder(resp *http.Response)
 
 // Resume resumes operation of the specified Dedicated capacity instance.
 //
-// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This
-// name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the Dedicated
-// capacity. It must be at least 3 characters in length, and no more than 63.
+// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+// This name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the
+// Dedicated capacity. It must be at least 3 characters in length, and no more than 63.
 func (client CapacitiesClient) Resume(ctx context.Context, resourceGroupName string, dedicatedCapacityName string) (result CapacitiesResumeFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -580,7 +580,7 @@ func (client CapacitiesClient) Resume(ctx context.Context, resourceGroupName str
 			Constraints: []validation.Constraint{{Target: "dedicatedCapacityName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "powerbidedicated.CapacitiesClient", "Resume")
+		return result, validation.NewError("powerbidedicated.CapacitiesClient", "Resume", err.Error())
 	}
 
 	req, err := client.ResumePreparer(ctx, resourceGroupName, dedicatedCapacityName)
@@ -648,9 +648,9 @@ func (client CapacitiesClient) ResumeResponder(resp *http.Response) (result auto
 
 // Suspend suspends operation of the specified dedicated capacity instance.
 //
-// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This
-// name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the Dedicated
-// capacity. It must be at least 3 characters in length, and no more than 63.
+// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+// This name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the
+// Dedicated capacity. It must be at least 3 characters in length, and no more than 63.
 func (client CapacitiesClient) Suspend(ctx context.Context, resourceGroupName string, dedicatedCapacityName string) (result CapacitiesSuspendFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -661,7 +661,7 @@ func (client CapacitiesClient) Suspend(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "dedicatedCapacityName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "powerbidedicated.CapacitiesClient", "Suspend")
+		return result, validation.NewError("powerbidedicated.CapacitiesClient", "Suspend", err.Error())
 	}
 
 	req, err := client.SuspendPreparer(ctx, resourceGroupName, dedicatedCapacityName)
@@ -729,10 +729,10 @@ func (client CapacitiesClient) SuspendResponder(resp *http.Response) (result aut
 
 // Update updates the current state of the specified Dedicated capacity.
 //
-// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This
-// name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the Dedicated
-// capacity. It must be at least 3 characters in length, and no more than 63. capacityUpdateParameters is request
-// object that contains the updated information for the capacity.
+// resourceGroupName is the name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+// This name must be at least 1 character in length, and no more than 90. dedicatedCapacityName is the name of the
+// Dedicated capacity. It must be at least 3 characters in length, and no more than 63. capacityUpdateParameters is
+// request object that contains the updated information for the capacity.
 func (client CapacitiesClient) Update(ctx context.Context, resourceGroupName string, dedicatedCapacityName string, capacityUpdateParameters DedicatedCapacityUpdateParameters) (result CapacitiesUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -743,7 +743,7 @@ func (client CapacitiesClient) Update(ctx context.Context, resourceGroupName str
 			Constraints: []validation.Constraint{{Target: "dedicatedCapacityName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "dedicatedCapacityName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "powerbidedicated.CapacitiesClient", "Update")
+		return result, validation.NewError("powerbidedicated.CapacitiesClient", "Update", err.Error())
 	}
 
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, dedicatedCapacityName, capacityUpdateParameters)

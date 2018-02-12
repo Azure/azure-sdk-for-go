@@ -46,7 +46,7 @@ func (client AppsClient) Add(ctx context.Context, applicationCreateObject Applic
 		{TargetValue: applicationCreateObject,
 			Constraints: []validation.Constraint{{Target: "applicationCreateObject.Culture", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "applicationCreateObject.Name", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.AppsClient", "Add")
+		return result, validation.NewError("programmatic.AppsClient", "Add", err.Error())
 	}
 
 	req, err := client.AddPreparer(ctx, applicationCreateObject)
@@ -493,7 +493,7 @@ func (client AppsClient) List(ctx context.Context, skip *int32, take *int32) (re
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.AppsClient", "List")
+		return result, validation.NewError("programmatic.AppsClient", "List", err.Error())
 	}
 
 	req, err := client.ListPreparer(ctx, skip, take)

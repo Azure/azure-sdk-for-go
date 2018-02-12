@@ -83,13 +83,6 @@ const (
 	Succeeded           EntityStatus = original.Succeeded
 )
 
-type SearchSortEnum = original.SearchSortEnum
-
-const (
-	Asc  SearchSortEnum = original.Asc
-	Desc SearchSortEnum = original.Desc
-)
-
 type SkuNameEnum = original.SkuNameEnum
 
 const (
@@ -101,14 +94,6 @@ const (
 	Unlimited  SkuNameEnum = original.Unlimited
 )
 
-type StorageInsightState = original.StorageInsightState
-
-const (
-	ERROR StorageInsightState = original.ERROR
-	OK    StorageInsightState = original.OK
-)
-
-type CoreSummary = original.CoreSummary
 type DataSource = original.DataSource
 type DataSourceFilter = original.DataSourceFilter
 type DataSourceListResult = original.DataSourceListResult
@@ -118,36 +103,19 @@ type IntelligencePack = original.IntelligencePack
 type LinkedService = original.LinkedService
 type LinkedServiceListResult = original.LinkedServiceListResult
 type LinkedServiceProperties = original.LinkedServiceProperties
-type LinkTarget = original.LinkTarget
 type ListIntelligencePack = original.ListIntelligencePack
-type ListLinkTarget = original.ListLinkTarget
 type ManagementGroup = original.ManagementGroup
 type ManagementGroupProperties = original.ManagementGroupProperties
 type MetricName = original.MetricName
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
-type SavedSearch = original.SavedSearch
-type SavedSearchesListResult = original.SavedSearchesListResult
-type SavedSearchProperties = original.SavedSearchProperties
-type SearchError = original.SearchError
-type SearchGetSchemaResponse = original.SearchGetSchemaResponse
-type SearchHighlight = original.SearchHighlight
-type SearchMetadata = original.SearchMetadata
-type SearchMetadataSchema = original.SearchMetadataSchema
-type SearchParameters = original.SearchParameters
-type SearchResultsResponse = original.SearchResultsResponse
-type SearchSchemaValue = original.SearchSchemaValue
-type SearchSort = original.SearchSort
 type SharedKeys = original.SharedKeys
 type Sku = original.Sku
-type StorageAccount = original.StorageAccount
-type StorageInsight = original.StorageInsight
-type StorageInsightListResult = original.StorageInsightListResult
-type StorageInsightListResultIterator = original.StorageInsightListResultIterator
-type StorageInsightListResultPage = original.StorageInsightListResultPage
-type StorageInsightProperties = original.StorageInsightProperties
-type StorageInsightStatus = original.StorageInsightStatus
-type Tag = original.Tag
 type UsageMetric = original.UsageMetric
 type Workspace = original.Workspace
 type WorkspaceListManagementGroupsResult = original.WorkspaceListManagementGroupsResult
@@ -155,23 +123,13 @@ type WorkspaceListResult = original.WorkspaceListResult
 type WorkspaceListUsagesResult = original.WorkspaceListUsagesResult
 type WorkspaceProperties = original.WorkspaceProperties
 type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
-type WorkspacesGetSearchResultsFuture = original.WorkspacesGetSearchResultsFuture
-type SavedSearchesClient = original.SavedSearchesClient
+type OperationsClient = original.OperationsClient
 
-func NewSavedSearchesClient(subscriptionID string) SavedSearchesClient {
-	return original.NewSavedSearchesClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewSavedSearchesClientWithBaseURI(baseURI string, subscriptionID string) SavedSearchesClient {
-	return original.NewSavedSearchesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type StorageInsightsClient = original.StorageInsightsClient
-
-func NewStorageInsightsClient(subscriptionID string) StorageInsightsClient {
-	return original.NewStorageInsightsClient(subscriptionID)
-}
-func NewStorageInsightsClientWithBaseURI(baseURI string, subscriptionID string) StorageInsightsClient {
-	return original.NewStorageInsightsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

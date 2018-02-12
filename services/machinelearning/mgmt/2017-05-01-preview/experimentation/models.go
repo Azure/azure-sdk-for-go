@@ -44,6 +44,8 @@ const (
 // Account an object that represents a machine learning team account.
 type Account struct {
 	autorest.Response `json:"-"`
+	// AccountProperties - The properties of the machine learning team account.
+	*AccountProperties `json:"properties,omitempty"`
 	// ID - The resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource.
@@ -53,9 +55,31 @@ type Account struct {
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
 	// Tags - The tags of the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// AccountProperties - The properties of the machine learning team account.
-	*AccountProperties `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Account.
+func (a Account) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.AccountProperties != nil {
+		objectMap["properties"] = a.AccountProperties
+	}
+	if a.ID != nil {
+		objectMap["id"] = a.ID
+	}
+	if a.Name != nil {
+		objectMap["name"] = a.Name
+	}
+	if a.Type != nil {
+		objectMap["type"] = a.Type
+	}
+	if a.Location != nil {
+		objectMap["location"] = a.Location
+	}
+	if a.Tags != nil {
+		objectMap["tags"] = a.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Account struct.
@@ -65,66 +89,63 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties AccountProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var accountProperties AccountProperties
+				err = json.Unmarshal(*v, &accountProperties)
+				if err != nil {
+					return err
+				}
+				a.AccountProperties = &accountProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				a.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				a.Tags = tags
+			}
 		}
-		a.AccountProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		a.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		a.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		a.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		a.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		a.Tags = &tags
 	}
 
 	return nil
@@ -271,9 +292,21 @@ type AccountPropertiesUpdateParameters struct {
 // AccountUpdateParameters the parameters for updating a machine learning team account.
 type AccountUpdateParameters struct {
 	// Tags - The resource tags for the machine learning team account.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// AccountPropertiesUpdateParameters - The properties that the machine learning team account will be updated with.
 	*AccountPropertiesUpdateParameters `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountUpdateParameters.
+func (aup AccountUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aup.Tags != nil {
+		objectMap["tags"] = aup.Tags
+	}
+	if aup.AccountPropertiesUpdateParameters != nil {
+		objectMap["properties"] = aup.AccountPropertiesUpdateParameters
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for AccountUpdateParameters struct.
@@ -283,26 +316,27 @@ func (aup *AccountUpdateParameters) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				aup.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var accountPropertiesUpdateParameters AccountPropertiesUpdateParameters
+				err = json.Unmarshal(*v, &accountPropertiesUpdateParameters)
+				if err != nil {
+					return err
+				}
+				aup.AccountPropertiesUpdateParameters = &accountPropertiesUpdateParameters
+			}
 		}
-		aup.Tags = &tags
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties AccountPropertiesUpdateParameters
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		aup.AccountPropertiesUpdateParameters = &properties
 	}
 
 	return nil
@@ -346,6 +380,8 @@ type OperationListResult struct {
 // Project an object that represents a machine learning project.
 type Project struct {
 	autorest.Response `json:"-"`
+	// ProjectProperties - The properties of the Project.
+	*ProjectProperties `json:"properties,omitempty"`
 	// ID - The resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource.
@@ -355,9 +391,31 @@ type Project struct {
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
 	// Tags - The tags of the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// ProjectProperties - The properties of the Project.
-	*ProjectProperties `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Project.
+func (p Project) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.ProjectProperties != nil {
+		objectMap["properties"] = p.ProjectProperties
+	}
+	if p.ID != nil {
+		objectMap["id"] = p.ID
+	}
+	if p.Name != nil {
+		objectMap["name"] = p.Name
+	}
+	if p.Type != nil {
+		objectMap["type"] = p.Type
+	}
+	if p.Location != nil {
+		objectMap["location"] = p.Location
+	}
+	if p.Tags != nil {
+		objectMap["tags"] = p.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Project struct.
@@ -367,66 +425,63 @@ func (p *Project) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties ProjectProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var projectProperties ProjectProperties
+				err = json.Unmarshal(*v, &projectProperties)
+				if err != nil {
+					return err
+				}
+				p.ProjectProperties = &projectProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				p.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				p.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				p.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				p.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				p.Tags = tags
+			}
 		}
-		p.ProjectProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		p.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		p.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		p.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		p.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		p.Tags = &tags
 	}
 
 	return nil
@@ -567,9 +622,21 @@ type ProjectPropertiesUpdateParameters struct {
 // ProjectUpdateParameters the parameters for updating a machine learning project.
 type ProjectUpdateParameters struct {
 	// Tags - The resource tags for the machine learning project.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// ProjectPropertiesUpdateParameters - The properties that the project will be updated with.
 	*ProjectPropertiesUpdateParameters `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProjectUpdateParameters.
+func (pup ProjectUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pup.Tags != nil {
+		objectMap["tags"] = pup.Tags
+	}
+	if pup.ProjectPropertiesUpdateParameters != nil {
+		objectMap["properties"] = pup.ProjectPropertiesUpdateParameters
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ProjectUpdateParameters struct.
@@ -579,26 +646,27 @@ func (pup *ProjectUpdateParameters) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				pup.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var projectPropertiesUpdateParameters ProjectPropertiesUpdateParameters
+				err = json.Unmarshal(*v, &projectPropertiesUpdateParameters)
+				if err != nil {
+					return err
+				}
+				pup.ProjectPropertiesUpdateParameters = &projectPropertiesUpdateParameters
+			}
 		}
-		pup.Tags = &tags
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ProjectPropertiesUpdateParameters
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		pup.ProjectPropertiesUpdateParameters = &properties
 	}
 
 	return nil
@@ -615,7 +683,28 @@ type Resource struct {
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
 	// Tags - The tags of the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.ID != nil {
+		objectMap["id"] = r.ID
+	}
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Type != nil {
+		objectMap["type"] = r.Type
+	}
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	if r.Tags != nil {
+		objectMap["tags"] = r.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // StorageAccountProperties the properties of a storage account for a machine learning team account.
@@ -629,6 +718,8 @@ type StorageAccountProperties struct {
 // Workspace an object that represents a machine learning team account workspace.
 type Workspace struct {
 	autorest.Response `json:"-"`
+	// WorkspaceProperties - The properties of the machine learning team account workspace.
+	*WorkspaceProperties `json:"properties,omitempty"`
 	// ID - The resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource.
@@ -638,9 +729,31 @@ type Workspace struct {
 	// Location - The location of the resource. This cannot be changed after the resource is created.
 	Location *string `json:"location,omitempty"`
 	// Tags - The tags of the resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// WorkspaceProperties - The properties of the machine learning team account workspace.
-	*WorkspaceProperties `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Workspace.
+func (w Workspace) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if w.WorkspaceProperties != nil {
+		objectMap["properties"] = w.WorkspaceProperties
+	}
+	if w.ID != nil {
+		objectMap["id"] = w.ID
+	}
+	if w.Name != nil {
+		objectMap["name"] = w.Name
+	}
+	if w.Type != nil {
+		objectMap["type"] = w.Type
+	}
+	if w.Location != nil {
+		objectMap["location"] = w.Location
+	}
+	if w.Tags != nil {
+		objectMap["tags"] = w.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Workspace struct.
@@ -650,66 +763,63 @@ func (w *Workspace) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties WorkspaceProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var workspaceProperties WorkspaceProperties
+				err = json.Unmarshal(*v, &workspaceProperties)
+				if err != nil {
+					return err
+				}
+				w.WorkspaceProperties = &workspaceProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				w.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				w.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				w.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				w.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				w.Tags = tags
+			}
 		}
-		w.WorkspaceProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		w.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		w.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		w.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		w.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		w.Tags = &tags
 	}
 
 	return nil
@@ -833,8 +943,8 @@ type WorkspaceProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
-// WorkspacePropertiesUpdateParameters the parameters for updating the properties of a machine learning team account
-// workspace.
+// WorkspacePropertiesUpdateParameters the parameters for updating the properties of a machine learning team
+// account workspace.
 type WorkspacePropertiesUpdateParameters struct {
 	// FriendlyName - Friendly name of this workspace.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -845,9 +955,21 @@ type WorkspacePropertiesUpdateParameters struct {
 // WorkspaceUpdateParameters the parameters for updating a machine learning team account workspace.
 type WorkspaceUpdateParameters struct {
 	// Tags - The resource tags for the machine learning team account workspace.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// WorkspacePropertiesUpdateParameters - The properties that the machine learning workspace will be updated with.
 	*WorkspacePropertiesUpdateParameters `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkspaceUpdateParameters.
+func (wup WorkspaceUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wup.Tags != nil {
+		objectMap["tags"] = wup.Tags
+	}
+	if wup.WorkspacePropertiesUpdateParameters != nil {
+		objectMap["properties"] = wup.WorkspacePropertiesUpdateParameters
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for WorkspaceUpdateParameters struct.
@@ -857,26 +979,27 @@ func (wup *WorkspaceUpdateParameters) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				wup.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var workspacePropertiesUpdateParameters WorkspacePropertiesUpdateParameters
+				err = json.Unmarshal(*v, &workspacePropertiesUpdateParameters)
+				if err != nil {
+					return err
+				}
+				wup.WorkspacePropertiesUpdateParameters = &workspacePropertiesUpdateParameters
+			}
 		}
-		wup.Tags = &tags
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties WorkspacePropertiesUpdateParameters
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		wup.WorkspacePropertiesUpdateParameters = &properties
 	}
 
 	return nil

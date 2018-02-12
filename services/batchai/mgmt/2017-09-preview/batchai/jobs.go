@@ -42,10 +42,10 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 
 // Create adds a Job that gets executed on a cluster.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. jobName is the name of the job within
-// the specified resource group. Job names can only contain a combination of alphanumeric characters along with dash
-// (-) and underscore (_). The name must be from 1 through 64 characters long. parameters is the parameters to provide
-// for job creation.
+// resourceGroupName is name of the resource group to which the resource belongs. jobName is the name of the job
+// within the specified resource group. Job names can only contain a combination of alphanumeric characters along
+// with dash (-) and underscore (_). The name must be from 1 through 64 characters long. parameters is the
+// parameters to provide for job creation.
 func (client JobsClient) Create(ctx context.Context, resourceGroupName string, jobName string, parameters JobCreateParameters) (result JobsCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -85,7 +85,7 @@ func (client JobsClient) Create(ctx context.Context, resourceGroupName string, j
 							Chain: []validation.Constraint{{Target: "parameters.JobBaseProperties.JobPreparation.CommandLine", Name: validation.Null, Rule: true, Chain: nil}}},
 						{Target: "parameters.JobBaseProperties.StdOutErrPathPrefix", Name: validation.Null, Rule: true, Chain: nil},
 					}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.JobsClient", "Create")
+		return result, validation.NewError("batchai.JobsClient", "Create", err.Error())
 	}
 
 	req, err := client.CreatePreparer(ctx, resourceGroupName, jobName, parameters)
@@ -156,9 +156,9 @@ func (client JobsClient) CreateResponder(resp *http.Response) (result Job, err e
 
 // Delete deletes the specified Batch AI job.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. jobName is the name of the job within
-// the specified resource group. Job names can only contain a combination of alphanumeric characters along with dash
-// (-) and underscore (_). The name must be from 1 through 64 characters long.
+// resourceGroupName is name of the resource group to which the resource belongs. jobName is the name of the job
+// within the specified resource group. Job names can only contain a combination of alphanumeric characters along
+// with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
 func (client JobsClient) Delete(ctx context.Context, resourceGroupName string, jobName string) (result JobsDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -167,7 +167,7 @@ func (client JobsClient) Delete(ctx context.Context, resourceGroupName string, j
 			Constraints: []validation.Constraint{{Target: "jobName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "jobName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "jobName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.JobsClient", "Delete")
+		return result, validation.NewError("batchai.JobsClient", "Delete", err.Error())
 	}
 
 	req, err := client.DeletePreparer(ctx, resourceGroupName, jobName)
@@ -235,9 +235,9 @@ func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.R
 
 // Get gets information about the specified Batch AI job.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. jobName is the name of the job within
-// the specified resource group. Job names can only contain a combination of alphanumeric characters along with dash
-// (-) and underscore (_). The name must be from 1 through 64 characters long.
+// resourceGroupName is name of the resource group to which the resource belongs. jobName is the name of the job
+// within the specified resource group. Job names can only contain a combination of alphanumeric characters along
+// with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
 func (client JobsClient) Get(ctx context.Context, resourceGroupName string, jobName string) (result Job, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -246,7 +246,7 @@ func (client JobsClient) Get(ctx context.Context, resourceGroupName string, jobN
 			Constraints: []validation.Constraint{{Target: "jobName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "jobName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "jobName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.JobsClient", "Get")
+		return result, validation.NewError("batchai.JobsClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, resourceGroupName, jobName)
@@ -313,9 +313,9 @@ func (client JobsClient) GetResponder(resp *http.Response) (result Job, err erro
 
 // List gets information about the jobs associated with the subscription.
 //
-// filter is an OData $filter clause.. Used to filter results that are returned in the GET respnose. selectParameter is
-// an OData $select clause. Used to select the properties to be returned in the GET respnose. maxResults is the maximum
-// number of items to return in the response. A maximum of 1000 files can be returned.
+// filter is an OData $filter clause.. Used to filter results that are returned in the GET respnose.
+// selectParameter is an OData $select clause. Used to select the properties to be returned in the GET respnose.
+// maxResults is the maximum number of items to return in the response. A maximum of 1000 files can be returned.
 func (client JobsClient) List(ctx context.Context, filter string, selectParameter string, maxResults *int32) (result JobListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: maxResults,
@@ -323,7 +323,7 @@ func (client JobsClient) List(ctx context.Context, filter string, selectParamete
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.JobsClient", "List")
+		return result, validation.NewError("batchai.JobsClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
@@ -366,6 +366,8 @@ func (client JobsClient) ListPreparer(ctx context.Context, filter string, select
 	}
 	if maxResults != nil {
 		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	} else {
+		queryParameters["maxresults"] = autorest.Encode("query", 1000)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -425,10 +427,10 @@ func (client JobsClient) ListComplete(ctx context.Context, filter string, select
 
 // ListByResourceGroup gets information about the Batch AI jobs associated within the specified resource group.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. filter is an OData $filter clause..
-// Used to filter results that are returned in the GET respnose. selectParameter is an OData $select clause. Used to
-// select the properties to be returned in the GET respnose. maxResults is the maximum number of items to return in the
-// response. A maximum of 1000 files can be returned.
+// resourceGroupName is name of the resource group to which the resource belongs. filter is an OData $filter
+// clause.. Used to filter results that are returned in the GET respnose. selectParameter is an OData $select
+// clause. Used to select the properties to be returned in the GET respnose. maxResults is the maximum number of
+// items to return in the response. A maximum of 1000 files can be returned.
 func (client JobsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, maxResults *int32) (result JobListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -438,7 +440,7 @@ func (client JobsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.JobsClient", "ListByResourceGroup")
+		return result, validation.NewError("batchai.JobsClient", "ListByResourceGroup", err.Error())
 	}
 
 	result.fn = client.listByResourceGroupNextResults
@@ -482,6 +484,8 @@ func (client JobsClient) ListByResourceGroupPreparer(ctx context.Context, resour
 	}
 	if maxResults != nil {
 		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	} else {
+		queryParameters["maxresults"] = autorest.Encode("query", 1000)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -542,12 +546,12 @@ func (client JobsClient) ListByResourceGroupComplete(ctx context.Context, resour
 // ListOutputFiles list all files inside the given output directory (Only if the output directory is on Azure File
 // Share or Azure Storage container).
 //
-// resourceGroupName is name of the resource group to which the resource belongs. jobName is the name of the job within
-// the specified resource group. Job names can only contain a combination of alphanumeric characters along with dash
-// (-) and underscore (_). The name must be from 1 through 64 characters long. outputdirectoryid is id of the job
-// output directory. This is the OutputDirectory-->id parameter that is given by the user during Create Job.
-// linkexpiryinminutes is the number of minutes after which the download link will expire. maxResults is the maximum
-// number of items to return in the response. A maximum of 1000 files can be returned.
+// resourceGroupName is name of the resource group to which the resource belongs. jobName is the name of the job
+// within the specified resource group. Job names can only contain a combination of alphanumeric characters along
+// with dash (-) and underscore (_). The name must be from 1 through 64 characters long. outputdirectoryid is id of
+// the job output directory. This is the OutputDirectory-->id parameter that is given by the user during Create
+// Job. linkexpiryinminutes is the number of minutes after which the download link will expire. maxResults is the
+// maximum number of items to return in the response. A maximum of 1000 files can be returned.
 func (client JobsClient) ListOutputFiles(ctx context.Context, resourceGroupName string, jobName string, outputdirectoryid string, linkexpiryinminutes *int32, maxResults *int32) (result FileListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -566,7 +570,7 @@ func (client JobsClient) ListOutputFiles(ctx context.Context, resourceGroupName 
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.JobsClient", "ListOutputFiles")
+		return result, validation.NewError("batchai.JobsClient", "ListOutputFiles", err.Error())
 	}
 
 	result.fn = client.listOutputFilesNextResults
@@ -606,9 +610,13 @@ func (client JobsClient) ListOutputFilesPreparer(ctx context.Context, resourceGr
 	}
 	if linkexpiryinminutes != nil {
 		queryParameters["linkexpiryinminutes"] = autorest.Encode("query", *linkexpiryinminutes)
+	} else {
+		queryParameters["linkexpiryinminutes"] = autorest.Encode("query", 60)
 	}
 	if maxResults != nil {
 		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	} else {
+		queryParameters["maxresults"] = autorest.Encode("query", 1000)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -669,9 +677,9 @@ func (client JobsClient) ListOutputFilesComplete(ctx context.Context, resourceGr
 // ListRemoteLoginInformation gets the IP address and port information of all the compute nodes which are used for job
 // execution.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. jobName is the name of the job within
-// the specified resource group. Job names can only contain a combination of alphanumeric characters along with dash
-// (-) and underscore (_). The name must be from 1 through 64 characters long.
+// resourceGroupName is name of the resource group to which the resource belongs. jobName is the name of the job
+// within the specified resource group. Job names can only contain a combination of alphanumeric characters along
+// with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
 func (client JobsClient) ListRemoteLoginInformation(ctx context.Context, resourceGroupName string, jobName string) (result RemoteLoginInformationListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -680,7 +688,7 @@ func (client JobsClient) ListRemoteLoginInformation(ctx context.Context, resourc
 			Constraints: []validation.Constraint{{Target: "jobName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "jobName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "jobName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.JobsClient", "ListRemoteLoginInformation")
+		return result, validation.NewError("batchai.JobsClient", "ListRemoteLoginInformation", err.Error())
 	}
 
 	result.fn = client.listRemoteLoginInformationNextResults
@@ -775,9 +783,9 @@ func (client JobsClient) ListRemoteLoginInformationComplete(ctx context.Context,
 
 // Terminate terminates a job.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. jobName is the name of the job within
-// the specified resource group. Job names can only contain a combination of alphanumeric characters along with dash
-// (-) and underscore (_). The name must be from 1 through 64 characters long.
+// resourceGroupName is name of the resource group to which the resource belongs. jobName is the name of the job
+// within the specified resource group. Job names can only contain a combination of alphanumeric characters along
+// with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
 func (client JobsClient) Terminate(ctx context.Context, resourceGroupName string, jobName string) (result JobsTerminateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -786,7 +794,7 @@ func (client JobsClient) Terminate(ctx context.Context, resourceGroupName string
 			Constraints: []validation.Constraint{{Target: "jobName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "jobName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "jobName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.JobsClient", "Terminate")
+		return result, validation.NewError("batchai.JobsClient", "Terminate", err.Error())
 	}
 
 	req, err := client.TerminatePreparer(ctx, resourceGroupName, jobName)

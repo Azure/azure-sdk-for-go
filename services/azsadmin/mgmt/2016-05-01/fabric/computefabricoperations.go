@@ -41,8 +41,8 @@ func NewComputeFabricOperationsClientWithBaseURI(baseURI string, subscriptionID 
 
 // Get get the status of a compute fabric operation.
 //
-// location is location of the resource. provider is name of the provider. computeOperationResult is id of a compute
-// fabric operation.
+// location is location of the resource. provider is name of the provider. computeOperationResult is id of a
+// compute fabric operation.
 func (client ComputeFabricOperationsClient) Get(ctx context.Context, location string, provider string, computeOperationResult string) (result OperationStatus, err error) {
 	req, err := client.GetPreparer(ctx, location, provider, computeOperationResult)
 	if err != nil {

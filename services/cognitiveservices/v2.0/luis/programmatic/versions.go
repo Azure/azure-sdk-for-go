@@ -444,7 +444,7 @@ func (client VersionsClient) List(ctx context.Context, appID uuid.UUID, skip *in
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.VersionsClient", "List")
+		return result, validation.NewError("programmatic.VersionsClient", "List", err.Error())
 	}
 
 	req, err := client.ListPreparer(ctx, appID, skip, take)

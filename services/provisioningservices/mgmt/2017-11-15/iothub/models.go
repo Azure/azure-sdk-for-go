@@ -18,6 +18,7 @@ package iothub
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
@@ -236,22 +237,39 @@ func (future IotDpsResourceCreateOrUpdateFuture) Result(client IotDpsResourceCli
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return psd, autorest.NewError("iothub.IotDpsResourceCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return psd, azure.NewAsyncOpIncompleteError("iothub.IotDpsResourceCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		psd, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	psd, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -267,22 +285,39 @@ func (future IotDpsResourceDeleteFuture) Result(client IotDpsResourceClient) (ar
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("iothub.IotDpsResourceDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("iothub.IotDpsResourceDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -298,22 +333,39 @@ func (future IotDpsResourceUpdateFuture) Result(client IotDpsResourceClient) (ps
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return psd, autorest.NewError("iothub.IotDpsResourceUpdateFuture", "Result", "asynchronous operation has not completed")
+		return psd, azure.NewAsyncOpIncompleteError("iothub.IotDpsResourceUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		psd, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	psd, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -576,6 +628,12 @@ func (page OperationListResultPage) Values() []Operation {
 // ProvisioningServiceDescription the description of the provisioning service.
 type ProvisioningServiceDescription struct {
 	autorest.Response `json:"-"`
+	// Etag - The Etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal ETag convention.
+	Etag *string `json:"etag,omitempty"`
+	// Properties - Service specific properties for a provisioning service
+	Properties *IotDpsPropertiesDescription `json:"properties,omitempty"`
+	// Sku - Sku info for a provisioning Service.
+	Sku *IotDpsSkuInfo `json:"sku,omitempty"`
 	// ID - The resource identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - The resource name.
@@ -585,13 +643,37 @@ type ProvisioningServiceDescription struct {
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// Etag - The Etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal ETag convention.
-	Etag *string `json:"etag,omitempty"`
-	// Properties - Service specific properties for a provisioning service
-	Properties *IotDpsPropertiesDescription `json:"properties,omitempty"`
-	// Sku - Sku info for a provisioning Service.
-	Sku *IotDpsSkuInfo `json:"sku,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ProvisioningServiceDescription.
+func (psd ProvisioningServiceDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if psd.Etag != nil {
+		objectMap["etag"] = psd.Etag
+	}
+	if psd.Properties != nil {
+		objectMap["properties"] = psd.Properties
+	}
+	if psd.Sku != nil {
+		objectMap["sku"] = psd.Sku
+	}
+	if psd.ID != nil {
+		objectMap["id"] = psd.ID
+	}
+	if psd.Name != nil {
+		objectMap["name"] = psd.Name
+	}
+	if psd.Type != nil {
+		objectMap["type"] = psd.Type
+	}
+	if psd.Location != nil {
+		objectMap["location"] = psd.Location
+	}
+	if psd.Tags != nil {
+		objectMap["tags"] = psd.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // ProvisioningServiceDescriptionListResult list of provisioning service descriptions.
@@ -708,7 +790,28 @@ type Resource struct {
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.ID != nil {
+		objectMap["id"] = r.ID
+	}
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Type != nil {
+		objectMap["type"] = r.Type
+	}
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	if r.Tags != nil {
+		objectMap["tags"] = r.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // SharedAccessSignatureAuthorizationRuleAccessRightsDescription description of the shared access key.
@@ -832,7 +935,16 @@ func (page SharedAccessSignatureAuthorizationRuleListResultPage) Values() []Shar
 // Provisioning Service instance.
 type TagsResource struct {
 	// Tags - Resource tags
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for TagsResource.
+func (tr TagsResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // VerificationCodeRequest the JSON-serialized leaf certificate

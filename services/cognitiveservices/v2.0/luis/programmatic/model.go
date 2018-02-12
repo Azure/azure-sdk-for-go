@@ -706,7 +706,7 @@ func (client ModelClient) AddPrebuilt(ctx context.Context, appID uuid.UUID, vers
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: prebuiltExtractorNames,
 			Constraints: []validation.Constraint{{Target: "prebuiltExtractorNames", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.ModelClient", "AddPrebuilt")
+		return result, validation.NewError("programmatic.ModelClient", "AddPrebuilt", err.Error())
 	}
 
 	req, err := client.AddPrebuiltPreparer(ctx, appID, versionID, prebuiltExtractorNames)
@@ -1696,7 +1696,7 @@ func (client ModelClient) GetEntitySuggestions(ctx context.Context, appID uuid.U
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.ModelClient", "GetEntitySuggestions")
+		return result, validation.NewError("programmatic.ModelClient", "GetEntitySuggestions", err.Error())
 	}
 
 	req, err := client.GetEntitySuggestionsPreparer(ctx, appID, versionID, entityID, take)
@@ -1972,7 +1972,7 @@ func (client ModelClient) GetIntentSuggestions(ctx context.Context, appID uuid.U
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.ModelClient", "GetIntentSuggestions")
+		return result, validation.NewError("programmatic.ModelClient", "GetIntentSuggestions", err.Error())
 	}
 
 	req, err := client.GetIntentSuggestionsPreparer(ctx, appID, versionID, intentID, take)
@@ -2121,7 +2121,7 @@ func (client ModelClient) ListClosedLists(ctx context.Context, appID uuid.UUID, 
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.ModelClient", "ListClosedLists")
+		return result, validation.NewError("programmatic.ModelClient", "ListClosedLists", err.Error())
 	}
 
 	req, err := client.ListClosedListsPreparer(ctx, appID, versionID, skip, take)
@@ -2210,7 +2210,7 @@ func (client ModelClient) ListCompositeEntities(ctx context.Context, appID uuid.
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.ModelClient", "ListCompositeEntities")
+		return result, validation.NewError("programmatic.ModelClient", "ListCompositeEntities", err.Error())
 	}
 
 	req, err := client.ListCompositeEntitiesPreparer(ctx, appID, versionID, skip, take)
@@ -2488,7 +2488,7 @@ func (client ModelClient) ListEntities(ctx context.Context, appID uuid.UUID, ver
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.ModelClient", "ListEntities")
+		return result, validation.NewError("programmatic.ModelClient", "ListEntities", err.Error())
 	}
 
 	req, err := client.ListEntitiesPreparer(ctx, appID, versionID, skip, take)
@@ -2577,7 +2577,7 @@ func (client ModelClient) ListHierarchicalEntities(ctx context.Context, appID uu
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.ModelClient", "ListHierarchicalEntities")
+		return result, validation.NewError("programmatic.ModelClient", "ListHierarchicalEntities", err.Error())
 	}
 
 	req, err := client.ListHierarchicalEntitiesPreparer(ctx, appID, versionID, skip, take)
@@ -2666,7 +2666,7 @@ func (client ModelClient) ListIntents(ctx context.Context, appID uuid.UUID, vers
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.ModelClient", "ListIntents")
+		return result, validation.NewError("programmatic.ModelClient", "ListIntents", err.Error())
 	}
 
 	req, err := client.ListIntentsPreparer(ctx, appID, versionID, skip, take)
@@ -2755,7 +2755,7 @@ func (client ModelClient) ListModels(ctx context.Context, appID uuid.UUID, versi
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.ModelClient", "ListModels")
+		return result, validation.NewError("programmatic.ModelClient", "ListModels", err.Error())
 	}
 
 	req, err := client.ListModelsPreparer(ctx, appID, versionID, skip, take)
@@ -2907,7 +2907,7 @@ func (client ModelClient) ListPrebuilts(ctx context.Context, appID uuid.UUID, ve
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.ModelClient", "ListPrebuilts")
+		return result, validation.NewError("programmatic.ModelClient", "ListPrebuilts", err.Error())
 	}
 
 	req, err := client.ListPrebuiltsPreparer(ctx, appID, versionID, skip, take)

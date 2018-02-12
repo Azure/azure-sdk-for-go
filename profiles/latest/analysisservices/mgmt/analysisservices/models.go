@@ -19,7 +19,7 @@
 
 package analysisservices
 
-import original "github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2017-07-14/analysisservices"
+import original "github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2017-08-01/analysisservices"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -33,6 +33,13 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+
+type ConnectionMode = original.ConnectionMode
+
+const (
+	All      ConnectionMode = original.All
+	ReadOnly ConnectionMode = original.ReadOnly
+)
 
 type ProvisioningState = original.ProvisioningState
 
@@ -89,6 +96,13 @@ type GatewayDetails = original.GatewayDetails
 type GatewayError = original.GatewayError
 type GatewayListStatusError = original.GatewayListStatusError
 type GatewayListStatusLive = original.GatewayListStatusLive
+type IPv4FirewallRule = original.IPv4FirewallRule
+type IPv4FirewallSettings = original.IPv4FirewallSettings
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
 type OperationStatus = original.OperationStatus
 type Resource = original.Resource
 type ResourceSku = original.ResourceSku
@@ -106,6 +120,15 @@ type ServerUpdateParameters = original.ServerUpdateParameters
 type SkuDetailsForExistingResource = original.SkuDetailsForExistingResource
 type SkuEnumerationForExistingResourceResult = original.SkuEnumerationForExistingResourceResult
 type SkuEnumerationForNewResourceResult = original.SkuEnumerationForNewResourceResult
+type OperationsClient = original.OperationsClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type ServersClient = original.ServersClient
 
 func NewServersClient(subscriptionID string) ServersClient {

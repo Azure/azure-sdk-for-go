@@ -19,7 +19,7 @@
 
 package storage
 
-import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2017-06-01/storage"
+import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2017-10-01/storage"
 
 type AccountsClient = original.AccountsClient
 
@@ -105,6 +105,7 @@ type Kind = original.Kind
 const (
 	BlobStorage Kind = original.BlobStorage
 	Storage     Kind = original.Storage
+	StorageV2   Kind = original.StorageV2
 )
 
 type Permissions = original.Permissions

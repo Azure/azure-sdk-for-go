@@ -48,7 +48,7 @@ func (client PersonGroupClient) Create(ctx context.Context, personGroupID string
 				Chain: []validation.Constraint{{Target: "body.Name", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
 				{Target: "body.UserData", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "body.UserData", Name: validation.MaxLength, Rule: 16384, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Create")
+		return result, validation.NewError("face.PersonGroupClient", "Create", err.Error())
 	}
 
 	req, err := client.CreatePreparer(ctx, personGroupID, body)
@@ -119,7 +119,7 @@ func (client PersonGroupClient) Delete(ctx context.Context, personGroupID string
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Delete")
+		return result, validation.NewError("face.PersonGroupClient", "Delete", err.Error())
 	}
 
 	req, err := client.DeletePreparer(ctx, personGroupID)
@@ -187,7 +187,7 @@ func (client PersonGroupClient) Get(ctx context.Context, personGroupID string) (
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Get")
+		return result, validation.NewError("face.PersonGroupClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, personGroupID)
@@ -256,7 +256,7 @@ func (client PersonGroupClient) GetTrainingStatus(ctx context.Context, personGro
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "GetTrainingStatus")
+		return result, validation.NewError("face.PersonGroupClient", "GetTrainingStatus", err.Error())
 	}
 
 	req, err := client.GetTrainingStatusPreparer(ctx, personGroupID)
@@ -330,7 +330,7 @@ func (client PersonGroupClient) List(ctx context.Context, start string, top *int
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "List")
+		return result, validation.NewError("face.PersonGroupClient", "List", err.Error())
 	}
 
 	req, err := client.ListPreparer(ctx, start, top)
@@ -406,7 +406,7 @@ func (client PersonGroupClient) Train(ctx context.Context, personGroupID string)
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Train")
+		return result, validation.NewError("face.PersonGroupClient", "Train", err.Error())
 	}
 
 	req, err := client.TrainPreparer(ctx, personGroupID)
@@ -475,7 +475,7 @@ func (client PersonGroupClient) Update(ctx context.Context, personGroupID string
 		{TargetValue: personGroupID,
 			Constraints: []validation.Constraint{{Target: "personGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "personGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.PersonGroupClient", "Update")
+		return result, validation.NewError("face.PersonGroupClient", "Update", err.Error())
 	}
 
 	req, err := client.UpdatePreparer(ctx, personGroupID, body)

@@ -177,8 +177,8 @@ func (client DefinitionsClient) GetResponder(resp *http.Response) (result Defini
 // GetOperationStatus retrieves the status of the subscription definition PUT operation. The URI of this API is
 // returned in the Location field of the response header.
 //
-// operationID is the operation ID, which can be found from the Location field in the generate recommendation response
-// header.
+// operationID is the operation ID, which can be found from the Location field in the generate recommendation
+// response header.
 func (client DefinitionsClient) GetOperationStatus(ctx context.Context, operationID uuid.UUID) (result Definition, err error) {
 	req, err := client.GetOperationStatusPreparer(ctx, operationID)
 	if err != nil {

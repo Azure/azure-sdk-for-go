@@ -711,8 +711,8 @@ type AutoUserSpecification struct {
 	ElevationLevel ElevationLevel `json:"elevationLevel,omitempty"`
 }
 
-// Certificate a certificate that can be installed on compute nodes and can be used to authenticate operations on the
-// machine.
+// Certificate a certificate that can be installed on compute nodes and can be used to authenticate operations on
+// the machine.
 type Certificate struct {
 	autorest.Response   `json:"-"`
 	Thumbprint          *string `json:"thumbprint,omitempty"`
@@ -2120,7 +2120,8 @@ type LinuxUserConfiguration struct {
 	SSHPrivateKey *string `json:"sshPrivateKey,omitempty"`
 }
 
-// MetadataItem the Batch service does not assign any meaning to this metadata; it is solely for the use of user code.
+// MetadataItem the Batch service does not assign any meaning to this metadata; it is solely for the use of user
+// code.
 type MetadataItem struct {
 	Name  *string `json:"name,omitempty"`
 	Value *string `json:"value,omitempty"`
@@ -2815,8 +2816,8 @@ type TaskFailureInformation struct {
 	Details  *[]NameValuePair `json:"details,omitempty"`
 }
 
-// TaskIDRange the start and end of the range are inclusive. For example, if a range has start 9 and end 12, then it
-// represents tasks '9', '10', '11' and '12'.
+// TaskIDRange the start and end of the range are inclusive. For example, if a range has start 9 and end 12, then
+// it represents tasks '9', '10', '11' and '12'.
 type TaskIDRange struct {
 	Start *int32 `json:"start,omitempty"`
 	End   *int32 `json:"end,omitempty"`

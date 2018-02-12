@@ -18,6 +18,7 @@ package location
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -34,18 +35,42 @@ const (
 // BasedServicesAccount an Azure resource which represents access to a suite of Location Based Services REST APIs.
 type BasedServicesAccount struct {
 	autorest.Response `json:"-"`
+	// LocationProperty - The location of the resource.
+	LocationProperty *string `json:"location,omitempty"`
+	// Tags - Gets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
+	Tags map[string]*string `json:"tags"`
+	// Sku - The SKU of this account.
+	Sku *Sku `json:"sku,omitempty"`
 	// ID - The fully qualified Location Based Services Account resource identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the Location Based Services Account, which is unique within a Resource Group.
 	Name *string `json:"name,omitempty"`
 	// Type - Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// LocationProperty - The location of the resource.
-	LocationProperty *string `json:"location,omitempty"`
-	// Tags - Gets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// Sku - The SKU of this account.
-	Sku *Sku `json:"sku,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BasedServicesAccount.
+func (bsa BasedServicesAccount) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bsa.LocationProperty != nil {
+		objectMap["location"] = bsa.LocationProperty
+	}
+	if bsa.Tags != nil {
+		objectMap["tags"] = bsa.Tags
+	}
+	if bsa.Sku != nil {
+		objectMap["sku"] = bsa.Sku
+	}
+	if bsa.ID != nil {
+		objectMap["id"] = bsa.ID
+	}
+	if bsa.Name != nil {
+		objectMap["name"] = bsa.Name
+	}
+	if bsa.Type != nil {
+		objectMap["type"] = bsa.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // BasedServicesAccountCreateParameters parameters used to create a new Location Based Services Account.
@@ -53,13 +78,28 @@ type BasedServicesAccountCreateParameters struct {
 	// LocationProperty - The location of the resource.
 	LocationProperty *string `json:"location,omitempty"`
 	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// Sku - The SKU of this account.
 	Sku *Sku `json:"sku,omitempty"`
 }
 
-// BasedServicesAccountKeys the set of keys which can be used to access the Location Based Services REST APIs. Two keys
-// are provided for key rotation without interruption.
+// MarshalJSON is the custom marshaler for BasedServicesAccountCreateParameters.
+func (bsacp BasedServicesAccountCreateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bsacp.LocationProperty != nil {
+		objectMap["location"] = bsacp.LocationProperty
+	}
+	if bsacp.Tags != nil {
+		objectMap["tags"] = bsacp.Tags
+	}
+	if bsacp.Sku != nil {
+		objectMap["sku"] = bsacp.Sku
+	}
+	return json.Marshal(objectMap)
+}
+
+// BasedServicesAccountKeys the set of keys which can be used to access the Location Based Services REST APIs. Two
+// keys are provided for key rotation without interruption.
 type BasedServicesAccountKeys struct {
 	autorest.Response `json:"-"`
 	// ID - The full Azure resource identifier of the Location Based Services Account.
@@ -88,9 +128,21 @@ type BasedServicesAccountsMoveRequest struct {
 // BasedServicesAccountUpdateParameters parameters used to update an existing Location Based Services Account.
 type BasedServicesAccountUpdateParameters struct {
 	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// Sku - The SKU of this account.
 	Sku *Sku `json:"sku,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BasedServicesAccountUpdateParameters.
+func (bsaup BasedServicesAccountUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bsaup.Tags != nil {
+		objectMap["tags"] = bsaup.Tags
+	}
+	if bsaup.Sku != nil {
+		objectMap["sku"] = bsaup.Sku
+	}
+	return json.Marshal(objectMap)
 }
 
 // BasedServicesKeySpecification whether the operation refers to the primary or secondary key.

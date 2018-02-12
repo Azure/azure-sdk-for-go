@@ -19,7 +19,7 @@
 
 package network
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-09-01/network"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-01-01/network"
 
 type ApplicationGatewaysClient = original.ApplicationGatewaysClient
 
@@ -68,6 +68,15 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type ConnectionMonitorsClient = original.ConnectionMonitorsClient
+
+func NewConnectionMonitorsClient(subscriptionID string) ConnectionMonitorsClient {
+	return original.NewConnectionMonitorsClient(subscriptionID)
+}
+func NewConnectionMonitorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectionMonitorsClient {
+	return original.NewConnectionMonitorsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
@@ -378,6 +387,14 @@ const (
 	BgpPeerStateUnknown    BgpPeerState = original.BgpPeerStateUnknown
 )
 
+type ConnectionState = original.ConnectionState
+
+const (
+	ConnectionStateReachable   ConnectionState = original.ConnectionStateReachable
+	ConnectionStateUnknown     ConnectionState = original.ConnectionStateUnknown
+	ConnectionStateUnreachable ConnectionState = original.ConnectionStateUnreachable
+)
+
 type ConnectionStatus = original.ConnectionStatus
 
 const (
@@ -429,6 +446,14 @@ const (
 	All EffectiveSecurityRuleProtocol = original.All
 	TCP EffectiveSecurityRuleProtocol = original.TCP
 	UDP EffectiveSecurityRuleProtocol = original.UDP
+)
+
+type EvaluationState = original.EvaluationState
+
+const (
+	Completed  EvaluationState = original.Completed
+	InProgress EvaluationState = original.InProgress
+	NotStarted EvaluationState = original.NotStarted
 )
 
 type ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = original.ExpressRouteCircuitPeeringAdvertisedPublicPrefixState
@@ -570,9 +595,9 @@ const (
 type OperationStatus = original.OperationStatus
 
 const (
-	Failed     OperationStatus = original.Failed
-	InProgress OperationStatus = original.InProgress
-	Succeeded  OperationStatus = original.Succeeded
+	OperationStatusFailed     OperationStatus = original.OperationStatusFailed
+	OperationStatusInProgress OperationStatus = original.OperationStatusInProgress
+	OperationStatusSucceeded  OperationStatus = original.OperationStatusSucceeded
 )
 
 type Origin = original.Origin
@@ -647,10 +672,10 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
-	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
-	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
-	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
+	Deleting  ProvisioningState = original.Deleting
+	Failed    ProvisioningState = original.Failed
+	Succeeded ProvisioningState = original.Succeeded
+	Updating  ProvisioningState = original.Updating
 )
 
 type PublicIPAddressSkuName = original.PublicIPAddressSkuName
@@ -882,8 +907,22 @@ type BgpServiceCommunityListResultIterator = original.BgpServiceCommunityListRes
 type BgpServiceCommunityListResultPage = original.BgpServiceCommunityListResultPage
 type BgpServiceCommunityPropertiesFormat = original.BgpServiceCommunityPropertiesFormat
 type BgpSettings = original.BgpSettings
+type ConnectionMonitor = original.ConnectionMonitor
+type ConnectionMonitorDestination = original.ConnectionMonitorDestination
+type ConnectionMonitorListResult = original.ConnectionMonitorListResult
+type ConnectionMonitorParameters = original.ConnectionMonitorParameters
+type ConnectionMonitorQueryResult = original.ConnectionMonitorQueryResult
+type ConnectionMonitorResult = original.ConnectionMonitorResult
+type ConnectionMonitorResultProperties = original.ConnectionMonitorResultProperties
+type ConnectionMonitorsCreateOrUpdateFuture = original.ConnectionMonitorsCreateOrUpdateFuture
+type ConnectionMonitorsDeleteFuture = original.ConnectionMonitorsDeleteFuture
+type ConnectionMonitorSource = original.ConnectionMonitorSource
+type ConnectionMonitorsQueryFuture = original.ConnectionMonitorsQueryFuture
+type ConnectionMonitorsStartFuture = original.ConnectionMonitorsStartFuture
+type ConnectionMonitorsStopFuture = original.ConnectionMonitorsStopFuture
 type ConnectionResetSharedKey = original.ConnectionResetSharedKey
 type ConnectionSharedKey = original.ConnectionSharedKey
+type ConnectionStateSnapshot = original.ConnectionStateSnapshot
 type ConnectivityDestination = original.ConnectivityDestination
 type ConnectivityHop = original.ConnectivityHop
 type ConnectivityInformation = original.ConnectivityInformation
@@ -982,6 +1021,7 @@ type IPAddressAvailabilityResult = original.IPAddressAvailabilityResult
 type IPConfiguration = original.IPConfiguration
 type IPConfigurationPropertiesFormat = original.IPConfigurationPropertiesFormat
 type IpsecPolicy = original.IpsecPolicy
+type IPTag = original.IPTag
 type Ipv6ExpressRouteCircuitPeeringConfig = original.Ipv6ExpressRouteCircuitPeeringConfig
 type LoadBalancer = original.LoadBalancer
 type LoadBalancerBackendAddressPoolListResult = original.LoadBalancerBackendAddressPoolListResult

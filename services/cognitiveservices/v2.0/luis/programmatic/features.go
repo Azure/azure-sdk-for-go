@@ -245,7 +245,7 @@ func (client FeaturesClient) List(ctx context.Context, appID uuid.UUID, versionI
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.FeaturesClient", "List")
+		return result, validation.NewError("programmatic.FeaturesClient", "List", err.Error())
 	}
 
 	req, err := client.ListPreparer(ctx, appID, versionID, skip, take)
@@ -334,7 +334,7 @@ func (client FeaturesClient) ListPhraseLists(ctx context.Context, appID uuid.UUI
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.FeaturesClient", "ListPhraseLists")
+		return result, validation.NewError("programmatic.FeaturesClient", "ListPhraseLists", err.Error())
 	}
 
 	req, err := client.ListPhraseListsPreparer(ctx, appID, versionID, skip, take)

@@ -47,7 +47,7 @@ func (client PredictionClient) Resolve(ctx context.Context, appID string, query 
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: query,
 			Constraints: []validation.Constraint{{Target: "query", Name: validation.MaxLength, Rule: 500, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "runtime.PredictionClient", "Resolve")
+		return result, validation.NewError("runtime.PredictionClient", "Resolve", err.Error())
 	}
 
 	req, err := client.ResolvePreparer(ctx, appID, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, logParameter)

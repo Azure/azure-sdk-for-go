@@ -51,6 +51,9 @@ const (
 type CoreSummary = original.CoreSummary
 type LinkTarget = original.LinkTarget
 type ListLinkTarget = original.ListLinkTarget
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationListResult = original.OperationListResult
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type SavedSearch = original.SavedSearch
@@ -74,6 +77,15 @@ type StorageInsightProperties = original.StorageInsightProperties
 type StorageInsightStatus = original.StorageInsightStatus
 type Tag = original.Tag
 type WorkspacesGetSearchResultsFuture = original.WorkspacesGetSearchResultsFuture
+type OperationsClient = original.OperationsClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type SavedSearchesClient = original.SavedSearchesClient
 
 func NewSavedSearchesClient(subscriptionID string) SavedSearchesClient {

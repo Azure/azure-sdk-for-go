@@ -42,7 +42,8 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 
 // CheckChildrenNameAvailability this method checks whether a proposed nested resource name is valid and available.
 //
-// groupName is name of the resource group serviceName is name of the service parameters is requested name to validate
+// groupName is name of the resource group serviceName is name of the service parameters is requested name to
+// validate
 func (client ServicesClient) CheckChildrenNameAvailability(ctx context.Context, groupName string, serviceName string, parameters NameAvailabilityRequest) (result NameAvailabilityResponse, err error) {
 	req, err := client.CheckChildrenNameAvailabilityPreparer(ctx, groupName, serviceName, parameters)
 	if err != nil {
@@ -257,7 +258,7 @@ func (client ServicesClient) CreateOrUpdate(ctx context.Context, parameters Serv
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ServiceProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.ServiceProperties.VirtualSubnetID", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "datamigration.ServicesClient", "CreateOrUpdate")
+		return result, validation.NewError("datamigration.ServicesClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, parameters, groupName, serviceName)
@@ -329,8 +330,8 @@ func (client ServicesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // Delete the services resource is the top-level resource that represents the Data Migration Service. The DELETE method
 // deletes a service. Any running tasks will be canceled.
 //
-// groupName is name of the resource group serviceName is name of the service deleteRunningTasks is delete the resource
-// even if it contains running tasks
+// groupName is name of the resource group serviceName is name of the service deleteRunningTasks is delete the
+// resource even if it contains running tasks
 func (client ServicesClient) Delete(ctx context.Context, groupName string, serviceName string, deleteRunningTasks *bool) (result ServicesDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, groupName, serviceName, deleteRunningTasks)
 	if err != nil {

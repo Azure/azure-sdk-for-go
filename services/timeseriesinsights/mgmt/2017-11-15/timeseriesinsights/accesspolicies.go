@@ -43,8 +43,8 @@ func NewAccessPoliciesClientWithBaseURI(baseURI string, subscriptionID string) A
 // CreateOrUpdate create or update an access policy in the specified environment.
 //
 // resourceGroupName is name of an Azure Resource group. environmentName is the name of the Time Series Insights
-// environment associated with the specified resource group. accessPolicyName is name of the access policy. parameters
-// is parameters for creating an access policy.
+// environment associated with the specified resource group. accessPolicyName is name of the access policy.
+// parameters is parameters for creating an access policy.
 func (client AccessPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, accessPolicyName string, parameters AccessPolicyCreateOrUpdateParameters) (result AccessPolicyResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accessPolicyName,
@@ -53,7 +53,7 @@ func (client AccessPoliciesClient) CreateOrUpdate(ctx context.Context, resourceG
 				{Target: "accessPolicyName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.AccessPolicyResourceProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "timeseriesinsights.AccessPoliciesClient", "CreateOrUpdate")
+		return result, validation.NewError("timeseriesinsights.AccessPoliciesClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, environmentName, accessPolicyName, parameters)
@@ -125,8 +125,8 @@ func (client AccessPoliciesClient) CreateOrUpdateResponder(resp *http.Response) 
 // environment
 //
 // resourceGroupName is name of an Azure Resource group. environmentName is the name of the Time Series Insights
-// environment associated with the specified resource group. accessPolicyName is the name of the Time Series Insights
-// access policy associated with the specified environment.
+// environment associated with the specified resource group. accessPolicyName is the name of the Time Series
+// Insights access policy associated with the specified environment.
 func (client AccessPoliciesClient) Delete(ctx context.Context, resourceGroupName string, environmentName string, accessPolicyName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, environmentName, accessPolicyName)
 	if err != nil {
@@ -193,8 +193,8 @@ func (client AccessPoliciesClient) DeleteResponder(resp *http.Response) (result 
 // Get gets the access policy with the specified name in the specified environment.
 //
 // resourceGroupName is name of an Azure Resource group. environmentName is the name of the Time Series Insights
-// environment associated with the specified resource group. accessPolicyName is the name of the Time Series Insights
-// access policy associated with the specified environment.
+// environment associated with the specified resource group. accessPolicyName is the name of the Time Series
+// Insights access policy associated with the specified environment.
 func (client AccessPoliciesClient) Get(ctx context.Context, resourceGroupName string, environmentName string, accessPolicyName string) (result AccessPolicyResource, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, environmentName, accessPolicyName)
 	if err != nil {
@@ -330,9 +330,9 @@ func (client AccessPoliciesClient) ListByEnvironmentResponder(resp *http.Respons
 // environment.
 //
 // resourceGroupName is name of an Azure Resource group. environmentName is the name of the Time Series Insights
-// environment associated with the specified resource group. accessPolicyName is the name of the Time Series Insights
-// access policy associated with the specified environment. accessPolicyUpdateParameters is request object that
-// contains the updated information for the access policy.
+// environment associated with the specified resource group. accessPolicyName is the name of the Time Series
+// Insights access policy associated with the specified environment. accessPolicyUpdateParameters is request object
+// that contains the updated information for the access policy.
 func (client AccessPoliciesClient) Update(ctx context.Context, resourceGroupName string, environmentName string, accessPolicyName string, accessPolicyUpdateParameters AccessPolicyUpdateParameters) (result AccessPolicyResource, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, environmentName, accessPolicyName, accessPolicyUpdateParameters)
 	if err != nil {

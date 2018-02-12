@@ -113,8 +113,8 @@ func (client TasksClient) CancelResponder(resp *http.Response) (result ProjectTa
 // The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom
 // properties, there is little reason to update an exising one.
 //
-// parameters is information about the task groupName is name of the resource group serviceName is name of the service
-// projectName is name of the project taskName is name of the Task
+// parameters is information about the task groupName is name of the resource group serviceName is name of the
+// service projectName is name of the project taskName is name of the Task
 func (client TasksClient) CreateOrUpdate(ctx context.Context, parameters ProjectTask, groupName string, serviceName string, projectName string, taskName string) (result ProjectTask, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, parameters, groupName, serviceName, projectName, taskName)
 	if err != nil {
@@ -431,8 +431,8 @@ func (client TasksClient) ListComplete(ctx context.Context, groupName string, se
 // Update the tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PATCH
 // method updates an existing task, but since tasks have no mutable custom properties, there is little reason to do so.
 //
-// parameters is information about the task groupName is name of the resource group serviceName is name of the service
-// projectName is name of the project taskName is name of the Task
+// parameters is information about the task groupName is name of the resource group serviceName is name of the
+// service projectName is name of the project taskName is name of the Task
 func (client TasksClient) Update(ctx context.Context, parameters ProjectTask, groupName string, serviceName string, projectName string, taskName string) (result ProjectTask, err error) {
 	req, err := client.UpdatePreparer(ctx, parameters, groupName, serviceName, projectName, taskName)
 	if err != nil {

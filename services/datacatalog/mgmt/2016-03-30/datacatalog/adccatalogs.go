@@ -45,15 +45,15 @@ func NewADCCatalogsClientWithBaseURI(baseURI string, subscriptionID string, cata
 // parameters. If the specific service already exists, then any patchable properties will be updated and any immutable
 // properties will remain unchanged.
 //
-// resourceGroupName is the name of the resource group within the user's subscription. The name is case insensitive.
-// properties is properties supplied to the Create or Update a data catalog.
+// resourceGroupName is the name of the resource group within the user's subscription. The name is case
+// insensitive. properties is properties supplied to the Create or Update a data catalog.
 func (client ADCCatalogsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, properties ADCCatalog) (result ADCCatalog, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "datacatalog.ADCCatalogsClient", "CreateOrUpdate")
+		return result, validation.NewError("datacatalog.ADCCatalogsClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, properties)
@@ -122,14 +122,15 @@ func (client ADCCatalogsClient) CreateOrUpdateResponder(resp *http.Response) (re
 
 // Delete the Delete Azure Data Catalog Service operation deletes an existing data catalog.
 //
-// resourceGroupName is the name of the resource group within the user's subscription. The name is case insensitive.
+// resourceGroupName is the name of the resource group within the user's subscription. The name is case
+// insensitive.
 func (client ADCCatalogsClient) Delete(ctx context.Context, resourceGroupName string) (result ADCCatalogsDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "datacatalog.ADCCatalogsClient", "Delete")
+		return result, validation.NewError("datacatalog.ADCCatalogsClient", "Delete", err.Error())
 	}
 
 	req, err := client.DeletePreparer(ctx, resourceGroupName)
@@ -197,14 +198,15 @@ func (client ADCCatalogsClient) DeleteResponder(resp *http.Response) (result aut
 
 // Get the Get Azure Data Catalog Service operation retrieves a json representation of the data catalog.
 //
-// resourceGroupName is the name of the resource group within the user's subscription. The name is case insensitive.
+// resourceGroupName is the name of the resource group within the user's subscription. The name is case
+// insensitive.
 func (client ADCCatalogsClient) Get(ctx context.Context, resourceGroupName string) (result ADCCatalog, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "datacatalog.ADCCatalogsClient", "Get")
+		return result, validation.NewError("datacatalog.ADCCatalogsClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, resourceGroupName)
@@ -272,14 +274,15 @@ func (client ADCCatalogsClient) GetResponder(resp *http.Response) (result ADCCat
 // ListtByResourceGroup the List catalogs in Resource Group operation lists all the Azure Data Catalogs available under
 // the given resource group.
 //
-// resourceGroupName is the name of the resource group within the user's subscription. The name is case insensitive.
+// resourceGroupName is the name of the resource group within the user's subscription. The name is case
+// insensitive.
 func (client ADCCatalogsClient) ListtByResourceGroup(ctx context.Context, resourceGroupName string) (result ADCCatalogsListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "datacatalog.ADCCatalogsClient", "ListtByResourceGroup")
+		return result, validation.NewError("datacatalog.ADCCatalogsClient", "ListtByResourceGroup", err.Error())
 	}
 
 	req, err := client.ListtByResourceGroupPreparer(ctx, resourceGroupName)
@@ -346,15 +349,15 @@ func (client ADCCatalogsClient) ListtByResourceGroupResponder(resp *http.Respons
 // Update the Update Azure Data Catalog Service operation can be used to update the existing deployment. The update
 // call only supports the properties listed in the PATCH body.
 //
-// resourceGroupName is the name of the resource group within the user's subscription. The name is case insensitive.
-// properties is properties supplied to the Update a data catalog.
+// resourceGroupName is the name of the resource group within the user's subscription. The name is case
+// insensitive. properties is properties supplied to the Update a data catalog.
 func (client ADCCatalogsClient) Update(ctx context.Context, resourceGroupName string, properties ADCCatalog) (result ADCCatalog, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "datacatalog.ADCCatalogsClient", "Update")
+		return result, validation.NewError("datacatalog.ADCCatalogsClient", "Update", err.Error())
 	}
 
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, properties)

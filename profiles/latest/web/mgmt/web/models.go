@@ -625,6 +625,14 @@ const (
 	StatusOptionsReady    StatusOptions = original.StatusOptionsReady
 )
 
+type SupportedTLSVersions = original.SupportedTLSVersions
+
+const (
+	OneFullStopOne  SupportedTLSVersions = original.OneFullStopOne
+	OneFullStopTwo  SupportedTLSVersions = original.OneFullStopTwo
+	OneFullStopZero SupportedTLSVersions = original.OneFullStopZero
+)
+
 type TriggeredWebJobStatus = original.TriggeredWebJobStatus
 
 const (
@@ -845,6 +853,7 @@ type DomainRecommendationSearchParameters = original.DomainRecommendationSearchP
 type DomainsCreateOrUpdateFuture = original.DomainsCreateOrUpdateFuture
 type EnabledConfig = original.EnabledConfig
 type ErrorEntity = original.ErrorEntity
+type ErrorResponse = original.ErrorResponse
 type Experiments = original.Experiments
 type FileSystemApplicationLogsConfig = original.FileSystemApplicationLogsConfig
 type FileSystemHTTPLogsConfig = original.FileSystemHTTPLogsConfig

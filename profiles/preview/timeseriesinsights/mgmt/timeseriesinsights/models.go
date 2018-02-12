@@ -68,6 +68,16 @@ const (
 	Reader      AccessPolicyRole = original.Reader
 )
 
+type IngressState = original.IngressState
+
+const (
+	Disabled IngressState = original.Disabled
+	Paused   IngressState = original.Paused
+	Ready    IngressState = original.Ready
+	Running  IngressState = original.Running
+	Unknown  IngressState = original.Unknown
+)
+
 type Kind = original.Kind
 
 const (
@@ -143,6 +153,8 @@ type EnvironmentMutableProperties = original.EnvironmentMutableProperties
 type EnvironmentResource = original.EnvironmentResource
 type EnvironmentResourceProperties = original.EnvironmentResourceProperties
 type EnvironmentsCreateOrUpdateFuture = original.EnvironmentsCreateOrUpdateFuture
+type EnvironmentStateDetails = original.EnvironmentStateDetails
+type EnvironmentStatus = original.EnvironmentStatus
 type EnvironmentsUpdateFuture = original.EnvironmentsUpdateFuture
 type EnvironmentUpdateParameters = original.EnvironmentUpdateParameters
 type EventHubEventSourceCommonProperties = original.EventHubEventSourceCommonProperties
@@ -161,6 +173,7 @@ type BasicEventSourceResource = original.BasicEventSourceResource
 type EventSourceResource = original.EventSourceResource
 type EventSourceResourceModel = original.EventSourceResourceModel
 type EventSourceUpdateParameters = original.EventSourceUpdateParameters
+type IngressEnvironmentStatus = original.IngressEnvironmentStatus
 type IoTHubEventSourceCommonProperties = original.IoTHubEventSourceCommonProperties
 type IoTHubEventSourceCreateOrUpdateParameters = original.IoTHubEventSourceCreateOrUpdateParameters
 type IoTHubEventSourceCreationProperties = original.IoTHubEventSourceCreationProperties

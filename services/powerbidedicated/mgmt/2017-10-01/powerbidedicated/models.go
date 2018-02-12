@@ -105,22 +105,39 @@ func (future CapacitiesCreateFuture) Result(client CapacitiesClient) (dc Dedicat
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return dc, autorest.NewError("powerbidedicated.CapacitiesCreateFuture", "Result", "asynchronous operation has not completed")
+		return dc, azure.NewAsyncOpIncompleteError("powerbidedicated.CapacitiesCreateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		dc, err = client.CreateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesCreateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesCreateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	dc, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesCreateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -136,22 +153,39 @@ func (future CapacitiesDeleteFuture) Result(client CapacitiesClient) (ar autores
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("powerbidedicated.CapacitiesDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("powerbidedicated.CapacitiesDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -167,22 +201,39 @@ func (future CapacitiesResumeFuture) Result(client CapacitiesClient) (ar autores
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesResumeFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("powerbidedicated.CapacitiesResumeFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("powerbidedicated.CapacitiesResumeFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.ResumeResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesResumeFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesResumeFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.ResumeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesResumeFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -198,22 +249,39 @@ func (future CapacitiesSuspendFuture) Result(client CapacitiesClient) (ar autore
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesSuspendFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("powerbidedicated.CapacitiesSuspendFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("powerbidedicated.CapacitiesSuspendFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.SuspendResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesSuspendFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesSuspendFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.SuspendResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesSuspendFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -229,22 +297,39 @@ func (future CapacitiesUpdateFuture) Result(client CapacitiesClient) (dc Dedicat
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return dc, autorest.NewError("powerbidedicated.CapacitiesUpdateFuture", "Result", "asynchronous operation has not completed")
+		return dc, azure.NewAsyncOpIncompleteError("powerbidedicated.CapacitiesUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		dc, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	dc, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -258,6 +343,8 @@ type DedicatedCapacities struct {
 // DedicatedCapacity represents an instance of a Dedicated Capacity resource.
 type DedicatedCapacity struct {
 	autorest.Response `json:"-"`
+	// DedicatedCapacityProperties - Properties of the provision operation request.
+	*DedicatedCapacityProperties `json:"properties,omitempty"`
 	// ID - An identifier that represents the PowerBI Dedicated resource.
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the PowerBI Dedicated resource.
@@ -269,9 +356,34 @@ type DedicatedCapacity struct {
 	// Sku - The SKU of the PowerBI Dedicated resource.
 	Sku *ResourceSku `json:"sku,omitempty"`
 	// Tags - Key-value pairs of additional resource provisioning properties.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// DedicatedCapacityProperties - Properties of the provision operation request.
-	*DedicatedCapacityProperties `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DedicatedCapacity.
+func (dc DedicatedCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dc.DedicatedCapacityProperties != nil {
+		objectMap["properties"] = dc.DedicatedCapacityProperties
+	}
+	if dc.ID != nil {
+		objectMap["id"] = dc.ID
+	}
+	if dc.Name != nil {
+		objectMap["name"] = dc.Name
+	}
+	if dc.Type != nil {
+		objectMap["type"] = dc.Type
+	}
+	if dc.Location != nil {
+		objectMap["location"] = dc.Location
+	}
+	if dc.Sku != nil {
+		objectMap["sku"] = dc.Sku
+	}
+	if dc.Tags != nil {
+		objectMap["tags"] = dc.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for DedicatedCapacity struct.
@@ -281,76 +393,72 @@ func (dc *DedicatedCapacity) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties DedicatedCapacityProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dedicatedCapacityProperties DedicatedCapacityProperties
+				err = json.Unmarshal(*v, &dedicatedCapacityProperties)
+				if err != nil {
+					return err
+				}
+				dc.DedicatedCapacityProperties = &dedicatedCapacityProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dc.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				dc.Location = &location
+			}
+		case "sku":
+			if v != nil {
+				var sku ResourceSku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				dc.Sku = &sku
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				dc.Tags = tags
+			}
 		}
-		dc.DedicatedCapacityProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		dc.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		dc.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		dc.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		dc.Location = &location
-	}
-
-	v = m["sku"]
-	if v != nil {
-		var sku ResourceSku
-		err = json.Unmarshal(*m["sku"], &sku)
-		if err != nil {
-			return err
-		}
-		dc.Sku = &sku
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		dc.Tags = &tags
 	}
 
 	return nil
@@ -371,12 +479,12 @@ type DedicatedCapacityMutableProperties struct {
 
 // DedicatedCapacityProperties properties of Dedicated Capacity resource.
 type DedicatedCapacityProperties struct {
-	// Administration - A collection of Dedicated capacity administrators
-	Administration *DedicatedCapacityAdministrators `json:"administration,omitempty"`
 	// State - The current state of PowerBI Dedicated resource. The state is to indicate more states outside of resource provisioning. Possible values include: 'StateDeleting', 'StateSucceeded', 'StateFailed', 'StatePaused', 'StateSuspended', 'StateProvisioning', 'StateUpdating', 'StateSuspending', 'StatePausing', 'StateResuming', 'StatePreparing', 'StateScaling'
 	State State `json:"state,omitempty"`
 	// ProvisioningState - The current deployment state of PowerBI Dedicatedresource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Deleting', 'Succeeded', 'Failed', 'Paused', 'Suspended', 'Provisioning', 'Updating', 'Suspending', 'Pausing', 'Resuming', 'Preparing', 'Scaling'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Administration - A collection of Dedicated capacity administrators
+	Administration *DedicatedCapacityAdministrators `json:"administration,omitempty"`
 }
 
 // DedicatedCapacityUpdateParameters provision request specification
@@ -384,9 +492,24 @@ type DedicatedCapacityUpdateParameters struct {
 	// Sku - The SKU of the Dedicated capacity resource.
 	Sku *ResourceSku `json:"sku,omitempty"`
 	// Tags - Key-value pairs of additional provisioning properties.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// DedicatedCapacityMutableProperties - Properties of the provision operation request.
 	*DedicatedCapacityMutableProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DedicatedCapacityUpdateParameters.
+func (dcup DedicatedCapacityUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dcup.Sku != nil {
+		objectMap["sku"] = dcup.Sku
+	}
+	if dcup.Tags != nil {
+		objectMap["tags"] = dcup.Tags
+	}
+	if dcup.DedicatedCapacityMutableProperties != nil {
+		objectMap["properties"] = dcup.DedicatedCapacityMutableProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for DedicatedCapacityUpdateParameters struct.
@@ -396,36 +519,36 @@ func (dcup *DedicatedCapacityUpdateParameters) UnmarshalJSON(body []byte) error 
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["sku"]
-	if v != nil {
-		var sku ResourceSku
-		err = json.Unmarshal(*m["sku"], &sku)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "sku":
+			if v != nil {
+				var sku ResourceSku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				dcup.Sku = &sku
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				dcup.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var dedicatedCapacityMutableProperties DedicatedCapacityMutableProperties
+				err = json.Unmarshal(*v, &dedicatedCapacityMutableProperties)
+				if err != nil {
+					return err
+				}
+				dcup.DedicatedCapacityMutableProperties = &dedicatedCapacityMutableProperties
+			}
 		}
-		dcup.Sku = &sku
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		dcup.Tags = &tags
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties DedicatedCapacityMutableProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		dcup.DedicatedCapacityMutableProperties = &properties
 	}
 
 	return nil
@@ -457,8 +580,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result listing capacities. It contains a list of operations and a URL link to get the next set
-// of results.
+// OperationListResult result listing capacities. It contains a list of operations and a URL link to get the next
+// set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of capacities supported by the Microsoft.PowerBIDedicated resource provider.
@@ -573,7 +696,31 @@ type Resource struct {
 	// Sku - The SKU of the PowerBI Dedicated resource.
 	Sku *ResourceSku `json:"sku,omitempty"`
 	// Tags - Key-value pairs of additional resource provisioning properties.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.ID != nil {
+		objectMap["id"] = r.ID
+	}
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Type != nil {
+		objectMap["type"] = r.Type
+	}
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	if r.Sku != nil {
+		objectMap["sku"] = r.Sku
+	}
+	if r.Tags != nil {
+		objectMap["tags"] = r.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // ResourceSku represents the SKU name and Azure pricing tier for PowerBI Dedicated resource.

@@ -45,46 +45,45 @@ func (d *Definition) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				d.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				d.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				d.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var definitionProperties DefinitionProperties
+				err = json.Unmarshal(*v, &definitionProperties)
+				if err != nil {
+					return err
+				}
+				d.DefinitionProperties = &definitionProperties
+			}
 		}
-		d.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		d.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		d.Type = &typeVar
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties DefinitionProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		d.DefinitionProperties = &properties
 	}
 
 	return nil
@@ -216,22 +215,39 @@ func (future DefinitionsCreateFuture) Result(client DefinitionsClient) (d Defini
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscription.DefinitionsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return d, autorest.NewError("subscription.DefinitionsCreateFuture", "Result", "asynchronous operation has not completed")
+		return d, azure.NewAsyncOpIncompleteError("subscription.DefinitionsCreateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		d, err = client.CreateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "subscription.DefinitionsCreateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscription.DefinitionsCreateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	d, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscription.DefinitionsCreateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -261,8 +277,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of the request to list operations. It contains a list of operations and a URL link to get
-// the next set of results.
+// OperationListResult result of the request to list operations. It contains a list of operations and a URL link to
+// get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of operations.

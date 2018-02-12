@@ -34,11 +34,34 @@ type Resource struct {
 	// Location - Location where resource is location.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.ID != nil {
+		objectMap["id"] = r.ID
+	}
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Type != nil {
+		objectMap["type"] = r.Type
+	}
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	if r.Tags != nil {
+		objectMap["tags"] = r.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UsageAggregate aggregate usage values for resource.
 type UsageAggregate struct {
+	// UsageAggregateModel - Properties for aggregate usage.
+	*UsageAggregateModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -48,9 +71,31 @@ type UsageAggregate struct {
 	// Location - Location where resource is location.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// UsageAggregateModel - Properties for aggregate usage.
-	*UsageAggregateModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for UsageAggregate.
+func (ua UsageAggregate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ua.UsageAggregateModel != nil {
+		objectMap["properties"] = ua.UsageAggregateModel
+	}
+	if ua.ID != nil {
+		objectMap["id"] = ua.ID
+	}
+	if ua.Name != nil {
+		objectMap["name"] = ua.Name
+	}
+	if ua.Type != nil {
+		objectMap["type"] = ua.Type
+	}
+	if ua.Location != nil {
+		objectMap["location"] = ua.Location
+	}
+	if ua.Tags != nil {
+		objectMap["tags"] = ua.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for UsageAggregate struct.
@@ -60,66 +105,63 @@ func (ua *UsageAggregate) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties UsageAggregateModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var usageAggregateModel UsageAggregateModel
+				err = json.Unmarshal(*v, &usageAggregateModel)
+				if err != nil {
+					return err
+				}
+				ua.UsageAggregateModel = &usageAggregateModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ua.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ua.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ua.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ua.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ua.Tags = tags
+			}
 		}
-		ua.UsageAggregateModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		ua.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		ua.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		ua.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		ua.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		ua.Tags = &tags
 	}
 
 	return nil

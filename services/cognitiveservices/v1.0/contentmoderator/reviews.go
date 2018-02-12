@@ -235,7 +235,7 @@ func (client ReviewsClient) AddVideoFrameURL(ctx context.Context, contentType st
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: videoFrameBody,
 			Constraints: []validation.Constraint{{Target: "videoFrameBody", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "contentmoderator.ReviewsClient", "AddVideoFrameURL")
+		return result, validation.NewError("contentmoderator.ReviewsClient", "AddVideoFrameURL", err.Error())
 	}
 
 	req, err := client.AddVideoFrameURLPreparer(ctx, contentType, teamName, reviewID, videoFrameBody, timescale)
@@ -344,6 +344,7 @@ func (client ReviewsClient) AddVideoTranscriptPreparer(ctx context.Context, team
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPut(),
 		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
 		autorest.WithPathParameters("/contentmoderator/review/v1.0/teams/{teamName}/reviews/{reviewId}/transcript", pathParameters),
@@ -381,7 +382,7 @@ func (client ReviewsClient) AddVideoTranscriptModerationResult(ctx context.Conte
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: transcriptModerationBody,
 			Constraints: []validation.Constraint{{Target: "transcriptModerationBody", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "contentmoderator.ReviewsClient", "AddVideoTranscriptModerationResult")
+		return result, validation.NewError("contentmoderator.ReviewsClient", "AddVideoTranscriptModerationResult", err.Error())
 	}
 
 	req, err := client.AddVideoTranscriptModerationResultPreparer(ctx, contentType, teamName, reviewID, transcriptModerationBody)
@@ -502,7 +503,7 @@ func (client ReviewsClient) CreateJob(ctx context.Context, teamName string, cont
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: content,
 			Constraints: []validation.Constraint{{Target: "content.ContentValue", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "contentmoderator.ReviewsClient", "CreateJob")
+		return result, validation.NewError("contentmoderator.ReviewsClient", "CreateJob", err.Error())
 	}
 
 	req, err := client.CreateJobPreparer(ctx, teamName, contentType, contentID, workflowName, jobContentType, content, callBackEndpoint)
@@ -608,7 +609,7 @@ func (client ReviewsClient) CreateReviews(ctx context.Context, URLContentType st
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: createReviewBody,
 			Constraints: []validation.Constraint{{Target: "createReviewBody", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "contentmoderator.ReviewsClient", "CreateReviews")
+		return result, validation.NewError("contentmoderator.ReviewsClient", "CreateReviews", err.Error())
 	}
 
 	req, err := client.CreateReviewsPreparer(ctx, URLContentType, teamName, createReviewBody, subTeam)
@@ -710,7 +711,7 @@ func (client ReviewsClient) CreateVideoReviews(ctx context.Context, contentType 
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: createVideoReviewsBody,
 			Constraints: []validation.Constraint{{Target: "createVideoReviewsBody", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "contentmoderator.ReviewsClient", "CreateVideoReviews")
+		return result, validation.NewError("contentmoderator.ReviewsClient", "CreateVideoReviews", err.Error())
 	}
 
 	req, err := client.CreateVideoReviewsPreparer(ctx, contentType, teamName, createVideoReviewsBody, subTeam)

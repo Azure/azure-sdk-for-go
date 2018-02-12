@@ -109,7 +109,7 @@ func (client ExamplesClient) Batch(ctx context.Context, appID uuid.UUID, version
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: exampleLabelObjectArray,
 			Constraints: []validation.Constraint{{Target: "exampleLabelObjectArray", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.ExamplesClient", "Batch")
+		return result, validation.NewError("programmatic.ExamplesClient", "Batch", err.Error())
 	}
 
 	req, err := client.BatchPreparer(ctx, appID, versionID, exampleLabelObjectArray)
@@ -251,7 +251,7 @@ func (client ExamplesClient) List(ctx context.Context, appID uuid.UUID, versionI
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: 500, Chain: nil},
 					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "programmatic.ExamplesClient", "List")
+		return result, validation.NewError("programmatic.ExamplesClient", "List", err.Error())
 	}
 
 	req, err := client.ListPreparer(ctx, appID, versionID, skip, take)

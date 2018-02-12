@@ -280,8 +280,8 @@ const (
 	ResultTypeTableLevelOutput ResultType = "TableLevelOutput"
 )
 
-// ResultTypeBasicConnectToSourceSQLServerTaskOutput enumerates the values for result type basic connect to source sql
-// server task output.
+// ResultTypeBasicConnectToSourceSQLServerTaskOutput enumerates the values for result type basic connect to
+// source sql server task output.
 type ResultTypeBasicConnectToSourceSQLServerTaskOutput string
 
 const (
@@ -531,12 +531,15 @@ func unmarshalBasicConnectionInfoArray(body []byte) ([]BasicConnectionInfo, erro
 // MarshalJSON is the custom marshaler for ConnectionInfo.
 func (ci ConnectionInfo) MarshalJSON() ([]byte, error) {
 	ci.Type = TypeUnknown
-	type Alias ConnectionInfo
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(ci),
-	})
+	objectMap := make(map[string]interface{})
+	if ci.UserName != nil {
+		objectMap["userName"] = ci.UserName
+	}
+	if ci.Password != nil {
+		objectMap["password"] = ci.Password
+	}
+	objectMap["type"] = ci.Type
+	return json.Marshal(objectMap)
 }
 
 // AsSQLConnectionInfo is the BasicConnectionInfo implementation for ConnectionInfo.
@@ -571,13 +574,13 @@ type BasicConnectToSourceSQLServerTaskOutput interface {
 	AsConnectToSourceSQLServerTaskOutput() (*ConnectToSourceSQLServerTaskOutput, bool)
 }
 
-// ConnectToSourceSQLServerTaskOutput output for the task that validates connection to SQL Server and also validates
-// source server requirements
+// ConnectToSourceSQLServerTaskOutput output for the task that validates connection to SQL Server and also
+// validates source server requirements
 type ConnectToSourceSQLServerTaskOutput struct {
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
 	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
 }
 
 func unmarshalBasicConnectToSourceSQLServerTaskOutput(body []byte) (BasicConnectToSourceSQLServerTaskOutput, error) {
@@ -624,12 +627,12 @@ func unmarshalBasicConnectToSourceSQLServerTaskOutputArray(body []byte) ([]Basic
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutput.
 func (ctsssto ConnectToSourceSQLServerTaskOutput) MarshalJSON() ([]byte, error) {
 	ctsssto.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput
-	type Alias ConnectToSourceSQLServerTaskOutput
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(ctsssto),
-	})
+	objectMap := make(map[string]interface{})
+	objectMap["resultType"] = ctsssto.ResultType
+	if ctsssto.ID != nil {
+		objectMap["id"] = ctsssto.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
@@ -692,13 +695,9 @@ func (ctsssto ConnectToSourceSQLServerTaskOutput) AsBasicConnectToSourceSQLServe
 	return &ctsssto, true
 }
 
-// ConnectToSourceSQLServerTaskOutputDatabaseLevel database level output for the task that validates connection to SQL
-// Server and also validates source server requirements
+// ConnectToSourceSQLServerTaskOutputDatabaseLevel database level output for the task that validates connection to
+// SQL Server and also validates source server requirements
 type ConnectToSourceSQLServerTaskOutputDatabaseLevel struct {
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
-	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 	// Name - Database name
 	Name *string `json:"name,omitempty"`
 	// SizeMB - Size of the file in megabytes
@@ -709,17 +708,32 @@ type ConnectToSourceSQLServerTaskOutputDatabaseLevel struct {
 	CompatibilityLevel DatabaseCompatLevel `json:"compatibilityLevel,omitempty"`
 	// DatabaseState - State of the database. Possible values include: 'Online', 'Restoring', 'Recovering', 'RecoveryPending', 'Suspect', 'Emergency', 'Offline', 'Copying', 'OfflineSecondary'
 	DatabaseState DatabaseState `json:"databaseState,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
+	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
 func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
 	ctssstodl.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput
-	type Alias ConnectToSourceSQLServerTaskOutputDatabaseLevel
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(ctssstodl),
-	})
+	objectMap := make(map[string]interface{})
+	if ctssstodl.Name != nil {
+		objectMap["name"] = ctssstodl.Name
+	}
+	if ctssstodl.SizeMB != nil {
+		objectMap["sizeMB"] = ctssstodl.SizeMB
+	}
+	if ctssstodl.DatabaseFiles != nil {
+		objectMap["databaseFiles"] = ctssstodl.DatabaseFiles
+	}
+	objectMap["compatibilityLevel"] = ctssstodl.CompatibilityLevel
+	objectMap["databaseState"] = ctssstodl.DatabaseState
+	objectMap["resultType"] = ctssstodl.ResultType
+	if ctssstodl.ID != nil {
+		objectMap["id"] = ctssstodl.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
@@ -782,32 +796,44 @@ func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsBasicConnectT
 	return &ctssstodl, true
 }
 
-// ConnectToSourceSQLServerTaskOutputTaskLevel task level output for the task that validates connection to SQL Server
-// and also validates source server requirements
+// ConnectToSourceSQLServerTaskOutputTaskLevel task level output for the task that validates connection to SQL
+// Server and also validates source server requirements
 type ConnectToSourceSQLServerTaskOutputTaskLevel struct {
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
-	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 	// Databases - Source databases as a map from database name to database id
-	Databases *map[string]*string `json:"databases,omitempty"`
+	Databases map[string]*string `json:"databases"`
 	// SourceServerVersion - Source server version
 	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
 	// SourceServerBrandVersion - Source server brand version
 	SourceServerBrandVersion *string `json:"sourceServerBrandVersion,omitempty"`
 	// ValidationErrors - Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
+	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutputTaskLevel.
 func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) MarshalJSON() ([]byte, error) {
 	ctssstotl.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput
-	type Alias ConnectToSourceSQLServerTaskOutputTaskLevel
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(ctssstotl),
-	})
+	objectMap := make(map[string]interface{})
+	if ctssstotl.Databases != nil {
+		objectMap["databases"] = ctssstotl.Databases
+	}
+	if ctssstotl.SourceServerVersion != nil {
+		objectMap["sourceServerVersion"] = ctssstotl.SourceServerVersion
+	}
+	if ctssstotl.SourceServerBrandVersion != nil {
+		objectMap["sourceServerBrandVersion"] = ctssstotl.SourceServerBrandVersion
+	}
+	if ctssstotl.ValidationErrors != nil {
+		objectMap["validationErrors"] = ctssstotl.ValidationErrors
+	}
+	objectMap["resultType"] = ctssstotl.ResultType
+	if ctssstotl.ID != nil {
+		objectMap["id"] = ctssstotl.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
@@ -873,27 +899,34 @@ func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsBasicConnectToSou
 // ConnectToSourceSQLServerTaskProperties properties for the task that validates connection to SQL Server and also
 // validates source server requirements
 type ConnectToSourceSQLServerTaskProperties struct {
+	// Input - Task input
+	Input *ConnectToSourceSQLServerTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]BasicConnectToSourceSQLServerTaskOutput `json:"output,omitempty"`
 	// Errors - Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServer'
 	TaskType TaskType `json:"taskType,omitempty"`
-	// Input - Task input
-	Input *ConnectToSourceSQLServerTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
-	Output *[]BasicConnectToSourceSQLServerTaskOutput `json:"output,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskProperties.
 func (ctssstp ConnectToSourceSQLServerTaskProperties) MarshalJSON() ([]byte, error) {
 	ctssstp.TaskType = TaskTypeConnectToSourceSQLServer
-	type Alias ConnectToSourceSQLServerTaskProperties
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(ctssstp),
-	})
+	objectMap := make(map[string]interface{})
+	if ctssstp.Input != nil {
+		objectMap["input"] = ctssstp.Input
+	}
+	if ctssstp.Output != nil {
+		objectMap["output"] = ctssstp.Output
+	}
+	if ctssstp.Errors != nil {
+		objectMap["errors"] = ctssstp.Errors
+	}
+	objectMap["state"] = ctssstp.State
+	objectMap["taskType"] = ctssstp.TaskType
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToSourceSQLServerTaskProperties.
@@ -933,61 +966,60 @@ func (ctssstp *ConnectToSourceSQLServerTaskProperties) UnmarshalJSON(body []byte
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["input"]
-	if v != nil {
-		var input ConnectToSourceSQLServerTaskInput
-		err = json.Unmarshal(*m["input"], &input)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input ConnectToSourceSQLServerTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				ctssstp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicConnectToSourceSQLServerTaskOutputArray(*v)
+				if err != nil {
+					return err
+				}
+				ctssstp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				ctssstp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				ctssstp.State = state
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				ctssstp.TaskType = taskType
+			}
 		}
-		ctssstp.Input = &input
-	}
-
-	v = m["output"]
-	if v != nil {
-		output, err := unmarshalBasicConnectToSourceSQLServerTaskOutputArray(*m["output"])
-		if err != nil {
-			return err
-		}
-		ctssstp.Output = &output
-	}
-
-	v = m["errors"]
-	if v != nil {
-		var errorsVar []ODataError
-		err = json.Unmarshal(*m["errors"], &errorsVar)
-		if err != nil {
-			return err
-		}
-		ctssstp.Errors = &errorsVar
-	}
-
-	v = m["state"]
-	if v != nil {
-		var state TaskState
-		err = json.Unmarshal(*m["state"], &state)
-		if err != nil {
-			return err
-		}
-		ctssstp.State = state
-	}
-
-	v = m["taskType"]
-	if v != nil {
-		var taskType TaskType
-		err = json.Unmarshal(*m["taskType"], &taskType)
-		if err != nil {
-			return err
-		}
-		ctssstp.TaskType = taskType
 	}
 
 	return nil
 }
 
-// ConnectToTargetSQLDbTaskInput input for the task that validates connection to SQL DB and target server requirements
+// ConnectToTargetSQLDbTaskInput input for the task that validates connection to SQL DB and target server
+// requirements
 type ConnectToTargetSQLDbTaskInput struct {
 	// TargetConnectionInfo - Connection information for target SQL DB
 	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
@@ -996,40 +1028,65 @@ type ConnectToTargetSQLDbTaskInput struct {
 // ConnectToTargetSQLDbTaskOutput output for the task that validates connection to SQL DB and target server
 // requirements
 type ConnectToTargetSQLDbTaskOutput struct {
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
 	// Databases - Source databases as a map from database name to database id
-	Databases *map[string]*string `json:"databases,omitempty"`
+	Databases map[string]*string `json:"databases"`
 	// TargetServerVersion - Version of the target server
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
 	// TargetServerBrandVersion - Target server brand version
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectToTargetSQLDbTaskOutput.
+func (cttsdto ConnectToTargetSQLDbTaskOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cttsdto.Databases != nil {
+		objectMap["databases"] = cttsdto.Databases
+	}
+	if cttsdto.TargetServerVersion != nil {
+		objectMap["targetServerVersion"] = cttsdto.TargetServerVersion
+	}
+	if cttsdto.TargetServerBrandVersion != nil {
+		objectMap["targetServerBrandVersion"] = cttsdto.TargetServerBrandVersion
+	}
+	if cttsdto.ID != nil {
+		objectMap["id"] = cttsdto.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // ConnectToTargetSQLDbTaskProperties properties for the task that validates connection to SQL DB and target server
 // requirements
 type ConnectToTargetSQLDbTaskProperties struct {
+	// Input - Task input
+	Input *ConnectToTargetSQLDbTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]ConnectToTargetSQLDbTaskOutput `json:"output,omitempty"`
 	// Errors - Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServer'
 	TaskType TaskType `json:"taskType,omitempty"`
-	// Input - Task input
-	Input *ConnectToTargetSQLDbTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
-	Output *[]ConnectToTargetSQLDbTaskOutput `json:"output,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToTargetSQLDbTaskProperties.
 func (cttsdtp ConnectToTargetSQLDbTaskProperties) MarshalJSON() ([]byte, error) {
 	cttsdtp.TaskType = TaskTypeConnectToTargetSQLDb
-	type Alias ConnectToTargetSQLDbTaskProperties
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(cttsdtp),
-	})
+	objectMap := make(map[string]interface{})
+	if cttsdtp.Input != nil {
+		objectMap["input"] = cttsdtp.Input
+	}
+	if cttsdtp.Output != nil {
+		objectMap["output"] = cttsdtp.Output
+	}
+	if cttsdtp.Errors != nil {
+		objectMap["errors"] = cttsdtp.Errors
+	}
+	objectMap["state"] = cttsdtp.State
+	objectMap["taskType"] = cttsdtp.TaskType
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ConnectToTargetSQLDbTaskProperties.
@@ -1152,6 +1209,8 @@ type DatabaseObjectName struct {
 
 // DatabaseSummaryResult summary of database results in the migration
 type DatabaseSummaryResult struct {
+	// SizeMB - Size of the database in megabytes
+	SizeMB *float64 `json:"sizeMB,omitempty"`
 	// Name - Name of the item
 	Name *string `json:"name,omitempty"`
 	// StartedOn - Migration start time
@@ -1170,8 +1229,6 @@ type DatabaseSummaryResult struct {
 	ErrorPrefix *string `json:"errorPrefix,omitempty"`
 	// ResultPrefix - Wildcard string prefix to use for querying all sub-tem results of the item
 	ResultPrefix *string `json:"resultPrefix,omitempty"`
-	// SizeMB - Size of the database in megabytes
-	SizeMB *float64 `json:"sizeMB,omitempty"`
 }
 
 // DatabaseTable table properties
@@ -1185,9 +1242,21 @@ type DatabaseTable struct {
 // DataIntegrityValidationResult results for checksum based Data Integrity validation results
 type DataIntegrityValidationResult struct {
 	// FailedObjects - List of failed table names of source and target pair
-	FailedObjects *map[string]*string `json:"failedObjects,omitempty"`
+	FailedObjects map[string]*string `json:"failedObjects"`
 	// ValidationErrors - List of errors that happened while performing data integrity validation
 	ValidationErrors *ValidationError `json:"validationErrors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataIntegrityValidationResult.
+func (divr DataIntegrityValidationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if divr.FailedObjects != nil {
+		objectMap["failedObjects"] = divr.FailedObjects
+	}
+	if divr.ValidationErrors != nil {
+		objectMap["validationErrors"] = divr.ValidationErrors
+	}
+	return json.Marshal(objectMap)
 }
 
 // DataItemMigrationSummaryResult basic summary of a data item migration
@@ -1229,11 +1298,35 @@ type ExecutionStatistics struct {
 	// ElapsedTimeMs - Time taken in millisecond(s) for executing the query
 	ElapsedTimeMs *float64 `json:"elapsedTimeMs,omitempty"`
 	// WaitStats - Dictionary of sql query execution wait types and the respective statistics
-	WaitStats *map[string]*WaitStatistics `json:"waitStats,omitempty"`
+	WaitStats map[string]*WaitStatistics `json:"waitStats"`
 	// HasErrors - Indicates whether the query resulted in an error
 	HasErrors *bool `json:"hasErrors,omitempty"`
 	// SQLErrors - List of sql Errors
 	SQLErrors *[]string `json:"sqlErrors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExecutionStatistics.
+func (es ExecutionStatistics) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if es.ExecutionCount != nil {
+		objectMap["executionCount"] = es.ExecutionCount
+	}
+	if es.CPUTimeMs != nil {
+		objectMap["cpuTimeMs"] = es.CPUTimeMs
+	}
+	if es.ElapsedTimeMs != nil {
+		objectMap["elapsedTimeMs"] = es.ElapsedTimeMs
+	}
+	if es.WaitStats != nil {
+		objectMap["waitStats"] = es.WaitStats
+	}
+	if es.HasErrors != nil {
+		objectMap["hasErrors"] = es.HasErrors
+	}
+	if es.SQLErrors != nil {
+		objectMap["sqlErrors"] = es.SQLErrors
+	}
+	return json.Marshal(objectMap)
 }
 
 // GetUserTablesSQLTaskInput input for the task that collects user tables for the given list of databases
@@ -1246,37 +1339,59 @@ type GetUserTablesSQLTaskInput struct {
 
 // GetUserTablesSQLTaskOutput output of the task that collects user tables for the given list of databases
 type GetUserTablesSQLTaskOutput struct {
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
 	// DatabasesToTables - Mapping from database name to list of tables
-	DatabasesToTables *map[string][]DatabaseTable `json:"databasesToTables,omitempty"`
+	DatabasesToTables map[string][]DatabaseTable `json:"databasesToTables"`
 	// ValidationErrors - Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GetUserTablesSQLTaskOutput.
+func (gutsto GetUserTablesSQLTaskOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gutsto.DatabasesToTables != nil {
+		objectMap["databasesToTables"] = gutsto.DatabasesToTables
+	}
+	if gutsto.ValidationErrors != nil {
+		objectMap["validationErrors"] = gutsto.ValidationErrors
+	}
+	if gutsto.ID != nil {
+		objectMap["id"] = gutsto.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // GetUserTablesSQLTaskProperties properties for the task that collects user tables for the given list of databases
 type GetUserTablesSQLTaskProperties struct {
+	// Input - Task input
+	Input *GetUserTablesSQLTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]GetUserTablesSQLTaskOutput `json:"output,omitempty"`
 	// Errors - Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServer'
 	TaskType TaskType `json:"taskType,omitempty"`
-	// Input - Task input
-	Input *GetUserTablesSQLTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
-	Output *[]GetUserTablesSQLTaskOutput `json:"output,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for GetUserTablesSQLTaskProperties.
 func (gutstp GetUserTablesSQLTaskProperties) MarshalJSON() ([]byte, error) {
 	gutstp.TaskType = TaskTypeGetUserTablesSQL
-	type Alias GetUserTablesSQLTaskProperties
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(gutstp),
-	})
+	objectMap := make(map[string]interface{})
+	if gutstp.Input != nil {
+		objectMap["input"] = gutstp.Input
+	}
+	if gutstp.Output != nil {
+		objectMap["output"] = gutstp.Output
+	}
+	if gutstp.Errors != nil {
+		objectMap["errors"] = gutstp.Errors
+	}
+	objectMap["state"] = gutstp.State
+	objectMap["taskType"] = gutstp.TaskType
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for GetUserTablesSQLTaskProperties.
@@ -1318,21 +1433,40 @@ type MigrateSQLServerSQLDbDatabaseInput struct {
 	// MakeSourceDbReadOnly - Whether to set database read only before migration
 	MakeSourceDbReadOnly *bool `json:"makeSourceDbReadOnly,omitempty"`
 	// TableMap - Mapping of source to target tables
-	TableMap *map[string]*string `json:"tableMap,omitempty"`
+	TableMap map[string]*string `json:"tableMap"`
 }
 
-// MigrateSQLServerSQLDbTaskInput input for the task that migrates on-prem SQL Server databases to Azure SQL Database
+// MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbDatabaseInput.
+func (msssddi MigrateSQLServerSQLDbDatabaseInput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if msssddi.Name != nil {
+		objectMap["name"] = msssddi.Name
+	}
+	if msssddi.TargetDatabaseName != nil {
+		objectMap["targetDatabaseName"] = msssddi.TargetDatabaseName
+	}
+	if msssddi.MakeSourceDbReadOnly != nil {
+		objectMap["makeSourceDbReadOnly"] = msssddi.MakeSourceDbReadOnly
+	}
+	if msssddi.TableMap != nil {
+		objectMap["tableMap"] = msssddi.TableMap
+	}
+	return json.Marshal(objectMap)
+}
+
+// MigrateSQLServerSQLDbTaskInput input for the task that migrates on-prem SQL Server databases to Azure SQL
+// Database
 type MigrateSQLServerSQLDbTaskInput struct {
-	// SourceConnectionInfo - Information for connecting to source
-	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
-	// TargetConnectionInfo - Information for connecting to target
-	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
 	// SelectedDatabases - Databases to migrate
 	SelectedDatabases *[]MigrateSQLServerSQLDbDatabaseInput `json:"selectedDatabases,omitempty"`
 	// ValidationOptions - Options for enabling various post migration validations. Available options,
 	//  1.) Data Integrity Check: Performs a checksum based comparison on source and target tables after the migration to ensure the correctness of the data.
 	//  2.) Schema Validation: Performs a thorough schema comparison between the source and target tables and provides a list of differences between the source and target database, 3.) Query Analysis: Executes a set of queries picked up automatically either from the Query Plan Cache or Query Store and execute them and compares the execution time between the source and target database.
 	ValidationOptions *MigrationValidationOptions `json:"validationOptions,omitempty"`
+	// SourceConnectionInfo - Information for connecting to source
+	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
+	// TargetConnectionInfo - Information for connecting to target
+	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
 }
 
 // BasicMigrateSQLServerSQLDbTaskOutput output for the task that migrates on-prem SQL Server databases to Azure SQL
@@ -1345,12 +1479,13 @@ type BasicMigrateSQLServerSQLDbTaskOutput interface {
 	AsMigrateSQLServerSQLDbTaskOutput() (*MigrateSQLServerSQLDbTaskOutput, bool)
 }
 
-// MigrateSQLServerSQLDbTaskOutput output for the task that migrates on-prem SQL Server databases to Azure SQL Database
+// MigrateSQLServerSQLDbTaskOutput output for the task that migrates on-prem SQL Server databases to Azure SQL
+// Database
 type MigrateSQLServerSQLDbTaskOutput struct {
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
 	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
 	ResultType ResultType `json:"resultType,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
 }
 
 func unmarshalBasicMigrateSQLServerSQLDbTaskOutput(body []byte) (BasicMigrateSQLServerSQLDbTaskOutput, error) {
@@ -1405,12 +1540,12 @@ func unmarshalBasicMigrateSQLServerSQLDbTaskOutputArray(body []byte) ([]BasicMig
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutput.
 func (msssdto MigrateSQLServerSQLDbTaskOutput) MarshalJSON() ([]byte, error) {
 	msssdto.ResultType = ResultTypeMigrateSQLServerSQLDbTaskOutput
-	type Alias MigrateSQLServerSQLDbTaskOutput
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(msssdto),
-	})
+	objectMap := make(map[string]interface{})
+	objectMap["resultType"] = msssdto.ResultType
+	if msssdto.ID != nil {
+		objectMap["id"] = msssdto.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
@@ -1475,10 +1610,6 @@ func (msssdto MigrateSQLServerSQLDbTaskOutput) AsBasicConnectToSourceSQLServerTa
 
 // MigrateSQLServerSQLDbTaskOutputDatabaseLevel ...
 type MigrateSQLServerSQLDbTaskOutputDatabaseLevel struct {
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// DatabaseName - Name of the item
 	DatabaseName *string `json:"databaseName,omitempty"`
 	// StartedOn - Migration start time
@@ -1506,18 +1637,60 @@ type MigrateSQLServerSQLDbTaskOutputDatabaseLevel struct {
 	// ExceptionsAndWarnings - Migration exceptions and warnings.
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
 	// ObjectSummary - Summary of object results in the migration
-	ObjectSummary *map[string]*DataItemMigrationSummaryResult `json:"objectSummary,omitempty"`
+	ObjectSummary map[string]*DataItemMigrationSummaryResult `json:"objectSummary"`
+	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
 func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) MarshalJSON() ([]byte, error) {
 	msssdtodl.ResultType = ResultTypeDatabaseLevelOutput
-	type Alias MigrateSQLServerSQLDbTaskOutputDatabaseLevel
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(msssdtodl),
-	})
+	objectMap := make(map[string]interface{})
+	if msssdtodl.DatabaseName != nil {
+		objectMap["databaseName"] = msssdtodl.DatabaseName
+	}
+	if msssdtodl.StartedOn != nil {
+		objectMap["startedOn"] = msssdtodl.StartedOn
+	}
+	if msssdtodl.EndedOn != nil {
+		objectMap["endedOn"] = msssdtodl.EndedOn
+	}
+	objectMap["state"] = msssdtodl.State
+	objectMap["stage"] = msssdtodl.Stage
+	if msssdtodl.StatusMessage != nil {
+		objectMap["statusMessage"] = msssdtodl.StatusMessage
+	}
+	if msssdtodl.Message != nil {
+		objectMap["message"] = msssdtodl.Message
+	}
+	if msssdtodl.NumberOfObjects != nil {
+		objectMap["numberOfObjects"] = msssdtodl.NumberOfObjects
+	}
+	if msssdtodl.NumberOfObjectsCompleted != nil {
+		objectMap["numberOfObjectsCompleted"] = msssdtodl.NumberOfObjectsCompleted
+	}
+	if msssdtodl.ErrorCount != nil {
+		objectMap["errorCount"] = msssdtodl.ErrorCount
+	}
+	if msssdtodl.ErrorPrefix != nil {
+		objectMap["errorPrefix"] = msssdtodl.ErrorPrefix
+	}
+	if msssdtodl.ResultPrefix != nil {
+		objectMap["resultPrefix"] = msssdtodl.ResultPrefix
+	}
+	if msssdtodl.ExceptionsAndWarnings != nil {
+		objectMap["exceptionsAndWarnings"] = msssdtodl.ExceptionsAndWarnings
+	}
+	if msssdtodl.ObjectSummary != nil {
+		objectMap["objectSummary"] = msssdtodl.ObjectSummary
+	}
+	objectMap["resultType"] = msssdtodl.ResultType
+	if msssdtodl.ID != nil {
+		objectMap["id"] = msssdtodl.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
@@ -1582,23 +1755,26 @@ func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsBasicConnectToSo
 
 // MigrateSQLServerSQLDbTaskOutputError ...
 type MigrateSQLServerSQLDbTaskOutputError struct {
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// Error - Migration error
 	Error *ReportableException `json:"error,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputError.
 func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) MarshalJSON() ([]byte, error) {
 	msssdtoe.ResultType = ResultTypeErrorOutput
-	type Alias MigrateSQLServerSQLDbTaskOutputError
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(msssdtoe),
-	})
+	objectMap := make(map[string]interface{})
+	if msssdtoe.Error != nil {
+		objectMap["error"] = msssdtoe.Error
+	}
+	objectMap["resultType"] = msssdtoe.ResultType
+	if msssdtoe.ID != nil {
+		objectMap["id"] = msssdtoe.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
@@ -1663,10 +1839,6 @@ func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsBasicConnectToSourceSQLSe
 
 // MigrateSQLServerSQLDbTaskOutputMigrationLevel ...
 type MigrateSQLServerSQLDbTaskOutputMigrationLevel struct {
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// StartedOn - Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
 	// EndedOn - Migration end time
@@ -1680,9 +1852,9 @@ type MigrateSQLServerSQLDbTaskOutputMigrationLevel struct {
 	// Message - Migration progress message
 	Message *string `json:"message,omitempty"`
 	// Databases - Selected databases as a map from database name to database id
-	Databases *map[string]*string `json:"databases,omitempty"`
+	Databases map[string]*string `json:"databases"`
 	// DatabaseSummary - Summary of database results in the migration
-	DatabaseSummary *map[string]*DatabaseSummaryResult `json:"databaseSummary,omitempty"`
+	DatabaseSummary map[string]*DatabaseSummaryResult `json:"databaseSummary"`
 	// MigrationReportResult - Migration Report Result, provides unique url for downloading your migration report.
 	MigrationReportResult *MigrationReportResult `json:"migrationReportResult,omitempty"`
 	// SourceServerVersion - Source server version
@@ -1695,17 +1867,61 @@ type MigrateSQLServerSQLDbTaskOutputMigrationLevel struct {
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
 	// ExceptionsAndWarnings - Migration exceptions and warnings.
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
 func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) MarshalJSON() ([]byte, error) {
 	msssdtoml.ResultType = ResultTypeMigrationLevelOutput
-	type Alias MigrateSQLServerSQLDbTaskOutputMigrationLevel
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(msssdtoml),
-	})
+	objectMap := make(map[string]interface{})
+	if msssdtoml.StartedOn != nil {
+		objectMap["startedOn"] = msssdtoml.StartedOn
+	}
+	if msssdtoml.EndedOn != nil {
+		objectMap["endedOn"] = msssdtoml.EndedOn
+	}
+	if msssdtoml.DurationInSeconds != nil {
+		objectMap["durationInSeconds"] = msssdtoml.DurationInSeconds
+	}
+	objectMap["status"] = msssdtoml.Status
+	if msssdtoml.StatusMessage != nil {
+		objectMap["statusMessage"] = msssdtoml.StatusMessage
+	}
+	if msssdtoml.Message != nil {
+		objectMap["message"] = msssdtoml.Message
+	}
+	if msssdtoml.Databases != nil {
+		objectMap["databases"] = msssdtoml.Databases
+	}
+	if msssdtoml.DatabaseSummary != nil {
+		objectMap["databaseSummary"] = msssdtoml.DatabaseSummary
+	}
+	if msssdtoml.MigrationReportResult != nil {
+		objectMap["migrationReportResult"] = msssdtoml.MigrationReportResult
+	}
+	if msssdtoml.SourceServerVersion != nil {
+		objectMap["sourceServerVersion"] = msssdtoml.SourceServerVersion
+	}
+	if msssdtoml.SourceServerBrandVersion != nil {
+		objectMap["sourceServerBrandVersion"] = msssdtoml.SourceServerBrandVersion
+	}
+	if msssdtoml.TargetServerVersion != nil {
+		objectMap["targetServerVersion"] = msssdtoml.TargetServerVersion
+	}
+	if msssdtoml.TargetServerBrandVersion != nil {
+		objectMap["targetServerBrandVersion"] = msssdtoml.TargetServerBrandVersion
+	}
+	if msssdtoml.ExceptionsAndWarnings != nil {
+		objectMap["exceptionsAndWarnings"] = msssdtoml.ExceptionsAndWarnings
+	}
+	objectMap["resultType"] = msssdtoml.ResultType
+	if msssdtoml.ID != nil {
+		objectMap["id"] = msssdtoml.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
@@ -1770,10 +1986,6 @@ func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsBasicConnectToS
 
 // MigrateSQLServerSQLDbTaskOutputTableLevel ...
 type MigrateSQLServerSQLDbTaskOutputTableLevel struct {
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// ObjectName - Name of the item
 	ObjectName *string `json:"objectName,omitempty"`
 	// StartedOn - Migration start time
@@ -1792,17 +2004,46 @@ type MigrateSQLServerSQLDbTaskOutputTableLevel struct {
 	ErrorPrefix *string `json:"errorPrefix,omitempty"`
 	// ResultPrefix - Wildcard string prefix to use for querying all sub-tem results of the item
 	ResultPrefix *string `json:"resultPrefix,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputTableLevel.
 func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) MarshalJSON() ([]byte, error) {
 	msssdtotl.ResultType = ResultTypeTableLevelOutput
-	type Alias MigrateSQLServerSQLDbTaskOutputTableLevel
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(msssdtotl),
-	})
+	objectMap := make(map[string]interface{})
+	if msssdtotl.ObjectName != nil {
+		objectMap["objectName"] = msssdtotl.ObjectName
+	}
+	if msssdtotl.StartedOn != nil {
+		objectMap["startedOn"] = msssdtotl.StartedOn
+	}
+	if msssdtotl.EndedOn != nil {
+		objectMap["endedOn"] = msssdtotl.EndedOn
+	}
+	objectMap["state"] = msssdtotl.State
+	if msssdtotl.StatusMessage != nil {
+		objectMap["statusMessage"] = msssdtotl.StatusMessage
+	}
+	if msssdtotl.ItemsCount != nil {
+		objectMap["itemsCount"] = msssdtotl.ItemsCount
+	}
+	if msssdtotl.ItemsCompletedCount != nil {
+		objectMap["itemsCompletedCount"] = msssdtotl.ItemsCompletedCount
+	}
+	if msssdtotl.ErrorPrefix != nil {
+		objectMap["errorPrefix"] = msssdtotl.ErrorPrefix
+	}
+	if msssdtotl.ResultPrefix != nil {
+		objectMap["resultPrefix"] = msssdtotl.ResultPrefix
+	}
+	objectMap["resultType"] = msssdtotl.ResultType
+	if msssdtotl.ID != nil {
+		objectMap["id"] = msssdtotl.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
@@ -1865,30 +2106,37 @@ func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsBasicConnectToSourc
 	return nil, false
 }
 
-// MigrateSQLServerSQLDbTaskProperties properties for the task that migrates on-prem SQL Server databases to Azure SQL
-// Database
+// MigrateSQLServerSQLDbTaskProperties properties for the task that migrates on-prem SQL Server databases to Azure
+// SQL Database
 type MigrateSQLServerSQLDbTaskProperties struct {
+	// Input - Task input
+	Input *MigrateSQLServerSQLDbTaskInput `json:"input,omitempty"`
+	// Output - Task output. This is ignored if submitted.
+	Output *[]BasicMigrateSQLServerSQLDbTaskOutput `json:"output,omitempty"`
 	// Errors - Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
 	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToSourceSQLServer'
 	TaskType TaskType `json:"taskType,omitempty"`
-	// Input - Task input
-	Input *MigrateSQLServerSQLDbTaskInput `json:"input,omitempty"`
-	// Output - Task output. This is ignored if submitted.
-	Output *[]BasicMigrateSQLServerSQLDbTaskOutput `json:"output,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskProperties.
 func (msssdtp MigrateSQLServerSQLDbTaskProperties) MarshalJSON() ([]byte, error) {
 	msssdtp.TaskType = TaskTypeMigrateSQLServerSQLDb
-	type Alias MigrateSQLServerSQLDbTaskProperties
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(msssdtp),
-	})
+	objectMap := make(map[string]interface{})
+	if msssdtp.Input != nil {
+		objectMap["input"] = msssdtp.Input
+	}
+	if msssdtp.Output != nil {
+		objectMap["output"] = msssdtp.Output
+	}
+	if msssdtp.Errors != nil {
+		objectMap["errors"] = msssdtp.Errors
+	}
+	objectMap["state"] = msssdtp.State
+	objectMap["taskType"] = msssdtp.TaskType
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for MigrateSQLServerSQLDbTaskProperties.
@@ -1928,55 +2176,53 @@ func (msssdtp *MigrateSQLServerSQLDbTaskProperties) UnmarshalJSON(body []byte) e
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["input"]
-	if v != nil {
-		var input MigrateSQLServerSQLDbTaskInput
-		err = json.Unmarshal(*m["input"], &input)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "input":
+			if v != nil {
+				var input MigrateSQLServerSQLDbTaskInput
+				err = json.Unmarshal(*v, &input)
+				if err != nil {
+					return err
+				}
+				msssdtp.Input = &input
+			}
+		case "output":
+			if v != nil {
+				output, err := unmarshalBasicMigrateSQLServerSQLDbTaskOutputArray(*v)
+				if err != nil {
+					return err
+				}
+				msssdtp.Output = &output
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []ODataError
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				msssdtp.Errors = &errorsVar
+			}
+		case "state":
+			if v != nil {
+				var state TaskState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				msssdtp.State = state
+			}
+		case "taskType":
+			if v != nil {
+				var taskType TaskType
+				err = json.Unmarshal(*v, &taskType)
+				if err != nil {
+					return err
+				}
+				msssdtp.TaskType = taskType
+			}
 		}
-		msssdtp.Input = &input
-	}
-
-	v = m["output"]
-	if v != nil {
-		output, err := unmarshalBasicMigrateSQLServerSQLDbTaskOutputArray(*m["output"])
-		if err != nil {
-			return err
-		}
-		msssdtp.Output = &output
-	}
-
-	v = m["errors"]
-	if v != nil {
-		var errorsVar []ODataError
-		err = json.Unmarshal(*m["errors"], &errorsVar)
-		if err != nil {
-			return err
-		}
-		msssdtp.Errors = &errorsVar
-	}
-
-	v = m["state"]
-	if v != nil {
-		var state TaskState
-		err = json.Unmarshal(*m["state"], &state)
-		if err != nil {
-			return err
-		}
-		msssdtp.State = state
-	}
-
-	v = m["taskType"]
-	if v != nil {
-		var taskType TaskType
-		err = json.Unmarshal(*m["taskType"], &taskType)
-		if err != nil {
-			return err
-		}
-		msssdtp.TaskType = taskType
 	}
 
 	return nil
@@ -2057,9 +2303,25 @@ type MigrationValidationResult struct {
 	// MigrationID - Migration Identifier
 	MigrationID *string `json:"migrationId,omitempty"`
 	// SummaryResults - Validation summary results for each database
-	SummaryResults *map[string]*MigrationValidationDatabaseSummaryResult `json:"summaryResults,omitempty"`
+	SummaryResults map[string]*MigrationValidationDatabaseSummaryResult `json:"summaryResults"`
 	// Status - Current status of validation at the migration level. Status from the database validation result status will be aggregated here. Possible values include: 'ValidationStatusDefault', 'ValidationStatusNotStarted', 'ValidationStatusInitialized', 'ValidationStatusInProgress', 'ValidationStatusCompleted', 'ValidationStatusCompletedWithIssues', 'ValidationStatusFailed', 'ValidationStatusStopped'
 	Status ValidationStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrationValidationResult.
+func (mvr MigrationValidationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mvr.ID != nil {
+		objectMap["id"] = mvr.ID
+	}
+	if mvr.MigrationID != nil {
+		objectMap["migrationId"] = mvr.MigrationID
+	}
+	if mvr.SummaryResults != nil {
+		objectMap["summaryResults"] = mvr.SummaryResults
+	}
+	objectMap["status"] = mvr.Status
+	return json.Marshal(objectMap)
 }
 
 // NameAvailabilityRequest a resource type and proposed name
@@ -2094,18 +2356,42 @@ type ODataError struct {
 // Project a project resource
 type Project struct {
 	autorest.Response `json:"-"`
+	// ProjectProperties - Project properties
+	*ProjectProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// ProjectProperties - Project properties
-	*ProjectProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Project.
+func (p Project) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.ProjectProperties != nil {
+		objectMap["properties"] = p.ProjectProperties
+	}
+	if p.Tags != nil {
+		objectMap["tags"] = p.Tags
+	}
+	if p.Location != nil {
+		objectMap["location"] = p.Location
+	}
+	if p.ID != nil {
+		objectMap["id"] = p.ID
+	}
+	if p.Name != nil {
+		objectMap["name"] = p.Name
+	}
+	if p.Type != nil {
+		objectMap["type"] = p.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Project struct.
@@ -2115,66 +2401,63 @@ func (p *Project) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties ProjectProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var projectProperties ProjectProperties
+				err = json.Unmarshal(*v, &projectProperties)
+				if err != nil {
+					return err
+				}
+				p.ProjectProperties = &projectProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				p.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				p.Location = &location
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				p.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				p.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				p.Type = &typeVar
+			}
 		}
-		p.ProjectProperties = &properties
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		p.Tags = &tags
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		p.Location = &location
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		p.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		p.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		p.Type = &typeVar
 	}
 
 	return nil
@@ -2327,74 +2610,70 @@ func (pp *ProjectProperties) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["sourcePlatform"]
-	if v != nil {
-		var sourcePlatform ProjectSourcePlatform
-		err = json.Unmarshal(*m["sourcePlatform"], &sourcePlatform)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "sourcePlatform":
+			if v != nil {
+				var sourcePlatform ProjectSourcePlatform
+				err = json.Unmarshal(*v, &sourcePlatform)
+				if err != nil {
+					return err
+				}
+				pp.SourcePlatform = sourcePlatform
+			}
+		case "targetPlatform":
+			if v != nil {
+				var targetPlatform ProjectTargetPlatform
+				err = json.Unmarshal(*v, &targetPlatform)
+				if err != nil {
+					return err
+				}
+				pp.TargetPlatform = targetPlatform
+			}
+		case "creationTime":
+			if v != nil {
+				var creationTime date.Time
+				err = json.Unmarshal(*v, &creationTime)
+				if err != nil {
+					return err
+				}
+				pp.CreationTime = &creationTime
+			}
+		case "sourceConnectionInfo":
+			if v != nil {
+				sourceConnectionInfo, err := unmarshalBasicConnectionInfo(*v)
+				if err != nil {
+					return err
+				}
+				pp.SourceConnectionInfo = sourceConnectionInfo
+			}
+		case "targetConnectionInfo":
+			if v != nil {
+				targetConnectionInfo, err := unmarshalBasicConnectionInfo(*v)
+				if err != nil {
+					return err
+				}
+				pp.TargetConnectionInfo = targetConnectionInfo
+			}
+		case "databasesInfo":
+			if v != nil {
+				var databasesInfo []DatabaseInfo
+				err = json.Unmarshal(*v, &databasesInfo)
+				if err != nil {
+					return err
+				}
+				pp.DatabasesInfo = &databasesInfo
+			}
+		case "provisioningState":
+			if v != nil {
+				var provisioningState ProjectProvisioningState
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				pp.ProvisioningState = provisioningState
+			}
 		}
-		pp.SourcePlatform = sourcePlatform
-	}
-
-	v = m["targetPlatform"]
-	if v != nil {
-		var targetPlatform ProjectTargetPlatform
-		err = json.Unmarshal(*m["targetPlatform"], &targetPlatform)
-		if err != nil {
-			return err
-		}
-		pp.TargetPlatform = targetPlatform
-	}
-
-	v = m["creationTime"]
-	if v != nil {
-		var creationTime date.Time
-		err = json.Unmarshal(*m["creationTime"], &creationTime)
-		if err != nil {
-			return err
-		}
-		pp.CreationTime = &creationTime
-	}
-
-	v = m["sourceConnectionInfo"]
-	if v != nil {
-		sourceConnectionInfo, err := unmarshalBasicConnectionInfo(*m["sourceConnectionInfo"])
-		if err != nil {
-			return err
-		}
-		pp.SourceConnectionInfo = sourceConnectionInfo
-	}
-
-	v = m["targetConnectionInfo"]
-	if v != nil {
-		targetConnectionInfo, err := unmarshalBasicConnectionInfo(*m["targetConnectionInfo"])
-		if err != nil {
-			return err
-		}
-		pp.TargetConnectionInfo = targetConnectionInfo
-	}
-
-	v = m["databasesInfo"]
-	if v != nil {
-		var databasesInfo []DatabaseInfo
-		err = json.Unmarshal(*m["databasesInfo"], &databasesInfo)
-		if err != nil {
-			return err
-		}
-		pp.DatabasesInfo = &databasesInfo
-	}
-
-	v = m["provisioningState"]
-	if v != nil {
-		var provisioningState ProjectProvisioningState
-		err = json.Unmarshal(*m["provisioningState"], &provisioningState)
-		if err != nil {
-			return err
-		}
-		pp.ProvisioningState = provisioningState
 	}
 
 	return nil
@@ -2403,16 +2682,16 @@ func (pp *ProjectProperties) UnmarshalJSON(body []byte) error {
 // ProjectTask a task resource
 type ProjectTask struct {
 	autorest.Response `json:"-"`
+	// Etag - HTTP strong entity tag value. This is ignored if submitted.
+	Etag *string `json:"etag,omitempty"`
+	// Properties - Custom task properties
+	Properties BasicProjectTaskProperties `json:"properties,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
-	// Etag - HTTP strong entity tag value. This is ignored if submitted.
-	Etag *string `json:"etag,omitempty"`
-	// Properties - Custom task properties
-	Properties BasicProjectTaskProperties `json:"properties,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for ProjectTask struct.
@@ -2422,55 +2701,53 @@ func (pt *ProjectTask) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["etag"]
-	if v != nil {
-		var etag string
-		err = json.Unmarshal(*m["etag"], &etag)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				pt.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				properties, err := unmarshalBasicProjectTaskProperties(*v)
+				if err != nil {
+					return err
+				}
+				pt.Properties = properties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pt.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pt.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pt.Type = &typeVar
+			}
 		}
-		pt.Etag = &etag
-	}
-
-	v = m["properties"]
-	if v != nil {
-		properties, err := unmarshalBasicProjectTaskProperties(*m["properties"])
-		if err != nil {
-			return err
-		}
-		pt.Properties = properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		pt.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		pt.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		pt.Type = &typeVar
 	}
 
 	return nil
@@ -2486,8 +2763,8 @@ type BasicProjectTaskProperties interface {
 	AsProjectTaskProperties() (*ProjectTaskProperties, bool)
 }
 
-// ProjectTaskProperties base class for all types of DMS task properties. If task is not supported by current client,
-// this object is returned.
+// ProjectTaskProperties base class for all types of DMS task properties. If task is not supported by current
+// client, this object is returned.
 type ProjectTaskProperties struct {
 	// Errors - Array of errors. This is ignored if submitted.
 	Errors *[]ODataError `json:"errors,omitempty"`
@@ -2549,12 +2826,13 @@ func unmarshalBasicProjectTaskPropertiesArray(body []byte) ([]BasicProjectTaskPr
 // MarshalJSON is the custom marshaler for ProjectTaskProperties.
 func (ptp ProjectTaskProperties) MarshalJSON() ([]byte, error) {
 	ptp.TaskType = TaskTypeUnknown
-	type Alias ProjectTaskProperties
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(ptp),
-	})
+	objectMap := make(map[string]interface{})
+	if ptp.Errors != nil {
+		objectMap["errors"] = ptp.Errors
+	}
+	objectMap["state"] = ptp.State
+	objectMap["taskType"] = ptp.TaskType
+	return json.Marshal(objectMap)
 }
 
 // AsMigrateSQLServerSQLDbTaskProperties is the BasicProjectTaskProperties implementation for ProjectTaskProperties.
@@ -2932,9 +3210,27 @@ type SchemaComparisonValidationResult struct {
 	// ValidationErrors - List of errors that happened while performing schema compare validation
 	ValidationErrors *ValidationError `json:"validationErrors,omitempty"`
 	// SourceDatabaseObjectCount - Count of source database objects
-	SourceDatabaseObjectCount *map[string]*int64 `json:"sourceDatabaseObjectCount,omitempty"`
+	SourceDatabaseObjectCount map[string]*int64 `json:"sourceDatabaseObjectCount"`
 	// TargetDatabaseObjectCount - Count of target database objects
-	TargetDatabaseObjectCount *map[string]*int64 `json:"targetDatabaseObjectCount,omitempty"`
+	TargetDatabaseObjectCount map[string]*int64 `json:"targetDatabaseObjectCount"`
+}
+
+// MarshalJSON is the custom marshaler for SchemaComparisonValidationResult.
+func (scvr SchemaComparisonValidationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scvr.SchemaDifferences != nil {
+		objectMap["schemaDifferences"] = scvr.SchemaDifferences
+	}
+	if scvr.ValidationErrors != nil {
+		objectMap["validationErrors"] = scvr.ValidationErrors
+	}
+	if scvr.SourceDatabaseObjectCount != nil {
+		objectMap["sourceDatabaseObjectCount"] = scvr.SourceDatabaseObjectCount
+	}
+	if scvr.TargetDatabaseObjectCount != nil {
+		objectMap["targetDatabaseObjectCount"] = scvr.TargetDatabaseObjectCount
+	}
+	return json.Marshal(objectMap)
 }
 
 // SchemaComparisonValidationResultType description about the errors happen while performing migration validation
@@ -2950,16 +3246,6 @@ type SchemaComparisonValidationResultType struct {
 // Service a Data Migration Service resource
 type Service struct {
 	autorest.Response `json:"-"`
-	// ID - Resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
 	// Etag - HTTP strong entity tag value. Ignored if submitted
 	Etag *string `json:"etag,omitempty"`
 	// Kind - The resource kind. Only 'vm' (the default) is supported.
@@ -2968,6 +3254,49 @@ type Service struct {
 	*ServiceProperties `json:"properties,omitempty"`
 	// Sku - Service SKU
 	Sku *ServiceSku `json:"sku,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Service.
+func (s Service) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.Etag != nil {
+		objectMap["etag"] = s.Etag
+	}
+	if s.Kind != nil {
+		objectMap["kind"] = s.Kind
+	}
+	if s.ServiceProperties != nil {
+		objectMap["properties"] = s.ServiceProperties
+	}
+	if s.Sku != nil {
+		objectMap["sku"] = s.Sku
+	}
+	if s.Tags != nil {
+		objectMap["tags"] = s.Tags
+	}
+	if s.Location != nil {
+		objectMap["location"] = s.Location
+	}
+	if s.ID != nil {
+		objectMap["id"] = s.ID
+	}
+	if s.Name != nil {
+		objectMap["name"] = s.Name
+	}
+	if s.Type != nil {
+		objectMap["type"] = s.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Service struct.
@@ -2977,96 +3306,90 @@ func (s *Service) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["etag"]
-	if v != nil {
-		var etag string
-		err = json.Unmarshal(*m["etag"], &etag)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				s.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				s.Kind = &kind
+			}
+		case "properties":
+			if v != nil {
+				var serviceProperties ServiceProperties
+				err = json.Unmarshal(*v, &serviceProperties)
+				if err != nil {
+					return err
+				}
+				s.ServiceProperties = &serviceProperties
+			}
+		case "sku":
+			if v != nil {
+				var sku ServiceSku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				s.Sku = &sku
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				s.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				s.Location = &location
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				s.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				s.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				s.Type = &typeVar
+			}
 		}
-		s.Etag = &etag
-	}
-
-	v = m["kind"]
-	if v != nil {
-		var kind string
-		err = json.Unmarshal(*m["kind"], &kind)
-		if err != nil {
-			return err
-		}
-		s.Kind = &kind
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ServiceProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		s.ServiceProperties = &properties
-	}
-
-	v = m["sku"]
-	if v != nil {
-		var sku ServiceSku
-		err = json.Unmarshal(*m["sku"], &sku)
-		if err != nil {
-			return err
-		}
-		s.Sku = &sku
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		s.Tags = &tags
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		s.Location = &location
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		s.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		s.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		s.Type = &typeVar
 	}
 
 	return nil
@@ -3306,7 +3629,8 @@ type ServiceProperties struct {
 	VirtualSubnetID *string `json:"virtualSubnetId,omitempty"`
 }
 
-// ServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServicesCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
@@ -3318,22 +3642,39 @@ func (future ServicesCreateOrUpdateFuture) Result(client ServicesClient) (s Serv
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return s, autorest.NewError("datamigration.ServicesCreateOrUpdateFuture", "Result", "asynchronous operation has not completed")
+		return s, azure.NewAsyncOpIncompleteError("datamigration.ServicesCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		s, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datamigration.ServicesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	s, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -3349,22 +3690,39 @@ func (future ServicesDeleteFuture) Result(client ServicesClient) (ar autorest.Re
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("datamigration.ServicesDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("datamigration.ServicesDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datamigration.ServicesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -3496,22 +3854,39 @@ func (future ServicesStartFuture) Result(client ServicesClient) (ar autorest.Res
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesStartFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("datamigration.ServicesStartFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("datamigration.ServicesStartFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.StartResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datamigration.ServicesStartFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesStartFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.StartResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesStartFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -3527,22 +3902,39 @@ func (future ServicesStopFuture) Result(client ServicesClient) (ar autorest.Resp
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesStopFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("datamigration.ServicesStopFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("datamigration.ServicesStopFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.StopResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datamigration.ServicesStopFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesStopFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.StopResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesStopFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -3571,33 +3963,44 @@ func (future ServicesUpdateFuture) Result(client ServicesClient) (s Service, err
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return s, autorest.NewError("datamigration.ServicesUpdateFuture", "Result", "asynchronous operation has not completed")
+		return s, azure.NewAsyncOpIncompleteError("datamigration.ServicesUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		s, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datamigration.ServicesUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	s, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesUpdateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
 // SQLConnectionInfo information for connecting to SQL database server
 type SQLConnectionInfo struct {
-	// UserName - User name
-	UserName *string `json:"userName,omitempty"`
-	// Password - Password credential.
-	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeSQLConnectionInfo'
-	Type Type `json:"type,omitempty"`
 	// DataSource - Data source in the format Protocol:MachineName\SQLServerInstanceName,PortNumber
 	DataSource *string `json:"dataSource,omitempty"`
 	// Authentication - Authentication type to use for connection. Possible values include: 'None', 'WindowsAuthentication', 'SQLAuthentication', 'ActiveDirectoryIntegrated', 'ActiveDirectoryPassword'
@@ -3608,17 +4011,39 @@ type SQLConnectionInfo struct {
 	AdditionalSettings *string `json:"additionalSettings,omitempty"`
 	// TrustServerCertificate - Whether to trust the server certificate
 	TrustServerCertificate *bool `json:"trustServerCertificate,omitempty"`
+	// UserName - User name
+	UserName *string `json:"userName,omitempty"`
+	// Password - Password credential.
+	Password *string `json:"password,omitempty"`
+	// Type - Possible values include: 'TypeUnknown', 'TypeSQLConnectionInfo'
+	Type Type `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SQLConnectionInfo.
 func (sci SQLConnectionInfo) MarshalJSON() ([]byte, error) {
 	sci.Type = TypeSQLConnectionInfo
-	type Alias SQLConnectionInfo
-	return json.Marshal(&struct {
-		Alias
-	}{
-		Alias: (Alias)(sci),
-	})
+	objectMap := make(map[string]interface{})
+	if sci.DataSource != nil {
+		objectMap["dataSource"] = sci.DataSource
+	}
+	objectMap["authentication"] = sci.Authentication
+	if sci.EncryptConnection != nil {
+		objectMap["encryptConnection"] = sci.EncryptConnection
+	}
+	if sci.AdditionalSettings != nil {
+		objectMap["additionalSettings"] = sci.AdditionalSettings
+	}
+	if sci.TrustServerCertificate != nil {
+		objectMap["trustServerCertificate"] = sci.TrustServerCertificate
+	}
+	if sci.UserName != nil {
+		objectMap["userName"] = sci.UserName
+	}
+	if sci.Password != nil {
+		objectMap["password"] = sci.Password
+	}
+	objectMap["type"] = sci.Type
+	return json.Marshal(objectMap)
 }
 
 // AsSQLConnectionInfo is the BasicConnectionInfo implementation for SQLConnectionInfo.
@@ -3754,16 +4179,37 @@ type TaskOutput struct {
 
 // TrackedResource ARM tracked top level resource.
 type TrackedResource struct {
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TrackedResource.
+func (tr TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
+	if tr.ID != nil {
+		objectMap["id"] = tr.ID
+	}
+	if tr.Name != nil {
+		objectMap["name"] = tr.Name
+	}
+	if tr.Type != nil {
+		objectMap["type"] = tr.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // ValidationError description about the errors happen while performing migration validation

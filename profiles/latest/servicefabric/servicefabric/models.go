@@ -19,61 +19,7 @@
 
 package servicefabric
 
-import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/1.0.0/servicefabric"
-
-type ApplicationHealthsClient = original.ApplicationHealthsClient
-
-func NewApplicationHealthsClient(timeout *int32) ApplicationHealthsClient {
-	return original.NewApplicationHealthsClient(timeout)
-}
-func NewApplicationHealthsClientWithBaseURI(baseURI string, timeout *int32) ApplicationHealthsClient {
-	return original.NewApplicationHealthsClientWithBaseURI(baseURI, timeout)
-}
-
-type ApplicationManifestsClient = original.ApplicationManifestsClient
-
-func NewApplicationManifestsClient(timeout *int32) ApplicationManifestsClient {
-	return original.NewApplicationManifestsClient(timeout)
-}
-func NewApplicationManifestsClientWithBaseURI(baseURI string, timeout *int32) ApplicationManifestsClient {
-	return original.NewApplicationManifestsClientWithBaseURI(baseURI, timeout)
-}
-
-type ApplicationsClient = original.ApplicationsClient
-
-func NewApplicationsClient(timeout *int32) ApplicationsClient {
-	return original.NewApplicationsClient(timeout)
-}
-func NewApplicationsClientWithBaseURI(baseURI string, timeout *int32) ApplicationsClient {
-	return original.NewApplicationsClientWithBaseURI(baseURI, timeout)
-}
-
-type ApplicationTypesClient = original.ApplicationTypesClient
-
-func NewApplicationTypesClient(timeout *int32) ApplicationTypesClient {
-	return original.NewApplicationTypesClient(timeout)
-}
-func NewApplicationTypesClientWithBaseURI(baseURI string, timeout *int32) ApplicationTypesClient {
-	return original.NewApplicationTypesClientWithBaseURI(baseURI, timeout)
-}
-
-type ApplicationUpgradeRollbacksClient = original.ApplicationUpgradeRollbacksClient
-
-func NewApplicationUpgradeRollbacksClient(timeout *int32) ApplicationUpgradeRollbacksClient {
-	return original.NewApplicationUpgradeRollbacksClient(timeout)
-}
-func NewApplicationUpgradeRollbacksClientWithBaseURI(baseURI string, timeout *int32) ApplicationUpgradeRollbacksClient {
-	return original.NewApplicationUpgradeRollbacksClientWithBaseURI(baseURI, timeout)
-}
-
-type ApplicationUpgradesClient = original.ApplicationUpgradesClient
-
-func NewApplicationUpgradesClient(timeout *int32) ApplicationUpgradesClient {
-	return original.NewApplicationUpgradesClient(timeout)
-}
-func NewApplicationUpgradesClientWithBaseURI(baseURI string, timeout *int32) ApplicationUpgradesClient {
-	return original.NewApplicationUpgradesClientWithBaseURI(baseURI, timeout)
-}
+import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/6.1/servicefabric"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -81,288 +27,174 @@ const (
 
 type BaseClient = original.BaseClient
 
-func New(timeout *int32) BaseClient {
-	return original.New(timeout)
+func New() BaseClient {
+	return original.New()
 }
-func NewWithBaseURI(baseURI string, timeout *int32) BaseClient {
-	return original.NewWithBaseURI(baseURI, timeout)
-}
-
-type ClusterHealthsClient = original.ClusterHealthsClient
-
-func NewClusterHealthsClient(timeout *int32) ClusterHealthsClient {
-	return original.NewClusterHealthsClient(timeout)
-}
-func NewClusterHealthsClientWithBaseURI(baseURI string, timeout *int32) ClusterHealthsClient {
-	return original.NewClusterHealthsClientWithBaseURI(baseURI, timeout)
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }
 
-type ClusterLoadInformationsClient = original.ClusterLoadInformationsClient
-
-func NewClusterLoadInformationsClient(timeout *int32) ClusterLoadInformationsClient {
-	return original.NewClusterLoadInformationsClient(timeout)
-}
-func NewClusterLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) ClusterLoadInformationsClient {
-	return original.NewClusterLoadInformationsClientWithBaseURI(baseURI, timeout)
-}
-
-type ClusterManifestsClient = original.ClusterManifestsClient
-
-func NewClusterManifestsClient(timeout *int32) ClusterManifestsClient {
-	return original.NewClusterManifestsClient(timeout)
-}
-func NewClusterManifestsClientWithBaseURI(baseURI string, timeout *int32) ClusterManifestsClient {
-	return original.NewClusterManifestsClientWithBaseURI(baseURI, timeout)
-}
-
-type ClusterPackagesClient = original.ClusterPackagesClient
-
-func NewClusterPackagesClient(timeout *int32) ClusterPackagesClient {
-	return original.NewClusterPackagesClient(timeout)
-}
-func NewClusterPackagesClientWithBaseURI(baseURI string, timeout *int32) ClusterPackagesClient {
-	return original.NewClusterPackagesClientWithBaseURI(baseURI, timeout)
-}
-
-type ClusterUpgradesClient = original.ClusterUpgradesClient
-
-func NewClusterUpgradesClient(timeout *int32) ClusterUpgradesClient {
-	return original.NewClusterUpgradesClient(timeout)
-}
-func NewClusterUpgradesClientWithBaseURI(baseURI string, timeout *int32) ClusterUpgradesClient {
-	return original.NewClusterUpgradesClientWithBaseURI(baseURI, timeout)
-}
-
-type DeployedApplicationHealthsClient = original.DeployedApplicationHealthsClient
-
-func NewDeployedApplicationHealthsClient(timeout *int32) DeployedApplicationHealthsClient {
-	return original.NewDeployedApplicationHealthsClient(timeout)
-}
-func NewDeployedApplicationHealthsClientWithBaseURI(baseURI string, timeout *int32) DeployedApplicationHealthsClient {
-	return original.NewDeployedApplicationHealthsClientWithBaseURI(baseURI, timeout)
-}
-
-type DeployedApplicationsClient = original.DeployedApplicationsClient
-
-func NewDeployedApplicationsClient(timeout *int32) DeployedApplicationsClient {
-	return original.NewDeployedApplicationsClient(timeout)
-}
-func NewDeployedApplicationsClientWithBaseURI(baseURI string, timeout *int32) DeployedApplicationsClient {
-	return original.NewDeployedApplicationsClientWithBaseURI(baseURI, timeout)
-}
-
-type DeployedCodePackagesClient = original.DeployedCodePackagesClient
-
-func NewDeployedCodePackagesClient(timeout *int32) DeployedCodePackagesClient {
-	return original.NewDeployedCodePackagesClient(timeout)
-}
-func NewDeployedCodePackagesClientWithBaseURI(baseURI string, timeout *int32) DeployedCodePackagesClient {
-	return original.NewDeployedCodePackagesClientWithBaseURI(baseURI, timeout)
-}
-
-type DeployedReplicaDetailsClient = original.DeployedReplicaDetailsClient
-
-func NewDeployedReplicaDetailsClient(timeout *int32) DeployedReplicaDetailsClient {
-	return original.NewDeployedReplicaDetailsClient(timeout)
-}
-func NewDeployedReplicaDetailsClientWithBaseURI(baseURI string, timeout *int32) DeployedReplicaDetailsClient {
-	return original.NewDeployedReplicaDetailsClientWithBaseURI(baseURI, timeout)
-}
-
-type DeployedReplicasClient = original.DeployedReplicasClient
-
-func NewDeployedReplicasClient(timeout *int32) DeployedReplicasClient {
-	return original.NewDeployedReplicasClient(timeout)
-}
-func NewDeployedReplicasClientWithBaseURI(baseURI string, timeout *int32) DeployedReplicasClient {
-	return original.NewDeployedReplicasClientWithBaseURI(baseURI, timeout)
-}
-
-type DeployedServicePackageHealthsClient = original.DeployedServicePackageHealthsClient
-
-func NewDeployedServicePackageHealthsClient(timeout *int32) DeployedServicePackageHealthsClient {
-	return original.NewDeployedServicePackageHealthsClient(timeout)
-}
-func NewDeployedServicePackageHealthsClientWithBaseURI(baseURI string, timeout *int32) DeployedServicePackageHealthsClient {
-	return original.NewDeployedServicePackageHealthsClientWithBaseURI(baseURI, timeout)
-}
-
-type DeployedServicePackagesClient = original.DeployedServicePackagesClient
-
-func NewDeployedServicePackagesClient(timeout *int32) DeployedServicePackagesClient {
-	return original.NewDeployedServicePackagesClient(timeout)
-}
-func NewDeployedServicePackagesClientWithBaseURI(baseURI string, timeout *int32) DeployedServicePackagesClient {
-	return original.NewDeployedServicePackagesClientWithBaseURI(baseURI, timeout)
-}
-
-type DeployedServiceTypesClient = original.DeployedServiceTypesClient
-
-func NewDeployedServiceTypesClient(timeout *int32) DeployedServiceTypesClient {
-	return original.NewDeployedServiceTypesClient(timeout)
-}
-func NewDeployedServiceTypesClientWithBaseURI(baseURI string, timeout *int32) DeployedServiceTypesClient {
-	return original.NewDeployedServiceTypesClientWithBaseURI(baseURI, timeout)
-}
-
-type AggregatedHealthState = original.AggregatedHealthState
+type ApplicationDefinitionKind = original.ApplicationDefinitionKind
 
 const (
-	Error   AggregatedHealthState = original.Error
-	Invalid AggregatedHealthState = original.Invalid
-	Ok      AggregatedHealthState = original.Ok
-	Unknown AggregatedHealthState = original.Unknown
-	Warning AggregatedHealthState = original.Warning
+	Compose                             ApplicationDefinitionKind = original.Compose
+	Invalid                             ApplicationDefinitionKind = original.Invalid
+	ServiceFabricApplicationDescription ApplicationDefinitionKind = original.ServiceFabricApplicationDescription
 )
 
-type AggregatedHealthState1 = original.AggregatedHealthState1
+type ApplicationStatus = original.ApplicationStatus
 
 const (
-	AggregatedHealthState1Error   AggregatedHealthState1 = original.AggregatedHealthState1Error
-	AggregatedHealthState1Invalid AggregatedHealthState1 = original.AggregatedHealthState1Invalid
-	AggregatedHealthState1Ok      AggregatedHealthState1 = original.AggregatedHealthState1Ok
-	AggregatedHealthState1Unknown AggregatedHealthState1 = original.AggregatedHealthState1Unknown
-	AggregatedHealthState1Warning AggregatedHealthState1 = original.AggregatedHealthState1Warning
+	ApplicationStatusCreating  ApplicationStatus = original.ApplicationStatusCreating
+	ApplicationStatusDeleting  ApplicationStatus = original.ApplicationStatusDeleting
+	ApplicationStatusFailed    ApplicationStatus = original.ApplicationStatusFailed
+	ApplicationStatusInvalid   ApplicationStatus = original.ApplicationStatusInvalid
+	ApplicationStatusReady     ApplicationStatus = original.ApplicationStatusReady
+	ApplicationStatusUpgrading ApplicationStatus = original.ApplicationStatusUpgrading
 )
 
-type AggregatedHealthState10 = original.AggregatedHealthState10
+type ApplicationTypeDefinitionKind = original.ApplicationTypeDefinitionKind
 
 const (
-	AggregatedHealthState10Error   AggregatedHealthState10 = original.AggregatedHealthState10Error
-	AggregatedHealthState10Invalid AggregatedHealthState10 = original.AggregatedHealthState10Invalid
-	AggregatedHealthState10Ok      AggregatedHealthState10 = original.AggregatedHealthState10Ok
-	AggregatedHealthState10Unknown AggregatedHealthState10 = original.AggregatedHealthState10Unknown
-	AggregatedHealthState10Warning AggregatedHealthState10 = original.AggregatedHealthState10Warning
+	ApplicationTypeDefinitionKindCompose                         ApplicationTypeDefinitionKind = original.ApplicationTypeDefinitionKindCompose
+	ApplicationTypeDefinitionKindInvalid                         ApplicationTypeDefinitionKind = original.ApplicationTypeDefinitionKindInvalid
+	ApplicationTypeDefinitionKindServiceFabricApplicationPackage ApplicationTypeDefinitionKind = original.ApplicationTypeDefinitionKindServiceFabricApplicationPackage
 )
 
-type AggregatedHealthState11 = original.AggregatedHealthState11
+type ApplicationTypeStatus = original.ApplicationTypeStatus
 
 const (
-	AggregatedHealthState11Error   AggregatedHealthState11 = original.AggregatedHealthState11Error
-	AggregatedHealthState11Invalid AggregatedHealthState11 = original.AggregatedHealthState11Invalid
-	AggregatedHealthState11Ok      AggregatedHealthState11 = original.AggregatedHealthState11Ok
-	AggregatedHealthState11Unknown AggregatedHealthState11 = original.AggregatedHealthState11Unknown
-	AggregatedHealthState11Warning AggregatedHealthState11 = original.AggregatedHealthState11Warning
+	ApplicationTypeStatusAvailable      ApplicationTypeStatus = original.ApplicationTypeStatusAvailable
+	ApplicationTypeStatusFailed         ApplicationTypeStatus = original.ApplicationTypeStatusFailed
+	ApplicationTypeStatusInvalid        ApplicationTypeStatus = original.ApplicationTypeStatusInvalid
+	ApplicationTypeStatusProvisioning   ApplicationTypeStatus = original.ApplicationTypeStatusProvisioning
+	ApplicationTypeStatusUnprovisioning ApplicationTypeStatus = original.ApplicationTypeStatusUnprovisioning
 )
 
-type AggregatedHealthState12 = original.AggregatedHealthState12
+type ChaosEventKind = original.ChaosEventKind
 
 const (
-	AggregatedHealthState12Error   AggregatedHealthState12 = original.AggregatedHealthState12Error
-	AggregatedHealthState12Invalid AggregatedHealthState12 = original.AggregatedHealthState12Invalid
-	AggregatedHealthState12Ok      AggregatedHealthState12 = original.AggregatedHealthState12Ok
-	AggregatedHealthState12Unknown AggregatedHealthState12 = original.AggregatedHealthState12Unknown
-	AggregatedHealthState12Warning AggregatedHealthState12 = original.AggregatedHealthState12Warning
+	ChaosEventKindExecutingFaults  ChaosEventKind = original.ChaosEventKindExecutingFaults
+	ChaosEventKindInvalid          ChaosEventKind = original.ChaosEventKindInvalid
+	ChaosEventKindStarted          ChaosEventKind = original.ChaosEventKindStarted
+	ChaosEventKindStopped          ChaosEventKind = original.ChaosEventKindStopped
+	ChaosEventKindTestError        ChaosEventKind = original.ChaosEventKindTestError
+	ChaosEventKindValidationFailed ChaosEventKind = original.ChaosEventKindValidationFailed
+	ChaosEventKindWaiting          ChaosEventKind = original.ChaosEventKindWaiting
 )
 
-type AggregatedHealthState13 = original.AggregatedHealthState13
+type Code = original.Code
 
 const (
-	AggregatedHealthState13Error   AggregatedHealthState13 = original.AggregatedHealthState13Error
-	AggregatedHealthState13Invalid AggregatedHealthState13 = original.AggregatedHealthState13Invalid
-	AggregatedHealthState13Ok      AggregatedHealthState13 = original.AggregatedHealthState13Ok
-	AggregatedHealthState13Unknown AggregatedHealthState13 = original.AggregatedHealthState13Unknown
-	AggregatedHealthState13Warning AggregatedHealthState13 = original.AggregatedHealthState13Warning
+	EABORT                                    Code = original.EABORT
+	FABRICEAPPLICATIONALREADYEXISTS           Code = original.FABRICEAPPLICATIONALREADYEXISTS
+	FABRICEAPPLICATIONALREADYINTARGETVERSION  Code = original.FABRICEAPPLICATIONALREADYINTARGETVERSION
+	FABRICEAPPLICATIONNOTFOUND                Code = original.FABRICEAPPLICATIONNOTFOUND
+	FABRICEAPPLICATIONNOTUPGRADING            Code = original.FABRICEAPPLICATIONNOTUPGRADING
+	FABRICEAPPLICATIONTYPEALREADYEXISTS       Code = original.FABRICEAPPLICATIONTYPEALREADYEXISTS
+	FABRICEAPPLICATIONTYPEINUSE               Code = original.FABRICEAPPLICATIONTYPEINUSE
+	FABRICEAPPLICATIONTYPENOTFOUND            Code = original.FABRICEAPPLICATIONTYPENOTFOUND
+	FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS Code = original.FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS
+	FABRICEAPPLICATIONUPGRADEINPROGRESS       Code = original.FABRICEAPPLICATIONUPGRADEINPROGRESS
+	FABRICEAPPLICATIONUPGRADEVALIDATIONERROR  Code = original.FABRICEAPPLICATIONUPGRADEVALIDATIONERROR
+	FABRICECOMMUNICATIONERROR                 Code = original.FABRICECOMMUNICATIONERROR
+	FABRICECONFIGURATIONPARAMETERNOTFOUND     Code = original.FABRICECONFIGURATIONPARAMETERNOTFOUND
+	FABRICECONFIGURATIONSECTIONNOTFOUND       Code = original.FABRICECONFIGURATIONSECTIONNOTFOUND
+	FABRICEDIRECTORYNOTFOUND                  Code = original.FABRICEDIRECTORYNOTFOUND
+	FABRICEENUMERATIONCOMPLETED               Code = original.FABRICEENUMERATIONCOMPLETED
+	FABRICEFABRICALREADYINTARGETVERSION       Code = original.FABRICEFABRICALREADYINTARGETVERSION
+	FABRICEFABRICNOTUPGRADING                 Code = original.FABRICEFABRICNOTUPGRADING
+	FABRICEFABRICUPGRADEINPROGRESS            Code = original.FABRICEFABRICUPGRADEINPROGRESS
+	FABRICEFABRICUPGRADEVALIDATIONERROR       Code = original.FABRICEFABRICUPGRADEVALIDATIONERROR
+	FABRICEFABRICVERSIONALREADYEXISTS         Code = original.FABRICEFABRICVERSIONALREADYEXISTS
+	FABRICEFABRICVERSIONINUSE                 Code = original.FABRICEFABRICVERSIONINUSE
+	FABRICEFABRICVERSIONNOTFOUND              Code = original.FABRICEFABRICVERSIONNOTFOUND
+	FABRICEFILENOTFOUND                       Code = original.FABRICEFILENOTFOUND
+	FABRICEHEALTHENTITYNOTFOUND               Code = original.FABRICEHEALTHENTITYNOTFOUND
+	FABRICEHEALTHSTALEREPORT                  Code = original.FABRICEHEALTHSTALEREPORT
+	FABRICEIMAGEBUILDERVALIDATIONERROR        Code = original.FABRICEIMAGEBUILDERVALIDATIONERROR
+	FABRICEINSTANCEIDMISMATCH                 Code = original.FABRICEINSTANCEIDMISMATCH
+	FABRICEINVALIDADDRESS                     Code = original.FABRICEINVALIDADDRESS
+	FABRICEINVALIDATOMICGROUP                 Code = original.FABRICEINVALIDATOMICGROUP
+	FABRICEINVALIDCONFIGURATION               Code = original.FABRICEINVALIDCONFIGURATION
+	FABRICEINVALIDNAMEURI                     Code = original.FABRICEINVALIDNAMEURI
+	FABRICEINVALIDPARTITIONKEY                Code = original.FABRICEINVALIDPARTITIONKEY
+	FABRICEKEYNOTFOUND                        Code = original.FABRICEKEYNOTFOUND
+	FABRICEKEYTOOLARGE                        Code = original.FABRICEKEYTOOLARGE
+	FABRICENAMEALREADYEXISTS                  Code = original.FABRICENAMEALREADYEXISTS
+	FABRICENAMEDOESNOTEXIST                   Code = original.FABRICENAMEDOESNOTEXIST
+	FABRICENAMENOTEMPTY                       Code = original.FABRICENAMENOTEMPTY
+	FABRICENODEHASNOTSTOPPEDYET               Code = original.FABRICENODEHASNOTSTOPPEDYET
+	FABRICENODEISUP                           Code = original.FABRICENODEISUP
+	FABRICENODENOTFOUND                       Code = original.FABRICENODENOTFOUND
+	FABRICENOTPRIMARY                         Code = original.FABRICENOTPRIMARY
+	FABRICENOTREADY                           Code = original.FABRICENOTREADY
+	FABRICENOWRITEQUORUM                      Code = original.FABRICENOWRITEQUORUM
+	FABRICEOPERATIONNOTCOMPLETE               Code = original.FABRICEOPERATIONNOTCOMPLETE
+	FABRICEPARTITIONNOTFOUND                  Code = original.FABRICEPARTITIONNOTFOUND
+	FABRICEPATHTOOLONG                        Code = original.FABRICEPATHTOOLONG
+	FABRICEPROPERTYCHECKFAILED                Code = original.FABRICEPROPERTYCHECKFAILED
+	FABRICEPROPERTYDOESNOTEXIST               Code = original.FABRICEPROPERTYDOESNOTEXIST
+	FABRICERECONFIGURATIONPENDING             Code = original.FABRICERECONFIGURATIONPENDING
+	FABRICEREPLICADOESNOTEXIST                Code = original.FABRICEREPLICADOESNOTEXIST
+	FABRICESEQUENCENUMBERCHECKFAILED          Code = original.FABRICESEQUENCENUMBERCHECKFAILED
+	FABRICESERVICEAFFINITYCHAINNOTSUPPORTED   Code = original.FABRICESERVICEAFFINITYCHAINNOTSUPPORTED
+	FABRICESERVICEALREADYEXISTS               Code = original.FABRICESERVICEALREADYEXISTS
+	FABRICESERVICEDOESNOTEXIST                Code = original.FABRICESERVICEDOESNOTEXIST
+	FABRICESERVICEGROUPALREADYEXISTS          Code = original.FABRICESERVICEGROUPALREADYEXISTS
+	FABRICESERVICEGROUPDOESNOTEXIST           Code = original.FABRICESERVICEGROUPDOESNOTEXIST
+	FABRICESERVICEMANIFESTNOTFOUND            Code = original.FABRICESERVICEMANIFESTNOTFOUND
+	FABRICESERVICEMETADATAMISMATCH            Code = original.FABRICESERVICEMETADATAMISMATCH
+	FABRICESERVICEOFFLINE                     Code = original.FABRICESERVICEOFFLINE
+	FABRICESERVICETYPEMISMATCH                Code = original.FABRICESERVICETYPEMISMATCH
+	FABRICESERVICETYPENOTFOUND                Code = original.FABRICESERVICETYPENOTFOUND
+	FABRICESERVICETYPETEMPLATENOTFOUND        Code = original.FABRICESERVICETYPETEMPLATENOTFOUND
+	FABRICETIMEOUT                            Code = original.FABRICETIMEOUT
+	FABRICEVALUEEMPTY                         Code = original.FABRICEVALUEEMPTY
+	FABRICEVALUETOOLARGE                      Code = original.FABRICEVALUETOOLARGE
 )
 
-type AggregatedHealthState14 = original.AggregatedHealthState14
+type ComposeDeploymentStatus = original.ComposeDeploymentStatus
 
 const (
-	AggregatedHealthState14Error   AggregatedHealthState14 = original.AggregatedHealthState14Error
-	AggregatedHealthState14Invalid AggregatedHealthState14 = original.AggregatedHealthState14Invalid
-	AggregatedHealthState14Ok      AggregatedHealthState14 = original.AggregatedHealthState14Ok
-	AggregatedHealthState14Unknown AggregatedHealthState14 = original.AggregatedHealthState14Unknown
-	AggregatedHealthState14Warning AggregatedHealthState14 = original.AggregatedHealthState14Warning
+	ComposeDeploymentStatusCreating       ComposeDeploymentStatus = original.ComposeDeploymentStatusCreating
+	ComposeDeploymentStatusDeleting       ComposeDeploymentStatus = original.ComposeDeploymentStatusDeleting
+	ComposeDeploymentStatusFailed         ComposeDeploymentStatus = original.ComposeDeploymentStatusFailed
+	ComposeDeploymentStatusInvalid        ComposeDeploymentStatus = original.ComposeDeploymentStatusInvalid
+	ComposeDeploymentStatusProvisioning   ComposeDeploymentStatus = original.ComposeDeploymentStatusProvisioning
+	ComposeDeploymentStatusReady          ComposeDeploymentStatus = original.ComposeDeploymentStatusReady
+	ComposeDeploymentStatusUnprovisioning ComposeDeploymentStatus = original.ComposeDeploymentStatusUnprovisioning
+	ComposeDeploymentStatusUpgrading      ComposeDeploymentStatus = original.ComposeDeploymentStatusUpgrading
 )
 
-type AggregatedHealthState15 = original.AggregatedHealthState15
+type ComposeDeploymentUpgradeState = original.ComposeDeploymentUpgradeState
 
 const (
-	AggregatedHealthState15Error   AggregatedHealthState15 = original.AggregatedHealthState15Error
-	AggregatedHealthState15Invalid AggregatedHealthState15 = original.AggregatedHealthState15Invalid
-	AggregatedHealthState15Ok      AggregatedHealthState15 = original.AggregatedHealthState15Ok
-	AggregatedHealthState15Unknown AggregatedHealthState15 = original.AggregatedHealthState15Unknown
-	AggregatedHealthState15Warning AggregatedHealthState15 = original.AggregatedHealthState15Warning
+	ComposeDeploymentUpgradeStateFailed                   ComposeDeploymentUpgradeState = original.ComposeDeploymentUpgradeStateFailed
+	ComposeDeploymentUpgradeStateInvalid                  ComposeDeploymentUpgradeState = original.ComposeDeploymentUpgradeStateInvalid
+	ComposeDeploymentUpgradeStateProvisioningTarget       ComposeDeploymentUpgradeState = original.ComposeDeploymentUpgradeStateProvisioningTarget
+	ComposeDeploymentUpgradeStateRollingBackCompleted     ComposeDeploymentUpgradeState = original.ComposeDeploymentUpgradeStateRollingBackCompleted
+	ComposeDeploymentUpgradeStateRollingBackInProgress    ComposeDeploymentUpgradeState = original.ComposeDeploymentUpgradeStateRollingBackInProgress
+	ComposeDeploymentUpgradeStateRollingForwardCompleted  ComposeDeploymentUpgradeState = original.ComposeDeploymentUpgradeStateRollingForwardCompleted
+	ComposeDeploymentUpgradeStateRollingForwardInProgress ComposeDeploymentUpgradeState = original.ComposeDeploymentUpgradeStateRollingForwardInProgress
+	ComposeDeploymentUpgradeStateRollingForwardPending    ComposeDeploymentUpgradeState = original.ComposeDeploymentUpgradeStateRollingForwardPending
+	ComposeDeploymentUpgradeStateUnprovisioningCurrent    ComposeDeploymentUpgradeState = original.ComposeDeploymentUpgradeStateUnprovisioningCurrent
+	ComposeDeploymentUpgradeStateUnprovisioningTarget     ComposeDeploymentUpgradeState = original.ComposeDeploymentUpgradeStateUnprovisioningTarget
 )
 
-type AggregatedHealthState2 = original.AggregatedHealthState2
+type CreateFabricDump = original.CreateFabricDump
 
 const (
-	AggregatedHealthState2Error   AggregatedHealthState2 = original.AggregatedHealthState2Error
-	AggregatedHealthState2Invalid AggregatedHealthState2 = original.AggregatedHealthState2Invalid
-	AggregatedHealthState2Ok      AggregatedHealthState2 = original.AggregatedHealthState2Ok
-	AggregatedHealthState2Unknown AggregatedHealthState2 = original.AggregatedHealthState2Unknown
-	AggregatedHealthState2Warning AggregatedHealthState2 = original.AggregatedHealthState2Warning
+	False CreateFabricDump = original.False
+	True  CreateFabricDump = original.True
 )
 
-type AggregatedHealthState3 = original.AggregatedHealthState3
+type DataLossModeRequiredQueryParam = original.DataLossModeRequiredQueryParam
 
 const (
-	AggregatedHealthState3Error   AggregatedHealthState3 = original.AggregatedHealthState3Error
-	AggregatedHealthState3Invalid AggregatedHealthState3 = original.AggregatedHealthState3Invalid
-	AggregatedHealthState3Ok      AggregatedHealthState3 = original.AggregatedHealthState3Ok
-	AggregatedHealthState3Unknown AggregatedHealthState3 = original.AggregatedHealthState3Unknown
-	AggregatedHealthState3Warning AggregatedHealthState3 = original.AggregatedHealthState3Warning
-)
-
-type AggregatedHealthState4 = original.AggregatedHealthState4
-
-const (
-	AggregatedHealthState4Error   AggregatedHealthState4 = original.AggregatedHealthState4Error
-	AggregatedHealthState4Invalid AggregatedHealthState4 = original.AggregatedHealthState4Invalid
-	AggregatedHealthState4Ok      AggregatedHealthState4 = original.AggregatedHealthState4Ok
-	AggregatedHealthState4Unknown AggregatedHealthState4 = original.AggregatedHealthState4Unknown
-	AggregatedHealthState4Warning AggregatedHealthState4 = original.AggregatedHealthState4Warning
-)
-
-type AggregatedHealthState5 = original.AggregatedHealthState5
-
-const (
-	AggregatedHealthState5Error   AggregatedHealthState5 = original.AggregatedHealthState5Error
-	AggregatedHealthState5Invalid AggregatedHealthState5 = original.AggregatedHealthState5Invalid
-	AggregatedHealthState5Ok      AggregatedHealthState5 = original.AggregatedHealthState5Ok
-	AggregatedHealthState5Unknown AggregatedHealthState5 = original.AggregatedHealthState5Unknown
-	AggregatedHealthState5Warning AggregatedHealthState5 = original.AggregatedHealthState5Warning
-)
-
-type AggregatedHealthState6 = original.AggregatedHealthState6
-
-const (
-	AggregatedHealthState6Error   AggregatedHealthState6 = original.AggregatedHealthState6Error
-	AggregatedHealthState6Invalid AggregatedHealthState6 = original.AggregatedHealthState6Invalid
-	AggregatedHealthState6Ok      AggregatedHealthState6 = original.AggregatedHealthState6Ok
-	AggregatedHealthState6Unknown AggregatedHealthState6 = original.AggregatedHealthState6Unknown
-	AggregatedHealthState6Warning AggregatedHealthState6 = original.AggregatedHealthState6Warning
-)
-
-type AggregatedHealthState7 = original.AggregatedHealthState7
-
-const (
-	AggregatedHealthState7Error   AggregatedHealthState7 = original.AggregatedHealthState7Error
-	AggregatedHealthState7Invalid AggregatedHealthState7 = original.AggregatedHealthState7Invalid
-	AggregatedHealthState7Ok      AggregatedHealthState7 = original.AggregatedHealthState7Ok
-	AggregatedHealthState7Unknown AggregatedHealthState7 = original.AggregatedHealthState7Unknown
-	AggregatedHealthState7Warning AggregatedHealthState7 = original.AggregatedHealthState7Warning
-)
-
-type AggregatedHealthState8 = original.AggregatedHealthState8
-
-const (
-	AggregatedHealthState8Error   AggregatedHealthState8 = original.AggregatedHealthState8Error
-	AggregatedHealthState8Invalid AggregatedHealthState8 = original.AggregatedHealthState8Invalid
-	AggregatedHealthState8Ok      AggregatedHealthState8 = original.AggregatedHealthState8Ok
-	AggregatedHealthState8Unknown AggregatedHealthState8 = original.AggregatedHealthState8Unknown
-	AggregatedHealthState8Warning AggregatedHealthState8 = original.AggregatedHealthState8Warning
-)
-
-type AggregatedHealthState9 = original.AggregatedHealthState9
-
-const (
-	AggregatedHealthState9Error   AggregatedHealthState9 = original.AggregatedHealthState9Error
-	AggregatedHealthState9Invalid AggregatedHealthState9 = original.AggregatedHealthState9Invalid
-	AggregatedHealthState9Ok      AggregatedHealthState9 = original.AggregatedHealthState9Ok
-	AggregatedHealthState9Unknown AggregatedHealthState9 = original.AggregatedHealthState9Unknown
-	AggregatedHealthState9Warning AggregatedHealthState9 = original.AggregatedHealthState9Warning
+	DataLossModeRequiredQueryParamFullDataLoss    DataLossModeRequiredQueryParam = original.DataLossModeRequiredQueryParamFullDataLoss
+	DataLossModeRequiredQueryParamInvalid         DataLossModeRequiredQueryParam = original.DataLossModeRequiredQueryParamInvalid
+	DataLossModeRequiredQueryParamPartialDataLoss DataLossModeRequiredQueryParam = original.DataLossModeRequiredQueryParamPartialDataLoss
 )
 
 type DeactivationIntent = original.DeactivationIntent
@@ -370,64 +202,107 @@ type DeactivationIntent = original.DeactivationIntent
 const (
 	Pause      DeactivationIntent = original.Pause
 	RemoveData DeactivationIntent = original.RemoveData
-	RemoveNode DeactivationIntent = original.RemoveNode
 	Restart    DeactivationIntent = original.Restart
 )
 
-type DefaultMoveCost = original.DefaultMoveCost
+type DeployedApplicationStatus = original.DeployedApplicationStatus
 
 const (
-	High   DefaultMoveCost = original.High
-	Low    DefaultMoveCost = original.Low
-	Medium DefaultMoveCost = original.Medium
-	Zero   DefaultMoveCost = original.Zero
+	DeployedApplicationStatusActivating   DeployedApplicationStatus = original.DeployedApplicationStatusActivating
+	DeployedApplicationStatusActive       DeployedApplicationStatus = original.DeployedApplicationStatusActive
+	DeployedApplicationStatusDeactivating DeployedApplicationStatus = original.DeployedApplicationStatusDeactivating
+	DeployedApplicationStatusDownloading  DeployedApplicationStatus = original.DeployedApplicationStatusDownloading
+	DeployedApplicationStatusInvalid      DeployedApplicationStatus = original.DeployedApplicationStatusInvalid
+	DeployedApplicationStatusUpgrading    DeployedApplicationStatus = original.DeployedApplicationStatusUpgrading
 )
 
-type DefaultMoveCost1 = original.DefaultMoveCost1
+type DeploymentStatus = original.DeploymentStatus
 
 const (
-	DefaultMoveCost1High   DefaultMoveCost1 = original.DefaultMoveCost1High
-	DefaultMoveCost1Low    DefaultMoveCost1 = original.DefaultMoveCost1Low
-	DefaultMoveCost1Medium DefaultMoveCost1 = original.DefaultMoveCost1Medium
-	DefaultMoveCost1Zero   DefaultMoveCost1 = original.DefaultMoveCost1Zero
+	DeploymentStatusActivating   DeploymentStatus = original.DeploymentStatusActivating
+	DeploymentStatusActive       DeploymentStatus = original.DeploymentStatusActive
+	DeploymentStatusDeactivating DeploymentStatus = original.DeploymentStatusDeactivating
+	DeploymentStatusDownloading  DeploymentStatus = original.DeploymentStatusDownloading
+	DeploymentStatusInvalid      DeploymentStatus = original.DeploymentStatusInvalid
+	DeploymentStatusUpgrading    DeploymentStatus = original.DeploymentStatusUpgrading
 )
 
-type DefaultMoveCost2 = original.DefaultMoveCost2
+type EntityKind = original.EntityKind
 
 const (
-	DefaultMoveCost2High   DefaultMoveCost2 = original.DefaultMoveCost2High
-	DefaultMoveCost2Low    DefaultMoveCost2 = original.DefaultMoveCost2Low
-	DefaultMoveCost2Medium DefaultMoveCost2 = original.DefaultMoveCost2Medium
-	DefaultMoveCost2Zero   DefaultMoveCost2 = original.DefaultMoveCost2Zero
+	EntityKindApplication            EntityKind = original.EntityKindApplication
+	EntityKindCluster                EntityKind = original.EntityKindCluster
+	EntityKindDeployedApplication    EntityKind = original.EntityKindDeployedApplication
+	EntityKindDeployedServicePackage EntityKind = original.EntityKindDeployedServicePackage
+	EntityKindInvalid                EntityKind = original.EntityKindInvalid
+	EntityKindNode                   EntityKind = original.EntityKindNode
+	EntityKindPartition              EntityKind = original.EntityKindPartition
+	EntityKindReplica                EntityKind = original.EntityKindReplica
+	EntityKindService                EntityKind = original.EntityKindService
 )
 
-type DefaultMoveCost3 = original.DefaultMoveCost3
+type EntryPointStatus = original.EntryPointStatus
 
 const (
-	DefaultMoveCost3High   DefaultMoveCost3 = original.DefaultMoveCost3High
-	DefaultMoveCost3Low    DefaultMoveCost3 = original.DefaultMoveCost3Low
-	DefaultMoveCost3Medium DefaultMoveCost3 = original.DefaultMoveCost3Medium
-	DefaultMoveCost3Zero   DefaultMoveCost3 = original.DefaultMoveCost3Zero
+	EntryPointStatusInvalid  EntryPointStatus = original.EntryPointStatusInvalid
+	EntryPointStatusPending  EntryPointStatus = original.EntryPointStatusPending
+	EntryPointStatusStarted  EntryPointStatus = original.EntryPointStatusStarted
+	EntryPointStatusStarting EntryPointStatus = original.EntryPointStatusStarting
+	EntryPointStatusStopped  EntryPointStatus = original.EntryPointStatusStopped
+	EntryPointStatusStopping EntryPointStatus = original.EntryPointStatusStopping
+)
+
+type FabricReplicaStatus = original.FabricReplicaStatus
+
+const (
+	FabricReplicaStatusDown    FabricReplicaStatus = original.FabricReplicaStatusDown
+	FabricReplicaStatusInvalid FabricReplicaStatus = original.FabricReplicaStatusInvalid
+	FabricReplicaStatusUp      FabricReplicaStatus = original.FabricReplicaStatusUp
+)
+
+type FailureAction = original.FailureAction
+
+const (
+	FailureActionInvalid  FailureAction = original.FailureActionInvalid
+	FailureActionManual   FailureAction = original.FailureActionManual
+	FailureActionRollback FailureAction = original.FailureActionRollback
 )
 
 type FailureReason = original.FailureReason
 
 const (
-	FailureReasonHealthCheck           FailureReason = original.FailureReasonHealthCheck
-	FailureReasonInterrupted           FailureReason = original.FailureReasonInterrupted
-	FailureReasonInvalid               FailureReason = original.FailureReasonInvalid
-	FailureReasonOverallUpgradeTimeout FailureReason = original.FailureReasonOverallUpgradeTimeout
-	FailureReasonUpgradeDomainTimeout  FailureReason = original.FailureReasonUpgradeDomainTimeout
+	HealthCheck           FailureReason = original.HealthCheck
+	Interrupted           FailureReason = original.Interrupted
+	None                  FailureReason = original.None
+	OverallUpgradeTimeout FailureReason = original.OverallUpgradeTimeout
+	UpgradeDomainTimeout  FailureReason = original.UpgradeDomainTimeout
 )
 
-type FailureReason1 = original.FailureReason1
+type HealthEvaluationKind = original.HealthEvaluationKind
 
 const (
-	FailureReason1HealthCheck           FailureReason1 = original.FailureReason1HealthCheck
-	FailureReason1Interrupted           FailureReason1 = original.FailureReason1Interrupted
-	FailureReason1Invalid               FailureReason1 = original.FailureReason1Invalid
-	FailureReason1OverallUpgradeTimeout FailureReason1 = original.FailureReason1OverallUpgradeTimeout
-	FailureReason1UpgradeDomainTimeout  FailureReason1 = original.FailureReason1UpgradeDomainTimeout
+	HealthEvaluationKindApplication                       HealthEvaluationKind = original.HealthEvaluationKindApplication
+	HealthEvaluationKindApplications                      HealthEvaluationKind = original.HealthEvaluationKindApplications
+	HealthEvaluationKindApplicationTypeApplications       HealthEvaluationKind = original.HealthEvaluationKindApplicationTypeApplications
+	HealthEvaluationKindDeltaNodesCheck                   HealthEvaluationKind = original.HealthEvaluationKindDeltaNodesCheck
+	HealthEvaluationKindDeployedApplication               HealthEvaluationKind = original.HealthEvaluationKindDeployedApplication
+	HealthEvaluationKindDeployedApplications              HealthEvaluationKind = original.HealthEvaluationKindDeployedApplications
+	HealthEvaluationKindDeployedServicePackage            HealthEvaluationKind = original.HealthEvaluationKindDeployedServicePackage
+	HealthEvaluationKindDeployedServicePackages           HealthEvaluationKind = original.HealthEvaluationKindDeployedServicePackages
+	HealthEvaluationKindEvent                             HealthEvaluationKind = original.HealthEvaluationKindEvent
+	HealthEvaluationKindInvalid                           HealthEvaluationKind = original.HealthEvaluationKindInvalid
+	HealthEvaluationKindNode                              HealthEvaluationKind = original.HealthEvaluationKindNode
+	HealthEvaluationKindNodes                             HealthEvaluationKind = original.HealthEvaluationKindNodes
+	HealthEvaluationKindPartition                         HealthEvaluationKind = original.HealthEvaluationKindPartition
+	HealthEvaluationKindPartitions                        HealthEvaluationKind = original.HealthEvaluationKindPartitions
+	HealthEvaluationKindReplica                           HealthEvaluationKind = original.HealthEvaluationKindReplica
+	HealthEvaluationKindReplicas                          HealthEvaluationKind = original.HealthEvaluationKindReplicas
+	HealthEvaluationKindService                           HealthEvaluationKind = original.HealthEvaluationKindService
+	HealthEvaluationKindServices                          HealthEvaluationKind = original.HealthEvaluationKindServices
+	HealthEvaluationKindSystemApplication                 HealthEvaluationKind = original.HealthEvaluationKindSystemApplication
+	HealthEvaluationKindUpgradeDomainDeltaNodesCheck      HealthEvaluationKind = original.HealthEvaluationKindUpgradeDomainDeltaNodesCheck
+	HealthEvaluationKindUpgradeDomainDeployedApplications HealthEvaluationKind = original.HealthEvaluationKindUpgradeDomainDeployedApplications
+	HealthEvaluationKindUpgradeDomainNodes                HealthEvaluationKind = original.HealthEvaluationKindUpgradeDomainNodes
 )
 
 type HealthState = original.HealthState
@@ -440,91 +315,169 @@ const (
 	HealthStateWarning HealthState = original.HealthStateWarning
 )
 
-type HealthState1 = original.HealthState1
+type HostIsolationMode = original.HostIsolationMode
 
 const (
-	HealthState1Error   HealthState1 = original.HealthState1Error
-	HealthState1Invalid HealthState1 = original.HealthState1Invalid
-	HealthState1Ok      HealthState1 = original.HealthState1Ok
-	HealthState1Unknown HealthState1 = original.HealthState1Unknown
-	HealthState1Warning HealthState1 = original.HealthState1Warning
+	HostIsolationModeHyperV  HostIsolationMode = original.HostIsolationModeHyperV
+	HostIsolationModeNone    HostIsolationMode = original.HostIsolationModeNone
+	HostIsolationModeProcess HostIsolationMode = original.HostIsolationModeProcess
 )
 
-type HealthState2 = original.HealthState2
+type HostType = original.HostType
 
 const (
-	HealthState2Error   HealthState2 = original.HealthState2Error
-	HealthState2Invalid HealthState2 = original.HealthState2Invalid
-	HealthState2Ok      HealthState2 = original.HealthState2Ok
-	HealthState2Unknown HealthState2 = original.HealthState2Unknown
-	HealthState2Warning HealthState2 = original.HealthState2Warning
+	HostTypeContainerHost HostType = original.HostTypeContainerHost
+	HostTypeExeHost       HostType = original.HostTypeExeHost
+	HostTypeInvalid       HostType = original.HostTypeInvalid
 )
 
-type HealthState3 = original.HealthState3
+type ImpactLevel = original.ImpactLevel
 
 const (
-	HealthState3Error   HealthState3 = original.HealthState3Error
-	HealthState3Invalid HealthState3 = original.HealthState3Invalid
-	HealthState3Ok      HealthState3 = original.HealthState3Ok
-	HealthState3Unknown HealthState3 = original.HealthState3Unknown
-	HealthState3Warning HealthState3 = original.HealthState3Warning
-)
-
-type HealthState4 = original.HealthState4
-
-const (
-	HealthState4Error   HealthState4 = original.HealthState4Error
-	HealthState4Invalid HealthState4 = original.HealthState4Invalid
-	HealthState4Ok      HealthState4 = original.HealthState4Ok
-	HealthState4Unknown HealthState4 = original.HealthState4Unknown
-	HealthState4Warning HealthState4 = original.HealthState4Warning
-)
-
-type HealthState5 = original.HealthState5
-
-const (
-	HealthState5Error   HealthState5 = original.HealthState5Error
-	HealthState5Invalid HealthState5 = original.HealthState5Invalid
-	HealthState5Ok      HealthState5 = original.HealthState5Ok
-	HealthState5Unknown HealthState5 = original.HealthState5Unknown
-	HealthState5Warning HealthState5 = original.HealthState5Warning
-)
-
-type HealthState6 = original.HealthState6
-
-const (
-	HealthState6Error   HealthState6 = original.HealthState6Error
-	HealthState6Invalid HealthState6 = original.HealthState6Invalid
-	HealthState6Ok      HealthState6 = original.HealthState6Ok
-	HealthState6Unknown HealthState6 = original.HealthState6Unknown
-	HealthState6Warning HealthState6 = original.HealthState6Warning
+	ImpactLevelInvalid    ImpactLevel = original.ImpactLevelInvalid
+	ImpactLevelNone       ImpactLevel = original.ImpactLevelNone
+	ImpactLevelRemoveData ImpactLevel = original.ImpactLevelRemoveData
+	ImpactLevelRemoveNode ImpactLevel = original.ImpactLevelRemoveNode
+	ImpactLevelRestart    ImpactLevel = original.ImpactLevelRestart
 )
 
 type Kind = original.Kind
 
 const (
-	KindApplication                       Kind = original.KindApplication
-	KindApplications                      Kind = original.KindApplications
-	KindApplicationType                   Kind = original.KindApplicationType
-	KindDeltaNodesCheck                   Kind = original.KindDeltaNodesCheck
-	KindDeployedApplication               Kind = original.KindDeployedApplication
-	KindDeployedApplications              Kind = original.KindDeployedApplications
-	KindDeployedServicePackage            Kind = original.KindDeployedServicePackage
-	KindDeployedServicePackages           Kind = original.KindDeployedServicePackages
-	KindEvent                             Kind = original.KindEvent
-	KindHealthEvaluation                  Kind = original.KindHealthEvaluation
-	KindNode                              Kind = original.KindNode
-	KindNodes                             Kind = original.KindNodes
-	KindPartition                         Kind = original.KindPartition
-	KindPartitions                        Kind = original.KindPartitions
-	KindReplica                           Kind = original.KindReplica
-	KindReplicas                          Kind = original.KindReplicas
-	KindService                           Kind = original.KindService
-	KindServices                          Kind = original.KindServices
-	KindSystemApplication                 Kind = original.KindSystemApplication
-	KindUpgradeDomainDeltaNodesCheck      Kind = original.KindUpgradeDomainDeltaNodesCheck
-	KindUpgradeDomainDeployedApplications Kind = original.KindUpgradeDomainDeployedApplications
-	KindUpgradeDomainNodes                Kind = original.KindUpgradeDomainNodes
+	KindApplication                  Kind = original.KindApplication
+	KindApplications                 Kind = original.KindApplications
+	KindApplicationTypeApplications  Kind = original.KindApplicationTypeApplications
+	KindDeltaNodesCheck              Kind = original.KindDeltaNodesCheck
+	KindDeployedApplication          Kind = original.KindDeployedApplication
+	KindDeployedApplications         Kind = original.KindDeployedApplications
+	KindDeployedServicePackage       Kind = original.KindDeployedServicePackage
+	KindDeployedServicePackages      Kind = original.KindDeployedServicePackages
+	KindEvent                        Kind = original.KindEvent
+	KindHealthEvaluation             Kind = original.KindHealthEvaluation
+	KindNode                         Kind = original.KindNode
+	KindNodes                        Kind = original.KindNodes
+	KindPartition                    Kind = original.KindPartition
+	KindPartitions                   Kind = original.KindPartitions
+	KindReplica                      Kind = original.KindReplica
+	KindReplicas                     Kind = original.KindReplicas
+	KindService                      Kind = original.KindService
+	KindServices                     Kind = original.KindServices
+	KindSystemApplication            Kind = original.KindSystemApplication
+	KindUpgradeDomainDeltaNodesCheck Kind = original.KindUpgradeDomainDeltaNodesCheck
+	KindUpgradeDomainNodes           Kind = original.KindUpgradeDomainNodes
+)
+
+type KindBasicChaosEvent = original.KindBasicChaosEvent
+
+const (
+	KindChaosEvent       KindBasicChaosEvent = original.KindChaosEvent
+	KindExecutingFaults  KindBasicChaosEvent = original.KindExecutingFaults
+	KindStarted          KindBasicChaosEvent = original.KindStarted
+	KindStopped          KindBasicChaosEvent = original.KindStopped
+	KindTestError        KindBasicChaosEvent = original.KindTestError
+	KindValidationFailed KindBasicChaosEvent = original.KindValidationFailed
+	KindWaiting          KindBasicChaosEvent = original.KindWaiting
+)
+
+type KindBasicPropertyBatchInfo = original.KindBasicPropertyBatchInfo
+
+const (
+	KindFailed            KindBasicPropertyBatchInfo = original.KindFailed
+	KindPropertyBatchInfo KindBasicPropertyBatchInfo = original.KindPropertyBatchInfo
+	KindSuccessful        KindBasicPropertyBatchInfo = original.KindSuccessful
+)
+
+type KindBasicPropertyBatchOperation = original.KindBasicPropertyBatchOperation
+
+const (
+	KindCheckExists            KindBasicPropertyBatchOperation = original.KindCheckExists
+	KindCheckSequence          KindBasicPropertyBatchOperation = original.KindCheckSequence
+	KindCheckValue             KindBasicPropertyBatchOperation = original.KindCheckValue
+	KindDelete                 KindBasicPropertyBatchOperation = original.KindDelete
+	KindGet                    KindBasicPropertyBatchOperation = original.KindGet
+	KindPropertyBatchOperation KindBasicPropertyBatchOperation = original.KindPropertyBatchOperation
+	KindPut                    KindBasicPropertyBatchOperation = original.KindPut
+)
+
+type KindBasicPropertyValue = original.KindBasicPropertyValue
+
+const (
+	KindBinary        KindBasicPropertyValue = original.KindBinary
+	KindDouble        KindBasicPropertyValue = original.KindDouble
+	KindGUID          KindBasicPropertyValue = original.KindGUID
+	KindInt64         KindBasicPropertyValue = original.KindInt64
+	KindPropertyValue KindBasicPropertyValue = original.KindPropertyValue
+	KindString        KindBasicPropertyValue = original.KindString
+)
+
+type KindBasicProvisionApplicationTypeDescriptionBase = original.KindBasicProvisionApplicationTypeDescriptionBase
+
+const (
+	KindExternalStore                           KindBasicProvisionApplicationTypeDescriptionBase = original.KindExternalStore
+	KindImageStorePath                          KindBasicProvisionApplicationTypeDescriptionBase = original.KindImageStorePath
+	KindProvisionApplicationTypeDescriptionBase KindBasicProvisionApplicationTypeDescriptionBase = original.KindProvisionApplicationTypeDescriptionBase
+)
+
+type KindBasicRepairImpactDescriptionBase = original.KindBasicRepairImpactDescriptionBase
+
+const (
+	KindBasicRepairImpactDescriptionBaseKindNode                        KindBasicRepairImpactDescriptionBase = original.KindBasicRepairImpactDescriptionBaseKindNode
+	KindBasicRepairImpactDescriptionBaseKindRepairImpactDescriptionBase KindBasicRepairImpactDescriptionBase = original.KindBasicRepairImpactDescriptionBaseKindRepairImpactDescriptionBase
+)
+
+type KindBasicRepairTargetDescriptionBase = original.KindBasicRepairTargetDescriptionBase
+
+const (
+	KindBasicRepairTargetDescriptionBaseKindNode                        KindBasicRepairTargetDescriptionBase = original.KindBasicRepairTargetDescriptionBaseKindNode
+	KindBasicRepairTargetDescriptionBaseKindRepairTargetDescriptionBase KindBasicRepairTargetDescriptionBase = original.KindBasicRepairTargetDescriptionBaseKindRepairTargetDescriptionBase
+)
+
+type KindBasicReplicaStatusBase = original.KindBasicReplicaStatusBase
+
+const (
+	KindKeyValueStore     KindBasicReplicaStatusBase = original.KindKeyValueStore
+	KindReplicaStatusBase KindBasicReplicaStatusBase = original.KindReplicaStatusBase
+)
+
+type KindBasicReplicatorStatus = original.KindBasicReplicatorStatus
+
+const (
+	KindActiveSecondary           KindBasicReplicatorStatus = original.KindActiveSecondary
+	KindIdleSecondary             KindBasicReplicatorStatus = original.KindIdleSecondary
+	KindPrimary                   KindBasicReplicatorStatus = original.KindPrimary
+	KindReplicatorStatus          KindBasicReplicatorStatus = original.KindReplicatorStatus
+	KindSecondaryReplicatorStatus KindBasicReplicatorStatus = original.KindSecondaryReplicatorStatus
+)
+
+type KindBasicSafetyCheck = original.KindBasicSafetyCheck
+
+const (
+	KindEnsureAvailability      KindBasicSafetyCheck = original.KindEnsureAvailability
+	KindEnsurePartitionQuorum   KindBasicSafetyCheck = original.KindEnsurePartitionQuorum
+	KindEnsureSeedNodeQuorum    KindBasicSafetyCheck = original.KindEnsureSeedNodeQuorum
+	KindPartitionSafetyCheck    KindBasicSafetyCheck = original.KindPartitionSafetyCheck
+	KindSafetyCheck             KindBasicSafetyCheck = original.KindSafetyCheck
+	KindWaitForInbuildReplica   KindBasicSafetyCheck = original.KindWaitForInbuildReplica
+	KindWaitForPrimaryPlacement KindBasicSafetyCheck = original.KindWaitForPrimaryPlacement
+	KindWaitForPrimarySwap      KindBasicSafetyCheck = original.KindWaitForPrimarySwap
+	KindWaitForReconfiguration  KindBasicSafetyCheck = original.KindWaitForReconfiguration
+)
+
+type KindBasicServiceTypeDescription = original.KindBasicServiceTypeDescription
+
+const (
+	KindServiceTypeDescription KindBasicServiceTypeDescription = original.KindServiceTypeDescription
+	KindStateful               KindBasicServiceTypeDescription = original.KindStateful
+	KindStateless              KindBasicServiceTypeDescription = original.KindStateless
+)
+
+type MoveCost = original.MoveCost
+
+const (
+	High   MoveCost = original.High
+	Low    MoveCost = original.Low
+	Medium MoveCost = original.Medium
+	Zero   MoveCost = original.Zero
 )
 
 type NodeDeactivationIntent = original.NodeDeactivationIntent
@@ -533,6 +486,7 @@ const (
 	NodeDeactivationIntentInvalid    NodeDeactivationIntent = original.NodeDeactivationIntentInvalid
 	NodeDeactivationIntentPause      NodeDeactivationIntent = original.NodeDeactivationIntentPause
 	NodeDeactivationIntentRemoveData NodeDeactivationIntent = original.NodeDeactivationIntentRemoveData
+	NodeDeactivationIntentRemoveNode NodeDeactivationIntent = original.NodeDeactivationIntentRemoveNode
 	NodeDeactivationIntentRestart    NodeDeactivationIntent = original.NodeDeactivationIntentRestart
 )
 
@@ -540,9 +494,18 @@ type NodeDeactivationStatus = original.NodeDeactivationStatus
 
 const (
 	NodeDeactivationStatusCompleted             NodeDeactivationStatus = original.NodeDeactivationStatusCompleted
-	NodeDeactivationStatusInvalid               NodeDeactivationStatus = original.NodeDeactivationStatusInvalid
+	NodeDeactivationStatusNone                  NodeDeactivationStatus = original.NodeDeactivationStatusNone
 	NodeDeactivationStatusSafetyCheckComplete   NodeDeactivationStatus = original.NodeDeactivationStatusSafetyCheckComplete
 	NodeDeactivationStatusSafetyCheckInProgress NodeDeactivationStatus = original.NodeDeactivationStatusSafetyCheckInProgress
+)
+
+type NodeDeactivationTaskType = original.NodeDeactivationTaskType
+
+const (
+	NodeDeactivationTaskTypeClient         NodeDeactivationTaskType = original.NodeDeactivationTaskTypeClient
+	NodeDeactivationTaskTypeInfrastructure NodeDeactivationTaskType = original.NodeDeactivationTaskTypeInfrastructure
+	NodeDeactivationTaskTypeInvalid        NodeDeactivationTaskType = original.NodeDeactivationTaskTypeInvalid
+	NodeDeactivationTaskTypeRepair         NodeDeactivationTaskType = original.NodeDeactivationTaskTypeRepair
 )
 
 type NodeStatus = original.NodeStatus
@@ -558,24 +521,202 @@ const (
 	NodeStatusUp        NodeStatus = original.NodeStatusUp
 )
 
+type NodeStatusFilterOptionalQueryParam = original.NodeStatusFilterOptionalQueryParam
+
+const (
+	All       NodeStatusFilterOptionalQueryParam = original.All
+	Default   NodeStatusFilterOptionalQueryParam = original.Default
+	Disabled  NodeStatusFilterOptionalQueryParam = original.Disabled
+	Disabling NodeStatusFilterOptionalQueryParam = original.Disabling
+	Down      NodeStatusFilterOptionalQueryParam = original.Down
+	Enabling  NodeStatusFilterOptionalQueryParam = original.Enabling
+	Removed   NodeStatusFilterOptionalQueryParam = original.Removed
+	Unknown   NodeStatusFilterOptionalQueryParam = original.Unknown
+	Up        NodeStatusFilterOptionalQueryParam = original.Up
+)
+
+type NodeTransitionTypeRequiredQueryParam = original.NodeTransitionTypeRequiredQueryParam
+
+const (
+	NodeTransitionTypeRequiredQueryParamInvalid NodeTransitionTypeRequiredQueryParam = original.NodeTransitionTypeRequiredQueryParamInvalid
+	NodeTransitionTypeRequiredQueryParamStart   NodeTransitionTypeRequiredQueryParam = original.NodeTransitionTypeRequiredQueryParamStart
+	NodeTransitionTypeRequiredQueryParamStop    NodeTransitionTypeRequiredQueryParam = original.NodeTransitionTypeRequiredQueryParamStop
+)
+
+type NodeUpgradePhase = original.NodeUpgradePhase
+
+const (
+	NodeUpgradePhaseInvalid                NodeUpgradePhase = original.NodeUpgradePhaseInvalid
+	NodeUpgradePhasePostUpgradeSafetyCheck NodeUpgradePhase = original.NodeUpgradePhasePostUpgradeSafetyCheck
+	NodeUpgradePhasePreUpgradeSafetyCheck  NodeUpgradePhase = original.NodeUpgradePhasePreUpgradeSafetyCheck
+	NodeUpgradePhaseUpgrading              NodeUpgradePhase = original.NodeUpgradePhaseUpgrading
+)
+
+type OperationState = original.OperationState
+
+const (
+	OperationStateCancelled      OperationState = original.OperationStateCancelled
+	OperationStateCompleted      OperationState = original.OperationStateCompleted
+	OperationStateFaulted        OperationState = original.OperationStateFaulted
+	OperationStateForceCancelled OperationState = original.OperationStateForceCancelled
+	OperationStateInvalid        OperationState = original.OperationStateInvalid
+	OperationStateRollingBack    OperationState = original.OperationStateRollingBack
+	OperationStateRunning        OperationState = original.OperationStateRunning
+)
+
+type OperationType = original.OperationType
+
+const (
+	OperationTypeInvalid             OperationType = original.OperationTypeInvalid
+	OperationTypeNodeTransition      OperationType = original.OperationTypeNodeTransition
+	OperationTypePartitionDataLoss   OperationType = original.OperationTypePartitionDataLoss
+	OperationTypePartitionQuorumLoss OperationType = original.OperationTypePartitionQuorumLoss
+	OperationTypePartitionRestart    OperationType = original.OperationTypePartitionRestart
+)
+
+type PackageSharingPolicyScope = original.PackageSharingPolicyScope
+
+const (
+	PackageSharingPolicyScopeAll    PackageSharingPolicyScope = original.PackageSharingPolicyScopeAll
+	PackageSharingPolicyScopeCode   PackageSharingPolicyScope = original.PackageSharingPolicyScopeCode
+	PackageSharingPolicyScopeConfig PackageSharingPolicyScope = original.PackageSharingPolicyScopeConfig
+	PackageSharingPolicyScopeData   PackageSharingPolicyScope = original.PackageSharingPolicyScopeData
+	PackageSharingPolicyScopeNone   PackageSharingPolicyScope = original.PackageSharingPolicyScopeNone
+)
+
+type PartitionAccessStatus = original.PartitionAccessStatus
+
+const (
+	PartitionAccessStatusGranted                PartitionAccessStatus = original.PartitionAccessStatusGranted
+	PartitionAccessStatusInvalid                PartitionAccessStatus = original.PartitionAccessStatusInvalid
+	PartitionAccessStatusNotPrimary             PartitionAccessStatus = original.PartitionAccessStatusNotPrimary
+	PartitionAccessStatusNoWriteQuorum          PartitionAccessStatus = original.PartitionAccessStatusNoWriteQuorum
+	PartitionAccessStatusReconfigurationPending PartitionAccessStatus = original.PartitionAccessStatusReconfigurationPending
+)
+
 type PartitionScheme = original.PartitionScheme
 
 const (
-	PartitionSchemeInvalid      PartitionScheme = original.PartitionSchemeInvalid
-	PartitionSchemeNamed        PartitionScheme = original.PartitionSchemeNamed
-	PartitionSchemeSingleton    PartitionScheme = original.PartitionSchemeSingleton
-	PartitionSchemeUniformInt64 PartitionScheme = original.PartitionSchemeUniformInt64
+	PartitionSchemeInvalid           PartitionScheme = original.PartitionSchemeInvalid
+	PartitionSchemeNamed             PartitionScheme = original.PartitionSchemeNamed
+	PartitionSchemeSingleton         PartitionScheme = original.PartitionSchemeSingleton
+	PartitionSchemeUniformInt64Range PartitionScheme = original.PartitionSchemeUniformInt64Range
 )
 
-type PartitionStatus = original.PartitionStatus
+type PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeBasicPartitionSchemeDescription
 
 const (
-	PartitionStatusDeleting      PartitionStatus = original.PartitionStatusDeleting
-	PartitionStatusInQuorumLoss  PartitionStatus = original.PartitionStatusInQuorumLoss
-	PartitionStatusInvalid       PartitionStatus = original.PartitionStatusInvalid
-	PartitionStatusNotReady      PartitionStatus = original.PartitionStatusNotReady
-	PartitionStatusReady         PartitionStatus = original.PartitionStatusReady
-	PartitionStatusReconfiguring PartitionStatus = original.PartitionStatusReconfiguring
+	PartitionSchemeNamed1                     PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeNamed1
+	PartitionSchemePartitionSchemeDescription PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemePartitionSchemeDescription
+	PartitionSchemeSingleton1                 PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeSingleton1
+	PartitionSchemeUniformInt64Range1         PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeUniformInt64Range1
+)
+
+type PropertyBatchInfoKind = original.PropertyBatchInfoKind
+
+const (
+	PropertyBatchInfoKindFailed     PropertyBatchInfoKind = original.PropertyBatchInfoKindFailed
+	PropertyBatchInfoKindInvalid    PropertyBatchInfoKind = original.PropertyBatchInfoKindInvalid
+	PropertyBatchInfoKindSuccessful PropertyBatchInfoKind = original.PropertyBatchInfoKindSuccessful
+)
+
+type PropertyBatchOperationKind = original.PropertyBatchOperationKind
+
+const (
+	PropertyBatchOperationKindCheckExists   PropertyBatchOperationKind = original.PropertyBatchOperationKindCheckExists
+	PropertyBatchOperationKindCheckSequence PropertyBatchOperationKind = original.PropertyBatchOperationKindCheckSequence
+	PropertyBatchOperationKindCheckValue    PropertyBatchOperationKind = original.PropertyBatchOperationKindCheckValue
+	PropertyBatchOperationKindDelete        PropertyBatchOperationKind = original.PropertyBatchOperationKindDelete
+	PropertyBatchOperationKindGet           PropertyBatchOperationKind = original.PropertyBatchOperationKindGet
+	PropertyBatchOperationKindInvalid       PropertyBatchOperationKind = original.PropertyBatchOperationKindInvalid
+	PropertyBatchOperationKindPut           PropertyBatchOperationKind = original.PropertyBatchOperationKindPut
+)
+
+type PropertyValueKind = original.PropertyValueKind
+
+const (
+	PropertyValueKindBinary  PropertyValueKind = original.PropertyValueKindBinary
+	PropertyValueKindDouble  PropertyValueKind = original.PropertyValueKindDouble
+	PropertyValueKindGUID    PropertyValueKind = original.PropertyValueKindGUID
+	PropertyValueKindInt64   PropertyValueKind = original.PropertyValueKindInt64
+	PropertyValueKindInvalid PropertyValueKind = original.PropertyValueKindInvalid
+	PropertyValueKindString  PropertyValueKind = original.PropertyValueKindString
+)
+
+type ProvisionApplicationTypeKind = original.ProvisionApplicationTypeKind
+
+const (
+	ProvisionApplicationTypeKindExternalStore  ProvisionApplicationTypeKind = original.ProvisionApplicationTypeKindExternalStore
+	ProvisionApplicationTypeKindImageStorePath ProvisionApplicationTypeKind = original.ProvisionApplicationTypeKindImageStorePath
+	ProvisionApplicationTypeKindInvalid        ProvisionApplicationTypeKind = original.ProvisionApplicationTypeKindInvalid
+)
+
+type QuorumLossModeRequiredQueryParam = original.QuorumLossModeRequiredQueryParam
+
+const (
+	QuorumLossModeRequiredQueryParamAllReplicas    QuorumLossModeRequiredQueryParam = original.QuorumLossModeRequiredQueryParamAllReplicas
+	QuorumLossModeRequiredQueryParamInvalid        QuorumLossModeRequiredQueryParam = original.QuorumLossModeRequiredQueryParamInvalid
+	QuorumLossModeRequiredQueryParamQuorumReplicas QuorumLossModeRequiredQueryParam = original.QuorumLossModeRequiredQueryParamQuorumReplicas
+)
+
+type ReconfigurationPhase = original.ReconfigurationPhase
+
+const (
+	ReconfigurationPhaseAbortPhaseZero ReconfigurationPhase = original.ReconfigurationPhaseAbortPhaseZero
+	ReconfigurationPhaseNone           ReconfigurationPhase = original.ReconfigurationPhaseNone
+	ReconfigurationPhasePhase0         ReconfigurationPhase = original.ReconfigurationPhasePhase0
+	ReconfigurationPhasePhase1         ReconfigurationPhase = original.ReconfigurationPhasePhase1
+	ReconfigurationPhasePhase2         ReconfigurationPhase = original.ReconfigurationPhasePhase2
+	ReconfigurationPhasePhase3         ReconfigurationPhase = original.ReconfigurationPhasePhase3
+	ReconfigurationPhasePhase4         ReconfigurationPhase = original.ReconfigurationPhasePhase4
+	ReconfigurationPhaseUnknown        ReconfigurationPhase = original.ReconfigurationPhaseUnknown
+)
+
+type ReconfigurationType = original.ReconfigurationType
+
+const (
+	ReconfigurationTypeFailover    ReconfigurationType = original.ReconfigurationTypeFailover
+	ReconfigurationTypeOther       ReconfigurationType = original.ReconfigurationTypeOther
+	ReconfigurationTypeSwapPrimary ReconfigurationType = original.ReconfigurationTypeSwapPrimary
+	ReconfigurationTypeUnknown     ReconfigurationType = original.ReconfigurationTypeUnknown
+)
+
+type RepairImpactKind = original.RepairImpactKind
+
+const (
+	RepairImpactKindInvalid RepairImpactKind = original.RepairImpactKindInvalid
+	RepairImpactKindNode    RepairImpactKind = original.RepairImpactKindNode
+)
+
+type RepairTargetKind = original.RepairTargetKind
+
+const (
+	RepairTargetKindInvalid RepairTargetKind = original.RepairTargetKindInvalid
+	RepairTargetKindNode    RepairTargetKind = original.RepairTargetKindNode
+)
+
+type RepairTaskHealthCheckState = original.RepairTaskHealthCheckState
+
+const (
+	InProgress RepairTaskHealthCheckState = original.InProgress
+	NotStarted RepairTaskHealthCheckState = original.NotStarted
+	Skipped    RepairTaskHealthCheckState = original.Skipped
+	Succeeded  RepairTaskHealthCheckState = original.Succeeded
+	TimedOut   RepairTaskHealthCheckState = original.TimedOut
+)
+
+type ReplicaHealthReportServiceKindRequiredQueryParam = original.ReplicaHealthReportServiceKindRequiredQueryParam
+
+const (
+	Stateful  ReplicaHealthReportServiceKindRequiredQueryParam = original.Stateful
+	Stateless ReplicaHealthReportServiceKindRequiredQueryParam = original.Stateless
+)
+
+type ReplicaKind = original.ReplicaKind
+
+const (
+	ReplicaKindInvalid       ReplicaKind = original.ReplicaKindInvalid
+	ReplicaKindKeyValueStore ReplicaKind = original.ReplicaKindKeyValueStore
 )
 
 type ReplicaRole = original.ReplicaRole
@@ -583,19 +724,9 @@ type ReplicaRole = original.ReplicaRole
 const (
 	ReplicaRoleActiveSecondary ReplicaRole = original.ReplicaRoleActiveSecondary
 	ReplicaRoleIdleSecondary   ReplicaRole = original.ReplicaRoleIdleSecondary
-	ReplicaRoleInvalid         ReplicaRole = original.ReplicaRoleInvalid
 	ReplicaRoleNone            ReplicaRole = original.ReplicaRoleNone
 	ReplicaRolePrimary         ReplicaRole = original.ReplicaRolePrimary
-)
-
-type ReplicaRole1 = original.ReplicaRole1
-
-const (
-	ReplicaRole1ActiveSecondary ReplicaRole1 = original.ReplicaRole1ActiveSecondary
-	ReplicaRole1IdleSecondary   ReplicaRole1 = original.ReplicaRole1IdleSecondary
-	ReplicaRole1Invalid         ReplicaRole1 = original.ReplicaRole1Invalid
-	ReplicaRole1None            ReplicaRole1 = original.ReplicaRole1None
-	ReplicaRole1Primary         ReplicaRole1 = original.ReplicaRole1Primary
+	ReplicaRoleUnknown         ReplicaRole = original.ReplicaRoleUnknown
 )
 
 type ReplicaStatus = original.ReplicaStatus
@@ -620,58 +751,51 @@ const (
 	ReplicaStatus1Standby ReplicaStatus1 = original.ReplicaStatus1Standby
 )
 
-type RollingUpgradeMode = original.RollingUpgradeMode
+type ReplicatorOperationName = original.ReplicatorOperationName
 
 const (
-	RollingUpgradeModeInvalid           RollingUpgradeMode = original.RollingUpgradeModeInvalid
-	RollingUpgradeModeMonitored         RollingUpgradeMode = original.RollingUpgradeModeMonitored
-	RollingUpgradeModeUnmonitoredAuto   RollingUpgradeMode = original.RollingUpgradeModeUnmonitoredAuto
-	RollingUpgradeModeUnmonitoredManual RollingUpgradeMode = original.RollingUpgradeModeUnmonitoredManual
+	ReplicatorOperationNameAbort          ReplicatorOperationName = original.ReplicatorOperationNameAbort
+	ReplicatorOperationNameBuild          ReplicatorOperationName = original.ReplicatorOperationNameBuild
+	ReplicatorOperationNameChangeRole     ReplicatorOperationName = original.ReplicatorOperationNameChangeRole
+	ReplicatorOperationNameClose          ReplicatorOperationName = original.ReplicatorOperationNameClose
+	ReplicatorOperationNameInvalid        ReplicatorOperationName = original.ReplicatorOperationNameInvalid
+	ReplicatorOperationNameNone           ReplicatorOperationName = original.ReplicatorOperationNameNone
+	ReplicatorOperationNameOnDataLoss     ReplicatorOperationName = original.ReplicatorOperationNameOnDataLoss
+	ReplicatorOperationNameOpen           ReplicatorOperationName = original.ReplicatorOperationNameOpen
+	ReplicatorOperationNameUpdateEpoch    ReplicatorOperationName = original.ReplicatorOperationNameUpdateEpoch
+	ReplicatorOperationNameWaitForCatchup ReplicatorOperationName = original.ReplicatorOperationNameWaitForCatchup
 )
 
-type RollingUpgradeMode1 = original.RollingUpgradeMode1
+type RestartPartitionModeRequiredQueryParam = original.RestartPartitionModeRequiredQueryParam
 
 const (
-	RollingUpgradeMode1Invalid           RollingUpgradeMode1 = original.RollingUpgradeMode1Invalid
-	RollingUpgradeMode1Monitored         RollingUpgradeMode1 = original.RollingUpgradeMode1Monitored
-	RollingUpgradeMode1UnmonitoredAuto   RollingUpgradeMode1 = original.RollingUpgradeMode1UnmonitoredAuto
-	RollingUpgradeMode1UnmonitoredManual RollingUpgradeMode1 = original.RollingUpgradeMode1UnmonitoredManual
+	RestartPartitionModeRequiredQueryParamAllReplicasOrInstances RestartPartitionModeRequiredQueryParam = original.RestartPartitionModeRequiredQueryParamAllReplicasOrInstances
+	RestartPartitionModeRequiredQueryParamInvalid                RestartPartitionModeRequiredQueryParam = original.RestartPartitionModeRequiredQueryParamInvalid
+	RestartPartitionModeRequiredQueryParamOnlyActiveSecondaries  RestartPartitionModeRequiredQueryParam = original.RestartPartitionModeRequiredQueryParamOnlyActiveSecondaries
 )
 
-type RollingUpgradeMode2 = original.RollingUpgradeMode2
+type ResultStatus = original.ResultStatus
 
 const (
-	RollingUpgradeMode2Invalid           RollingUpgradeMode2 = original.RollingUpgradeMode2Invalid
-	RollingUpgradeMode2Monitored         RollingUpgradeMode2 = original.RollingUpgradeMode2Monitored
-	RollingUpgradeMode2UnmonitoredAuto   RollingUpgradeMode2 = original.RollingUpgradeMode2UnmonitoredAuto
-	RollingUpgradeMode2UnmonitoredManual RollingUpgradeMode2 = original.RollingUpgradeMode2UnmonitoredManual
+	ResultStatusCancelled   ResultStatus = original.ResultStatusCancelled
+	ResultStatusFailed      ResultStatus = original.ResultStatusFailed
+	ResultStatusInterrupted ResultStatus = original.ResultStatusInterrupted
+	ResultStatusInvalid     ResultStatus = original.ResultStatusInvalid
+	ResultStatusPending     ResultStatus = original.ResultStatusPending
+	ResultStatusSucceeded   ResultStatus = original.ResultStatusSucceeded
 )
 
-type RollingUpgradeMode3 = original.RollingUpgradeMode3
+type SafetyCheckKind = original.SafetyCheckKind
 
 const (
-	RollingUpgradeMode3Invalid           RollingUpgradeMode3 = original.RollingUpgradeMode3Invalid
-	RollingUpgradeMode3Monitored         RollingUpgradeMode3 = original.RollingUpgradeMode3Monitored
-	RollingUpgradeMode3UnmonitoredAuto   RollingUpgradeMode3 = original.RollingUpgradeMode3UnmonitoredAuto
-	RollingUpgradeMode3UnmonitoredManual RollingUpgradeMode3 = original.RollingUpgradeMode3UnmonitoredManual
-)
-
-type RollingUpgradeMode4 = original.RollingUpgradeMode4
-
-const (
-	RollingUpgradeMode4Invalid           RollingUpgradeMode4 = original.RollingUpgradeMode4Invalid
-	RollingUpgradeMode4Monitored         RollingUpgradeMode4 = original.RollingUpgradeMode4Monitored
-	RollingUpgradeMode4UnmonitoredAuto   RollingUpgradeMode4 = original.RollingUpgradeMode4UnmonitoredAuto
-	RollingUpgradeMode4UnmonitoredManual RollingUpgradeMode4 = original.RollingUpgradeMode4UnmonitoredManual
-)
-
-type RollingUpgradeMode5 = original.RollingUpgradeMode5
-
-const (
-	RollingUpgradeMode5Invalid           RollingUpgradeMode5 = original.RollingUpgradeMode5Invalid
-	RollingUpgradeMode5Monitored         RollingUpgradeMode5 = original.RollingUpgradeMode5Monitored
-	RollingUpgradeMode5UnmonitoredAuto   RollingUpgradeMode5 = original.RollingUpgradeMode5UnmonitoredAuto
-	RollingUpgradeMode5UnmonitoredManual RollingUpgradeMode5 = original.RollingUpgradeMode5UnmonitoredManual
+	SafetyCheckKindEnsureAvailability      SafetyCheckKind = original.SafetyCheckKindEnsureAvailability
+	SafetyCheckKindEnsurePartitionQuorum   SafetyCheckKind = original.SafetyCheckKindEnsurePartitionQuorum
+	SafetyCheckKindEnsureSeedNodeQuorum    SafetyCheckKind = original.SafetyCheckKindEnsureSeedNodeQuorum
+	SafetyCheckKindInvalid                 SafetyCheckKind = original.SafetyCheckKindInvalid
+	SafetyCheckKindWaitForInbuildReplica   SafetyCheckKind = original.SafetyCheckKindWaitForInbuildReplica
+	SafetyCheckKindWaitForPrimaryPlacement SafetyCheckKind = original.SafetyCheckKindWaitForPrimaryPlacement
+	SafetyCheckKindWaitForPrimarySwap      SafetyCheckKind = original.SafetyCheckKindWaitForPrimarySwap
+	SafetyCheckKindWaitForReconfiguration  SafetyCheckKind = original.SafetyCheckKindWaitForReconfiguration
 )
 
 type ServiceCorrelationScheme = original.ServiceCorrelationScheme
@@ -683,6 +807,15 @@ const (
 	ServiceCorrelationSchemeNonAlignedAffinity ServiceCorrelationScheme = original.ServiceCorrelationSchemeNonAlignedAffinity
 )
 
+type ServiceEndpointRole = original.ServiceEndpointRole
+
+const (
+	ServiceEndpointRoleInvalid           ServiceEndpointRole = original.ServiceEndpointRoleInvalid
+	ServiceEndpointRoleStatefulPrimary   ServiceEndpointRole = original.ServiceEndpointRoleStatefulPrimary
+	ServiceEndpointRoleStatefulSecondary ServiceEndpointRole = original.ServiceEndpointRoleStatefulSecondary
+	ServiceEndpointRoleStateless         ServiceEndpointRole = original.ServiceEndpointRoleStateless
+)
+
 type ServiceKind = original.ServiceKind
 
 const (
@@ -691,68 +824,44 @@ const (
 	ServiceKindStateless ServiceKind = original.ServiceKindStateless
 )
 
-type ServiceKind1 = original.ServiceKind1
+type ServiceKindBasicDeployedServiceReplicaDetailInfo = original.ServiceKindBasicDeployedServiceReplicaDetailInfo
 
 const (
-	ServiceKind1Invalid   ServiceKind1 = original.ServiceKind1Invalid
-	ServiceKind1Stateful  ServiceKind1 = original.ServiceKind1Stateful
-	ServiceKind1Stateless ServiceKind1 = original.ServiceKind1Stateless
+	ServiceKindDeployedServiceReplicaDetailInfo ServiceKindBasicDeployedServiceReplicaDetailInfo = original.ServiceKindDeployedServiceReplicaDetailInfo
+	ServiceKindStateful1                        ServiceKindBasicDeployedServiceReplicaDetailInfo = original.ServiceKindStateful1
+	ServiceKindStateless1                       ServiceKindBasicDeployedServiceReplicaDetailInfo = original.ServiceKindStateless1
 )
 
-type ServiceKind2 = original.ServiceKind2
+type ServiceKindBasicDeployedServiceReplicaInfo = original.ServiceKindBasicDeployedServiceReplicaInfo
 
 const (
-	ServiceKind2Invalid   ServiceKind2 = original.ServiceKind2Invalid
-	ServiceKind2Stateful  ServiceKind2 = original.ServiceKind2Stateful
-	ServiceKind2Stateless ServiceKind2 = original.ServiceKind2Stateless
+	ServiceKindBasicDeployedServiceReplicaInfoServiceKindDeployedServiceReplicaInfo ServiceKindBasicDeployedServiceReplicaInfo = original.ServiceKindBasicDeployedServiceReplicaInfoServiceKindDeployedServiceReplicaInfo
+	ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateful                   ServiceKindBasicDeployedServiceReplicaInfo = original.ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateful
+	ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateless                  ServiceKindBasicDeployedServiceReplicaInfo = original.ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateless
 )
 
-type ServiceKind3 = original.ServiceKind3
+type ServiceKindBasicReplicaHealth = original.ServiceKindBasicReplicaHealth
 
 const (
-	ServiceKind3Invalid   ServiceKind3 = original.ServiceKind3Invalid
-	ServiceKind3Stateful  ServiceKind3 = original.ServiceKind3Stateful
-	ServiceKind3Stateless ServiceKind3 = original.ServiceKind3Stateless
+	ServiceKindBasicReplicaHealthServiceKindReplicaHealth ServiceKindBasicReplicaHealth = original.ServiceKindBasicReplicaHealthServiceKindReplicaHealth
+	ServiceKindBasicReplicaHealthServiceKindStateful      ServiceKindBasicReplicaHealth = original.ServiceKindBasicReplicaHealthServiceKindStateful
+	ServiceKindBasicReplicaHealthServiceKindStateless     ServiceKindBasicReplicaHealth = original.ServiceKindBasicReplicaHealthServiceKindStateless
 )
 
-type ServiceKind4 = original.ServiceKind4
+type ServiceKindBasicReplicaHealthState = original.ServiceKindBasicReplicaHealthState
 
 const (
-	ServiceKind4Invalid   ServiceKind4 = original.ServiceKind4Invalid
-	ServiceKind4Stateful  ServiceKind4 = original.ServiceKind4Stateful
-	ServiceKind4Stateless ServiceKind4 = original.ServiceKind4Stateless
+	ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState ServiceKindBasicReplicaHealthState = original.ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState
+	ServiceKindBasicReplicaHealthStateServiceKindStateful           ServiceKindBasicReplicaHealthState = original.ServiceKindBasicReplicaHealthStateServiceKindStateful
+	ServiceKindBasicReplicaHealthStateServiceKindStateless          ServiceKindBasicReplicaHealthState = original.ServiceKindBasicReplicaHealthStateServiceKindStateless
 )
 
-type ServiceKind5 = original.ServiceKind5
+type ServiceKindBasicReplicaInfo = original.ServiceKindBasicReplicaInfo
 
 const (
-	ServiceKind5Invalid   ServiceKind5 = original.ServiceKind5Invalid
-	ServiceKind5Stateful  ServiceKind5 = original.ServiceKind5Stateful
-	ServiceKind5Stateless ServiceKind5 = original.ServiceKind5Stateless
-)
-
-type ServiceKind6 = original.ServiceKind6
-
-const (
-	ServiceKind6Invalid   ServiceKind6 = original.ServiceKind6Invalid
-	ServiceKind6Stateful  ServiceKind6 = original.ServiceKind6Stateful
-	ServiceKind6Stateless ServiceKind6 = original.ServiceKind6Stateless
-)
-
-type ServiceKindBasicCreateServiceDescription = original.ServiceKindBasicCreateServiceDescription
-
-const (
-	ServiceKindCreateServiceDescription ServiceKindBasicCreateServiceDescription = original.ServiceKindCreateServiceDescription
-	ServiceKindStateful1                ServiceKindBasicCreateServiceDescription = original.ServiceKindStateful1
-	ServiceKindStateless1               ServiceKindBasicCreateServiceDescription = original.ServiceKindStateless1
-)
-
-type ServiceKindBasicCreateServiceGroupDescription = original.ServiceKindBasicCreateServiceGroupDescription
-
-const (
-	ServiceKindBasicCreateServiceGroupDescriptionServiceKindCreateServiceGroupDescription ServiceKindBasicCreateServiceGroupDescription = original.ServiceKindBasicCreateServiceGroupDescriptionServiceKindCreateServiceGroupDescription
-	ServiceKindBasicCreateServiceGroupDescriptionServiceKindStateful                      ServiceKindBasicCreateServiceGroupDescription = original.ServiceKindBasicCreateServiceGroupDescriptionServiceKindStateful
-	ServiceKindBasicCreateServiceGroupDescriptionServiceKindStateless                     ServiceKindBasicCreateServiceGroupDescription = original.ServiceKindBasicCreateServiceGroupDescriptionServiceKindStateless
+	ServiceKindBasicReplicaInfoServiceKindReplicaInfo ServiceKindBasicReplicaInfo = original.ServiceKindBasicReplicaInfoServiceKindReplicaInfo
+	ServiceKindBasicReplicaInfoServiceKindStateful    ServiceKindBasicReplicaInfo = original.ServiceKindBasicReplicaInfoServiceKindStateful
+	ServiceKindBasicReplicaInfoServiceKindStateless   ServiceKindBasicReplicaInfo = original.ServiceKindBasicReplicaInfoServiceKindStateless
 )
 
 type ServiceKindBasicServiceDescription = original.ServiceKindBasicServiceDescription
@@ -763,28 +872,28 @@ const (
 	ServiceKindBasicServiceDescriptionServiceKindStateless          ServiceKindBasicServiceDescription = original.ServiceKindBasicServiceDescriptionServiceKindStateless
 )
 
-type ServiceKindBasicServiceGroupDescription = original.ServiceKindBasicServiceGroupDescription
+type ServiceKindBasicServiceInfo = original.ServiceKindBasicServiceInfo
 
 const (
-	ServiceKindBasicServiceGroupDescriptionServiceKindServiceGroupDescription ServiceKindBasicServiceGroupDescription = original.ServiceKindBasicServiceGroupDescriptionServiceKindServiceGroupDescription
-	ServiceKindBasicServiceGroupDescriptionServiceKindStateful                ServiceKindBasicServiceGroupDescription = original.ServiceKindBasicServiceGroupDescriptionServiceKindStateful
-	ServiceKindBasicServiceGroupDescriptionServiceKindStateless               ServiceKindBasicServiceGroupDescription = original.ServiceKindBasicServiceGroupDescriptionServiceKindStateless
+	ServiceKindBasicServiceInfoServiceKindServiceInfo ServiceKindBasicServiceInfo = original.ServiceKindBasicServiceInfoServiceKindServiceInfo
+	ServiceKindBasicServiceInfoServiceKindStateful    ServiceKindBasicServiceInfo = original.ServiceKindBasicServiceInfoServiceKindStateful
+	ServiceKindBasicServiceInfoServiceKindStateless   ServiceKindBasicServiceInfo = original.ServiceKindBasicServiceInfoServiceKindStateless
 )
 
-type ServiceKindBasicUpdateServiceDescription = original.ServiceKindBasicUpdateServiceDescription
+type ServiceKindBasicServicePartitionInfo = original.ServiceKindBasicServicePartitionInfo
 
 const (
-	ServiceKindBasicUpdateServiceDescriptionServiceKindStateful                 ServiceKindBasicUpdateServiceDescription = original.ServiceKindBasicUpdateServiceDescriptionServiceKindStateful
-	ServiceKindBasicUpdateServiceDescriptionServiceKindStateless                ServiceKindBasicUpdateServiceDescription = original.ServiceKindBasicUpdateServiceDescriptionServiceKindStateless
-	ServiceKindBasicUpdateServiceDescriptionServiceKindUpdateServiceDescription ServiceKindBasicUpdateServiceDescription = original.ServiceKindBasicUpdateServiceDescriptionServiceKindUpdateServiceDescription
+	ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo ServiceKindBasicServicePartitionInfo = original.ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo
+	ServiceKindBasicServicePartitionInfoServiceKindStateful             ServiceKindBasicServicePartitionInfo = original.ServiceKindBasicServicePartitionInfoServiceKindStateful
+	ServiceKindBasicServicePartitionInfoServiceKindStateless            ServiceKindBasicServicePartitionInfo = original.ServiceKindBasicServicePartitionInfoServiceKindStateless
 )
 
-type ServiceKindBasicUpdateServiceGroupDescription = original.ServiceKindBasicUpdateServiceGroupDescription
+type ServiceKindBasicServiceUpdateDescription = original.ServiceKindBasicServiceUpdateDescription
 
 const (
-	ServiceKindBasicUpdateServiceGroupDescriptionServiceKindStateful                      ServiceKindBasicUpdateServiceGroupDescription = original.ServiceKindBasicUpdateServiceGroupDescriptionServiceKindStateful
-	ServiceKindBasicUpdateServiceGroupDescriptionServiceKindStateless                     ServiceKindBasicUpdateServiceGroupDescription = original.ServiceKindBasicUpdateServiceGroupDescriptionServiceKindStateless
-	ServiceKindBasicUpdateServiceGroupDescriptionServiceKindUpdateServiceGroupDescription ServiceKindBasicUpdateServiceGroupDescription = original.ServiceKindBasicUpdateServiceGroupDescriptionServiceKindUpdateServiceGroupDescription
+	ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription ServiceKindBasicServiceUpdateDescription = original.ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription
+	ServiceKindBasicServiceUpdateDescriptionServiceKindStateful                 ServiceKindBasicServiceUpdateDescription = original.ServiceKindBasicServiceUpdateDescriptionServiceKindStateful
+	ServiceKindBasicServiceUpdateDescriptionServiceKindStateless                ServiceKindBasicServiceUpdateDescription = original.ServiceKindBasicServiceUpdateDescriptionServiceKindStateless
 )
 
 type ServiceLoadMetricWeight = original.ServiceLoadMetricWeight
@@ -796,13 +905,53 @@ const (
 	ServiceLoadMetricWeightZero   ServiceLoadMetricWeight = original.ServiceLoadMetricWeightZero
 )
 
+type ServiceOperationName = original.ServiceOperationName
+
+const (
+	ServiceOperationNameAbort      ServiceOperationName = original.ServiceOperationNameAbort
+	ServiceOperationNameChangeRole ServiceOperationName = original.ServiceOperationNameChangeRole
+	ServiceOperationNameClose      ServiceOperationName = original.ServiceOperationNameClose
+	ServiceOperationNameNone       ServiceOperationName = original.ServiceOperationNameNone
+	ServiceOperationNameOpen       ServiceOperationName = original.ServiceOperationNameOpen
+	ServiceOperationNameUnknown    ServiceOperationName = original.ServiceOperationNameUnknown
+)
+
+type ServicePackageActivationMode = original.ServicePackageActivationMode
+
+const (
+	ExclusiveProcess ServicePackageActivationMode = original.ExclusiveProcess
+	SharedProcess    ServicePackageActivationMode = original.SharedProcess
+)
+
 type ServicePartitionKind = original.ServicePartitionKind
 
 const (
-	ServicePartitionKindInt64Range ServicePartitionKind = original.ServicePartitionKindInt64Range
-	ServicePartitionKindInvalid    ServicePartitionKind = original.ServicePartitionKindInvalid
-	ServicePartitionKindNamed      ServicePartitionKind = original.ServicePartitionKindNamed
-	ServicePartitionKindSingleton  ServicePartitionKind = original.ServicePartitionKindSingleton
+	ServicePartitionKindInt64Range           ServicePartitionKind = original.ServicePartitionKindInt64Range
+	ServicePartitionKindNamed                ServicePartitionKind = original.ServicePartitionKindNamed
+	ServicePartitionKindPartitionInformation ServicePartitionKind = original.ServicePartitionKindPartitionInformation
+	ServicePartitionKindSingleton            ServicePartitionKind = original.ServicePartitionKindSingleton
+)
+
+type ServicePartitionStatus = original.ServicePartitionStatus
+
+const (
+	ServicePartitionStatusDeleting      ServicePartitionStatus = original.ServicePartitionStatusDeleting
+	ServicePartitionStatusInQuorumLoss  ServicePartitionStatus = original.ServicePartitionStatusInQuorumLoss
+	ServicePartitionStatusInvalid       ServicePartitionStatus = original.ServicePartitionStatusInvalid
+	ServicePartitionStatusNotReady      ServicePartitionStatus = original.ServicePartitionStatusNotReady
+	ServicePartitionStatusReady         ServicePartitionStatus = original.ServicePartitionStatusReady
+	ServicePartitionStatusReconfiguring ServicePartitionStatus = original.ServicePartitionStatusReconfiguring
+)
+
+type ServicePlacementPolicyType = original.ServicePlacementPolicyType
+
+const (
+	ServicePlacementPolicyTypeInvalid                    ServicePlacementPolicyType = original.ServicePlacementPolicyTypeInvalid
+	ServicePlacementPolicyTypeInvalidDomain              ServicePlacementPolicyType = original.ServicePlacementPolicyTypeInvalidDomain
+	ServicePlacementPolicyTypeNonPartiallyPlaceService   ServicePlacementPolicyType = original.ServicePlacementPolicyTypeNonPartiallyPlaceService
+	ServicePlacementPolicyTypePreferredPrimaryDomain     ServicePlacementPolicyType = original.ServicePlacementPolicyTypePreferredPrimaryDomain
+	ServicePlacementPolicyTypeRequiredDomain             ServicePlacementPolicyType = original.ServicePlacementPolicyTypeRequiredDomain
+	ServicePlacementPolicyTypeRequiredDomainDistribution ServicePlacementPolicyType = original.ServicePlacementPolicyTypeRequiredDomainDistribution
 )
 
 type ServiceStatus = original.ServiceStatus
@@ -811,9 +960,59 @@ const (
 	ServiceStatusActive    ServiceStatus = original.ServiceStatusActive
 	ServiceStatusCreating  ServiceStatus = original.ServiceStatusCreating
 	ServiceStatusDeleting  ServiceStatus = original.ServiceStatusDeleting
-	ServiceStatusFaile     ServiceStatus = original.ServiceStatusFaile
-	ServiceStatusInvalid   ServiceStatus = original.ServiceStatusInvalid
+	ServiceStatusFailed    ServiceStatus = original.ServiceStatusFailed
+	ServiceStatusUnknown   ServiceStatus = original.ServiceStatusUnknown
 	ServiceStatusUpgrading ServiceStatus = original.ServiceStatusUpgrading
+)
+
+type ServiceTypeRegistrationStatus = original.ServiceTypeRegistrationStatus
+
+const (
+	ServiceTypeRegistrationStatusDisabled   ServiceTypeRegistrationStatus = original.ServiceTypeRegistrationStatusDisabled
+	ServiceTypeRegistrationStatusEnabled    ServiceTypeRegistrationStatus = original.ServiceTypeRegistrationStatusEnabled
+	ServiceTypeRegistrationStatusInvalid    ServiceTypeRegistrationStatus = original.ServiceTypeRegistrationStatusInvalid
+	ServiceTypeRegistrationStatusRegistered ServiceTypeRegistrationStatus = original.ServiceTypeRegistrationStatusRegistered
+)
+
+type State = original.State
+
+const (
+	StateApproved  State = original.StateApproved
+	StateClaimed   State = original.StateClaimed
+	StateCompleted State = original.StateCompleted
+	StateCreated   State = original.StateCreated
+	StateExecuting State = original.StateExecuting
+	StateInvalid   State = original.StateInvalid
+	StatePreparing State = original.StatePreparing
+	StateRestoring State = original.StateRestoring
+)
+
+type Status = original.Status
+
+const (
+	StatusInvalid Status = original.StatusInvalid
+	StatusRunning Status = original.StatusRunning
+	StatusStopped Status = original.StatusStopped
+)
+
+type Type = original.Type
+
+const (
+	TypeInvalidDomain                     Type = original.TypeInvalidDomain
+	TypeNonPartiallyPlaceService          Type = original.TypeNonPartiallyPlaceService
+	TypePreferPrimaryDomain               Type = original.TypePreferPrimaryDomain
+	TypeRequireDomain                     Type = original.TypeRequireDomain
+	TypeRequireDomainDistribution         Type = original.TypeRequireDomainDistribution
+	TypeServicePlacementPolicyDescription Type = original.TypeServicePlacementPolicyDescription
+)
+
+type UpgradeDomainState = original.UpgradeDomainState
+
+const (
+	UpgradeDomainStateCompleted  UpgradeDomainState = original.UpgradeDomainStateCompleted
+	UpgradeDomainStateInProgress UpgradeDomainState = original.UpgradeDomainStateInProgress
+	UpgradeDomainStateInvalid    UpgradeDomainState = original.UpgradeDomainStateInvalid
+	UpgradeDomainStatePending    UpgradeDomainState = original.UpgradeDomainStatePending
 )
 
 type UpgradeKind = original.UpgradeKind
@@ -823,9 +1022,19 @@ const (
 	UpgradeKindRolling UpgradeKind = original.UpgradeKindRolling
 )
 
+type UpgradeMode = original.UpgradeMode
+
+const (
+	UpgradeModeInvalid           UpgradeMode = original.UpgradeModeInvalid
+	UpgradeModeMonitored         UpgradeMode = original.UpgradeModeMonitored
+	UpgradeModeUnmonitoredAuto   UpgradeMode = original.UpgradeModeUnmonitoredAuto
+	UpgradeModeUnmonitoredManual UpgradeMode = original.UpgradeModeUnmonitoredManual
+)
+
 type UpgradeState = original.UpgradeState
 
 const (
+	UpgradeStateFailed                   UpgradeState = original.UpgradeStateFailed
 	UpgradeStateInvalid                  UpgradeState = original.UpgradeStateInvalid
 	UpgradeStateRollingBackCompleted     UpgradeState = original.UpgradeStateRollingBackCompleted
 	UpgradeStateRollingBackInProgress    UpgradeState = original.UpgradeStateRollingBackInProgress
@@ -834,384 +1043,356 @@ const (
 	UpgradeStateRollingForwardPending    UpgradeState = original.UpgradeStateRollingForwardPending
 )
 
-type UpgradeState1 = original.UpgradeState1
+type UpgradeType = original.UpgradeType
 
 const (
-	UpgradeState1Invalid                  UpgradeState1 = original.UpgradeState1Invalid
-	UpgradeState1RollingBackCompleted     UpgradeState1 = original.UpgradeState1RollingBackCompleted
-	UpgradeState1RollingBackInProgress    UpgradeState1 = original.UpgradeState1RollingBackInProgress
-	UpgradeState1RollingForwardCompleted  UpgradeState1 = original.UpgradeState1RollingForwardCompleted
-	UpgradeState1RollingForwardInProgress UpgradeState1 = original.UpgradeState1RollingForwardInProgress
-	UpgradeState1RollingForwardPending    UpgradeState1 = original.UpgradeState1RollingForwardPending
+	UpgradeTypeInvalid             UpgradeType = original.UpgradeTypeInvalid
+	UpgradeTypeRolling             UpgradeType = original.UpgradeTypeRolling
+	UpgradeTypeRollingForceRestart UpgradeType = original.UpgradeTypeRollingForceRestart
 )
 
-type Application = original.Application
+type AadMetadata = original.AadMetadata
+type AadMetadataObject = original.AadMetadataObject
+type ApplicationCapacityDescription = original.ApplicationCapacityDescription
 type ApplicationDescription = original.ApplicationDescription
-type ApplicationDescriptionParameterListItem = original.ApplicationDescriptionParameterListItem
 type ApplicationHealth = original.ApplicationHealth
-type ApplicationHealthDeployedApplicationHealthStatesItem = original.ApplicationHealthDeployedApplicationHealthStatesItem
 type ApplicationHealthEvaluation = original.ApplicationHealthEvaluation
+type ApplicationHealthPolicies = original.ApplicationHealthPolicies
 type ApplicationHealthPolicy = original.ApplicationHealthPolicy
-type ApplicationHealthPolicyDefaultServiceTypeHealthPolicy = original.ApplicationHealthPolicyDefaultServiceTypeHealthPolicy
-type ApplicationHealthPolicyMap = original.ApplicationHealthPolicyMap
-type ApplicationHealthReport = original.ApplicationHealthReport
-type ApplicationHealthServiceHealthStatesItem = original.ApplicationHealthServiceHealthStatesItem
-type ApplicationList = original.ApplicationList
-type ApplicationManifest = original.ApplicationManifest
-type ApplicationParametersItem = original.ApplicationParametersItem
+type ApplicationHealthPolicyMapItem = original.ApplicationHealthPolicyMapItem
+type ApplicationHealthState = original.ApplicationHealthState
+type ApplicationHealthStateChunk = original.ApplicationHealthStateChunk
+type ApplicationHealthStateChunkList = original.ApplicationHealthStateChunkList
+type ApplicationHealthStateFilter = original.ApplicationHealthStateFilter
+type ApplicationInfo = original.ApplicationInfo
+type ApplicationLoadInfo = original.ApplicationLoadInfo
+type ApplicationMetricDescription = original.ApplicationMetricDescription
+type ApplicationNameInfo = original.ApplicationNameInfo
+type ApplicationParameter = original.ApplicationParameter
 type ApplicationsHealthEvaluation = original.ApplicationsHealthEvaluation
-type ApplicationType = original.ApplicationType
-type ApplicationTypeDefaultParameterListItem = original.ApplicationTypeDefaultParameterListItem
-type ApplicationTypeHealthEvaluation = original.ApplicationTypeHealthEvaluation
-type ApplicationUpgrade = original.ApplicationUpgrade
-type ApplicationUpgradeCurrentUpgradeDomainProgress = original.ApplicationUpgradeCurrentUpgradeDomainProgress
-type ApplicationUpgradeDeployedApplicationHealthStates = original.ApplicationUpgradeDeployedApplicationHealthStates
+type ApplicationTypeApplicationsHealthEvaluation = original.ApplicationTypeApplicationsHealthEvaluation
+type ApplicationTypeHealthPolicyMapItem = original.ApplicationTypeHealthPolicyMapItem
+type ApplicationTypeImageStorePath = original.ApplicationTypeImageStorePath
+type ApplicationTypeInfo = original.ApplicationTypeInfo
+type ApplicationTypeManifest = original.ApplicationTypeManifest
+type ApplicationUpgradeDescription = original.ApplicationUpgradeDescription
+type ApplicationUpgradeProgressInfo = original.ApplicationUpgradeProgressInfo
+type ApplicationUpgradeUpdateDescription = original.ApplicationUpgradeUpdateDescription
+type BinaryPropertyValue = original.BinaryPropertyValue
+type ChaosContext = original.ChaosContext
+type ChaosContextMapItem = original.ChaosContextMapItem
+type BasicChaosEvent = original.BasicChaosEvent
+type ChaosEvent = original.ChaosEvent
+type ChaosEventWrapper = original.ChaosEventWrapper
+type ChaosParameters = original.ChaosParameters
+type ChaosReport = original.ChaosReport
+type ChaosTargetFilter = original.ChaosTargetFilter
+type CheckExistsPropertyBatchOperation = original.CheckExistsPropertyBatchOperation
+type CheckSequencePropertyBatchOperation = original.CheckSequencePropertyBatchOperation
+type CheckValuePropertyBatchOperation = original.CheckValuePropertyBatchOperation
+type ClusterConfiguration = original.ClusterConfiguration
+type ClusterConfigurationUpgradeDescription = original.ClusterConfigurationUpgradeDescription
+type ClusterConfigurationUpgradeStatusInfo = original.ClusterConfigurationUpgradeStatusInfo
 type ClusterHealth = original.ClusterHealth
-type ClusterHealthApplicationHealthStateItem = original.ClusterHealthApplicationHealthStateItem
-type ClusterHealthNodeHealthStatesItem = original.ClusterHealthNodeHealthStatesItem
-type ClusterHealthNodeHealthStatesItemID = original.ClusterHealthNodeHealthStatesItemID
+type ClusterHealthChunk = original.ClusterHealthChunk
+type ClusterHealthChunkQueryDescription = original.ClusterHealthChunkQueryDescription
+type ClusterHealthPolicies = original.ClusterHealthPolicies
 type ClusterHealthPolicy = original.ClusterHealthPolicy
-type ClusterHealthReport = original.ClusterHealthReport
-type ClusterLoadInformation = original.ClusterLoadInformation
-type ClusterUpgradeHealthPolicy = original.ClusterUpgradeHealthPolicy
-type ClusterUpgradeProgress = original.ClusterUpgradeProgress
-type ClusterUpgradeProgressCurrentUpgradeDomainProgress = original.ClusterUpgradeProgressCurrentUpgradeDomainProgress
-type ClusterUpgradeProgressUpgradeDomainProgressAtFailure = original.ClusterUpgradeProgressUpgradeDomainProgressAtFailure
+type ClusterManifest = original.ClusterManifest
+type ClusterUpgradeDescriptionObject = original.ClusterUpgradeDescriptionObject
+type ClusterUpgradeHealthPolicyObject = original.ClusterUpgradeHealthPolicyObject
+type ClusterUpgradeProgressObject = original.ClusterUpgradeProgressObject
+type CodePackageEntryPoint = original.CodePackageEntryPoint
 type CodePackageEntryPointStatistics = original.CodePackageEntryPointStatistics
-type BasicCreateServiceDescription = original.BasicCreateServiceDescription
-type CreateServiceDescription = original.CreateServiceDescription
-type BasicCreateServiceGroupDescription = original.BasicCreateServiceGroupDescription
-type CreateServiceGroupDescription = original.CreateServiceGroupDescription
+type ComposeDeploymentStatusInfo = original.ComposeDeploymentStatusInfo
+type ComposeDeploymentUpgradeDescription = original.ComposeDeploymentUpgradeDescription
+type ComposeDeploymentUpgradeProgressInfo = original.ComposeDeploymentUpgradeProgressInfo
+type ContainerLogs = original.ContainerLogs
+type CreateComposeDeploymentDescription = original.CreateComposeDeploymentDescription
+type CurrentUpgradeDomainProgressInfo = original.CurrentUpgradeDomainProgressInfo
+type DeactivationIntentDescription = original.DeactivationIntentDescription
+type DeletePropertyBatchOperation = original.DeletePropertyBatchOperation
 type DeltaNodesCheckHealthEvaluation = original.DeltaNodesCheckHealthEvaluation
-type DeployedApplication = original.DeployedApplication
 type DeployedApplicationHealth = original.DeployedApplicationHealth
 type DeployedApplicationHealthEvaluation = original.DeployedApplicationHealthEvaluation
-type DeployedApplicationHealthReport = original.DeployedApplicationHealthReport
+type DeployedApplicationHealthState = original.DeployedApplicationHealthState
+type DeployedApplicationHealthStateChunk = original.DeployedApplicationHealthStateChunk
+type DeployedApplicationHealthStateChunkList = original.DeployedApplicationHealthStateChunkList
+type DeployedApplicationHealthStateFilter = original.DeployedApplicationHealthStateFilter
+type DeployedApplicationInfo = original.DeployedApplicationInfo
 type DeployedApplicationsHealthEvaluation = original.DeployedApplicationsHealthEvaluation
-type DeployedCodePackage = original.DeployedCodePackage
-type DeployedReplica = original.DeployedReplica
-type DeployedReplicaDetail = original.DeployedReplicaDetail
-type DeployedReplicaDetailReplicatorStatus = original.DeployedReplicaDetailReplicatorStatus
-type DeployedReplicaDetailReplicatorStatusReplicationQueueStatus = original.DeployedReplicaDetailReplicatorStatusReplicationQueueStatus
-type DeployedServiceHealthReport = original.DeployedServiceHealthReport
-type DeployedServicePackage = original.DeployedServicePackage
+type DeployedCodePackageInfo = original.DeployedCodePackageInfo
 type DeployedServicePackageHealth = original.DeployedServicePackageHealth
 type DeployedServicePackageHealthEvaluation = original.DeployedServicePackageHealthEvaluation
 type DeployedServicePackageHealthState = original.DeployedServicePackageHealthState
+type DeployedServicePackageHealthStateChunk = original.DeployedServicePackageHealthStateChunk
+type DeployedServicePackageHealthStateChunkList = original.DeployedServicePackageHealthStateChunkList
+type DeployedServicePackageHealthStateFilter = original.DeployedServicePackageHealthStateFilter
+type DeployedServicePackageInfo = original.DeployedServicePackageInfo
 type DeployedServicePackagesHealthEvaluation = original.DeployedServicePackagesHealthEvaluation
-type DeployedServiceType = original.DeployedServiceType
-type DisableNode = original.DisableNode
-type EntryPoint = original.EntryPoint
-type ErrorModel = original.ErrorModel
-type ErrorModelError = original.ErrorModelError
+type BasicDeployedServiceReplicaDetailInfo = original.BasicDeployedServiceReplicaDetailInfo
+type DeployedServiceReplicaDetailInfo = original.DeployedServiceReplicaDetailInfo
+type DeployedServiceReplicaDetailInfoModel = original.DeployedServiceReplicaDetailInfoModel
+type BasicDeployedServiceReplicaInfo = original.BasicDeployedServiceReplicaInfo
+type DeployedServiceReplicaInfo = original.DeployedServiceReplicaInfo
+type DeployedServiceTypeInfo = original.DeployedServiceTypeInfo
+type DeployedStatefulServiceReplicaDetailInfo = original.DeployedStatefulServiceReplicaDetailInfo
+type DeployedStatefulServiceReplicaInfo = original.DeployedStatefulServiceReplicaInfo
+type DeployedStatelessServiceInstanceDetailInfo = original.DeployedStatelessServiceInstanceDetailInfo
+type DeployedStatelessServiceInstanceInfo = original.DeployedStatelessServiceInstanceInfo
+type DeployServicePackageToNodeDescription = original.DeployServicePackageToNodeDescription
+type DoublePropertyValue = original.DoublePropertyValue
+type EnsureAvailabilitySafetyCheck = original.EnsureAvailabilitySafetyCheck
+type EnsurePartitionQurumSafetyCheck = original.EnsurePartitionQurumSafetyCheck
+type EntityHealth = original.EntityHealth
+type EntityHealthState = original.EntityHealthState
+type EntityHealthStateChunk = original.EntityHealthStateChunk
+type EntityHealthStateChunkList = original.EntityHealthStateChunkList
+type EntityKindHealthStateCount = original.EntityKindHealthStateCount
+type Epoch = original.Epoch
 type EventHealthEvaluation = original.EventHealthEvaluation
+type ExecutingFaultsChaosEvent = original.ExecutingFaultsChaosEvent
+type ExternalStoreProvisionApplicationTypeDescription = original.ExternalStoreProvisionApplicationTypeDescription
+type FabricCodeVersionInfo = original.FabricCodeVersionInfo
+type FabricConfigVersionInfo = original.FabricConfigVersionInfo
+type FabricError = original.FabricError
+type FabricErrorError = original.FabricErrorError
+type FailedPropertyBatchInfo = original.FailedPropertyBatchInfo
+type FailedUpgradeDomainProgressObject = original.FailedUpgradeDomainProgressObject
+type FailureUpgradeDomainProgressInfo = original.FailureUpgradeDomainProgressInfo
+type FileInfo = original.FileInfo
+type FileVersion = original.FileVersion
+type FolderInfo = original.FolderInfo
+type GetPropertyBatchOperation = original.GetPropertyBatchOperation
+type GUIDPropertyValue = original.GUIDPropertyValue
 type BasicHealthEvaluation = original.BasicHealthEvaluation
 type HealthEvaluation = original.HealthEvaluation
+type HealthEvaluationWrapper = original.HealthEvaluationWrapper
 type HealthEvent = original.HealthEvent
-type HealthReport = original.HealthReport
-type ListApplicationType = original.ListApplicationType
-type ListDeployedApplication = original.ListDeployedApplication
-type ListDeployedCodePackage = original.ListDeployedCodePackage
-type ListDeployedReplica = original.ListDeployedReplica
-type ListDeployedServicePackage = original.ListDeployedServicePackage
-type ListDeployedServiceType = original.ListDeployedServiceType
-type ListServiceType = original.ListServiceType
-type LoadMetricInformation = original.LoadMetricInformation
-type LoadMetricInformationMaxNodeLoadID = original.LoadMetricInformationMaxNodeLoadID
-type LoadMetricInformationMinNodeLoadID = original.LoadMetricInformationMinNodeLoadID
-type MonitoringPolicy = original.MonitoringPolicy
-type Node = original.Node
+type HealthInformation = original.HealthInformation
+type HealthStateCount = original.HealthStateCount
+type HealthStatistics = original.HealthStatistics
+type ImageStoreContent = original.ImageStoreContent
+type ImageStoreCopyDescription = original.ImageStoreCopyDescription
+type Int64PropertyValue = original.Int64PropertyValue
+type Int64RangePartitionInformation = original.Int64RangePartitionInformation
+type InvokeDataLossResult = original.InvokeDataLossResult
+type InvokeQuorumLossResult = original.InvokeQuorumLossResult
+type KeyValueStoreReplicaStatus = original.KeyValueStoreReplicaStatus
+type ListDeployedCodePackageInfo = original.ListDeployedCodePackageInfo
+type ListDeployedServicePackageInfo = original.ListDeployedServicePackageInfo
+type ListDeployedServiceReplicaInfo = original.ListDeployedServiceReplicaInfo
+type ListDeployedServiceTypeInfo = original.ListDeployedServiceTypeInfo
+type ListFabricCodeVersionInfo = original.ListFabricCodeVersionInfo
+type ListFabricConfigVersionInfo = original.ListFabricConfigVersionInfo
+type ListOperationStatus = original.ListOperationStatus
+type ListRepairTask = original.ListRepairTask
+type ListServiceTypeInfo = original.ListServiceTypeInfo
+type LoadMetricReport = original.LoadMetricReport
+type LoadMetricReportInfo = original.LoadMetricReportInfo
+type MonitoringPolicyDescription = original.MonitoringPolicyDescription
+type NameDescription = original.NameDescription
+type NamedPartitionInformation = original.NamedPartitionInformation
+type NamedPartitionSchemeDescription = original.NamedPartitionSchemeDescription
+type NodeDeactivationInfo = original.NodeDeactivationInfo
+type NodeDeactivationTask = original.NodeDeactivationTask
+type NodeDeactivationTaskID = original.NodeDeactivationTaskID
 type NodeHealth = original.NodeHealth
 type NodeHealthEvaluation = original.NodeHealthEvaluation
-type NodeHealthReport = original.NodeHealthReport
+type NodeHealthState = original.NodeHealthState
+type NodeHealthStateChunk = original.NodeHealthStateChunk
+type NodeHealthStateChunkList = original.NodeHealthStateChunkList
+type NodeHealthStateFilter = original.NodeHealthStateFilter
 type NodeID = original.NodeID
-type NodeList = original.NodeList
-type NodeLoadInformation = original.NodeLoadInformation
+type NodeImpact = original.NodeImpact
+type NodeInfo = original.NodeInfo
+type NodeLoadInfo = original.NodeLoadInfo
 type NodeLoadMetricInformation = original.NodeLoadMetricInformation
-type NodeNodeDeactivationInfo = original.NodeNodeDeactivationInfo
+type NodeRepairImpactDescription = original.NodeRepairImpactDescription
+type NodeRepairTargetDescription = original.NodeRepairTargetDescription
+type NodeResult = original.NodeResult
 type NodesHealthEvaluation = original.NodesHealthEvaluation
-type Partition = original.Partition
-type PartitionCurrentConfigurationEpoch = original.PartitionCurrentConfigurationEpoch
-type PartitionDescription = original.PartitionDescription
+type NodeTransitionProgress = original.NodeTransitionProgress
+type NodeTransitionResult = original.NodeTransitionResult
+type NodeUpgradeProgressInfo = original.NodeUpgradeProgressInfo
+type OperationStatus = original.OperationStatus
+type PackageSharingPolicyInfo = original.PackageSharingPolicyInfo
+type PagedApplicationInfoList = original.PagedApplicationInfoList
+type PagedApplicationTypeInfoList = original.PagedApplicationTypeInfoList
+type PagedComposeDeploymentStatusInfoList = original.PagedComposeDeploymentStatusInfoList
+type PagedDeployedApplicationInfoList = original.PagedDeployedApplicationInfoList
+type PagedNodeInfoList = original.PagedNodeInfoList
+type PagedPropertyInfoList = original.PagedPropertyInfoList
+type PagedReplicaInfoList = original.PagedReplicaInfoList
+type PagedServiceInfoList = original.PagedServiceInfoList
+type PagedServicePartitionInfoList = original.PagedServicePartitionInfoList
+type PagedSubNameInfoList = original.PagedSubNameInfoList
+type PartitionDataLossProgress = original.PartitionDataLossProgress
 type PartitionHealth = original.PartitionHealth
 type PartitionHealthEvaluation = original.PartitionHealthEvaluation
-type PartitionHealthReplicaHealthStatesItem = original.PartitionHealthReplicaHealthStatesItem
-type PartitionHealthReport = original.PartitionHealthReport
+type PartitionHealthState = original.PartitionHealthState
+type PartitionHealthStateChunk = original.PartitionHealthStateChunk
+type PartitionHealthStateChunkList = original.PartitionHealthStateChunkList
+type PartitionHealthStateFilter = original.PartitionHealthStateFilter
+type BasicPartitionInformation = original.BasicPartitionInformation
 type PartitionInformation = original.PartitionInformation
-type PartitionList = original.PartitionList
 type PartitionLoadInformation = original.PartitionLoadInformation
+type PartitionQuorumLossProgress = original.PartitionQuorumLossProgress
+type PartitionRestartProgress = original.PartitionRestartProgress
+type BasicPartitionSafetyCheck = original.BasicPartitionSafetyCheck
+type PartitionSafetyCheck = original.PartitionSafetyCheck
+type BasicPartitionSchemeDescription = original.BasicPartitionSchemeDescription
+type PartitionSchemeDescription = original.PartitionSchemeDescription
 type PartitionsHealthEvaluation = original.PartitionsHealthEvaluation
-type RegisterApplicationType = original.RegisterApplicationType
-type RegisterClusterPackage = original.RegisterClusterPackage
-type Replica = original.Replica
+type PrimaryReplicatorStatus = original.PrimaryReplicatorStatus
+type PropertyBatchDescriptionList = original.PropertyBatchDescriptionList
+type BasicPropertyBatchInfo = original.BasicPropertyBatchInfo
+type PropertyBatchInfo = original.PropertyBatchInfo
+type PropertyBatchInfoModel = original.PropertyBatchInfoModel
+type BasicPropertyBatchOperation = original.BasicPropertyBatchOperation
+type PropertyBatchOperation = original.PropertyBatchOperation
+type PropertyDescription = original.PropertyDescription
+type PropertyInfo = original.PropertyInfo
+type PropertyMetadata = original.PropertyMetadata
+type BasicPropertyValue = original.BasicPropertyValue
+type PropertyValue = original.PropertyValue
+type ProvisionApplicationTypeDescription = original.ProvisionApplicationTypeDescription
+type BasicProvisionApplicationTypeDescriptionBase = original.BasicProvisionApplicationTypeDescriptionBase
+type ProvisionApplicationTypeDescriptionBase = original.ProvisionApplicationTypeDescriptionBase
+type ProvisionFabricDescription = original.ProvisionFabricDescription
+type PutPropertyBatchOperation = original.PutPropertyBatchOperation
+type ReconfigurationInformation = original.ReconfigurationInformation
+type RegistryCredential = original.RegistryCredential
+type RemoteReplicatorAcknowledgementDetail = original.RemoteReplicatorAcknowledgementDetail
+type RemoteReplicatorAcknowledgementStatus = original.RemoteReplicatorAcknowledgementStatus
+type RemoteReplicatorStatus = original.RemoteReplicatorStatus
+type BasicRepairImpactDescriptionBase = original.BasicRepairImpactDescriptionBase
+type RepairImpactDescriptionBase = original.RepairImpactDescriptionBase
+type BasicRepairTargetDescriptionBase = original.BasicRepairTargetDescriptionBase
+type RepairTargetDescriptionBase = original.RepairTargetDescriptionBase
+type RepairTask = original.RepairTask
+type RepairTaskApproveDescription = original.RepairTaskApproveDescription
+type RepairTaskCancelDescription = original.RepairTaskCancelDescription
+type RepairTaskDeleteDescription = original.RepairTaskDeleteDescription
+type RepairTaskHistory = original.RepairTaskHistory
+type RepairTaskUpdateHealthPolicyDescription = original.RepairTaskUpdateHealthPolicyDescription
+type RepairTaskUpdateInfo = original.RepairTaskUpdateInfo
+type BasicReplicaHealth = original.BasicReplicaHealth
 type ReplicaHealth = original.ReplicaHealth
 type ReplicaHealthEvaluation = original.ReplicaHealthEvaluation
-type ReplicaHealthReport = original.ReplicaHealthReport
-type ReplicaList = original.ReplicaList
-type ReplicaLoadInformation = original.ReplicaLoadInformation
+type ReplicaHealthModel = original.ReplicaHealthModel
+type BasicReplicaHealthState = original.BasicReplicaHealthState
+type ReplicaHealthState = original.ReplicaHealthState
+type ReplicaHealthStateChunk = original.ReplicaHealthStateChunk
+type ReplicaHealthStateChunkList = original.ReplicaHealthStateChunkList
+type ReplicaHealthStateFilter = original.ReplicaHealthStateFilter
+type BasicReplicaInfo = original.BasicReplicaInfo
+type ReplicaInfo = original.ReplicaInfo
+type ReplicaInfoModel = original.ReplicaInfoModel
 type ReplicasHealthEvaluation = original.ReplicasHealthEvaluation
+type BasicReplicaStatusBase = original.BasicReplicaStatusBase
+type ReplicaStatusBase = original.ReplicaStatusBase
+type ReplicatorQueueStatus = original.ReplicatorQueueStatus
+type BasicReplicatorStatus = original.BasicReplicatorStatus
+type ReplicatorStatus = original.ReplicatorStatus
+type ResolvedServiceEndpoint = original.ResolvedServiceEndpoint
 type ResolvedServicePartition = original.ResolvedServicePartition
-type ResolvedServicePartitionEndpointsItem = original.ResolvedServicePartitionEndpointsItem
-type ResumeApplicationUpgrade = original.ResumeApplicationUpgrade
-type ResumeClusterUpgrade = original.ResumeClusterUpgrade
-type Service = original.Service
+type RestartDeployedCodePackageDescription = original.RestartDeployedCodePackageDescription
+type RestartNodeDescription = original.RestartNodeDescription
+type RestartPartitionResult = original.RestartPartitionResult
+type ResumeApplicationUpgradeDescription = original.ResumeApplicationUpgradeDescription
+type ResumeClusterUpgradeDescription = original.ResumeClusterUpgradeDescription
+type RollingUpgradeUpdateDescription = original.RollingUpgradeUpdateDescription
+type BasicSafetyCheck = original.BasicSafetyCheck
+type SafetyCheck = original.SafetyCheck
+type SafetyCheckWrapper = original.SafetyCheckWrapper
+type SecondaryActiveReplicatorStatus = original.SecondaryActiveReplicatorStatus
+type SecondaryIdleReplicatorStatus = original.SecondaryIdleReplicatorStatus
+type BasicSecondaryReplicatorStatus = original.BasicSecondaryReplicatorStatus
+type SecondaryReplicatorStatus = original.SecondaryReplicatorStatus
+type SeedNodeSafetyCheck = original.SeedNodeSafetyCheck
+type SelectedPartition = original.SelectedPartition
 type ServiceCorrelationDescription = original.ServiceCorrelationDescription
 type BasicServiceDescription = original.BasicServiceDescription
 type ServiceDescription = original.ServiceDescription
 type ServiceDescriptionModel = original.ServiceDescriptionModel
-type ServiceDescriptionTemplate = original.ServiceDescriptionTemplate
-type BasicServiceGroupDescription = original.BasicServiceGroupDescription
-type ServiceGroupDescription = original.ServiceGroupDescription
-type ServiceGroupDescriptionModel = original.ServiceGroupDescriptionModel
-type ServiceGroupMember = original.ServiceGroupMember
-type ServiceGroupMemberDescription = original.ServiceGroupMemberDescription
+type ServiceFromTemplateDescription = original.ServiceFromTemplateDescription
 type ServiceHealth = original.ServiceHealth
 type ServiceHealthEvaluation = original.ServiceHealthEvaluation
-type ServiceHealthPartitionHealthStatesItem = original.ServiceHealthPartitionHealthStatesItem
-type ServiceHealthReport = original.ServiceHealthReport
-type ServiceList = original.ServiceList
+type ServiceHealthState = original.ServiceHealthState
+type ServiceHealthStateChunk = original.ServiceHealthStateChunk
+type ServiceHealthStateChunkList = original.ServiceHealthStateChunkList
+type ServiceHealthStateFilter = original.ServiceHealthStateFilter
+type BasicServiceInfo = original.BasicServiceInfo
+type ServiceInfo = original.ServiceInfo
+type ServiceInfoModel = original.ServiceInfoModel
 type ServiceLoadMetricDescription = original.ServiceLoadMetricDescription
-type ServiceManifest = original.ServiceManifest
+type ServiceNameInfo = original.ServiceNameInfo
+type BasicServicePartitionInfo = original.BasicServicePartitionInfo
+type ServicePartitionInfo = original.ServicePartitionInfo
+type ServicePartitionInfoModel = original.ServicePartitionInfoModel
+type ServicePlacementInvalidDomainPolicyDescription = original.ServicePlacementInvalidDomainPolicyDescription
+type ServicePlacementNonPartiallyPlaceServicePolicyDescription = original.ServicePlacementNonPartiallyPlaceServicePolicyDescription
+type BasicServicePlacementPolicyDescription = original.BasicServicePlacementPolicyDescription
 type ServicePlacementPolicyDescription = original.ServicePlacementPolicyDescription
+type ServicePlacementPreferPrimaryDomainPolicyDescription = original.ServicePlacementPreferPrimaryDomainPolicyDescription
+type ServicePlacementRequiredDomainPolicyDescription = original.ServicePlacementRequiredDomainPolicyDescription
+type ServicePlacementRequireDomainDistributionPolicyDescription = original.ServicePlacementRequireDomainDistributionPolicyDescription
 type ServicesHealthEvaluation = original.ServicesHealthEvaluation
-type ServiceType = original.ServiceType
-type ServiceTypeServiceTypeDescription = original.ServiceTypeServiceTypeDescription
-type StartApplicationUpgrade = original.StartApplicationUpgrade
-type StartApplicationUpgradeParametersItem = original.StartApplicationUpgradeParametersItem
-type StartClusterUpgrade = original.StartClusterUpgrade
-type StatefulCreateServiceDescription = original.StatefulCreateServiceDescription
-type StatefulCreateServiceGroupDescription = original.StatefulCreateServiceGroupDescription
+type BasicServiceTypeDescription = original.BasicServiceTypeDescription
+type ServiceTypeDescription = original.ServiceTypeDescription
+type ServiceTypeExtensionDescription = original.ServiceTypeExtensionDescription
+type ServiceTypeHealthPolicy = original.ServiceTypeHealthPolicy
+type ServiceTypeHealthPolicyMapItem = original.ServiceTypeHealthPolicyMapItem
+type ServiceTypeInfo = original.ServiceTypeInfo
+type ServiceTypeManifest = original.ServiceTypeManifest
+type BasicServiceUpdateDescription = original.BasicServiceUpdateDescription
+type ServiceUpdateDescription = original.ServiceUpdateDescription
+type SingletonPartitionInformation = original.SingletonPartitionInformation
+type SingletonPartitionSchemeDescription = original.SingletonPartitionSchemeDescription
+type StartClusterUpgradeDescription = original.StartClusterUpgradeDescription
+type StartedChaosEvent = original.StartedChaosEvent
 type StatefulServiceDescription = original.StatefulServiceDescription
-type StatefulServiceGroupDescription = original.StatefulServiceGroupDescription
-type StatefulUpdateServiceDescription = original.StatefulUpdateServiceDescription
-type StatefulUpdateServiceGroupDescription = original.StatefulUpdateServiceGroupDescription
-type StatelessCreateServiceDescription = original.StatelessCreateServiceDescription
-type StatelessCreateServiceGroupDescription = original.StatelessCreateServiceGroupDescription
+type StatefulServiceInfo = original.StatefulServiceInfo
+type StatefulServicePartitionInfo = original.StatefulServicePartitionInfo
+type StatefulServiceReplicaHealth = original.StatefulServiceReplicaHealth
+type StatefulServiceReplicaHealthState = original.StatefulServiceReplicaHealthState
+type StatefulServiceReplicaInfo = original.StatefulServiceReplicaInfo
+type StatefulServiceTypeDescription = original.StatefulServiceTypeDescription
+type StatefulServiceUpdateDescription = original.StatefulServiceUpdateDescription
 type StatelessServiceDescription = original.StatelessServiceDescription
-type StatelessServiceGroupDescription = original.StatelessServiceGroupDescription
-type StatelessUpdateServiceDescription = original.StatelessUpdateServiceDescription
-type StatelessUpdateServiceGroupDescription = original.StatelessUpdateServiceGroupDescription
+type StatelessServiceInfo = original.StatelessServiceInfo
+type StatelessServiceInstanceHealth = original.StatelessServiceInstanceHealth
+type StatelessServiceInstanceHealthState = original.StatelessServiceInstanceHealthState
+type StatelessServiceInstanceInfo = original.StatelessServiceInstanceInfo
+type StatelessServicePartitionInfo = original.StatelessServicePartitionInfo
+type StatelessServiceTypeDescription = original.StatelessServiceTypeDescription
+type StatelessServiceUpdateDescription = original.StatelessServiceUpdateDescription
+type StoppedChaosEvent = original.StoppedChaosEvent
 type String = original.String
+type StringPropertyValue = original.StringPropertyValue
+type SuccessfulPropertyBatchInfo = original.SuccessfulPropertyBatchInfo
 type SystemApplicationHealthEvaluation = original.SystemApplicationHealthEvaluation
-type UnhealthyEvaluation = original.UnhealthyEvaluation
-type UnregisterApplicationType = original.UnregisterApplicationType
-type UnregisterClusterPackage = original.UnregisterClusterPackage
-type UpdateApplicationUpgrade = original.UpdateApplicationUpgrade
-type UpdateClusterUpgrade = original.UpdateClusterUpgrade
-type UpdateDescription = original.UpdateDescription
-type BasicUpdateServiceDescription = original.BasicUpdateServiceDescription
-type UpdateServiceDescription = original.UpdateServiceDescription
-type BasicUpdateServiceGroupDescription = original.BasicUpdateServiceGroupDescription
-type UpdateServiceGroupDescription = original.UpdateServiceGroupDescription
+type TestErrorChaosEvent = original.TestErrorChaosEvent
+type UniformInt64RangePartitionSchemeDescription = original.UniformInt64RangePartitionSchemeDescription
+type UnprovisionApplicationTypeDescriptionInfo = original.UnprovisionApplicationTypeDescriptionInfo
+type UnprovisionFabricDescription = original.UnprovisionFabricDescription
+type UpdateClusterUpgradeDescription = original.UpdateClusterUpgradeDescription
 type UpgradeDomainDeltaNodesCheckHealthEvaluation = original.UpgradeDomainDeltaNodesCheckHealthEvaluation
-type UpgradeDomainDeployedApplicationsHealthEvaluation = original.UpgradeDomainDeployedApplicationsHealthEvaluation
+type UpgradeDomainInfo = original.UpgradeDomainInfo
 type UpgradeDomainNodesHealthEvaluation = original.UpgradeDomainNodesHealthEvaluation
-type NodeHealthsClient = original.NodeHealthsClient
+type UpgradeOrchestrationServiceState = original.UpgradeOrchestrationServiceState
+type UpgradeOrchestrationServiceStateSummary = original.UpgradeOrchestrationServiceStateSummary
+type UploadChunkRange = original.UploadChunkRange
+type UploadSession = original.UploadSession
+type UploadSessionInfo = original.UploadSessionInfo
+type ValidationFailedChaosEvent = original.ValidationFailedChaosEvent
+type WaitForInbuildReplicaSafetyCheck = original.WaitForInbuildReplicaSafetyCheck
+type WaitForPrimaryPlacementSafetyCheck = original.WaitForPrimaryPlacementSafetyCheck
+type WaitForPrimarySwapSafetyCheck = original.WaitForPrimarySwapSafetyCheck
+type WaitForReconfigurationSafetyCheck = original.WaitForReconfigurationSafetyCheck
+type WaitingChaosEvent = original.WaitingChaosEvent
 
-func NewNodeHealthsClient(timeout *int32) NodeHealthsClient {
-	return original.NewNodeHealthsClient(timeout)
-}
-func NewNodeHealthsClientWithBaseURI(baseURI string, timeout *int32) NodeHealthsClient {
-	return original.NewNodeHealthsClientWithBaseURI(baseURI, timeout)
-}
-
-type NodeLoadInformationsClient = original.NodeLoadInformationsClient
-
-func NewNodeLoadInformationsClient(timeout *int32) NodeLoadInformationsClient {
-	return original.NewNodeLoadInformationsClient(timeout)
-}
-func NewNodeLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) NodeLoadInformationsClient {
-	return original.NewNodeLoadInformationsClientWithBaseURI(baseURI, timeout)
-}
-
-type NodesClient = original.NodesClient
-
-func NewNodesClient(timeout *int32) NodesClient {
-	return original.NewNodesClient(timeout)
-}
-func NewNodesClientWithBaseURI(baseURI string, timeout *int32) NodesClient {
-	return original.NewNodesClientWithBaseURI(baseURI, timeout)
-}
-
-type NodeStatesClient = original.NodeStatesClient
-
-func NewNodeStatesClient(timeout *int32) NodeStatesClient {
-	return original.NewNodeStatesClient(timeout)
-}
-func NewNodeStatesClientWithBaseURI(baseURI string, timeout *int32) NodeStatesClient {
-	return original.NewNodeStatesClientWithBaseURI(baseURI, timeout)
-}
-
-type PartitionHealthsClient = original.PartitionHealthsClient
-
-func NewPartitionHealthsClient(timeout *int32) PartitionHealthsClient {
-	return original.NewPartitionHealthsClient(timeout)
-}
-func NewPartitionHealthsClientWithBaseURI(baseURI string, timeout *int32) PartitionHealthsClient {
-	return original.NewPartitionHealthsClientWithBaseURI(baseURI, timeout)
-}
-
-type PartitionListsClient = original.PartitionListsClient
-
-func NewPartitionListsClient(timeout *int32) PartitionListsClient {
-	return original.NewPartitionListsClient(timeout)
-}
-func NewPartitionListsClientWithBaseURI(baseURI string, timeout *int32) PartitionListsClient {
-	return original.NewPartitionListsClientWithBaseURI(baseURI, timeout)
-}
-
-type PartitionLoadInformationsClient = original.PartitionLoadInformationsClient
-
-func NewPartitionLoadInformationsClient(timeout *int32) PartitionLoadInformationsClient {
-	return original.NewPartitionLoadInformationsClient(timeout)
-}
-func NewPartitionLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) PartitionLoadInformationsClient {
-	return original.NewPartitionLoadInformationsClientWithBaseURI(baseURI, timeout)
-}
-
-type PartitionLoadsClient = original.PartitionLoadsClient
-
-func NewPartitionLoadsClient(timeout *int32) PartitionLoadsClient {
-	return original.NewPartitionLoadsClient(timeout)
-}
-func NewPartitionLoadsClientWithBaseURI(baseURI string, timeout *int32) PartitionLoadsClient {
-	return original.NewPartitionLoadsClientWithBaseURI(baseURI, timeout)
-}
-
-type PartitionsClient = original.PartitionsClient
-
-func NewPartitionsClient(timeout *int32) PartitionsClient {
-	return original.NewPartitionsClient(timeout)
-}
-func NewPartitionsClientWithBaseURI(baseURI string, timeout *int32) PartitionsClient {
-	return original.NewPartitionsClientWithBaseURI(baseURI, timeout)
-}
-
-type ReplicaHealthsClient = original.ReplicaHealthsClient
-
-func NewReplicaHealthsClient(timeout *int32) ReplicaHealthsClient {
-	return original.NewReplicaHealthsClient(timeout)
-}
-func NewReplicaHealthsClientWithBaseURI(baseURI string, timeout *int32) ReplicaHealthsClient {
-	return original.NewReplicaHealthsClientWithBaseURI(baseURI, timeout)
-}
-
-type ReplicaLoadInformationsClient = original.ReplicaLoadInformationsClient
-
-func NewReplicaLoadInformationsClient(timeout *int32) ReplicaLoadInformationsClient {
-	return original.NewReplicaLoadInformationsClient(timeout)
-}
-func NewReplicaLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) ReplicaLoadInformationsClient {
-	return original.NewReplicaLoadInformationsClientWithBaseURI(baseURI, timeout)
-}
-
-type ReplicasClient = original.ReplicasClient
-
-func NewReplicasClient(timeout *int32) ReplicasClient {
-	return original.NewReplicasClient(timeout)
-}
-func NewReplicasClientWithBaseURI(baseURI string, timeout *int32) ReplicasClient {
-	return original.NewReplicasClientWithBaseURI(baseURI, timeout)
-}
-
-type ServiceDescriptionsClient = original.ServiceDescriptionsClient
-
-func NewServiceDescriptionsClient(timeout *int32) ServiceDescriptionsClient {
-	return original.NewServiceDescriptionsClient(timeout)
-}
-func NewServiceDescriptionsClientWithBaseURI(baseURI string, timeout *int32) ServiceDescriptionsClient {
-	return original.NewServiceDescriptionsClientWithBaseURI(baseURI, timeout)
-}
-
-type ServiceFromTemplatesClient = original.ServiceFromTemplatesClient
-
-func NewServiceFromTemplatesClient(timeout *int32) ServiceFromTemplatesClient {
-	return original.NewServiceFromTemplatesClient(timeout)
-}
-func NewServiceFromTemplatesClientWithBaseURI(baseURI string, timeout *int32) ServiceFromTemplatesClient {
-	return original.NewServiceFromTemplatesClientWithBaseURI(baseURI, timeout)
-}
-
-type ServiceGroupDescriptionsClient = original.ServiceGroupDescriptionsClient
-
-func NewServiceGroupDescriptionsClient(timeout *int32) ServiceGroupDescriptionsClient {
-	return original.NewServiceGroupDescriptionsClient(timeout)
-}
-func NewServiceGroupDescriptionsClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupDescriptionsClient {
-	return original.NewServiceGroupDescriptionsClientWithBaseURI(baseURI, timeout)
-}
-
-type ServiceGroupFromTemplatesClient = original.ServiceGroupFromTemplatesClient
-
-func NewServiceGroupFromTemplatesClient(timeout *int32) ServiceGroupFromTemplatesClient {
-	return original.NewServiceGroupFromTemplatesClient(timeout)
-}
-func NewServiceGroupFromTemplatesClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupFromTemplatesClient {
-	return original.NewServiceGroupFromTemplatesClientWithBaseURI(baseURI, timeout)
-}
-
-type ServiceGroupMembersClient = original.ServiceGroupMembersClient
-
-func NewServiceGroupMembersClient(timeout *int32) ServiceGroupMembersClient {
-	return original.NewServiceGroupMembersClient(timeout)
-}
-func NewServiceGroupMembersClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupMembersClient {
-	return original.NewServiceGroupMembersClientWithBaseURI(baseURI, timeout)
-}
-
-type ServiceGroupsClient = original.ServiceGroupsClient
-
-func NewServiceGroupsClient(timeout *int32) ServiceGroupsClient {
-	return original.NewServiceGroupsClient(timeout)
-}
-func NewServiceGroupsClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupsClient {
-	return original.NewServiceGroupsClientWithBaseURI(baseURI, timeout)
-}
-
-type ServiceHealthsClient = original.ServiceHealthsClient
-
-func NewServiceHealthsClient(timeout *int32) ServiceHealthsClient {
-	return original.NewServiceHealthsClient(timeout)
-}
-func NewServiceHealthsClientWithBaseURI(baseURI string, timeout *int32) ServiceHealthsClient {
-	return original.NewServiceHealthsClientWithBaseURI(baseURI, timeout)
-}
-
-type ServiceManifestsClient = original.ServiceManifestsClient
-
-func NewServiceManifestsClient(timeout *int32) ServiceManifestsClient {
-	return original.NewServiceManifestsClient(timeout)
-}
-func NewServiceManifestsClientWithBaseURI(baseURI string, timeout *int32) ServiceManifestsClient {
-	return original.NewServiceManifestsClientWithBaseURI(baseURI, timeout)
-}
-
-type ServicesClient = original.ServicesClient
-
-func NewServicesClient(timeout *int32) ServicesClient {
-	return original.NewServicesClient(timeout)
-}
-func NewServicesClientWithBaseURI(baseURI string, timeout *int32) ServicesClient {
-	return original.NewServicesClientWithBaseURI(baseURI, timeout)
-}
-
-type ServiceTypesClient = original.ServiceTypesClient
-
-func NewServiceTypesClient(timeout *int32) ServiceTypesClient {
-	return original.NewServiceTypesClient(timeout)
-}
-func NewServiceTypesClientWithBaseURI(baseURI string, timeout *int32) ServiceTypesClient {
-	return original.NewServiceTypesClientWithBaseURI(baseURI, timeout)
-}
-
-type UpgradeProgressesClient = original.UpgradeProgressesClient
-
-func NewUpgradeProgressesClient(timeout *int32) UpgradeProgressesClient {
-	return original.NewUpgradeProgressesClient(timeout)
-}
-func NewUpgradeProgressesClientWithBaseURI(baseURI string, timeout *int32) UpgradeProgressesClient {
-	return original.NewUpgradeProgressesClientWithBaseURI(baseURI, timeout)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }

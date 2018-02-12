@@ -41,8 +41,8 @@ func NewStoragePoolsClientWithBaseURI(baseURI string, subscriptionID string) Sto
 
 // Get get a storage pool.
 //
-// location is location of the resource. storageSubSystem is name of the storage system. storagePool is storage pool
-// name.
+// location is location of the resource. storageSubSystem is name of the storage system. storagePool is storage
+// pool name.
 func (client StoragePoolsClient) Get(ctx context.Context, location string, storageSubSystem string, storagePool string) (result StoragePool, err error) {
 	req, err := client.GetPreparer(ctx, location, storageSubSystem, storagePool)
 	if err != nil {

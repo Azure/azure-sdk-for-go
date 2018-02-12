@@ -41,8 +41,8 @@ func NewNetworkFabricOperationsClientWithBaseURI(baseURI string, subscriptionID 
 
 // Get get the status of a network fabric operation.
 //
-// location is location of the resource. provider is name of the provider. networkOperationResult is id of a network
-// fabric operation.
+// location is location of the resource. provider is name of the provider. networkOperationResult is id of a
+// network fabric operation.
 func (client NetworkFabricOperationsClient) Get(ctx context.Context, location string, provider string, networkOperationResult string) (result OperationStatus, err error) {
 	req, err := client.GetPreparer(ctx, location, provider, networkOperationResult)
 	if err != nil {

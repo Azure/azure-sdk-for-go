@@ -97,23 +97,23 @@ const (
 type Type = original.Type
 
 const (
-	Hive Type = original.Hive
-	USQL Type = original.USQL
+	TypeHive          Type = original.TypeHive
+	TypeJobProperties Type = original.TypeJobProperties
+	TypeUSQL          Type = original.TypeUSQL
 )
 
 type TypeBasicCreateJobProperties = original.TypeBasicCreateJobProperties
 
 const (
-	TypeCreateJobProperties TypeBasicCreateJobProperties = original.TypeCreateJobProperties
-	TypeUSQL                TypeBasicCreateJobProperties = original.TypeUSQL
+	TypeBasicCreateJobPropertiesTypeCreateJobProperties TypeBasicCreateJobProperties = original.TypeBasicCreateJobPropertiesTypeCreateJobProperties
+	TypeBasicCreateJobPropertiesTypeUSQL                TypeBasicCreateJobProperties = original.TypeBasicCreateJobPropertiesTypeUSQL
 )
 
-type TypeBasicProperties = original.TypeBasicProperties
+type TypeEnum = original.TypeEnum
 
 const (
-	TypeBasicPropertiesTypeHive          TypeBasicProperties = original.TypeBasicPropertiesTypeHive
-	TypeBasicPropertiesTypeJobProperties TypeBasicProperties = original.TypeBasicPropertiesTypeJobProperties
-	TypeBasicPropertiesTypeUSQL          TypeBasicProperties = original.TypeBasicPropertiesTypeUSQL
+	Hive TypeEnum = original.Hive
+	USQL TypeEnum = original.USQL
 )
 
 type BaseJobParameters = original.BaseJobParameters

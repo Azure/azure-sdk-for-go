@@ -178,8 +178,8 @@ type AutoScaleSettings struct {
 	InitialNodeCount *int32 `json:"initialNodeCount,omitempty"`
 }
 
-// AzureBlobFileSystemReference provides required information, for the service to be able to mount Azure Blob Storage
-// container on the cluster nodes.
+// AzureBlobFileSystemReference provides required information, for the service to be able to mount Azure Blob
+// Storage container on the cluster nodes.
 type AzureBlobFileSystemReference struct {
 	AccountName   *string                      `json:"accountName,omitempty"`
 	ContainerName *string                      `json:"containerName,omitempty"`
@@ -260,6 +260,8 @@ type CloudErrorBody struct {
 // Cluster contains information about a Cluster.
 type Cluster struct {
 	autorest.Response `json:"-"`
+	// ClusterProperties - The properties associated with the Cluster.
+	*ClusterProperties `json:"properties,omitempty"`
 	// ID - The ID of the resource
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
@@ -269,9 +271,31 @@ type Cluster struct {
 	// Location - The location of the resource
 	Location *string `json:"location,omitempty"`
 	// Tags - The tags of the resource
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// ClusterProperties - The properties associated with the Cluster.
-	*ClusterProperties `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Cluster.
+func (c Cluster) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.ClusterProperties != nil {
+		objectMap["properties"] = c.ClusterProperties
+	}
+	if c.ID != nil {
+		objectMap["id"] = c.ID
+	}
+	if c.Name != nil {
+		objectMap["name"] = c.Name
+	}
+	if c.Type != nil {
+		objectMap["type"] = c.Type
+	}
+	if c.Location != nil {
+		objectMap["location"] = c.Location
+	}
+	if c.Tags != nil {
+		objectMap["tags"] = c.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Cluster struct.
@@ -281,66 +305,63 @@ func (c *Cluster) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties ClusterProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var clusterProperties ClusterProperties
+				err = json.Unmarshal(*v, &clusterProperties)
+				if err != nil {
+					return err
+				}
+				c.ClusterProperties = &clusterProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				c.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				c.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				c.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				c.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				c.Tags = tags
+			}
 		}
-		c.ClusterProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		c.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		c.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		c.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		c.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		c.Tags = &tags
 	}
 
 	return nil
@@ -364,9 +385,24 @@ type ClusterCreateParameters struct {
 	// Location - The region in which to create the cluster.
 	Location *string `json:"location,omitempty"`
 	// Tags - The user specified tags associated with the Cluster.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// ClusterBaseProperties - The properties of the Cluster.
 	*ClusterBaseProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ClusterCreateParameters.
+func (ccp ClusterCreateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ccp.Location != nil {
+		objectMap["location"] = ccp.Location
+	}
+	if ccp.Tags != nil {
+		objectMap["tags"] = ccp.Tags
+	}
+	if ccp.ClusterBaseProperties != nil {
+		objectMap["properties"] = ccp.ClusterBaseProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ClusterCreateParameters struct.
@@ -376,36 +412,36 @@ func (ccp *ClusterCreateParameters) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ccp.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ccp.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var clusterBaseProperties ClusterBaseProperties
+				err = json.Unmarshal(*v, &clusterBaseProperties)
+				if err != nil {
+					return err
+				}
+				ccp.ClusterBaseProperties = &clusterBaseProperties
+			}
 		}
-		ccp.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		ccp.Tags = &tags
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ClusterBaseProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		ccp.ClusterBaseProperties = &properties
 	}
 
 	return nil
@@ -549,22 +585,39 @@ func (future ClustersCreateFuture) Result(client ClustersClient) (c Cluster, err
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.ClustersCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return c, autorest.NewError("batchai.ClustersCreateFuture", "Result", "asynchronous operation has not completed")
+		return c, azure.NewAsyncOpIncompleteError("batchai.ClustersCreateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		c, err = client.CreateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.ClustersCreateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.ClustersCreateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	c, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.ClustersCreateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -580,31 +633,60 @@ func (future ClustersDeleteFuture) Result(client ClustersClient) (ar autorest.Re
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.ClustersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("batchai.ClustersDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("batchai.ClustersDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.ClustersDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.ClustersDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.ClustersDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
 // ClusterUpdateParameters parameters supplied to the Update operation.
 type ClusterUpdateParameters struct {
 	// Tags - The user specified tags associated with the Cluster.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// ClusterUpdateProperties - The properties of the Cluster.
 	*ClusterUpdateProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ClusterUpdateParameters.
+func (cup ClusterUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cup.Tags != nil {
+		objectMap["tags"] = cup.Tags
+	}
+	if cup.ClusterUpdateProperties != nil {
+		objectMap["properties"] = cup.ClusterUpdateProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ClusterUpdateParameters struct.
@@ -614,26 +696,27 @@ func (cup *ClusterUpdateParameters) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				cup.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var clusterUpdateProperties ClusterUpdateProperties
+				err = json.Unmarshal(*v, &clusterUpdateProperties)
+				if err != nil {
+					return err
+				}
+				cup.ClusterUpdateProperties = &clusterUpdateProperties
+			}
 		}
-		cup.Tags = &tags
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties ClusterUpdateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		cup.ClusterUpdateProperties = &properties
 	}
 
 	return nil
@@ -712,36 +795,36 @@ func (f *File) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				f.Name = &name
+			}
+		case "downloadUrl":
+			if v != nil {
+				var downloadURL string
+				err = json.Unmarshal(*v, &downloadURL)
+				if err != nil {
+					return err
+				}
+				f.DownloadURL = &downloadURL
+			}
+		case "properties":
+			if v != nil {
+				var fileProperties FileProperties
+				err = json.Unmarshal(*v, &fileProperties)
+				if err != nil {
+					return err
+				}
+				f.FileProperties = &fileProperties
+			}
 		}
-		f.Name = &name
-	}
-
-	v = m["downloadUrl"]
-	if v != nil {
-		var downloadURL string
-		err = json.Unmarshal(*m["downloadUrl"], &downloadURL)
-		if err != nil {
-			return err
-		}
-		f.DownloadURL = &downloadURL
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties FileProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		f.FileProperties = &properties
 	}
 
 	return nil
@@ -860,6 +943,8 @@ type FileProperties struct {
 // FileServer contains information about the File Server.
 type FileServer struct {
 	autorest.Response `json:"-"`
+	// FileServerProperties - The properties associated with the File Server.
+	*FileServerProperties `json:"properties,omitempty"`
 	// ID - The ID of the resource
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
@@ -869,9 +954,31 @@ type FileServer struct {
 	// Location - The location of the resource
 	Location *string `json:"location,omitempty"`
 	// Tags - The tags of the resource
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// FileServerProperties - The properties associated with the File Server.
-	*FileServerProperties `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for FileServer.
+func (fs FileServer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fs.FileServerProperties != nil {
+		objectMap["properties"] = fs.FileServerProperties
+	}
+	if fs.ID != nil {
+		objectMap["id"] = fs.ID
+	}
+	if fs.Name != nil {
+		objectMap["name"] = fs.Name
+	}
+	if fs.Type != nil {
+		objectMap["type"] = fs.Type
+	}
+	if fs.Location != nil {
+		objectMap["location"] = fs.Location
+	}
+	if fs.Tags != nil {
+		objectMap["tags"] = fs.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for FileServer struct.
@@ -881,66 +988,63 @@ func (fs *FileServer) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties FileServerProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var fileServerProperties FileServerProperties
+				err = json.Unmarshal(*v, &fileServerProperties)
+				if err != nil {
+					return err
+				}
+				fs.FileServerProperties = &fileServerProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				fs.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				fs.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				fs.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				fs.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				fs.Tags = tags
+			}
 		}
-		fs.FileServerProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		fs.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		fs.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		fs.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		fs.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		fs.Tags = &tags
 	}
 
 	return nil
@@ -960,9 +1064,24 @@ type FileServerCreateParameters struct {
 	// Location - The region in which to create the File Server.
 	Location *string `json:"location,omitempty"`
 	// Tags - The user specified tags associated with the File Server.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// FileServerBaseProperties - The properties of the File Server.
 	*FileServerBaseProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileServerCreateParameters.
+func (fscp FileServerCreateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fscp.Location != nil {
+		objectMap["location"] = fscp.Location
+	}
+	if fscp.Tags != nil {
+		objectMap["tags"] = fscp.Tags
+	}
+	if fscp.FileServerBaseProperties != nil {
+		objectMap["properties"] = fscp.FileServerBaseProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for FileServerCreateParameters struct.
@@ -972,36 +1091,36 @@ func (fscp *FileServerCreateParameters) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				fscp.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				fscp.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var fileServerBaseProperties FileServerBaseProperties
+				err = json.Unmarshal(*v, &fileServerBaseProperties)
+				if err != nil {
+					return err
+				}
+				fscp.FileServerBaseProperties = &fileServerBaseProperties
+			}
 		}
-		fscp.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		fscp.Tags = &tags
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties FileServerBaseProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		fscp.FileServerBaseProperties = &properties
 	}
 
 	return nil
@@ -1146,22 +1265,39 @@ func (future FileServersCreateFuture) Result(client FileServersClient) (fs FileS
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.FileServersCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return fs, autorest.NewError("batchai.FileServersCreateFuture", "Result", "asynchronous operation has not completed")
+		return fs, azure.NewAsyncOpIncompleteError("batchai.FileServersCreateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		fs, err = client.CreateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.FileServersCreateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.FileServersCreateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	fs, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.FileServersCreateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1177,22 +1313,39 @@ func (future FileServersDeleteFuture) Result(client FileServersClient) (ar autor
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.FileServersDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("batchai.FileServersDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("batchai.FileServersDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.FileServersDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.FileServersDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.FileServersDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1221,6 +1374,8 @@ type InputDirectory struct {
 // Job contains information about the job.
 type Job struct {
 	autorest.Response `json:"-"`
+	// JobProperties - The properties associated with the job.
+	*JobProperties `json:"properties,omitempty"`
 	// ID - The ID of the resource
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
@@ -1230,9 +1385,31 @@ type Job struct {
 	// Location - The location of the resource
 	Location *string `json:"location,omitempty"`
 	// Tags - The tags of the resource
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// JobProperties - The properties associated with the job.
-	*JobProperties `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Job.
+func (j Job) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if j.JobProperties != nil {
+		objectMap["properties"] = j.JobProperties
+	}
+	if j.ID != nil {
+		objectMap["id"] = j.ID
+	}
+	if j.Name != nil {
+		objectMap["name"] = j.Name
+	}
+	if j.Type != nil {
+		objectMap["type"] = j.Type
+	}
+	if j.Location != nil {
+		objectMap["location"] = j.Location
+	}
+	if j.Tags != nil {
+		objectMap["tags"] = j.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Job struct.
@@ -1242,66 +1419,63 @@ func (j *Job) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties JobProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var jobProperties JobProperties
+				err = json.Unmarshal(*v, &jobProperties)
+				if err != nil {
+					return err
+				}
+				j.JobProperties = &jobProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				j.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				j.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				j.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				j.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				j.Tags = tags
+			}
 		}
-		j.JobProperties = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		j.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		j.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		j.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		j.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		j.Tags = &tags
 	}
 
 	return nil
@@ -1347,9 +1521,24 @@ type JobCreateParameters struct {
 	// Location - The region in which to create the job.
 	Location *string `json:"location,omitempty"`
 	// Tags - The user specified tags associated with the job.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// JobBaseProperties - The properties of the Job.
 	*JobBaseProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobCreateParameters.
+func (jcp JobCreateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if jcp.Location != nil {
+		objectMap["location"] = jcp.Location
+	}
+	if jcp.Tags != nil {
+		objectMap["tags"] = jcp.Tags
+	}
+	if jcp.JobBaseProperties != nil {
+		objectMap["properties"] = jcp.JobBaseProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for JobCreateParameters struct.
@@ -1359,36 +1548,36 @@ func (jcp *JobCreateParameters) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				jcp.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				jcp.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var jobBaseProperties JobBaseProperties
+				err = json.Unmarshal(*v, &jobBaseProperties)
+				if err != nil {
+					return err
+				}
+				jcp.JobBaseProperties = &jobBaseProperties
+			}
 		}
-		jcp.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		jcp.Tags = &tags
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties JobBaseProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		jcp.JobBaseProperties = &properties
 	}
 
 	return nil
@@ -1573,22 +1762,39 @@ func (future JobsCreateFuture) Result(client JobsClient) (j Job, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.JobsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return j, autorest.NewError("batchai.JobsCreateFuture", "Result", "asynchronous operation has not completed")
+		return j, azure.NewAsyncOpIncompleteError("batchai.JobsCreateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		j, err = client.CreateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.JobsCreateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.JobsCreateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	j, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.JobsCreateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1604,22 +1810,39 @@ func (future JobsDeleteFuture) Result(client JobsClient) (ar autorest.Response, 
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.JobsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("batchai.JobsDeleteFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("batchai.JobsDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.JobsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.JobsDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.JobsDeleteFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1635,22 +1858,39 @@ func (future JobsTerminateFuture) Result(client JobsClient) (ar autorest.Respons
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.JobsTerminateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("batchai.JobsTerminateFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("batchai.JobsTerminateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.TerminateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "batchai.JobsTerminateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.JobsTerminateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.TerminateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.JobsTerminateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1726,9 +1966,9 @@ type Operation struct {
 	// Name - This is of the format {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
 	// Display - The object that describes the operation.
-	Display    *OperationDisplay       `json:"display,omitempty"`
-	Origin     *string                 `json:"origin,omitempty"`
-	Properties *map[string]interface{} `json:"properties,omitempty"`
+	Display    *OperationDisplay `json:"display,omitempty"`
+	Origin     *string           `json:"origin,omitempty"`
+	Properties interface{}       `json:"properties,omitempty"`
 }
 
 // OperationDisplay the object that describes the operation.
@@ -1985,7 +2225,28 @@ type Resource struct {
 	// Location - The location of the resource
 	Location *string `json:"location,omitempty"`
 	// Tags - The tags of the resource
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.ID != nil {
+		objectMap["id"] = r.ID
+	}
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Type != nil {
+		objectMap["type"] = r.Type
+	}
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	if r.Tags != nil {
+		objectMap["tags"] = r.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // ResourceID represents a resource ID. For example, for a subnet, it is the resource URL for the subnet.
@@ -1995,8 +2256,8 @@ type ResourceID struct {
 }
 
 // ScaleSettings at least one of manual or autoScale settings must be specified. Only one of manual or autoScale
-// settings can be specified. If autoScale settings are specified, the system automatically scales the cluster up and
-// down (within the supplied limits) based on the pending jobs on the cluster.
+// settings can be specified. If autoScale settings are specified, the system automatically scales the cluster up
+// and down (within the supplied limits) based on the pending jobs on the cluster.
 type ScaleSettings struct {
 	Manual    *ManualScaleSettings `json:"manual,omitempty"`
 	AutoScale *AutoScaleSettings   `json:"autoScale,omitempty"`

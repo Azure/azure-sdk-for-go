@@ -54,7 +54,7 @@ func (client SoftwareUpdateConfigurationsClient) Create(ctx context.Context, sof
 				Chain: []validation.Constraint{{Target: "parameters.SoftwareUpdateConfigurationProperties.UpdateConfiguration", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.SoftwareUpdateConfigurationProperties.ScheduleInfo", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.SoftwareUpdateConfigurationsClient", "Create")
+		return result, validation.NewError("automation.SoftwareUpdateConfigurationsClient", "Create", err.Error())
 	}
 
 	req, err := client.CreatePreparer(ctx, softwareUpdateConfigurationName, parameters)
@@ -133,7 +133,7 @@ func (client SoftwareUpdateConfigurationsClient) Delete(ctx context.Context, sof
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
 			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.SoftwareUpdateConfigurationsClient", "Delete")
+		return result, validation.NewError("automation.SoftwareUpdateConfigurationsClient", "Delete", err.Error())
 	}
 
 	req, err := client.DeletePreparer(ctx, softwareUpdateConfigurationName)
@@ -209,7 +209,7 @@ func (client SoftwareUpdateConfigurationsClient) GetByName(ctx context.Context, 
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
 			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.SoftwareUpdateConfigurationsClient", "GetByName")
+		return result, validation.NewError("automation.SoftwareUpdateConfigurationsClient", "GetByName", err.Error())
 	}
 
 	req, err := client.GetByNamePreparer(ctx, softwareUpdateConfigurationName)
@@ -286,7 +286,7 @@ func (client SoftwareUpdateConfigurationsClient) List(ctx context.Context, filte
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
 			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.SoftwareUpdateConfigurationsClient", "List")
+		return result, validation.NewError("automation.SoftwareUpdateConfigurationsClient", "List", err.Error())
 	}
 
 	req, err := client.ListPreparer(ctx, filter)

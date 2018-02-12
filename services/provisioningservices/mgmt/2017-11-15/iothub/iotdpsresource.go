@@ -49,7 +49,7 @@ func (client IotDpsResourceClient) CheckProvisioningServiceNameAvailability(ctx 
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: arguments,
 			Constraints: []validation.Constraint{{Target: "arguments.Name", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "iothub.IotDpsResourceClient", "CheckProvisioningServiceNameAvailability")
+		return result, validation.NewError("iothub.IotDpsResourceClient", "CheckProvisioningServiceNameAvailability", err.Error())
 	}
 
 	req, err := client.CheckProvisioningServiceNameAvailabilityPreparer(ctx, arguments)
@@ -118,14 +118,14 @@ func (client IotDpsResourceClient) CheckProvisioningServiceNameAvailabilityRespo
 // to retrieve the provisioning service metadata and security metadata, and then combine them with the modified values
 // in a new body to update the provisioning service.
 //
-// resourceGroupName is resource group identifier. provisioningServiceName is name of provisioning service to create or
-// update. iotDpsDescription is description of the provisioning service to create or update.
+// resourceGroupName is resource group identifier. provisioningServiceName is name of provisioning service to
+// create or update. iotDpsDescription is description of the provisioning service to create or update.
 func (client IotDpsResourceClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription) (result IotDpsResourceCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: iotDpsDescription,
 			Constraints: []validation.Constraint{{Target: "iotDpsDescription.Properties", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "iotDpsDescription.Sku", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "iothub.IotDpsResourceClient", "CreateOrUpdate")
+		return result, validation.NewError("iothub.IotDpsResourceClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, provisioningServiceName, iotDpsDescription)
@@ -196,7 +196,8 @@ func (client IotDpsResourceClient) CreateOrUpdateResponder(resp *http.Response) 
 
 // Delete deletes the Provisioning Service.
 //
-// provisioningServiceName is name of provisioning service to delete. resourceGroupName is resource group identifier.
+// provisioningServiceName is name of provisioning service to delete. resourceGroupName is resource group
+// identifier.
 func (client IotDpsResourceClient) Delete(ctx context.Context, provisioningServiceName string, resourceGroupName string) (result IotDpsResourceDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, provisioningServiceName, resourceGroupName)
 	if err != nil {
@@ -263,7 +264,8 @@ func (client IotDpsResourceClient) DeleteResponder(resp *http.Response) (result 
 
 // Get get the metadata of the provisioning service without SAS keys.
 //
-// provisioningServiceName is name of the provisioning service to retrieve. resourceGroupName is resource group name.
+// provisioningServiceName is name of the provisioning service to retrieve. resourceGroupName is resource group
+// name.
 func (client IotDpsResourceClient) Get(ctx context.Context, provisioningServiceName string, resourceGroupName string) (result ProvisioningServiceDescription, err error) {
 	req, err := client.GetPreparer(ctx, provisioningServiceName, resourceGroupName)
 	if err != nil {
@@ -841,8 +843,9 @@ func (client IotDpsResourceClient) ListValidSkusComplete(ctx context.Context, pr
 
 // Update update an existing provisioning service's tags. to update other fields use the CreateOrUpdate method
 //
-// resourceGroupName is resource group identifier. provisioningServiceName is name of provisioning service to create or
-// update. provisioningServiceTags is updated tag information to set into the provisioning service instance.
+// resourceGroupName is resource group identifier. provisioningServiceName is name of provisioning service to
+// create or update. provisioningServiceTags is updated tag information to set into the provisioning service
+// instance.
 func (client IotDpsResourceClient) Update(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource) (result IotDpsResourceUpdateFuture, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, provisioningServiceName, provisioningServiceTags)
 	if err != nil {

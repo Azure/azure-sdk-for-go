@@ -43,16 +43,16 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 // CreateOrUpdate create or update a Location Based Services Account. A Location Based Services Account holds the keys
 // which allow access to the Location Based Services REST APIs.
 //
-// resourceGroupName is the name of the Azure Resource Group. accountName is the name of the Location Based Services
-// Account. locationBasedServicesAccountCreateParameters is the new or updated parameters for the Location Based
-// Services Account.
+// resourceGroupName is the name of the Azure Resource Group. accountName is the name of the Location Based
+// Services Account. locationBasedServicesAccountCreateParameters is the new or updated parameters for the Location
+// Based Services Account.
 func (client AccountsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, locationBasedServicesAccountCreateParameters BasedServicesAccountCreateParameters) (result BasedServicesAccount, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: locationBasedServicesAccountCreateParameters,
 			Constraints: []validation.Constraint{{Target: "locationBasedServicesAccountCreateParameters.LocationProperty", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "locationBasedServicesAccountCreateParameters.Sku", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "locationBasedServicesAccountCreateParameters.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "location.AccountsClient", "CreateOrUpdate")
+		return result, validation.NewError("location.AccountsClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, accountName, locationBasedServicesAccountCreateParameters)
@@ -121,8 +121,8 @@ func (client AccountsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 
 // Delete delete a Location Based Services Account
 //
-// resourceGroupName is the name of the Azure Resource Group. accountName is the name of the Location Based Services
-// Account.
+// resourceGroupName is the name of the Azure Resource Group. accountName is the name of the Location Based
+// Services Account.
 func (client AccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
@@ -187,8 +187,8 @@ func (client AccountsClient) DeleteResponder(resp *http.Response) (result autore
 
 // Get get a Location Based Services Account
 //
-// resourceGroupName is the name of the Azure Resource Group. accountName is the name of the Location Based Services
-// Account.
+// resourceGroupName is the name of the Azure Resource Group. accountName is the name of the Location Based
+// Services Account.
 func (client AccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string) (result BasedServicesAccount, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
@@ -383,8 +383,8 @@ func (client AccountsClient) ListBySubscriptionResponder(resp *http.Response) (r
 // access to the Location Based Services REST APIs. Only one key is needed at a time; two are given to provide seamless
 // key regeneration.
 //
-// resourceGroupName is the name of the Azure Resource Group. accountName is the name of the Location Based Services
-// Account.
+// resourceGroupName is the name of the Azure Resource Group. accountName is the name of the Location Based
+// Services Account.
 func (client AccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string) (result BasedServicesAccountKeys, err error) {
 	req, err := client.ListKeysPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
@@ -515,7 +515,7 @@ func (client AccountsClient) Move(ctx context.Context, resourceGroupName string,
 		{TargetValue: moveRequest,
 			Constraints: []validation.Constraint{{Target: "moveRequest.TargetResourceGroup", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "moveRequest.ResourceIds", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "location.AccountsClient", "Move")
+		return result, validation.NewError("location.AccountsClient", "Move", err.Error())
 	}
 
 	req, err := client.MovePreparer(ctx, resourceGroupName, moveRequest)
@@ -583,8 +583,8 @@ func (client AccountsClient) MoveResponder(resp *http.Response) (result autorest
 // RegenerateKeys regenerate either the primary or secondary key for use with the Location Based Services APIs. The old
 // key will stop working immediately.
 //
-// resourceGroupName is the name of the Azure Resource Group. accountName is the name of the Location Based Services
-// Account. keySpecification is which key to regenerate:  primary or secondary.
+// resourceGroupName is the name of the Azure Resource Group. accountName is the name of the Location Based
+// Services Account. keySpecification is which key to regenerate:  primary or secondary.
 func (client AccountsClient) RegenerateKeys(ctx context.Context, resourceGroupName string, accountName string, keySpecification BasedServicesKeySpecification) (result BasedServicesAccountKeys, err error) {
 	req, err := client.RegenerateKeysPreparer(ctx, resourceGroupName, accountName, keySpecification)
 	if err != nil {
@@ -653,9 +653,9 @@ func (client AccountsClient) RegenerateKeysResponder(resp *http.Response) (resul
 // Update updates a Location Based Services Account. Only a subset of the parameters may be updated after creation,
 // such as Sku and Tags.
 //
-// resourceGroupName is the name of the Azure Resource Group. accountName is the name of the Location Based Services
-// Account. locationBasedServicesAccountUpdateParameters is the updated parameters for the Location Based Services
-// Account.
+// resourceGroupName is the name of the Azure Resource Group. accountName is the name of the Location Based
+// Services Account. locationBasedServicesAccountUpdateParameters is the updated parameters for the Location Based
+// Services Account.
 func (client AccountsClient) Update(ctx context.Context, resourceGroupName string, accountName string, locationBasedServicesAccountUpdateParameters BasedServicesAccountUpdateParameters) (result BasedServicesAccount, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, accountName, locationBasedServicesAccountUpdateParameters)
 	if err != nil {

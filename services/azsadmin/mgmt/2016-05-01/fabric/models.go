@@ -95,10 +95,12 @@ const (
 	Unknown ScaleUnitType = "Unknown"
 )
 
-// EdgeGateway this resource represents a gateway, which provides the configuration needed to provide gateway services
-// to virtual networks.
+// EdgeGateway this resource represents a gateway, which provides the configuration needed to provide gateway
+// services to virtual networks.
 type EdgeGateway struct {
 	autorest.Response `json:"-"`
+	// EdgeGatewayModel - Model which holds information related to edge gateways.
+	*EdgeGatewayModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -108,9 +110,31 @@ type EdgeGateway struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// EdgeGatewayModel - Model which holds information related to edge gateways.
-	*EdgeGatewayModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for EdgeGateway.
+func (eg EdgeGateway) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if eg.EdgeGatewayModel != nil {
+		objectMap["properties"] = eg.EdgeGatewayModel
+	}
+	if eg.ID != nil {
+		objectMap["id"] = eg.ID
+	}
+	if eg.Name != nil {
+		objectMap["name"] = eg.Name
+	}
+	if eg.Type != nil {
+		objectMap["type"] = eg.Type
+	}
+	if eg.Location != nil {
+		objectMap["location"] = eg.Location
+	}
+	if eg.Tags != nil {
+		objectMap["tags"] = eg.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for EdgeGateway struct.
@@ -120,66 +144,63 @@ func (eg *EdgeGateway) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties EdgeGatewayModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var edgeGatewayModel EdgeGatewayModel
+				err = json.Unmarshal(*v, &edgeGatewayModel)
+				if err != nil {
+					return err
+				}
+				eg.EdgeGatewayModel = &edgeGatewayModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				eg.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				eg.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				eg.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				eg.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				eg.Tags = tags
+			}
 		}
-		eg.EdgeGatewayModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		eg.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		eg.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		eg.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		eg.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		eg.Tags = &tags
 	}
 
 	return nil
@@ -302,6 +323,8 @@ type EdgeGatewayModel struct {
 // EdgeGatewayPool this resource represents an edge gateway pool, which contains an array of gateways.
 type EdgeGatewayPool struct {
 	autorest.Response `json:"-"`
+	// EdgeGatewayPoolModel - All the properties of an edge gateway pool.
+	*EdgeGatewayPoolModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -311,9 +334,31 @@ type EdgeGatewayPool struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// EdgeGatewayPoolModel - All the properties of an edge gateway pool.
-	*EdgeGatewayPoolModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for EdgeGatewayPool.
+func (egp EdgeGatewayPool) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if egp.EdgeGatewayPoolModel != nil {
+		objectMap["properties"] = egp.EdgeGatewayPoolModel
+	}
+	if egp.ID != nil {
+		objectMap["id"] = egp.ID
+	}
+	if egp.Name != nil {
+		objectMap["name"] = egp.Name
+	}
+	if egp.Type != nil {
+		objectMap["type"] = egp.Type
+	}
+	if egp.Location != nil {
+		objectMap["location"] = egp.Location
+	}
+	if egp.Tags != nil {
+		objectMap["tags"] = egp.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for EdgeGatewayPool struct.
@@ -323,66 +368,63 @@ func (egp *EdgeGatewayPool) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties EdgeGatewayPoolModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var edgeGatewayPoolModel EdgeGatewayPoolModel
+				err = json.Unmarshal(*v, &edgeGatewayPoolModel)
+				if err != nil {
+					return err
+				}
+				egp.EdgeGatewayPoolModel = &edgeGatewayPoolModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				egp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				egp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				egp.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				egp.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				egp.Tags = tags
+			}
 		}
-		egp.EdgeGatewayPoolModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		egp.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		egp.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		egp.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		egp.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		egp.Tags = &tags
 	}
 
 	return nil
@@ -511,6 +553,8 @@ type EdgeGatewayPoolModel struct {
 // FileShare representation of a file share resource.
 type FileShare struct {
 	autorest.Response `json:"-"`
+	// FileShareModel - Properties of a file share resource.
+	*FileShareModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -520,9 +564,31 @@ type FileShare struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// FileShareModel - Properties of a file share resource.
-	*FileShareModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for FileShare.
+func (fs FileShare) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fs.FileShareModel != nil {
+		objectMap["properties"] = fs.FileShareModel
+	}
+	if fs.ID != nil {
+		objectMap["id"] = fs.ID
+	}
+	if fs.Name != nil {
+		objectMap["name"] = fs.Name
+	}
+	if fs.Type != nil {
+		objectMap["type"] = fs.Type
+	}
+	if fs.Location != nil {
+		objectMap["location"] = fs.Location
+	}
+	if fs.Tags != nil {
+		objectMap["tags"] = fs.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for FileShare struct.
@@ -532,66 +598,63 @@ func (fs *FileShare) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties FileShareModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var fileShareModel FileShareModel
+				err = json.Unmarshal(*v, &fileShareModel)
+				if err != nil {
+					return err
+				}
+				fs.FileShareModel = &fileShareModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				fs.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				fs.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				fs.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				fs.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				fs.Tags = tags
+			}
 		}
-		fs.FileShareModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		fs.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		fs.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		fs.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		fs.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		fs.Tags = &tags
 	}
 
 	return nil
@@ -615,6 +678,8 @@ type FileShareModel struct {
 // InfraRole get an infra role description.
 type InfraRole struct {
 	autorest.Response `json:"-"`
+	// InfraRoleModel - Infra role properties.
+	*InfraRoleModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -624,9 +689,31 @@ type InfraRole struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// InfraRoleModel - Infra role properties.
-	*InfraRoleModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for InfraRole.
+func (ir InfraRole) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ir.InfraRoleModel != nil {
+		objectMap["properties"] = ir.InfraRoleModel
+	}
+	if ir.ID != nil {
+		objectMap["id"] = ir.ID
+	}
+	if ir.Name != nil {
+		objectMap["name"] = ir.Name
+	}
+	if ir.Type != nil {
+		objectMap["type"] = ir.Type
+	}
+	if ir.Location != nil {
+		objectMap["location"] = ir.Location
+	}
+	if ir.Tags != nil {
+		objectMap["tags"] = ir.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for InfraRole struct.
@@ -636,76 +723,75 @@ func (ir *InfraRole) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties InfraRoleModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var infraRoleModel InfraRoleModel
+				err = json.Unmarshal(*v, &infraRoleModel)
+				if err != nil {
+					return err
+				}
+				ir.InfraRoleModel = &infraRoleModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ir.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ir.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ir.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ir.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ir.Tags = tags
+			}
 		}
-		ir.InfraRoleModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		ir.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		ir.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		ir.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		ir.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		ir.Tags = &tags
 	}
 
 	return nil
 }
 
-// InfraRoleInstance the virtual machine resource is used to represent an infrastructure virtual machine in the Azure
-// Stack environment. The fabric resource provider only surfaces infrastructure virtual machines. These machines are
-// never created directly by the admin, but rather as a side effect of expanding admin services.
+// InfraRoleInstance the virtual machine resource is used to represent an infrastructure virtual machine in the
+// Azure Stack environment. The fabric resource provider only surfaces infrastructure virtual machines. These
+// machines are never created directly by the admin, but rather as a side effect of expanding admin services.
 type InfraRoleInstance struct {
 	autorest.Response `json:"-"`
+	// InfraRoleInstanceModel - All properties of an infra role instance.
+	*InfraRoleInstanceModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -715,9 +801,31 @@ type InfraRoleInstance struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// InfraRoleInstanceModel - All properties of an infra role instance.
-	*InfraRoleInstanceModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for InfraRoleInstance.
+func (iri InfraRoleInstance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iri.InfraRoleInstanceModel != nil {
+		objectMap["properties"] = iri.InfraRoleInstanceModel
+	}
+	if iri.ID != nil {
+		objectMap["id"] = iri.ID
+	}
+	if iri.Name != nil {
+		objectMap["name"] = iri.Name
+	}
+	if iri.Type != nil {
+		objectMap["type"] = iri.Type
+	}
+	if iri.Location != nil {
+		objectMap["location"] = iri.Location
+	}
+	if iri.Tags != nil {
+		objectMap["tags"] = iri.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for InfraRoleInstance struct.
@@ -727,66 +835,63 @@ func (iri *InfraRoleInstance) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties InfraRoleInstanceModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var infraRoleInstanceModel InfraRoleInstanceModel
+				err = json.Unmarshal(*v, &infraRoleInstanceModel)
+				if err != nil {
+					return err
+				}
+				iri.InfraRoleInstanceModel = &infraRoleInstanceModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				iri.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				iri.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				iri.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				iri.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				iri.Tags = tags
+			}
 		}
-		iri.InfraRoleInstanceModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		iri.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		iri.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		iri.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		iri.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		iri.Tags = &tags
 	}
 
 	return nil
@@ -927,22 +1032,39 @@ func (future InfraRoleInstancesPowerOffFuture) Result(client InfraRoleInstancesC
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesPowerOffFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return osVar, autorest.NewError("fabric.InfraRoleInstancesPowerOffFuture", "Result", "asynchronous operation has not completed")
+		return osVar, azure.NewAsyncOpIncompleteError("fabric.InfraRoleInstancesPowerOffFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		osVar, err = client.PowerOffResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesPowerOffFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesPowerOffFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	osVar, err = client.PowerOffResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesPowerOffFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -959,26 +1081,44 @@ func (future InfraRoleInstancesPowerOnFuture) Result(client InfraRoleInstancesCl
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesPowerOnFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return osVar, autorest.NewError("fabric.InfraRoleInstancesPowerOnFuture", "Result", "asynchronous operation has not completed")
+		return osVar, azure.NewAsyncOpIncompleteError("fabric.InfraRoleInstancesPowerOnFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		osVar, err = client.PowerOnResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesPowerOnFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesPowerOnFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	osVar, err = client.PowerOnResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesPowerOnFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
-// InfraRoleInstancesRebootFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// InfraRoleInstancesRebootFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type InfraRoleInstancesRebootFuture struct {
 	azure.Future
 	req *http.Request
@@ -990,22 +1130,39 @@ func (future InfraRoleInstancesRebootFuture) Result(client InfraRoleInstancesCli
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesRebootFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return osVar, autorest.NewError("fabric.InfraRoleInstancesRebootFuture", "Result", "asynchronous operation has not completed")
+		return osVar, azure.NewAsyncOpIncompleteError("fabric.InfraRoleInstancesRebootFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		osVar, err = client.RebootResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesRebootFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesRebootFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	osVar, err = client.RebootResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesRebootFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1022,22 +1179,39 @@ func (future InfraRoleInstancesShutdownFuture) Result(client InfraRoleInstancesC
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesShutdownFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return osVar, autorest.NewError("fabric.InfraRoleInstancesShutdownFuture", "Result", "asynchronous operation has not completed")
+		return osVar, azure.NewAsyncOpIncompleteError("fabric.InfraRoleInstancesShutdownFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		osVar, err = client.ShutdownResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesShutdownFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesShutdownFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	osVar, err = client.ShutdownResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.InfraRoleInstancesShutdownFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1153,6 +1327,8 @@ type InfraRoleModel struct {
 // subnet.
 type IPPool struct {
 	autorest.Response `json:"-"`
+	// IPPoolModel - Properties of an IpPool.
+	*IPPoolModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -1162,9 +1338,31 @@ type IPPool struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// IPPoolModel - Properties of an IpPool.
-	*IPPoolModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for IPPool.
+func (IP IPPool) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if IP.IPPoolModel != nil {
+		objectMap["properties"] = IP.IPPoolModel
+	}
+	if IP.ID != nil {
+		objectMap["id"] = IP.ID
+	}
+	if IP.Name != nil {
+		objectMap["name"] = IP.Name
+	}
+	if IP.Type != nil {
+		objectMap["type"] = IP.Type
+	}
+	if IP.Location != nil {
+		objectMap["location"] = IP.Location
+	}
+	if IP.Tags != nil {
+		objectMap["tags"] = IP.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for IPPool struct.
@@ -1174,66 +1372,63 @@ func (IP *IPPool) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties IPPoolModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var IPPoolModel IPPoolModel
+				err = json.Unmarshal(*v, &IPPoolModel)
+				if err != nil {
+					return err
+				}
+				IP.IPPoolModel = &IPPoolModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				IP.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				IP.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				IP.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				IP.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				IP.Tags = tags
+			}
 		}
-		IP.IPPoolModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		IP.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		IP.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		IP.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		IP.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		IP.Tags = &tags
 	}
 
 	return nil
@@ -1369,22 +1564,39 @@ func (future IPPoolsCreateFuture) Result(client IPPoolsClient) (osVar OperationS
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.IPPoolsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return osVar, autorest.NewError("fabric.IPPoolsCreateFuture", "Result", "asynchronous operation has not completed")
+		return osVar, azure.NewAsyncOpIncompleteError("fabric.IPPoolsCreateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		osVar, err = client.CreateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "fabric.IPPoolsCreateFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.IPPoolsCreateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	osVar, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.IPPoolsCreateFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -1400,7 +1612,28 @@ type Location struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Location.
+func (l Location) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if l.ID != nil {
+		objectMap["id"] = l.ID
+	}
+	if l.Name != nil {
+		objectMap["name"] = l.Name
+	}
+	if l.Type != nil {
+		objectMap["type"] = l.Type
+	}
+	if l.Location != nil {
+		objectMap["location"] = l.Location
+	}
+	if l.Tags != nil {
+		objectMap["tags"] = l.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // LocationList pageable list of fabric locations.
@@ -1505,10 +1738,12 @@ func (page LocationListPage) Values() []Location {
 	return *page.ll.Value
 }
 
-// LogicalNetwork this resource represents a logical partition of physical network that is dedicated for a particular
-// purpose.  A logical network comprises of a collection of logical subnets.
+// LogicalNetwork this resource represents a logical partition of physical network that is dedicated for a
+// particular purpose.  A logical network comprises of a collection of logical subnets.
 type LogicalNetwork struct {
 	autorest.Response `json:"-"`
+	// LogicalNetworkModel - Properties of a logical network.
+	*LogicalNetworkModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -1518,9 +1753,31 @@ type LogicalNetwork struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// LogicalNetworkModel - Properties of a logical network.
-	*LogicalNetworkModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for LogicalNetwork.
+func (ln LogicalNetwork) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ln.LogicalNetworkModel != nil {
+		objectMap["properties"] = ln.LogicalNetworkModel
+	}
+	if ln.ID != nil {
+		objectMap["id"] = ln.ID
+	}
+	if ln.Name != nil {
+		objectMap["name"] = ln.Name
+	}
+	if ln.Type != nil {
+		objectMap["type"] = ln.Type
+	}
+	if ln.Location != nil {
+		objectMap["location"] = ln.Location
+	}
+	if ln.Tags != nil {
+		objectMap["tags"] = ln.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for LogicalNetwork struct.
@@ -1530,66 +1787,63 @@ func (ln *LogicalNetwork) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties LogicalNetworkModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var logicalNetworkModel LogicalNetworkModel
+				err = json.Unmarshal(*v, &logicalNetworkModel)
+				if err != nil {
+					return err
+				}
+				ln.LogicalNetworkModel = &logicalNetworkModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ln.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ln.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ln.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ln.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ln.Tags = tags
+			}
 		}
-		ln.LogicalNetworkModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		ln.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		ln.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		ln.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		ln.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		ln.Tags = &tags
 	}
 
 	return nil
@@ -1700,16 +1954,33 @@ func (page LogicalNetworkListPage) Values() []LogicalNetwork {
 // LogicalNetworkModel properties of a logical network.
 type LogicalNetworkModel struct {
 	// Metadata - Metadata related to this Logical Network.
-	Metadata *map[string]*string `json:"metadata,omitempty"`
+	Metadata map[string]*string `json:"metadata"`
 	// NetworkVirtualizationEnabled - Is Network Virtualization is enabled on this Logical Network.
 	NetworkVirtualizationEnabled *bool `json:"networkVirtualizationEnabled,omitempty"`
 	// Subnets - List of subnets belonging to this Logical Network.
 	Subnets *[]string `json:"subnets,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LogicalNetworkModel.
+func (lnm LogicalNetworkModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lnm.Metadata != nil {
+		objectMap["metadata"] = lnm.Metadata
+	}
+	if lnm.NetworkVirtualizationEnabled != nil {
+		objectMap["networkVirtualizationEnabled"] = lnm.NetworkVirtualizationEnabled
+	}
+	if lnm.Subnets != nil {
+		objectMap["subnets"] = lnm.Subnets
+	}
+	return json.Marshal(objectMap)
+}
+
 // LogicalSubnet this resource represents a Logical Subnet.  A Logical Subnet comprises of subnet/vlan pair.
 type LogicalSubnet struct {
 	autorest.Response `json:"-"`
+	// LogicalSubnetModel - Properties of a logical subnet.
+	*LogicalSubnetModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -1719,9 +1990,31 @@ type LogicalSubnet struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// LogicalSubnetModel - Properties of a logical subnet.
-	*LogicalSubnetModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for LogicalSubnet.
+func (ls LogicalSubnet) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ls.LogicalSubnetModel != nil {
+		objectMap["properties"] = ls.LogicalSubnetModel
+	}
+	if ls.ID != nil {
+		objectMap["id"] = ls.ID
+	}
+	if ls.Name != nil {
+		objectMap["name"] = ls.Name
+	}
+	if ls.Type != nil {
+		objectMap["type"] = ls.Type
+	}
+	if ls.Location != nil {
+		objectMap["location"] = ls.Location
+	}
+	if ls.Tags != nil {
+		objectMap["tags"] = ls.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for LogicalSubnet struct.
@@ -1731,66 +2024,63 @@ func (ls *LogicalSubnet) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties LogicalSubnetModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var logicalSubnetModel LogicalSubnetModel
+				err = json.Unmarshal(*v, &logicalSubnetModel)
+				if err != nil {
+					return err
+				}
+				ls.LogicalSubnetModel = &logicalSubnetModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ls.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ls.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ls.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ls.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ls.Tags = tags
+			}
 		}
-		ls.LogicalSubnetModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		ls.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		ls.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		ls.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		ls.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		ls.Tags = &tags
 	}
 
 	return nil
@@ -1905,14 +2195,31 @@ type LogicalSubnetModel struct {
 	// IsPublic - The visiblity status of the ip pool.  If is true the associated pools are public ip address pools.
 	IsPublic *bool `json:"isPublic,omitempty"`
 	// Metadata - Metadata related to this Logical Network.
-	Metadata *map[string]*string `json:"metadata,omitempty"`
+	Metadata map[string]*string `json:"metadata"`
 }
 
-// MacAddressPool this resource represents a MAC address pool.  The default MAC address pools are used if you set the
-// MAC address type for a virtual machine to 'Static'.  If the virtual machine setting is “Dynamic”, the hypervisor
-// assigns the MAC address.
+// MarshalJSON is the custom marshaler for LogicalSubnetModel.
+func (lsm LogicalSubnetModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lsm.IPPools != nil {
+		objectMap["ipPools"] = lsm.IPPools
+	}
+	if lsm.IsPublic != nil {
+		objectMap["isPublic"] = lsm.IsPublic
+	}
+	if lsm.Metadata != nil {
+		objectMap["metadata"] = lsm.Metadata
+	}
+	return json.Marshal(objectMap)
+}
+
+// MacAddressPool this resource represents a MAC address pool.  The default MAC address pools are used if you set
+// the MAC address type for a virtual machine to 'Static'.  If the virtual machine setting is “Dynamic”, the
+// hypervisor assigns the MAC address.
 type MacAddressPool struct {
 	autorest.Response `json:"-"`
+	// MacAddressPoolModel - Properties of a MAC address pool.
+	*MacAddressPoolModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -1922,9 +2229,31 @@ type MacAddressPool struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// MacAddressPoolModel - Properties of a MAC address pool.
-	*MacAddressPoolModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for MacAddressPool.
+func (mapVar MacAddressPool) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mapVar.MacAddressPoolModel != nil {
+		objectMap["properties"] = mapVar.MacAddressPoolModel
+	}
+	if mapVar.ID != nil {
+		objectMap["id"] = mapVar.ID
+	}
+	if mapVar.Name != nil {
+		objectMap["name"] = mapVar.Name
+	}
+	if mapVar.Type != nil {
+		objectMap["type"] = mapVar.Type
+	}
+	if mapVar.Location != nil {
+		objectMap["location"] = mapVar.Location
+	}
+	if mapVar.Tags != nil {
+		objectMap["tags"] = mapVar.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for MacAddressPool struct.
@@ -1934,66 +2263,63 @@ func (mapVar *MacAddressPool) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties MacAddressPoolModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var macAddressPoolModel MacAddressPoolModel
+				err = json.Unmarshal(*v, &macAddressPoolModel)
+				if err != nil {
+					return err
+				}
+				mapVar.MacAddressPoolModel = &macAddressPoolModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mapVar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mapVar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mapVar.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				mapVar.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				mapVar.Tags = tags
+			}
 		}
-		mapVar.MacAddressPoolModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		mapVar.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		mapVar.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		mapVar.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		mapVar.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		mapVar.Tags = &tags
 	}
 
 	return nil
@@ -2104,7 +2430,7 @@ func (page MacAddressPoolListPage) Values() []MacAddressPool {
 // MacAddressPoolModel properties of a MAC address pool.
 type MacAddressPoolModel struct {
 	// Metadata - Metadata related to this MAC pool.
-	Metadata *map[string]*string `json:"metadata,omitempty"`
+	Metadata map[string]*string `json:"metadata"`
 	// StartMacAddress - Starting MAC address.
 	StartMacAddress *string `json:"startMacAddress,omitempty"`
 	// EndMacAddress - Ending MAC address.
@@ -2113,6 +2439,27 @@ type MacAddressPoolModel struct {
 	NumberOfAllocatedMacAddresses *int64 `json:"numberOfAllocatedMacAddresses,omitempty"`
 	// NumberOfAvailableMacAddresses - Number of MAC addresses available.
 	NumberOfAvailableMacAddresses *int64 `json:"numberOfAvailableMacAddresses,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MacAddressPoolModel.
+func (mapm MacAddressPoolModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mapm.Metadata != nil {
+		objectMap["metadata"] = mapm.Metadata
+	}
+	if mapm.StartMacAddress != nil {
+		objectMap["startMacAddress"] = mapm.StartMacAddress
+	}
+	if mapm.EndMacAddress != nil {
+		objectMap["endMacAddress"] = mapm.EndMacAddress
+	}
+	if mapm.NumberOfAllocatedMacAddresses != nil {
+		objectMap["numberOfAllocatedMacAddresses"] = mapm.NumberOfAllocatedMacAddresses
+	}
+	if mapm.NumberOfAvailableMacAddresses != nil {
+		objectMap["numberOfAvailableMacAddresses"] = mapm.NumberOfAvailableMacAddresses
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationStatus status of the compute operation.
@@ -2129,16 +2476,18 @@ func (osVar *OperationStatus) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties ProvisioningStateModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var provisioningStateModel ProvisioningStateModel
+				err = json.Unmarshal(*v, &provisioningStateModel)
+				if err != nil {
+					return err
+				}
+				osVar.ProvisioningStateModel = &provisioningStateModel
+			}
 		}
-		osVar.ProvisioningStateModel = &properties
 	}
 
 	return nil
@@ -2167,12 +2516,36 @@ type Resource struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 }
 
-// ScaleUnit represents a cluster - generally this will be a collection of Hosts backed by Failover Cluster Manager.
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.ID != nil {
+		objectMap["id"] = r.ID
+	}
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Type != nil {
+		objectMap["type"] = r.Type
+	}
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	if r.Tags != nil {
+		objectMap["tags"] = r.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// ScaleUnit represents a cluster - generally this will be a collection of Hosts backed by Failover Cluster
+// Manager.
 type ScaleUnit struct {
 	autorest.Response `json:"-"`
+	// ScaleUnitModel - Properties of a scale unit.
+	*ScaleUnitModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -2182,9 +2555,31 @@ type ScaleUnit struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// ScaleUnitModel - Properties of a scale unit.
-	*ScaleUnitModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ScaleUnit.
+func (su ScaleUnit) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if su.ScaleUnitModel != nil {
+		objectMap["properties"] = su.ScaleUnitModel
+	}
+	if su.ID != nil {
+		objectMap["id"] = su.ID
+	}
+	if su.Name != nil {
+		objectMap["name"] = su.Name
+	}
+	if su.Type != nil {
+		objectMap["type"] = su.Type
+	}
+	if su.Location != nil {
+		objectMap["location"] = su.Location
+	}
+	if su.Tags != nil {
+		objectMap["tags"] = su.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ScaleUnit struct.
@@ -2194,66 +2589,63 @@ func (su *ScaleUnit) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties ScaleUnitModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var scaleUnitModel ScaleUnitModel
+				err = json.Unmarshal(*v, &scaleUnitModel)
+				if err != nil {
+					return err
+				}
+				su.ScaleUnitModel = &scaleUnitModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				su.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				su.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				su.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				su.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				su.Tags = tags
+			}
 		}
-		su.ScaleUnitModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		su.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		su.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		su.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		su.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		su.Tags = &tags
 	}
 
 	return nil
@@ -2388,6 +2780,8 @@ type ScaleUnitModel struct {
 // ScaleUnitNode the physical server in a cluster.
 type ScaleUnitNode struct {
 	autorest.Response `json:"-"`
+	// ScaleUnitNodeModel - Holds all properties related to a scale unit node.
+	*ScaleUnitNodeModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -2397,9 +2791,31 @@ type ScaleUnitNode struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// ScaleUnitNodeModel - Holds all properties related to a scale unit node.
-	*ScaleUnitNodeModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ScaleUnitNode.
+func (sun ScaleUnitNode) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sun.ScaleUnitNodeModel != nil {
+		objectMap["properties"] = sun.ScaleUnitNodeModel
+	}
+	if sun.ID != nil {
+		objectMap["id"] = sun.ID
+	}
+	if sun.Name != nil {
+		objectMap["name"] = sun.Name
+	}
+	if sun.Type != nil {
+		objectMap["type"] = sun.Type
+	}
+	if sun.Location != nil {
+		objectMap["location"] = sun.Location
+	}
+	if sun.Tags != nil {
+		objectMap["tags"] = sun.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ScaleUnitNode struct.
@@ -2409,66 +2825,63 @@ func (sun *ScaleUnitNode) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties ScaleUnitNodeModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var scaleUnitNodeModel ScaleUnitNodeModel
+				err = json.Unmarshal(*v, &scaleUnitNodeModel)
+				if err != nil {
+					return err
+				}
+				sun.ScaleUnitNodeModel = &scaleUnitNodeModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sun.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sun.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sun.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				sun.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sun.Tags = tags
+			}
 		}
-		sun.ScaleUnitNodeModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		sun.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		sun.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		sun.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		sun.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		sun.Tags = &tags
 	}
 
 	return nil
@@ -2604,7 +3017,8 @@ type ScaleUnitNodeModel struct {
 	Capacity *ScaleUnitCapacity `json:"capacity,omitempty"`
 }
 
-// ScaleUnitNodesPowerOffFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ScaleUnitNodesPowerOffFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ScaleUnitNodesPowerOffFuture struct {
 	azure.Future
 	req *http.Request
@@ -2616,26 +3030,44 @@ func (future ScaleUnitNodesPowerOffFuture) Result(client ScaleUnitNodesClient) (
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesPowerOffFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return osVar, autorest.NewError("fabric.ScaleUnitNodesPowerOffFuture", "Result", "asynchronous operation has not completed")
+		return osVar, azure.NewAsyncOpIncompleteError("fabric.ScaleUnitNodesPowerOffFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		osVar, err = client.PowerOffResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesPowerOffFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesPowerOffFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	osVar, err = client.PowerOffResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesPowerOffFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
-// ScaleUnitNodesPowerOnFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ScaleUnitNodesPowerOnFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ScaleUnitNodesPowerOnFuture struct {
 	azure.Future
 	req *http.Request
@@ -2647,27 +3079,44 @@ func (future ScaleUnitNodesPowerOnFuture) Result(client ScaleUnitNodesClient) (o
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesPowerOnFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return osVar, autorest.NewError("fabric.ScaleUnitNodesPowerOnFuture", "Result", "asynchronous operation has not completed")
+		return osVar, azure.NewAsyncOpIncompleteError("fabric.ScaleUnitNodesPowerOnFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		osVar, err = client.PowerOnResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesPowerOnFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesPowerOnFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	osVar, err = client.PowerOnResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesPowerOnFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
-// ScaleUnitNodesStartMaintenanceModeFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ScaleUnitNodesStartMaintenanceModeFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ScaleUnitNodesStartMaintenanceModeFuture struct {
 	azure.Future
 	req *http.Request
@@ -2679,27 +3128,44 @@ func (future ScaleUnitNodesStartMaintenanceModeFuture) Result(client ScaleUnitNo
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesStartMaintenanceModeFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return osVar, autorest.NewError("fabric.ScaleUnitNodesStartMaintenanceModeFuture", "Result", "asynchronous operation has not completed")
+		return osVar, azure.NewAsyncOpIncompleteError("fabric.ScaleUnitNodesStartMaintenanceModeFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		osVar, err = client.StartMaintenanceModeResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesStartMaintenanceModeFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesStartMaintenanceModeFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	osVar, err = client.StartMaintenanceModeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesStartMaintenanceModeFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
-// ScaleUnitNodesStopMaintenanceModeFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ScaleUnitNodesStopMaintenanceModeFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ScaleUnitNodesStopMaintenanceModeFuture struct {
 	azure.Future
 	req *http.Request
@@ -2711,22 +3177,39 @@ func (future ScaleUnitNodesStopMaintenanceModeFuture) Result(client ScaleUnitNod
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesStopMaintenanceModeFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return osVar, autorest.NewError("fabric.ScaleUnitNodesStopMaintenanceModeFuture", "Result", "asynchronous operation has not completed")
+		return osVar, azure.NewAsyncOpIncompleteError("fabric.ScaleUnitNodesStopMaintenanceModeFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		osVar, err = client.StopMaintenanceModeResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesStopMaintenanceModeFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesStopMaintenanceModeFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	osVar, err = client.StopMaintenanceModeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "fabric.ScaleUnitNodesStopMaintenanceModeFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }
 
@@ -2734,6 +3217,8 @@ func (future ScaleUnitNodesStopMaintenanceModeFuture) Result(client ScaleUnitNod
 // tenant and tenant customer network traffic).
 type SlbMuxInstance struct {
 	autorest.Response `json:"-"`
+	// SlbMuxInstanceModel - Properties of a SLB MUX
+	*SlbMuxInstanceModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -2743,9 +3228,31 @@ type SlbMuxInstance struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// SlbMuxInstanceModel - Properties of a SLB MUX
-	*SlbMuxInstanceModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for SlbMuxInstance.
+func (smi SlbMuxInstance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if smi.SlbMuxInstanceModel != nil {
+		objectMap["properties"] = smi.SlbMuxInstanceModel
+	}
+	if smi.ID != nil {
+		objectMap["id"] = smi.ID
+	}
+	if smi.Name != nil {
+		objectMap["name"] = smi.Name
+	}
+	if smi.Type != nil {
+		objectMap["type"] = smi.Type
+	}
+	if smi.Location != nil {
+		objectMap["location"] = smi.Location
+	}
+	if smi.Tags != nil {
+		objectMap["tags"] = smi.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for SlbMuxInstance struct.
@@ -2755,66 +3262,63 @@ func (smi *SlbMuxInstance) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties SlbMuxInstanceModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var slbMuxInstanceModel SlbMuxInstanceModel
+				err = json.Unmarshal(*v, &slbMuxInstanceModel)
+				if err != nil {
+					return err
+				}
+				smi.SlbMuxInstanceModel = &slbMuxInstanceModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				smi.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				smi.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				smi.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				smi.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				smi.Tags = tags
+			}
 		}
-		smi.SlbMuxInstanceModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		smi.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		smi.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		smi.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		smi.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		smi.Tags = &tags
 	}
 
 	return nil
@@ -2935,6 +3439,8 @@ type SlbMuxInstanceModel struct {
 // StoragePool representation of a storage pool resource.
 type StoragePool struct {
 	autorest.Response `json:"-"`
+	// StoragePoolModel - All properties of a storage pool.
+	*StoragePoolModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -2944,9 +3450,31 @@ type StoragePool struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// StoragePoolModel - All properties of a storage pool.
-	*StoragePoolModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for StoragePool.
+func (sp StoragePool) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.StoragePoolModel != nil {
+		objectMap["properties"] = sp.StoragePoolModel
+	}
+	if sp.ID != nil {
+		objectMap["id"] = sp.ID
+	}
+	if sp.Name != nil {
+		objectMap["name"] = sp.Name
+	}
+	if sp.Type != nil {
+		objectMap["type"] = sp.Type
+	}
+	if sp.Location != nil {
+		objectMap["location"] = sp.Location
+	}
+	if sp.Tags != nil {
+		objectMap["tags"] = sp.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for StoragePool struct.
@@ -2956,66 +3484,63 @@ func (sp *StoragePool) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties StoragePoolModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var storagePoolModel StoragePoolModel
+				err = json.Unmarshal(*v, &storagePoolModel)
+				if err != nil {
+					return err
+				}
+				sp.StoragePoolModel = &storagePoolModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sp.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				sp.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sp.Tags = tags
+			}
 		}
-		sp.StoragePoolModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		sp.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		sp.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		sp.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		sp.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		sp.Tags = &tags
 	}
 
 	return nil
@@ -3132,6 +3657,8 @@ type StoragePoolModel struct {
 // StorageSystem representation of a storage system resource.
 type StorageSystem struct {
 	autorest.Response `json:"-"`
+	// StorageSystemModel - All properties of a storage system.
+	*StorageSystemModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -3141,9 +3668,31 @@ type StorageSystem struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// StorageSystemModel - All properties of a storage system.
-	*StorageSystemModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for StorageSystem.
+func (ss StorageSystem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ss.StorageSystemModel != nil {
+		objectMap["properties"] = ss.StorageSystemModel
+	}
+	if ss.ID != nil {
+		objectMap["id"] = ss.ID
+	}
+	if ss.Name != nil {
+		objectMap["name"] = ss.Name
+	}
+	if ss.Type != nil {
+		objectMap["type"] = ss.Type
+	}
+	if ss.Location != nil {
+		objectMap["location"] = ss.Location
+	}
+	if ss.Tags != nil {
+		objectMap["tags"] = ss.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for StorageSystem struct.
@@ -3153,66 +3702,63 @@ func (ss *StorageSystem) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties StorageSystemModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var storageSystemModel StorageSystemModel
+				err = json.Unmarshal(*v, &storageSystemModel)
+				if err != nil {
+					return err
+				}
+				ss.StorageSystemModel = &storageSystemModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ss.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ss.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ss.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ss.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ss.Tags = tags
+			}
 		}
-		ss.StorageSystemModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		ss.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		ss.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		ss.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		ss.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		ss.Tags = &tags
 	}
 
 	return nil
@@ -3329,6 +3875,8 @@ type StorageSystemModel struct {
 // Volume representation of a volume resource.
 type Volume struct {
 	autorest.Response `json:"-"`
+	// VolumeModel - Properties of a volume.
+	*VolumeModel `json:"properties,omitempty"`
 	// ID - URI of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the resource.
@@ -3338,9 +3886,31 @@ type Volume struct {
 	// Location - Region Location of resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - List of key value pairs.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// VolumeModel - Properties of a volume.
-	*VolumeModel `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Volume.
+func (vVar Volume) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vVar.VolumeModel != nil {
+		objectMap["properties"] = vVar.VolumeModel
+	}
+	if vVar.ID != nil {
+		objectMap["id"] = vVar.ID
+	}
+	if vVar.Name != nil {
+		objectMap["name"] = vVar.Name
+	}
+	if vVar.Type != nil {
+		objectMap["type"] = vVar.Type
+	}
+	if vVar.Location != nil {
+		objectMap["location"] = vVar.Location
+	}
+	if vVar.Tags != nil {
+		objectMap["tags"] = vVar.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Volume struct.
@@ -3350,66 +3920,63 @@ func (vVar *Volume) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["properties"]
-	if v != nil {
-		var properties VolumeModel
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var volumeModel VolumeModel
+				err = json.Unmarshal(*v, &volumeModel)
+				if err != nil {
+					return err
+				}
+				vVar.VolumeModel = &volumeModel
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vVar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vVar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vVar.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				vVar.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				vVar.Tags = tags
+			}
 		}
-		vVar.VolumeModel = &properties
-	}
-
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		vVar.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		vVar.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		vVar.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		vVar.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		vVar.Tags = &tags
 	}
 
 	return nil

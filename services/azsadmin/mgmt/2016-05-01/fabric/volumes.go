@@ -41,8 +41,8 @@ func NewVolumesClientWithBaseURI(baseURI string, subscriptionID string) VolumesC
 
 // Get get a volume.
 //
-// location is location of the resource. storageSubSystem is name of the storage system. storagePool is storage pool
-// name. volume is name of the volume.
+// location is location of the resource. storageSubSystem is name of the storage system. storagePool is storage
+// pool name. volume is name of the volume.
 func (client VolumesClient) Get(ctx context.Context, location string, storageSubSystem string, storagePool string, volume string) (result Volume, err error) {
 	req, err := client.GetPreparer(ctx, location, storageSubSystem, storagePool, volume)
 	if err != nil {
@@ -110,8 +110,8 @@ func (client VolumesClient) GetResponder(resp *http.Response) (result Volume, er
 
 // List get a list of all volumes at a location.
 //
-// location is location of the resource. storageSubSystem is name of the storage system. storagePool is storage pool
-// name. filter is oData filter parameter.
+// location is location of the resource. storageSubSystem is name of the storage system. storagePool is storage
+// pool name. filter is oData filter parameter.
 func (client VolumesClient) List(ctx context.Context, location string, storageSubSystem string, storagePool string, filter string) (result VolumeListPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, location, storageSubSystem, storagePool, filter)

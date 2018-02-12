@@ -114,6 +114,7 @@ type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
 type ManagementErrorWithDetails = original.ManagementErrorWithDetails
 type MoveInfo = original.MoveInfo
+type MoveResourcesFuture = original.MoveResourcesFuture
 type ParametersLink = original.ParametersLink
 type Plan = original.Plan
 type Provider = original.Provider
@@ -123,8 +124,6 @@ type ProviderListResultPage = original.ProviderListResultPage
 type ProviderOperationDisplayProperties = original.ProviderOperationDisplayProperties
 type ProviderResourceType = original.ProviderResourceType
 type Resource = original.Resource
-type ResourcesMoveResourcesFuture = original.ResourcesMoveResourcesFuture
-type ResourcesUpdateFuture = original.ResourcesUpdateFuture
 type Sku = original.Sku
 type SubResource = original.SubResource
 type TagCount = original.TagCount
@@ -135,6 +134,7 @@ type TagsListResultPage = original.TagsListResultPage
 type TagValue = original.TagValue
 type TargetResource = original.TargetResource
 type TemplateLink = original.TemplateLink
+type UpdateFuture = original.UpdateFuture
 type ProvidersClient = original.ProvidersClient
 
 func NewProvidersClient(subscriptionID string) ProvidersClient {

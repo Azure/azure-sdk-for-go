@@ -89,6 +89,7 @@ func (client ImageModerationClient) EvaluateFileInputPreparer(ctx context.Contex
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
 		autorest.WithPath("/contentmoderator/moderate/v1.0/ProcessImage/Evaluate"),
@@ -352,6 +353,7 @@ func (client ImageModerationClient) FindFacesFileInputPreparer(ctx context.Conte
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
 		autorest.WithPath("/contentmoderator/moderate/v1.0/ProcessImage/FindFaces"),
@@ -497,6 +499,7 @@ func (client ImageModerationClient) MatchFileInputPreparer(ctx context.Context, 
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
 		autorest.WithPath("/contentmoderator/moderate/v1.0/ProcessImage/Match"),
@@ -730,6 +733,7 @@ func (client ImageModerationClient) OCRFileInputPreparer(ctx context.Context, la
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{baseUrl}", urlParameters),
 		autorest.WithPath("/contentmoderator/moderate/v1.0/ProcessImage/OCR"),

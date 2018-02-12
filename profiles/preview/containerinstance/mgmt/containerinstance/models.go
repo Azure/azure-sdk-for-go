@@ -19,7 +19,7 @@
 
 package containerinstance
 
-import original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2017-08-01-preview/containerinstance"
+import original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-02-01-preview/containerinstance"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -43,6 +43,15 @@ func NewContainerGroupsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return original.NewContainerGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 
+type ContainerGroupUsageClient = original.ContainerGroupUsageClient
+
+func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClient {
+	return original.NewContainerGroupUsageClient(subscriptionID)
+}
+func NewContainerGroupUsageClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupUsageClient {
+	return original.NewContainerGroupUsageClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type ContainerLogsClient = original.ContainerLogsClient
 
 func NewContainerLogsClient(subscriptionID string) ContainerLogsClient {
@@ -59,10 +68,19 @@ const (
 	UDP ContainerGroupNetworkProtocol = original.UDP
 )
 
-type ContainerRestartPolicy = original.ContainerRestartPolicy
+type ContainerGroupRestartPolicy = original.ContainerGroupRestartPolicy
 
 const (
-	Always ContainerRestartPolicy = original.Always
+	Always    ContainerGroupRestartPolicy = original.Always
+	Never     ContainerGroupRestartPolicy = original.Never
+	OnFailure ContainerGroupRestartPolicy = original.OnFailure
+)
+
+type ContainerNetworkProtocol = original.ContainerNetworkProtocol
+
+const (
+	ContainerNetworkProtocolTCP ContainerNetworkProtocol = original.ContainerNetworkProtocolTCP
+	ContainerNetworkProtocolUDP ContainerNetworkProtocol = original.ContainerNetworkProtocolUDP
 )
 
 type OperatingSystemTypes = original.OperatingSystemTypes
@@ -72,30 +90,52 @@ const (
 	Windows OperatingSystemTypes = original.Windows
 )
 
+type OperationsOrigin = original.OperationsOrigin
+
+const (
+	System OperationsOrigin = original.System
+	User   OperationsOrigin = original.User
+)
+
 type AzureFileVolume = original.AzureFileVolume
 type Container = original.Container
-type ContainerEvent = original.ContainerEvent
 type ContainerGroup = original.ContainerGroup
 type ContainerGroupListResult = original.ContainerGroupListResult
 type ContainerGroupListResultIterator = original.ContainerGroupListResultIterator
 type ContainerGroupListResultPage = original.ContainerGroupListResultPage
 type ContainerGroupProperties = original.ContainerGroupProperties
+type ContainerGroupPropertiesInstanceView = original.ContainerGroupPropertiesInstanceView
 type ContainerPort = original.ContainerPort
 type ContainerProperties = original.ContainerProperties
 type ContainerPropertiesInstanceView = original.ContainerPropertiesInstanceView
 type ContainerState = original.ContainerState
 type EnvironmentVariable = original.EnvironmentVariable
+type Event = original.Event
+type GitRepoVolume = original.GitRepoVolume
 type ImageRegistryCredential = original.ImageRegistryCredential
 type IPAddress = original.IPAddress
 type Logs = original.Logs
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationListResult = original.OperationListResult
 type Port = original.Port
 type Resource = original.Resource
 type ResourceLimits = original.ResourceLimits
 type ResourceRequests = original.ResourceRequests
 type ResourceRequirements = original.ResourceRequirements
+type Usage = original.Usage
+type UsageListResult = original.UsageListResult
+type UsageName = original.UsageName
 type Volume = original.Volume
 type VolumeMount = original.VolumeMount
+type OperationsClient = original.OperationsClient
 
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }

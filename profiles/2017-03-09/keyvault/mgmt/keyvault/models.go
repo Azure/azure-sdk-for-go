@@ -119,13 +119,17 @@ const (
 type StoragePermissions = original.StoragePermissions
 
 const (
+	StoragePermissionsBackup        StoragePermissions = original.StoragePermissionsBackup
 	StoragePermissionsDelete        StoragePermissions = original.StoragePermissionsDelete
 	StoragePermissionsDeletesas     StoragePermissions = original.StoragePermissionsDeletesas
 	StoragePermissionsGet           StoragePermissions = original.StoragePermissionsGet
 	StoragePermissionsGetsas        StoragePermissions = original.StoragePermissionsGetsas
 	StoragePermissionsList          StoragePermissions = original.StoragePermissionsList
 	StoragePermissionsListsas       StoragePermissions = original.StoragePermissionsListsas
+	StoragePermissionsPurge         StoragePermissions = original.StoragePermissionsPurge
+	StoragePermissionsRecover       StoragePermissions = original.StoragePermissionsRecover
 	StoragePermissionsRegeneratekey StoragePermissions = original.StoragePermissionsRegeneratekey
+	StoragePermissionsRestore       StoragePermissions = original.StoragePermissionsRestore
 	StoragePermissionsSet           StoragePermissions = original.StoragePermissionsSet
 	StoragePermissionsSetsas        StoragePermissions = original.StoragePermissionsSetsas
 	StoragePermissionsUpdate        StoragePermissions = original.StoragePermissionsUpdate

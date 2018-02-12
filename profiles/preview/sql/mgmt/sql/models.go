@@ -61,6 +61,15 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 
+type DatabaseAutomaticTuningClient = original.DatabaseAutomaticTuningClient
+
+func NewDatabaseAutomaticTuningClient(subscriptionID string) DatabaseAutomaticTuningClient {
+	return original.NewDatabaseAutomaticTuningClient(subscriptionID)
+}
+func NewDatabaseAutomaticTuningClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAutomaticTuningClient {
+	return original.NewDatabaseAutomaticTuningClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type DatabaseBlobAuditingPoliciesClient = original.DatabaseBlobAuditingPoliciesClient
 
 func NewDatabaseBlobAuditingPoliciesClient(subscriptionID string) DatabaseBlobAuditingPoliciesClient {
@@ -194,11 +203,63 @@ const (
 	SQL        AuthenticationType = original.SQL
 )
 
+type AutomaticTuningDisabledReason = original.AutomaticTuningDisabledReason
+
+const (
+	AutoConfigured      AutomaticTuningDisabledReason = original.AutoConfigured
+	Default             AutomaticTuningDisabledReason = original.Default
+	Disabled            AutomaticTuningDisabledReason = original.Disabled
+	InheritedFromServer AutomaticTuningDisabledReason = original.InheritedFromServer
+	NotSupported        AutomaticTuningDisabledReason = original.NotSupported
+	QueryStoreOff       AutomaticTuningDisabledReason = original.QueryStoreOff
+	QueryStoreReadOnly  AutomaticTuningDisabledReason = original.QueryStoreReadOnly
+)
+
+type AutomaticTuningMode = original.AutomaticTuningMode
+
+const (
+	Auto        AutomaticTuningMode = original.Auto
+	Custom      AutomaticTuningMode = original.Custom
+	Inherit     AutomaticTuningMode = original.Inherit
+	Unspecified AutomaticTuningMode = original.Unspecified
+)
+
+type AutomaticTuningOptionModeActual = original.AutomaticTuningOptionModeActual
+
+const (
+	Off AutomaticTuningOptionModeActual = original.Off
+	On  AutomaticTuningOptionModeActual = original.On
+)
+
+type AutomaticTuningOptionModeDesired = original.AutomaticTuningOptionModeDesired
+
+const (
+	AutomaticTuningOptionModeDesiredDefault AutomaticTuningOptionModeDesired = original.AutomaticTuningOptionModeDesiredDefault
+	AutomaticTuningOptionModeDesiredOff     AutomaticTuningOptionModeDesired = original.AutomaticTuningOptionModeDesiredOff
+	AutomaticTuningOptionModeDesiredOn      AutomaticTuningOptionModeDesired = original.AutomaticTuningOptionModeDesiredOn
+)
+
+type AutomaticTuningServerMode = original.AutomaticTuningServerMode
+
+const (
+	AutomaticTuningServerModeAuto        AutomaticTuningServerMode = original.AutomaticTuningServerModeAuto
+	AutomaticTuningServerModeCustom      AutomaticTuningServerMode = original.AutomaticTuningServerModeCustom
+	AutomaticTuningServerModeUnspecified AutomaticTuningServerMode = original.AutomaticTuningServerModeUnspecified
+)
+
+type AutomaticTuningServerReason = original.AutomaticTuningServerReason
+
+const (
+	AutomaticTuningServerReasonAutoConfigured AutomaticTuningServerReason = original.AutomaticTuningServerReasonAutoConfigured
+	AutomaticTuningServerReasonDefault        AutomaticTuningServerReason = original.AutomaticTuningServerReasonDefault
+	AutomaticTuningServerReasonDisabled       AutomaticTuningServerReason = original.AutomaticTuningServerReasonDisabled
+)
+
 type BackupLongTermRetentionPolicyState = original.BackupLongTermRetentionPolicyState
 
 const (
-	Disabled BackupLongTermRetentionPolicyState = original.Disabled
-	Enabled  BackupLongTermRetentionPolicyState = original.Enabled
+	BackupLongTermRetentionPolicyStateDisabled BackupLongTermRetentionPolicyState = original.BackupLongTermRetentionPolicyStateDisabled
+	BackupLongTermRetentionPolicyStateEnabled  BackupLongTermRetentionPolicyState = original.BackupLongTermRetentionPolicyStateEnabled
 )
 
 type BlobAuditingPolicyState = original.BlobAuditingPolicyState
@@ -227,14 +288,14 @@ const (
 type CreateMode = original.CreateMode
 
 const (
-	Copy                           CreateMode = original.Copy
-	Default                        CreateMode = original.Default
-	NonReadableSecondary           CreateMode = original.NonReadableSecondary
-	OnlineSecondary                CreateMode = original.OnlineSecondary
-	PointInTimeRestore             CreateMode = original.PointInTimeRestore
-	Recovery                       CreateMode = original.Recovery
-	Restore                        CreateMode = original.Restore
-	RestoreLongTermRetentionBackup CreateMode = original.RestoreLongTermRetentionBackup
+	CreateModeCopy                           CreateMode = original.CreateModeCopy
+	CreateModeDefault                        CreateMode = original.CreateModeDefault
+	CreateModeNonReadableSecondary           CreateMode = original.CreateModeNonReadableSecondary
+	CreateModeOnlineSecondary                CreateMode = original.CreateModeOnlineSecondary
+	CreateModePointInTimeRestore             CreateMode = original.CreateModePointInTimeRestore
+	CreateModeRecovery                       CreateMode = original.CreateModeRecovery
+	CreateModeRestore                        CreateMode = original.CreateModeRestore
+	CreateModeRestoreLongTermRetentionBackup CreateMode = original.CreateModeRestoreLongTermRetentionBackup
 )
 
 type DatabaseEdition = original.DatabaseEdition
@@ -676,6 +737,9 @@ const (
 	VirtualNetworkRuleStateUnknown      VirtualNetworkRuleState = original.VirtualNetworkRuleStateUnknown
 )
 
+type AutomaticTuningOptions = original.AutomaticTuningOptions
+type AutomaticTuningServerOptions = original.AutomaticTuningServerOptions
+type AutomaticTuningServerProperties = original.AutomaticTuningServerProperties
 type BackupLongTermRetentionPoliciesCreateOrUpdateFuture = original.BackupLongTermRetentionPoliciesCreateOrUpdateFuture
 type BackupLongTermRetentionPolicy = original.BackupLongTermRetentionPolicy
 type BackupLongTermRetentionPolicyListResult = original.BackupLongTermRetentionPolicyListResult
@@ -686,7 +750,10 @@ type BackupLongTermRetentionVaultProperties = original.BackupLongTermRetentionVa
 type BackupLongTermRetentionVaultsCreateOrUpdateFuture = original.BackupLongTermRetentionVaultsCreateOrUpdateFuture
 type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
 type CheckNameAvailabilityResponse = original.CheckNameAvailabilityResponse
+type CreateDatabaseRestorePointDefinition = original.CreateDatabaseRestorePointDefinition
 type Database = original.Database
+type DatabaseAutomaticTuning = original.DatabaseAutomaticTuning
+type DatabaseAutomaticTuningProperties = original.DatabaseAutomaticTuningProperties
 type DatabaseBlobAuditingPolicy = original.DatabaseBlobAuditingPolicy
 type DatabaseBlobAuditingPolicyProperties = original.DatabaseBlobAuditingPolicyProperties
 type DatabaseListResult = original.DatabaseListResult
@@ -804,9 +871,11 @@ type RestorableDroppedDatabaseProperties = original.RestorableDroppedDatabasePro
 type RestorePoint = original.RestorePoint
 type RestorePointListResult = original.RestorePointListResult
 type RestorePointProperties = original.RestorePointProperties
+type RestorePointsCreateFuture = original.RestorePointsCreateFuture
 type Server = original.Server
 type ServerAdministratorListResult = original.ServerAdministratorListResult
 type ServerAdministratorProperties = original.ServerAdministratorProperties
+type ServerAutomaticTuning = original.ServerAutomaticTuning
 type ServerAzureADAdministrator = original.ServerAzureADAdministrator
 type ServerAzureADAdministratorsCreateOrUpdateFuture = original.ServerAzureADAdministratorsCreateOrUpdateFuture
 type ServerAzureADAdministratorsDeleteFuture = original.ServerAzureADAdministratorsDeleteFuture
@@ -969,6 +1038,15 @@ func NewRestorePointsClient(subscriptionID string) RestorePointsClient {
 }
 func NewRestorePointsClientWithBaseURI(baseURI string, subscriptionID string) RestorePointsClient {
 	return original.NewRestorePointsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ServerAutomaticTuningClient = original.ServerAutomaticTuningClient
+
+func NewServerAutomaticTuningClient(subscriptionID string) ServerAutomaticTuningClient {
+	return original.NewServerAutomaticTuningClient(subscriptionID)
+}
+func NewServerAutomaticTuningClientWithBaseURI(baseURI string, subscriptionID string) ServerAutomaticTuningClient {
+	return original.NewServerAutomaticTuningClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type ServerAzureADAdministratorsClient = original.ServerAzureADAdministratorsClient

@@ -50,7 +50,7 @@ func (client SoftwareUpdateConfigurationMachineRunsClient) GetByID(ctx context.C
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
 			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.SoftwareUpdateConfigurationMachineRunsClient", "GetByID")
+		return result, validation.NewError("automation.SoftwareUpdateConfigurationMachineRunsClient", "GetByID", err.Error())
 	}
 
 	req, err := client.GetByIDPreparer(ctx, softwareUpdateConfigurationMachineRunID)
@@ -129,7 +129,7 @@ func (client SoftwareUpdateConfigurationMachineRunsClient) List(ctx context.Cont
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
 			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "automation.SoftwareUpdateConfigurationMachineRunsClient", "List")
+		return result, validation.NewError("automation.SoftwareUpdateConfigurationMachineRunsClient", "List", err.Error())
 	}
 
 	req, err := client.ListPreparer(ctx, filter, skip, top)

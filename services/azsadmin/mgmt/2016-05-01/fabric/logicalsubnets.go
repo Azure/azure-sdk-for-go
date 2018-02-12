@@ -41,8 +41,8 @@ func NewLogicalSubnetsClientWithBaseURI(baseURI string, subscriptionID string) L
 
 // Get get a list of all volumes at a location.
 //
-// location is location of the resource. logicalNetwork is name of the logical network. logicalSubnet is name of the
-// logical subnet.
+// location is location of the resource. logicalNetwork is name of the logical network. logicalSubnet is name of
+// the logical subnet.
 func (client LogicalSubnetsClient) Get(ctx context.Context, location string, logicalNetwork string, logicalSubnet string) (result LogicalSubnet, err error) {
 	req, err := client.GetPreparer(ctx, location, logicalNetwork, logicalSubnet)
 	if err != nil {

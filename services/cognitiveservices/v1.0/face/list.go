@@ -53,7 +53,7 @@ func (client ListClient) AddFaceFromStream(ctx context.Context, faceListID strin
 				{Target: "faceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
 		{TargetValue: userData,
 			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.ListClient", "AddFaceFromStream")
+		return result, validation.NewError("face.ListClient", "AddFaceFromStream", err.Error())
 	}
 
 	req, err := client.AddFaceFromStreamPreparer(ctx, faceListID, imageParameter, userData, targetFace)
@@ -96,6 +96,7 @@ func (client ListClient) AddFaceFromStreamPreparer(ctx context.Context, faceList
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
 		autorest.WithPathParameters("/facelists/{faceListId}/persistedFaces", pathParameters),
@@ -142,7 +143,7 @@ func (client ListClient) AddFaceFromURL(ctx context.Context, faceListID string, 
 			Constraints: []validation.Constraint{{Target: "userData", Name: validation.MaxLength, Rule: 1024, Chain: nil}}},
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.ListClient", "AddFaceFromURL")
+		return result, validation.NewError("face.ListClient", "AddFaceFromURL", err.Error())
 	}
 
 	req, err := client.AddFaceFromURLPreparer(ctx, faceListID, imageURL, userData, targetFace)
@@ -227,7 +228,7 @@ func (client ListClient) Create(ctx context.Context, faceListID string, body Nam
 				Chain: []validation.Constraint{{Target: "body.Name", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
 				{Target: "body.UserData", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "body.UserData", Name: validation.MaxLength, Rule: 16384, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.ListClient", "Create")
+		return result, validation.NewError("face.ListClient", "Create", err.Error())
 	}
 
 	req, err := client.CreatePreparer(ctx, faceListID, body)
@@ -298,7 +299,7 @@ func (client ListClient) Delete(ctx context.Context, faceListID string) (result 
 		{TargetValue: faceListID,
 			Constraints: []validation.Constraint{{Target: "faceListID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "faceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.ListClient", "Delete")
+		return result, validation.NewError("face.ListClient", "Delete", err.Error())
 	}
 
 	req, err := client.DeletePreparer(ctx, faceListID)
@@ -368,7 +369,7 @@ func (client ListClient) DeleteFace(ctx context.Context, faceListID string, pers
 		{TargetValue: faceListID,
 			Constraints: []validation.Constraint{{Target: "faceListID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "faceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.ListClient", "DeleteFace")
+		return result, validation.NewError("face.ListClient", "DeleteFace", err.Error())
 	}
 
 	req, err := client.DeleteFacePreparer(ctx, faceListID, persistedFaceID)
@@ -437,7 +438,7 @@ func (client ListClient) Get(ctx context.Context, faceListID string) (result Lis
 		{TargetValue: faceListID,
 			Constraints: []validation.Constraint{{Target: "faceListID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "faceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.ListClient", "Get")
+		return result, validation.NewError("face.ListClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, faceListID)
@@ -562,7 +563,7 @@ func (client ListClient) Update(ctx context.Context, faceListID string, body Nam
 		{TargetValue: faceListID,
 			Constraints: []validation.Constraint{{Target: "faceListID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "faceListID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.ListClient", "Update")
+		return result, validation.NewError("face.ListClient", "Update", err.Error())
 	}
 
 	req, err := client.UpdatePreparer(ctx, faceListID, body)

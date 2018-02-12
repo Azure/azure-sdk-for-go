@@ -90,6 +90,7 @@ func (client Client) DetectWithStreamPreparer(ctx context.Context, imageParamete
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", urlParameters),
 		autorest.WithPath("/detect"),
@@ -131,7 +132,7 @@ func (client Client) DetectWithURL(ctx context.Context, imageURL ImageURL, retur
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.Client", "DetectWithURL")
+		return result, validation.NewError("face.Client", "DetectWithURL", err.Error())
 	}
 
 	req, err := client.DetectWithURLPreparer(ctx, imageURL, returnFaceID, returnFaceLandmarks, returnFaceAttributes)
@@ -223,7 +224,7 @@ func (client Client) FindSimilar(ctx context.Context, body FindSimilarRequest) (
 					Chain: []validation.Constraint{{Target: "body.MaxNumOfCandidatesReturned", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 						{Target: "body.MaxNumOfCandidatesReturned", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 					}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.Client", "FindSimilar")
+		return result, validation.NewError("face.Client", "FindSimilar", err.Error())
 	}
 
 	req, err := client.FindSimilarPreparer(ctx, body)
@@ -290,7 +291,7 @@ func (client Client) Group(ctx context.Context, body GroupRequest) (result Group
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body.FaceIds", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "body.FaceIds", Name: validation.MaxItems, Rule: 1000, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.Client", "Group")
+		return result, validation.NewError("face.Client", "Group", err.Error())
 	}
 
 	req, err := client.GroupPreparer(ctx, body)
@@ -365,7 +366,7 @@ func (client Client) Identify(ctx context.Context, body IdentifyRequest) (result
 					Chain: []validation.Constraint{{Target: "body.MaxNumOfCandidatesReturned", Name: validation.InclusiveMaximum, Rule: 5, Chain: nil},
 						{Target: "body.MaxNumOfCandidatesReturned", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 					}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.Client", "Identify")
+		return result, validation.NewError("face.Client", "Identify", err.Error())
 	}
 
 	req, err := client.IdentifyPreparer(ctx, body)
@@ -432,7 +433,7 @@ func (client Client) VerifyFaceToFace(ctx context.Context, body VerifyFaceToFace
 		{TargetValue: body,
 			Constraints: []validation.Constraint{{Target: "body.FaceID1", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "body.FaceID2", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.Client", "VerifyFaceToFace")
+		return result, validation.NewError("face.Client", "VerifyFaceToFace", err.Error())
 	}
 
 	req, err := client.VerifyFaceToFacePreparer(ctx, body)
@@ -503,7 +504,7 @@ func (client Client) VerifyFaceToPerson(ctx context.Context, body VerifyFaceToPe
 						{Target: "body.PersonGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil},
 					}},
 				{Target: "body.PersonID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "face.Client", "VerifyFaceToPerson")
+		return result, validation.NewError("face.Client", "VerifyFaceToPerson", err.Error())
 	}
 
 	req, err := client.VerifyFaceToPersonPreparer(ctx, body)

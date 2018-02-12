@@ -21,13 +21,13 @@ package account
 
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/2016-11-01/account"
 
-type Client = original.Client
+type AccountsClient = original.AccountsClient
 
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
 }
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 const (
@@ -156,11 +156,19 @@ const (
 	TrustedIDProviderStateEnabled  TrustedIDProviderState = original.TrustedIDProviderStateEnabled
 )
 
-type AccountCreateFuture = original.AccountCreateFuture
-type AccountDeleteFuture = original.AccountDeleteFuture
-type AccountUpdateFuture = original.AccountUpdateFuture
+type AccountsCreateFutureType = original.AccountsCreateFutureType
+type AccountsDeleteFutureType = original.AccountsDeleteFutureType
+type AccountsUpdateFutureType = original.AccountsUpdateFutureType
 type CapabilityInformation = original.CapabilityInformation
 type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
+type CreateDataLakeStoreAccountParameters = original.CreateDataLakeStoreAccountParameters
+type CreateDataLakeStoreAccountProperties = original.CreateDataLakeStoreAccountProperties
+type CreateFirewallRuleWithAccountParameters = original.CreateFirewallRuleWithAccountParameters
+type CreateOrUpdateFirewallRuleParameters = original.CreateOrUpdateFirewallRuleParameters
+type CreateOrUpdateFirewallRuleProperties = original.CreateOrUpdateFirewallRuleProperties
+type CreateOrUpdateTrustedIDProviderParameters = original.CreateOrUpdateTrustedIDProviderParameters
+type CreateOrUpdateTrustedIDProviderProperties = original.CreateOrUpdateTrustedIDProviderProperties
+type CreateTrustedIDProviderWithAccountParameters = original.CreateTrustedIDProviderWithAccountParameters
 type DataLakeStoreAccount = original.DataLakeStoreAccount
 type DataLakeStoreAccountBasic = original.DataLakeStoreAccountBasic
 type DataLakeStoreAccountListResult = original.DataLakeStoreAccountListResult
@@ -168,17 +176,12 @@ type DataLakeStoreAccountListResultIterator = original.DataLakeStoreAccountListR
 type DataLakeStoreAccountListResultPage = original.DataLakeStoreAccountListResultPage
 type DataLakeStoreAccountProperties = original.DataLakeStoreAccountProperties
 type DataLakeStoreAccountPropertiesBasic = original.DataLakeStoreAccountPropertiesBasic
-type DataLakeStoreAccountUpdateParameters = original.DataLakeStoreAccountUpdateParameters
-type DataLakeStoreFirewallRuleListResult = original.DataLakeStoreFirewallRuleListResult
-type DataLakeStoreFirewallRuleListResultIterator = original.DataLakeStoreFirewallRuleListResultIterator
-type DataLakeStoreFirewallRuleListResultPage = original.DataLakeStoreFirewallRuleListResultPage
-type DataLakeStoreTrustedIDProviderListResult = original.DataLakeStoreTrustedIDProviderListResult
-type DataLakeStoreTrustedIDProviderListResultIterator = original.DataLakeStoreTrustedIDProviderListResultIterator
-type DataLakeStoreTrustedIDProviderListResultPage = original.DataLakeStoreTrustedIDProviderListResultPage
 type EncryptionConfig = original.EncryptionConfig
 type EncryptionIdentity = original.EncryptionIdentity
-type ErrorDetails = original.ErrorDetails
 type FirewallRule = original.FirewallRule
+type FirewallRuleListResult = original.FirewallRuleListResult
+type FirewallRuleListResultIterator = original.FirewallRuleListResultIterator
+type FirewallRuleListResultPage = original.FirewallRuleListResultPage
 type FirewallRuleProperties = original.FirewallRuleProperties
 type KeyVaultMetaInfo = original.KeyVaultMetaInfo
 type NameAvailabilityInformation = original.NameAvailabilityInformation
@@ -188,14 +191,20 @@ type OperationListResult = original.OperationListResult
 type Resource = original.Resource
 type SubResource = original.SubResource
 type TrustedIDProvider = original.TrustedIDProvider
+type TrustedIDProviderListResult = original.TrustedIDProviderListResult
+type TrustedIDProviderListResultIterator = original.TrustedIDProviderListResultIterator
+type TrustedIDProviderListResultPage = original.TrustedIDProviderListResultPage
 type TrustedIDProviderProperties = original.TrustedIDProviderProperties
+type UpdateDataLakeStoreAccountParameters = original.UpdateDataLakeStoreAccountParameters
 type UpdateDataLakeStoreAccountProperties = original.UpdateDataLakeStoreAccountProperties
 type UpdateEncryptionConfig = original.UpdateEncryptionConfig
 type UpdateFirewallRuleParameters = original.UpdateFirewallRuleParameters
 type UpdateFirewallRuleProperties = original.UpdateFirewallRuleProperties
+type UpdateFirewallRuleWithAccountParameters = original.UpdateFirewallRuleWithAccountParameters
 type UpdateKeyVaultMetaInfo = original.UpdateKeyVaultMetaInfo
 type UpdateTrustedIDProviderParameters = original.UpdateTrustedIDProviderParameters
 type UpdateTrustedIDProviderProperties = original.UpdateTrustedIDProviderProperties
+type UpdateTrustedIDProviderWithAccountParameters = original.UpdateTrustedIDProviderWithAccountParameters
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {

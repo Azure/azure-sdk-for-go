@@ -43,8 +43,8 @@ func NewReferenceDataSetsClientWithBaseURI(baseURI string, subscriptionID string
 // CreateOrUpdate create or update a reference data set in the specified environment.
 //
 // resourceGroupName is name of an Azure Resource group. environmentName is the name of the Time Series Insights
-// environment associated with the specified resource group. referenceDataSetName is name of the reference data set.
-// parameters is parameters for creating a reference data set.
+// environment associated with the specified resource group. referenceDataSetName is name of the reference data
+// set. parameters is parameters for creating a reference data set.
 func (client ReferenceDataSetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, referenceDataSetName string, parameters ReferenceDataSetCreateOrUpdateParameters) (result ReferenceDataSetResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: referenceDataSetName,
@@ -54,7 +54,7 @@ func (client ReferenceDataSetsClient) CreateOrUpdate(ctx context.Context, resour
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ReferenceDataSetCreationProperties", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.ReferenceDataSetCreationProperties.KeyProperties", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "timeseriesinsights.ReferenceDataSetsClient", "CreateOrUpdate")
+		return result, validation.NewError("timeseriesinsights.ReferenceDataSetsClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, environmentName, referenceDataSetName, parameters)
@@ -333,8 +333,8 @@ func (client ReferenceDataSetsClient) ListByEnvironmentResponder(resp *http.Resp
 //
 // resourceGroupName is name of an Azure Resource group. environmentName is the name of the Time Series Insights
 // environment associated with the specified resource group. referenceDataSetName is the name of the Time Series
-// Insights reference data set associated with the specified environment. referenceDataSetUpdateParameters is request
-// object that contains the updated information for the reference data set.
+// Insights reference data set associated with the specified environment. referenceDataSetUpdateParameters is
+// request object that contains the updated information for the reference data set.
 func (client ReferenceDataSetsClient) Update(ctx context.Context, resourceGroupName string, environmentName string, referenceDataSetName string, referenceDataSetUpdateParameters ReferenceDataSetUpdateParameters) (result ReferenceDataSetResource, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, environmentName, referenceDataSetName, referenceDataSetUpdateParameters)
 	if err != nil {

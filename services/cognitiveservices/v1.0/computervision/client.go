@@ -74,7 +74,7 @@ func (client BaseClient) AnalyzeImage(ctx context.Context, imageURL ImageURL, vi
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "computervision.BaseClient", "AnalyzeImage")
+		return result, validation.NewError("computervision.BaseClient", "AnalyzeImage", err.Error())
 	}
 
 	req, err := client.AnalyzeImagePreparer(ctx, imageURL, visualFeatures, details, language)
@@ -159,7 +159,7 @@ func (client BaseClient) AnalyzeImageByDomain(ctx context.Context, model DomainM
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "computervision.BaseClient", "AnalyzeImageByDomain")
+		return result, validation.NewError("computervision.BaseClient", "AnalyzeImageByDomain", err.Error())
 	}
 
 	req, err := client.AnalyzeImageByDomainPreparer(ctx, model, imageURL)
@@ -263,6 +263,7 @@ func (client BaseClient) AnalyzeImageByDomainInStreamPreparer(ctx context.Contex
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0", urlParameters),
 		autorest.WithPathParameters("/models/{model}/analyze", pathParameters),
@@ -347,6 +348,7 @@ func (client BaseClient) AnalyzeImageInStreamPreparer(ctx context.Context, image
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0", urlParameters),
 		autorest.WithPath("/analyze"),
@@ -388,7 +390,7 @@ func (client BaseClient) DescribeImage(ctx context.Context, imageURL ImageURL, m
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "computervision.BaseClient", "DescribeImage")
+		return result, validation.NewError("computervision.BaseClient", "DescribeImage", err.Error())
 	}
 
 	req, err := client.DescribeImagePreparer(ctx, imageURL, maxCandidates)
@@ -501,6 +503,7 @@ func (client BaseClient) DescribeImageInStreamPreparer(ctx context.Context, imag
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0", urlParameters),
 		autorest.WithPath("/describe"),
@@ -548,7 +551,7 @@ func (client BaseClient) GenerateThumbnail(ctx context.Context, width int32, hei
 				{Target: "height", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}},
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "computervision.BaseClient", "GenerateThumbnail")
+		return result, validation.NewError("computervision.BaseClient", "GenerateThumbnail", err.Error())
 	}
 
 	req, err := client.GenerateThumbnailPreparer(ctx, width, height, imageURL, smartCropping)
@@ -635,7 +638,7 @@ func (client BaseClient) GenerateThumbnailInStream(ctx context.Context, width in
 		{TargetValue: height,
 			Constraints: []validation.Constraint{{Target: "height", Name: validation.InclusiveMaximum, Rule: 1023, Chain: nil},
 				{Target: "height", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "computervision.BaseClient", "GenerateThumbnailInStream")
+		return result, validation.NewError("computervision.BaseClient", "GenerateThumbnailInStream", err.Error())
 	}
 
 	req, err := client.GenerateThumbnailInStreamPreparer(ctx, width, height, imageParameter, smartCropping)
@@ -676,6 +679,7 @@ func (client BaseClient) GenerateThumbnailInStreamPreparer(ctx context.Context, 
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0", urlParameters),
 		autorest.WithPath("/generateThumbnail"),
@@ -839,7 +843,7 @@ func (client BaseClient) RecognizePrintedText(ctx context.Context, detectOrienta
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "computervision.BaseClient", "RecognizePrintedText")
+		return result, validation.NewError("computervision.BaseClient", "RecognizePrintedText", err.Error())
 	}
 
 	req, err := client.RecognizePrintedTextPreparer(ctx, detectOrientation, imageURL, language)
@@ -957,6 +961,7 @@ func (client BaseClient) RecognizePrintedTextInStreamPreparer(ctx context.Contex
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0", urlParameters),
 		autorest.WithPath("/ocr"),
@@ -996,7 +1001,7 @@ func (client BaseClient) RecognizeText(ctx context.Context, imageURL ImageURL, d
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "computervision.BaseClient", "RecognizeText")
+		return result, validation.NewError("computervision.BaseClient", "RecognizeText", err.Error())
 	}
 
 	req, err := client.RecognizeTextPreparer(ctx, imageURL, detectHandwriting)
@@ -1105,6 +1110,7 @@ func (client BaseClient) RecognizeTextInStreamPreparer(ctx context.Context, imag
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0", urlParameters),
 		autorest.WithPath("/recognizeText"),
@@ -1143,7 +1149,7 @@ func (client BaseClient) TagImage(ctx context.Context, imageURL ImageURL) (resul
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "computervision.BaseClient", "TagImage")
+		return result, validation.NewError("computervision.BaseClient", "TagImage", err.Error())
 	}
 
 	req, err := client.TagImagePreparer(ctx, imageURL)
@@ -1239,6 +1245,7 @@ func (client BaseClient) TagImageInStreamPreparer(ctx context.Context, imagePara
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsOctetStream(),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0", urlParameters),
 		autorest.WithPath("/tag"),

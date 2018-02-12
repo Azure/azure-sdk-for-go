@@ -43,9 +43,9 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 // Create adds a cluster. A cluster is a collection of compute nodes. Multiple jobs can be run on the same cluster.
 //
 // resourceGroupName is name of the resource group to which the resource belongs. clusterName is the name of the
-// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric characters
-// along with dash (-) and underscore (_). The name must be from 1 through 64 characters long. parameters is the
-// parameters to provide for cluster creation.
+// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric
+// characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+// parameters is the parameters to provide for cluster creation.
 func (client ClustersClient) Create(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterCreateParameters) (result ClustersCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -84,7 +84,7 @@ func (client ClustersClient) Create(ctx context.Context, resourceGroupName strin
 						{Target: "parameters.ClusterBaseProperties.Subnet", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "parameters.ClusterBaseProperties.Subnet.ID", Name: validation.Null, Rule: true, Chain: nil}}},
 					}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.ClustersClient", "Create")
+		return result, validation.NewError("batchai.ClustersClient", "Create", err.Error())
 	}
 
 	req, err := client.CreatePreparer(ctx, resourceGroupName, clusterName, parameters)
@@ -156,8 +156,8 @@ func (client ClustersClient) CreateResponder(resp *http.Response) (result Cluste
 // Delete deletes a Cluster.
 //
 // resourceGroupName is name of the resource group to which the resource belongs. clusterName is the name of the
-// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric characters
-// along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric
+// characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
 func (client ClustersClient) Delete(ctx context.Context, resourceGroupName string, clusterName string) (result ClustersDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -166,7 +166,7 @@ func (client ClustersClient) Delete(ctx context.Context, resourceGroupName strin
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "clusterName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.ClustersClient", "Delete")
+		return result, validation.NewError("batchai.ClustersClient", "Delete", err.Error())
 	}
 
 	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterName)
@@ -235,8 +235,8 @@ func (client ClustersClient) DeleteResponder(resp *http.Response) (result autore
 // Get gets information about the specified Cluster.
 //
 // resourceGroupName is name of the resource group to which the resource belongs. clusterName is the name of the
-// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric characters
-// along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric
+// characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
 func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string) (result Cluster, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -245,7 +245,7 @@ func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, 
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "clusterName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.ClustersClient", "Get")
+		return result, validation.NewError("batchai.ClustersClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, resourceGroupName, clusterName)
@@ -312,9 +312,9 @@ func (client ClustersClient) GetResponder(resp *http.Response) (result Cluster, 
 
 // List gets information about the Clusters associated with the subscription.
 //
-// filter is an OData $filter clause.. Used to filter results that are returned in the GET respnose. selectParameter is
-// an OData $select clause. Used to select the properties to be returned in the GET respnose. maxResults is the maximum
-// number of items to return in the response. A maximum of 1000 files can be returned.
+// filter is an OData $filter clause.. Used to filter results that are returned in the GET respnose.
+// selectParameter is an OData $select clause. Used to select the properties to be returned in the GET respnose.
+// maxResults is the maximum number of items to return in the response. A maximum of 1000 files can be returned.
 func (client ClustersClient) List(ctx context.Context, filter string, selectParameter string, maxResults *int32) (result ClusterListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: maxResults,
@@ -322,7 +322,7 @@ func (client ClustersClient) List(ctx context.Context, filter string, selectPara
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.ClustersClient", "List")
+		return result, validation.NewError("batchai.ClustersClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
@@ -365,6 +365,8 @@ func (client ClustersClient) ListPreparer(ctx context.Context, filter string, se
 	}
 	if maxResults != nil {
 		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	} else {
+		queryParameters["maxresults"] = autorest.Encode("query", 1000)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -424,10 +426,10 @@ func (client ClustersClient) ListComplete(ctx context.Context, filter string, se
 
 // ListByResourceGroup gets information about the Clusters associated within the specified resource group.
 //
-// resourceGroupName is name of the resource group to which the resource belongs. filter is an OData $filter clause..
-// Used to filter results that are returned in the GET respnose. selectParameter is an OData $select clause. Used to
-// select the properties to be returned in the GET respnose. maxResults is the maximum number of items to return in the
-// response. A maximum of 1000 files can be returned.
+// resourceGroupName is name of the resource group to which the resource belongs. filter is an OData $filter
+// clause.. Used to filter results that are returned in the GET respnose. selectParameter is an OData $select
+// clause. Used to select the properties to be returned in the GET respnose. maxResults is the maximum number of
+// items to return in the response. A maximum of 1000 files can be returned.
 func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, maxResults *int32) (result ClusterListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -437,7 +439,7 @@ func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGr
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.ClustersClient", "ListByResourceGroup")
+		return result, validation.NewError("batchai.ClustersClient", "ListByResourceGroup", err.Error())
 	}
 
 	result.fn = client.listByResourceGroupNextResults
@@ -481,6 +483,8 @@ func (client ClustersClient) ListByResourceGroupPreparer(ctx context.Context, re
 	}
 	if maxResults != nil {
 		queryParameters["maxresults"] = autorest.Encode("query", *maxResults)
+	} else {
+		queryParameters["maxresults"] = autorest.Encode("query", 1000)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -541,8 +545,8 @@ func (client ClustersClient) ListByResourceGroupComplete(ctx context.Context, re
 // ListRemoteLoginInformation get the IP address, port of all the compute nodes in the cluster.
 //
 // resourceGroupName is name of the resource group to which the resource belongs. clusterName is the name of the
-// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric characters
-// along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric
+// characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
 func (client ClustersClient) ListRemoteLoginInformation(ctx context.Context, resourceGroupName string, clusterName string) (result RemoteLoginInformationListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -551,7 +555,7 @@ func (client ClustersClient) ListRemoteLoginInformation(ctx context.Context, res
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "clusterName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.ClustersClient", "ListRemoteLoginInformation")
+		return result, validation.NewError("batchai.ClustersClient", "ListRemoteLoginInformation", err.Error())
 	}
 
 	result.fn = client.listRemoteLoginInformationNextResults
@@ -647,9 +651,9 @@ func (client ClustersClient) ListRemoteLoginInformationComplete(ctx context.Cont
 // Update update the properties of a given cluster.
 //
 // resourceGroupName is name of the resource group to which the resource belongs. clusterName is the name of the
-// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric characters
-// along with dash (-) and underscore (_). The name must be from 1 through 64 characters long. parameters is additional
-// parameters for cluster update.
+// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric
+// characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+// parameters is additional parameters for cluster update.
 func (client ClustersClient) Update(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdateParameters) (result Cluster, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -658,7 +662,7 @@ func (client ClustersClient) Update(ctx context.Context, resourceGroupName strin
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "clusterName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "batchai.ClustersClient", "Update")
+		return result, validation.NewError("batchai.ClustersClient", "Update", err.Error())
 	}
 
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, clusterName, parameters)

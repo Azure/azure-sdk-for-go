@@ -43,6 +43,15 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 
+type ComponentAvailableFeaturesClient = original.ComponentAvailableFeaturesClient
+
+func NewComponentAvailableFeaturesClient(subscriptionID string) ComponentAvailableFeaturesClient {
+	return original.NewComponentAvailableFeaturesClient(subscriptionID)
+}
+func NewComponentAvailableFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentAvailableFeaturesClient {
+	return original.NewComponentAvailableFeaturesClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type ComponentCurrentBillingFeaturesClient = original.ComponentCurrentBillingFeaturesClient
 
 func NewComponentCurrentBillingFeaturesClient(subscriptionID string) ComponentCurrentBillingFeaturesClient {
@@ -50,6 +59,15 @@ func NewComponentCurrentBillingFeaturesClient(subscriptionID string) ComponentCu
 }
 func NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentCurrentBillingFeaturesClient {
 	return original.NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ComponentFeatureCapabilitiesClient = original.ComponentFeatureCapabilitiesClient
+
+func NewComponentFeatureCapabilitiesClient(subscriptionID string) ComponentFeatureCapabilitiesClient {
+	return original.NewComponentFeatureCapabilitiesClient(subscriptionID)
+}
+func NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string) ComponentFeatureCapabilitiesClient {
+	return original.NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type ComponentQuotaStatusClient = original.ComponentQuotaStatusClient
@@ -109,17 +127,24 @@ type APIKeyRequest = original.APIKeyRequest
 type ApplicationInsightsComponent = original.ApplicationInsightsComponent
 type ApplicationInsightsComponentAPIKey = original.ApplicationInsightsComponentAPIKey
 type ApplicationInsightsComponentAPIKeyListResult = original.ApplicationInsightsComponentAPIKeyListResult
+type ApplicationInsightsComponentAvailableFeatures = original.ApplicationInsightsComponentAvailableFeatures
 type ApplicationInsightsComponentBillingFeatures = original.ApplicationInsightsComponentBillingFeatures
 type ApplicationInsightsComponentDataVolumeCap = original.ApplicationInsightsComponentDataVolumeCap
 type ApplicationInsightsComponentExportConfiguration = original.ApplicationInsightsComponentExportConfiguration
 type ApplicationInsightsComponentExportRequest = original.ApplicationInsightsComponentExportRequest
+type ApplicationInsightsComponentFeature = original.ApplicationInsightsComponentFeature
+type ApplicationInsightsComponentFeatureCapabilities = original.ApplicationInsightsComponentFeatureCapabilities
+type ApplicationInsightsComponentFeatureCapability = original.ApplicationInsightsComponentFeatureCapability
 type ApplicationInsightsComponentListResult = original.ApplicationInsightsComponentListResult
 type ApplicationInsightsComponentListResultIterator = original.ApplicationInsightsComponentListResultIterator
 type ApplicationInsightsComponentListResultPage = original.ApplicationInsightsComponentListResultPage
+type ApplicationInsightsComponentProactiveDetectionConfiguration = original.ApplicationInsightsComponentProactiveDetectionConfiguration
+type ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions = original.ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
 type ApplicationInsightsComponentProperties = original.ApplicationInsightsComponentProperties
 type ApplicationInsightsComponentQuotaStatus = original.ApplicationInsightsComponentQuotaStatus
 type ErrorResponse = original.ErrorResponse
 type ListApplicationInsightsComponentExportConfiguration = original.ListApplicationInsightsComponentExportConfiguration
+type ListApplicationInsightsComponentProactiveDetectionConfiguration = original.ListApplicationInsightsComponentProactiveDetectionConfiguration
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -141,6 +166,15 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ProactiveDetectionConfigurationsClient = original.ProactiveDetectionConfigurationsClient
+
+func NewProactiveDetectionConfigurationsClient(subscriptionID string) ProactiveDetectionConfigurationsClient {
+	return original.NewProactiveDetectionConfigurationsClient(subscriptionID)
+}
+func NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ProactiveDetectionConfigurationsClient {
+	return original.NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

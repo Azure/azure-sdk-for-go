@@ -167,6 +167,8 @@ const (
 type StoragePermissions string
 
 const (
+	// StoragePermissionsBackup ...
+	StoragePermissionsBackup StoragePermissions = "backup"
 	// StoragePermissionsDelete ...
 	StoragePermissionsDelete StoragePermissions = "delete"
 	// StoragePermissionsDeletesas ...
@@ -179,8 +181,14 @@ const (
 	StoragePermissionsList StoragePermissions = "list"
 	// StoragePermissionsListsas ...
 	StoragePermissionsListsas StoragePermissions = "listsas"
+	// StoragePermissionsPurge ...
+	StoragePermissionsPurge StoragePermissions = "purge"
+	// StoragePermissionsRecover ...
+	StoragePermissionsRecover StoragePermissions = "recover"
 	// StoragePermissionsRegeneratekey ...
 	StoragePermissionsRegeneratekey StoragePermissions = "regeneratekey"
+	// StoragePermissionsRestore ...
+	StoragePermissionsRestore StoragePermissions = "restore"
 	// StoragePermissionsSet ...
 	StoragePermissionsSet StoragePermissions = "set"
 	// StoragePermissionsSetsas ...
@@ -339,7 +347,28 @@ type DeletedVaultProperties struct {
 	// ScheduledPurgeDate - The scheduled purged date.
 	ScheduledPurgeDate *date.Time `json:"scheduledPurgeDate,omitempty"`
 	// Tags - Tags of the original vault.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DeletedVaultProperties.
+func (dvp DeletedVaultProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dvp.VaultID != nil {
+		objectMap["vaultId"] = dvp.VaultID
+	}
+	if dvp.Location != nil {
+		objectMap["location"] = dvp.Location
+	}
+	if dvp.DeletionDate != nil {
+		objectMap["deletionDate"] = dvp.DeletionDate
+	}
+	if dvp.ScheduledPurgeDate != nil {
+		objectMap["scheduledPurgeDate"] = dvp.ScheduledPurgeDate
+	}
+	if dvp.Tags != nil {
+		objectMap["tags"] = dvp.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // LogSpecification log specification of operation.
@@ -371,46 +400,45 @@ func (o *Operation) UnmarshalJSON(body []byte) error {
 	if err != nil {
 		return err
 	}
-	var v *json.RawMessage
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				o.Name = &name
+			}
+		case "display":
+			if v != nil {
+				var display OperationDisplay
+				err = json.Unmarshal(*v, &display)
+				if err != nil {
+					return err
+				}
+				o.Display = &display
+			}
+		case "origin":
+			if v != nil {
+				var origin string
+				err = json.Unmarshal(*v, &origin)
+				if err != nil {
+					return err
+				}
+				o.Origin = &origin
+			}
+		case "properties":
+			if v != nil {
+				var operationProperties OperationProperties
+				err = json.Unmarshal(*v, &operationProperties)
+				if err != nil {
+					return err
+				}
+				o.OperationProperties = &operationProperties
+			}
 		}
-		o.Name = &name
-	}
-
-	v = m["display"]
-	if v != nil {
-		var display OperationDisplay
-		err = json.Unmarshal(*m["display"], &display)
-		if err != nil {
-			return err
-		}
-		o.Display = &display
-	}
-
-	v = m["origin"]
-	if v != nil {
-		var origin string
-		err = json.Unmarshal(*m["origin"], &origin)
-		if err != nil {
-			return err
-		}
-		o.Origin = &origin
-	}
-
-	v = m["properties"]
-	if v != nil {
-		var properties OperationProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		o.OperationProperties = &properties
 	}
 
 	return nil
@@ -560,7 +588,28 @@ type Resource struct {
 	// Location - The supported Azure location where the key vault should be created.
 	Location *string `json:"location,omitempty"`
 	// Tags - The tags that will be assigned to the key vault.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.ID != nil {
+		objectMap["id"] = r.ID
+	}
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Type != nil {
+		objectMap["type"] = r.Type
+	}
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	if r.Tags != nil {
+		objectMap["tags"] = r.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // ResourceListResult list of vault resources.
@@ -682,6 +731,8 @@ type Sku struct {
 // Vault resource information with extended details.
 type Vault struct {
 	autorest.Response `json:"-"`
+	// Properties - Properties of the vault
+	Properties *VaultProperties `json:"properties,omitempty"`
 	// ID - The Azure Resource Manager resource ID for the key vault.
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the key vault.
@@ -691,9 +742,31 @@ type Vault struct {
 	// Location - The supported Azure location where the key vault should be created.
 	Location *string `json:"location,omitempty"`
 	// Tags - The tags that will be assigned to the key vault.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// Properties - Properties of the vault
-	Properties *VaultProperties `json:"properties,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Vault.
+func (vVar Vault) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vVar.Properties != nil {
+		objectMap["properties"] = vVar.Properties
+	}
+	if vVar.ID != nil {
+		objectMap["id"] = vVar.ID
+	}
+	if vVar.Name != nil {
+		objectMap["name"] = vVar.Name
+	}
+	if vVar.Type != nil {
+		objectMap["type"] = vVar.Type
+	}
+	if vVar.Location != nil {
+		objectMap["location"] = vVar.Location
+	}
+	if vVar.Tags != nil {
+		objectMap["tags"] = vVar.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // VaultAccessPolicyParameters parameters for updating the access policy in a vault
@@ -730,9 +803,24 @@ type VaultCreateOrUpdateParameters struct {
 	// Location - The supported Azure location where the key vault should be created.
 	Location *string `json:"location,omitempty"`
 	// Tags - The tags that will be assigned to the key vault.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// Properties - Properties of the vault
 	Properties *VaultProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VaultCreateOrUpdateParameters.
+func (vcoup VaultCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vcoup.Location != nil {
+		objectMap["location"] = vcoup.Location
+	}
+	if vcoup.Tags != nil {
+		objectMap["tags"] = vcoup.Tags
+	}
+	if vcoup.Properties != nil {
+		objectMap["properties"] = vcoup.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // VaultListResult list of vaults
@@ -840,9 +928,21 @@ func (page VaultListResultPage) Values() []Vault {
 // VaultPatchParameters parameters for creating or updating a vault
 type VaultPatchParameters struct {
 	// Tags - The tags that will be assigned to the key vault.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// Properties - Properties of the vault
 	Properties *VaultPatchProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VaultPatchParameters.
+func (vpp VaultPatchParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vpp.Tags != nil {
+		objectMap["tags"] = vpp.Tags
+	}
+	if vpp.Properties != nil {
+		objectMap["properties"] = vpp.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // VaultPatchProperties properties of the vault
@@ -899,21 +999,38 @@ func (future VaultsPurgeDeletedFuture) Result(client VaultsClient) (ar autorest.
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.VaultsPurgeDeletedFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, autorest.NewError("keyvault.VaultsPurgeDeletedFuture", "Result", "asynchronous operation has not completed")
+		return ar, azure.NewAsyncOpIncompleteError("keyvault.VaultsPurgeDeletedFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.PurgeDeletedResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "keyvault.VaultsPurgeDeletedFuture", "Result", future.Response(), "Failure responding to request")
+		}
 		return
 	}
+	var req *http.Request
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, autorest.ChangeToGet(future.req),
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.VaultsPurgeDeletedFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.PurgeDeletedResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.VaultsPurgeDeletedFuture", "Result", resp, "Failure responding to request")
+	}
 	return
 }

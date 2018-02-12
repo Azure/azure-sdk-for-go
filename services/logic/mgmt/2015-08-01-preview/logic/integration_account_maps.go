@@ -27,26 +27,21 @@ import (
 	"net/http"
 )
 
-// MapsClient is the REST API for Azure Logic Apps.
-type MapsClient struct {
+// IntegrationAccountMapsClient is the REST API for Azure Logic Apps.
+type IntegrationAccountMapsClient struct {
 	ManagementClient
 }
 
-// NewMapsClient creates an instance of the MapsClient client.
-func NewMapsClient(p pipeline.Pipeline) MapsClient {
-	return MapsClient{NewManagementClient(p)}
+// NewIntegrationAccountMapsClient creates an instance of the IntegrationAccountMapsClient client.
+func NewIntegrationAccountMapsClient(p pipeline.Pipeline) IntegrationAccountMapsClient {
+	return IntegrationAccountMapsClient{NewManagementClient(p)}
 }
 
 // CreateOrUpdate creates or updates an integration account map.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is the
 // integration account map name. mapParameter is the integration account map.
-func (client MapsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, mapParameter IntegrationAccountMap) (*IntegrationAccountMap, error) {
-	if err := validate([]validation{
-		{targetValue: mapParameter,
-			constraints: []constraint{{target: "mapParameter.IntegrationAccountMapProperties", name: null, rule: true, chain: nil}}}}); err != nil {
-		return nil, err
-	}
+func (client IntegrationAccountMapsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, mapParameter IntegrationAccountMap) (*IntegrationAccountMap, error) {
 	req, err := client.createOrUpdatePreparer(resourceGroupName, integrationAccountName, mapName, mapParameter)
 	if err != nil {
 		return nil, err
@@ -59,7 +54,7 @@ func (client MapsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 }
 
 // createOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client MapsClient) createOrUpdatePreparer(resourceGroupName string, integrationAccountName string, mapName string, mapParameter IntegrationAccountMap) (pipeline.Request, error) {
+func (client IntegrationAccountMapsClient) createOrUpdatePreparer(resourceGroupName string, integrationAccountName string, mapName string, mapParameter IntegrationAccountMap) (pipeline.Request, error) {
 	u := client.url
 	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}"
 	req, err := pipeline.NewRequest("PUT", u, nil)
@@ -82,7 +77,7 @@ func (client MapsClient) createOrUpdatePreparer(resourceGroupName string, integr
 }
 
 // createOrUpdateResponder handles the response to the CreateOrUpdate request.
-func (client MapsClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client IntegrationAccountMapsClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK, http.StatusCreated)
 	if resp == nil {
 		return nil, err
@@ -109,7 +104,7 @@ func (client MapsClient) createOrUpdateResponder(resp pipeline.Response) (pipeli
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is the
 // integration account map name.
-func (client MapsClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (*http.Response, error) {
+func (client IntegrationAccountMapsClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (*http.Response, error) {
 	req, err := client.deletePreparer(resourceGroupName, integrationAccountName, mapName)
 	if err != nil {
 		return nil, err
@@ -122,7 +117,7 @@ func (client MapsClient) Delete(ctx context.Context, resourceGroupName string, i
 }
 
 // deletePreparer prepares the Delete request.
-func (client MapsClient) deletePreparer(resourceGroupName string, integrationAccountName string, mapName string) (pipeline.Request, error) {
+func (client IntegrationAccountMapsClient) deletePreparer(resourceGroupName string, integrationAccountName string, mapName string) (pipeline.Request, error) {
 	u := client.url
 	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}"
 	req, err := pipeline.NewRequest("DELETE", u, nil)
@@ -136,7 +131,7 @@ func (client MapsClient) deletePreparer(resourceGroupName string, integrationAcc
 }
 
 // deleteResponder handles the response to the Delete request.
-func (client MapsClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client IntegrationAccountMapsClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
 	if resp == nil {
 		return nil, err
@@ -148,7 +143,7 @@ func (client MapsClient) deleteResponder(resp pipeline.Response) (pipeline.Respo
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is the
 // integration account map name.
-func (client MapsClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (*IntegrationAccountMap, error) {
+func (client IntegrationAccountMapsClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (*IntegrationAccountMap, error) {
 	req, err := client.getPreparer(resourceGroupName, integrationAccountName, mapName)
 	if err != nil {
 		return nil, err
@@ -161,7 +156,7 @@ func (client MapsClient) Get(ctx context.Context, resourceGroupName string, inte
 }
 
 // getPreparer prepares the Get request.
-func (client MapsClient) getPreparer(resourceGroupName string, integrationAccountName string, mapName string) (pipeline.Request, error) {
+func (client IntegrationAccountMapsClient) getPreparer(resourceGroupName string, integrationAccountName string, mapName string) (pipeline.Request, error) {
 	u := client.url
 	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}"
 	req, err := pipeline.NewRequest("GET", u, nil)
@@ -175,7 +170,7 @@ func (client MapsClient) getPreparer(resourceGroupName string, integrationAccoun
 }
 
 // getResponder handles the response to the Get request.
-func (client MapsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client IntegrationAccountMapsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
@@ -198,24 +193,24 @@ func (client MapsClient) getResponder(resp pipeline.Response) (pipeline.Response
 	return result, nil
 }
 
-// ListByIntegrationAccounts gets a list of integration account maps.
+// List gets a list of integration account maps.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. top is the
 // number of items to be included in the result. filter is the filter to apply on the operation.
-func (client MapsClient) ListByIntegrationAccounts(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter *string) (*IntegrationAccountMapListResult, error) {
-	req, err := client.listByIntegrationAccountsPreparer(resourceGroupName, integrationAccountName, top, filter)
+func (client IntegrationAccountMapsClient) List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter *string) (*IntegrationAccountMapListResult, error) {
+	req, err := client.listPreparer(resourceGroupName, integrationAccountName, top, filter)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByIntegrationAccountsResponder}, req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp.(*IntegrationAccountMapListResult), err
 }
 
-// listByIntegrationAccountsPreparer prepares the ListByIntegrationAccounts request.
-func (client MapsClient) listByIntegrationAccountsPreparer(resourceGroupName string, integrationAccountName string, top *int32, filter *string) (pipeline.Request, error) {
+// listPreparer prepares the List request.
+func (client IntegrationAccountMapsClient) listPreparer(resourceGroupName string, integrationAccountName string, top *int32, filter *string) (pipeline.Request, error) {
 	u := client.url
 	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps"
 	req, err := pipeline.NewRequest("GET", u, nil)
@@ -234,8 +229,8 @@ func (client MapsClient) listByIntegrationAccountsPreparer(resourceGroupName str
 	return req, nil
 }
 
-// listByIntegrationAccountsResponder handles the response to the ListByIntegrationAccounts request.
-func (client MapsClient) listByIntegrationAccountsResponder(resp pipeline.Response) (pipeline.Response, error) {
+// listResponder handles the response to the List request.
+func (client IntegrationAccountMapsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err

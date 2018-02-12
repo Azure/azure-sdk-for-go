@@ -27,27 +27,22 @@ import (
 	"net/http"
 )
 
-// MapsClient is the REST API for Azure Logic Apps.
-type MapsClient struct {
+// IntegrationAccountSchemasClient is the REST API for Azure Logic Apps.
+type IntegrationAccountSchemasClient struct {
 	ManagementClient
 }
 
-// NewMapsClient creates an instance of the MapsClient client.
-func NewMapsClient(p pipeline.Pipeline) MapsClient {
-	return MapsClient{NewManagementClient(p)}
+// NewIntegrationAccountSchemasClient creates an instance of the IntegrationAccountSchemasClient client.
+func NewIntegrationAccountSchemasClient(p pipeline.Pipeline) IntegrationAccountSchemasClient {
+	return IntegrationAccountSchemasClient{NewManagementClient(p)}
 }
 
-// CreateOrUpdate creates or updates an integration account map.
+// CreateOrUpdate creates or updates an integration account schema.
 //
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is the
-// integration account map name. mapParameter is the integration account map.
-func (client MapsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, mapParameter IntegrationAccountMap) (*IntegrationAccountMap, error) {
-	if err := validate([]validation{
-		{targetValue: mapParameter,
-			constraints: []constraint{{target: "mapParameter.IntegrationAccountMapProperties", name: null, rule: true, chain: nil}}}}); err != nil {
-		return nil, err
-	}
-	req, err := client.createOrUpdatePreparer(resourceGroupName, integrationAccountName, mapName, mapParameter)
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name. schemaName is
+// the integration account schema name. schema is the integration account schema.
+func (client IntegrationAccountSchemasClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string, schema IntegrationAccountSchema) (*IntegrationAccountSchema, error) {
+	req, err := client.createOrUpdatePreparer(resourceGroupName, integrationAccountName, schemaName, schema)
 	if err != nil {
 		return nil, err
 	}
@@ -55,13 +50,13 @@ func (client MapsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*IntegrationAccountMap), err
+	return resp.(*IntegrationAccountSchema), err
 }
 
 // createOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client MapsClient) createOrUpdatePreparer(resourceGroupName string, integrationAccountName string, mapName string, mapParameter IntegrationAccountMap) (pipeline.Request, error) {
+func (client IntegrationAccountSchemasClient) createOrUpdatePreparer(resourceGroupName string, integrationAccountName string, schemaName string, schema IntegrationAccountSchema) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas/{schemaName}"
 	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -69,7 +64,7 @@ func (client MapsClient) createOrUpdatePreparer(resourceGroupName string, integr
 	params := req.URL.Query()
 	params.Set("api-version", APIVersion)
 	req.URL.RawQuery = params.Encode()
-	b, err := json.Marshal(mapParameter)
+	b, err := json.Marshal(schema)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
@@ -82,12 +77,12 @@ func (client MapsClient) createOrUpdatePreparer(resourceGroupName string, integr
 }
 
 // createOrUpdateResponder handles the response to the CreateOrUpdate request.
-func (client MapsClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client IntegrationAccountSchemasClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK, http.StatusCreated)
 	if resp == nil {
 		return nil, err
 	}
-	result := &IntegrationAccountMap{rawResponse: resp.Response()}
+	result := &IntegrationAccountSchema{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -105,12 +100,12 @@ func (client MapsClient) createOrUpdateResponder(resp pipeline.Response) (pipeli
 	return result, nil
 }
 
-// Delete deletes an integration account map.
+// Delete deletes an integration account schema.
 //
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is the
-// integration account map name.
-func (client MapsClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (*http.Response, error) {
-	req, err := client.deletePreparer(resourceGroupName, integrationAccountName, mapName)
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name. schemaName is
+// the integration account schema name.
+func (client IntegrationAccountSchemasClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string) (*http.Response, error) {
+	req, err := client.deletePreparer(resourceGroupName, integrationAccountName, schemaName)
 	if err != nil {
 		return nil, err
 	}
@@ -122,9 +117,9 @@ func (client MapsClient) Delete(ctx context.Context, resourceGroupName string, i
 }
 
 // deletePreparer prepares the Delete request.
-func (client MapsClient) deletePreparer(resourceGroupName string, integrationAccountName string, mapName string) (pipeline.Request, error) {
+func (client IntegrationAccountSchemasClient) deletePreparer(resourceGroupName string, integrationAccountName string, schemaName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas/{schemaName}"
 	req, err := pipeline.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -136,7 +131,7 @@ func (client MapsClient) deletePreparer(resourceGroupName string, integrationAcc
 }
 
 // deleteResponder handles the response to the Delete request.
-func (client MapsClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client IntegrationAccountSchemasClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
 	if resp == nil {
 		return nil, err
@@ -144,12 +139,12 @@ func (client MapsClient) deleteResponder(resp pipeline.Response) (pipeline.Respo
 	return resp, err
 }
 
-// Get gets an integration account map.
+// Get gets an integration account schema.
 //
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is the
-// integration account map name.
-func (client MapsClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (*IntegrationAccountMap, error) {
-	req, err := client.getPreparer(resourceGroupName, integrationAccountName, mapName)
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name. schemaName is
+// the integration account schema name.
+func (client IntegrationAccountSchemasClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, schemaName string) (*IntegrationAccountSchema, error) {
+	req, err := client.getPreparer(resourceGroupName, integrationAccountName, schemaName)
 	if err != nil {
 		return nil, err
 	}
@@ -157,13 +152,13 @@ func (client MapsClient) Get(ctx context.Context, resourceGroupName string, inte
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*IntegrationAccountMap), err
+	return resp.(*IntegrationAccountSchema), err
 }
 
 // getPreparer prepares the Get request.
-func (client MapsClient) getPreparer(resourceGroupName string, integrationAccountName string, mapName string) (pipeline.Request, error) {
+func (client IntegrationAccountSchemasClient) getPreparer(resourceGroupName string, integrationAccountName string, schemaName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas/{schemaName}"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -175,12 +170,12 @@ func (client MapsClient) getPreparer(resourceGroupName string, integrationAccoun
 }
 
 // getResponder handles the response to the Get request.
-func (client MapsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client IntegrationAccountSchemasClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &IntegrationAccountMap{rawResponse: resp.Response()}
+	result := &IntegrationAccountSchema{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -198,26 +193,26 @@ func (client MapsClient) getResponder(resp pipeline.Response) (pipeline.Response
 	return result, nil
 }
 
-// ListByIntegrationAccounts gets a list of integration account maps.
+// List gets a list of integration account schemas.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. top is the
 // number of items to be included in the result. filter is the filter to apply on the operation.
-func (client MapsClient) ListByIntegrationAccounts(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter *string) (*IntegrationAccountMapListResult, error) {
-	req, err := client.listByIntegrationAccountsPreparer(resourceGroupName, integrationAccountName, top, filter)
+func (client IntegrationAccountSchemasClient) List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter *string) (*IntegrationAccountSchemaListResult, error) {
+	req, err := client.listPreparer(resourceGroupName, integrationAccountName, top, filter)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByIntegrationAccountsResponder}, req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*IntegrationAccountMapListResult), err
+	return resp.(*IntegrationAccountSchemaListResult), err
 }
 
-// listByIntegrationAccountsPreparer prepares the ListByIntegrationAccounts request.
-func (client MapsClient) listByIntegrationAccountsPreparer(resourceGroupName string, integrationAccountName string, top *int32, filter *string) (pipeline.Request, error) {
+// listPreparer prepares the List request.
+func (client IntegrationAccountSchemasClient) listPreparer(resourceGroupName string, integrationAccountName string, top *int32, filter *string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/schemas"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -234,13 +229,13 @@ func (client MapsClient) listByIntegrationAccountsPreparer(resourceGroupName str
 	return req, nil
 }
 
-// listByIntegrationAccountsResponder handles the response to the ListByIntegrationAccounts request.
-func (client MapsClient) listByIntegrationAccountsResponder(resp pipeline.Response) (pipeline.Response, error) {
+// listResponder handles the response to the List request.
+func (client IntegrationAccountSchemasClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &IntegrationAccountMapListResult{rawResponse: resp.Response()}
+	result := &IntegrationAccountSchemaListResult{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}

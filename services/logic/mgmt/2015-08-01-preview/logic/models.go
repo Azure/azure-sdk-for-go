@@ -18,255 +18,305 @@ package logic
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"encoding/json"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
+	"time"
 )
+
+// Marker represents an opaque value used in paged responses.
+type Marker struct {
+	val *string
+}
+
+// NotDone returns true if the list enumeration should be started or is not yet complete. Specifically, NotDone returns true
+// for a just-initialized (zero value) Marker indicating that you should make an initial request to get a result portion from
+// the service. NotDone also returns true whenever the service returns an interim result portion. NotDone returns false only
+// after the service has returned the final result portion.
+func (m Marker) NotDone() bool {
+	return m.val == nil || *m.val != ""
+}
+
+// UnmarshalXML implements the xml.Unmarshaler interface for Marker.
+func (m *Marker) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var out string
+	err := d.DecodeElement(&out, &start)
+	m.val = &out
+	return err
+}
 
 // AgreementType enumerates the values for agreement type.
 type AgreementType string
 
 const (
-	// AS2 ...
-	AS2 AgreementType = "AS2"
-	// Edifact ...
-	Edifact AgreementType = "Edifact"
-	// NotSpecified ...
-	NotSpecified AgreementType = "NotSpecified"
-	// X12 ...
-	X12 AgreementType = "X12"
+	// AgreementAS2 ...
+	AgreementAS2 AgreementType = "AS2"
+	// AgreementEdifact ...
+	AgreementEdifact AgreementType = "Edifact"
+	// AgreementNone represents an empty AgreementType.
+	AgreementNone AgreementType = ""
+	// AgreementNotSpecified ...
+	AgreementNotSpecified AgreementType = "NotSpecified"
+	// AgreementX12 ...
+	AgreementX12 AgreementType = "X12"
 )
 
-// EdifactCharacterSet enumerates the values for edifact character set.
-type EdifactCharacterSet string
+// EdifactCharacterSetType enumerates the values for edifact character set.
+type EdifactCharacterSetType string
 
 const (
 	// EdifactCharacterSetKECA ...
-	EdifactCharacterSetKECA EdifactCharacterSet = "KECA"
+	EdifactCharacterSetKECA EdifactCharacterSetType = "KECA"
+	// EdifactCharacterSetNone represents an empty EdifactCharacterSetType.
+	EdifactCharacterSetNone EdifactCharacterSetType = ""
 	// EdifactCharacterSetNotSpecified ...
-	EdifactCharacterSetNotSpecified EdifactCharacterSet = "NotSpecified"
+	EdifactCharacterSetNotSpecified EdifactCharacterSetType = "NotSpecified"
 	// EdifactCharacterSetUNOA ...
-	EdifactCharacterSetUNOA EdifactCharacterSet = "UNOA"
+	EdifactCharacterSetUNOA EdifactCharacterSetType = "UNOA"
 	// EdifactCharacterSetUNOB ...
-	EdifactCharacterSetUNOB EdifactCharacterSet = "UNOB"
+	EdifactCharacterSetUNOB EdifactCharacterSetType = "UNOB"
 	// EdifactCharacterSetUNOC ...
-	EdifactCharacterSetUNOC EdifactCharacterSet = "UNOC"
+	EdifactCharacterSetUNOC EdifactCharacterSetType = "UNOC"
 	// EdifactCharacterSetUNOD ...
-	EdifactCharacterSetUNOD EdifactCharacterSet = "UNOD"
+	EdifactCharacterSetUNOD EdifactCharacterSetType = "UNOD"
 	// EdifactCharacterSetUNOE ...
-	EdifactCharacterSetUNOE EdifactCharacterSet = "UNOE"
+	EdifactCharacterSetUNOE EdifactCharacterSetType = "UNOE"
 	// EdifactCharacterSetUNOF ...
-	EdifactCharacterSetUNOF EdifactCharacterSet = "UNOF"
+	EdifactCharacterSetUNOF EdifactCharacterSetType = "UNOF"
 	// EdifactCharacterSetUNOG ...
-	EdifactCharacterSetUNOG EdifactCharacterSet = "UNOG"
+	EdifactCharacterSetUNOG EdifactCharacterSetType = "UNOG"
 	// EdifactCharacterSetUNOH ...
-	EdifactCharacterSetUNOH EdifactCharacterSet = "UNOH"
+	EdifactCharacterSetUNOH EdifactCharacterSetType = "UNOH"
 	// EdifactCharacterSetUNOI ...
-	EdifactCharacterSetUNOI EdifactCharacterSet = "UNOI"
+	EdifactCharacterSetUNOI EdifactCharacterSetType = "UNOI"
 	// EdifactCharacterSetUNOJ ...
-	EdifactCharacterSetUNOJ EdifactCharacterSet = "UNOJ"
+	EdifactCharacterSetUNOJ EdifactCharacterSetType = "UNOJ"
 	// EdifactCharacterSetUNOK ...
-	EdifactCharacterSetUNOK EdifactCharacterSet = "UNOK"
+	EdifactCharacterSetUNOK EdifactCharacterSetType = "UNOK"
 	// EdifactCharacterSetUNOX ...
-	EdifactCharacterSetUNOX EdifactCharacterSet = "UNOX"
+	EdifactCharacterSetUNOX EdifactCharacterSetType = "UNOX"
 	// EdifactCharacterSetUNOY ...
-	EdifactCharacterSetUNOY EdifactCharacterSet = "UNOY"
+	EdifactCharacterSetUNOY EdifactCharacterSetType = "UNOY"
 )
 
-// EdifactDecimalIndicator enumerates the values for edifact decimal indicator.
-type EdifactDecimalIndicator string
+// EdifactDecimalIndicatorType enumerates the values for edifact decimal indicator.
+type EdifactDecimalIndicatorType string
 
 const (
 	// EdifactDecimalIndicatorComma ...
-	EdifactDecimalIndicatorComma EdifactDecimalIndicator = "Comma"
+	EdifactDecimalIndicatorComma EdifactDecimalIndicatorType = "Comma"
 	// EdifactDecimalIndicatorDecimal ...
-	EdifactDecimalIndicatorDecimal EdifactDecimalIndicator = "Decimal"
+	EdifactDecimalIndicatorDecimal EdifactDecimalIndicatorType = "Decimal"
+	// EdifactDecimalIndicatorNone represents an empty EdifactDecimalIndicatorType.
+	EdifactDecimalIndicatorNone EdifactDecimalIndicatorType = ""
 	// EdifactDecimalIndicatorNotSpecified ...
-	EdifactDecimalIndicatorNotSpecified EdifactDecimalIndicator = "NotSpecified"
+	EdifactDecimalIndicatorNotSpecified EdifactDecimalIndicatorType = "NotSpecified"
 )
 
-// EncryptionAlgorithm enumerates the values for encryption algorithm.
-type EncryptionAlgorithm string
+// EncryptionAlgorithmType enumerates the values for encryption algorithm.
+type EncryptionAlgorithmType string
 
 const (
 	// EncryptionAlgorithmAES128 ...
-	EncryptionAlgorithmAES128 EncryptionAlgorithm = "AES128"
+	EncryptionAlgorithmAES128 EncryptionAlgorithmType = "AES128"
 	// EncryptionAlgorithmAES192 ...
-	EncryptionAlgorithmAES192 EncryptionAlgorithm = "AES192"
+	EncryptionAlgorithmAES192 EncryptionAlgorithmType = "AES192"
 	// EncryptionAlgorithmAES256 ...
-	EncryptionAlgorithmAES256 EncryptionAlgorithm = "AES256"
+	EncryptionAlgorithmAES256 EncryptionAlgorithmType = "AES256"
 	// EncryptionAlgorithmDES3 ...
-	EncryptionAlgorithmDES3 EncryptionAlgorithm = "DES3"
+	EncryptionAlgorithmDES3 EncryptionAlgorithmType = "DES3"
 	// EncryptionAlgorithmNone ...
-	EncryptionAlgorithmNone EncryptionAlgorithm = "None"
+	EncryptionAlgorithmNone EncryptionAlgorithmType = "None"
+	// EncryptionAlgorithmNone represents an empty EncryptionAlgorithmType.
+	EncryptionAlgorithmNone EncryptionAlgorithmType = ""
 	// EncryptionAlgorithmNotSpecified ...
-	EncryptionAlgorithmNotSpecified EncryptionAlgorithm = "NotSpecified"
+	EncryptionAlgorithmNotSpecified EncryptionAlgorithmType = "NotSpecified"
 	// EncryptionAlgorithmRC2 ...
-	EncryptionAlgorithmRC2 EncryptionAlgorithm = "RC2"
+	EncryptionAlgorithmRC2 EncryptionAlgorithmType = "RC2"
 )
 
-// HashingAlgorithm enumerates the values for hashing algorithm.
-type HashingAlgorithm string
+// HashingAlgorithmType enumerates the values for hashing algorithm.
+type HashingAlgorithmType string
 
 const (
 	// HashingAlgorithmNone ...
-	HashingAlgorithmNone HashingAlgorithm = "None"
+	HashingAlgorithmNone HashingAlgorithmType = "None"
+	// HashingAlgorithmNone represents an empty HashingAlgorithmType.
+	HashingAlgorithmNone HashingAlgorithmType = ""
 	// HashingAlgorithmNotSpecified ...
-	HashingAlgorithmNotSpecified HashingAlgorithm = "NotSpecified"
+	HashingAlgorithmNotSpecified HashingAlgorithmType = "NotSpecified"
 	// HashingAlgorithmSHA2256 ...
-	HashingAlgorithmSHA2256 HashingAlgorithm = "SHA2256"
+	HashingAlgorithmSHA2256 HashingAlgorithmType = "SHA2256"
 	// HashingAlgorithmSHA2384 ...
-	HashingAlgorithmSHA2384 HashingAlgorithm = "SHA2384"
+	HashingAlgorithmSHA2384 HashingAlgorithmType = "SHA2384"
 	// HashingAlgorithmSHA2512 ...
-	HashingAlgorithmSHA2512 HashingAlgorithm = "SHA2512"
+	HashingAlgorithmSHA2512 HashingAlgorithmType = "SHA2512"
 )
 
 // MapType enumerates the values for map type.
 type MapType string
 
 const (
-	// MapTypeNotSpecified ...
-	MapTypeNotSpecified MapType = "NotSpecified"
-	// MapTypeXslt ...
-	MapTypeXslt MapType = "Xslt"
+	// MapNone represents an empty MapType.
+	MapNone MapType = ""
+	// MapNotSpecified ...
+	MapNotSpecified MapType = "NotSpecified"
+	// MapXslt ...
+	MapXslt MapType = "Xslt"
 )
 
 // MessageFilterType enumerates the values for message filter type.
 type MessageFilterType string
 
 const (
-	// MessageFilterTypeExclude ...
-	MessageFilterTypeExclude MessageFilterType = "Exclude"
-	// MessageFilterTypeInclude ...
-	MessageFilterTypeInclude MessageFilterType = "Include"
-	// MessageFilterTypeNotSpecified ...
-	MessageFilterTypeNotSpecified MessageFilterType = "NotSpecified"
+	// MessageFilterExclude ...
+	MessageFilterExclude MessageFilterType = "Exclude"
+	// MessageFilterInclude ...
+	MessageFilterInclude MessageFilterType = "Include"
+	// MessageFilterNone represents an empty MessageFilterType.
+	MessageFilterNone MessageFilterType = ""
+	// MessageFilterNotSpecified ...
+	MessageFilterNotSpecified MessageFilterType = "NotSpecified"
 )
 
 // PartnerType enumerates the values for partner type.
 type PartnerType string
 
 const (
-	// PartnerTypeB2B ...
-	PartnerTypeB2B PartnerType = "B2B"
-	// PartnerTypeNotSpecified ...
-	PartnerTypeNotSpecified PartnerType = "NotSpecified"
+	// PartnerB2B ...
+	PartnerB2B PartnerType = "B2B"
+	// PartnerNone represents an empty PartnerType.
+	PartnerNone PartnerType = ""
+	// PartnerNotSpecified ...
+	PartnerNotSpecified PartnerType = "NotSpecified"
 )
 
 // SchemaType enumerates the values for schema type.
 type SchemaType string
 
 const (
-	// SchemaTypeNotSpecified ...
-	SchemaTypeNotSpecified SchemaType = "NotSpecified"
-	// SchemaTypeXML ...
-	SchemaTypeXML SchemaType = "Xml"
+	// SchemaNone represents an empty SchemaType.
+	SchemaNone SchemaType = ""
+	// SchemaNotSpecified ...
+	SchemaNotSpecified SchemaType = "NotSpecified"
+	// SchemaXML ...
+	SchemaXML SchemaType = "Xml"
 )
 
-// SegmentTerminatorSuffix enumerates the values for segment terminator suffix.
-type SegmentTerminatorSuffix string
+// SegmentTerminatorSuffixType enumerates the values for segment terminator suffix.
+type SegmentTerminatorSuffixType string
 
 const (
 	// SegmentTerminatorSuffixCR ...
-	SegmentTerminatorSuffixCR SegmentTerminatorSuffix = "CR"
+	SegmentTerminatorSuffixCR SegmentTerminatorSuffixType = "CR"
 	// SegmentTerminatorSuffixCRLF ...
-	SegmentTerminatorSuffixCRLF SegmentTerminatorSuffix = "CRLF"
+	SegmentTerminatorSuffixCRLF SegmentTerminatorSuffixType = "CRLF"
 	// SegmentTerminatorSuffixLF ...
-	SegmentTerminatorSuffixLF SegmentTerminatorSuffix = "LF"
+	SegmentTerminatorSuffixLF SegmentTerminatorSuffixType = "LF"
 	// SegmentTerminatorSuffixNone ...
-	SegmentTerminatorSuffixNone SegmentTerminatorSuffix = "None"
+	SegmentTerminatorSuffixNone SegmentTerminatorSuffixType = "None"
+	// SegmentTerminatorSuffixNone represents an empty SegmentTerminatorSuffixType.
+	SegmentTerminatorSuffixNone SegmentTerminatorSuffixType = ""
 	// SegmentTerminatorSuffixNotSpecified ...
-	SegmentTerminatorSuffixNotSpecified SegmentTerminatorSuffix = "NotSpecified"
+	SegmentTerminatorSuffixNotSpecified SegmentTerminatorSuffixType = "NotSpecified"
 )
 
-// SkuName enumerates the values for sku name.
-type SkuName string
+// SkuNameType enumerates the values for sku name.
+type SkuNameType string
 
 const (
 	// SkuNameBasic ...
-	SkuNameBasic SkuName = "Basic"
+	SkuNameBasic SkuNameType = "Basic"
 	// SkuNameFree ...
-	SkuNameFree SkuName = "Free"
+	SkuNameFree SkuNameType = "Free"
+	// SkuNameNone represents an empty SkuNameType.
+	SkuNameNone SkuNameType = ""
 	// SkuNameNotSpecified ...
-	SkuNameNotSpecified SkuName = "NotSpecified"
+	SkuNameNotSpecified SkuNameType = "NotSpecified"
 	// SkuNamePremium ...
-	SkuNamePremium SkuName = "Premium"
+	SkuNamePremium SkuNameType = "Premium"
 	// SkuNameShared ...
-	SkuNameShared SkuName = "Shared"
+	SkuNameShared SkuNameType = "Shared"
 	// SkuNameStandard ...
-	SkuNameStandard SkuName = "Standard"
+	SkuNameStandard SkuNameType = "Standard"
 )
 
-// TrailingSeparatorPolicy enumerates the values for trailing separator policy.
-type TrailingSeparatorPolicy string
+// TrailingSeparatorPolicyType enumerates the values for trailing separator policy.
+type TrailingSeparatorPolicyType string
 
 const (
 	// TrailingSeparatorPolicyMandatory ...
-	TrailingSeparatorPolicyMandatory TrailingSeparatorPolicy = "Mandatory"
+	TrailingSeparatorPolicyMandatory TrailingSeparatorPolicyType = "Mandatory"
+	// TrailingSeparatorPolicyNone represents an empty TrailingSeparatorPolicyType.
+	TrailingSeparatorPolicyNone TrailingSeparatorPolicyType = ""
 	// TrailingSeparatorPolicyNotAllowed ...
-	TrailingSeparatorPolicyNotAllowed TrailingSeparatorPolicy = "NotAllowed"
+	TrailingSeparatorPolicyNotAllowed TrailingSeparatorPolicyType = "NotAllowed"
 	// TrailingSeparatorPolicyNotSpecified ...
-	TrailingSeparatorPolicyNotSpecified TrailingSeparatorPolicy = "NotSpecified"
+	TrailingSeparatorPolicyNotSpecified TrailingSeparatorPolicyType = "NotSpecified"
 	// TrailingSeparatorPolicyOptional ...
-	TrailingSeparatorPolicyOptional TrailingSeparatorPolicy = "Optional"
+	TrailingSeparatorPolicyOptional TrailingSeparatorPolicyType = "Optional"
 )
 
-// UsageIndicator enumerates the values for usage indicator.
-type UsageIndicator string
+// UsageIndicatorType enumerates the values for usage indicator.
+type UsageIndicatorType string
 
 const (
 	// UsageIndicatorInformation ...
-	UsageIndicatorInformation UsageIndicator = "Information"
+	UsageIndicatorInformation UsageIndicatorType = "Information"
+	// UsageIndicatorNone represents an empty UsageIndicatorType.
+	UsageIndicatorNone UsageIndicatorType = ""
 	// UsageIndicatorNotSpecified ...
-	UsageIndicatorNotSpecified UsageIndicator = "NotSpecified"
+	UsageIndicatorNotSpecified UsageIndicatorType = "NotSpecified"
 	// UsageIndicatorProduction ...
-	UsageIndicatorProduction UsageIndicator = "Production"
+	UsageIndicatorProduction UsageIndicatorType = "Production"
 	// UsageIndicatorTest ...
-	UsageIndicatorTest UsageIndicator = "Test"
+	UsageIndicatorTest UsageIndicatorType = "Test"
 )
 
-// X12CharacterSet enumerates the values for x12 character set.
-type X12CharacterSet string
+// X12CharacterSetType enumerates the values for x12 character set.
+type X12CharacterSetType string
 
 const (
 	// X12CharacterSetBasic ...
-	X12CharacterSetBasic X12CharacterSet = "Basic"
+	X12CharacterSetBasic X12CharacterSetType = "Basic"
 	// X12CharacterSetExtended ...
-	X12CharacterSetExtended X12CharacterSet = "Extended"
+	X12CharacterSetExtended X12CharacterSetType = "Extended"
+	// X12CharacterSetNone represents an empty X12CharacterSetType.
+	X12CharacterSetNone X12CharacterSetType = ""
 	// X12CharacterSetNotSpecified ...
-	X12CharacterSetNotSpecified X12CharacterSet = "NotSpecified"
+	X12CharacterSetNotSpecified X12CharacterSetType = "NotSpecified"
 	// X12CharacterSetUTF8 ...
-	X12CharacterSetUTF8 X12CharacterSet = "UTF8"
+	X12CharacterSetUTF8 X12CharacterSetType = "UTF8"
 )
 
-// X12DateFormat enumerates the values for x12 date format.
-type X12DateFormat string
+// X12DateFormatType enumerates the values for x12 date format.
+type X12DateFormatType string
 
 const (
 	// X12DateFormatCCYYMMDD ...
-	X12DateFormatCCYYMMDD X12DateFormat = "CCYYMMDD"
+	X12DateFormatCCYYMMDD X12DateFormatType = "CCYYMMDD"
+	// X12DateFormatNone represents an empty X12DateFormatType.
+	X12DateFormatNone X12DateFormatType = ""
 	// X12DateFormatNotSpecified ...
-	X12DateFormatNotSpecified X12DateFormat = "NotSpecified"
+	X12DateFormatNotSpecified X12DateFormatType = "NotSpecified"
 	// X12DateFormatYYMMDD ...
-	X12DateFormatYYMMDD X12DateFormat = "YYMMDD"
+	X12DateFormatYYMMDD X12DateFormatType = "YYMMDD"
 )
 
-// X12TimeFormat enumerates the values for x12 time format.
-type X12TimeFormat string
+// X12TimeFormatType enumerates the values for x12 time format.
+type X12TimeFormatType string
 
 const (
 	// X12TimeFormatHHMM ...
-	X12TimeFormatHHMM X12TimeFormat = "HHMM"
+	X12TimeFormatHHMM X12TimeFormatType = "HHMM"
 	// X12TimeFormatHHMMSS ...
-	X12TimeFormatHHMMSS X12TimeFormat = "HHMMSS"
+	X12TimeFormatHHMMSS X12TimeFormatType = "HHMMSS"
 	// X12TimeFormatHHMMSSd ...
-	X12TimeFormatHHMMSSd X12TimeFormat = "HHMMSSd"
+	X12TimeFormatHHMMSSd X12TimeFormatType = "HHMMSSd"
 	// X12TimeFormatHHMMSSdd ...
-	X12TimeFormatHHMMSSdd X12TimeFormat = "HHMMSSdd"
+	X12TimeFormatHHMMSSdd X12TimeFormatType = "HHMMSSdd"
+	// X12TimeFormatNone represents an empty X12TimeFormatType.
+	X12TimeFormatNone X12TimeFormatType = ""
 	// X12TimeFormatNotSpecified ...
-	X12TimeFormatNotSpecified X12TimeFormat = "NotSpecified"
+	X12TimeFormatNotSpecified X12TimeFormatType = "NotSpecified"
 )
 
 // AgreementContent ...
@@ -339,8 +389,8 @@ type AS2MdnSettings struct {
 	MdnText *string `json:"mdnText,omitempty"`
 	// SendInboundMdnToMessageBox - The value indicating whether to send inbound MDN to message box.
 	SendInboundMdnToMessageBox *bool `json:"sendInboundMdnToMessageBox,omitempty"`
-	// MicHashingAlgorithm - The signing or hashing algorithm. Possible values include: 'HashingAlgorithmNotSpecified', 'HashingAlgorithmNone', 'HashingAlgorithmSHA2256', 'HashingAlgorithmSHA2384', 'HashingAlgorithmSHA2512'
-	MicHashingAlgorithm HashingAlgorithm `json:"micHashingAlgorithm,omitempty"`
+	// MicHashingAlgorithm - The signing or hashing algorithm. Possible values include: 'NotSpecified', 'None', 'SHA2256', 'SHA2384', 'SHA2512', 'None'
+	MicHashingAlgorithm HashingAlgorithmType `json:"micHashingAlgorithm,omitempty"`
 }
 
 // AS2MessageConnectionSettings ...
@@ -423,14 +473,14 @@ type AS2ValidationSettings struct {
 	CheckCertificateRevocationListOnSend *bool `json:"checkCertificateRevocationListOnSend,omitempty"`
 	// CheckCertificateRevocationListOnReceive - The value indicating whether to check for certificate revocation list on receive.
 	CheckCertificateRevocationListOnReceive *bool `json:"checkCertificateRevocationListOnReceive,omitempty"`
-	// EncryptionAlgorithm - The encryption algorithm. Possible values include: 'EncryptionAlgorithmNotSpecified', 'EncryptionAlgorithmNone', 'EncryptionAlgorithmDES3', 'EncryptionAlgorithmRC2', 'EncryptionAlgorithmAES128', 'EncryptionAlgorithmAES192', 'EncryptionAlgorithmAES256'
-	EncryptionAlgorithm EncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
+	// EncryptionAlgorithm - The encryption algorithm. Possible values include: 'NotSpecified', 'None', 'DES3', 'RC2', 'AES128', 'AES192', 'AES256', 'None'
+	EncryptionAlgorithm EncryptionAlgorithmType `json:"encryptionAlgorithm,omitempty"`
 }
 
 // B2BPartnerContent ...
 type B2BPartnerContent struct {
 	// BusinessIdentities - The list of partner business identities.
-	BusinessIdentities *[]BusinessIdentity `json:"businessIdentities,omitempty"`
+	BusinessIdentities []BusinessIdentity `json:"businessIdentities,omitempty"`
 }
 
 // BusinessIdentity ...
@@ -443,9 +493,24 @@ type BusinessIdentity struct {
 
 // CallbackURL ...
 type CallbackURL struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The URL value.
 	Value *string `json:"value,omitempty"`
+}
+
+// Response returns the raw HTTP response object.
+func (cu CallbackURL) Response() *http.Response {
+	return cu.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (cu CallbackURL) StatusCode() int {
+	return cu.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (cu CallbackURL) Status() string {
+	return cu.rawResponse.Status
 }
 
 // EdifactAcknowledgementSettings ...
@@ -498,10 +563,10 @@ type EdifactDelimiterOverride struct {
 	SegmentTerminator *int32 `json:"segmentTerminator,omitempty"`
 	// RepetitionSeparator - The repetition separator.
 	RepetitionSeparator *int32 `json:"repetitionSeparator,omitempty"`
-	// SegmentTerminatorSuffix - The segment terminator suffix. Possible values include: 'SegmentTerminatorSuffixNotSpecified', 'SegmentTerminatorSuffixNone', 'SegmentTerminatorSuffixCR', 'SegmentTerminatorSuffixLF', 'SegmentTerminatorSuffixCRLF'
-	SegmentTerminatorSuffix SegmentTerminatorSuffix `json:"segmentTerminatorSuffix,omitempty"`
-	// DecimalPointIndicator - The decimal point indicator. Possible values include: 'EdifactDecimalIndicatorNotSpecified', 'EdifactDecimalIndicatorComma', 'EdifactDecimalIndicatorDecimal'
-	DecimalPointIndicator EdifactDecimalIndicator `json:"decimalPointIndicator,omitempty"`
+	// SegmentTerminatorSuffix - The segment terminator suffix. Possible values include: 'NotSpecified', 'None', 'CR', 'LF', 'CRLF', 'None'
+	SegmentTerminatorSuffix SegmentTerminatorSuffixType `json:"segmentTerminatorSuffix,omitempty"`
+	// DecimalPointIndicator - The decimal point indicator. Possible values include: 'NotSpecified', 'Comma', 'Decimal', 'None'
+	DecimalPointIndicator EdifactDecimalIndicatorType `json:"decimalPointIndicator,omitempty"`
 	// ReleaseIndicator - The release indicator.
 	ReleaseIndicator *int32 `json:"releaseIndicator,omitempty"`
 	// MessageAssociationAssignedCode - The message association assigned code.
@@ -648,17 +713,17 @@ type EdifactFramingSettings struct {
 	ReleaseIndicator *int32 `json:"releaseIndicator,omitempty"`
 	// RepetitionSeparator - The repetition separator.
 	RepetitionSeparator *int32 `json:"repetitionSeparator,omitempty"`
-	// CharacterSet - The EDIFACT frame setting characterSet. Possible values include: 'EdifactCharacterSetNotSpecified', 'EdifactCharacterSetUNOB', 'EdifactCharacterSetUNOA', 'EdifactCharacterSetUNOC', 'EdifactCharacterSetUNOD', 'EdifactCharacterSetUNOE', 'EdifactCharacterSetUNOF', 'EdifactCharacterSetUNOG', 'EdifactCharacterSetUNOH', 'EdifactCharacterSetUNOI', 'EdifactCharacterSetUNOJ', 'EdifactCharacterSetUNOK', 'EdifactCharacterSetUNOX', 'EdifactCharacterSetUNOY', 'EdifactCharacterSetKECA'
-	CharacterSet EdifactCharacterSet `json:"characterSet,omitempty"`
-	// DecimalPointIndicator - The EDIFACT frame setting decimal indicator. Possible values include: 'EdifactDecimalIndicatorNotSpecified', 'EdifactDecimalIndicatorComma', 'EdifactDecimalIndicatorDecimal'
-	DecimalPointIndicator EdifactDecimalIndicator `json:"decimalPointIndicator,omitempty"`
-	// SegmentTerminatorSuffix - The EDIFACT frame setting segment terminator suffix. Possible values include: 'SegmentTerminatorSuffixNotSpecified', 'SegmentTerminatorSuffixNone', 'SegmentTerminatorSuffixCR', 'SegmentTerminatorSuffixLF', 'SegmentTerminatorSuffixCRLF'
-	SegmentTerminatorSuffix SegmentTerminatorSuffix `json:"segmentTerminatorSuffix,omitempty"`
+	// CharacterSet - The EDIFACT frame setting characterSet. Possible values include: 'NotSpecified', 'UNOB', 'UNOA', 'UNOC', 'UNOD', 'UNOE', 'UNOF', 'UNOG', 'UNOH', 'UNOI', 'UNOJ', 'UNOK', 'UNOX', 'UNOY', 'KECA', 'None'
+	CharacterSet EdifactCharacterSetType `json:"characterSet,omitempty"`
+	// DecimalPointIndicator - The EDIFACT frame setting decimal indicator. Possible values include: 'NotSpecified', 'Comma', 'Decimal', 'None'
+	DecimalPointIndicator EdifactDecimalIndicatorType `json:"decimalPointIndicator,omitempty"`
+	// SegmentTerminatorSuffix - The EDIFACT frame setting segment terminator suffix. Possible values include: 'NotSpecified', 'None', 'CR', 'LF', 'CRLF', 'None'
+	SegmentTerminatorSuffix SegmentTerminatorSuffixType `json:"segmentTerminatorSuffix,omitempty"`
 }
 
 // EdifactMessageFilter ...
 type EdifactMessageFilter struct {
-	// MessageFilterType - The message filter type. Possible values include: 'MessageFilterTypeNotSpecified', 'MessageFilterTypeInclude', 'MessageFilterTypeExclude'
+	// MessageFilterType - The message filter type. Possible values include: 'NotSpecified', 'Include', 'Exclude', 'None'
 	MessageFilterType MessageFilterType `json:"messageFilterType,omitempty"`
 }
 
@@ -707,15 +772,15 @@ type EdifactProtocolSettings struct {
 	// ProcessingSettings - The EDIFACT processing Settings.
 	ProcessingSettings *EdifactProcessingSettings `json:"processingSettings,omitempty"`
 	// EnvelopeOverrides - The EDIFACT envelope override settings.
-	EnvelopeOverrides *[]EdifactEnvelopeOverride `json:"envelopeOverrides,omitempty"`
+	EnvelopeOverrides []EdifactEnvelopeOverride `json:"envelopeOverrides,omitempty"`
 	// MessageFilterList - The EDIFACT message filter list.
-	MessageFilterList *[]EdifactMessageIdentifier `json:"messageFilterList,omitempty"`
+	MessageFilterList []EdifactMessageIdentifier `json:"messageFilterList,omitempty"`
 	// SchemaReferences - The EDIFACT schema references.
-	SchemaReferences *[]EdifactSchemaReference `json:"schemaReferences,omitempty"`
+	SchemaReferences []EdifactSchemaReference `json:"schemaReferences,omitempty"`
 	// ValidationOverrides - The EDIFACT validation override settings.
-	ValidationOverrides *[]EdifactValidationOverride `json:"validationOverrides,omitempty"`
+	ValidationOverrides []EdifactValidationOverride `json:"validationOverrides,omitempty"`
 	// EdifactDelimiterOverrides - The EDIFACT delimiter override settings.
-	EdifactDelimiterOverrides *[]EdifactDelimiterOverride `json:"edifactDelimiterOverrides,omitempty"`
+	EdifactDelimiterOverrides []EdifactDelimiterOverride `json:"edifactDelimiterOverrides,omitempty"`
 }
 
 // EdifactSchemaReference ...
@@ -748,8 +813,8 @@ type EdifactValidationOverride struct {
 	ValidateXSDTypes *bool `json:"validateXSDTypes,omitempty"`
 	// AllowLeadingAndTrailingSpacesAndZeroes - The value indicating whether to allow leading and trailing spaces and zeroes.
 	AllowLeadingAndTrailingSpacesAndZeroes *bool `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
-	// TrailingSeparatorPolicy - The trailing separator policy. Possible values include: 'TrailingSeparatorPolicyNotSpecified', 'TrailingSeparatorPolicyNotAllowed', 'TrailingSeparatorPolicyOptional', 'TrailingSeparatorPolicyMandatory'
-	TrailingSeparatorPolicy TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
+	// TrailingSeparatorPolicy - The trailing separator policy. Possible values include: 'NotSpecified', 'NotAllowed', 'Optional', 'Mandatory', 'None'
+	TrailingSeparatorPolicy TrailingSeparatorPolicyType `json:"trailingSeparatorPolicy,omitempty"`
 	// TrimLeadingAndTrailingSpacesAndZeroes - The value indicating whether to trim leading and trailing spaces and zeroes.
 	TrimLeadingAndTrailingSpacesAndZeroes *bool `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
 }
@@ -774,13 +839,13 @@ type EdifactValidationSettings struct {
 	AllowLeadingAndTrailingSpacesAndZeroes *bool `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
 	// TrimLeadingAndTrailingSpacesAndZeroes - The value indicating whether to trim leading and trailing spaces and zeroes.
 	TrimLeadingAndTrailingSpacesAndZeroes *bool `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
-	// TrailingSeparatorPolicy - The trailing separator policy. Possible values include: 'TrailingSeparatorPolicyNotSpecified', 'TrailingSeparatorPolicyNotAllowed', 'TrailingSeparatorPolicyOptional', 'TrailingSeparatorPolicyMandatory'
-	TrailingSeparatorPolicy TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
+	// TrailingSeparatorPolicy - The trailing separator policy. Possible values include: 'NotSpecified', 'NotAllowed', 'Optional', 'Mandatory', 'None'
+	TrailingSeparatorPolicy TrailingSeparatorPolicyType `json:"trailingSeparatorPolicy,omitempty"`
 }
 
 // IntegrationAccount ...
 type IntegrationAccount struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - The resource id.
 	ID *string `json:"id,omitempty"`
 	// Name - The resource name.
@@ -790,16 +855,31 @@ type IntegrationAccount struct {
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 	// Properties - The integration account properties.
-	Properties *map[string]interface{} `json:"properties,omitempty"`
+	Properties map[string]interface{} `json:"properties,omitempty"`
 	// Sku - The sku.
 	Sku *IntegrationAccountSku `json:"sku,omitempty"`
 }
 
+// Response returns the raw HTTP response object.
+func (ia IntegrationAccount) Response() *http.Response {
+	return ia.rawResponse
+}
+
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ia IntegrationAccount) StatusCode() int {
+	return ia.rawResponse.StatusCode
+}
+
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ia IntegrationAccount) Status() string {
+	return ia.rawResponse.Status
+}
+
 // IntegrationAccountAgreement ...
 type IntegrationAccountAgreement struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - The resource id.
 	ID *string `json:"id,omitempty"`
 	// Name - The resource name.
@@ -809,201 +889,65 @@ type IntegrationAccountAgreement struct {
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// IntegrationAccountAgreementProperties - The integration account agreement properties.
+	Tags map[string]string `json:"tags,omitempty"`
+	// Properties - The integration account agreement properties.
 	*IntegrationAccountAgreementProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for IntegrationAccountAgreement struct.
-func (iaa *IntegrationAccountAgreement) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
+// Response returns the raw HTTP response object.
+func (iaa IntegrationAccountAgreement) Response() *http.Response {
+	return iaa.rawResponse
+}
 
-	v = m["properties"]
-	if v != nil {
-		var properties IntegrationAccountAgreementProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		iaa.IntegrationAccountAgreementProperties = &properties
-	}
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (iaa IntegrationAccountAgreement) StatusCode() int {
+	return iaa.rawResponse.StatusCode
+}
 
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		iaa.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		iaa.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		iaa.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		iaa.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		iaa.Tags = &tags
-	}
-
-	return nil
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (iaa IntegrationAccountAgreement) Status() string {
+	return iaa.rawResponse.Status
 }
 
 // IntegrationAccountAgreementFilter ...
 type IntegrationAccountAgreementFilter struct {
-	// AgreementType - The agreement type of integration account agreement. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'
+	// AgreementType - The agreement type of integration account agreement. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact', 'None'
 	AgreementType AgreementType `json:"agreementType,omitempty"`
 }
 
 // IntegrationAccountAgreementListResult ...
 type IntegrationAccountAgreementListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of integration account agreements.
-	Value *[]IntegrationAccountAgreement `json:"value,omitempty"`
+	Value []IntegrationAccountAgreement `json:"value,omitempty"`
 	// NextLink - The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// IntegrationAccountAgreementListResultIterator provides access to a complete listing of IntegrationAccountAgreement
-// values.
-type IntegrationAccountAgreementListResultIterator struct {
-	i    int
-	page IntegrationAccountAgreementListResultPage
+// Response returns the raw HTTP response object.
+func (iaalr IntegrationAccountAgreementListResult) Response() *http.Response {
+	return iaalr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IntegrationAccountAgreementListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (iaalr IntegrationAccountAgreementListResult) StatusCode() int {
+	return iaalr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IntegrationAccountAgreementListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IntegrationAccountAgreementListResultIterator) Response() IntegrationAccountAgreementListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IntegrationAccountAgreementListResultIterator) Value() IntegrationAccountAgreement {
-	if !iter.page.NotDone() {
-		return IntegrationAccountAgreement{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (iaalr IntegrationAccountAgreementListResult) IsEmpty() bool {
-	return iaalr.Value == nil || len(*iaalr.Value) == 0
-}
-
-// integrationAccountAgreementListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (iaalr IntegrationAccountAgreementListResult) integrationAccountAgreementListResultPreparer() (*http.Request, error) {
-	if iaalr.NextLink == nil || len(to.String(iaalr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(iaalr.NextLink)))
-}
-
-// IntegrationAccountAgreementListResultPage contains a page of IntegrationAccountAgreement values.
-type IntegrationAccountAgreementListResultPage struct {
-	fn    func(IntegrationAccountAgreementListResult) (IntegrationAccountAgreementListResult, error)
-	iaalr IntegrationAccountAgreementListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IntegrationAccountAgreementListResultPage) Next() error {
-	next, err := page.fn(page.iaalr)
-	if err != nil {
-		return err
-	}
-	page.iaalr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IntegrationAccountAgreementListResultPage) NotDone() bool {
-	return !page.iaalr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IntegrationAccountAgreementListResultPage) Response() IntegrationAccountAgreementListResult {
-	return page.iaalr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IntegrationAccountAgreementListResultPage) Values() []IntegrationAccountAgreement {
-	if page.iaalr.IsEmpty() {
-		return nil
-	}
-	return *page.iaalr.Value
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (iaalr IntegrationAccountAgreementListResult) Status() string {
+	return iaalr.rawResponse.Status
 }
 
 // IntegrationAccountAgreementProperties ...
 type IntegrationAccountAgreementProperties struct {
 	// CreatedTime - The created time.
-	CreatedTime *date.Time `json:"createdTime,omitempty"`
+	CreatedTime *time.Time `json:"createdTime,omitempty"`
 	// ChangedTime - The changed time.
-	ChangedTime *date.Time `json:"changedTime,omitempty"`
+	ChangedTime *time.Time `json:"changedTime,omitempty"`
 	// Metadata - The metadata.
-	Metadata *map[string]interface{} `json:"metadata,omitempty"`
-	// AgreementType - The agreement type. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
+	// AgreementType - The agreement type. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact', 'None'
 	AgreementType AgreementType `json:"agreementType,omitempty"`
 	// HostPartner - The host partner.
 	HostPartner *string `json:"hostPartner,omitempty"`
@@ -1019,7 +963,7 @@ type IntegrationAccountAgreementProperties struct {
 
 // IntegrationAccountCertificate ...
 type IntegrationAccountCertificate struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - The resource id.
 	ID *string `json:"id,omitempty"`
 	// Name - The resource name.
@@ -1029,194 +973,58 @@ type IntegrationAccountCertificate struct {
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// IntegrationAccountCertificateProperties - The integration account certificate properties.
+	Tags map[string]string `json:"tags,omitempty"`
+	// Properties - The integration account certificate properties.
 	*IntegrationAccountCertificateProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for IntegrationAccountCertificate struct.
-func (iac *IntegrationAccountCertificate) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
+// Response returns the raw HTTP response object.
+func (iac IntegrationAccountCertificate) Response() *http.Response {
+	return iac.rawResponse
+}
 
-	v = m["properties"]
-	if v != nil {
-		var properties IntegrationAccountCertificateProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		iac.IntegrationAccountCertificateProperties = &properties
-	}
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (iac IntegrationAccountCertificate) StatusCode() int {
+	return iac.rawResponse.StatusCode
+}
 
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		iac.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		iac.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		iac.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		iac.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		iac.Tags = &tags
-	}
-
-	return nil
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (iac IntegrationAccountCertificate) Status() string {
+	return iac.rawResponse.Status
 }
 
 // IntegrationAccountCertificateListResult ...
 type IntegrationAccountCertificateListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of integration account certificates.
-	Value *[]IntegrationAccountCertificate `json:"value,omitempty"`
+	Value []IntegrationAccountCertificate `json:"value,omitempty"`
 	// NextLink - The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// IntegrationAccountCertificateListResultIterator provides access to a complete listing of
-// IntegrationAccountCertificate values.
-type IntegrationAccountCertificateListResultIterator struct {
-	i    int
-	page IntegrationAccountCertificateListResultPage
+// Response returns the raw HTTP response object.
+func (iaclr IntegrationAccountCertificateListResult) Response() *http.Response {
+	return iaclr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IntegrationAccountCertificateListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (iaclr IntegrationAccountCertificateListResult) StatusCode() int {
+	return iaclr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IntegrationAccountCertificateListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IntegrationAccountCertificateListResultIterator) Response() IntegrationAccountCertificateListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IntegrationAccountCertificateListResultIterator) Value() IntegrationAccountCertificate {
-	if !iter.page.NotDone() {
-		return IntegrationAccountCertificate{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (iaclr IntegrationAccountCertificateListResult) IsEmpty() bool {
-	return iaclr.Value == nil || len(*iaclr.Value) == 0
-}
-
-// integrationAccountCertificateListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (iaclr IntegrationAccountCertificateListResult) integrationAccountCertificateListResultPreparer() (*http.Request, error) {
-	if iaclr.NextLink == nil || len(to.String(iaclr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(iaclr.NextLink)))
-}
-
-// IntegrationAccountCertificateListResultPage contains a page of IntegrationAccountCertificate values.
-type IntegrationAccountCertificateListResultPage struct {
-	fn    func(IntegrationAccountCertificateListResult) (IntegrationAccountCertificateListResult, error)
-	iaclr IntegrationAccountCertificateListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IntegrationAccountCertificateListResultPage) Next() error {
-	next, err := page.fn(page.iaclr)
-	if err != nil {
-		return err
-	}
-	page.iaclr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IntegrationAccountCertificateListResultPage) NotDone() bool {
-	return !page.iaclr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IntegrationAccountCertificateListResultPage) Response() IntegrationAccountCertificateListResult {
-	return page.iaclr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IntegrationAccountCertificateListResultPage) Values() []IntegrationAccountCertificate {
-	if page.iaclr.IsEmpty() {
-		return nil
-	}
-	return *page.iaclr.Value
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (iaclr IntegrationAccountCertificateListResult) Status() string {
+	return iaclr.rawResponse.Status
 }
 
 // IntegrationAccountCertificateProperties ...
 type IntegrationAccountCertificateProperties struct {
 	// CreatedTime - The created time.
-	CreatedTime *date.Time `json:"createdTime,omitempty"`
+	CreatedTime *time.Time `json:"createdTime,omitempty"`
 	// ChangedTime - The changed time.
-	ChangedTime *date.Time `json:"changedTime,omitempty"`
+	ChangedTime *time.Time `json:"changedTime,omitempty"`
 	// Metadata - The metadata.
-	Metadata *map[string]interface{} `json:"metadata,omitempty"`
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
 	// Key - The key details in the key vault.
 	Key *KeyVaultKeyReference `json:"key,omitempty"`
 	// PublicCertificate - The public certificate.
@@ -1242,114 +1050,36 @@ type IntegrationAccountContentLink struct {
 	// ContentHash - The content hash.
 	ContentHash *IntegrationAccountContentHash `json:"contentHash,omitempty"`
 	// Metadata - The metadata.
-	Metadata *map[string]interface{} `json:"metadata,omitempty"`
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
 }
 
 // IntegrationAccountListResult ...
 type IntegrationAccountListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of integration accounts.
-	Value *[]IntegrationAccount `json:"value,omitempty"`
+	Value []IntegrationAccount `json:"value,omitempty"`
 	// NextLink - The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// IntegrationAccountListResultIterator provides access to a complete listing of IntegrationAccount values.
-type IntegrationAccountListResultIterator struct {
-	i    int
-	page IntegrationAccountListResultPage
+// Response returns the raw HTTP response object.
+func (ialr IntegrationAccountListResult) Response() *http.Response {
+	return ialr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IntegrationAccountListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ialr IntegrationAccountListResult) StatusCode() int {
+	return ialr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IntegrationAccountListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IntegrationAccountListResultIterator) Response() IntegrationAccountListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IntegrationAccountListResultIterator) Value() IntegrationAccount {
-	if !iter.page.NotDone() {
-		return IntegrationAccount{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (ialr IntegrationAccountListResult) IsEmpty() bool {
-	return ialr.Value == nil || len(*ialr.Value) == 0
-}
-
-// integrationAccountListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (ialr IntegrationAccountListResult) integrationAccountListResultPreparer() (*http.Request, error) {
-	if ialr.NextLink == nil || len(to.String(ialr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ialr.NextLink)))
-}
-
-// IntegrationAccountListResultPage contains a page of IntegrationAccount values.
-type IntegrationAccountListResultPage struct {
-	fn   func(IntegrationAccountListResult) (IntegrationAccountListResult, error)
-	ialr IntegrationAccountListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IntegrationAccountListResultPage) Next() error {
-	next, err := page.fn(page.ialr)
-	if err != nil {
-		return err
-	}
-	page.ialr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IntegrationAccountListResultPage) NotDone() bool {
-	return !page.ialr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IntegrationAccountListResultPage) Response() IntegrationAccountListResult {
-	return page.ialr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IntegrationAccountListResultPage) Values() []IntegrationAccount {
-	if page.ialr.IsEmpty() {
-		return nil
-	}
-	return *page.ialr.Value
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ialr IntegrationAccountListResult) Status() string {
+	return ialr.rawResponse.Status
 }
 
 // IntegrationAccountMap ...
 type IntegrationAccountMap struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - The resource id.
 	ID *string `json:"id,omitempty"`
 	// Name - The resource name.
@@ -1359,212 +1089,77 @@ type IntegrationAccountMap struct {
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// IntegrationAccountMapProperties - The integration account map properties.
+	Tags map[string]string `json:"tags,omitempty"`
+	// Properties - The integration account map properties.
 	*IntegrationAccountMapProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for IntegrationAccountMap struct.
-func (iam *IntegrationAccountMap) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
+// Response returns the raw HTTP response object.
+func (iam IntegrationAccountMap) Response() *http.Response {
+	return iam.rawResponse
+}
 
-	v = m["properties"]
-	if v != nil {
-		var properties IntegrationAccountMapProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		iam.IntegrationAccountMapProperties = &properties
-	}
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (iam IntegrationAccountMap) StatusCode() int {
+	return iam.rawResponse.StatusCode
+}
 
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		iam.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		iam.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		iam.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		iam.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		iam.Tags = &tags
-	}
-
-	return nil
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (iam IntegrationAccountMap) Status() string {
+	return iam.rawResponse.Status
 }
 
 // IntegrationAccountMapFilter ...
 type IntegrationAccountMapFilter struct {
-	// SchemaType - The map type of integration account map. Possible values include: 'MapTypeNotSpecified', 'MapTypeXslt'
+	// SchemaType - The map type of integration account map. Possible values include: 'NotSpecified', 'Xslt', 'None'
 	SchemaType MapType `json:"schemaType,omitempty"`
 }
 
 // IntegrationAccountMapListResult ...
 type IntegrationAccountMapListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of integration account maps.
-	Value *[]IntegrationAccountMap `json:"value,omitempty"`
+	Value []IntegrationAccountMap `json:"value,omitempty"`
 	// NextLink - The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// IntegrationAccountMapListResultIterator provides access to a complete listing of IntegrationAccountMap values.
-type IntegrationAccountMapListResultIterator struct {
-	i    int
-	page IntegrationAccountMapListResultPage
+// Response returns the raw HTTP response object.
+func (iamlr IntegrationAccountMapListResult) Response() *http.Response {
+	return iamlr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IntegrationAccountMapListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (iamlr IntegrationAccountMapListResult) StatusCode() int {
+	return iamlr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IntegrationAccountMapListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IntegrationAccountMapListResultIterator) Response() IntegrationAccountMapListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IntegrationAccountMapListResultIterator) Value() IntegrationAccountMap {
-	if !iter.page.NotDone() {
-		return IntegrationAccountMap{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (iamlr IntegrationAccountMapListResult) IsEmpty() bool {
-	return iamlr.Value == nil || len(*iamlr.Value) == 0
-}
-
-// integrationAccountMapListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (iamlr IntegrationAccountMapListResult) integrationAccountMapListResultPreparer() (*http.Request, error) {
-	if iamlr.NextLink == nil || len(to.String(iamlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(iamlr.NextLink)))
-}
-
-// IntegrationAccountMapListResultPage contains a page of IntegrationAccountMap values.
-type IntegrationAccountMapListResultPage struct {
-	fn    func(IntegrationAccountMapListResult) (IntegrationAccountMapListResult, error)
-	iamlr IntegrationAccountMapListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IntegrationAccountMapListResultPage) Next() error {
-	next, err := page.fn(page.iamlr)
-	if err != nil {
-		return err
-	}
-	page.iamlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IntegrationAccountMapListResultPage) NotDone() bool {
-	return !page.iamlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IntegrationAccountMapListResultPage) Response() IntegrationAccountMapListResult {
-	return page.iamlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IntegrationAccountMapListResultPage) Values() []IntegrationAccountMap {
-	if page.iamlr.IsEmpty() {
-		return nil
-	}
-	return *page.iamlr.Value
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (iamlr IntegrationAccountMapListResult) Status() string {
+	return iamlr.rawResponse.Status
 }
 
 // IntegrationAccountMapProperties ...
 type IntegrationAccountMapProperties struct {
-	// MapType - The map type. Possible values include: 'MapTypeNotSpecified', 'MapTypeXslt'
+	// MapType - The map type. Possible values include: 'NotSpecified', 'Xslt', 'None'
 	MapType MapType `json:"mapType,omitempty"`
 	// CreatedTime - The created time.
-	CreatedTime *date.Time `json:"createdTime,omitempty"`
+	CreatedTime *time.Time `json:"createdTime,omitempty"`
 	// ChangedTime - The changed time.
-	ChangedTime *date.Time `json:"changedTime,omitempty"`
+	ChangedTime *time.Time `json:"changedTime,omitempty"`
 	// Content - The content.
-	Content *map[string]interface{} `json:"content,omitempty"`
+	Content map[string]interface{} `json:"content,omitempty"`
 	// ContentType - The content type.
 	ContentType *string `json:"contentType,omitempty"`
 	// ContentLink - The content link.
 	ContentLink *IntegrationAccountContentLink `json:"contentLink,omitempty"`
 	// Metadata - The metadata.
-	Metadata *map[string]interface{} `json:"metadata,omitempty"`
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
 }
 
 // IntegrationAccountPartner ...
 type IntegrationAccountPartner struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - The resource id.
 	ID *string `json:"id,omitempty"`
 	// Name - The resource name.
@@ -1574,202 +1169,66 @@ type IntegrationAccountPartner struct {
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// IntegrationAccountPartnerProperties - The integration account partner properties.
+	Tags map[string]string `json:"tags,omitempty"`
+	// Properties - The integration account partner properties.
 	*IntegrationAccountPartnerProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for IntegrationAccountPartner struct.
-func (iap *IntegrationAccountPartner) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
+// Response returns the raw HTTP response object.
+func (iap IntegrationAccountPartner) Response() *http.Response {
+	return iap.rawResponse
+}
 
-	v = m["properties"]
-	if v != nil {
-		var properties IntegrationAccountPartnerProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		iap.IntegrationAccountPartnerProperties = &properties
-	}
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (iap IntegrationAccountPartner) StatusCode() int {
+	return iap.rawResponse.StatusCode
+}
 
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		iap.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		iap.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		iap.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		iap.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		iap.Tags = &tags
-	}
-
-	return nil
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (iap IntegrationAccountPartner) Status() string {
+	return iap.rawResponse.Status
 }
 
 // IntegrationAccountPartnerFilter ...
 type IntegrationAccountPartnerFilter struct {
-	// PartnerType - The partner type of integration account partner. Possible values include: 'PartnerTypeNotSpecified', 'PartnerTypeB2B'
+	// PartnerType - The partner type of integration account partner. Possible values include: 'NotSpecified', 'B2B', 'None'
 	PartnerType PartnerType `json:"partnerType,omitempty"`
 }
 
 // IntegrationAccountPartnerListResult ...
 type IntegrationAccountPartnerListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of integration account partners.
-	Value *[]IntegrationAccountPartner `json:"value,omitempty"`
+	Value []IntegrationAccountPartner `json:"value,omitempty"`
 	// NextLink - The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// IntegrationAccountPartnerListResultIterator provides access to a complete listing of IntegrationAccountPartner
-// values.
-type IntegrationAccountPartnerListResultIterator struct {
-	i    int
-	page IntegrationAccountPartnerListResultPage
+// Response returns the raw HTTP response object.
+func (iaplr IntegrationAccountPartnerListResult) Response() *http.Response {
+	return iaplr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IntegrationAccountPartnerListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (iaplr IntegrationAccountPartnerListResult) StatusCode() int {
+	return iaplr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IntegrationAccountPartnerListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IntegrationAccountPartnerListResultIterator) Response() IntegrationAccountPartnerListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IntegrationAccountPartnerListResultIterator) Value() IntegrationAccountPartner {
-	if !iter.page.NotDone() {
-		return IntegrationAccountPartner{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (iaplr IntegrationAccountPartnerListResult) IsEmpty() bool {
-	return iaplr.Value == nil || len(*iaplr.Value) == 0
-}
-
-// integrationAccountPartnerListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (iaplr IntegrationAccountPartnerListResult) integrationAccountPartnerListResultPreparer() (*http.Request, error) {
-	if iaplr.NextLink == nil || len(to.String(iaplr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(iaplr.NextLink)))
-}
-
-// IntegrationAccountPartnerListResultPage contains a page of IntegrationAccountPartner values.
-type IntegrationAccountPartnerListResultPage struct {
-	fn    func(IntegrationAccountPartnerListResult) (IntegrationAccountPartnerListResult, error)
-	iaplr IntegrationAccountPartnerListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IntegrationAccountPartnerListResultPage) Next() error {
-	next, err := page.fn(page.iaplr)
-	if err != nil {
-		return err
-	}
-	page.iaplr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IntegrationAccountPartnerListResultPage) NotDone() bool {
-	return !page.iaplr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IntegrationAccountPartnerListResultPage) Response() IntegrationAccountPartnerListResult {
-	return page.iaplr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IntegrationAccountPartnerListResultPage) Values() []IntegrationAccountPartner {
-	if page.iaplr.IsEmpty() {
-		return nil
-	}
-	return *page.iaplr.Value
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (iaplr IntegrationAccountPartnerListResult) Status() string {
+	return iaplr.rawResponse.Status
 }
 
 // IntegrationAccountPartnerProperties ...
 type IntegrationAccountPartnerProperties struct {
-	// PartnerType - The partner type. Possible values include: 'PartnerTypeNotSpecified', 'PartnerTypeB2B'
+	// PartnerType - The partner type. Possible values include: 'NotSpecified', 'B2B', 'None'
 	PartnerType PartnerType `json:"partnerType,omitempty"`
 	// CreatedTime - The created time.
-	CreatedTime *date.Time `json:"createdTime,omitempty"`
+	CreatedTime *time.Time `json:"createdTime,omitempty"`
 	// ChangedTime - The changed time.
-	ChangedTime *date.Time `json:"changedTime,omitempty"`
+	ChangedTime *time.Time `json:"changedTime,omitempty"`
 	// Metadata - The metadata.
-	Metadata *map[string]interface{} `json:"metadata,omitempty"`
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
 	// Content - The partner content.
 	Content *PartnerContent `json:"content,omitempty"`
 }
@@ -1785,12 +1244,12 @@ type IntegrationAccountResource struct {
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // IntegrationAccountSchema ...
 type IntegrationAccountSchema struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// ID - The resource id.
 	ID *string `json:"id,omitempty"`
 	// Name - The resource name.
@@ -1800,215 +1259,80 @@ type IntegrationAccountSchema struct {
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
-	Tags *map[string]*string `json:"tags,omitempty"`
-	// IntegrationAccountSchemaProperties - The integration account schema properties.
+	Tags map[string]string `json:"tags,omitempty"`
+	// Properties - The integration account schema properties.
 	*IntegrationAccountSchemaProperties `json:"properties,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for IntegrationAccountSchema struct.
-func (ias *IntegrationAccountSchema) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	var v *json.RawMessage
+// Response returns the raw HTTP response object.
+func (ias IntegrationAccountSchema) Response() *http.Response {
+	return ias.rawResponse
+}
 
-	v = m["properties"]
-	if v != nil {
-		var properties IntegrationAccountSchemaProperties
-		err = json.Unmarshal(*m["properties"], &properties)
-		if err != nil {
-			return err
-		}
-		ias.IntegrationAccountSchemaProperties = &properties
-	}
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (ias IntegrationAccountSchema) StatusCode() int {
+	return ias.rawResponse.StatusCode
+}
 
-	v = m["id"]
-	if v != nil {
-		var ID string
-		err = json.Unmarshal(*m["id"], &ID)
-		if err != nil {
-			return err
-		}
-		ias.ID = &ID
-	}
-
-	v = m["name"]
-	if v != nil {
-		var name string
-		err = json.Unmarshal(*m["name"], &name)
-		if err != nil {
-			return err
-		}
-		ias.Name = &name
-	}
-
-	v = m["type"]
-	if v != nil {
-		var typeVar string
-		err = json.Unmarshal(*m["type"], &typeVar)
-		if err != nil {
-			return err
-		}
-		ias.Type = &typeVar
-	}
-
-	v = m["location"]
-	if v != nil {
-		var location string
-		err = json.Unmarshal(*m["location"], &location)
-		if err != nil {
-			return err
-		}
-		ias.Location = &location
-	}
-
-	v = m["tags"]
-	if v != nil {
-		var tags map[string]*string
-		err = json.Unmarshal(*m["tags"], &tags)
-		if err != nil {
-			return err
-		}
-		ias.Tags = &tags
-	}
-
-	return nil
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (ias IntegrationAccountSchema) Status() string {
+	return ias.rawResponse.Status
 }
 
 // IntegrationAccountSchemaFilter ...
 type IntegrationAccountSchemaFilter struct {
-	// SchemaType - The schema type of integration account schema. Possible values include: 'SchemaTypeNotSpecified', 'SchemaTypeXML'
+	// SchemaType - The schema type of integration account schema. Possible values include: 'NotSpecified', 'XML', 'None'
 	SchemaType SchemaType `json:"schemaType,omitempty"`
 }
 
 // IntegrationAccountSchemaListResult ...
 type IntegrationAccountSchemaListResult struct {
-	autorest.Response `json:"-"`
+	rawResponse *http.Response
 	// Value - The list of integration account schemas.
-	Value *[]IntegrationAccountSchema `json:"value,omitempty"`
+	Value []IntegrationAccountSchema `json:"value,omitempty"`
 	// NextLink - The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink Marker `json:"NextLink"`
 }
 
-// IntegrationAccountSchemaListResultIterator provides access to a complete listing of IntegrationAccountSchema values.
-type IntegrationAccountSchemaListResultIterator struct {
-	i    int
-	page IntegrationAccountSchemaListResultPage
+// Response returns the raw HTTP response object.
+func (iaslr IntegrationAccountSchemaListResult) Response() *http.Response {
+	return iaslr.rawResponse
 }
 
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IntegrationAccountSchemaListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
+// StatusCode returns the HTTP status code of the response, e.g. 200.
+func (iaslr IntegrationAccountSchemaListResult) StatusCode() int {
+	return iaslr.rawResponse.StatusCode
 }
 
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IntegrationAccountSchemaListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IntegrationAccountSchemaListResultIterator) Response() IntegrationAccountSchemaListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IntegrationAccountSchemaListResultIterator) Value() IntegrationAccountSchema {
-	if !iter.page.NotDone() {
-		return IntegrationAccountSchema{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (iaslr IntegrationAccountSchemaListResult) IsEmpty() bool {
-	return iaslr.Value == nil || len(*iaslr.Value) == 0
-}
-
-// integrationAccountSchemaListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (iaslr IntegrationAccountSchemaListResult) integrationAccountSchemaListResultPreparer() (*http.Request, error) {
-	if iaslr.NextLink == nil || len(to.String(iaslr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(iaslr.NextLink)))
-}
-
-// IntegrationAccountSchemaListResultPage contains a page of IntegrationAccountSchema values.
-type IntegrationAccountSchemaListResultPage struct {
-	fn    func(IntegrationAccountSchemaListResult) (IntegrationAccountSchemaListResult, error)
-	iaslr IntegrationAccountSchemaListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IntegrationAccountSchemaListResultPage) Next() error {
-	next, err := page.fn(page.iaslr)
-	if err != nil {
-		return err
-	}
-	page.iaslr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IntegrationAccountSchemaListResultPage) NotDone() bool {
-	return !page.iaslr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IntegrationAccountSchemaListResultPage) Response() IntegrationAccountSchemaListResult {
-	return page.iaslr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IntegrationAccountSchemaListResultPage) Values() []IntegrationAccountSchema {
-	if page.iaslr.IsEmpty() {
-		return nil
-	}
-	return *page.iaslr.Value
+// Status returns the HTTP status message of the response, e.g. "200 OK".
+func (iaslr IntegrationAccountSchemaListResult) Status() string {
+	return iaslr.rawResponse.Status
 }
 
 // IntegrationAccountSchemaProperties ...
 type IntegrationAccountSchemaProperties struct {
-	// SchemaType - The schema type. Possible values include: 'SchemaTypeNotSpecified', 'SchemaTypeXML'
+	// SchemaType - The schema type. Possible values include: 'NotSpecified', 'XML', 'None'
 	SchemaType SchemaType `json:"schemaType,omitempty"`
 	// TargetNamespace - The target namespace.
 	TargetNamespace *string `json:"targetNamespace,omitempty"`
 	// CreatedTime - The created time.
-	CreatedTime *date.Time `json:"createdTime,omitempty"`
+	CreatedTime *time.Time `json:"createdTime,omitempty"`
 	// ChangedTime - The changed time.
-	ChangedTime *date.Time `json:"changedTime,omitempty"`
+	ChangedTime *time.Time `json:"changedTime,omitempty"`
 	// Content - The content.
-	Content *map[string]interface{} `json:"content,omitempty"`
+	Content map[string]interface{} `json:"content,omitempty"`
 	// ContentType - The content type.
 	ContentType *string `json:"contentType,omitempty"`
 	// ContentLink - The content link.
 	ContentLink *IntegrationAccountContentLink `json:"contentLink,omitempty"`
 	// Metadata - The metadata.
-	Metadata *map[string]interface{} `json:"metadata,omitempty"`
+	Metadata map[string]interface{} `json:"metadata,omitempty"`
 }
 
 // IntegrationAccountSku ...
 type IntegrationAccountSku struct {
-	// Name - The sku name. Possible values include: 'SkuNameNotSpecified', 'SkuNameFree', 'SkuNameShared', 'SkuNameBasic', 'SkuNameStandard', 'SkuNamePremium'
-	Name SkuName `json:"name,omitempty"`
+	// Name - The sku name. Possible values include: 'NotSpecified', 'Free', 'Shared', 'Basic', 'Standard', 'Premium', 'None'
+	Name SkuNameType `json:"name,omitempty"`
 }
 
 // KeyVaultKeyReference ...
@@ -2021,7 +1345,7 @@ type KeyVaultKeyReference struct {
 	KeyVersion *string `json:"keyVersion,omitempty"`
 }
 
-// KeyVaultKeyReferenceKeyVault the key vault reference.
+// KeyVaultKeyReferenceKeyVault - The key vault reference.
 type KeyVaultKeyReferenceKeyVault struct {
 	// ID - The resource id.
 	ID *string `json:"id,omitempty"`
@@ -2034,7 +1358,7 @@ type KeyVaultKeyReferenceKeyVault struct {
 // ListCallbackURLParameters ...
 type ListCallbackURLParameters struct {
 	// NotAfter - The expiry time.
-	NotAfter *date.Time `json:"NotAfter,omitempty"`
+	NotAfter *time.Time `json:"NotAfter,omitempty"`
 }
 
 // PartnerContent ...
@@ -2097,8 +1421,8 @@ type X12DelimiterOverrides struct {
 	ComponentSeparator *int32 `json:"componentSeparator,omitempty"`
 	// SegmentTerminator - The segment terminator.
 	SegmentTerminator *int32 `json:"segmentTerminator,omitempty"`
-	// SegmentTerminatorSuffix - The segment terminator suffix. Possible values include: 'SegmentTerminatorSuffixNotSpecified', 'SegmentTerminatorSuffixNone', 'SegmentTerminatorSuffixCR', 'SegmentTerminatorSuffixLF', 'SegmentTerminatorSuffixCRLF'
-	SegmentTerminatorSuffix SegmentTerminatorSuffix `json:"segmentTerminatorSuffix,omitempty"`
+	// SegmentTerminatorSuffix - The segment terminator suffix. Possible values include: 'NotSpecified', 'None', 'CR', 'LF', 'CRLF', 'None'
+	SegmentTerminatorSuffix SegmentTerminatorSuffixType `json:"segmentTerminatorSuffix,omitempty"`
 	// ReplaceCharacter - The replacement character.
 	ReplaceCharacter *int32 `json:"replaceCharacter,omitempty"`
 	// ReplaceSeparatorsInPayload - The value indicating whether to replace separators in payload.
@@ -2125,10 +1449,10 @@ type X12EnvelopeOverride struct {
 	ReceiverApplicationID *string `json:"receiverApplicationId,omitempty"`
 	// FunctionalIdentifierCode - The functional identifier code.
 	FunctionalIdentifierCode *string `json:"functionalIdentifierCode,omitempty"`
-	// DateFormat - The date format. Possible values include: 'X12DateFormatNotSpecified', 'X12DateFormatCCYYMMDD', 'X12DateFormatYYMMDD'
-	DateFormat X12DateFormat `json:"dateFormat,omitempty"`
-	// TimeFormat - The time format. Possible values include: 'X12TimeFormatNotSpecified', 'X12TimeFormatHHMM', 'X12TimeFormatHHMMSS', 'X12TimeFormatHHMMSSdd', 'X12TimeFormatHHMMSSd'
-	TimeFormat X12TimeFormat `json:"timeFormat,omitempty"`
+	// DateFormat - The date format. Possible values include: 'NotSpecified', 'CCYYMMDD', 'YYMMDD', 'None'
+	DateFormat X12DateFormatType `json:"dateFormat,omitempty"`
+	// TimeFormat - The time format. Possible values include: 'NotSpecified', 'HHMM', 'HHMMSS', 'HHMMSSdd', 'HHMMSSd', 'None'
+	TimeFormat X12TimeFormatType `json:"timeFormat,omitempty"`
 }
 
 // X12EnvelopeSettings ...
@@ -2175,12 +1499,12 @@ type X12EnvelopeSettings struct {
 	TransactionSetControlNumberSuffix *string `json:"transactionSetControlNumberSuffix,omitempty"`
 	// OverwriteExistingTransactionSetControlNumber - The value indicating whether to overwrite existing transaction set control number.
 	OverwriteExistingTransactionSetControlNumber *bool `json:"overwriteExistingTransactionSetControlNumber,omitempty"`
-	// GroupHeaderDateFormat - The group header date format. Possible values include: 'X12DateFormatNotSpecified', 'X12DateFormatCCYYMMDD', 'X12DateFormatYYMMDD'
-	GroupHeaderDateFormat X12DateFormat `json:"groupHeaderDateFormat,omitempty"`
-	// GroupHeaderTimeFormat - The group header time format. Possible values include: 'X12TimeFormatNotSpecified', 'X12TimeFormatHHMM', 'X12TimeFormatHHMMSS', 'X12TimeFormatHHMMSSdd', 'X12TimeFormatHHMMSSd'
-	GroupHeaderTimeFormat X12TimeFormat `json:"groupHeaderTimeFormat,omitempty"`
-	// UsageIndicator - The usage indicator. Possible values include: 'UsageIndicatorNotSpecified', 'UsageIndicatorTest', 'UsageIndicatorInformation', 'UsageIndicatorProduction'
-	UsageIndicator UsageIndicator `json:"usageIndicator,omitempty"`
+	// GroupHeaderDateFormat - The group header date format. Possible values include: 'NotSpecified', 'CCYYMMDD', 'YYMMDD', 'None'
+	GroupHeaderDateFormat X12DateFormatType `json:"groupHeaderDateFormat,omitempty"`
+	// GroupHeaderTimeFormat - The group header time format. Possible values include: 'NotSpecified', 'HHMM', 'HHMMSS', 'HHMMSSdd', 'HHMMSSd', 'None'
+	GroupHeaderTimeFormat X12TimeFormatType `json:"groupHeaderTimeFormat,omitempty"`
+	// UsageIndicator - The usage indicator. Possible values include: 'NotSpecified', 'Test', 'Information', 'Production', 'None'
+	UsageIndicator UsageIndicatorType `json:"usageIndicator,omitempty"`
 }
 
 // X12FramingSettings ...
@@ -2195,15 +1519,15 @@ type X12FramingSettings struct {
 	ReplaceCharacter *int32 `json:"replaceCharacter,omitempty"`
 	// SegmentTerminator - The segment terminator.
 	SegmentTerminator *int32 `json:"segmentTerminator,omitempty"`
-	// CharacterSet - The X12 character set. Possible values include: 'X12CharacterSetNotSpecified', 'X12CharacterSetBasic', 'X12CharacterSetExtended', 'X12CharacterSetUTF8'
-	CharacterSet X12CharacterSet `json:"characterSet,omitempty"`
-	// SegmentTerminatorSuffix - The segment terminator suffix. Possible values include: 'SegmentTerminatorSuffixNotSpecified', 'SegmentTerminatorSuffixNone', 'SegmentTerminatorSuffixCR', 'SegmentTerminatorSuffixLF', 'SegmentTerminatorSuffixCRLF'
-	SegmentTerminatorSuffix SegmentTerminatorSuffix `json:"segmentTerminatorSuffix,omitempty"`
+	// CharacterSet - The X12 character set. Possible values include: 'NotSpecified', 'Basic', 'Extended', 'UTF8', 'None'
+	CharacterSet X12CharacterSetType `json:"characterSet,omitempty"`
+	// SegmentTerminatorSuffix - The segment terminator suffix. Possible values include: 'NotSpecified', 'None', 'CR', 'LF', 'CRLF', 'None'
+	SegmentTerminatorSuffix SegmentTerminatorSuffixType `json:"segmentTerminatorSuffix,omitempty"`
 }
 
 // X12MessageFilter ...
 type X12MessageFilter struct {
-	// MessageFilterType - The message filter type. Possible values include: 'MessageFilterTypeNotSpecified', 'MessageFilterTypeInclude', 'MessageFilterTypeExclude'
+	// MessageFilterType - The message filter type. Possible values include: 'NotSpecified', 'Include', 'Exclude', 'None'
 	MessageFilterType MessageFilterType `json:"messageFilterType,omitempty"`
 }
 
@@ -2256,15 +1580,15 @@ type X12ProtocolSettings struct {
 	// ProcessingSettings - The X12 processing settings.
 	ProcessingSettings *X12ProcessingSettings `json:"processingSettings,omitempty"`
 	// EnvelopeOverrides - The X12 envelope override settings.
-	EnvelopeOverrides *[]X12EnvelopeOverride `json:"envelopeOverrides,omitempty"`
+	EnvelopeOverrides []X12EnvelopeOverride `json:"envelopeOverrides,omitempty"`
 	// ValidationOverrides - The X12 validation override settings.
-	ValidationOverrides *[]X12ValidationOverride `json:"validationOverrides,omitempty"`
+	ValidationOverrides []X12ValidationOverride `json:"validationOverrides,omitempty"`
 	// MessageFilterList - The X12 message filter list.
-	MessageFilterList *[]X12MessageIdentifier `json:"messageFilterList,omitempty"`
+	MessageFilterList []X12MessageIdentifier `json:"messageFilterList,omitempty"`
 	// SchemaReferences - The X12 schema references.
-	SchemaReferences *[]X12SchemaReference `json:"schemaReferences,omitempty"`
+	SchemaReferences []X12SchemaReference `json:"schemaReferences,omitempty"`
 	// X12DelimiterOverrides - The X12 delimiter override settings.
-	X12DelimiterOverrides *[]X12DelimiterOverrides `json:"x12DelimiterOverrides,omitempty"`
+	X12DelimiterOverrides []X12DelimiterOverrides `json:"x12DelimiterOverrides,omitempty"`
 }
 
 // X12SchemaReference ...
@@ -2305,8 +1629,8 @@ type X12ValidationOverride struct {
 	ValidateCharacterSet *bool `json:"validateCharacterSet,omitempty"`
 	// TrimLeadingAndTrailingSpacesAndZeroes - The value indicating whether to trim leading and trailing spaces and zeroes.
 	TrimLeadingAndTrailingSpacesAndZeroes *bool `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
-	// TrailingSeparatorPolicy - The trailing separator policy. Possible values include: 'TrailingSeparatorPolicyNotSpecified', 'TrailingSeparatorPolicyNotAllowed', 'TrailingSeparatorPolicyOptional', 'TrailingSeparatorPolicyMandatory'
-	TrailingSeparatorPolicy TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
+	// TrailingSeparatorPolicy - The trailing separator policy. Possible values include: 'NotSpecified', 'NotAllowed', 'Optional', 'Mandatory', 'None'
+	TrailingSeparatorPolicy TrailingSeparatorPolicyType `json:"trailingSeparatorPolicy,omitempty"`
 }
 
 // X12ValidationSettings ...
@@ -2329,6 +1653,6 @@ type X12ValidationSettings struct {
 	AllowLeadingAndTrailingSpacesAndZeroes *bool `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
 	// TrimLeadingAndTrailingSpacesAndZeroes - The value indicating whether to trim leading and trailing spaces and zeroes.
 	TrimLeadingAndTrailingSpacesAndZeroes *bool `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
-	// TrailingSeparatorPolicy - The trailing separator policy. Possible values include: 'TrailingSeparatorPolicyNotSpecified', 'TrailingSeparatorPolicyNotAllowed', 'TrailingSeparatorPolicyOptional', 'TrailingSeparatorPolicyMandatory'
-	TrailingSeparatorPolicy TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
+	// TrailingSeparatorPolicy - The trailing separator policy. Possible values include: 'NotSpecified', 'NotAllowed', 'Optional', 'Mandatory', 'None'
+	TrailingSeparatorPolicy TrailingSeparatorPolicyType `json:"trailingSeparatorPolicy,omitempty"`
 }

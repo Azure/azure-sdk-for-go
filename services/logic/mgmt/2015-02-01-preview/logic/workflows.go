@@ -18,755 +18,541 @@ package logic
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
+	"encoding/json"
+	"fmt"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // WorkflowsClient is the REST API for Azure Logic Apps.
 type WorkflowsClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewWorkflowsClient creates an instance of the WorkflowsClient client.
-func NewWorkflowsClient(subscriptionID string) WorkflowsClient {
-	return NewWorkflowsClientWithBaseURI(DefaultBaseURI, subscriptionID)
-}
-
-// NewWorkflowsClientWithBaseURI creates an instance of the WorkflowsClient client.
-func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowsClient {
-	return WorkflowsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewWorkflowsClient(p pipeline.Pipeline) WorkflowsClient {
+	return WorkflowsClient{NewManagementClient(p)}
 }
 
 // CreateOrUpdate creates or updates a workflow.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. workflow is the workflow.
-func (client WorkflowsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workflowName string, workflow Workflow) (result Workflow, err error) {
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workflowName, workflow)
+func (client WorkflowsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workflowName string, workflow Workflow) (*Workflow, error) {
+	req, err := client.createOrUpdatePreparer(resourceGroupName, workflowName, workflow)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "CreateOrUpdate", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.CreateOrUpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createOrUpdateResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "CreateOrUpdate", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "CreateOrUpdate", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Workflow), err
 }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client WorkflowsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workflowName string, workflow Workflow) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workflowName":      autorest.Encode("path", workflowName),
+// createOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client WorkflowsClient) createOrUpdatePreparer(resourceGroupName string, workflowName string, workflow Workflow) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-02-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(workflow)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}", pathParameters),
-		autorest.WithJSON(workflow),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkflowsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
-// closes the http.Response Body.
-func (client WorkflowsClient) CreateOrUpdateResponder(resp *http.Response) (result Workflow, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createOrUpdateResponder handles the response to the CreateOrUpdate request.
+func (client WorkflowsClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusCreated)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Workflow{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Delete deletes a workflow.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name.
-func (client WorkflowsClient) Delete(ctx context.Context, resourceGroupName string, workflowName string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(ctx, resourceGroupName, workflowName)
+func (client WorkflowsClient) Delete(ctx context.Context, resourceGroupName string, workflowName string) (*http.Response, error) {
+	req, err := client.deletePreparer(resourceGroupName, workflowName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Delete", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.DeleteSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Delete", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeletePreparer prepares the Delete request.
-func (client WorkflowsClient) DeletePreparer(ctx context.Context, resourceGroupName string, workflowName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workflowName":      autorest.Encode("path", workflowName),
+// deletePreparer prepares the Delete request.
+func (client WorkflowsClient) deletePreparer(resourceGroupName string, workflowName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-02-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkflowsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client WorkflowsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteResponder handles the response to the Delete request.
+func (client WorkflowsClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // Disable disables a workflow.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name.
-func (client WorkflowsClient) Disable(ctx context.Context, resourceGroupName string, workflowName string) (result autorest.Response, err error) {
-	req, err := client.DisablePreparer(ctx, resourceGroupName, workflowName)
+func (client WorkflowsClient) Disable(ctx context.Context, resourceGroupName string, workflowName string) (*http.Response, error) {
+	req, err := client.disablePreparer(resourceGroupName, workflowName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Disable", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.DisableSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.disableResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Disable", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DisableResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Disable", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// DisablePreparer prepares the Disable request.
-func (client WorkflowsClient) DisablePreparer(ctx context.Context, resourceGroupName string, workflowName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workflowName":      autorest.Encode("path", workflowName),
+// disablePreparer prepares the Disable request.
+func (client WorkflowsClient) disablePreparer(resourceGroupName string, workflowName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/disable"
+	req, err := pipeline.NewRequest("POST", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-02-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/disable", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DisableSender sends the Disable request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkflowsClient) DisableSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// DisableResponder handles the response to the Disable request. The method always
-// closes the http.Response Body.
-func (client WorkflowsClient) DisableResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// disableResponder handles the response to the Disable request.
+func (client WorkflowsClient) disableResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // Enable enables a workflow.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name.
-func (client WorkflowsClient) Enable(ctx context.Context, resourceGroupName string, workflowName string) (result autorest.Response, err error) {
-	req, err := client.EnablePreparer(ctx, resourceGroupName, workflowName)
+func (client WorkflowsClient) Enable(ctx context.Context, resourceGroupName string, workflowName string) (*http.Response, error) {
+	req, err := client.enablePreparer(resourceGroupName, workflowName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Enable", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.EnableSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.enableResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Enable", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.EnableResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Enable", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// EnablePreparer prepares the Enable request.
-func (client WorkflowsClient) EnablePreparer(ctx context.Context, resourceGroupName string, workflowName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workflowName":      autorest.Encode("path", workflowName),
+// enablePreparer prepares the Enable request.
+func (client WorkflowsClient) enablePreparer(resourceGroupName string, workflowName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/enable"
+	req, err := pipeline.NewRequest("POST", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-02-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/enable", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// EnableSender sends the Enable request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkflowsClient) EnableSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// EnableResponder handles the response to the Enable request. The method always
-// closes the http.Response Body.
-func (client WorkflowsClient) EnableResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// enableResponder handles the response to the Enable request.
+func (client WorkflowsClient) enableResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // Get gets a workflow.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name.
-func (client WorkflowsClient) Get(ctx context.Context, resourceGroupName string, workflowName string) (result Workflow, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, workflowName)
+func (client WorkflowsClient) Get(ctx context.Context, resourceGroupName string, workflowName string) (*Workflow, error) {
+	req, err := client.getPreparer(resourceGroupName, workflowName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Workflow), err
 }
 
-// GetPreparer prepares the Get request.
-func (client WorkflowsClient) GetPreparer(ctx context.Context, resourceGroupName string, workflowName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workflowName":      autorest.Encode("path", workflowName),
+// getPreparer prepares the Get request.
+func (client WorkflowsClient) getPreparer(resourceGroupName string, workflowName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-02-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkflowsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client WorkflowsClient) GetResponder(resp *http.Response) (result Workflow, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getResponder handles the response to the Get request.
+func (client WorkflowsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Workflow{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListByResourceGroup gets a list of workflows by resource group.
 //
 // resourceGroupName is the resource group name. top is the number of items to be included in the result. filter is the
 // filter to apply on the operation.
-func (client WorkflowsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32, filter string) (result WorkflowListResultPage, err error) {
-	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, top, filter)
+func (client WorkflowsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32, filter *string) (*WorkflowListResult, error) {
+	req, err := client.listByResourceGroupPreparer(resourceGroupName, top, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListByResourceGroup", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListByResourceGroupSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByResourceGroupResponder}, req)
 	if err != nil {
-		result.wlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListByResourceGroup", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.wlr, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListByResourceGroup", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*WorkflowListResult), err
 }
 
-// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client WorkflowsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, top *int32, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// listByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client WorkflowsClient) listByResourceGroupPreparer(resourceGroupName string, top *int32, filter *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-02-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkflowsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
-// closes the http.Response Body.
-func (client WorkflowsClient) ListByResourceGroupResponder(resp *http.Response) (result WorkflowListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client WorkflowsClient) listByResourceGroupNextResults(lastResults WorkflowListResult) (result WorkflowListResult, err error) {
-	req, err := lastResults.workflowListResultPreparer()
+// listByResourceGroupResponder handles the response to the ListByResourceGroup request.
+func (client WorkflowsClient) listByResourceGroupResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &WorkflowListResult{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListByResourceGroupSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client WorkflowsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, top *int32, filter string) (result WorkflowListResultIterator, err error) {
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName, top, filter)
-	return
+	return result, nil
 }
 
 // ListBySubscription gets a list of workflows by subscription.
 //
 // top is the number of items to be included in the result. filter is the filter to apply on the operation.
-func (client WorkflowsClient) ListBySubscription(ctx context.Context, top *int32, filter string) (result WorkflowListResultPage, err error) {
-	result.fn = client.listBySubscriptionNextResults
-	req, err := client.ListBySubscriptionPreparer(ctx, top, filter)
+func (client WorkflowsClient) ListBySubscription(ctx context.Context, top *int32, filter *string) (*WorkflowListResult, error) {
+	req, err := client.listBySubscriptionPreparer(top, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListBySubscription", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListBySubscriptionSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listBySubscriptionResponder}, req)
 	if err != nil {
-		result.wlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListBySubscription", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.wlr, err = client.ListBySubscriptionResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "ListBySubscription", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*WorkflowListResult), err
 }
 
-// ListBySubscriptionPreparer prepares the ListBySubscription request.
-func (client WorkflowsClient) ListBySubscriptionPreparer(ctx context.Context, top *int32, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+// listBySubscriptionPreparer prepares the ListBySubscription request.
+func (client WorkflowsClient) listBySubscriptionPreparer(top *int32, filter *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/providers/Microsoft.Logic/workflows"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-02-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Logic/workflows", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListBySubscriptionSender sends the ListBySubscription request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkflowsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
-// closes the http.Response Body.
-func (client WorkflowsClient) ListBySubscriptionResponder(resp *http.Response) (result WorkflowListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listBySubscriptionNextResults retrieves the next set of results, if any.
-func (client WorkflowsClient) listBySubscriptionNextResults(lastResults WorkflowListResult) (result WorkflowListResult, err error) {
-	req, err := lastResults.workflowListResultPreparer()
+// listBySubscriptionResponder handles the response to the ListBySubscription request.
+func (client WorkflowsClient) listBySubscriptionResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &WorkflowListResult{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "listBySubscriptionNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListBySubscriptionSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowsClient", "listBySubscriptionNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListBySubscriptionResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
+	return result, nil
 }
 
-// ListBySubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
-func (client WorkflowsClient) ListBySubscriptionComplete(ctx context.Context, top *int32, filter string) (result WorkflowListResultIterator, err error) {
-	result.page, err = client.ListBySubscription(ctx, top, filter)
-	return
-}
-
-// Run runs a workflow.
+// Run runs a workflow. This method may poll for completion. Polling can be canceled by passing the cancel channel
+// argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. parameters is the parameters.
-func (client WorkflowsClient) Run(ctx context.Context, resourceGroupName string, workflowName string, parameters RunWorkflowParameters) (result WorkflowsRunFuture, err error) {
-	req, err := client.RunPreparer(ctx, resourceGroupName, workflowName, parameters)
+func (client WorkflowsClient) Run(ctx context.Context, resourceGroupName string, workflowName string, parameters RunWorkflowParameters) (*WorkflowRun, error) {
+	req, err := client.runPreparer(resourceGroupName, workflowName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Run", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.RunSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.runResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Run", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*WorkflowRun), err
 }
 
-// RunPreparer prepares the Run request.
-func (client WorkflowsClient) RunPreparer(ctx context.Context, resourceGroupName string, workflowName string, parameters RunWorkflowParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workflowName":      autorest.Encode("path", workflowName),
-	}
-
-	const APIVersion = "2015-02-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/run", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// RunSender sends the Run request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkflowsClient) RunSender(req *http.Request) (future WorkflowsRunFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// runPreparer prepares the Run request.
+func (client WorkflowsClient) runPreparer(resourceGroupName string, workflowName string, parameters RunWorkflowParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/run"
+	req, err := pipeline.NewRequest("POST", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// RunResponder handles the response to the Run request. The method always
-// closes the http.Response Body.
-func (client WorkflowsClient) RunResponder(resp *http.Response) (result WorkflowRun, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// runResponder handles the response to the Run request.
+func (client WorkflowsClient) runResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted)
+	if resp == nil {
+		return nil, err
+	}
+	result := &WorkflowRun{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Update updates a workflow.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. workflow is the workflow.
-func (client WorkflowsClient) Update(ctx context.Context, resourceGroupName string, workflowName string, workflow Workflow) (result Workflow, err error) {
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, workflowName, workflow)
+func (client WorkflowsClient) Update(ctx context.Context, resourceGroupName string, workflowName string, workflow Workflow) (*Workflow, error) {
+	req, err := client.updatePreparer(resourceGroupName, workflowName, workflow)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Update", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.UpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Update", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Update", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Workflow), err
 }
 
-// UpdatePreparer prepares the Update request.
-func (client WorkflowsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, workflowName string, workflow Workflow) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workflowName":      autorest.Encode("path", workflowName),
+// updatePreparer prepares the Update request.
+func (client WorkflowsClient) updatePreparer(resourceGroupName string, workflowName string, workflow Workflow) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}"
+	req, err := pipeline.NewRequest("PATCH", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-02-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(workflow)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}", pathParameters),
-		autorest.WithJSON(workflow),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// UpdateSender sends the Update request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkflowsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// UpdateResponder handles the response to the Update request. The method always
-// closes the http.Response Body.
-func (client WorkflowsClient) UpdateResponder(resp *http.Response) (result Workflow, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// updateResponder handles the response to the Update request.
+func (client WorkflowsClient) updateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Workflow{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Validate validates a workflow.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. workflow is the workflow.
-func (client WorkflowsClient) Validate(ctx context.Context, resourceGroupName string, workflowName string, workflow Workflow) (result autorest.Response, err error) {
-	req, err := client.ValidatePreparer(ctx, resourceGroupName, workflowName, workflow)
+func (client WorkflowsClient) Validate(ctx context.Context, resourceGroupName string, workflowName string, workflow Workflow) (*http.Response, error) {
+	req, err := client.validatePreparer(resourceGroupName, workflowName, workflow)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Validate", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ValidateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.validateResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Validate", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.ValidateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowsClient", "Validate", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// ValidatePreparer prepares the Validate request.
-func (client WorkflowsClient) ValidatePreparer(ctx context.Context, resourceGroupName string, workflowName string, workflow Workflow) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workflowName":      autorest.Encode("path", workflowName),
+// validatePreparer prepares the Validate request.
+func (client WorkflowsClient) validatePreparer(resourceGroupName string, workflowName string, workflow Workflow) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/validate"
+	req, err := pipeline.NewRequest("POST", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-02-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(workflow)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/validate", pathParameters),
-		autorest.WithJSON(workflow),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// ValidateSender sends the Validate request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkflowsClient) ValidateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ValidateResponder handles the response to the Validate request. The method always
-// closes the http.Response Body.
-func (client WorkflowsClient) ValidateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// validateResponder handles the response to the Validate request.
+func (client WorkflowsClient) validateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }

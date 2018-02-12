@@ -27,27 +27,22 @@ import (
 	"net/http"
 )
 
-// MapsClient is the REST API for Azure Logic Apps.
-type MapsClient struct {
+// IntegrationAccountCertificatesClient is the REST API for Azure Logic Apps.
+type IntegrationAccountCertificatesClient struct {
 	ManagementClient
 }
 
-// NewMapsClient creates an instance of the MapsClient client.
-func NewMapsClient(p pipeline.Pipeline) MapsClient {
-	return MapsClient{NewManagementClient(p)}
+// NewIntegrationAccountCertificatesClient creates an instance of the IntegrationAccountCertificatesClient client.
+func NewIntegrationAccountCertificatesClient(p pipeline.Pipeline) IntegrationAccountCertificatesClient {
+	return IntegrationAccountCertificatesClient{NewManagementClient(p)}
 }
 
-// CreateOrUpdate creates or updates an integration account map.
+// CreateOrUpdate creates or updates an integration account certificate.
 //
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is the
-// integration account map name. mapParameter is the integration account map.
-func (client MapsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, mapParameter IntegrationAccountMap) (*IntegrationAccountMap, error) {
-	if err := validate([]validation{
-		{targetValue: mapParameter,
-			constraints: []constraint{{target: "mapParameter.IntegrationAccountMapProperties", name: null, rule: true, chain: nil}}}}); err != nil {
-		return nil, err
-	}
-	req, err := client.createOrUpdatePreparer(resourceGroupName, integrationAccountName, mapName, mapParameter)
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name.
+// certificateName is the integration account certificate name. certificate is the integration account certificate.
+func (client IntegrationAccountCertificatesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string, certificate IntegrationAccountCertificate) (*IntegrationAccountCertificate, error) {
+	req, err := client.createOrUpdatePreparer(resourceGroupName, integrationAccountName, certificateName, certificate)
 	if err != nil {
 		return nil, err
 	}
@@ -55,13 +50,13 @@ func (client MapsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*IntegrationAccountMap), err
+	return resp.(*IntegrationAccountCertificate), err
 }
 
 // createOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client MapsClient) createOrUpdatePreparer(resourceGroupName string, integrationAccountName string, mapName string, mapParameter IntegrationAccountMap) (pipeline.Request, error) {
+func (client IntegrationAccountCertificatesClient) createOrUpdatePreparer(resourceGroupName string, integrationAccountName string, certificateName string, certificate IntegrationAccountCertificate) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates/{certificateName}"
 	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -69,7 +64,7 @@ func (client MapsClient) createOrUpdatePreparer(resourceGroupName string, integr
 	params := req.URL.Query()
 	params.Set("api-version", APIVersion)
 	req.URL.RawQuery = params.Encode()
-	b, err := json.Marshal(mapParameter)
+	b, err := json.Marshal(certificate)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
@@ -82,12 +77,12 @@ func (client MapsClient) createOrUpdatePreparer(resourceGroupName string, integr
 }
 
 // createOrUpdateResponder handles the response to the CreateOrUpdate request.
-func (client MapsClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client IntegrationAccountCertificatesClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK, http.StatusCreated)
 	if resp == nil {
 		return nil, err
 	}
-	result := &IntegrationAccountMap{rawResponse: resp.Response()}
+	result := &IntegrationAccountCertificate{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -105,12 +100,12 @@ func (client MapsClient) createOrUpdateResponder(resp pipeline.Response) (pipeli
 	return result, nil
 }
 
-// Delete deletes an integration account map.
+// Delete deletes an integration account certificate.
 //
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is the
-// integration account map name.
-func (client MapsClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (*http.Response, error) {
-	req, err := client.deletePreparer(resourceGroupName, integrationAccountName, mapName)
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name.
+// certificateName is the integration account certificate name.
+func (client IntegrationAccountCertificatesClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string) (*http.Response, error) {
+	req, err := client.deletePreparer(resourceGroupName, integrationAccountName, certificateName)
 	if err != nil {
 		return nil, err
 	}
@@ -122,9 +117,9 @@ func (client MapsClient) Delete(ctx context.Context, resourceGroupName string, i
 }
 
 // deletePreparer prepares the Delete request.
-func (client MapsClient) deletePreparer(resourceGroupName string, integrationAccountName string, mapName string) (pipeline.Request, error) {
+func (client IntegrationAccountCertificatesClient) deletePreparer(resourceGroupName string, integrationAccountName string, certificateName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates/{certificateName}"
 	req, err := pipeline.NewRequest("DELETE", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -136,7 +131,7 @@ func (client MapsClient) deletePreparer(resourceGroupName string, integrationAcc
 }
 
 // deleteResponder handles the response to the Delete request.
-func (client MapsClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client IntegrationAccountCertificatesClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
 	if resp == nil {
 		return nil, err
@@ -144,12 +139,12 @@ func (client MapsClient) deleteResponder(resp pipeline.Response) (pipeline.Respo
 	return resp, err
 }
 
-// Get gets an integration account map.
+// Get gets an integration account certificate.
 //
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is the
-// integration account map name.
-func (client MapsClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (*IntegrationAccountMap, error) {
-	req, err := client.getPreparer(resourceGroupName, integrationAccountName, mapName)
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name.
+// certificateName is the integration account certificate name.
+func (client IntegrationAccountCertificatesClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, certificateName string) (*IntegrationAccountCertificate, error) {
+	req, err := client.getPreparer(resourceGroupName, integrationAccountName, certificateName)
 	if err != nil {
 		return nil, err
 	}
@@ -157,13 +152,13 @@ func (client MapsClient) Get(ctx context.Context, resourceGroupName string, inte
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*IntegrationAccountMap), err
+	return resp.(*IntegrationAccountCertificate), err
 }
 
 // getPreparer prepares the Get request.
-func (client MapsClient) getPreparer(resourceGroupName string, integrationAccountName string, mapName string) (pipeline.Request, error) {
+func (client IntegrationAccountCertificatesClient) getPreparer(resourceGroupName string, integrationAccountName string, certificateName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates/{certificateName}"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -175,12 +170,12 @@ func (client MapsClient) getPreparer(resourceGroupName string, integrationAccoun
 }
 
 // getResponder handles the response to the Get request.
-func (client MapsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client IntegrationAccountCertificatesClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &IntegrationAccountMap{rawResponse: resp.Response()}
+	result := &IntegrationAccountCertificate{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}
@@ -198,26 +193,26 @@ func (client MapsClient) getResponder(resp pipeline.Response) (pipeline.Response
 	return result, nil
 }
 
-// ListByIntegrationAccounts gets a list of integration account maps.
+// List gets a list of integration account certificates.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. top is the
-// number of items to be included in the result. filter is the filter to apply on the operation.
-func (client MapsClient) ListByIntegrationAccounts(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter *string) (*IntegrationAccountMapListResult, error) {
-	req, err := client.listByIntegrationAccountsPreparer(resourceGroupName, integrationAccountName, top, filter)
+// number of items to be included in the result.
+func (client IntegrationAccountCertificatesClient) List(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32) (*IntegrationAccountCertificateListResult, error) {
+	req, err := client.listPreparer(resourceGroupName, integrationAccountName, top)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByIntegrationAccountsResponder}, req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*IntegrationAccountMapListResult), err
+	return resp.(*IntegrationAccountCertificateListResult), err
 }
 
-// listByIntegrationAccountsPreparer prepares the ListByIntegrationAccounts request.
-func (client MapsClient) listByIntegrationAccountsPreparer(resourceGroupName string, integrationAccountName string, top *int32, filter *string) (pipeline.Request, error) {
+// listPreparer prepares the List request.
+func (client IntegrationAccountCertificatesClient) listPreparer(resourceGroupName string, integrationAccountName string, top *int32) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/certificates"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -227,20 +222,17 @@ func (client MapsClient) listByIntegrationAccountsPreparer(resourceGroupName str
 	if top != nil {
 		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
-	if filter != nil {
-		params.Set("$filter", *filter)
-	}
 	req.URL.RawQuery = params.Encode()
 	return req, nil
 }
 
-// listByIntegrationAccountsResponder handles the response to the ListByIntegrationAccounts request.
-func (client MapsClient) listByIntegrationAccountsResponder(resp pipeline.Response) (pipeline.Response, error) {
+// listResponder handles the response to the List request.
+func (client IntegrationAccountCertificatesClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &IntegrationAccountMapListResult{rawResponse: resp.Response()}
+	result := &IntegrationAccountCertificateListResult{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}

@@ -25,19 +25,22 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the composite Swagger for Application Insights Management Client
-type OperationsClient struct {
+// WebTestLocationsClient is the composite Swagger for Application Insights Management Client
+type WebTestLocationsClient struct {
 	ManagementClient
 }
 
-// NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(p pipeline.Pipeline) OperationsClient {
-	return OperationsClient{NewManagementClient(p)}
+// NewWebTestLocationsClient creates an instance of the WebTestLocationsClient client.
+func NewWebTestLocationsClient(p pipeline.Pipeline) WebTestLocationsClient {
+	return WebTestLocationsClient{NewManagementClient(p)}
 }
 
-// List lists all of the available insights REST API operations.
-func (client OperationsClient) List(ctx context.Context) (*OperationListResult, error) {
-	req, err := client.listPreparer()
+// List gets a list of web test locations available to this Application Insights component.
+//
+// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights component
+// resource.
+func (client WebTestLocationsClient) List(ctx context.Context, resourceGroupName string, resourceName string) (*ApplicationInsightsWebTestLocationsListResult, error) {
+	req, err := client.listPreparer(resourceGroupName, resourceName)
 	if err != nil {
 		return nil, err
 	}
@@ -45,13 +48,13 @@ func (client OperationsClient) List(ctx context.Context) (*OperationListResult, 
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*OperationListResult), err
+	return resp.(*ApplicationInsightsWebTestLocationsListResult), err
 }
 
 // listPreparer prepares the List request.
-func (client OperationsClient) listPreparer() (pipeline.Request, error) {
+func (client WebTestLocationsClient) listPreparer(resourceGroupName string, resourceName string) (pipeline.Request, error) {
 	u := client.url
-	u.Path = "/providers/microsoft.insights/operations"
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/syntheticmonitorlocations"
 	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
 		return req, pipeline.NewError(err, "failed to create request")
@@ -63,12 +66,12 @@ func (client OperationsClient) listPreparer() (pipeline.Request, error) {
 }
 
 // listResponder handles the response to the List request.
-func (client OperationsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+func (client WebTestLocationsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
 	err := validateResponse(resp, http.StatusOK)
 	if resp == nil {
 		return nil, err
 	}
-	result := &OperationListResult{rawResponse: resp.Response()}
+	result := &ApplicationInsightsWebTestLocationsListResult{rawResponse: resp.Response()}
 	if err != nil {
 		return result, err
 	}

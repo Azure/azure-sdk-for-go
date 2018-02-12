@@ -19,154 +19,127 @@ package graphrbac
 
 import (
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // DomainsClient is the the Graph RBAC Management Client
 type DomainsClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewDomainsClient creates an instance of the DomainsClient client.
-func NewDomainsClient(tenantID string) DomainsClient {
-	return NewDomainsClientWithBaseURI(DefaultBaseURI, tenantID)
-}
-
-// NewDomainsClientWithBaseURI creates an instance of the DomainsClient client.
-func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient {
-	return DomainsClient{NewWithBaseURI(baseURI, tenantID)}
+func NewDomainsClient(p pipeline.Pipeline) DomainsClient {
+	return DomainsClient{NewManagementClient(p)}
 }
 
 // Get gets a specific domain in the current tenant.
 //
 // domainName is name of the domain.
-func (client DomainsClient) Get(ctx context.Context, domainName string) (result Domain, err error) {
-	req, err := client.GetPreparer(ctx, domainName)
+func (client DomainsClient) Get(ctx context.Context, domainName string) (*Domain, error) {
+	req, err := client.getPreparer(domainName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.DomainsClient", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.DomainsClient", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.DomainsClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Domain), err
 }
 
-// GetPreparer prepares the Get request.
-func (client DomainsClient) GetPreparer(ctx context.Context, domainName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"domainName": autorest.Encode("path", domainName),
-		"tenantID":   autorest.Encode("path", client.TenantID),
+// getPreparer prepares the Get request.
+func (client DomainsClient) getPreparer(domainName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/domains/{domainName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/domains/{domainName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client DomainsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client DomainsClient) GetResponder(resp *http.Response) (result Domain, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getResponder handles the response to the Get request.
+func (client DomainsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Domain{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // List gets a list of domains for the current tenant.
 //
 // filter is the filter to apply to the operation.
-func (client DomainsClient) List(ctx context.Context, filter string) (result DomainListResult, err error) {
-	req, err := client.ListPreparer(ctx, filter)
+func (client DomainsClient) List(ctx context.Context, filter *string) (*DomainListResult, error) {
+	req, err := client.listPreparer(filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.DomainsClient", "List", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.DomainsClient", "List", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.DomainsClient", "List", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*DomainListResult), err
 }
 
-// ListPreparer prepares the List request.
-func (client DomainsClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID": autorest.Encode("path", client.TenantID),
+// listPreparer prepares the List request.
+func (client DomainsClient) listPreparer(filter *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/domains"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/domains", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client DomainsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client DomainsClient) ListResponder(resp *http.Response) (result DomainListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// listResponder handles the response to the List request.
+func (client DomainsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DomainListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

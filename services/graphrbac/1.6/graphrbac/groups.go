@@ -18,27 +18,22 @@ package graphrbac
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/to"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // GroupsClient is the the Graph RBAC Management Client
 type GroupsClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewGroupsClient creates an instance of the GroupsClient client.
-func NewGroupsClient(tenantID string) GroupsClient {
-	return NewGroupsClientWithBaseURI(DefaultBaseURI, tenantID)
-}
-
-// NewGroupsClientWithBaseURI creates an instance of the GroupsClient client.
-func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
-	return GroupsClient{NewWithBaseURI(baseURI, tenantID)}
+func NewGroupsClient(p pipeline.Pipeline) GroupsClient {
+	return GroupsClient{NewManagementClient(p)}
 }
 
 // AddMember add a member to a group.
@@ -46,773 +41,601 @@ func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
 // groupObjectID is the object ID of the group to which to add the member. parameters is the URL of the member object,
 // such as
 // https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
-func (client GroupsClient) AddMember(ctx context.Context, groupObjectID string, parameters GroupAddMemberParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.GroupsClient", "AddMember")
+func (client GroupsClient) AddMember(ctx context.Context, groupObjectID string, parameters GroupAddMemberParameters) (*http.Response, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.URL", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.AddMemberPreparer(ctx, groupObjectID, parameters)
+	req, err := client.addMemberPreparer(groupObjectID, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddMember", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.AddMemberSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.addMemberResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddMember", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.AddMemberResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "AddMember", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// AddMemberPreparer prepares the AddMember request.
-func (client GroupsClient) AddMemberPreparer(ctx context.Context, groupObjectID string, parameters GroupAddMemberParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"groupObjectId": autorest.Encode("path", groupObjectID),
-		"tenantID":      autorest.Encode("path", client.TenantID),
+// addMemberPreparer prepares the AddMember request.
+func (client GroupsClient) addMemberPreparer(groupObjectID string, parameters GroupAddMemberParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/groups/{groupObjectId}/$links/members"
+	req, err := pipeline.NewRequest("POST", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/groups/{groupObjectId}/$links/members", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// AddMemberSender sends the AddMember request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupsClient) AddMemberSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// AddMemberResponder handles the response to the AddMember request. The method always
-// closes the http.Response Body.
-func (client GroupsClient) AddMemberResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// addMemberResponder handles the response to the AddMember request.
+func (client GroupsClient) addMemberResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // Create create a group in the directory.
 //
 // parameters is the parameters for the group to create.
-func (client GroupsClient) Create(ctx context.Context, parameters GroupCreateParameters) (result ADGroup, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.MailEnabled", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.MailNickname", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.SecurityEnabled", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.GroupsClient", "Create")
+func (client GroupsClient) Create(ctx context.Context, parameters GroupCreateParameters) (*ADGroup, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.DisplayName", name: null, rule: true, chain: nil},
+				{target: "parameters.MailEnabled", name: null, rule: true, chain: nil},
+				{target: "parameters.MailNickname", name: null, rule: true, chain: nil},
+				{target: "parameters.SecurityEnabled", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.CreatePreparer(ctx, parameters)
+	req, err := client.createPreparer(parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Create", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.CreateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Create", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Create", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*ADGroup), err
 }
 
-// CreatePreparer prepares the Create request.
-func (client GroupsClient) CreatePreparer(ctx context.Context, parameters GroupCreateParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID": autorest.Encode("path", client.TenantID),
+// createPreparer prepares the Create request.
+func (client GroupsClient) createPreparer(parameters GroupCreateParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/groups"
+	req, err := pipeline.NewRequest("POST", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/groups", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateSender sends the Create request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// CreateResponder handles the response to the Create request. The method always
-// closes the http.Response Body.
-func (client GroupsClient) CreateResponder(resp *http.Response) (result ADGroup, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createResponder handles the response to the Create request.
+func (client GroupsClient) createResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusCreated)
+	if resp == nil {
+		return nil, err
+	}
+	result := &ADGroup{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Delete delete a group from the directory.
 //
 // objectID is the object ID of the group to delete.
-func (client GroupsClient) Delete(ctx context.Context, objectID string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(ctx, objectID)
+func (client GroupsClient) Delete(ctx context.Context, objectID string) (*http.Response, error) {
+	req, err := client.deletePreparer(objectID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Delete", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.DeleteSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Delete", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeletePreparer prepares the Delete request.
-func (client GroupsClient) DeletePreparer(ctx context.Context, objectID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"objectId": autorest.Encode("path", objectID),
-		"tenantID": autorest.Encode("path", client.TenantID),
+// deletePreparer prepares the Delete request.
+func (client GroupsClient) deletePreparer(objectID string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/groups/{objectId}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/groups/{objectId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client GroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteResponder handles the response to the Delete request.
+func (client GroupsClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // Get gets group information from the directory.
 //
 // objectID is the object ID of the user for which to get group information.
-func (client GroupsClient) Get(ctx context.Context, objectID string) (result ADGroup, err error) {
-	req, err := client.GetPreparer(ctx, objectID)
+func (client GroupsClient) Get(ctx context.Context, objectID string) (*ADGroup, error) {
+	req, err := client.getPreparer(objectID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*ADGroup), err
 }
 
-// GetPreparer prepares the Get request.
-func (client GroupsClient) GetPreparer(ctx context.Context, objectID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"objectId": autorest.Encode("path", objectID),
-		"tenantID": autorest.Encode("path", client.TenantID),
+// getPreparer prepares the Get request.
+func (client GroupsClient) getPreparer(objectID string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/groups/{objectId}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/groups/{objectId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client GroupsClient) GetResponder(resp *http.Response) (result ADGroup, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getResponder handles the response to the Get request.
+func (client GroupsClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &ADGroup{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetGroupMembers gets the members of a group.
 //
 // objectID is the object ID of the group whose members should be retrieved.
-func (client GroupsClient) GetGroupMembers(ctx context.Context, objectID string) (result GetObjectsResultPage, err error) {
-	result.fn = func(lastResult GetObjectsResult) (GetObjectsResult, error) {
-		if lastResult.OdataNextLink == nil || len(to.String(lastResult.OdataNextLink)) < 1 {
-			return GetObjectsResult{}, nil
+func (client GroupsClient) GetGroupMembers(ctx context.Context, objectID string) (*GetObjectsResult, error) {
+	req, err := client.getGroupMembersPreparer(objectID)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getGroupMembersResponder}, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*GetObjectsResult), err
+}
+
+// getGroupMembersPreparer prepares the GetGroupMembers request.
+func (client GroupsClient) getGroupMembersPreparer(objectID string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/groups/{objectId}/members"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
+	}
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
+}
+
+// getGroupMembersResponder handles the response to the GetGroupMembers request.
+func (client GroupsClient) getGroupMembersResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &GetObjectsResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
 		}
-		return client.GetGroupMembersNext(ctx, *lastResult.OdataNextLink)
 	}
-	req, err := client.GetGroupMembersPreparer(ctx, objectID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembers", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetGroupMembersSender(req)
-	if err != nil {
-		result.gor.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembers", resp, "Failure sending request")
-		return
-	}
-
-	result.gor, err = client.GetGroupMembersResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembers", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetGroupMembersPreparer prepares the GetGroupMembers request.
-func (client GroupsClient) GetGroupMembersPreparer(ctx context.Context, objectID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"objectId": autorest.Encode("path", objectID),
-		"tenantID": autorest.Encode("path", client.TenantID),
-	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/groups/{objectId}/members", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetGroupMembersSender sends the GetGroupMembers request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupsClient) GetGroupMembersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetGroupMembersResponder handles the response to the GetGroupMembers request. The method always
-// closes the http.Response Body.
-func (client GroupsClient) GetGroupMembersResponder(resp *http.Response) (result GetObjectsResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetGroupMembersComplete enumerates all values, automatically crossing page boundaries as required.
-func (client GroupsClient) GetGroupMembersComplete(ctx context.Context, objectID string) (result GetObjectsResultIterator, err error) {
-	result.page, err = client.GetGroupMembers(ctx, objectID)
-	return
+	return result, nil
 }
 
 // GetGroupMembersNext gets the members of a group.
 //
 // nextLink is next link for the list operation.
-func (client GroupsClient) GetGroupMembersNext(ctx context.Context, nextLink string) (result GetObjectsResult, err error) {
-	req, err := client.GetGroupMembersNextPreparer(ctx, nextLink)
+func (client GroupsClient) GetGroupMembersNext(ctx context.Context, nextLink string) (*GetObjectsResult, error) {
+	req, err := client.getGroupMembersNextPreparer(nextLink)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembersNext", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetGroupMembersNextSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getGroupMembersNextResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembersNext", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetGroupMembersNextResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetGroupMembersNext", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*GetObjectsResult), err
 }
 
-// GetGroupMembersNextPreparer prepares the GetGroupMembersNext request.
-func (client GroupsClient) GetGroupMembersNextPreparer(ctx context.Context, nextLink string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"nextLink": nextLink,
-		"tenantID": autorest.Encode("path", client.TenantID),
+// getGroupMembersNextPreparer prepares the GetGroupMembersNext request.
+func (client GroupsClient) getGroupMembersNextPreparer(nextLink string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/{nextLink}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/{nextLink}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetGroupMembersNextSender sends the GetGroupMembersNext request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupsClient) GetGroupMembersNextSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetGroupMembersNextResponder handles the response to the GetGroupMembersNext request. The method always
-// closes the http.Response Body.
-func (client GroupsClient) GetGroupMembersNextResponder(resp *http.Response) (result GetObjectsResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getGroupMembersNextResponder handles the response to the GetGroupMembersNext request.
+func (client GroupsClient) getGroupMembersNextResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &GetObjectsResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetMemberGroups gets a collection of object IDs of groups of which the specified group is a member.
 //
 // objectID is the object ID of the group for which to get group membership. parameters is group filtering parameters.
-func (client GroupsClient) GetMemberGroups(ctx context.Context, objectID string, parameters GroupGetMemberGroupsParameters) (result GroupGetMemberGroupsResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.SecurityEnabledOnly", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.GroupsClient", "GetMemberGroups")
+func (client GroupsClient) GetMemberGroups(ctx context.Context, objectID string, parameters GroupGetMemberGroupsParameters) (*GroupGetMemberGroupsResult, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.SecurityEnabledOnly", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.GetMemberGroupsPreparer(ctx, objectID, parameters)
+	req, err := client.getMemberGroupsPreparer(objectID, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetMemberGroups", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetMemberGroupsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getMemberGroupsResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetMemberGroups", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetMemberGroupsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "GetMemberGroups", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*GroupGetMemberGroupsResult), err
 }
 
-// GetMemberGroupsPreparer prepares the GetMemberGroups request.
-func (client GroupsClient) GetMemberGroupsPreparer(ctx context.Context, objectID string, parameters GroupGetMemberGroupsParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"objectId": autorest.Encode("path", objectID),
-		"tenantID": autorest.Encode("path", client.TenantID),
+// getMemberGroupsPreparer prepares the GetMemberGroups request.
+func (client GroupsClient) getMemberGroupsPreparer(objectID string, parameters GroupGetMemberGroupsParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/groups/{objectId}/getMemberGroups"
+	req, err := pipeline.NewRequest("POST", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/groups/{objectId}/getMemberGroups", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// GetMemberGroupsSender sends the GetMemberGroups request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupsClient) GetMemberGroupsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetMemberGroupsResponder handles the response to the GetMemberGroups request. The method always
-// closes the http.Response Body.
-func (client GroupsClient) GetMemberGroupsResponder(resp *http.Response) (result GroupGetMemberGroupsResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getMemberGroupsResponder handles the response to the GetMemberGroups request.
+func (client GroupsClient) getMemberGroupsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &GroupGetMemberGroupsResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // IsMemberOf checks whether the specified user, group, contact, or service principal is a direct or transitive member
 // of the specified group.
 //
 // parameters is the check group membership parameters.
-func (client GroupsClient) IsMemberOf(ctx context.Context, parameters CheckGroupMembershipParameters) (result CheckGroupMembershipResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.GroupID", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.MemberID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.GroupsClient", "IsMemberOf")
+func (client GroupsClient) IsMemberOf(ctx context.Context, parameters CheckGroupMembershipParameters) (*CheckGroupMembershipResult, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.GroupID", name: null, rule: true, chain: nil},
+				{target: "parameters.MemberID", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.IsMemberOfPreparer(ctx, parameters)
+	req, err := client.isMemberOfPreparer(parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "IsMemberOf", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.IsMemberOfSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.isMemberOfResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "IsMemberOf", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.IsMemberOfResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "IsMemberOf", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*CheckGroupMembershipResult), err
 }
 
-// IsMemberOfPreparer prepares the IsMemberOf request.
-func (client GroupsClient) IsMemberOfPreparer(ctx context.Context, parameters CheckGroupMembershipParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID": autorest.Encode("path", client.TenantID),
+// isMemberOfPreparer prepares the IsMemberOf request.
+func (client GroupsClient) isMemberOfPreparer(parameters CheckGroupMembershipParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/isMemberOf"
+	req, err := pipeline.NewRequest("POST", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/isMemberOf", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// IsMemberOfSender sends the IsMemberOf request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupsClient) IsMemberOfSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// IsMemberOfResponder handles the response to the IsMemberOf request. The method always
-// closes the http.Response Body.
-func (client GroupsClient) IsMemberOfResponder(resp *http.Response) (result CheckGroupMembershipResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// isMemberOfResponder handles the response to the IsMemberOf request.
+func (client GroupsClient) isMemberOfResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &CheckGroupMembershipResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // List gets list of groups for the current tenant.
 //
 // filter is the filter to apply to the operation.
-func (client GroupsClient) List(ctx context.Context, filter string) (result GroupListResultPage, err error) {
-	result.fn = func(lastResult GroupListResult) (GroupListResult, error) {
-		if lastResult.OdataNextLink == nil || len(to.String(lastResult.OdataNextLink)) < 1 {
-			return GroupListResult{}, nil
+func (client GroupsClient) List(ctx context.Context, filter *string) (*GroupListResult, error) {
+	req, err := client.listPreparer(filter)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*GroupListResult), err
+}
+
+// listPreparer prepares the List request.
+func (client GroupsClient) listPreparer(filter *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/groups"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
+	}
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
+	}
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
+}
+
+// listResponder handles the response to the List request.
+func (client GroupsClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &GroupListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
 		}
-		return client.ListNext(ctx, *lastResult.OdataNextLink)
 	}
-	req, err := client.ListPreparer(ctx, filter)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "List", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.glr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "List", resp, "Failure sending request")
-		return
-	}
-
-	result.glr, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "List", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListPreparer prepares the List request.
-func (client GroupsClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID": autorest.Encode("path", client.TenantID),
-	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/groups", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client GroupsClient) ListResponder(resp *http.Response) (result GroupListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client GroupsClient) ListComplete(ctx context.Context, filter string) (result GroupListResultIterator, err error) {
-	result.page, err = client.List(ctx, filter)
-	return
+	return result, nil
 }
 
 // ListNext gets a list of groups for the current tenant.
 //
 // nextLink is next link for the list operation.
-func (client GroupsClient) ListNext(ctx context.Context, nextLink string) (result GroupListResult, err error) {
-	req, err := client.ListNextPreparer(ctx, nextLink)
+func (client GroupsClient) ListNext(ctx context.Context, nextLink string) (*GroupListResult, error) {
+	req, err := client.listNextPreparer(nextLink)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListNext", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListNextSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listNextResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListNext", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.ListNextResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "ListNext", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*GroupListResult), err
 }
 
-// ListNextPreparer prepares the ListNext request.
-func (client GroupsClient) ListNextPreparer(ctx context.Context, nextLink string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"nextLink": nextLink,
-		"tenantID": autorest.Encode("path", client.TenantID),
+// listNextPreparer prepares the ListNext request.
+func (client GroupsClient) listNextPreparer(nextLink string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/{nextLink}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/{nextLink}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListNextSender sends the ListNext request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupsClient) ListNextSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListNextResponder handles the response to the ListNext request. The method always
-// closes the http.Response Body.
-func (client GroupsClient) ListNextResponder(resp *http.Response) (result GroupListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// listNextResponder handles the response to the ListNext request.
+func (client GroupsClient) listNextResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &GroupListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // RemoveMember remove a member from a group.
 //
 // groupObjectID is the object ID of the group from which to remove the member. memberObjectID is member object id
-func (client GroupsClient) RemoveMember(ctx context.Context, groupObjectID string, memberObjectID string) (result autorest.Response, err error) {
-	req, err := client.RemoveMemberPreparer(ctx, groupObjectID, memberObjectID)
+func (client GroupsClient) RemoveMember(ctx context.Context, groupObjectID string, memberObjectID string) (*http.Response, error) {
+	req, err := client.removeMemberPreparer(groupObjectID, memberObjectID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "RemoveMember", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.RemoveMemberSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.removeMemberResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "RemoveMember", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.RemoveMemberResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.GroupsClient", "RemoveMember", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// RemoveMemberPreparer prepares the RemoveMember request.
-func (client GroupsClient) RemoveMemberPreparer(ctx context.Context, groupObjectID string, memberObjectID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"groupObjectId":  autorest.Encode("path", groupObjectID),
-		"memberObjectId": autorest.Encode("path", memberObjectID),
-		"tenantID":       autorest.Encode("path", client.TenantID),
+// removeMemberPreparer prepares the RemoveMember request.
+func (client GroupsClient) removeMemberPreparer(groupObjectID string, memberObjectID string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/groups/{groupObjectId}/$links/members/{memberObjectId}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/groups/{groupObjectId}/$links/members/{memberObjectId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// RemoveMemberSender sends the RemoveMember request. The method will close the
-// http.Response Body if it receives an error.
-func (client GroupsClient) RemoveMemberSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// RemoveMemberResponder handles the response to the RemoveMember request. The method always
-// closes the http.Response Body.
-func (client GroupsClient) RemoveMemberResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// removeMemberResponder handles the response to the RemoveMember request.
+func (client GroupsClient) removeMemberResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }

@@ -18,515 +18,407 @@ package graphrbac
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/to"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // UsersClient is the the Graph RBAC Management Client
 type UsersClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewUsersClient creates an instance of the UsersClient client.
-func NewUsersClient(tenantID string) UsersClient {
-	return NewUsersClientWithBaseURI(DefaultBaseURI, tenantID)
-}
-
-// NewUsersClientWithBaseURI creates an instance of the UsersClient client.
-func NewUsersClientWithBaseURI(baseURI string, tenantID string) UsersClient {
-	return UsersClient{NewWithBaseURI(baseURI, tenantID)}
+func NewUsersClient(p pipeline.Pipeline) UsersClient {
+	return UsersClient{NewManagementClient(p)}
 }
 
 // Create create a new user.
 //
 // parameters is parameters to create a user.
-func (client UsersClient) Create(ctx context.Context, parameters UserCreateParameters) (result User, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.AccountEnabled", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.PasswordProfile", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "parameters.PasswordProfile.Password", Name: validation.Null, Rule: true, Chain: nil}}},
-				{Target: "parameters.UserPrincipalName", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.MailNickname", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.UsersClient", "Create")
+func (client UsersClient) Create(ctx context.Context, parameters UserCreateParameters) (*User, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.AccountEnabled", name: null, rule: true, chain: nil},
+				{target: "parameters.DisplayName", name: null, rule: true, chain: nil},
+				{target: "parameters.PasswordProfile", name: null, rule: true,
+					chain: []constraint{{target: "parameters.PasswordProfile.Password", name: null, rule: true, chain: nil}}},
+				{target: "parameters.UserPrincipalName", name: null, rule: true, chain: nil},
+				{target: "parameters.MailNickname", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.CreatePreparer(ctx, parameters)
+	req, err := client.createPreparer(parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Create", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.CreateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Create", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Create", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*User), err
 }
 
-// CreatePreparer prepares the Create request.
-func (client UsersClient) CreatePreparer(ctx context.Context, parameters UserCreateParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID": autorest.Encode("path", client.TenantID),
+// createPreparer prepares the Create request.
+func (client UsersClient) createPreparer(parameters UserCreateParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/users"
+	req, err := pipeline.NewRequest("POST", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/users", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateSender sends the Create request. The method will close the
-// http.Response Body if it receives an error.
-func (client UsersClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// CreateResponder handles the response to the Create request. The method always
-// closes the http.Response Body.
-func (client UsersClient) CreateResponder(resp *http.Response) (result User, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createResponder handles the response to the Create request.
+func (client UsersClient) createResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusCreated)
+	if resp == nil {
+		return nil, err
+	}
+	result := &User{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Delete delete a user.
 //
 // upnOrObjectID is the object ID or principal name of the user to delete.
-func (client UsersClient) Delete(ctx context.Context, upnOrObjectID string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(ctx, upnOrObjectID)
+func (client UsersClient) Delete(ctx context.Context, upnOrObjectID string) (*http.Response, error) {
+	req, err := client.deletePreparer(upnOrObjectID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Delete", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.DeleteSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Delete", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeletePreparer prepares the Delete request.
-func (client UsersClient) DeletePreparer(ctx context.Context, upnOrObjectID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID":      autorest.Encode("path", client.TenantID),
-		"upnOrObjectId": autorest.Encode("path", upnOrObjectID),
+// deletePreparer prepares the Delete request.
+func (client UsersClient) deletePreparer(upnOrObjectID string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/users/{upnOrObjectId}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/users/{upnOrObjectId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client UsersClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client UsersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteResponder handles the response to the Delete request.
+func (client UsersClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // Get gets user information from the directory.
 //
 // upnOrObjectID is the object ID or principal name of the user for which to get information.
-func (client UsersClient) Get(ctx context.Context, upnOrObjectID string) (result User, err error) {
-	req, err := client.GetPreparer(ctx, upnOrObjectID)
+func (client UsersClient) Get(ctx context.Context, upnOrObjectID string) (*User, error) {
+	req, err := client.getPreparer(upnOrObjectID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*User), err
 }
 
-// GetPreparer prepares the Get request.
-func (client UsersClient) GetPreparer(ctx context.Context, upnOrObjectID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID":      autorest.Encode("path", client.TenantID),
-		"upnOrObjectId": autorest.Encode("path", upnOrObjectID),
+// getPreparer prepares the Get request.
+func (client UsersClient) getPreparer(upnOrObjectID string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/users/{upnOrObjectId}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/users/{upnOrObjectId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client UsersClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client UsersClient) GetResponder(resp *http.Response) (result User, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getResponder handles the response to the Get request.
+func (client UsersClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &User{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetMemberGroups gets a collection that contains the object IDs of the groups of which the user is a member.
 //
 // objectID is the object ID of the user for which to get group membership. parameters is user filtering parameters.
-func (client UsersClient) GetMemberGroups(ctx context.Context, objectID string, parameters UserGetMemberGroupsParameters) (result UserGetMemberGroupsResult, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.SecurityEnabledOnly", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "graphrbac.UsersClient", "GetMemberGroups")
+func (client UsersClient) GetMemberGroups(ctx context.Context, objectID string, parameters UserGetMemberGroupsParameters) (*UserGetMemberGroupsResult, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.SecurityEnabledOnly", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.GetMemberGroupsPreparer(ctx, objectID, parameters)
+	req, err := client.getMemberGroupsPreparer(objectID, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "GetMemberGroups", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetMemberGroupsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getMemberGroupsResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "GetMemberGroups", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetMemberGroupsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "GetMemberGroups", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*UserGetMemberGroupsResult), err
 }
 
-// GetMemberGroupsPreparer prepares the GetMemberGroups request.
-func (client UsersClient) GetMemberGroupsPreparer(ctx context.Context, objectID string, parameters UserGetMemberGroupsParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"objectId": autorest.Encode("path", objectID),
-		"tenantID": autorest.Encode("path", client.TenantID),
+// getMemberGroupsPreparer prepares the GetMemberGroups request.
+func (client UsersClient) getMemberGroupsPreparer(objectID string, parameters UserGetMemberGroupsParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/users/{objectId}/getMemberGroups"
+	req, err := pipeline.NewRequest("POST", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/users/{objectId}/getMemberGroups", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// GetMemberGroupsSender sends the GetMemberGroups request. The method will close the
-// http.Response Body if it receives an error.
-func (client UsersClient) GetMemberGroupsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetMemberGroupsResponder handles the response to the GetMemberGroups request. The method always
-// closes the http.Response Body.
-func (client UsersClient) GetMemberGroupsResponder(resp *http.Response) (result UserGetMemberGroupsResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getMemberGroupsResponder handles the response to the GetMemberGroups request.
+func (client UsersClient) getMemberGroupsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &UserGetMemberGroupsResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // List gets list of users for the current tenant.
 //
 // filter is the filter to apply to the operation.
-func (client UsersClient) List(ctx context.Context, filter string) (result UserListResultPage, err error) {
-	result.fn = func(lastResult UserListResult) (UserListResult, error) {
-		if lastResult.OdataNextLink == nil || len(to.String(lastResult.OdataNextLink)) < 1 {
-			return UserListResult{}, nil
+func (client UsersClient) List(ctx context.Context, filter *string) (*UserListResult, error) {
+	req, err := client.listPreparer(filter)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*UserListResult), err
+}
+
+// listPreparer prepares the List request.
+func (client UsersClient) listPreparer(filter *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/users"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
+	}
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
+	}
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
+}
+
+// listResponder handles the response to the List request.
+func (client UsersClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &UserListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
 		}
-		return client.ListNext(ctx, *lastResult.OdataNextLink)
 	}
-	req, err := client.ListPreparer(ctx, filter)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "List", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.ulr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "List", resp, "Failure sending request")
-		return
-	}
-
-	result.ulr, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "List", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListPreparer prepares the List request.
-func (client UsersClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID": autorest.Encode("path", client.TenantID),
-	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/users", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client UsersClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client UsersClient) ListResponder(resp *http.Response) (result UserListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsersClient) ListComplete(ctx context.Context, filter string) (result UserListResultIterator, err error) {
-	result.page, err = client.List(ctx, filter)
-	return
+	return result, nil
 }
 
 // ListNext gets a list of users for the current tenant.
 //
 // nextLink is next link for the list operation.
-func (client UsersClient) ListNext(ctx context.Context, nextLink string) (result UserListResult, err error) {
-	req, err := client.ListNextPreparer(ctx, nextLink)
+func (client UsersClient) ListNext(ctx context.Context, nextLink string) (*UserListResult, error) {
+	req, err := client.listNextPreparer(nextLink)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "ListNext", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListNextSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listNextResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "ListNext", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.ListNextResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "ListNext", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*UserListResult), err
 }
 
-// ListNextPreparer prepares the ListNext request.
-func (client UsersClient) ListNextPreparer(ctx context.Context, nextLink string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"nextLink": nextLink,
-		"tenantID": autorest.Encode("path", client.TenantID),
+// listNextPreparer prepares the ListNext request.
+func (client UsersClient) listNextPreparer(nextLink string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/{nextLink}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/{nextLink}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListNextSender sends the ListNext request. The method will close the
-// http.Response Body if it receives an error.
-func (client UsersClient) ListNextSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListNextResponder handles the response to the ListNext request. The method always
-// closes the http.Response Body.
-func (client UsersClient) ListNextResponder(resp *http.Response) (result UserListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// listNextResponder handles the response to the ListNext request.
+func (client UsersClient) listNextResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &UserListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Update updates a user.
 //
 // upnOrObjectID is the object ID or principal name of the user to update. parameters is parameters to update an
 // existing user.
-func (client UsersClient) Update(ctx context.Context, upnOrObjectID string, parameters UserUpdateParameters) (result autorest.Response, err error) {
-	req, err := client.UpdatePreparer(ctx, upnOrObjectID, parameters)
+func (client UsersClient) Update(ctx context.Context, upnOrObjectID string, parameters UserUpdateParameters) (*http.Response, error) {
+	req, err := client.updatePreparer(upnOrObjectID, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Update", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.UpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Update", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "graphrbac.UsersClient", "Update", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// UpdatePreparer prepares the Update request.
-func (client UsersClient) UpdatePreparer(ctx context.Context, upnOrObjectID string, parameters UserUpdateParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"tenantID":      autorest.Encode("path", client.TenantID),
-		"upnOrObjectId": autorest.Encode("path", upnOrObjectID),
+// updatePreparer prepares the Update request.
+func (client UsersClient) updatePreparer(upnOrObjectID string, parameters UserUpdateParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/{tenantID}/users/{upnOrObjectId}"
+	req, err := pipeline.NewRequest("PATCH", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "1.6"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{tenantID}/users/{upnOrObjectId}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// UpdateSender sends the Update request. The method will close the
-// http.Response Body if it receives an error.
-func (client UsersClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// UpdateResponder handles the response to the Update request. The method always
-// closes the http.Response Body.
-func (client UsersClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// updateResponder handles the response to the Update request.
+func (client UsersClient) updateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }

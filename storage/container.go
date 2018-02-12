@@ -294,17 +294,7 @@ func (c *Container) create(options *CreateContainerOptions) (*storageResponse, e
 func (c *Container) Exists() (bool, error) {
 	q := url.Values{"restype": {"container"}}
 	var uri string
-	if c.bsc.client.isServiceSASClient() {
-		q = mergeParams(q, c.sasuri.Query())
-		newURI := c.sasuri
-		newURI.RawQuery = q.Encode()
-		uri = newURI.String()
-
-	} else {
-		uri = c.bsc.client.getEndpoint(blobServiceName, c.buildPath(), q)
-	}
 	headers := c.bsc.client.getStandardHeaders()
-
 	resp, err := c.bsc.client.exec(http.MethodHead, uri, headers, nil, c.bsc.auth)
 	if resp != nil {
 		defer readAndCloseBody(resp.body)

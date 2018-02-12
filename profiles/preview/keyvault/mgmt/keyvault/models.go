@@ -34,6 +34,14 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 
+type AccessPolicyUpdateKind = original.AccessPolicyUpdateKind
+
+const (
+	Add     AccessPolicyUpdateKind = original.Add
+	Remove  AccessPolicyUpdateKind = original.Remove
+	Replace AccessPolicyUpdateKind = original.Replace
+)
+
 type CertificatePermissions = original.CertificatePermissions
 
 const (
@@ -81,6 +89,13 @@ const (
 	KeyPermissionsWrapKey   KeyPermissions = original.KeyPermissionsWrapKey
 )
 
+type Reason = original.Reason
+
+const (
+	AccountNameInvalid Reason = original.AccountNameInvalid
+	AlreadyExists      Reason = original.AlreadyExists
+)
+
 type SecretPermissions = original.SecretPermissions
 
 const (
@@ -104,37 +119,64 @@ const (
 type StoragePermissions = original.StoragePermissions
 
 const (
+	StoragePermissionsBackup        StoragePermissions = original.StoragePermissionsBackup
 	StoragePermissionsDelete        StoragePermissions = original.StoragePermissionsDelete
 	StoragePermissionsDeletesas     StoragePermissions = original.StoragePermissionsDeletesas
 	StoragePermissionsGet           StoragePermissions = original.StoragePermissionsGet
 	StoragePermissionsGetsas        StoragePermissions = original.StoragePermissionsGetsas
 	StoragePermissionsList          StoragePermissions = original.StoragePermissionsList
 	StoragePermissionsListsas       StoragePermissions = original.StoragePermissionsListsas
+	StoragePermissionsPurge         StoragePermissions = original.StoragePermissionsPurge
+	StoragePermissionsRecover       StoragePermissions = original.StoragePermissionsRecover
 	StoragePermissionsRegeneratekey StoragePermissions = original.StoragePermissionsRegeneratekey
+	StoragePermissionsRestore       StoragePermissions = original.StoragePermissionsRestore
 	StoragePermissionsSet           StoragePermissions = original.StoragePermissionsSet
 	StoragePermissionsSetsas        StoragePermissions = original.StoragePermissionsSetsas
 	StoragePermissionsUpdate        StoragePermissions = original.StoragePermissionsUpdate
 )
 
 type AccessPolicyEntry = original.AccessPolicyEntry
+type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type DeletedVault = original.DeletedVault
 type DeletedVaultListResult = original.DeletedVaultListResult
 type DeletedVaultListResultIterator = original.DeletedVaultListResultIterator
 type DeletedVaultListResultPage = original.DeletedVaultListResultPage
 type DeletedVaultProperties = original.DeletedVaultProperties
+type LogSpecification = original.LogSpecification
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
+type OperationProperties = original.OperationProperties
 type Permissions = original.Permissions
 type Resource = original.Resource
 type ResourceListResult = original.ResourceListResult
 type ResourceListResultIterator = original.ResourceListResultIterator
 type ResourceListResultPage = original.ResourceListResultPage
+type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku
 type Vault = original.Vault
+type VaultAccessPolicyParameters = original.VaultAccessPolicyParameters
+type VaultAccessPolicyProperties = original.VaultAccessPolicyProperties
+type VaultCheckNameAvailabilityParameters = original.VaultCheckNameAvailabilityParameters
 type VaultCreateOrUpdateParameters = original.VaultCreateOrUpdateParameters
 type VaultListResult = original.VaultListResult
 type VaultListResultIterator = original.VaultListResultIterator
 type VaultListResultPage = original.VaultListResultPage
+type VaultPatchParameters = original.VaultPatchParameters
+type VaultPatchProperties = original.VaultPatchProperties
 type VaultProperties = original.VaultProperties
 type VaultsPurgeDeletedFuture = original.VaultsPurgeDeletedFuture
+type OperationsClient = original.OperationsClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type VaultsClient = original.VaultsClient
 
 func NewVaultsClient(subscriptionID string) VaultsClient {

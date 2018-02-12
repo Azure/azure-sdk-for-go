@@ -452,6 +452,8 @@ type NotificationSettings = original.NotificationSettings
 type NotificationSettingsFragment = original.NotificationSettingsFragment
 type NotifyParameters = original.NotifyParameters
 type OperationError = original.OperationError
+type OperationMetadata = original.OperationMetadata
+type OperationMetadataDisplay = original.OperationMetadataDisplay
 type OperationResult = original.OperationResult
 type ParameterInfo = original.ParameterInfo
 type ParametersValueFileInfo = original.ParametersValueFileInfo
@@ -464,6 +466,9 @@ type PolicySetResult = original.PolicySetResult
 type PolicyViolation = original.PolicyViolation
 type Port = original.Port
 type PortFragment = original.PortFragment
+type ProviderOperationResult = original.ProviderOperationResult
+type ProviderOperationResultIterator = original.ProviderOperationResultIterator
+type ProviderOperationResultPage = original.ProviderOperationResultPage
 type Resource = original.Resource
 type ResponseWithContinuationArmTemplate = original.ResponseWithContinuationArmTemplate
 type ResponseWithContinuationArmTemplateIterator = original.ResponseWithContinuationArmTemplateIterator
@@ -599,6 +604,15 @@ func NewPolicySetsClient(subscriptionID string) PolicySetsClient {
 }
 func NewPolicySetsClientWithBaseURI(baseURI string, subscriptionID string) PolicySetsClient {
 	return original.NewPolicySetsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ProviderOperationsClient = original.ProviderOperationsClient
+
+func NewProviderOperationsClient(subscriptionID string) ProviderOperationsClient {
+	return original.NewProviderOperationsClient(subscriptionID)
+}
+func NewProviderOperationsClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsClient {
+	return original.NewProviderOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type SchedulesClient = original.SchedulesClient

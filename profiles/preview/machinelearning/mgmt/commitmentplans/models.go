@@ -52,6 +52,29 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 
+type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
+
+const (
+	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.NotAvailableForSubscription
+	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
+)
+
+type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
+
+const (
+	Location ResourceSkuRestrictionsType = original.Location
+	Zone     ResourceSkuRestrictionsType = original.Zone
+)
+
+type SkuCapacityScaleType = original.SkuCapacityScaleType
+
+const (
+	Automatic SkuCapacityScaleType = original.Automatic
+	Manual    SkuCapacityScaleType = original.Manual
+	None      SkuCapacityScaleType = original.None
+)
+
+type CatalogSku = original.CatalogSku
 type CommitmentAssociation = original.CommitmentAssociation
 type CommitmentAssociationListResult = original.CommitmentAssociationListResult
 type CommitmentAssociationListResultIterator = original.CommitmentAssociationListResultIterator
@@ -71,6 +94,20 @@ type PlanUsageHistoryListResultPage = original.PlanUsageHistoryListResultPage
 type Properties = original.Properties
 type Resource = original.Resource
 type ResourceSku = original.ResourceSku
+type SkuCapability = original.SkuCapability
+type SkuCapacity = original.SkuCapacity
+type SkuCost = original.SkuCost
+type SkuListResult = original.SkuListResult
+type SkuRestrictions = original.SkuRestrictions
+type SkusClient = original.SkusClient
+
+func NewSkusClient(subscriptionID string) SkusClient {
+	return original.NewSkusClient(subscriptionID)
+}
+func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
+	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type UsageHistoryClient = original.UsageHistoryClient
 
 func NewUsageHistoryClient(subscriptionID string) UsageHistoryClient {

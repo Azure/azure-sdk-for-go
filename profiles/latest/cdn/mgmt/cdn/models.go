@@ -19,7 +19,7 @@
 
 package cdn
 
-import original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2017-04-02/cdn"
+import original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2017-10-12/cdn"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -60,6 +60,14 @@ func NewEndpointsClient(subscriptionID string) EndpointsClient {
 func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
 	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }
+
+type CacheBehavior = original.CacheBehavior
+
+const (
+	BypassCache  CacheBehavior = original.BypassCache
+	Override     CacheBehavior = original.Override
+	SetIfMissing CacheBehavior = original.SetIfMissing
+)
 
 type CustomDomainResourceState = original.CustomDomainResourceState
 
@@ -110,6 +118,28 @@ type GeoFilterActions = original.GeoFilterActions
 const (
 	Allow GeoFilterActions = original.Allow
 	Block GeoFilterActions = original.Block
+)
+
+type MatchType = original.MatchType
+
+const (
+	Literal  MatchType = original.Literal
+	Wildcard MatchType = original.Wildcard
+)
+
+type Name = original.Name
+
+const (
+	NameCacheExpiration    Name = original.NameCacheExpiration
+	NameDeliveryRuleAction Name = original.NameDeliveryRuleAction
+)
+
+type NameBasicDeliveryRuleCondition = original.NameBasicDeliveryRuleCondition
+
+const (
+	NameDeliveryRuleCondition NameBasicDeliveryRuleCondition = original.NameDeliveryRuleCondition
+	NameURLFileExtension      NameBasicDeliveryRuleCondition = original.NameURLFileExtension
+	NameURLPath               NameBasicDeliveryRuleCondition = original.NameURLPath
 )
 
 type OptimizationType = original.OptimizationType
@@ -164,6 +194,7 @@ const (
 	StandardVerizon  SkuName = original.StandardVerizon
 )
 
+type CacheExpirationActionParameters = original.CacheExpirationActionParameters
 type CheckNameAvailabilityInput = original.CheckNameAvailabilityInput
 type CheckNameAvailabilityOutput = original.CheckNameAvailabilityOutput
 type CidrIPAddress = original.CidrIPAddress
@@ -178,6 +209,14 @@ type CustomDomainsCreateFuture = original.CustomDomainsCreateFuture
 type CustomDomainsDeleteFuture = original.CustomDomainsDeleteFuture
 type DeepCreatedOrigin = original.DeepCreatedOrigin
 type DeepCreatedOriginProperties = original.DeepCreatedOriginProperties
+type DeliveryRule = original.DeliveryRule
+type BasicDeliveryRuleAction = original.BasicDeliveryRuleAction
+type DeliveryRuleAction = original.DeliveryRuleAction
+type DeliveryRuleCacheExpirationAction = original.DeliveryRuleCacheExpirationAction
+type BasicDeliveryRuleCondition = original.BasicDeliveryRuleCondition
+type DeliveryRuleCondition = original.DeliveryRuleCondition
+type DeliveryRuleURLFileExtensionCondition = original.DeliveryRuleURLFileExtensionCondition
+type DeliveryRuleURLPathCondition = original.DeliveryRuleURLPathCondition
 type EdgeNode = original.EdgeNode
 type EdgeNodeProperties = original.EdgeNodeProperties
 type EdgenodeResult = original.EdgenodeResult
@@ -189,6 +228,7 @@ type EndpointListResultIterator = original.EndpointListResultIterator
 type EndpointListResultPage = original.EndpointListResultPage
 type EndpointProperties = original.EndpointProperties
 type EndpointPropertiesUpdateParameters = original.EndpointPropertiesUpdateParameters
+type EndpointPropertiesUpdateParametersDeliveryPolicy = original.EndpointPropertiesUpdateParametersDeliveryPolicy
 type EndpointsCreateFuture = original.EndpointsCreateFuture
 type EndpointsDeleteFuture = original.EndpointsDeleteFuture
 type EndpointsLoadContentFuture = original.EndpointsLoadContentFuture
@@ -234,6 +274,8 @@ type Sku = original.Sku
 type SsoURI = original.SsoURI
 type SupportedOptimizationTypesListResult = original.SupportedOptimizationTypesListResult
 type TrackedResource = original.TrackedResource
+type URLFileExtensionConditionParameters = original.URLFileExtensionConditionParameters
+type URLPathConditionParameters = original.URLPathConditionParameters
 type ValidateCustomDomainInput = original.ValidateCustomDomainInput
 type ValidateCustomDomainOutput = original.ValidateCustomDomainOutput
 type ValidateProbeInput = original.ValidateProbeInput

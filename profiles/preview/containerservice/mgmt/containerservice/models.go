@@ -214,8 +214,8 @@ const (
 type AccessProfile = original.AccessProfile
 type AgentPoolProfile = original.AgentPoolProfile
 type ContainerService = original.ContainerService
-type ContainerServicesCreateOrUpdateFuture = original.ContainerServicesCreateOrUpdateFuture
-type ContainerServicesDeleteFuture = original.ContainerServicesDeleteFuture
+type ContainerServicesCreateOrUpdateFutureType = original.ContainerServicesCreateOrUpdateFutureType
+type ContainerServicesDeleteFutureType = original.ContainerServicesDeleteFutureType
 type CustomProfile = original.CustomProfile
 type DiagnosticsProfile = original.DiagnosticsProfile
 type KeyVaultSecretRef = original.KeyVaultSecretRef

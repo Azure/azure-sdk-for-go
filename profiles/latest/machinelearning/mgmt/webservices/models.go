@@ -131,6 +131,8 @@ type AsyncOperationStatus = original.AsyncOperationStatus
 type BlobLocation = original.BlobLocation
 type ColumnSpecification = original.ColumnSpecification
 type CommitmentPlan = original.CommitmentPlan
+type CreateOrUpdateFuture = original.CreateOrUpdateFuture
+type CreateRegionalPropertiesFuture = original.CreateRegionalPropertiesFuture
 type DiagnosticsConfiguration = original.DiagnosticsConfiguration
 type ExampleRequest = original.ExampleRequest
 type GraphEdge = original.GraphEdge
@@ -143,25 +145,33 @@ type Keys = original.Keys
 type MachineLearningWorkspace = original.MachineLearningWorkspace
 type ModeValueInfo = original.ModeValueInfo
 type ModuleAssetParameter = original.ModuleAssetParameter
+type OperationDisplayInfo = original.OperationDisplayInfo
+type OperationEntity = original.OperationEntity
+type OperationEntityListResult = original.OperationEntityListResult
 type OutputPort = original.OutputPort
 type PaginatedWebServicesList = original.PaginatedWebServicesList
 type PaginatedWebServicesListIterator = original.PaginatedWebServicesListIterator
 type PaginatedWebServicesListPage = original.PaginatedWebServicesListPage
 type Parameter = original.Parameter
+type PatchFuture = original.PatchFuture
 type BasicProperties = original.BasicProperties
 type Properties = original.Properties
 type PropertiesForGraph = original.PropertiesForGraph
 type RealtimeConfiguration = original.RealtimeConfiguration
+type RemoveFuture = original.RemoveFuture
 type Resource = original.Resource
 type ServiceInputOutputSpecification = original.ServiceInputOutputSpecification
 type StorageAccount = original.StorageAccount
 type TableSpecification = original.TableSpecification
 type WebService = original.WebService
-type WebServicesCreateOrUpdateFuture = original.WebServicesCreateOrUpdateFuture
-type WebServicesCreateRegionalPropertiesFuture = original.WebServicesCreateRegionalPropertiesFuture
-type WebServicesPatchFuture = original.WebServicesPatchFuture
-type WebServicesRemoveFuture = original.WebServicesRemoveFuture
+type OperationsClient = original.OperationsClient
 
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }

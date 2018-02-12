@@ -19,7 +19,7 @@
 
 package runtime
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/luis/v2.0/runtime"
+import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/luis/runtime"
 
 type BaseClient = original.BaseClient
 

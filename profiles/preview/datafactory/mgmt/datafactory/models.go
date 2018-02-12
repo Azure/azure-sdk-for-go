@@ -97,6 +97,14 @@ const (
 	AuthenticationTypeWebLinkedServiceTypeProperties AuthenticationType = original.AuthenticationTypeWebLinkedServiceTypeProperties
 )
 
+type AuthorizationType = original.AuthorizationType
+
+const (
+	AuthorizationTypeKey                                AuthorizationType = original.AuthorizationTypeKey
+	AuthorizationTypeLinkedIntegrationRuntimeProperties AuthorizationType = original.AuthorizationTypeLinkedIntegrationRuntimeProperties
+	AuthorizationTypeRBAC                               AuthorizationType = original.AuthorizationTypeRBAC
+)
+
 type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
 
 const (
@@ -257,6 +265,13 @@ type IntegrationRuntimeAutoUpdate = original.IntegrationRuntimeAutoUpdate
 const (
 	Off IntegrationRuntimeAutoUpdate = original.Off
 	On  IntegrationRuntimeAutoUpdate = original.On
+)
+
+type IntegrationRuntimeEdition = original.IntegrationRuntimeEdition
+
+const (
+	Enterprise IntegrationRuntimeEdition = original.Enterprise
+	Standard   IntegrationRuntimeEdition = original.Standard
 )
 
 type IntegrationRuntimeInternalChannelEncryptionMode = original.IntegrationRuntimeInternalChannelEncryptionMode
@@ -648,6 +663,7 @@ const (
 	TypeRelationalSource           TypeBasicCopySource = original.TypeRelationalSource
 	TypeSalesforceSource           TypeBasicCopySource = original.TypeSalesforceSource
 	TypeSapCloudForCustomerSource  TypeBasicCopySource = original.TypeSapCloudForCustomerSource
+	TypeSapEccSource               TypeBasicCopySource = original.TypeSapEccSource
 	TypeServiceNowSource           TypeBasicCopySource = original.TypeServiceNowSource
 	TypeShopifySource              TypeBasicCopySource = original.TypeShopifySource
 	TypeSparkSource                TypeBasicCopySource = original.TypeSparkSource
@@ -710,6 +726,7 @@ const (
 	TypeRelationalTable             TypeBasicDataset = original.TypeRelationalTable
 	TypeSalesforceObject            TypeBasicDataset = original.TypeSalesforceObject
 	TypeSapCloudForCustomerResource TypeBasicDataset = original.TypeSapCloudForCustomerResource
+	TypeSapEccResource              TypeBasicDataset = original.TypeSapEccResource
 	TypeServiceNowObject            TypeBasicDataset = original.TypeServiceNowObject
 	TypeShopifyObject               TypeBasicDataset = original.TypeShopifyObject
 	TypeSparkObject                 TypeBasicDataset = original.TypeSparkObject
@@ -813,6 +830,7 @@ const (
 	TypeSalesforce             TypeBasicLinkedService = original.TypeSalesforce
 	TypeSapBW                  TypeBasicLinkedService = original.TypeSapBW
 	TypeSapCloudForCustomer    TypeBasicLinkedService = original.TypeSapCloudForCustomer
+	TypeSapEcc                 TypeBasicLinkedService = original.TypeSapEcc
 	TypeSapHana                TypeBasicLinkedService = original.TypeSapHana
 	TypeServiceNow             TypeBasicLinkedService = original.TypeServiceNow
 	TypeSftp                   TypeBasicLinkedService = original.TypeSftp
@@ -1069,6 +1087,7 @@ type IntegrationRuntime = original.IntegrationRuntime
 type IntegrationRuntimeAuthKeys = original.IntegrationRuntimeAuthKeys
 type IntegrationRuntimeComputeProperties = original.IntegrationRuntimeComputeProperties
 type IntegrationRuntimeConnectionInfo = original.IntegrationRuntimeConnectionInfo
+type IntegrationRuntimeCustomSetupScriptProperties = original.IntegrationRuntimeCustomSetupScriptProperties
 type IntegrationRuntimeListResponse = original.IntegrationRuntimeListResponse
 type IntegrationRuntimeListResponseIterator = original.IntegrationRuntimeListResponseIterator
 type IntegrationRuntimeListResponsePage = original.IntegrationRuntimeListResponsePage
@@ -1093,6 +1112,12 @@ type JiraLinkedServiceTypeProperties = original.JiraLinkedServiceTypeProperties
 type JiraObjectDataset = original.JiraObjectDataset
 type JiraSource = original.JiraSource
 type JSONFormat = original.JSONFormat
+type LinkedIntegrationRuntime = original.LinkedIntegrationRuntime
+type LinkedIntegrationRuntimeKey = original.LinkedIntegrationRuntimeKey
+type BasicLinkedIntegrationRuntimeProperties = original.BasicLinkedIntegrationRuntimeProperties
+type LinkedIntegrationRuntimeProperties = original.LinkedIntegrationRuntimeProperties
+type LinkedIntegrationRuntimeRbac = original.LinkedIntegrationRuntimeRbac
+type LinkedIntegrationRuntimeTypeProperties = original.LinkedIntegrationRuntimeTypeProperties
 type BasicLinkedService = original.BasicLinkedService
 type LinkedService = original.LinkedService
 type LinkedServiceListResponse = original.LinkedServiceListResponse
@@ -1208,6 +1233,11 @@ type SapCloudForCustomerResourceDataset = original.SapCloudForCustomerResourceDa
 type SapCloudForCustomerResourceDatasetTypeProperties = original.SapCloudForCustomerResourceDatasetTypeProperties
 type SapCloudForCustomerSink = original.SapCloudForCustomerSink
 type SapCloudForCustomerSource = original.SapCloudForCustomerSource
+type SapEccLinkedService = original.SapEccLinkedService
+type SapEccLinkedServiceTypeProperties = original.SapEccLinkedServiceTypeProperties
+type SapEccResourceDataset = original.SapEccResourceDataset
+type SapEccResourceDatasetTypeProperties = original.SapEccResourceDatasetTypeProperties
+type SapEccSource = original.SapEccSource
 type SapHanaLinkedService = original.SapHanaLinkedService
 type SapHanaLinkedServiceProperties = original.SapHanaLinkedServiceProperties
 type ScheduleTrigger = original.ScheduleTrigger

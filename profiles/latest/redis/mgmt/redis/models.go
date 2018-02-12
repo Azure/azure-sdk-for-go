@@ -19,7 +19,7 @@
 
 package redis
 
-import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-02-01/redis"
+import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-10-01/redis"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -104,24 +104,31 @@ const (
 )
 
 type AccessKeys = original.AccessKeys
+type CommonProperties = original.CommonProperties
+type CreateFuture = original.CreateFuture
 type CreateParameters = original.CreateParameters
 type CreateProperties = original.CreateProperties
+type DeleteFuture = original.DeleteFuture
+type ExportDataFuture = original.ExportDataFuture
 type ExportRDBParameters = original.ExportRDBParameters
 type FirewallRule = original.FirewallRule
+type FirewallRuleCreateParameters = original.FirewallRuleCreateParameters
 type FirewallRuleListResult = original.FirewallRuleListResult
 type FirewallRuleListResultIterator = original.FirewallRuleListResultIterator
 type FirewallRuleListResultPage = original.FirewallRuleListResultPage
 type FirewallRuleProperties = original.FirewallRuleProperties
 type ForceRebootResponse = original.ForceRebootResponse
+type ImportDataFuture = original.ImportDataFuture
 type ImportRDBParameters = original.ImportRDBParameters
 type LinkedServer = original.LinkedServer
 type LinkedServerCreateFuture = original.LinkedServerCreateFuture
 type LinkedServerCreateParameters = original.LinkedServerCreateParameters
 type LinkedServerCreateProperties = original.LinkedServerCreateProperties
-type LinkedServerList = original.LinkedServerList
 type LinkedServerProperties = original.LinkedServerProperties
 type LinkedServerWithProperties = original.LinkedServerWithProperties
 type LinkedServerWithPropertiesList = original.LinkedServerWithPropertiesList
+type LinkedServerWithPropertiesListIterator = original.LinkedServerWithPropertiesListIterator
+type LinkedServerWithPropertiesListPage = original.LinkedServerWithPropertiesListPage
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
@@ -134,13 +141,8 @@ type PatchSchedule = original.PatchSchedule
 type Properties = original.Properties
 type ProxyResource = original.ProxyResource
 type RebootParameters = original.RebootParameters
-type RedisCreateFuture = original.RedisCreateFuture
-type RedisDeleteFuture = original.RedisDeleteFuture
-type RedisExportDataFuture = original.RedisExportDataFuture
-type RedisImportDataFuture = original.RedisImportDataFuture
 type RegenerateKeyParameters = original.RegenerateKeyParameters
 type Resource = original.Resource
-type ResourceProperties = original.ResourceProperties
 type ResourceType = original.ResourceType
 type ScheduleEntries = original.ScheduleEntries
 type ScheduleEntry = original.ScheduleEntry

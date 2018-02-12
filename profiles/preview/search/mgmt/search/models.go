@@ -99,6 +99,9 @@ type CheckNameAvailabilityOutput = original.CheckNameAvailabilityOutput
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type ListQueryKeysResult = original.ListQueryKeysResult
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationListResult = original.OperationListResult
 type QueryKey = original.QueryKey
 type Resource = original.Resource
 type Service = original.Service
@@ -106,6 +109,15 @@ type ServiceListResult = original.ServiceListResult
 type ServiceProperties = original.ServiceProperties
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type Sku = original.Sku
+type OperationsClient = original.OperationsClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type QueryKeysClient = original.QueryKeysClient
 
 func NewQueryKeysClient(subscriptionID string) QueryKeysClient {

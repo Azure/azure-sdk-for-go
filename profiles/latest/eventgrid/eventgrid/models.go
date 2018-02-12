@@ -30,8 +30,16 @@ func NewWithoutDefaults() BaseClient {
 	return original.NewWithoutDefaults()
 }
 
+type DeviceLifeCycleEventProperties = original.DeviceLifeCycleEventProperties
+type DeviceTwinInfo = original.DeviceTwinInfo
+type DeviceTwinInfoProperties = original.DeviceTwinInfoProperties
+type DeviceTwinInfoX509Thumbprint = original.DeviceTwinInfoX509Thumbprint
+type DeviceTwinMetadata = original.DeviceTwinMetadata
+type DeviceTwinProperties = original.DeviceTwinProperties
 type Event = original.Event
 type EventHubCaptureFileCreatedEventData = original.EventHubCaptureFileCreatedEventData
+type IotHubDeviceCreatedEventData = original.IotHubDeviceCreatedEventData
+type IotHubDeviceDeletedEventData = original.IotHubDeviceDeletedEventData
 type ResourceDeleteCancelData = original.ResourceDeleteCancelData
 type ResourceDeleteFailureData = original.ResourceDeleteFailureData
 type ResourceDeleteSuccessData = original.ResourceDeleteSuccessData

@@ -97,30 +97,31 @@ const (
 type Type = original.Type
 
 const (
-	Hive  Type = original.Hive
-	Scope Type = original.Scope
-	USQL  Type = original.USQL
+	TypeHive          Type = original.TypeHive
+	TypeJobProperties Type = original.TypeJobProperties
+	TypeScope         Type = original.TypeScope
+	TypeUSQL          Type = original.TypeUSQL
 )
 
 type TypeBasicCreateJobProperties = original.TypeBasicCreateJobProperties
 
 const (
-	TypeCreateJobProperties TypeBasicCreateJobProperties = original.TypeCreateJobProperties
-	TypeScope               TypeBasicCreateJobProperties = original.TypeScope
-	TypeUSQL                TypeBasicCreateJobProperties = original.TypeUSQL
+	TypeBasicCreateJobPropertiesTypeCreateJobProperties TypeBasicCreateJobProperties = original.TypeBasicCreateJobPropertiesTypeCreateJobProperties
+	TypeBasicCreateJobPropertiesTypeScope               TypeBasicCreateJobProperties = original.TypeBasicCreateJobPropertiesTypeScope
+	TypeBasicCreateJobPropertiesTypeUSQL                TypeBasicCreateJobProperties = original.TypeBasicCreateJobPropertiesTypeUSQL
 )
 
-type TypeBasicProperties = original.TypeBasicProperties
+type TypeEnum = original.TypeEnum
 
 const (
-	TypeBasicPropertiesTypeHive          TypeBasicProperties = original.TypeBasicPropertiesTypeHive
-	TypeBasicPropertiesTypeJobProperties TypeBasicProperties = original.TypeBasicPropertiesTypeJobProperties
-	TypeBasicPropertiesTypeScope         TypeBasicProperties = original.TypeBasicPropertiesTypeScope
-	TypeBasicPropertiesTypeUSQL          TypeBasicProperties = original.TypeBasicPropertiesTypeUSQL
+	Hive  TypeEnum = original.Hive
+	Scope TypeEnum = original.Scope
+	USQL  TypeEnum = original.USQL
 )
 
 type BaseJobParameters = original.BaseJobParameters
 type BuildJobParameters = original.BuildJobParameters
+type CancelFuture = original.CancelFuture
 type CreateJobParameters = original.CreateJobParameters
 type BasicCreateJobProperties = original.BasicCreateJobProperties
 type CreateJobProperties = original.CreateJobProperties
@@ -137,9 +138,6 @@ type InfoListResultPage = original.InfoListResultPage
 type Information = original.Information
 type InformationBasic = original.InformationBasic
 type InnerError = original.InnerError
-type JobCancelFuture = original.JobCancelFuture
-type JobUpdateFuture = original.JobUpdateFuture
-type JobYieldFuture = original.JobYieldFuture
 type PipelineInformation = original.PipelineInformation
 type PipelineInformationListResult = original.PipelineInformationListResult
 type PipelineInformationListResultIterator = original.PipelineInformationListResultIterator
@@ -160,8 +158,10 @@ type StateAuditRecord = original.StateAuditRecord
 type Statistics = original.Statistics
 type StatisticsVertex = original.StatisticsVertex
 type StatisticsVertexStage = original.StatisticsVertexStage
+type UpdateFuture = original.UpdateFuture
 type UpdateJobParameters = original.UpdateJobParameters
 type USQLJobProperties = original.USQLJobProperties
+type YieldFuture = original.YieldFuture
 type PipelineClient = original.PipelineClient
 
 func NewPipelineClient() PipelineClient {

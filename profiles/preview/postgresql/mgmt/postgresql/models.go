@@ -133,16 +133,6 @@ const (
 	SslEnforcementEnumEnabled  SslEnforcementEnum = original.SslEnforcementEnumEnabled
 )
 
-type VirtualNetworkRuleState = original.VirtualNetworkRuleState
-
-const (
-	VirtualNetworkRuleStateDeleting     VirtualNetworkRuleState = original.VirtualNetworkRuleStateDeleting
-	VirtualNetworkRuleStateInitializing VirtualNetworkRuleState = original.VirtualNetworkRuleStateInitializing
-	VirtualNetworkRuleStateInProgress   VirtualNetworkRuleState = original.VirtualNetworkRuleStateInProgress
-	VirtualNetworkRuleStateReady        VirtualNetworkRuleState = original.VirtualNetworkRuleStateReady
-	VirtualNetworkRuleStateUnknown      VirtualNetworkRuleState = original.VirtualNetworkRuleStateUnknown
-)
-
 type Configuration = original.Configuration
 type ConfigurationListResult = original.ConfigurationListResult
 type ConfigurationProperties = original.ConfigurationProperties
@@ -184,13 +174,6 @@ type ServerUpdateParameters = original.ServerUpdateParameters
 type ServerUpdateParametersProperties = original.ServerUpdateParametersProperties
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
-type VirtualNetworkRule = original.VirtualNetworkRule
-type VirtualNetworkRuleListResult = original.VirtualNetworkRuleListResult
-type VirtualNetworkRuleListResultIterator = original.VirtualNetworkRuleListResultIterator
-type VirtualNetworkRuleListResultPage = original.VirtualNetworkRuleListResultPage
-type VirtualNetworkRuleProperties = original.VirtualNetworkRuleProperties
-type VirtualNetworkRulesCreateOrUpdateFuture = original.VirtualNetworkRulesCreateOrUpdateFuture
-type VirtualNetworkRulesDeleteFuture = original.VirtualNetworkRulesDeleteFuture
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {
@@ -222,13 +205,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-
-type VirtualNetworkRulesClient = original.VirtualNetworkRulesClient
-
-func NewVirtualNetworkRulesClient(subscriptionID string) VirtualNetworkRulesClient {
-	return original.NewVirtualNetworkRulesClient(subscriptionID)
-}
-func NewVirtualNetworkRulesClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkRulesClient {
-	return original.NewVirtualNetworkRulesClientWithBaseURI(baseURI, subscriptionID)
 }

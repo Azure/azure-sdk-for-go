@@ -54,7 +54,7 @@ func (client ContainerGroupsClient) CreateOrUpdate(ctx context.Context, resource
 							{Target: "containerGroup.ContainerGroupProperties.IPAddress.Type", Name: validation.Null, Rule: true, Chain: nil},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "containerinstance.ContainerGroupsClient", "CreateOrUpdate")
+		return result, validation.NewError("containerinstance.ContainerGroupsClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, containerGroupName, containerGroup)

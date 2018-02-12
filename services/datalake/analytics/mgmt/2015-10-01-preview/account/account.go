@@ -18,26 +18,23 @@ package account
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"fmt"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // Client is the creates an Azure Data Lake Analytics account management client.
 type Client struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewClient creates an instance of the Client client.
-func NewClient(subscriptionID string) Client {
-	return NewClientWithBaseURI(DefaultBaseURI, subscriptionID)
-}
-
-// NewClientWithBaseURI creates an instance of the Client client.
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return Client{NewWithBaseURI(baseURI, subscriptionID)}
+func NewClient(p pipeline.Pipeline) Client {
+	return Client{NewManagementClient(p)}
 }
 
 // AddDataLakeStoreAccount updates the specified Data Lake Analytics account to include the additional Data Lake Store
@@ -46,75 +43,53 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName
 // is the name of the Data Lake Analytics account to which to add the Data Lake Store account. dataLakeStoreAccountName
 // is the name of the Data Lake Store account to add. parameters is the details of the Data Lake Store account.
-func (client Client) AddDataLakeStoreAccount(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, parameters AddDataLakeStoreParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.Client", "AddDataLakeStoreAccount")
+func (client Client) AddDataLakeStoreAccount(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, parameters AddDataLakeStoreParameters) (*http.Response, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.Properties", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.AddDataLakeStoreAccountPreparer(ctx, resourceGroupName, accountName, dataLakeStoreAccountName, parameters)
+	req, err := client.addDataLakeStoreAccountPreparer(resourceGroupName, accountName, dataLakeStoreAccountName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "AddDataLakeStoreAccount", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.AddDataLakeStoreAccountSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.addDataLakeStoreAccountResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "account.Client", "AddDataLakeStoreAccount", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.AddDataLakeStoreAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "AddDataLakeStoreAccount", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// AddDataLakeStoreAccountPreparer prepares the AddDataLakeStoreAccount request.
-func (client Client) AddDataLakeStoreAccountPreparer(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string, parameters AddDataLakeStoreParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":              autorest.Encode("path", accountName),
-		"dataLakeStoreAccountName": autorest.Encode("path", dataLakeStoreAccountName),
-		"resourceGroupName":        autorest.Encode("path", resourceGroupName),
-		"subscriptionId":           autorest.Encode("path", client.SubscriptionID),
+// addDataLakeStoreAccountPreparer prepares the AddDataLakeStoreAccount request.
+func (client Client) addDataLakeStoreAccountPreparer(resourceGroupName string, accountName string, dataLakeStoreAccountName string, parameters AddDataLakeStoreParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// AddDataLakeStoreAccountSender sends the AddDataLakeStoreAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) AddDataLakeStoreAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// AddDataLakeStoreAccountResponder handles the response to the AddDataLakeStoreAccount request. The method always
-// closes the http.Response Body.
-func (client Client) AddDataLakeStoreAccountResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// addDataLakeStoreAccountResponder handles the response to the AddDataLakeStoreAccount request.
+func (client Client) addDataLakeStoreAccountResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // AddStorageAccount updates the specified Data Lake Analytics account to add an Azure Storage account.
@@ -123,217 +98,161 @@ func (client Client) AddDataLakeStoreAccountResponder(resp *http.Response) (resu
 // is the name of the Data Lake Analytics account to which to add the Azure Storage account. storageAccountName is the
 // name of the Azure Storage account to add parameters is the parameters containing the access key and optional suffix
 // for the Azure Storage Account.
-func (client Client) AddStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.Properties.AccessKey", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "account.Client", "AddStorageAccount")
+func (client Client) AddStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (*http.Response, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.Properties", name: null, rule: true,
+				chain: []constraint{{target: "parameters.Properties.AccessKey", name: null, rule: true, chain: nil}}}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.AddStorageAccountPreparer(ctx, resourceGroupName, accountName, storageAccountName, parameters)
+	req, err := client.addStorageAccountPreparer(resourceGroupName, accountName, storageAccountName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "AddStorageAccount", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.AddStorageAccountSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.addStorageAccountResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "account.Client", "AddStorageAccount", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.AddStorageAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "AddStorageAccount", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// AddStorageAccountPreparer prepares the AddStorageAccount request.
-func (client Client) AddStorageAccountPreparer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+// addStorageAccountPreparer prepares the AddStorageAccount request.
+func (client Client) addStorageAccountPreparer(resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// AddStorageAccountSender sends the AddStorageAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) AddStorageAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// AddStorageAccountResponder handles the response to the AddStorageAccount request. The method always
-// closes the http.Response Body.
-func (client Client) AddStorageAccountResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// addStorageAccountResponder handles the response to the AddStorageAccount request.
+func (client Client) addStorageAccountResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // Create creates the specified Data Lake Analytics account. This supplies the user with computation services for Data
-// Lake Analytics workloads
+// Lake Analytics workloads This method may poll for completion. Polling can be canceled by passing the cancel channel
+// argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account.the account
 // will be associated with. name is the name of the Data Lake Analytics account to create. parameters is parameters
 // supplied to the create Data Lake Analytics account operation.
-func (client Client) Create(ctx context.Context, resourceGroupName string, name string, parameters DataLakeAnalyticsAccount) (result AccountCreateFuture, err error) {
-	req, err := client.CreatePreparer(ctx, resourceGroupName, name, parameters)
+func (client Client) Create(ctx context.Context, resourceGroupName string, name string, parameters DataLakeAnalyticsAccount) (*DataLakeAnalyticsAccount, error) {
+	req, err := client.createPreparer(resourceGroupName, name, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Create", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Create", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*DataLakeAnalyticsAccount), err
 }
 
-// CreatePreparer prepares the Create request.
-func (client Client) CreatePreparer(ctx context.Context, resourceGroupName string, name string, parameters DataLakeAnalyticsAccount) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{name}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateSender sends the Create request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) CreateSender(req *http.Request) (future AccountCreateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// createPreparer prepares the Create request.
+func (client Client) createPreparer(resourceGroupName string, name string, parameters DataLakeAnalyticsAccount) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{name}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateResponder handles the response to the Create request. The method always
-// closes the http.Response Body.
-func (client Client) CreateResponder(resp *http.Response) (result DataLakeAnalyticsAccount, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createResponder handles the response to the Create request.
+func (client Client) createResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusCreated, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeAnalyticsAccount{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Delete begins the delete delete process for the Data Lake Analytics account object specified by the account name.
+// This method may poll for completion. Polling can be canceled by passing the cancel channel argument. The channel
+// will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName
 // is the name of the Data Lake Analytics account to delete
-func (client Client) Delete(ctx context.Context, resourceGroupName string, accountName string) (result AccountDeleteFuture, err error) {
-	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName)
+func (client Client) Delete(ctx context.Context, resourceGroupName string, accountName string) (*http.Response, error) {
+	req, err := client.deletePreparer(resourceGroupName, accountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Delete", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Delete", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeletePreparer prepares the Delete request.
-func (client Client) DeletePreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) DeleteSender(req *http.Request) (future AccountDeleteFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// deletePreparer prepares the Delete request.
+func (client Client) deletePreparer(resourceGroupName string, accountName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client Client) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteResponder handles the response to the Delete request.
+func (client Client) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted, http.StatusNotFound, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // DeleteDataLakeStoreAccount updates the Data Lake Analytics account specified to remove the specified Data Lake Store
@@ -342,67 +261,39 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName
 // is the name of the Data Lake Analytics account from which to remove the Data Lake Store account.
 // dataLakeStoreAccountName is the name of the Data Lake Store account to remove
-func (client Client) DeleteDataLakeStoreAccount(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result autorest.Response, err error) {
-	req, err := client.DeleteDataLakeStoreAccountPreparer(ctx, resourceGroupName, accountName, dataLakeStoreAccountName)
+func (client Client) DeleteDataLakeStoreAccount(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string) (*http.Response, error) {
+	req, err := client.deleteDataLakeStoreAccountPreparer(resourceGroupName, accountName, dataLakeStoreAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "DeleteDataLakeStoreAccount", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.DeleteDataLakeStoreAccountSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteDataLakeStoreAccountResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "account.Client", "DeleteDataLakeStoreAccount", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteDataLakeStoreAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "DeleteDataLakeStoreAccount", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeleteDataLakeStoreAccountPreparer prepares the DeleteDataLakeStoreAccount request.
-func (client Client) DeleteDataLakeStoreAccountPreparer(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":              autorest.Encode("path", accountName),
-		"dataLakeStoreAccountName": autorest.Encode("path", dataLakeStoreAccountName),
-		"resourceGroupName":        autorest.Encode("path", resourceGroupName),
-		"subscriptionId":           autorest.Encode("path", client.SubscriptionID),
+// deleteDataLakeStoreAccountPreparer prepares the DeleteDataLakeStoreAccount request.
+func (client Client) deleteDataLakeStoreAccountPreparer(resourceGroupName string, accountName string, dataLakeStoreAccountName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteDataLakeStoreAccountSender sends the DeleteDataLakeStoreAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) DeleteDataLakeStoreAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// DeleteDataLakeStoreAccountResponder handles the response to the DeleteDataLakeStoreAccount request. The method always
-// closes the http.Response Body.
-func (client Client) DeleteDataLakeStoreAccountResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteDataLakeStoreAccountResponder handles the response to the DeleteDataLakeStoreAccount request.
+func (client Client) deleteDataLakeStoreAccountResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // DeleteStorageAccount updates the specified Data Lake Analytics account to remove an Azure Storage account.
@@ -410,134 +301,93 @@ func (client Client) DeleteDataLakeStoreAccountResponder(resp *http.Response) (r
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName
 // is the name of the Data Lake Analytics account from which to remove the Azure Storage account. storageAccountName is
 // the name of the Azure Storage account to remove
-func (client Client) DeleteStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result autorest.Response, err error) {
-	req, err := client.DeleteStorageAccountPreparer(ctx, resourceGroupName, accountName, storageAccountName)
+func (client Client) DeleteStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (*http.Response, error) {
+	req, err := client.deleteStorageAccountPreparer(resourceGroupName, accountName, storageAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "DeleteStorageAccount", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.DeleteStorageAccountSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteStorageAccountResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "account.Client", "DeleteStorageAccount", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteStorageAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "DeleteStorageAccount", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeleteStorageAccountPreparer prepares the DeleteStorageAccount request.
-func (client Client) DeleteStorageAccountPreparer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+// deleteStorageAccountPreparer prepares the DeleteStorageAccount request.
+func (client Client) deleteStorageAccountPreparer(resourceGroupName string, accountName string, storageAccountName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteStorageAccountSender sends the DeleteStorageAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) DeleteStorageAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// DeleteStorageAccountResponder handles the response to the DeleteStorageAccount request. The method always
-// closes the http.Response Body.
-func (client Client) DeleteStorageAccountResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteStorageAccountResponder handles the response to the DeleteStorageAccount request.
+func (client Client) deleteStorageAccountResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // Get gets details of the specified Data Lake Analytics account.
 //
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName
 // is the name of the Data Lake Analytics account to retrieve.
-func (client Client) Get(ctx context.Context, resourceGroupName string, accountName string) (result DataLakeAnalyticsAccount, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, accountName)
+func (client Client) Get(ctx context.Context, resourceGroupName string, accountName string) (*DataLakeAnalyticsAccount, error) {
+	req, err := client.getPreparer(resourceGroupName, accountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Get", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*DataLakeAnalyticsAccount), err
 }
 
-// GetPreparer prepares the Get request.
-func (client Client) GetPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// getPreparer prepares the Get request.
+func (client Client) getPreparer(resourceGroupName string, accountName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client Client) GetResponder(resp *http.Response) (result DataLakeAnalyticsAccount, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getResponder handles the response to the Get request.
+func (client Client) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeAnalyticsAccount{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetDataLakeStoreAccount gets the specified Data Lake Store account details in the specified Data Lake Analytics
@@ -546,68 +396,54 @@ func (client Client) GetResponder(resp *http.Response) (result DataLakeAnalytics
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName
 // is the name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
 // dataLakeStoreAccountName is the name of the Data Lake Store account to retrieve
-func (client Client) GetDataLakeStoreAccount(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string) (result DataLakeStoreAccountInfo, err error) {
-	req, err := client.GetDataLakeStoreAccountPreparer(ctx, resourceGroupName, accountName, dataLakeStoreAccountName)
+func (client Client) GetDataLakeStoreAccount(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string) (*DataLakeStoreAccountInfo, error) {
+	req, err := client.getDataLakeStoreAccountPreparer(resourceGroupName, accountName, dataLakeStoreAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "GetDataLakeStoreAccount", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetDataLakeStoreAccountSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getDataLakeStoreAccountResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "GetDataLakeStoreAccount", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetDataLakeStoreAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "GetDataLakeStoreAccount", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*DataLakeStoreAccountInfo), err
 }
 
-// GetDataLakeStoreAccountPreparer prepares the GetDataLakeStoreAccount request.
-func (client Client) GetDataLakeStoreAccountPreparer(ctx context.Context, resourceGroupName string, accountName string, dataLakeStoreAccountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":              autorest.Encode("path", accountName),
-		"dataLakeStoreAccountName": autorest.Encode("path", dataLakeStoreAccountName),
-		"resourceGroupName":        autorest.Encode("path", resourceGroupName),
-		"subscriptionId":           autorest.Encode("path", client.SubscriptionID),
+// getDataLakeStoreAccountPreparer prepares the GetDataLakeStoreAccount request.
+func (client Client) getDataLakeStoreAccountPreparer(resourceGroupName string, accountName string, dataLakeStoreAccountName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetDataLakeStoreAccountSender sends the GetDataLakeStoreAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetDataLakeStoreAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetDataLakeStoreAccountResponder handles the response to the GetDataLakeStoreAccount request. The method always
-// closes the http.Response Body.
-func (client Client) GetDataLakeStoreAccountResponder(resp *http.Response) (result DataLakeStoreAccountInfo, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getDataLakeStoreAccountResponder handles the response to the GetDataLakeStoreAccount request.
+func (client Client) getDataLakeStoreAccountResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeStoreAccountInfo{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetStorageAccount gets the specified Azure Storage account linked to the given Data Lake Analytics account.
@@ -615,68 +451,54 @@ func (client Client) GetDataLakeStoreAccountResponder(resp *http.Response) (resu
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName
 // is the name of the Data Lake Analytics account from which to retrieve Azure storage account details.
 // storageAccountName is the name of the Azure Storage account for which to retrieve the details.
-func (client Client) GetStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result StorageAccountInfo, err error) {
-	req, err := client.GetStorageAccountPreparer(ctx, resourceGroupName, accountName, storageAccountName)
+func (client Client) GetStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (*StorageAccountInfo, error) {
+	req, err := client.getStorageAccountPreparer(resourceGroupName, accountName, storageAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "GetStorageAccount", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetStorageAccountSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getStorageAccountResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "GetStorageAccount", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetStorageAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "GetStorageAccount", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*StorageAccountInfo), err
 }
 
-// GetStorageAccountPreparer prepares the GetStorageAccount request.
-func (client Client) GetStorageAccountPreparer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+// getStorageAccountPreparer prepares the GetStorageAccount request.
+func (client Client) getStorageAccountPreparer(resourceGroupName string, accountName string, storageAccountName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetStorageAccountSender sends the GetStorageAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetStorageAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetStorageAccountResponder handles the response to the GetStorageAccount request. The method always
-// closes the http.Response Body.
-func (client Client) GetStorageAccountResponder(resp *http.Response) (result StorageAccountInfo, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getStorageAccountResponder handles the response to the GetStorageAccount request.
+func (client Client) getStorageAccountResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &StorageAccountInfo{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetStorageContainer gets the specified Azure Storage container associated with the given Data Lake Analytics and
@@ -686,69 +508,54 @@ func (client Client) GetStorageAccountResponder(resp *http.Response) (result Sto
 // is the name of the Data Lake Analytics account for which to retrieve blob container. storageAccountName is the name
 // of the Azure storage account from which to retrieve the blob container. containerName is the name of the Azure
 // storage container to retrieve
-func (client Client) GetStorageContainer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (result BlobContainer, err error) {
-	req, err := client.GetStorageContainerPreparer(ctx, resourceGroupName, accountName, storageAccountName, containerName)
+func (client Client) GetStorageContainer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (*BlobContainer, error) {
+	req, err := client.getStorageContainerPreparer(resourceGroupName, accountName, storageAccountName, containerName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "GetStorageContainer", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetStorageContainerSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getStorageContainerResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "GetStorageContainer", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetStorageContainerResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "GetStorageContainer", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*BlobContainer), err
 }
 
-// GetStorageContainerPreparer prepares the GetStorageContainer request.
-func (client Client) GetStorageContainerPreparer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"containerName":      autorest.Encode("path", containerName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+// getStorageContainerPreparer prepares the GetStorageContainer request.
+func (client Client) getStorageContainerPreparer(resourceGroupName string, accountName string, storageAccountName string, containerName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers/{containerName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers/{containerName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetStorageContainerSender sends the GetStorageContainer request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetStorageContainerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetStorageContainerResponder handles the response to the GetStorageContainer request. The method always
-// closes the http.Response Body.
-func (client Client) GetStorageContainerResponder(resp *http.Response) (result BlobContainer, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getStorageContainerResponder handles the response to the GetStorageContainer request.
+func (client Client) getStorageContainerResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &BlobContainer{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // List gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a
@@ -766,120 +573,81 @@ func (client Client) GetStorageContainerResponder(resp *http.Response) (result B
 // feed, e.g. Categories?$search=blue OR green. Optional. formatParameter is the desired return format. Return the
 // response in particular formatxii without access to request headers for standard content-type negotiation (e.g
 // Orders?$format=json). Optional.
-func (client Client) List(ctx context.Context, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListResultPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+func (client Client) List(ctx context.Context, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool, search *string, formatParameter *string) (*DataLakeAnalyticsAccountListResult, error) {
+	req, err := client.listPreparer(filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "List", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
 	if err != nil {
-		result.dlaalr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "List", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.dlaalr, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "List", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*DataLakeAnalyticsAccountListResult), err
 }
 
-// ListPreparer prepares the List request.
-func (client Client) ListPreparer(ctx context.Context, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+// listPreparer prepares the List request.
+func (client Client) listPreparer(filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool, search *string, formatParameter *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/accounts"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
+	if search != nil {
+		params.Set("$search", *search)
 	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
+	if formatParameter != nil {
+		params.Set("$format", *formatParameter)
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeAnalytics/accounts", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client Client) ListResponder(resp *http.Response) (result DataLakeAnalyticsAccountListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listNextResults retrieves the next set of results, if any.
-func (client Client) listNextResults(lastResults DataLakeAnalyticsAccountListResult) (result DataLakeAnalyticsAccountListResult, err error) {
-	req, err := lastResults.dataLakeAnalyticsAccountListResultPreparer()
+// listResponder handles the response to the List request.
+func (client Client) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeAnalyticsAccountListResult{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "listNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "listNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "listNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListComplete(ctx context.Context, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListResultIterator, err error) {
-	result.page, err = client.List(ctx, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
-	return
+	return result, nil
 }
 
 // ListByResourceGroup gets the first page of Data Lake Analytics accounts, if any, within a specific resource group.
@@ -898,121 +666,81 @@ func (client Client) ListComplete(ctx context.Context, filter string, top *int32
 // feed, e.g. Categories?$search=blue OR green. Optional. formatParameter is the return format. Return the response in
 // particular formatxii without access to request headers for standard content-type negotiation (e.g
 // Orders?$format=json). Optional.
-func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListResultPage, err error) {
-	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool, search *string, formatParameter *string) (*DataLakeAnalyticsAccountListResult, error) {
+	req, err := client.listByResourceGroupPreparer(resourceGroupName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListByResourceGroup", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListByResourceGroupSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByResourceGroupResponder}, req)
 	if err != nil {
-		result.dlaalr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "ListByResourceGroup", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.dlaalr, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListByResourceGroup", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*DataLakeAnalyticsAccountListResult), err
 }
 
-// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client Client) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// listByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client Client) listByResourceGroupPreparer(resourceGroupName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool, search *string, formatParameter *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
+	if search != nil {
+		params.Set("$search", *search)
 	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
+	if formatParameter != nil {
+		params.Set("$format", *formatParameter)
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
-// closes the http.Response Body.
-func (client Client) ListByResourceGroupResponder(resp *http.Response) (result DataLakeAnalyticsAccountListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client Client) listByResourceGroupNextResults(lastResults DataLakeAnalyticsAccountListResult) (result DataLakeAnalyticsAccountListResult, err error) {
-	req, err := lastResults.dataLakeAnalyticsAccountListResultPreparer()
+// listByResourceGroupResponder handles the response to the ListByResourceGroup request.
+func (client Client) listByResourceGroupResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeAnalyticsAccountListResult{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListByResourceGroupSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListResultIterator, err error) {
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
-	return
+	return result, nil
 }
 
 // ListDataLakeStoreAccounts gets the first page of Data Lake Store accounts linked to the specified Data Lake
@@ -1032,122 +760,81 @@ func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGr
 // feed, e.g. Categories?$search=blue OR green. Optional. formatParameter is the desired return format. Return the
 // response in particular formatxii without access to request headers for standard content-type negotiation (e.g
 // Orders?$format=json). Optional.
-func (client Client) ListDataLakeStoreAccounts(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListDataLakeStoreResultPage, err error) {
-	result.fn = client.listDataLakeStoreAccountsNextResults
-	req, err := client.ListDataLakeStoreAccountsPreparer(ctx, resourceGroupName, accountName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+func (client Client) ListDataLakeStoreAccounts(ctx context.Context, resourceGroupName string, accountName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool, search *string, formatParameter *string) (*DataLakeAnalyticsAccountListDataLakeStoreResult, error) {
+	req, err := client.listDataLakeStoreAccountsPreparer(resourceGroupName, accountName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListDataLakeStoreAccountsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listDataLakeStoreAccountsResponder}, req)
 	if err != nil {
-		result.dlaaldlsr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.dlaaldlsr, err = client.ListDataLakeStoreAccountsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListDataLakeStoreAccounts", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*DataLakeAnalyticsAccountListDataLakeStoreResult), err
 }
 
-// ListDataLakeStoreAccountsPreparer prepares the ListDataLakeStoreAccounts request.
-func (client Client) ListDataLakeStoreAccountsPreparer(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// listDataLakeStoreAccountsPreparer prepares the ListDataLakeStoreAccounts request.
+func (client Client) listDataLakeStoreAccountsPreparer(resourceGroupName string, accountName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool, search *string, formatParameter *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
+	if search != nil {
+		params.Set("$search", *search)
 	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
+	if formatParameter != nil {
+		params.Set("$format", *formatParameter)
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListDataLakeStoreAccountsSender sends the ListDataLakeStoreAccounts request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListDataLakeStoreAccountsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListDataLakeStoreAccountsResponder handles the response to the ListDataLakeStoreAccounts request. The method always
-// closes the http.Response Body.
-func (client Client) ListDataLakeStoreAccountsResponder(resp *http.Response) (result DataLakeAnalyticsAccountListDataLakeStoreResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listDataLakeStoreAccountsNextResults retrieves the next set of results, if any.
-func (client Client) listDataLakeStoreAccountsNextResults(lastResults DataLakeAnalyticsAccountListDataLakeStoreResult) (result DataLakeAnalyticsAccountListDataLakeStoreResult, err error) {
-	req, err := lastResults.dataLakeAnalyticsAccountListDataLakeStoreResultPreparer()
+// listDataLakeStoreAccountsResponder handles the response to the ListDataLakeStoreAccounts request.
+func (client Client) listDataLakeStoreAccountsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeAnalyticsAccountListDataLakeStoreResult{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "listDataLakeStoreAccountsNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListDataLakeStoreAccountsSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "listDataLakeStoreAccountsNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListDataLakeStoreAccountsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "listDataLakeStoreAccountsNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListDataLakeStoreAccountsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListDataLakeStoreAccountsComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListDataLakeStoreResultIterator, err error) {
-	result.page, err = client.ListDataLakeStoreAccounts(ctx, resourceGroupName, accountName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
-	return
+	return result, nil
 }
 
 // ListSasTokens gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and
@@ -1157,97 +844,54 @@ func (client Client) ListDataLakeStoreAccountsComplete(ctx context.Context, reso
 // is the name of the Data Lake Analytics account from which an Azure Storage account's SAS token is being requested.
 // storageAccountName is the name of the Azure storage account for which the SAS token is being requested.
 // containerName is the name of the Azure storage container for which the SAS token is being requested.
-func (client Client) ListSasTokens(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (result ListSasTokensResultPage, err error) {
-	result.fn = client.listSasTokensNextResults
-	req, err := client.ListSasTokensPreparer(ctx, resourceGroupName, accountName, storageAccountName, containerName)
+func (client Client) ListSasTokens(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (*ListSasTokensResult, error) {
+	req, err := client.listSasTokensPreparer(resourceGroupName, accountName, storageAccountName, containerName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListSasTokens", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListSasTokensSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listSasTokensResponder}, req)
 	if err != nil {
-		result.lstr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "ListSasTokens", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.lstr, err = client.ListSasTokensResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListSasTokens", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*ListSasTokensResult), err
 }
 
-// ListSasTokensPreparer prepares the ListSasTokens request.
-func (client Client) ListSasTokensPreparer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"containerName":      autorest.Encode("path", containerName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers/{containerName}/listSasTokens", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSasTokensSender sends the ListSasTokens request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListSasTokensSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListSasTokensResponder handles the response to the ListSasTokens request. The method always
-// closes the http.Response Body.
-func (client Client) ListSasTokensResponder(resp *http.Response) (result ListSasTokensResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listSasTokensNextResults retrieves the next set of results, if any.
-func (client Client) listSasTokensNextResults(lastResults ListSasTokensResult) (result ListSasTokensResult, err error) {
-	req, err := lastResults.listSasTokensResultPreparer()
+// listSasTokensPreparer prepares the ListSasTokens request.
+func (client Client) listSasTokensPreparer(resourceGroupName string, accountName string, storageAccountName string, containerName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers/{containerName}/listSasTokens"
+	req, err := pipeline.NewRequest("POST", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "listSasTokensNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSasTokensSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "listSasTokensNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListSasTokensResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "listSasTokensNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListSasTokensComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListSasTokensComplete(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, containerName string) (result ListSasTokensResultIterator, err error) {
-	result.page, err = client.ListSasTokens(ctx, resourceGroupName, accountName, storageAccountName, containerName)
-	return
+// listSasTokensResponder handles the response to the ListSasTokens request.
+func (client Client) listSasTokensResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &ListSasTokensResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListStorageAccounts gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake
@@ -1267,122 +911,81 @@ func (client Client) ListSasTokensComplete(ctx context.Context, resourceGroupNam
 // feed, e.g. Categories?$search=blue OR green. Optional. formatParameter is the desired return format. Return the
 // response in particular formatxii without access to request headers for standard content-type negotiation (e.g
 // Orders?$format=json). Optional.
-func (client Client) ListStorageAccounts(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListStorageAccountsResultPage, err error) {
-	result.fn = client.listStorageAccountsNextResults
-	req, err := client.ListStorageAccountsPreparer(ctx, resourceGroupName, accountName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+func (client Client) ListStorageAccounts(ctx context.Context, resourceGroupName string, accountName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool, search *string, formatParameter *string) (*DataLakeAnalyticsAccountListStorageAccountsResult, error) {
+	req, err := client.listStorageAccountsPreparer(resourceGroupName, accountName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListStorageAccountsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listStorageAccountsResponder}, req)
 	if err != nil {
-		result.dlaalsar.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.dlaalsar, err = client.ListStorageAccountsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageAccounts", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*DataLakeAnalyticsAccountListStorageAccountsResult), err
 }
 
-// ListStorageAccountsPreparer prepares the ListStorageAccounts request.
-func (client Client) ListStorageAccountsPreparer(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// listStorageAccountsPreparer prepares the ListStorageAccounts request.
+func (client Client) listStorageAccountsPreparer(resourceGroupName string, accountName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool, search *string, formatParameter *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
+	if search != nil {
+		params.Set("$search", *search)
 	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
+	if formatParameter != nil {
+		params.Set("$format", *formatParameter)
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListStorageAccountsSender sends the ListStorageAccounts request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListStorageAccountsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListStorageAccountsResponder handles the response to the ListStorageAccounts request. The method always
-// closes the http.Response Body.
-func (client Client) ListStorageAccountsResponder(resp *http.Response) (result DataLakeAnalyticsAccountListStorageAccountsResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listStorageAccountsNextResults retrieves the next set of results, if any.
-func (client Client) listStorageAccountsNextResults(lastResults DataLakeAnalyticsAccountListStorageAccountsResult) (result DataLakeAnalyticsAccountListStorageAccountsResult, err error) {
-	req, err := lastResults.dataLakeAnalyticsAccountListStorageAccountsResultPreparer()
+// listStorageAccountsResponder handles the response to the ListStorageAccounts request.
+func (client Client) listStorageAccountsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeAnalyticsAccountListStorageAccountsResult{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "listStorageAccountsNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListStorageAccountsSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "listStorageAccountsNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListStorageAccountsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "listStorageAccountsNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListStorageAccountsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListStorageAccountsComplete(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeAnalyticsAccountListStorageAccountsResultIterator, err error) {
-	result.page, err = client.ListStorageAccounts(ctx, resourceGroupName, accountName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
-	return
+	return result, nil
 }
 
 // ListStorageContainers lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics
@@ -1391,169 +994,120 @@ func (client Client) ListStorageAccountsComplete(ctx context.Context, resourceGr
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. accountName
 // is the name of the Data Lake Analytics account for which to list Azure Storage blob containers. storageAccountName
 // is the name of the Azure storage account from which to list blob containers.
-func (client Client) ListStorageContainers(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result ListBlobContainersResultPage, err error) {
-	result.fn = client.listStorageContainersNextResults
-	req, err := client.ListStorageContainersPreparer(ctx, resourceGroupName, accountName, storageAccountName)
+func (client Client) ListStorageContainers(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (*ListBlobContainersResult, error) {
+	req, err := client.listStorageContainersPreparer(resourceGroupName, accountName, storageAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageContainers", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListStorageContainersSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listStorageContainersResponder}, req)
 	if err != nil {
-		result.lbcr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageContainers", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.lbcr, err = client.ListStorageContainersResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListStorageContainers", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*ListBlobContainersResult), err
 }
 
-// ListStorageContainersPreparer prepares the ListStorageContainers request.
-func (client Client) ListStorageContainersPreparer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListStorageContainersSender sends the ListStorageContainers request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListStorageContainersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListStorageContainersResponder handles the response to the ListStorageContainers request. The method always
-// closes the http.Response Body.
-func (client Client) ListStorageContainersResponder(resp *http.Response) (result ListBlobContainersResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listStorageContainersNextResults retrieves the next set of results, if any.
-func (client Client) listStorageContainersNextResults(lastResults ListBlobContainersResult) (result ListBlobContainersResult, err error) {
-	req, err := lastResults.listBlobContainersResultPreparer()
+// listStorageContainersPreparer prepares the ListStorageContainers request.
+func (client Client) listStorageContainersPreparer(resourceGroupName string, accountName string, storageAccountName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "listStorageContainersNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListStorageContainersSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "listStorageContainersNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListStorageContainersResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "listStorageContainersNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListStorageContainersComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListStorageContainersComplete(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string) (result ListBlobContainersResultIterator, err error) {
-	result.page, err = client.ListStorageContainers(ctx, resourceGroupName, accountName, storageAccountName)
-	return
+// listStorageContainersResponder handles the response to the ListStorageContainers request.
+func (client Client) listStorageContainersResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &ListBlobContainersResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // Update updates the Data Lake Analytics account object specified by the accountName with the contents of the account
-// object.
+// object. This method may poll for completion. Polling can be canceled by passing the cancel channel argument. The
+// channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Analytics account. name is the
 // name of the Data Lake Analytics account to update. parameters is parameters supplied to the update Data Lake
 // Analytics account operation.
-func (client Client) Update(ctx context.Context, resourceGroupName string, name string, parameters DataLakeAnalyticsAccount) (result AccountUpdateFuture, err error) {
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, name, parameters)
+func (client Client) Update(ctx context.Context, resourceGroupName string, name string, parameters DataLakeAnalyticsAccount) (*DataLakeAnalyticsAccount, error) {
+	req, err := client.updatePreparer(resourceGroupName, name, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Update", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.UpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Update", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*DataLakeAnalyticsAccount), err
 }
 
-// UpdatePreparer prepares the Update request.
-func (client Client) UpdatePreparer(ctx context.Context, resourceGroupName string, name string, parameters DataLakeAnalyticsAccount) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{name}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UpdateSender sends the Update request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) UpdateSender(req *http.Request) (future AccountUpdateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// updatePreparer prepares the Update request.
+func (client Client) updatePreparer(resourceGroupName string, name string, parameters DataLakeAnalyticsAccount) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{name}"
+	req, err := pipeline.NewRequest("PATCH", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// UpdateResponder handles the response to the Update request. The method always
-// closes the http.Response Body.
-func (client Client) UpdateResponder(resp *http.Response) (result DataLakeAnalyticsAccount, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// updateResponder handles the response to the Update request.
+func (client Client) updateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusCreated)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeAnalyticsAccount{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // UpdateStorageAccount updates the Data Lake Analytics account to replace Azure Storage blob account details, such as
@@ -1563,67 +1117,46 @@ func (client Client) UpdateResponder(resp *http.Response) (result DataLakeAnalyt
 // is the name of the Data Lake Analytics account to modify storage accounts in storageAccountName is the Azure Storage
 // account to modify parameters is the parameters containing the access key and suffix to update the storage account
 // with.
-func (client Client) UpdateStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (result autorest.Response, err error) {
-	req, err := client.UpdateStorageAccountPreparer(ctx, resourceGroupName, accountName, storageAccountName, parameters)
+func (client Client) UpdateStorageAccount(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (*http.Response, error) {
+	req, err := client.updateStorageAccountPreparer(resourceGroupName, accountName, storageAccountName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "UpdateStorageAccount", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.UpdateStorageAccountSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateStorageAccountResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "account.Client", "UpdateStorageAccount", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.UpdateStorageAccountResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "UpdateStorageAccount", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// UpdateStorageAccountPreparer prepares the UpdateStorageAccount request.
-func (client Client) UpdateStorageAccountPreparer(ctx context.Context, resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":        autorest.Encode("path", accountName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"storageAccountName": autorest.Encode("path", storageAccountName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+// updateStorageAccountPreparer prepares the UpdateStorageAccount request.
+func (client Client) updateStorageAccountPreparer(resourceGroupName string, accountName string, storageAccountName string, parameters AddStorageAccountParameters) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}"
+	req, err := pipeline.NewRequest("PATCH", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// UpdateStorageAccountSender sends the UpdateStorageAccount request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) UpdateStorageAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// UpdateStorageAccountResponder handles the response to the UpdateStorageAccount request. The method always
-// closes the http.Response Body.
-func (client Client) UpdateStorageAccountResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// updateStorageAccountResponder handles the response to the UpdateStorageAccount request.
+func (client Client) updateStorageAccountResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }

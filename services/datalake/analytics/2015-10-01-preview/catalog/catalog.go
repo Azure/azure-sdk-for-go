@@ -18,21 +18,24 @@ package catalog
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
+	"encoding/json"
+	"fmt"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
+	"net/url"
 )
 
 // Client is the creates an Azure Data Lake Analytics catalog client.
 type Client struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewClient creates an instance of the Client client.
-func NewClient() Client {
-	return Client{New()}
+func NewClient(url url.URL, p pipeline.Pipeline) Client {
+	return Client{NewManagementClient(url, p)}
 }
 
 // CreateSecret creates the specified secret for use with external data sources in the specified database.
@@ -40,501 +43,348 @@ func NewClient() Client {
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database in which to create the secret. secretName is the name of the secret. parameters is the parameters
 // required to create the secret (name and password)
-func (client Client) CreateSecret(ctx context.Context, accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (result USQLSecret, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Password", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewErrorWithValidationError(err, "catalog.Client", "CreateSecret")
+func (client Client) CreateSecret(ctx context.Context, accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (*USQLSecret, error) {
+	if err := validate([]validation{
+		{targetValue: parameters,
+			constraints: []constraint{{target: "parameters.Password", name: null, rule: true, chain: nil}}}}); err != nil {
+		return nil, err
 	}
-
-	req, err := client.CreateSecretPreparer(ctx, accountName, databaseName, secretName, parameters)
+	req, err := client.createSecretPreparer(accountName, databaseName, secretName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "CreateSecret", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.CreateSecretSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createSecretResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "CreateSecret", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateSecretResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "CreateSecret", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLSecret), err
 }
 
-// CreateSecretPreparer prepares the CreateSecret request.
-func (client Client) CreateSecretPreparer(ctx context.Context, accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// createSecretPreparer prepares the CreateSecret request.
+func (client Client) createSecretPreparer(accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("PUT", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"secretName":   autorest.Encode("path", secretName),
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets/{secretName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	return req, nil
 }
 
-// CreateSecretSender sends the CreateSecret request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) CreateSecretSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// CreateSecretResponder handles the response to the CreateSecret request. The method always
-// closes the http.Response Body.
-func (client Client) CreateSecretResponder(resp *http.Response) (result USQLSecret, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createSecretResponder handles the response to the CreateSecret request.
+func (client Client) createSecretResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLSecret{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // DeleteAllSecrets deletes all secrets in the specified database
 //
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the secret.
-func (client Client) DeleteAllSecrets(ctx context.Context, accountName string, databaseName string) (result autorest.Response, err error) {
-	req, err := client.DeleteAllSecretsPreparer(ctx, accountName, databaseName)
+func (client Client) DeleteAllSecrets(ctx context.Context, accountName string, databaseName string) (*http.Response, error) {
+	req, err := client.deleteAllSecretsPreparer(accountName, databaseName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "DeleteAllSecrets", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.DeleteAllSecretsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteAllSecretsResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "catalog.Client", "DeleteAllSecrets", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteAllSecretsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "DeleteAllSecrets", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeleteAllSecretsPreparer prepares the DeleteAllSecrets request.
-func (client Client) DeleteAllSecretsPreparer(ctx context.Context, accountName string, databaseName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// deleteAllSecretsPreparer prepares the DeleteAllSecrets request.
+func (client Client) deleteAllSecretsPreparer(accountName string, databaseName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("DELETE", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteAllSecretsSender sends the DeleteAllSecrets request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) DeleteAllSecretsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// DeleteAllSecretsResponder handles the response to the DeleteAllSecrets request. The method always
-// closes the http.Response Body.
-func (client Client) DeleteAllSecretsResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteAllSecretsResponder handles the response to the DeleteAllSecrets request.
+func (client Client) deleteAllSecretsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // DeleteSecret deletes the specified secret in the specified database
 //
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the secret. secretName is the name of the secret to delete
-func (client Client) DeleteSecret(ctx context.Context, accountName string, databaseName string, secretName string) (result autorest.Response, err error) {
-	req, err := client.DeleteSecretPreparer(ctx, accountName, databaseName, secretName)
+func (client Client) DeleteSecret(ctx context.Context, accountName string, databaseName string, secretName string) (*http.Response, error) {
+	req, err := client.deleteSecretPreparer(accountName, databaseName, secretName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "DeleteSecret", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.DeleteSecretSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteSecretResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "catalog.Client", "DeleteSecret", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteSecretResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "DeleteSecret", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeleteSecretPreparer prepares the DeleteSecret request.
-func (client Client) DeleteSecretPreparer(ctx context.Context, accountName string, databaseName string, secretName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// deleteSecretPreparer prepares the DeleteSecret request.
+func (client Client) deleteSecretPreparer(accountName string, databaseName string, secretName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("DELETE", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"secretName":   autorest.Encode("path", secretName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets/{secretName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteSecretSender sends the DeleteSecret request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) DeleteSecretSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// DeleteSecretResponder handles the response to the DeleteSecret request. The method always
-// closes the http.Response Body.
-func (client Client) DeleteSecretResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteSecretResponder handles the response to the DeleteSecret request.
+func (client Client) deleteSecretResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // GetAssembly retrieves the specified assembly from the Data Lake Analytics catalog.
 //
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the assembly. assemblyName is the name of the assembly.
-func (client Client) GetAssembly(ctx context.Context, accountName string, databaseName string, assemblyName string) (result USQLAssembly, err error) {
-	req, err := client.GetAssemblyPreparer(ctx, accountName, databaseName, assemblyName)
+func (client Client) GetAssembly(ctx context.Context, accountName string, databaseName string, assemblyName string) (*USQLAssembly, error) {
+	req, err := client.getAssemblyPreparer(accountName, databaseName, assemblyName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetAssembly", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetAssemblySender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getAssemblyResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetAssembly", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetAssemblyResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetAssembly", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLAssembly), err
 }
 
-// GetAssemblyPreparer prepares the GetAssembly request.
-func (client Client) GetAssemblyPreparer(ctx context.Context, accountName string, databaseName string, assemblyName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getAssemblyPreparer prepares the GetAssembly request.
+func (client Client) getAssemblyPreparer(accountName string, databaseName string, assemblyName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"assemblyName": autorest.Encode("path", assemblyName),
-		"databaseName": autorest.Encode("path", databaseName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/assemblies/{assemblyName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetAssemblySender sends the GetAssembly request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetAssemblySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetAssemblyResponder handles the response to the GetAssembly request. The method always
-// closes the http.Response Body.
-func (client Client) GetAssemblyResponder(resp *http.Response) (result USQLAssembly, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getAssemblyResponder handles the response to the GetAssembly request.
+func (client Client) getAssemblyResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLAssembly{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetCredential retrieves the specified credential from the Data Lake Analytics catalog.
 //
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the schema. credentialName is the name of the credential.
-func (client Client) GetCredential(ctx context.Context, accountName string, databaseName string, credentialName string) (result USQLCredential, err error) {
-	req, err := client.GetCredentialPreparer(ctx, accountName, databaseName, credentialName)
+func (client Client) GetCredential(ctx context.Context, accountName string, databaseName string, credentialName string) (*USQLCredential, error) {
+	req, err := client.getCredentialPreparer(accountName, databaseName, credentialName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetCredential", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetCredentialSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getCredentialResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetCredential", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetCredentialResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetCredential", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLCredential), err
 }
 
-// GetCredentialPreparer prepares the GetCredential request.
-func (client Client) GetCredentialPreparer(ctx context.Context, accountName string, databaseName string, credentialName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getCredentialPreparer prepares the GetCredential request.
+func (client Client) getCredentialPreparer(accountName string, databaseName string, credentialName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"credentialName": autorest.Encode("path", credentialName),
-		"databaseName":   autorest.Encode("path", databaseName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/credentials/{credentialName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetCredentialSender sends the GetCredential request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetCredentialSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetCredentialResponder handles the response to the GetCredential request. The method always
-// closes the http.Response Body.
-func (client Client) GetCredentialResponder(resp *http.Response) (result USQLCredential, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getCredentialResponder handles the response to the GetCredential request.
+func (client Client) getCredentialResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLCredential{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetDatabase retrieves the specified database from the Data Lake Analytics catalog.
 //
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database.
-func (client Client) GetDatabase(ctx context.Context, accountName string, databaseName string) (result USQLDatabase, err error) {
-	req, err := client.GetDatabasePreparer(ctx, accountName, databaseName)
+func (client Client) GetDatabase(ctx context.Context, accountName string, databaseName string) (*USQLDatabase, error) {
+	req, err := client.getDatabasePreparer(accountName, databaseName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetDatabase", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetDatabaseSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getDatabaseResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetDatabase", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetDatabaseResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetDatabase", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLDatabase), err
 }
 
-// GetDatabasePreparer prepares the GetDatabase request.
-func (client Client) GetDatabasePreparer(ctx context.Context, accountName string, databaseName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getDatabasePreparer prepares the GetDatabase request.
+func (client Client) getDatabasePreparer(accountName string, databaseName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetDatabaseSender sends the GetDatabase request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetDatabaseSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetDatabaseResponder handles the response to the GetDatabase request. The method always
-// closes the http.Response Body.
-func (client Client) GetDatabaseResponder(resp *http.Response) (result USQLDatabase, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getDatabaseResponder handles the response to the GetDatabase request.
+func (client Client) getDatabaseResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLDatabase{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetExternalDataSource retrieves the specified external data source from the Data Lake Analytics catalog.
 //
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the external data source. externalDataSourceName is the name of the external data source.
-func (client Client) GetExternalDataSource(ctx context.Context, accountName string, databaseName string, externalDataSourceName string) (result USQLExternalDataSource, err error) {
-	req, err := client.GetExternalDataSourcePreparer(ctx, accountName, databaseName, externalDataSourceName)
+func (client Client) GetExternalDataSource(ctx context.Context, accountName string, databaseName string, externalDataSourceName string) (*USQLExternalDataSource, error) {
+	req, err := client.getExternalDataSourcePreparer(accountName, databaseName, externalDataSourceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetExternalDataSource", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetExternalDataSourceSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getExternalDataSourceResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetExternalDataSource", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetExternalDataSourceResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetExternalDataSource", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLExternalDataSource), err
 }
 
-// GetExternalDataSourcePreparer prepares the GetExternalDataSource request.
-func (client Client) GetExternalDataSourcePreparer(ctx context.Context, accountName string, databaseName string, externalDataSourceName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getExternalDataSourcePreparer prepares the GetExternalDataSource request.
+func (client Client) getExternalDataSourcePreparer(accountName string, databaseName string, externalDataSourceName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName":           autorest.Encode("path", databaseName),
-		"externalDataSourceName": autorest.Encode("path", externalDataSourceName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/externaldatasources/{externalDataSourceName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetExternalDataSourceSender sends the GetExternalDataSource request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetExternalDataSourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetExternalDataSourceResponder handles the response to the GetExternalDataSource request. The method always
-// closes the http.Response Body.
-func (client Client) GetExternalDataSourceResponder(resp *http.Response) (result USQLExternalDataSource, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getExternalDataSourceResponder handles the response to the GetExternalDataSource request.
+func (client Client) getExternalDataSourceResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLExternalDataSource{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetProcedure retrieves the specified procedure from the Data Lake Analytics catalog.
@@ -542,214 +392,156 @@ func (client Client) GetExternalDataSourceResponder(resp *http.Response) (result
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the procedure. schemaName is the name of the schema containing the procedure. procedureName
 // is the name of the procedure.
-func (client Client) GetProcedure(ctx context.Context, accountName string, databaseName string, schemaName string, procedureName string) (result USQLProcedure, err error) {
-	req, err := client.GetProcedurePreparer(ctx, accountName, databaseName, schemaName, procedureName)
+func (client Client) GetProcedure(ctx context.Context, accountName string, databaseName string, schemaName string, procedureName string) (*USQLProcedure, error) {
+	req, err := client.getProcedurePreparer(accountName, databaseName, schemaName, procedureName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetProcedure", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetProcedureSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getProcedureResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetProcedure", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetProcedureResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetProcedure", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLProcedure), err
 }
 
-// GetProcedurePreparer prepares the GetProcedure request.
-func (client Client) GetProcedurePreparer(ctx context.Context, accountName string, databaseName string, schemaName string, procedureName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getProcedurePreparer prepares the GetProcedure request.
+func (client Client) getProcedurePreparer(accountName string, databaseName string, schemaName string, procedureName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName":  autorest.Encode("path", databaseName),
-		"procedureName": autorest.Encode("path", procedureName),
-		"schemaName":    autorest.Encode("path", schemaName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/procedures/{procedureName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetProcedureSender sends the GetProcedure request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetProcedureSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetProcedureResponder handles the response to the GetProcedure request. The method always
-// closes the http.Response Body.
-func (client Client) GetProcedureResponder(resp *http.Response) (result USQLProcedure, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getProcedureResponder handles the response to the GetProcedure request.
+func (client Client) getProcedureResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLProcedure{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetSchema retrieves the specified schema from the Data Lake Analytics catalog.
 //
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the schema. schemaName is the name of the schema.
-func (client Client) GetSchema(ctx context.Context, accountName string, databaseName string, schemaName string) (result USQLSchema, err error) {
-	req, err := client.GetSchemaPreparer(ctx, accountName, databaseName, schemaName)
+func (client Client) GetSchema(ctx context.Context, accountName string, databaseName string, schemaName string) (*USQLSchema, error) {
+	req, err := client.getSchemaPreparer(accountName, databaseName, schemaName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetSchema", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSchemaSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getSchemaResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetSchema", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetSchemaResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetSchema", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLSchema), err
 }
 
-// GetSchemaPreparer prepares the GetSchema request.
-func (client Client) GetSchemaPreparer(ctx context.Context, accountName string, databaseName string, schemaName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getSchemaPreparer prepares the GetSchema request.
+func (client Client) getSchemaPreparer(accountName string, databaseName string, schemaName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"schemaName":   autorest.Encode("path", schemaName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSchemaSender sends the GetSchema request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetSchemaSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetSchemaResponder handles the response to the GetSchema request. The method always
-// closes the http.Response Body.
-func (client Client) GetSchemaResponder(resp *http.Response) (result USQLSchema, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getSchemaResponder handles the response to the GetSchema request.
+func (client Client) getSchemaResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLSchema{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetSecret gets the specified secret in the specified database
 //
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the secret. secretName is the name of the secret to get
-func (client Client) GetSecret(ctx context.Context, accountName string, databaseName string, secretName string) (result USQLSecret, err error) {
-	req, err := client.GetSecretPreparer(ctx, accountName, databaseName, secretName)
+func (client Client) GetSecret(ctx context.Context, accountName string, databaseName string, secretName string) (*USQLSecret, error) {
+	req, err := client.getSecretPreparer(accountName, databaseName, secretName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetSecret", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSecretSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getSecretResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetSecret", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetSecretResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetSecret", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLSecret), err
 }
 
-// GetSecretPreparer prepares the GetSecret request.
-func (client Client) GetSecretPreparer(ctx context.Context, accountName string, databaseName string, secretName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getSecretPreparer prepares the GetSecret request.
+func (client Client) getSecretPreparer(accountName string, databaseName string, secretName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"secretName":   autorest.Encode("path", secretName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets/{secretName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSecretSender sends the GetSecret request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetSecretSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetSecretResponder handles the response to the GetSecret request. The method always
-// closes the http.Response Body.
-func (client Client) GetSecretResponder(resp *http.Response) (result USQLSecret, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getSecretResponder handles the response to the GetSecret request.
+func (client Client) getSecretResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLSecret{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetTable retrieves the specified table from the Data Lake Analytics catalog.
@@ -757,72 +549,52 @@ func (client Client) GetSecretResponder(resp *http.Response) (result USQLSecret,
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the table. schemaName is the name of the schema containing the table. tableName is the name
 // of the table.
-func (client Client) GetTable(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string) (result USQLTable, err error) {
-	req, err := client.GetTablePreparer(ctx, accountName, databaseName, schemaName, tableName)
+func (client Client) GetTable(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string) (*USQLTable, error) {
+	req, err := client.getTablePreparer(accountName, databaseName, schemaName, tableName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTable", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetTableSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getTableResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTable", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetTableResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTable", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLTable), err
 }
 
-// GetTablePreparer prepares the GetTable request.
-func (client Client) GetTablePreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getTablePreparer prepares the GetTable request.
+func (client Client) getTablePreparer(accountName string, databaseName string, schemaName string, tableName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"schemaName":   autorest.Encode("path", schemaName),
-		"tableName":    autorest.Encode("path", tableName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetTableSender sends the GetTable request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetTableSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetTableResponder handles the response to the GetTable request. The method always
-// closes the http.Response Body.
-func (client Client) GetTableResponder(resp *http.Response) (result USQLTable, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getTableResponder handles the response to the GetTable request.
+func (client Client) getTableResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLTable{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetTablePartition retrieves the specified table partition from the Data Lake Analytics catalog.
@@ -830,73 +602,52 @@ func (client Client) GetTableResponder(resp *http.Response) (result USQLTable, e
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the partition. schemaName is the name of the schema containing the partition. tableName is
 // the name of the table containing the partition. partitionName is the name of the table partition.
-func (client Client) GetTablePartition(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, partitionName string) (result USQLTablePartition, err error) {
-	req, err := client.GetTablePartitionPreparer(ctx, accountName, databaseName, schemaName, tableName, partitionName)
+func (client Client) GetTablePartition(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, partitionName string) (*USQLTablePartition, error) {
+	req, err := client.getTablePartitionPreparer(accountName, databaseName, schemaName, tableName, partitionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTablePartition", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetTablePartitionSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getTablePartitionResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTablePartition", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetTablePartitionResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTablePartition", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLTablePartition), err
 }
 
-// GetTablePartitionPreparer prepares the GetTablePartition request.
-func (client Client) GetTablePartitionPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, partitionName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getTablePartitionPreparer prepares the GetTablePartition request.
+func (client Client) getTablePartitionPreparer(accountName string, databaseName string, schemaName string, tableName string, partitionName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName":  autorest.Encode("path", databaseName),
-		"partitionName": autorest.Encode("path", partitionName),
-		"schemaName":    autorest.Encode("path", schemaName),
-		"tableName":     autorest.Encode("path", tableName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/partitions/{partitionName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetTablePartitionSender sends the GetTablePartition request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetTablePartitionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetTablePartitionResponder handles the response to the GetTablePartition request. The method always
-// closes the http.Response Body.
-func (client Client) GetTablePartitionResponder(resp *http.Response) (result USQLTablePartition, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getTablePartitionResponder handles the response to the GetTablePartition request.
+func (client Client) getTablePartitionResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLTablePartition{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetTableStatistic retrieves the specified table statistics from the Data Lake Analytics catalog.
@@ -904,73 +655,52 @@ func (client Client) GetTablePartitionResponder(resp *http.Response) (result USQ
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the statistics. schemaName is the name of the schema containing the statistics. tableName is
 // the name of the table containing the statistics. statisticsName is the name of the table statistics.
-func (client Client) GetTableStatistic(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, statisticsName string) (result USQLTableStatistics, err error) {
-	req, err := client.GetTableStatisticPreparer(ctx, accountName, databaseName, schemaName, tableName, statisticsName)
+func (client Client) GetTableStatistic(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, statisticsName string) (*USQLTableStatistics, error) {
+	req, err := client.getTableStatisticPreparer(accountName, databaseName, schemaName, tableName, statisticsName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTableStatistic", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetTableStatisticSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getTableStatisticResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTableStatistic", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetTableStatisticResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTableStatistic", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLTableStatistics), err
 }
 
-// GetTableStatisticPreparer prepares the GetTableStatistic request.
-func (client Client) GetTableStatisticPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, statisticsName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getTableStatisticPreparer prepares the GetTableStatistic request.
+func (client Client) getTableStatisticPreparer(accountName string, databaseName string, schemaName string, tableName string, statisticsName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName":   autorest.Encode("path", databaseName),
-		"schemaName":     autorest.Encode("path", schemaName),
-		"statisticsName": autorest.Encode("path", statisticsName),
-		"tableName":      autorest.Encode("path", tableName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics/{statisticsName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetTableStatisticSender sends the GetTableStatistic request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetTableStatisticSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetTableStatisticResponder handles the response to the GetTableStatistic request. The method always
-// closes the http.Response Body.
-func (client Client) GetTableStatisticResponder(resp *http.Response) (result USQLTableStatistics, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getTableStatisticResponder handles the response to the GetTableStatistic request.
+func (client Client) getTableStatisticResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLTableStatistics{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetTableType retrieves the specified table type from the Data Lake Analytics catalog.
@@ -978,72 +708,52 @@ func (client Client) GetTableStatisticResponder(resp *http.Response) (result USQ
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the table type. schemaName is the name of the schema containing the table type.
 // tableTypeName is the name of the table type to retrieve.
-func (client Client) GetTableType(ctx context.Context, accountName string, databaseName string, schemaName string, tableTypeName string) (result USQLTableType, err error) {
-	req, err := client.GetTableTypePreparer(ctx, accountName, databaseName, schemaName, tableTypeName)
+func (client Client) GetTableType(ctx context.Context, accountName string, databaseName string, schemaName string, tableTypeName string) (*USQLTableType, error) {
+	req, err := client.getTableTypePreparer(accountName, databaseName, schemaName, tableTypeName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTableType", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetTableTypeSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getTableTypeResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTableType", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetTableTypeResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTableType", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLTableType), err
 }
 
-// GetTableTypePreparer prepares the GetTableType request.
-func (client Client) GetTableTypePreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableTypeName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getTableTypePreparer prepares the GetTableType request.
+func (client Client) getTableTypePreparer(accountName string, databaseName string, schemaName string, tableTypeName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName":  autorest.Encode("path", databaseName),
-		"schemaName":    autorest.Encode("path", schemaName),
-		"tableTypeName": autorest.Encode("path", tableTypeName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tabletypes/{tableTypeName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetTableTypeSender sends the GetTableType request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetTableTypeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetTableTypeResponder handles the response to the GetTableType request. The method always
-// closes the http.Response Body.
-func (client Client) GetTableTypeResponder(resp *http.Response) (result USQLTableType, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getTableTypeResponder handles the response to the GetTableType request.
+func (client Client) getTableTypeResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLTableType{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetTableValuedFunction retrieves the specified table valued function from the Data Lake Analytics catalog.
@@ -1051,72 +761,52 @@ func (client Client) GetTableTypeResponder(resp *http.Response) (result USQLTabl
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the table valued function. schemaName is the name of the schema containing the table valued
 // function. tableValuedFunctionName is the name of the tableValuedFunction.
-func (client Client) GetTableValuedFunction(ctx context.Context, accountName string, databaseName string, schemaName string, tableValuedFunctionName string) (result USQLTableValuedFunction, err error) {
-	req, err := client.GetTableValuedFunctionPreparer(ctx, accountName, databaseName, schemaName, tableValuedFunctionName)
+func (client Client) GetTableValuedFunction(ctx context.Context, accountName string, databaseName string, schemaName string, tableValuedFunctionName string) (*USQLTableValuedFunction, error) {
+	req, err := client.getTableValuedFunctionPreparer(accountName, databaseName, schemaName, tableValuedFunctionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTableValuedFunction", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetTableValuedFunctionSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getTableValuedFunctionResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTableValuedFunction", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetTableValuedFunctionResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetTableValuedFunction", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLTableValuedFunction), err
 }
 
-// GetTableValuedFunctionPreparer prepares the GetTableValuedFunction request.
-func (client Client) GetTableValuedFunctionPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableValuedFunctionName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getTableValuedFunctionPreparer prepares the GetTableValuedFunction request.
+func (client Client) getTableValuedFunctionPreparer(accountName string, databaseName string, schemaName string, tableValuedFunctionName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName":            autorest.Encode("path", databaseName),
-		"schemaName":              autorest.Encode("path", schemaName),
-		"tableValuedFunctionName": autorest.Encode("path", tableValuedFunctionName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tablevaluedfunctions/{tableValuedFunctionName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetTableValuedFunctionSender sends the GetTableValuedFunction request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetTableValuedFunctionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetTableValuedFunctionResponder handles the response to the GetTableValuedFunction request. The method always
-// closes the http.Response Body.
-func (client Client) GetTableValuedFunctionResponder(resp *http.Response) (result USQLTableValuedFunction, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getTableValuedFunctionResponder handles the response to the GetTableValuedFunction request.
+func (client Client) getTableValuedFunctionResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLTableValuedFunction{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetView retrieves the specified view from the Data Lake Analytics catalog.
@@ -1124,72 +814,52 @@ func (client Client) GetTableValuedFunctionResponder(resp *http.Response) (resul
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the view. schemaName is the name of the schema containing the view. viewName is the name of
 // the view.
-func (client Client) GetView(ctx context.Context, accountName string, databaseName string, schemaName string, viewName string) (result USQLView, err error) {
-	req, err := client.GetViewPreparer(ctx, accountName, databaseName, schemaName, viewName)
+func (client Client) GetView(ctx context.Context, accountName string, databaseName string, schemaName string, viewName string) (*USQLView, error) {
+	req, err := client.getViewPreparer(accountName, databaseName, schemaName, viewName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetView", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetViewSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getViewResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetView", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetViewResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "GetView", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLView), err
 }
 
-// GetViewPreparer prepares the GetView request.
-func (client Client) GetViewPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, viewName string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// getViewPreparer prepares the GetView request.
+func (client Client) getViewPreparer(accountName string, databaseName string, schemaName string, viewName string) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"schemaName":   autorest.Encode("path", schemaName),
-		"viewName":     autorest.Encode("path", viewName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/views/{viewName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetViewSender sends the GetView request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetViewSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetViewResponder handles the response to the GetView request. The method always
-// closes the http.Response Body.
-func (client Client) GetViewResponder(resp *http.Response) (result USQLView, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getViewResponder handles the response to the GetView request.
+func (client Client) getViewResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLView{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListAssemblies retrieves the list of assemblies from the Data Lake Analytics catalog.
@@ -1204,119 +874,73 @@ func (client Client) GetViewResponder(resp *http.Response) (result USQLView, err
 // order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is the Boolean value
 // of true or false to request a count of the matching resources included with the resources in the response, e.g.
 // Categories?$count=true. Optional.
-func (client Client) ListAssemblies(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLAssemblyListPage, err error) {
-	result.fn = client.listAssembliesNextResults
-	req, err := client.ListAssembliesPreparer(ctx, accountName, databaseName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListAssemblies(ctx context.Context, accountName string, databaseName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLAssemblyList, error) {
+	req, err := client.listAssembliesPreparer(accountName, databaseName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListAssemblies", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListAssembliesSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listAssembliesResponder}, req)
 	if err != nil {
-		result.ual.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListAssemblies", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.ual, err = client.ListAssembliesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListAssemblies", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLAssemblyList), err
 }
 
-// ListAssembliesPreparer prepares the ListAssemblies request.
-func (client Client) ListAssembliesPreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listAssembliesPreparer prepares the ListAssemblies request.
+func (client Client) listAssembliesPreparer(accountName string, databaseName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/assemblies", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListAssembliesSender sends the ListAssemblies request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListAssembliesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListAssembliesResponder handles the response to the ListAssemblies request. The method always
-// closes the http.Response Body.
-func (client Client) ListAssembliesResponder(resp *http.Response) (result USQLAssemblyList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listAssembliesNextResults retrieves the next set of results, if any.
-func (client Client) listAssembliesNextResults(lastResults USQLAssemblyList) (result USQLAssemblyList, err error) {
-	req, err := lastResults.uSQLAssemblyListPreparer()
+// listAssembliesResponder handles the response to the ListAssemblies request.
+func (client Client) listAssembliesResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLAssemblyList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listAssembliesNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListAssembliesSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listAssembliesNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListAssembliesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listAssembliesNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListAssembliesComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListAssembliesComplete(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLAssemblyListIterator, err error) {
-	result.page, err = client.ListAssemblies(ctx, accountName, databaseName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // ListCredentials retrieves the list of credentials from the Data Lake Analytics catalog.
@@ -1331,119 +955,73 @@ func (client Client) ListAssembliesComplete(ctx context.Context, accountName str
 // order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is the Boolean value
 // of true or false to request a count of the matching resources included with the resources in the response, e.g.
 // Categories?$count=true. Optional.
-func (client Client) ListCredentials(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLCredentialListPage, err error) {
-	result.fn = client.listCredentialsNextResults
-	req, err := client.ListCredentialsPreparer(ctx, accountName, databaseName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListCredentials(ctx context.Context, accountName string, databaseName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLCredentialList, error) {
+	req, err := client.listCredentialsPreparer(accountName, databaseName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListCredentials", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListCredentialsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listCredentialsResponder}, req)
 	if err != nil {
-		result.ucl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListCredentials", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.ucl, err = client.ListCredentialsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListCredentials", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLCredentialList), err
 }
 
-// ListCredentialsPreparer prepares the ListCredentials request.
-func (client Client) ListCredentialsPreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listCredentialsPreparer prepares the ListCredentials request.
+func (client Client) listCredentialsPreparer(accountName string, databaseName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/credentials", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListCredentialsSender sends the ListCredentials request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListCredentialsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListCredentialsResponder handles the response to the ListCredentials request. The method always
-// closes the http.Response Body.
-func (client Client) ListCredentialsResponder(resp *http.Response) (result USQLCredentialList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listCredentialsNextResults retrieves the next set of results, if any.
-func (client Client) listCredentialsNextResults(lastResults USQLCredentialList) (result USQLCredentialList, err error) {
-	req, err := lastResults.uSQLCredentialListPreparer()
+// listCredentialsResponder handles the response to the ListCredentials request.
+func (client Client) listCredentialsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLCredentialList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listCredentialsNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListCredentialsSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listCredentialsNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListCredentialsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listCredentialsNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListCredentialsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListCredentialsComplete(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLCredentialListIterator, err error) {
-	result.page, err = client.ListCredentials(ctx, accountName, databaseName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // ListDatabases retrieves the list of databases from the Data Lake Analytics catalog.
@@ -1457,115 +1035,73 @@ func (client Client) ListCredentialsComplete(ctx context.Context, accountName st
 // expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g.
 // Categories?$orderby=CategoryName desc. Optional. count is the Boolean value of true or false to request a count of
 // the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-func (client Client) ListDatabases(ctx context.Context, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLDatabaseListPage, err error) {
-	result.fn = client.listDatabasesNextResults
-	req, err := client.ListDatabasesPreparer(ctx, accountName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListDatabases(ctx context.Context, accountName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLDatabaseList, error) {
+	req, err := client.listDatabasesPreparer(accountName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListDatabases", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListDatabasesSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listDatabasesResponder}, req)
 	if err != nil {
-		result.udl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListDatabases", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.udl, err = client.ListDatabasesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListDatabases", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLDatabaseList), err
 }
 
-// ListDatabasesPreparer prepares the ListDatabases request.
-func (client Client) ListDatabasesPreparer(ctx context.Context, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listDatabasesPreparer prepares the ListDatabases request.
+func (client Client) listDatabasesPreparer(accountName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPath("/catalog/usql/databases"),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListDatabasesSender sends the ListDatabases request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListDatabasesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListDatabasesResponder handles the response to the ListDatabases request. The method always
-// closes the http.Response Body.
-func (client Client) ListDatabasesResponder(resp *http.Response) (result USQLDatabaseList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listDatabasesNextResults retrieves the next set of results, if any.
-func (client Client) listDatabasesNextResults(lastResults USQLDatabaseList) (result USQLDatabaseList, err error) {
-	req, err := lastResults.uSQLDatabaseListPreparer()
+// listDatabasesResponder handles the response to the ListDatabases request.
+func (client Client) listDatabasesResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLDatabaseList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listDatabasesNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListDatabasesSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listDatabasesNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListDatabasesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listDatabasesNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListDatabasesComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListDatabasesComplete(ctx context.Context, accountName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLDatabaseListIterator, err error) {
-	result.page, err = client.ListDatabases(ctx, accountName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // ListExternalDataSources retrieves the list of external data sources from the Data Lake Analytics catalog.
@@ -1580,119 +1116,73 @@ func (client Client) ListDatabasesComplete(ctx context.Context, accountName stri
 // depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is
 // the Boolean value of true or false to request a count of the matching resources included with the resources in the
 // response, e.g. Categories?$count=true. Optional.
-func (client Client) ListExternalDataSources(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLExternalDataSourceListPage, err error) {
-	result.fn = client.listExternalDataSourcesNextResults
-	req, err := client.ListExternalDataSourcesPreparer(ctx, accountName, databaseName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListExternalDataSources(ctx context.Context, accountName string, databaseName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLExternalDataSourceList, error) {
+	req, err := client.listExternalDataSourcesPreparer(accountName, databaseName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListExternalDataSources", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListExternalDataSourcesSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listExternalDataSourcesResponder}, req)
 	if err != nil {
-		result.uedsl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListExternalDataSources", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.uedsl, err = client.ListExternalDataSourcesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListExternalDataSources", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLExternalDataSourceList), err
 }
 
-// ListExternalDataSourcesPreparer prepares the ListExternalDataSources request.
-func (client Client) ListExternalDataSourcesPreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listExternalDataSourcesPreparer prepares the ListExternalDataSources request.
+func (client Client) listExternalDataSourcesPreparer(accountName string, databaseName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/externaldatasources", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListExternalDataSourcesSender sends the ListExternalDataSources request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListExternalDataSourcesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListExternalDataSourcesResponder handles the response to the ListExternalDataSources request. The method always
-// closes the http.Response Body.
-func (client Client) ListExternalDataSourcesResponder(resp *http.Response) (result USQLExternalDataSourceList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listExternalDataSourcesNextResults retrieves the next set of results, if any.
-func (client Client) listExternalDataSourcesNextResults(lastResults USQLExternalDataSourceList) (result USQLExternalDataSourceList, err error) {
-	req, err := lastResults.uSQLExternalDataSourceListPreparer()
+// listExternalDataSourcesResponder handles the response to the ListExternalDataSources request.
+func (client Client) listExternalDataSourcesResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLExternalDataSourceList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listExternalDataSourcesNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListExternalDataSourcesSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listExternalDataSourcesNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListExternalDataSourcesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listExternalDataSourcesNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListExternalDataSourcesComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListExternalDataSourcesComplete(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLExternalDataSourceListIterator, err error) {
-	result.page, err = client.ListExternalDataSources(ctx, accountName, databaseName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // ListProcedures retrieves the list of procedures from the Data Lake Analytics catalog.
@@ -1707,120 +1197,73 @@ func (client Client) ListExternalDataSourcesComplete(ctx context.Context, accoun
 // expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g.
 // Categories?$orderby=CategoryName desc. Optional. count is the Boolean value of true or false to request a count of
 // the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-func (client Client) ListProcedures(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLProcedureListPage, err error) {
-	result.fn = client.listProceduresNextResults
-	req, err := client.ListProceduresPreparer(ctx, accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListProcedures(ctx context.Context, accountName string, databaseName string, schemaName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLProcedureList, error) {
+	req, err := client.listProceduresPreparer(accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListProcedures", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListProceduresSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listProceduresResponder}, req)
 	if err != nil {
-		result.upl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListProcedures", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.upl, err = client.ListProceduresResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListProcedures", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLProcedureList), err
 }
 
-// ListProceduresPreparer prepares the ListProcedures request.
-func (client Client) ListProceduresPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listProceduresPreparer prepares the ListProcedures request.
+func (client Client) listProceduresPreparer(accountName string, databaseName string, schemaName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"schemaName":   autorest.Encode("path", schemaName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/procedures", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListProceduresSender sends the ListProcedures request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListProceduresSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListProceduresResponder handles the response to the ListProcedures request. The method always
-// closes the http.Response Body.
-func (client Client) ListProceduresResponder(resp *http.Response) (result USQLProcedureList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listProceduresNextResults retrieves the next set of results, if any.
-func (client Client) listProceduresNextResults(lastResults USQLProcedureList) (result USQLProcedureList, err error) {
-	req, err := lastResults.uSQLProcedureListPreparer()
+// listProceduresResponder handles the response to the ListProcedures request.
+func (client Client) listProceduresResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLProcedureList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listProceduresNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListProceduresSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listProceduresNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListProceduresResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listProceduresNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListProceduresComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListProceduresComplete(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLProcedureListIterator, err error) {
-	result.page, err = client.ListProcedures(ctx, accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // ListSchemas retrieves the list of schemas from the Data Lake Analytics catalog.
@@ -1835,119 +1278,73 @@ func (client Client) ListProceduresComplete(ctx context.Context, accountName str
 // order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is the Boolean value
 // of true or false to request a count of the matching resources included with the resources in the response, e.g.
 // Categories?$count=true. Optional.
-func (client Client) ListSchemas(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLSchemaListPage, err error) {
-	result.fn = client.listSchemasNextResults
-	req, err := client.ListSchemasPreparer(ctx, accountName, databaseName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListSchemas(ctx context.Context, accountName string, databaseName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLSchemaList, error) {
+	req, err := client.listSchemasPreparer(accountName, databaseName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListSchemas", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListSchemasSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listSchemasResponder}, req)
 	if err != nil {
-		result.usl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListSchemas", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.usl, err = client.ListSchemasResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListSchemas", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLSchemaList), err
 }
 
-// ListSchemasPreparer prepares the ListSchemas request.
-func (client Client) ListSchemasPreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listSchemasPreparer prepares the ListSchemas request.
+func (client Client) listSchemasPreparer(accountName string, databaseName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListSchemasSender sends the ListSchemas request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListSchemasSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListSchemasResponder handles the response to the ListSchemas request. The method always
-// closes the http.Response Body.
-func (client Client) ListSchemasResponder(resp *http.Response) (result USQLSchemaList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listSchemasNextResults retrieves the next set of results, if any.
-func (client Client) listSchemasNextResults(lastResults USQLSchemaList) (result USQLSchemaList, err error) {
-	req, err := lastResults.uSQLSchemaListPreparer()
+// listSchemasResponder handles the response to the ListSchemas request.
+func (client Client) listSchemasResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLSchemaList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listSchemasNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSchemasSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listSchemasNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListSchemasResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listSchemasNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListSchemasComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListSchemasComplete(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLSchemaListIterator, err error) {
-	result.page, err = client.ListSchemas(ctx, accountName, databaseName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // ListTablePartitions retrieves the list of table partitions from the Data Lake Analytics catalog.
@@ -1963,121 +1360,73 @@ func (client Client) ListSchemasComplete(ctx context.Context, accountName string
 // depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is
 // the Boolean value of true or false to request a count of the matching resources included with the resources in the
 // response, e.g. Categories?$count=true. Optional.
-func (client Client) ListTablePartitions(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLTablePartitionListPage, err error) {
-	result.fn = client.listTablePartitionsNextResults
-	req, err := client.ListTablePartitionsPreparer(ctx, accountName, databaseName, schemaName, tableName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListTablePartitions(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLTablePartitionList, error) {
+	req, err := client.listTablePartitionsPreparer(accountName, databaseName, schemaName, tableName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTablePartitions", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListTablePartitionsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listTablePartitionsResponder}, req)
 	if err != nil {
-		result.utpl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTablePartitions", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.utpl, err = client.ListTablePartitionsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTablePartitions", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLTablePartitionList), err
 }
 
-// ListTablePartitionsPreparer prepares the ListTablePartitions request.
-func (client Client) ListTablePartitionsPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listTablePartitionsPreparer prepares the ListTablePartitions request.
+func (client Client) listTablePartitionsPreparer(accountName string, databaseName string, schemaName string, tableName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"schemaName":   autorest.Encode("path", schemaName),
-		"tableName":    autorest.Encode("path", tableName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/partitions", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListTablePartitionsSender sends the ListTablePartitions request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListTablePartitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListTablePartitionsResponder handles the response to the ListTablePartitions request. The method always
-// closes the http.Response Body.
-func (client Client) ListTablePartitionsResponder(resp *http.Response) (result USQLTablePartitionList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listTablePartitionsNextResults retrieves the next set of results, if any.
-func (client Client) listTablePartitionsNextResults(lastResults USQLTablePartitionList) (result USQLTablePartitionList, err error) {
-	req, err := lastResults.uSQLTablePartitionListPreparer()
+// listTablePartitionsResponder handles the response to the ListTablePartitions request.
+func (client Client) listTablePartitionsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLTablePartitionList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTablePartitionsNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListTablePartitionsSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTablePartitionsNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListTablePartitionsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listTablePartitionsNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListTablePartitionsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListTablePartitionsComplete(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLTablePartitionListIterator, err error) {
-	result.page, err = client.ListTablePartitions(ctx, accountName, databaseName, schemaName, tableName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // ListTables retrieves the list of tables from the Data Lake Analytics catalog.
@@ -2092,120 +1441,73 @@ func (client Client) ListTablePartitionsComplete(ctx context.Context, accountNam
 // expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g.
 // Categories?$orderby=CategoryName desc. Optional. count is the Boolean value of true or false to request a count of
 // the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-func (client Client) ListTables(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLTableListPage, err error) {
-	result.fn = client.listTablesNextResults
-	req, err := client.ListTablesPreparer(ctx, accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListTables(ctx context.Context, accountName string, databaseName string, schemaName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLTableList, error) {
+	req, err := client.listTablesPreparer(accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTables", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListTablesSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listTablesResponder}, req)
 	if err != nil {
-		result.utl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTables", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.utl, err = client.ListTablesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTables", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLTableList), err
 }
 
-// ListTablesPreparer prepares the ListTables request.
-func (client Client) ListTablesPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listTablesPreparer prepares the ListTables request.
+func (client Client) listTablesPreparer(accountName string, databaseName string, schemaName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"schemaName":   autorest.Encode("path", schemaName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListTablesSender sends the ListTables request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListTablesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListTablesResponder handles the response to the ListTables request. The method always
-// closes the http.Response Body.
-func (client Client) ListTablesResponder(resp *http.Response) (result USQLTableList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listTablesNextResults retrieves the next set of results, if any.
-func (client Client) listTablesNextResults(lastResults USQLTableList) (result USQLTableList, err error) {
-	req, err := lastResults.uSQLTableListPreparer()
+// listTablesResponder handles the response to the ListTables request.
+func (client Client) listTablesResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLTableList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTablesNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListTablesSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTablesNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListTablesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listTablesNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListTablesComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListTablesComplete(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLTableListIterator, err error) {
-	result.page, err = client.ListTables(ctx, accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // ListTableStatistics retrieves the list of table statistics from the Data Lake Analytics catalog.
@@ -2221,121 +1523,73 @@ func (client Client) ListTablesComplete(ctx context.Context, accountName string,
 // depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is
 // the Boolean value of true or false to request a count of the matching resources included with the resources in the
 // response, e.g. Categories?$count=true. Optional.
-func (client Client) ListTableStatistics(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLTableStatisticsListPage, err error) {
-	result.fn = client.listTableStatisticsNextResults
-	req, err := client.ListTableStatisticsPreparer(ctx, accountName, databaseName, schemaName, tableName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListTableStatistics(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLTableStatisticsList, error) {
+	req, err := client.listTableStatisticsPreparer(accountName, databaseName, schemaName, tableName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTableStatistics", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListTableStatisticsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listTableStatisticsResponder}, req)
 	if err != nil {
-		result.utsl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTableStatistics", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.utsl, err = client.ListTableStatisticsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTableStatistics", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLTableStatisticsList), err
 }
 
-// ListTableStatisticsPreparer prepares the ListTableStatistics request.
-func (client Client) ListTableStatisticsPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listTableStatisticsPreparer prepares the ListTableStatistics request.
+func (client Client) listTableStatisticsPreparer(accountName string, databaseName string, schemaName string, tableName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"schemaName":   autorest.Encode("path", schemaName),
-		"tableName":    autorest.Encode("path", tableName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/statistics", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListTableStatisticsSender sends the ListTableStatistics request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListTableStatisticsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListTableStatisticsResponder handles the response to the ListTableStatistics request. The method always
-// closes the http.Response Body.
-func (client Client) ListTableStatisticsResponder(resp *http.Response) (result USQLTableStatisticsList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listTableStatisticsNextResults retrieves the next set of results, if any.
-func (client Client) listTableStatisticsNextResults(lastResults USQLTableStatisticsList) (result USQLTableStatisticsList, err error) {
-	req, err := lastResults.uSQLTableStatisticsListPreparer()
+// listTableStatisticsResponder handles the response to the ListTableStatistics request.
+func (client Client) listTableStatisticsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLTableStatisticsList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTableStatisticsNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListTableStatisticsSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTableStatisticsNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListTableStatisticsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listTableStatisticsNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListTableStatisticsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListTableStatisticsComplete(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLTableStatisticsListIterator, err error) {
-	result.page, err = client.ListTableStatistics(ctx, accountName, databaseName, schemaName, tableName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // ListTableTypes retrieves the list of table types from the Data Lake Analytics catalog.
@@ -2350,120 +1604,73 @@ func (client Client) ListTableStatisticsComplete(ctx context.Context, accountNam
 // expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g.
 // Categories?$orderby=CategoryName desc. Optional. count is the Boolean value of true or false to request a count of
 // the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-func (client Client) ListTableTypes(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLTableTypeListPage, err error) {
-	result.fn = client.listTableTypesNextResults
-	req, err := client.ListTableTypesPreparer(ctx, accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListTableTypes(ctx context.Context, accountName string, databaseName string, schemaName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLTableTypeList, error) {
+	req, err := client.listTableTypesPreparer(accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTableTypes", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListTableTypesSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listTableTypesResponder}, req)
 	if err != nil {
-		result.uttl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTableTypes", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.uttl, err = client.ListTableTypesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTableTypes", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLTableTypeList), err
 }
 
-// ListTableTypesPreparer prepares the ListTableTypes request.
-func (client Client) ListTableTypesPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listTableTypesPreparer prepares the ListTableTypes request.
+func (client Client) listTableTypesPreparer(accountName string, databaseName string, schemaName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"schemaName":   autorest.Encode("path", schemaName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tabletypes", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListTableTypesSender sends the ListTableTypes request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListTableTypesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListTableTypesResponder handles the response to the ListTableTypes request. The method always
-// closes the http.Response Body.
-func (client Client) ListTableTypesResponder(resp *http.Response) (result USQLTableTypeList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listTableTypesNextResults retrieves the next set of results, if any.
-func (client Client) listTableTypesNextResults(lastResults USQLTableTypeList) (result USQLTableTypeList, err error) {
-	req, err := lastResults.uSQLTableTypeListPreparer()
+// listTableTypesResponder handles the response to the ListTableTypes request.
+func (client Client) listTableTypesResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLTableTypeList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTableTypesNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListTableTypesSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTableTypesNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListTableTypesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listTableTypesNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListTableTypesComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListTableTypesComplete(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLTableTypeListIterator, err error) {
-	result.page, err = client.ListTableTypes(ctx, accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // ListTableValuedFunctions retrieves the list of table valued functions from the Data Lake Analytics catalog.
@@ -2479,120 +1686,73 @@ func (client Client) ListTableTypesComplete(ctx context.Context, accountName str
 // values sorted, e.g. Categories?$orderby=CategoryName desc. Optional. count is the Boolean value of true or false to
 // request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true.
 // Optional.
-func (client Client) ListTableValuedFunctions(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLTableValuedFunctionListPage, err error) {
-	result.fn = client.listTableValuedFunctionsNextResults
-	req, err := client.ListTableValuedFunctionsPreparer(ctx, accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListTableValuedFunctions(ctx context.Context, accountName string, databaseName string, schemaName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLTableValuedFunctionList, error) {
+	req, err := client.listTableValuedFunctionsPreparer(accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTableValuedFunctions", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListTableValuedFunctionsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listTableValuedFunctionsResponder}, req)
 	if err != nil {
-		result.utvfl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTableValuedFunctions", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.utvfl, err = client.ListTableValuedFunctionsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTableValuedFunctions", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLTableValuedFunctionList), err
 }
 
-// ListTableValuedFunctionsPreparer prepares the ListTableValuedFunctions request.
-func (client Client) ListTableValuedFunctionsPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listTableValuedFunctionsPreparer prepares the ListTableValuedFunctions request.
+func (client Client) listTableValuedFunctionsPreparer(accountName string, databaseName string, schemaName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"schemaName":   autorest.Encode("path", schemaName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tablevaluedfunctions", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListTableValuedFunctionsSender sends the ListTableValuedFunctions request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListTableValuedFunctionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListTableValuedFunctionsResponder handles the response to the ListTableValuedFunctions request. The method always
-// closes the http.Response Body.
-func (client Client) ListTableValuedFunctionsResponder(resp *http.Response) (result USQLTableValuedFunctionList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listTableValuedFunctionsNextResults retrieves the next set of results, if any.
-func (client Client) listTableValuedFunctionsNextResults(lastResults USQLTableValuedFunctionList) (result USQLTableValuedFunctionList, err error) {
-	req, err := lastResults.uSQLTableValuedFunctionListPreparer()
+// listTableValuedFunctionsResponder handles the response to the ListTableValuedFunctions request.
+func (client Client) listTableValuedFunctionsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLTableValuedFunctionList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTableValuedFunctionsNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListTableValuedFunctionsSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTableValuedFunctionsNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListTableValuedFunctionsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listTableValuedFunctionsNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListTableValuedFunctionsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListTableValuedFunctionsComplete(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLTableValuedFunctionListIterator, err error) {
-	result.page, err = client.ListTableValuedFunctions(ctx, accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // ListTypes retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
@@ -2607,120 +1767,73 @@ func (client Client) ListTableValuedFunctionsComplete(ctx context.Context, accou
 // expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g.
 // Categories?$orderby=CategoryName desc. Optional. count is the Boolean value of true or false to request a count of
 // the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-func (client Client) ListTypes(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLTypeListPage, err error) {
-	result.fn = client.listTypesNextResults
-	req, err := client.ListTypesPreparer(ctx, accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListTypes(ctx context.Context, accountName string, databaseName string, schemaName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLTypeList, error) {
+	req, err := client.listTypesPreparer(accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTypes", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListTypesSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listTypesResponder}, req)
 	if err != nil {
-		result.utl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTypes", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.utl, err = client.ListTypesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTypes", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLTypeList), err
 }
 
-// ListTypesPreparer prepares the ListTypes request.
-func (client Client) ListTypesPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listTypesPreparer prepares the ListTypes request.
+func (client Client) listTypesPreparer(accountName string, databaseName string, schemaName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"schemaName":   autorest.Encode("path", schemaName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/types", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListTypesSender sends the ListTypes request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListTypesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListTypesResponder handles the response to the ListTypes request. The method always
-// closes the http.Response Body.
-func (client Client) ListTypesResponder(resp *http.Response) (result USQLTypeList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listTypesNextResults retrieves the next set of results, if any.
-func (client Client) listTypesNextResults(lastResults USQLTypeList) (result USQLTypeList, err error) {
-	req, err := lastResults.uSQLTypeListPreparer()
+// listTypesResponder handles the response to the ListTypes request.
+func (client Client) listTypesResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLTypeList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTypesNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListTypesSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTypesNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListTypesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listTypesNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListTypesComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListTypesComplete(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLTypeListIterator, err error) {
-	result.page, err = client.ListTypes(ctx, accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // ListViews retrieves the list of views from the Data Lake Analytics catalog.
@@ -2735,120 +1848,73 @@ func (client Client) ListTypesComplete(ctx context.Context, accountName string, 
 // expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g.
 // Categories?$orderby=CategoryName desc. Optional. count is the Boolean value of true or false to request a count of
 // the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-func (client Client) ListViews(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLViewListPage, err error) {
-	result.fn = client.listViewsNextResults
-	req, err := client.ListViewsPreparer(ctx, accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
+func (client Client) ListViews(ctx context.Context, accountName string, databaseName string, schemaName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (*USQLViewList, error) {
+	req, err := client.listViewsPreparer(accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListViews", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListViewsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listViewsResponder}, req)
 	if err != nil {
-		result.uvl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListViews", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.uvl, err = client.ListViewsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "ListViews", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLViewList), err
 }
 
-// ListViewsPreparer prepares the ListViews request.
-func (client Client) ListViewsPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// listViewsPreparer prepares the ListViews request.
+func (client Client) listViewsPreparer(accountName string, databaseName string, schemaName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("GET", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"schemaName":   autorest.Encode("path", schemaName),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/views", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListViewsSender sends the ListViews request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListViewsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListViewsResponder handles the response to the ListViews request. The method always
-// closes the http.Response Body.
-func (client Client) ListViewsResponder(resp *http.Response) (result USQLViewList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listViewsNextResults retrieves the next set of results, if any.
-func (client Client) listViewsNextResults(lastResults USQLViewList) (result USQLViewList, err error) {
-	req, err := lastResults.uSQLViewListPreparer()
+// listViewsResponder handles the response to the ListViews request.
+func (client Client) listViewsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLViewList{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listViewsNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListViewsSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "catalog.Client", "listViewsNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListViewsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "listViewsNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListViewsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListViewsComplete(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool) (result USQLViewListIterator, err error) {
-	result.page, err = client.ListViews(ctx, accountName, databaseName, schemaName, filter, top, skip, expand, selectParameter, orderby, count)
-	return
+	return result, nil
 }
 
 // UpdateSecret modifies the specified secret for use with external data sources in the specified database
@@ -2856,71 +1922,59 @@ func (client Client) ListViewsComplete(ctx context.Context, accountName string, 
 // accountName is the Azure Data Lake Analytics account to execute catalog operations on. databaseName is the name of
 // the database containing the secret. secretName is the name of the secret. parameters is the parameters required to
 // modify the secret (name and password)
-func (client Client) UpdateSecret(ctx context.Context, accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (result USQLSecret, err error) {
-	req, err := client.UpdateSecretPreparer(ctx, accountName, databaseName, secretName, parameters)
+func (client Client) UpdateSecret(ctx context.Context, accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (*USQLSecret, error) {
+	req, err := client.updateSecretPreparer(accountName, databaseName, secretName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "UpdateSecret", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.UpdateSecretSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateSecretResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "catalog.Client", "UpdateSecret", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.UpdateSecretResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "catalog.Client", "UpdateSecret", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*USQLSecret), err
 }
 
-// UpdateSecretPreparer prepares the UpdateSecret request.
-func (client Client) UpdateSecretPreparer(ctx context.Context, accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"accountName":          accountName,
-		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+// updateSecretPreparer prepares the UpdateSecret request.
+func (client Client) updateSecretPreparer(accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (pipeline.Request, error) {
+	req, err := pipeline.NewRequest("PATCH", client.url, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	pathParameters := map[string]interface{}{
-		"databaseName": autorest.Encode("path", databaseName),
-		"secretName":   autorest.Encode("path", secretName),
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPatch(),
-		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
-		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/secrets/{secretName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	return req, nil
 }
 
-// UpdateSecretSender sends the UpdateSecret request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) UpdateSecretSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// UpdateSecretResponder handles the response to the UpdateSecret request. The method always
-// closes the http.Response Body.
-func (client Client) UpdateSecretResponder(resp *http.Response) (result USQLSecret, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// updateSecretResponder handles the response to the UpdateSecret request.
+func (client Client) updateSecretResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &USQLSecret{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

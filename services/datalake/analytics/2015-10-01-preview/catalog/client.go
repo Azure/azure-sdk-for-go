@@ -1,6 +1,3 @@
-// Package catalog implements the Azure ARM Catalog service API version 2015-10-01-preview.
-//
-// Creates an Azure Data Lake Analytics catalog client.
 package catalog
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -21,29 +18,35 @@ package catalog
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"net/url"
 )
 
 const (
-	// DefaultAdlaCatalogDNSSuffix is the default value for adla catalog dns suffix
-	DefaultAdlaCatalogDNSSuffix = "azuredatalakeanalytics.net"
+	// ServiceVersion specifies the version of the operations used in this package.
+	ServiceVersion = "2015-10-01-preview"
 )
 
-// BaseClient is the base client for Catalog.
-type BaseClient struct {
-	autorest.Client
-	AdlaCatalogDNSSuffix string
+// ManagementClient is the base client for Catalog.
+type ManagementClient struct {
+	url url.URL
+	p   pipeline.Pipeline
 }
 
-// New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithoutDefaults(DefaultAdlaCatalogDNSSuffix)
-}
-
-// NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
-	return BaseClient{
-		Client:               autorest.NewClientWithUserAgent(UserAgent()),
-		AdlaCatalogDNSSuffix: adlaCatalogDNSSuffix,
+// NewManagementClient creates an instance of the ManagementClient client.
+func NewManagementClient(url url.URL, p pipeline.Pipeline) ManagementClient {
+	return ManagementClient{
+		url: url,
+		p:   p,
 	}
+}
+
+// URL returns a copy of the URL for this client.
+func (mc ManagementClient) URL() url.URL {
+	return mc.url
+}
+
+// Pipeline returns the pipeline for this client.
+func (mc ManagementClient) Pipeline() pipeline.Pipeline {
+	return mc.p
 }

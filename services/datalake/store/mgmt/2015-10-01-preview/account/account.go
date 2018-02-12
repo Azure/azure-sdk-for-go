@@ -18,97 +18,89 @@ package account
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
+	"encoding/json"
+	"fmt"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // Client is the dataLake Store Client
 type Client struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewClient creates an instance of the Client client.
-func NewClient(subscriptionID string) Client {
-	return NewClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewClient(p pipeline.Pipeline) Client {
+	return Client{NewManagementClient(p)}
 }
 
-// NewClientWithBaseURI creates an instance of the Client client.
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return Client{NewWithBaseURI(baseURI, subscriptionID)}
-}
-
-// Create creates the specified Data Lake Store account.
+// Create creates the specified Data Lake Store account. This method may poll for completion. Polling can be canceled
+// by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
+// requests.
 //
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Store account. name is the
 // name of the Data Lake Store account to create. parameters is parameters supplied to create the Data Lake Store
 // account.
-func (client Client) Create(ctx context.Context, resourceGroupName string, name string, parameters DataLakeStoreAccount) (result AccountCreateFuture, err error) {
-	req, err := client.CreatePreparer(ctx, resourceGroupName, name, parameters)
+func (client Client) Create(ctx context.Context, resourceGroupName string, name string, parameters DataLakeStoreAccount) (*DataLakeStoreAccount, error) {
+	req, err := client.createPreparer(resourceGroupName, name, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Create", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Create", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*DataLakeStoreAccount), err
 }
 
-// CreatePreparer prepares the Create request.
-func (client Client) CreatePreparer(ctx context.Context, resourceGroupName string, name string, parameters DataLakeStoreAccount) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{name}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateSender sends the Create request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) CreateSender(req *http.Request) (future AccountCreateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// createPreparer prepares the Create request.
+func (client Client) createPreparer(resourceGroupName string, name string, parameters DataLakeStoreAccount) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{name}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateResponder handles the response to the Create request. The method always
-// closes the http.Response Body.
-func (client Client) CreateResponder(resp *http.Response) (result DataLakeStoreAccount, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createResponder handles the response to the Create request.
+func (client Client) createResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusCreated, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeStoreAccount{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // CreateOrUpdateFirewallRule creates or updates the specified firewall rule.
@@ -116,138 +108,104 @@ func (client Client) CreateResponder(resp *http.Response) (result DataLakeStoreA
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Store account. accountName is
 // the name of the Data Lake Store account to which to add the firewall rule. name is the name of the firewall rule to
 // create or update. parameters is parameters supplied to create the create firewall rule.
-func (client Client) CreateOrUpdateFirewallRule(ctx context.Context, resourceGroupName string, accountName string, name string, parameters FirewallRule) (result FirewallRule, err error) {
-	req, err := client.CreateOrUpdateFirewallRulePreparer(ctx, resourceGroupName, accountName, name, parameters)
+func (client Client) CreateOrUpdateFirewallRule(ctx context.Context, resourceGroupName string, accountName string, name string, parameters FirewallRule) (*FirewallRule, error) {
+	req, err := client.createOrUpdateFirewallRulePreparer(resourceGroupName, accountName, name, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "CreateOrUpdateFirewallRule", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.CreateOrUpdateFirewallRuleSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createOrUpdateFirewallRuleResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "CreateOrUpdateFirewallRule", resp, "Failure sending request")
-		return
+		return nil, err
 	}
+	return resp.(*FirewallRule), err
+}
 
-	result, err = client.CreateOrUpdateFirewallRuleResponder(resp)
+// createOrUpdateFirewallRulePreparer prepares the CreateOrUpdateFirewallRule request.
+func (client Client) createOrUpdateFirewallRulePreparer(resourceGroupName string, accountName string, name string, parameters FirewallRule) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{name}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "CreateOrUpdateFirewallRule", resp, "Failure responding to request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	return
-}
-
-// CreateOrUpdateFirewallRulePreparer prepares the CreateOrUpdateFirewallRule request.
-func (client Client) CreateOrUpdateFirewallRulePreparer(ctx context.Context, resourceGroupName string, accountName string, name string, parameters FirewallRule) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{name}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	return req, nil
 }
 
-// CreateOrUpdateFirewallRuleSender sends the CreateOrUpdateFirewallRule request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) CreateOrUpdateFirewallRuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+// createOrUpdateFirewallRuleResponder handles the response to the CreateOrUpdateFirewallRule request.
+func (client Client) createOrUpdateFirewallRuleResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &FirewallRule{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// CreateOrUpdateFirewallRuleResponder handles the response to the CreateOrUpdateFirewallRule request. The method always
-// closes the http.Response Body.
-func (client Client) CreateOrUpdateFirewallRuleResponder(resp *http.Response) (result FirewallRule, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// Delete deletes the specified Data Lake Store account.
+// Delete deletes the specified Data Lake Store account. This method may poll for completion. Polling can be canceled
+// by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
+// requests.
 //
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Store account. accountName is
 // the name of the Data Lake Store account to delete.
-func (client Client) Delete(ctx context.Context, resourceGroupName string, accountName string) (result AccountDeleteFuture, err error) {
-	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName)
+func (client Client) Delete(ctx context.Context, resourceGroupName string, accountName string) (*http.Response, error) {
+	req, err := client.deletePreparer(resourceGroupName, accountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Delete", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Delete", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeletePreparer prepares the Delete request.
-func (client Client) DeletePreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) DeleteSender(req *http.Request) (future AccountDeleteFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// deletePreparer prepares the Delete request.
+func (client Client) deletePreparer(resourceGroupName string, accountName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client Client) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteResponder handles the response to the Delete request.
+func (client Client) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNotFound, http.StatusNoContent, http.StatusAccepted)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // DeleteFirewallRule deletes the specified firewall rule from the specified Data Lake Store account
@@ -255,200 +213,132 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Store account. accountName is
 // the name of the Data Lake Store account from which to delete the firewall rule. firewallRuleName is the name of the
 // firewall rule to delete.
-func (client Client) DeleteFirewallRule(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string) (result autorest.Response, err error) {
-	req, err := client.DeleteFirewallRulePreparer(ctx, resourceGroupName, accountName, firewallRuleName)
+func (client Client) DeleteFirewallRule(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string) (*http.Response, error) {
+	req, err := client.deleteFirewallRulePreparer(resourceGroupName, accountName, firewallRuleName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "DeleteFirewallRule", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.DeleteFirewallRuleSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteFirewallRuleResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "account.Client", "DeleteFirewallRule", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteFirewallRuleResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "DeleteFirewallRule", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeleteFirewallRulePreparer prepares the DeleteFirewallRule request.
-func (client Client) DeleteFirewallRulePreparer(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"firewallRuleName":  autorest.Encode("path", firewallRuleName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// deleteFirewallRulePreparer prepares the DeleteFirewallRule request.
+func (client Client) deleteFirewallRulePreparer(resourceGroupName string, accountName string, firewallRuleName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteFirewallRuleSender sends the DeleteFirewallRule request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) DeleteFirewallRuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// DeleteFirewallRuleResponder handles the response to the DeleteFirewallRule request. The method always
-// closes the http.Response Body.
-func (client Client) DeleteFirewallRuleResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteFirewallRuleResponder handles the response to the DeleteFirewallRule request.
+func (client Client) deleteFirewallRuleResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // EnableKeyVault attempts to enable a user managed key vault for encryption of the specified Data Lake Store account.
 //
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Store account. accountName is
 // the name of the Data Lake Store account to attempt to enable the Key Vault for.
-func (client Client) EnableKeyVault(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error) {
-	req, err := client.EnableKeyVaultPreparer(ctx, resourceGroupName, accountName)
+func (client Client) EnableKeyVault(ctx context.Context, resourceGroupName string, accountName string) (*http.Response, error) {
+	req, err := client.enableKeyVaultPreparer(resourceGroupName, accountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "EnableKeyVault", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.EnableKeyVaultSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.enableKeyVaultResponder}, req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "account.Client", "EnableKeyVault", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.EnableKeyVaultResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "EnableKeyVault", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.Response(), err
 }
 
-// EnableKeyVaultPreparer prepares the EnableKeyVault request.
-func (client Client) EnableKeyVaultPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// enableKeyVaultPreparer prepares the EnableKeyVault request.
+func (client Client) enableKeyVaultPreparer(resourceGroupName string, accountName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/enableKeyVault"
+	req, err := pipeline.NewRequest("POST", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/enableKeyVault", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// EnableKeyVaultSender sends the EnableKeyVault request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) EnableKeyVaultSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// EnableKeyVaultResponder handles the response to the EnableKeyVault request. The method always
-// closes the http.Response Body.
-func (client Client) EnableKeyVaultResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// enableKeyVaultResponder handles the response to the EnableKeyVault request.
+func (client Client) enableKeyVaultResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // Get gets the specified Data Lake Store account.
 //
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Store account. accountName is
 // the name of the Data Lake Store account to retrieve.
-func (client Client) Get(ctx context.Context, resourceGroupName string, accountName string) (result DataLakeStoreAccount, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, accountName)
+func (client Client) Get(ctx context.Context, resourceGroupName string, accountName string) (*DataLakeStoreAccount, error) {
+	req, err := client.getPreparer(resourceGroupName, accountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Get", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*DataLakeStoreAccount), err
 }
 
-// GetPreparer prepares the Get request.
-func (client Client) GetPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// getPreparer prepares the Get request.
+func (client Client) getPreparer(resourceGroupName string, accountName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client Client) GetResponder(resp *http.Response) (result DataLakeStoreAccount, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getResponder handles the response to the Get request.
+func (client Client) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeStoreAccount{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetFirewallRule gets the specified Data Lake Store firewall rule.
@@ -456,68 +346,54 @@ func (client Client) GetResponder(resp *http.Response) (result DataLakeStoreAcco
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Store account. accountName is
 // the name of the Data Lake Store account from which to get the firewall rule. firewallRuleName is the name of the
 // firewall rule to retrieve.
-func (client Client) GetFirewallRule(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string) (result FirewallRule, err error) {
-	req, err := client.GetFirewallRulePreparer(ctx, resourceGroupName, accountName, firewallRuleName)
+func (client Client) GetFirewallRule(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string) (*FirewallRule, error) {
+	req, err := client.getFirewallRulePreparer(resourceGroupName, accountName, firewallRuleName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "GetFirewallRule", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetFirewallRuleSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getFirewallRuleResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "GetFirewallRule", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetFirewallRuleResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "GetFirewallRule", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*FirewallRule), err
 }
 
-// GetFirewallRulePreparer prepares the GetFirewallRule request.
-func (client Client) GetFirewallRulePreparer(ctx context.Context, resourceGroupName string, accountName string, firewallRuleName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"firewallRuleName":  autorest.Encode("path", firewallRuleName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// getFirewallRulePreparer prepares the GetFirewallRule request.
+func (client Client) getFirewallRulePreparer(resourceGroupName string, accountName string, firewallRuleName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules/{firewallRuleName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetFirewallRuleSender sends the GetFirewallRule request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) GetFirewallRuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetFirewallRuleResponder handles the response to the GetFirewallRule request. The method always
-// closes the http.Response Body.
-func (client Client) GetFirewallRuleResponder(resp *http.Response) (result FirewallRule, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getFirewallRuleResponder handles the response to the GetFirewallRule request.
+func (client Client) getFirewallRuleResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &FirewallRule{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // List lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of
@@ -535,120 +411,81 @@ func (client Client) GetFirewallRuleResponder(resp *http.Response) (result Firew
 // feed, e.g. Categories?$search=blue OR green. Optional. formatParameter is the desired return format. Return the
 // response in particular formatxii without access to request headers for standard content-type negotiation (e.g
 // Orders?$format=json). Optional.
-func (client Client) List(ctx context.Context, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeStoreAccountListResultPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+func (client Client) List(ctx context.Context, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool, search *string, formatParameter *string) (*DataLakeStoreAccountListResult, error) {
+	req, err := client.listPreparer(filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "List", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
 	if err != nil {
-		result.dlsalr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "List", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.dlsalr, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "List", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*DataLakeStoreAccountListResult), err
 }
 
-// ListPreparer prepares the List request.
-func (client Client) ListPreparer(ctx context.Context, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+// listPreparer prepares the List request.
+func (client Client) listPreparer(filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool, search *string, formatParameter *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/accounts"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
+	if search != nil {
+		params.Set("$search", *search)
 	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
+	if formatParameter != nil {
+		params.Set("$format", *formatParameter)
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/accounts", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client Client) ListResponder(resp *http.Response) (result DataLakeStoreAccountListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listNextResults retrieves the next set of results, if any.
-func (client Client) listNextResults(lastResults DataLakeStoreAccountListResult) (result DataLakeStoreAccountListResult, err error) {
-	req, err := lastResults.dataLakeStoreAccountListResultPreparer()
+// listResponder handles the response to the List request.
+func (client Client) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeStoreAccountListResult{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "listNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "listNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "listNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListComplete(ctx context.Context, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeStoreAccountListResultIterator, err error) {
-	result.page, err = client.List(ctx, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
-	return
+	return result, nil
 }
 
 // ListByResourceGroup lists the Data Lake Store accounts within a specific resource group. The response includes a
@@ -667,286 +504,199 @@ func (client Client) ListComplete(ctx context.Context, filter string, top *int32
 // feed, e.g. Categories?$search=blue OR green. Optional. formatParameter is the desired return format. Return the
 // response in particular formatxii without access to request headers for standard content-type negotiation (e.g
 // Orders?$format=json). Optional.
-func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeStoreAccountListResultPage, err error) {
-	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
+func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool, search *string, formatParameter *string) (*DataLakeStoreAccountListResult, error) {
+	req, err := client.listByResourceGroupPreparer(resourceGroupName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListByResourceGroup", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListByResourceGroupSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listByResourceGroupResponder}, req)
 	if err != nil {
-		result.dlsalr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "ListByResourceGroup", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.dlsalr, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListByResourceGroup", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*DataLakeStoreAccountListResult), err
 }
 
-// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client Client) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// listByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client Client) listByResourceGroupPreparer(resourceGroupName string, filter *string, top *int32, skip *int32, expand *string, selectParameter *string, orderby *string, count *bool, search *string, formatParameter *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
+	params := req.URL.Query()
+	if filter != nil {
+		params.Set("$filter", *filter)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		params.Set("$top", fmt.Sprintf("%v", *top))
 	}
 	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
+		params.Set("$skip", fmt.Sprintf("%v", *skip))
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	if selectParameter != nil {
+		params.Set("$select", *selectParameter)
 	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	if orderby != nil {
+		params.Set("$orderby", *orderby)
 	}
 	if count != nil {
-		queryParameters["$count"] = autorest.Encode("query", *count)
+		params.Set("$count", fmt.Sprintf("%v", *count))
 	}
-	if len(search) > 0 {
-		queryParameters["$search"] = autorest.Encode("query", search)
+	if search != nil {
+		params.Set("$search", *search)
 	}
-	if len(formatParameter) > 0 {
-		queryParameters["$format"] = autorest.Encode("query", formatParameter)
+	if formatParameter != nil {
+		params.Set("$format", *formatParameter)
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
-// closes the http.Response Body.
-func (client Client) ListByResourceGroupResponder(resp *http.Response) (result DataLakeStoreAccountListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client Client) listByResourceGroupNextResults(lastResults DataLakeStoreAccountListResult) (result DataLakeStoreAccountListResult, err error) {
-	req, err := lastResults.dataLakeStoreAccountListResultPreparer()
+// listByResourceGroupResponder handles the response to the ListByResourceGroup request.
+func (client Client) listByResourceGroupResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeStoreAccountListResult{rawResponse: resp.Response()}
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return result, err
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListByResourceGroupSender(req)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-	result, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
 	}
-	return
-}
-
-// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skip *int32, expand string, selectParameter string, orderby string, count *bool, search string, formatParameter string) (result DataLakeStoreAccountListResultIterator, err error) {
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName, filter, top, skip, expand, selectParameter, orderby, count, search, formatParameter)
-	return
+	return result, nil
 }
 
 // ListFirewallRules lists the Data Lake Store firewall rules within the specified Data Lake Store account.
 //
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Store account. accountName is
 // the name of the Data Lake Store account from which to get the firewall rules.
-func (client Client) ListFirewallRules(ctx context.Context, resourceGroupName string, accountName string) (result DataLakeStoreFirewallRuleListResultPage, err error) {
-	result.fn = client.listFirewallRulesNextResults
-	req, err := client.ListFirewallRulesPreparer(ctx, resourceGroupName, accountName)
+func (client Client) ListFirewallRules(ctx context.Context, resourceGroupName string, accountName string) (*DataLakeStoreFirewallRuleListResult, error) {
+	req, err := client.listFirewallRulesPreparer(resourceGroupName, accountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListFirewallRules", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListFirewallRulesSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listFirewallRulesResponder}, req)
 	if err != nil {
-		result.dlsfrlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "account.Client", "ListFirewallRules", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.dlsfrlr, err = client.ListFirewallRulesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "ListFirewallRules", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*DataLakeStoreFirewallRuleListResult), err
 }
 
-// ListFirewallRulesPreparer prepares the ListFirewallRules request.
-func (client Client) ListFirewallRulesPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListFirewallRulesSender sends the ListFirewallRules request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListFirewallRulesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListFirewallRulesResponder handles the response to the ListFirewallRules request. The method always
-// closes the http.Response Body.
-func (client Client) ListFirewallRulesResponder(resp *http.Response) (result DataLakeStoreFirewallRuleListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listFirewallRulesNextResults retrieves the next set of results, if any.
-func (client Client) listFirewallRulesNextResults(lastResults DataLakeStoreFirewallRuleListResult) (result DataLakeStoreFirewallRuleListResult, err error) {
-	req, err := lastResults.dataLakeStoreFirewallRuleListResultPreparer()
+// listFirewallRulesPreparer prepares the ListFirewallRules request.
+func (client Client) listFirewallRulesPreparer(resourceGroupName string, accountName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/firewallRules"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "account.Client", "listFirewallRulesNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListFirewallRulesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "account.Client", "listFirewallRulesNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListFirewallRulesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "listFirewallRulesNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListFirewallRulesComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListFirewallRulesComplete(ctx context.Context, resourceGroupName string, accountName string) (result DataLakeStoreFirewallRuleListResultIterator, err error) {
-	result.page, err = client.ListFirewallRules(ctx, resourceGroupName, accountName)
-	return
+// listFirewallRulesResponder handles the response to the ListFirewallRules request.
+func (client Client) listFirewallRulesResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeStoreFirewallRuleListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// Update updates the specified Data Lake Store account information.
+// Update updates the specified Data Lake Store account information. This method may poll for completion. Polling can
+// be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding
+// HTTP requests.
 //
 // resourceGroupName is the name of the Azure resource group that contains the Data Lake Store account. name is the
 // name of the Data Lake Store account to update. parameters is parameters supplied to update the Data Lake Store
 // account.
-func (client Client) Update(ctx context.Context, resourceGroupName string, name string, parameters DataLakeStoreAccount) (result AccountUpdateFuture, err error) {
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, name, parameters)
+func (client Client) Update(ctx context.Context, resourceGroupName string, name string, parameters DataLakeStoreAccount) (*DataLakeStoreAccount, error) {
+	req, err := client.updatePreparer(resourceGroupName, name, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Update", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.UpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.Client", "Update", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*DataLakeStoreAccount), err
 }
 
-// UpdatePreparer prepares the Update request.
-func (client Client) UpdatePreparer(ctx context.Context, resourceGroupName string, name string, parameters DataLakeStoreAccount) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-10-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{name}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UpdateSender sends the Update request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) UpdateSender(req *http.Request) (future AccountUpdateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// updatePreparer prepares the Update request.
+func (client Client) updatePreparer(resourceGroupName string, name string, parameters DataLakeStoreAccount) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{name}"
+	req, err := pipeline.NewRequest("PATCH", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// UpdateResponder handles the response to the Update request. The method always
-// closes the http.Response Body.
-func (client Client) UpdateResponder(resp *http.Response) (result DataLakeStoreAccount, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// updateResponder handles the response to the Update request.
+func (client Client) updateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusCreated)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DataLakeStoreAccount{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

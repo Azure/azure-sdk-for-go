@@ -14,7 +14,6 @@ install:
 script:
   - bash rungas.sh
   - grep -L -r --include *.go --exclude-dir vendor -P "Copyright (\d{4}|\(c\)) Microsoft" ./ | tee /dev/stderr | test -z "$(< /dev/stdin)"
-  - test -z "$(gofmt -s -l -w management | tee /dev/stderr)"
   - test -z "$(gofmt -s -l -w storage | tee /dev/stderr)"
   - test -z "$(gofmt -s -l -w $(find ./services/* -type d -print) | tee /dev/stderr)"
   - test -z "$(go build $(find ./* -type d -print | grep -v '^./vendor$' | grep -v '^./storage$') | tee /dev/stderr)"
@@ -26,10 +25,7 @@ script:
   - test -z "$(go fmt ./services/... | tee /dev/stderr)"
   - test -z "$(go vet ./services/... | tee /dev/stderr)"
   # - test -z "$(golint ./services/... | tee /dev/stderr)"
-  - go test -v ./management/...
   - go test -v ./storage/...
   - bash ./tools/profileBuilder/test.sh
-  - test -z "$(golint ./management/... |  grep -v 'should have comment' | grep -v 'stutters' | tee /dev/stderr)"
   - test -z "$(golint ./storage/... | tee /dev/stderr)"
-  - go vet ./management/...
   - go vet ./storage/...

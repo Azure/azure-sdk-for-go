@@ -132,8 +132,7 @@ You'll need to consider both SDK and API versions when selecting your
 targets. The following will describe them one by one.
 
 **SDK versions** are set with repository-wide [tags][]. We try to adhere to
-[semver][], so although we've long moved past version zero, we continue to
-add `-beta` to versions because **this package is still in preview.**
+[semver][].
 
 [tags]: https://github.com/Azure/azure-sdk-for-go/tags
 [semver]: https://semver.org

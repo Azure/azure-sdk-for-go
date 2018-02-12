@@ -8,10 +8,6 @@ azure-sdk-for-go provides Go packages for using Azure services. It has been
 tested with Go 1.8 and 1.9. To be notified about updates and changes, subscribe
 to the [Azure update feed][].
 
-:exclamation: **NOTE:** This project is in preview and breaking changes are 
-introduced frequently. Therefore, vendoring dependencies is even more
-important than usual. We use [dep](https://github.com/golang/dep).
-
 ### Install:
 
 ```sh
@@ -136,8 +132,7 @@ You'll need to consider both SDK and API versions when selecting your
 targets. The following will describe them one by one.
 
 **SDK versions** are set with repository-wide [tags][]. We try to adhere to
-[semver][], so although we've long moved past version zero, we continue to
-add `-beta` to versions because **this package is still in preview.**
+[semver][].
 
 [tags]: https://github.com/Azure/azure-sdk-for-go/tags
 [semver]: https://semver.org

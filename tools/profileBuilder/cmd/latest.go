@@ -42,6 +42,8 @@ const (
 
 var rootDefault = model.DefaultInputRoot()
 
+var latestFlags = viper.New()
+
 // latestCmd represents the latest command
 var latestCmd = &cobra.Command{
 	Use:   "latest",
@@ -61,29 +63,24 @@ By default, this command ignores API versions that are in preview.`,
 		errLog := log.New(os.Stderr, "[ERROR] ", 0)
 
 		packageStrategy := model.LatestStrategy{
-			Root:          viper.GetString(rootLongName),
+			Root:          latestFlags.GetString(rootLongName),
 			Predicate:     model.IgnorePreview,
 			VerboseOutput: outputLog,
 		}
 
-		if viper.GetBool(previewLongName) {
+		if latestFlags.GetBool(previewLongName) {
 			packageStrategy.Predicate = model.AcceptAll
 			outputLog.Println("Using preview versions.")
 		}
 
 		model.BuildProfile(
 			packageStrategy,
-			*nameToUse,
-			*outputLocationName,
+			latestFlags.GetString(nameLongName),
+			latestFlags.GetString(outputLocationLongName),
 			outputLog,
 			errLog)
 	},
 }
-
-// This is technical debt. It is being tracked by issue:
-// https://github.com/Azure/azure-sdk-for-go/issues/1060
-var outputLocationName *string
-var nameToUse *string
 
 func init() {
 	rootCmd.AddCommand(latestCmd)
@@ -100,12 +97,12 @@ func init() {
 
 	latestCmd.Flags().BoolP(previewLongName, previewShortName, previewDefault, previewDescription)
 
-	outputLocationName = latestCmd.Flags().StringP(outputLocationLongName, outputLocationShortName, outputLocationDefault, outputLocationDescription)
+	latestCmd.Flags().StringP(outputLocationLongName, outputLocationShortName, outputLocationDefault, outputLocationDescription)
 
-	nameToUse = latestCmd.Flags().StringP(nameLongName, nameShortName, nameDefault, nameDescription)
+	latestCmd.Flags().StringP(nameLongName, nameShortName, nameDefault, nameDescription)
 
 	latestCmd.Flags().StringP(rootLongName, rootShortName, rootDefault, rootDescription)
 
-	viper.BindPFlags(latestCmd.Flags())
-	viper.SetDefault(nameLongName, randname.Generate())
+	latestFlags.BindPFlags(latestCmd.Flags())
+	latestFlags.SetDefault(nameLongName, randname.Generate())
 }

@@ -27,6 +27,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+var listFlags = viper.New()
+
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
@@ -54,8 +56,8 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 
 		model.BuildProfile(
 			&model.ListStrategy{Reader: os.Stdin},
-			*nameToUse,
-			*outputLocationName,
+			listFlags.GetString(nameLongName),
+			listFlags.GetString(outputLocationLongName),
 			outputLog,
 			errLog)
 	},
@@ -74,10 +76,10 @@ func init() {
 	// is called directly, e.g.:
 	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	outputLocationName = listCmd.Flags().StringP(outputLocationLongName, outputLocationShortName, outputLocationDefault, outputLocationDescription)
-	nameToUse = listCmd.Flags().StringP(nameLongName, nameShortName, nameDefault, nameDescription)
+	listCmd.Flags().StringP(outputLocationLongName, outputLocationShortName, outputLocationDefault, outputLocationDescription)
+	listCmd.Flags().StringP(nameLongName, nameShortName, nameDefault, nameDescription)
 
-	viper.BindPFlags(listCmd.Flags())
+	listFlags.BindPFlags(listCmd.Flags())
 
-	viper.SetDefault(nameLongName, randname.Generate())
+	listFlags.SetDefault(nameLongName, randname.Generate())
 }

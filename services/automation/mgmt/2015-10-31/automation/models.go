@@ -2081,6 +2081,8 @@ type DscCompilationJob struct {
 	autorest.Response `json:"-"`
 	// ID - Gets the id of the resource.
 	ID *string `json:"id,omitempty"`
+	// Name - Dsc Compilation Job name
+	Name *string `json:"name,omitempty"`
 	// DscCompilationJobProperties - Gets or sets the properties of the Dsc Compilation job.
 	*DscCompilationJobProperties `json:"properties,omitempty"`
 }
@@ -2102,6 +2104,16 @@ func (dcj *DscCompilationJob) UnmarshalJSON(body []byte) error {
 			return err
 		}
 		dcj.ID = &ID
+	}
+
+	v = m["name"]
+	if v != nil {
+		var name string
+		err = json.Unmarshal(*m["name"], &name)
+		if err != nil {
+			return err
+		}
+		dcj.Name = &name
 	}
 
 	v = m["properties"]
@@ -2303,6 +2315,10 @@ type DscCompilationJobProperties struct {
 	JobID *uuid.UUID `json:"jobId,omitempty"`
 	// CreationTime - Gets the creation time of the job.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// ProvisioningState - The current provisioning state of the job.
+	ProvisioningState *ProvisioningStateProperty `json:"provisioningState,omitempty"`
+	// RunOn - Gets or sets the runOn which specifies the group name where the job is to be executed.
+	RunOn *string `json:"runOn,omitempty"`
 	// Status - Gets or sets the status of the job. Possible values include: 'JobStatusNew', 'JobStatusActivating', 'JobStatusRunning', 'JobStatusCompleted', 'JobStatusFailed', 'JobStatusStopped', 'JobStatusBlocked', 'JobStatusSuspended', 'JobStatusDisconnected', 'JobStatusSuspending', 'JobStatusStopping', 'JobStatusResuming', 'JobStatusRemoving'
 	Status JobStatus `json:"status,omitempty"`
 	// StatusDetails - Gets or sets the status details of the job.
@@ -4243,6 +4259,12 @@ type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Automation operations supported by the Automation resource provider.
 	Value *[]Operation `json:"value,omitempty"`
+}
+
+// ProvisioningStateProperty the provisioning state property.
+type ProvisioningStateProperty struct {
+	// ProvisioningState - The provisioning state of the resource.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
 // ReadCloser ...

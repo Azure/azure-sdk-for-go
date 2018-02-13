@@ -22,4 +22,4 @@ script:
   - test -z "$(go fmt $(go list ./... | grep -v vendor) | tee /dev/stderr)"
   - go vet $(go list ./... | grep -v vendor)
   - go test $(go list ./... | grep -v vendor | grep -v profileBuilder)
-  - sh ./tools/profileBuilder/testh.sh
+  - sh ./tools/profileBuilder/test.sh

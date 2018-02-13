@@ -6,6 +6,10 @@ go:
   - 1.9.x
   - master
 
+matrix:
+  allow_failures:
+    - go: master
+
 install:
   - go get -u github.com/golang/lint/golint
   - go get -u github.com/golang/dep/cmd/dep
@@ -14,18 +18,7 @@ install:
 script:
   - bash rungas.sh
   - grep -L -r --include *.go --exclude-dir vendor -P "Copyright (\d{4}|\(c\)) Microsoft" ./ | tee /dev/stderr | test -z "$(< /dev/stdin)"
-  - test -z "$(gofmt -s -l -w storage | tee /dev/stderr)"
-  - test -z "$(gofmt -s -l -w $(find ./services/* -type d -print) | tee /dev/stderr)"
-  - test -z "$(go build $(find ./* -type d -print | grep -v '^./vendor$' | grep -v '^./storage$') | tee /dev/stderr)"
-  - go build ./profiles/...
-  - test -z "$(go fmt ./profiles/... | tee /dev/stderr)"
-  - test -z "$(go vet ./profiles/... | tee /dev/stderr)"
-  # - test -z "$(golint ./profiles/... | tee /dev/stderr)" # This line should be uncommented once Aliases include comments.
-  - go build ./services/...
-  - test -z "$(go fmt ./services/... | tee /dev/stderr)"
-  - test -z "$(go vet ./services/... | tee /dev/stderr)"
-  # - test -z "$(golint ./services/... | tee /dev/stderr)"
-  - go test -v ./storage/...
-  - bash ./tools/profileBuilder/test.sh
-  - test -z "$(golint ./storage/... | tee /dev/stderr)"
-  - go vet ./storage/...
+  - test -z "$(go build $(go list ./... | grep -v vendor) | tee /dev/stderr)"
+  - test -z "$(gofmt -s -l -w $(go list ./... | grep -v vendor) | tee /dev/stderr)"
+  - go vet $(go list ./... | grep -v vendor)
+  - go test $(go list ./... | grep -v vendor)

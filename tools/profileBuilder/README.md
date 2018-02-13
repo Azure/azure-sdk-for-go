@@ -103,6 +103,16 @@ The `latest` command reflects on the packages in the `services` directory of the
 
 ### Arguments
 
+#### Input
+
+|              |              |
+|--------------|--------------|
+| Long Form    | --input      |
+| Short Form   | -i           |
+| Default      | \<stdin>     |
+| Sub-Commands | list         |
+
+When using the `list` sub-command, instead of reading from stdin, read from the file specified .
 #### Help
 
 |              |              |

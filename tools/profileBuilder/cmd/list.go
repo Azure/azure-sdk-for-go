@@ -17,6 +17,7 @@
 package cmd
 
 import (
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -28,6 +29,13 @@ import (
 )
 
 var listFlags = viper.New()
+
+const (
+	inputLongName    = "input"
+	inputShortName   = "i"
+	inputDefault     = "<stdin>"
+	inputDescription = "Specify a file to read for the list of packages, instead of stdin."
+)
 
 // listCmd represents the list command
 var listCmd = &cobra.Command{
@@ -54,8 +62,19 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 
 		outputLog.Printf("Output-Location set to: %s", viper.GetString(outputLocationLongName))
 
+		var input io.Reader
+
+		if _, ok := listFlags.Get(inputLongName).(int); ok {
+			input = os.Stdin
+		} else if fileHandle, err := os.Open(listFlags.GetString(inputLongName)); err == nil {
+			input = fileHandle
+		} else {
+			errLog.Printf("Unable to open file %q", listFlags.GetString(inputLongName))
+			return
+		}
+
 		model.BuildProfile(
-			&model.ListStrategy{Reader: os.Stdin},
+			&model.ListStrategy{Reader: input},
 			listFlags.GetString(nameLongName),
 			listFlags.GetString(outputLocationLongName),
 			outputLog,
@@ -78,8 +97,13 @@ func init() {
 
 	listCmd.Flags().StringP(outputLocationLongName, outputLocationShortName, outputLocationDefault, outputLocationDescription)
 	listCmd.Flags().StringP(nameLongName, nameShortName, nameDefault, nameDescription)
+	listCmd.Flags().StringP(inputLongName, inputShortName, inputDefault, inputDescription)
 
 	listFlags.BindPFlags(listCmd.Flags())
 
 	listFlags.SetDefault(nameLongName, randname.Generate())
+
+	// To work around the fact that cobra's default and viper's default are going to step on eachother's toes,
+	// set the viper default to an int. That way we can check based on type, instead of having a special case string.
+	listFlags.SetDefault(inputLongName, 0)
 }

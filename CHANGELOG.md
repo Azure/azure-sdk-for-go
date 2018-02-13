@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## `v14.0.1`
+
+### Changes
+
+- Removed the ./services/search/2016-09-01/search package, it was never intended to be included and doesn't work.
+
+## `v14.0.0`
+
+### Breaking Changes
+
+- Removed the ./arm, ./datalake-store and ./dataplane directories.  You can find the same packages under ./services
+- The management package was moved to ./services/classic/management
+- Renamed package ./services/redis/mgmt/2017-10-01/cache to ./services/redis/mgmt/2017-10-01/redis
+
+### Changes
+
+- Removed the "-beta" suffix.
+- Added various new services.
+- Added ./version package for centralized SDK versioning.
+
 ## `v12.5.0-beta`
 
 ### Changes

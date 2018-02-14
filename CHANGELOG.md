@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## `v14.0.2`
+
+### Changes
+
+- Updating `profileBuilder list` to accept an `input` flag instead of reading from `stdin`.
+- Simplifying CI to have less chatter, be faster, and have no special cases.
+
 ## `v14.0.1`
 
 ### Changes

@@ -69,7 +69,7 @@ func (client DiagnosticSettingsClient) CreateOrUpdate(ctx context.Context, resou
 func (client DiagnosticSettingsClient) CreateOrUpdatePreparer(ctx context.Context, resourceURI string, parameters DiagnosticSettingsResource, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":        autorest.Encode("path", name),
-		"resourceUri": autorest.Encode("path", resourceURI),
+		"resourceUri": resourceURI,
 	}
 
 	const APIVersion = "2017-05-01-preview"
@@ -136,7 +136,7 @@ func (client DiagnosticSettingsClient) Delete(ctx context.Context, resourceURI s
 func (client DiagnosticSettingsClient) DeletePreparer(ctx context.Context, resourceURI string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":        autorest.Encode("path", name),
-		"resourceUri": autorest.Encode("path", resourceURI),
+		"resourceUri": resourceURI,
 	}
 
 	const APIVersion = "2017-05-01-preview"
@@ -200,7 +200,7 @@ func (client DiagnosticSettingsClient) Get(ctx context.Context, resourceURI stri
 func (client DiagnosticSettingsClient) GetPreparer(ctx context.Context, resourceURI string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":        autorest.Encode("path", name),
-		"resourceUri": autorest.Encode("path", resourceURI),
+		"resourceUri": resourceURI,
 	}
 
 	const APIVersion = "2017-05-01-preview"
@@ -264,7 +264,7 @@ func (client DiagnosticSettingsClient) List(ctx context.Context, resourceURI str
 // ListPreparer prepares the List request.
 func (client DiagnosticSettingsClient) ListPreparer(ctx context.Context, resourceURI string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceUri": autorest.Encode("path", resourceURI),
+		"resourceUri": resourceURI,
 	}
 
 	const APIVersion = "2017-05-01-preview"

@@ -19,7 +19,7 @@
 
 package insights
 
-import original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2018-03-01/insights"
+import original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2017-09-01/insights"
 
 type ActionGroupsClient = original.ActionGroupsClient
 

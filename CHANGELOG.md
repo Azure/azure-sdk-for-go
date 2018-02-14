@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v14.1.0`
+
+### Changes
+
+- Update `latest` profile to point to latest stable API versions.
+- Add new API version for Azure Monitoring service.
+- Update Cognitive Services dataplane implementation.
+
 ## `v14.0.2`
 
 ### Changes

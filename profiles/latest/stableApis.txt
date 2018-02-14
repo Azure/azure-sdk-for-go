@@ -1,6 +1,6 @@
 github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-04-19/advisor
 github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2017-08-01/analysisservices
-github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2017-03-01/apimanagement
+github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2016-10-10/apimanagement
 github.com/Azure/azure-sdk-for-go/services/appinsights/v1/appinsights
 github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2015-05-01/insights
 github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization

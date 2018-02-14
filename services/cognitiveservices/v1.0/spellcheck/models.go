@@ -106,18 +106,18 @@ const (
 	TypeSpellCheck Type = "SpellCheck"
 )
 
-// BasicAnswer ...
+// BasicAnswer
 type BasicAnswer interface {
 	AsSpellCheck() (*SpellCheck, bool)
 	AsAnswer() (*Answer, bool)
 }
 
-// Answer ...
+// Answer
 type Answer struct {
-	// ID - A String identifier.
-	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSpellCheck', 'TypeAnswer', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse'
 	Type Type `json:"_type,omitempty"`
+	// ID - A String identifier.
+	ID *string `json:"id,omitempty"`
 }
 
 func unmarshalBasicAnswer(body []byte) (BasicAnswer, error) {
@@ -160,12 +160,12 @@ func unmarshalBasicAnswerArray(body []byte) ([]BasicAnswer, error) {
 // MarshalJSON is the custom marshaler for Answer.
 func (a Answer) MarshalJSON() ([]byte, error) {
 	a.Type = TypeAnswer
-	objectMap := make(map[string]interface{})
-	if a.ID != nil {
-		objectMap["id"] = a.ID
-	}
-	objectMap["_type"] = a.Type
-	return json.Marshal(objectMap)
+	type Alias Answer
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(a),
+	})
 }
 
 // AsSpellCheck is the BasicResponseBase implementation for Answer.
@@ -236,26 +236,23 @@ type Error struct {
 
 // ErrorResponse the top-level response that represents a failed request.
 type ErrorResponse struct {
-	// Errors - A list of errors that describe the reasons why the request failed.
-	Errors *[]Error `json:"errors,omitempty"`
-	// ID - A String identifier.
-	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSpellCheck', 'TypeAnswer', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse'
 	Type Type `json:"_type,omitempty"`
+	// ID - A String identifier.
+	ID *string `json:"id,omitempty"`
+	// Errors - A list of errors that describe the reasons why the request failed.
+	Errors *[]Error `json:"errors,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ErrorResponse.
 func (er ErrorResponse) MarshalJSON() ([]byte, error) {
 	er.Type = TypeErrorResponse
-	objectMap := make(map[string]interface{})
-	if er.Errors != nil {
-		objectMap["errors"] = er.Errors
-	}
-	if er.ID != nil {
-		objectMap["id"] = er.ID
-	}
-	objectMap["_type"] = er.Type
-	return json.Marshal(objectMap)
+	type Alias ErrorResponse
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(er),
+	})
 }
 
 // AsSpellCheck is the BasicResponseBase implementation for ErrorResponse.
@@ -321,10 +318,10 @@ type BasicIdentifiable interface {
 
 // Identifiable defines the identity of a resource.
 type Identifiable struct {
-	// ID - A String identifier.
-	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSpellCheck', 'TypeAnswer', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse'
 	Type Type `json:"_type,omitempty"`
+	// ID - A String identifier.
+	ID *string `json:"id,omitempty"`
 }
 
 func unmarshalBasicIdentifiable(body []byte) (BasicIdentifiable, error) {
@@ -379,12 +376,12 @@ func unmarshalBasicIdentifiableArray(body []byte) ([]BasicIdentifiable, error) {
 // MarshalJSON is the custom marshaler for Identifiable.
 func (i Identifiable) MarshalJSON() ([]byte, error) {
 	i.Type = TypeIdentifiable
-	objectMap := make(map[string]interface{})
-	if i.ID != nil {
-		objectMap["id"] = i.ID
-	}
-	objectMap["_type"] = i.Type
-	return json.Marshal(objectMap)
+	type Alias Identifiable
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(i),
+	})
 }
 
 // AsSpellCheck is the BasicResponseBase implementation for Identifiable.
@@ -447,13 +444,12 @@ type BasicResponse interface {
 	AsResponse() (*Response, bool)
 }
 
-// Response defines a response. All schemas that could be returned at the root of a response should inherit from
-// this
+// Response defines a response. All schemas that could be returned at the root of a response should inherit from this
 type Response struct {
-	// ID - A String identifier.
-	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSpellCheck', 'TypeAnswer', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse'
 	Type Type `json:"_type,omitempty"`
+	// ID - A String identifier.
+	ID *string `json:"id,omitempty"`
 }
 
 func unmarshalBasicResponse(body []byte) (BasicResponse, error) {
@@ -504,12 +500,12 @@ func unmarshalBasicResponseArray(body []byte) ([]BasicResponse, error) {
 // MarshalJSON is the custom marshaler for Response.
 func (r Response) MarshalJSON() ([]byte, error) {
 	r.Type = TypeResponse
-	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	objectMap["_type"] = r.Type
-	return json.Marshal(objectMap)
+	type Alias Response
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(r),
+	})
 }
 
 // AsSpellCheck is the BasicResponseBase implementation for Response.
@@ -562,7 +558,7 @@ func (r Response) AsBasicResponseBase() (BasicResponseBase, bool) {
 	return &r, true
 }
 
-// BasicResponseBase ...
+// BasicResponseBase
 type BasicResponseBase interface {
 	AsSpellCheck() (*SpellCheck, bool)
 	AsAnswer() (*Answer, bool)
@@ -575,7 +571,7 @@ type BasicResponseBase interface {
 	AsResponseBase() (*ResponseBase, bool)
 }
 
-// ResponseBase ...
+// ResponseBase
 type ResponseBase struct {
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSpellCheck', 'TypeAnswer', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse'
 	Type Type `json:"_type,omitempty"`
@@ -637,9 +633,12 @@ func unmarshalBasicResponseBaseArray(body []byte) ([]BasicResponseBase, error) {
 // MarshalJSON is the custom marshaler for ResponseBase.
 func (rb ResponseBase) MarshalJSON() ([]byte, error) {
 	rb.Type = TypeResponseBase
-	objectMap := make(map[string]interface{})
-	objectMap["_type"] = rb.Type
-	return json.Marshal(objectMap)
+	type Alias ResponseBase
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(rb),
+	})
 }
 
 // AsSpellCheck is the BasicResponseBase implementation for ResponseBase.
@@ -695,25 +694,22 @@ func (rb ResponseBase) AsBasicResponseBase() (BasicResponseBase, bool) {
 // SpellCheck ...
 type SpellCheck struct {
 	autorest.Response `json:"-"`
-	FlaggedTokens     *[]SpellingFlaggedToken `json:"flaggedTokens,omitempty"`
-	// ID - A String identifier.
-	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSpellCheck', 'TypeAnswer', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse'
 	Type Type `json:"_type,omitempty"`
+	// ID - A String identifier.
+	ID            *string                 `json:"id,omitempty"`
+	FlaggedTokens *[]SpellingFlaggedToken `json:"flaggedTokens,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SpellCheck.
 func (sc SpellCheck) MarshalJSON() ([]byte, error) {
 	sc.Type = TypeSpellCheck
-	objectMap := make(map[string]interface{})
-	if sc.FlaggedTokens != nil {
-		objectMap["flaggedTokens"] = sc.FlaggedTokens
-	}
-	if sc.ID != nil {
-		objectMap["id"] = sc.ID
-	}
-	objectMap["_type"] = sc.Type
-	return json.Marshal(objectMap)
+	type Alias SpellCheck
+	return json.Marshal(&struct {
+		Alias
+	}{
+		Alias: (Alias)(sc),
+	})
 }
 
 // AsSpellCheck is the BasicResponseBase implementation for SpellCheck.

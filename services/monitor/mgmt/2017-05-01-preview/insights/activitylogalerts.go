@@ -53,7 +53,7 @@ func (client ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resour
 						Chain: []validation.Constraint{{Target: "activityLogAlert.ActivityLogAlert.Condition.AllOf", Name: validation.Null, Rule: true, Chain: nil}}},
 					{Target: "activityLogAlert.ActivityLogAlert.Actions", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("insights.ActivityLogAlertsClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewErrorWithValidationError(err, "insights.ActivityLogAlertsClient", "CreateOrUpdate")
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, activityLogAlertName, activityLogAlert)

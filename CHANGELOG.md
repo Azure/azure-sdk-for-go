@@ -5,8 +5,7 @@
 ### Changes
 
 - Update `latest` profile to point to latest stable API versions.
-- Add new API version for Azure Monitoring service.
-- Update Cognitive Services dataplane implementation.
+- Add new API version for Azure Monitoring service and for Batch Data plane service.
 
 ## `v14.0.2`
 

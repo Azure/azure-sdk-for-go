@@ -55,7 +55,7 @@ func (client LogProfilesClient) CreateOrUpdate(ctx context.Context, logProfileNa
 								Chain: []validation.Constraint{{Target: "parameters.LogProfileProperties.RetentionPolicy.Days", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewError("insights.LogProfilesClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewErrorWithValidationError(err, "insights.LogProfilesClient", "CreateOrUpdate")
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, logProfileName, parameters)

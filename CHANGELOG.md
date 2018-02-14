@@ -4,6 +4,7 @@
 
 ### Changes
 
+- Update README with details on new authentication helpers.
 - Update `latest` profile to point to latest stable API versions.
 - Add new API version for Azure Monitoring service and for Batch Data plane service.
 

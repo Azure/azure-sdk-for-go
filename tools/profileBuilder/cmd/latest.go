@@ -20,6 +20,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 
 	"github.com/Azure/azure-sdk-for-go/tools/profileBuilder/model"
 	"github.com/marstr/randname"
@@ -71,6 +72,14 @@ By default, this command ignores API versions that are in preview.`,
 		if latestFlags.GetBool(previewLongName) {
 			packageStrategy.Predicate = model.AcceptAll
 			outputLog.Println("Using preview versions.")
+		}
+
+		deleteLoc := path.Join(latestFlags.GetString(outputLocationLongName), latestFlags.GetString(nameLongName))
+		if viper.GetBool("clear-output") {
+			if err := model.DeleteChildDirs(deleteLoc); err != nil {
+				errLog.Print("Fatal! Unable to clear output-folder:", err)
+				return
+			}
 		}
 
 		model.BuildProfile(

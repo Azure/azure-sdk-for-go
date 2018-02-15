@@ -19,7 +19,7 @@
 
 package batch
 
-import original "github.com/Azure/azure-sdk-for-go/services/batch/2017-09-01.6.0/batch"
+import original "github.com/Azure/azure-sdk-for-go/services/batch/2017-05-01.5.0/batch"
 
 type AccountClient = original.AccountClient
 
@@ -245,13 +245,6 @@ const (
 	UserError   ErrorCategory = original.UserError
 )
 
-type InboundEndpointProtocol = original.InboundEndpointProtocol
-
-const (
-	TCP InboundEndpointProtocol = original.TCP
-	UDP InboundEndpointProtocol = original.UDP
-)
-
 type JobAction = original.JobAction
 
 const (
@@ -294,13 +287,6 @@ const (
 	JobStateDisabling   JobState = original.JobStateDisabling
 	JobStateEnabling    JobState = original.JobStateEnabling
 	JobStateTerminating JobState = original.JobStateTerminating
-)
-
-type NetworkSecurityGroupRuleAccess = original.NetworkSecurityGroupRuleAccess
-
-const (
-	Allow NetworkSecurityGroupRuleAccess = original.Allow
-	Deny  NetworkSecurityGroupRuleAccess = original.Deny
 )
 
 type OnAllTasksComplete = original.OnAllTasksComplete
@@ -361,13 +347,6 @@ const (
 	StartTaskStateRunning   StartTaskState = original.StartTaskStateRunning
 )
 
-type StorageAccountType = original.StorageAccountType
-
-const (
-	PremiumLRS  StorageAccountType = original.PremiumLRS
-	StandardLRS StorageAccountType = original.StandardLRS
-)
-
 type SubtaskState = original.SubtaskState
 
 const (
@@ -382,13 +361,6 @@ const (
 	TaskAddStatusClientError TaskAddStatus = original.TaskAddStatusClientError
 	TaskAddStatusServerError TaskAddStatus = original.TaskAddStatusServerError
 	TaskAddStatusSuccess     TaskAddStatus = original.TaskAddStatusSuccess
-)
-
-type TaskCountValidationStatus = original.TaskCountValidationStatus
-
-const (
-	Unvalidated TaskCountValidationStatus = original.Unvalidated
-	Validated   TaskCountValidationStatus = original.Validated
 )
 
 type TaskExecutionResult = original.TaskExecutionResult
@@ -449,7 +421,6 @@ type CloudTaskListResultIterator = original.CloudTaskListResultIterator
 type CloudTaskListResultPage = original.CloudTaskListResultPage
 type CloudTaskListSubtasksResult = original.CloudTaskListSubtasksResult
 type ComputeNode = original.ComputeNode
-type ComputeNodeEndpointConfiguration = original.ComputeNodeEndpointConfiguration
 type ComputeNodeError = original.ComputeNodeError
 type ComputeNodeGetRemoteLoginSettingsResult = original.ComputeNodeGetRemoteLoginSettingsResult
 type ComputeNodeInformation = original.ComputeNodeInformation
@@ -457,9 +428,6 @@ type ComputeNodeListResult = original.ComputeNodeListResult
 type ComputeNodeListResultIterator = original.ComputeNodeListResultIterator
 type ComputeNodeListResultPage = original.ComputeNodeListResultPage
 type ComputeNodeUser = original.ComputeNodeUser
-type ContainerConfiguration = original.ContainerConfiguration
-type ContainerRegistry = original.ContainerRegistry
-type DataDisk = original.DataDisk
 type DeleteCertificateError = original.DeleteCertificateError
 type EnvironmentSetting = original.EnvironmentSetting
 type Error = original.Error
@@ -471,8 +439,6 @@ type ExitConditions = original.ExitConditions
 type ExitOptions = original.ExitOptions
 type FileProperties = original.FileProperties
 type ImageReference = original.ImageReference
-type InboundEndpoint = original.InboundEndpoint
-type InboundNATPool = original.InboundNATPool
 type JobAddParameter = original.JobAddParameter
 type JobConstraints = original.JobConstraints
 type JobDisableParameter = original.JobDisableParameter
@@ -499,7 +465,6 @@ type MetadataItem = original.MetadataItem
 type MultiInstanceSettings = original.MultiInstanceSettings
 type NameValuePair = original.NameValuePair
 type NetworkConfiguration = original.NetworkConfiguration
-type NetworkSecurityGroupRule = original.NetworkSecurityGroupRule
 type NodeAgentSku = original.NodeAgentSku
 type NodeDisableSchedulingParameter = original.NodeDisableSchedulingParameter
 type NodeFile = original.NodeFile
@@ -517,7 +482,6 @@ type OutputFileDestination = original.OutputFileDestination
 type OutputFileUploadOptions = original.OutputFileUploadOptions
 type PoolAddParameter = original.PoolAddParameter
 type PoolEnableAutoScaleParameter = original.PoolEnableAutoScaleParameter
-type PoolEndpointConfiguration = original.PoolEndpointConfiguration
 type PoolEvaluateAutoScaleParameter = original.PoolEvaluateAutoScaleParameter
 type PoolInformation = original.PoolInformation
 type PoolListUsageMetricsResult = original.PoolListUsageMetricsResult
@@ -544,9 +508,6 @@ type TaskAddCollectionResult = original.TaskAddCollectionResult
 type TaskAddParameter = original.TaskAddParameter
 type TaskAddResult = original.TaskAddResult
 type TaskConstraints = original.TaskConstraints
-type TaskContainerExecutionInformation = original.TaskContainerExecutionInformation
-type TaskContainerSettings = original.TaskContainerSettings
-type TaskCounts = original.TaskCounts
 type TaskDependencies = original.TaskDependencies
 type TaskExecutionInformation = original.TaskExecutionInformation
 type TaskFailureInformation = original.TaskFailureInformation

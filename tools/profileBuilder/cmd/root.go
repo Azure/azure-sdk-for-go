@@ -79,8 +79,11 @@ func init() {
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.profileBuilder.yaml)")
 
+	rootCmd.PersistentFlags().BoolP("clear-output", "c", false, "Removes any directories in the output-folder before writing a profile.")
 	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "Use stderr to log verbose output.")
+
 	viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
+	viper.BindPFlag("clear-output", rootCmd.PersistentFlags().Lookup("clear-output"))
 }
 
 // initConfig reads in config file and ENV variables if set.

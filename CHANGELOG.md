@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v14.1.0`
+
+### Changes
+
+- Update README with details on new authentication helpers.
+- Update `latest` profile to point to latest stable API versions.
+- Add new API version for Azure Monitoring service and for Batch Data plane service.
+
 ## `v14.0.2`
 
 ### Changes

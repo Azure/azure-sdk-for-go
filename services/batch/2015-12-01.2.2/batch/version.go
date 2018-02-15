@@ -1,4 +1,4 @@
-package newssearch
+package batch
 
 import "github.com/Azure/azure-sdk-for-go/version"
 
@@ -21,7 +21,7 @@ import "github.com/Azure/azure-sdk-for-go/version"
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/" + version.Number + " newssearch/1.0"
+	return "Azure-SDK-For-Go/" + version.Number + " batch/2015-12-01.2.2"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

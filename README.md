@@ -1,7 +1,7 @@
 # Azure SDK for Go
 
-[![godoc](https://godoc.org/github.com/Azure/azure-sdk-for-go?status.svg)](https://godoc.org/github.com/Azure/azure-sdk-for-go) 
-[![Build Status](https://travis-ci.org/Azure/azure-sdk-for-go.svg?branch=master)](https://travis-ci.org/Azure/azure-sdk-for-go) 
+[![godoc](https://godoc.org/github.com/Azure/azure-sdk-for-go?status.svg)](https://godoc.org/github.com/Azure/azure-sdk-for-go)
+[![Build Status](https://travis-ci.org/Azure/azure-sdk-for-go.svg?branch=master)](https://travis-ci.org/Azure/azure-sdk-for-go)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Azure/azure-sdk-for-go)](https://goreportcard.com/report/github.com/Azure/azure-sdk-for-go)
 
 azure-sdk-for-go provides Go packages for managing and using Azure services. It has been
@@ -53,98 +53,111 @@ If you need to install Go, follow [the official instructions](https://golang.org
 For complete examples of many scenarios see [Azure-Samples/azure-sdk-for-go-samples][samples_repo].
 
 1. Import a package from the [services][services_dir] directory.
-1. Create and authenticate a client with a `New*Client` func, e.g.
+2. Create and authenticate a client with a `New*Client` func, e.g.
    `c := compute.NewVirtualMachinesClient(...)`.
-1. Invoke API methods using the client, e.g. `c.CreateOrUpdate(...)`.
-1. Handle responses.
+3. Invoke API methods using the client, e.g. `c.CreateOrUpdate(...)`.
+4. Handle responses.
 
 [services_dir]: https://github.com/Azure/azure-sdk-for-go/tree/master/services
 
 For example, to create a new virtual network (substitute your own values for
 strings in angle brackets):
 
-Note: For more on `OAuthTokenProvider` and authentication see [the next
+Note: For more on authentication and the `Authorizer` interface see [the next
   section](#authentication).
 
 ```go
+package main
+
 import (
+	"context"
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-09-01/network"
-	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure/auth"
 	"github.com/Azure/go-autorest/autorest/to"
 )
 
-vnetClient := network.NewVirtualNetworksClient("<subscriptionID>")
-vnetClient.Authorizer = autorest.NewBearerAuthorizer("<OAuthTokenProvider>")
+func main() {
+	vnetClient := network.NewVirtualNetworksClient("<subscriptionID>")
+	authorizer, err := auth.NewAuthorizerFromEnvironment()
 
-vnetClient.CreateOrUpdate(
-  "<resourceGroupName>",
-  "<vnetName>",
-  network.VirtualNetwork{
-    Location: to.StringPtr("<azureRegion>"),
-    VirtualNetworkPropertiesFormat: &network.VirtualNetworkPropertiesFormat{
-      AddressSpace: &network.AddressSpace{
-        AddressPrefixes: &[]string{"10.0.0.0/8"},
-      },
-      Subnets: &[]network.Subnet{
-        {
-          Name: to.StringPtr("<subnet1Name>"),
-          SubnetPropertiesFormat: &network.SubnetPropertiesFormat{
-            AddressPrefix: to.StringPtr("10.0.0.0/16"),
-          },
-        },
-        {
-          Name: to.StringPtr("<subnet2Name>"),
-          SubnetPropertiesFormat: &network.SubnetPropertiesFormat{
-            AddressPrefix: to.StringPtr("10.1.0.0/16"),
-          },
-        },
-      },
-    },
-  },
-  nil)
+	if err == nil {
+		vnetClient.Authorizer = authorizer
+	}
+
+	vnetClient.CreateOrUpdate(context.Background(),
+		"<resourceGroupName>",
+		"<vnetName>",
+		network.VirtualNetwork{
+			Location: to.StringPtr("<azureRegion>"),
+			VirtualNetworkPropertiesFormat: &network.VirtualNetworkPropertiesFormat{
+				AddressSpace: &network.AddressSpace{
+					AddressPrefixes: &[]string{"10.0.0.0/8"},
+				},
+				Subnets: &[]network.Subnet{
+					{
+						Name: to.StringPtr("<subnet1Name>"),
+						SubnetPropertiesFormat: &network.SubnetPropertiesFormat{
+							AddressPrefix: to.StringPtr("10.0.0.0/16"),
+						},
+					},
+					{
+						Name: to.StringPtr("<subnet2Name>"),
+						SubnetPropertiesFormat: &network.SubnetPropertiesFormat{
+							AddressPrefix: to.StringPtr("10.1.0.0/16"),
+						},
+					},
+				},
+			},
+		})
+}
 ```
 
 ### Authentication
 
-Most SDK operations require an OAuth token for authentication and authorization.
+Most SDK operations require an OAuth token for authentication and authorization. These are
+made available in the Go SDK For Azure through types implementing the `Authorizer` interface.
 You can get one from Azure Active Directory using the SDK's
-[authentication](https://godoc.org/github.com/Azure/go-autorest/autorest/adal) package
-and an existing service principal (aka Client ID and secret) as shown in the
-following example.
+[authentication](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth) package. The `Authorizer` returned  should
+be set as the authorizer for the resource client, as shown in the [previous section](#use).
 
-The `OAuthTokenProvider` returned by this sample should be set as the
-authorizer for the resource client, as shown in the [previous section](#use).
+You can get an authorizer in the following ways:
+1. From the **Environment**:
+  - Use `auth.auth.NewAuthorizerFromEnvironment()`. This call will try to get an authorizer based on the environment
+variables with different types of credentials in the following order:
+    1. **Client Credentials**: Uses the AAD App Secret for auth.
+      - `AZURE_TENANT_ID`: Specifies the Tenant to which to authenticate.
+      - `AZURE_CLIENT_ID`: Specifies the app client ID to use.
+      - `AZURE_CLIENT_SECRET`: Specifies the app secret to use.
+    2. **Client Certificate**: Uses a certificate that was configured on the AAD Service Principal.
+      - `AZURE_TENANT_ID`: Specifies the Tenant to which to authenticate.
+      - `AZURE_CLIENT_ID`: Specifies the app client ID to use.
+      - `AZURE_CERTIFICATE_PATH`: Specifies the certificate Path to use.
+      - `AZURE_CERTIFICATE_PASSWORD`: Specifies the certificate password to use.
+    3. **Username Pasword**: Uses a username and a password for auth. This is not recommended. Use `Device Flow` Auth instead for user interactive acccess.
+      - `AZURE_TENANT_ID`: Specifies the Tenant to which to authenticate.
+      - `AZURE_CLIENT_ID`: Specifies the app client ID to use.
+      - `AZURE_USERNAME`: Specifies the username to use.
+      - `AZURE_PASSWORD`: Specifies the password to use.
+    4. **MSI**: Only available for apps running in Azure. No configuration needed as it leverages the fact that the app is running in Azure. See [Azure Managed Service Identity](https://docs.microsoft.com/en-us/azure/active-directory/msi-overview).
 
-Note: To create a new service principal, run
+  - Optionally, the following environment variables can be defined:
+    - `AZURE_ENVIRONMENT`: Specifies the Azure Environment to use. If not set, it defaults to `AzurePublicCloud`. (Not applicable to MSI based auth)
+    - `AZURE_AD_RESOURCE`: Specifies the AAD resource ID to use. If not set, it defaults to `ResourceManagerEndpoint`which allows management operations against Azure Resource Manager.
+
+2. From an **Auth File**:
+ - Create a service principal and output the file content using `az ad sp create-for-rbac --sdk-auth` from the Azure CLI.For more details see [az ad sp](https://docs.microsoft.com/en-us/cli/azure/ad/sp).
+ - Set environment variable `AZURE_AUTH_LOCATION` for finding the file.
+ - Use `auth.NewAuthorizerFromFile()` for getting the `Authorizer` based on the auth file.
+
+3. From **Device Flow** by configuring `auth.DeviceFlowConfig` and calling the `Authorizer()` method.
+
+Note: To authenticate you first need to create a service principal in Azure. To create a new service principal, run
 `az ad sp create-for-rbac -n "<app_name>"` in the
 [azure-cli](https://github.com/Azure/azure-cli). See
 [these docs](https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest)
-for more info. Copy the new principal's ID, secret, and tenant ID for use in
-your app.
+for more info. Copy the new principal's ID, secret, and tenant ID for use in your app.
 
-
-```go
-import (
-	"github.com/Azure/go-autorest/autorest/adal"
-	"github.com/Azure/go-autorest/autorest/azure"
-)
-
-var (
-	clientID =        "<service_principal_ID>"
-	clientSecret =    "<service_principal_secret>"
-	tenantID =        "<tenant_ID>"
-	subscriptionID =  "<subscription_ID>"
-)
-
-func getServicePrincipalToken() (adal.OAuthTokenProvider, error) {
-	config, err := adal.NewOAuthConfig(azure.PublicCloud.ActiveDirectoryEndpoint, tenantID)
-	return adal.NewServicePrincipalToken(
-		*oauthConfig,
-		clientID,
-		clientSecret,
-		azure.PublicCloud.ResourceManagerEndpoint)
-}
-```
+Alternatively, if your apps are running in Azure, you can now leverage the [Managed Service Identity](https://docs.microsoft.com/en-us/azure/active-directory/msi-overview).
 
 # Versioning
 
@@ -227,7 +240,7 @@ import "github.com/Azure/azure-sdk-for-go/profiles/preview/compute/mgmt/compute"
 
 ### Other Azure packages for Go
 
-- [Azure Storage Blobs](https://azure.microsoft.com/services/storage/blobs) - [github.com/Azure/azure-storage-blob-go](https://github.com/Azure/azure-storage-blob-go) 
+- [Azure Storage Blobs](https://azure.microsoft.com/services/storage/blobs) - [github.com/Azure/azure-storage-blob-go](https://github.com/Azure/azure-storage-blob-go)
 - [Azure Applications Insights](https://azure.microsoft.com/en-us/services/application-insights/) - [github.com/Microsoft/ApplicationInsights-Go](https://github.com/Microsoft/ApplicationInsights-Go)
 
 ## License

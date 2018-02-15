@@ -6,7 +6,7 @@
       "dep ensure",
       "go install",
       "cd ../..",
-      "go generate",
+      "go generate ./profiles/...",
       "gofmt -w ./services/",
       "gofmt -w ./profiles/"
     ],

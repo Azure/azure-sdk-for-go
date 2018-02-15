@@ -11,13 +11,13 @@
       "gofmt -w ./profiles/"
     ],
     "autorest_options": {
-      "use": "@microsoft.azure/autorest.go@preview",
+      "use": "@microsoft.azure/autorest.go@2.1.86",
       "go": "",
       "verbose": "",
       "sdkrel:go-sdk-folder": ".",
       "multiapi": "",
-      "package-version": "nightly",
-      "user-agent": "Azure-SDK-For-Go/nightly services"
+      "package-version": "latest",
+      "user-agent": "Azure-SDK-For-Go/latest services"
     },
     "version": "0.2.0"
   }

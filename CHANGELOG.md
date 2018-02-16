@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v14.1.1`
+
+- Fixing timestamp marshalling bug in the `storage` package.
+- Updating `profileBuilder` to clear-output folders when it is run by `go generate`.
+- Tweaking Swagger -> SDK config to use "latest" instead of "nightly" and be tied to a particular version of autorest.go.
+
 ## `v14.1.0`
 
 ### Changes

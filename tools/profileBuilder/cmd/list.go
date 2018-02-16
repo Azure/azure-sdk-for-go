@@ -21,6 +21,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 
 	"github.com/Azure/azure-sdk-for-go/tools/profileBuilder/model"
 	"github.com/marstr/randname"
@@ -69,8 +70,16 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 		} else if fileHandle, err := os.Open(listFlags.GetString(inputLongName)); err == nil {
 			input = fileHandle
 		} else {
-			errLog.Printf("Unable to open file %q", listFlags.GetString(inputLongName))
+			errLog.Printf("Fatal! Unable to open file %q", listFlags.GetString(inputLongName))
 			return
+		}
+
+		deleteLoc := path.Join(listFlags.GetString(outputLocationLongName), listFlags.GetString(nameLongName))
+		if viper.GetBool("clear-output") {
+			if err := model.DeleteChildDirs(deleteLoc); err != nil {
+				errLog.Print("Fatal! Unable to clear output-folder:", err)
+				return
+			}
 		}
 
 		model.BuildProfile(

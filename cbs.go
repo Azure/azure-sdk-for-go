@@ -51,7 +51,8 @@ func (sb *serviceBus) newCbsLink() (*cbsLink, error) {
 	cbsClientAddress := cbsReplyToPrefix + sb.name.String()
 	authReceiver, err := authSession.NewReceiver(
 		amqp.LinkSourceAddress(cbsAddress),
-		amqp.LinkTargetAddress(cbsClientAddress))
+		amqp.LinkTargetAddress(cbsClientAddress),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -68,14 +69,13 @@ func (sb *serviceBus) ensureCbsLink() error {
 	sb.cbsMu.Lock()
 	defer sb.cbsMu.Unlock()
 
-	if sb.cbsLink == nil {
-		link, err := sb.newCbsLink()
-		if err != nil {
-			return err
-		}
-		sb.cbsLink = link
+	if sb.cbsLink != nil {
+		return nil
 	}
-	return nil
+
+	link, err := sb.newCbsLink()
+	sb.cbsLink = link
+	return err
 }
 
 func (sb *serviceBus) negotiateClaim(entityPath string) error {
@@ -103,31 +103,40 @@ func (sb *serviceBus) negotiateClaim(entityPath string) error {
 
 	_, err = retry(3, 1*time.Second, func() (interface{}, error) {
 		log.Debugf("Attempting to negotiate cbs for %s in namespace %s", entityPath, sb.namespace)
-		err := sb.cbsLink.send(context.Background(), msg)
+
+		ctx := context.Background()
+
+		err := sb.cbsLink.send(ctx, msg)
 		if err != nil {
 			return nil, err
 		}
 
-		res, err := sb.cbsLink.receive(context.Background())
+		res, err := sb.cbsLink.receive(ctx)
 		if err != nil {
 			return nil, err
 		}
 
-		if statusCode, ok := res.ApplicationProperties[cbsStatusCodeKey].(int32); ok {
-			description := res.ApplicationProperties[cbsDescriptionKey].(string)
-			if statusCode >= 200 && statusCode < 300 {
-				log.Debugf("Successfully negotiated cbs for %s in namespace %s", entityPath, sb.namespace)
-				return res, nil
-			} else if statusCode >= 500 {
-				log.Debugf("Re-negotiating cbs for %s in namespace %s. Received status code: %d and error: %s", entityPath, sb.namespace, statusCode, description)
-				return nil, &retryable{message: "cbs error: " + description}
-			} else {
-				log.Debugf("Failed negotiating cbs for %s in namespace %s with error %d", entityPath, sb.namespace, statusCode)
-				return nil, fmt.Errorf("cbs error: failed with code %d and message: %s", statusCode, description)
-			}
+		statusCode, ok := res.ApplicationProperties[cbsStatusCodeKey].(int32)
+		if !ok {
+			return nil, &retryable{message: "cbs error: didn't understand the replied message status code"}
 		}
 
-		return nil, &retryable{message: "cbs error: didn't understand the replied message status code"}
+		description, ok := res.ApplicationProperties[cbsDescriptionKey].(string)
+		if !ok {
+			return nil, &retryable{message: "cbs error: didn't understand the replied message description"}
+		}
+
+		switch {
+		case statusCode >= 200 && statusCode < 300:
+			log.Debugf("Successfully negotiated cbs for %s in namespace %s", entityPath, sb.namespace)
+			return res, nil
+		case statusCode >= 500:
+			log.Debugf("Re-negotiating cbs for %s in namespace %s. Received status code: %d and error: %s", entityPath, sb.namespace, statusCode, description)
+			return nil, &retryable{message: "cbs error: " + description}
+		default:
+			log.Debugf("Failed negotiating cbs for %s in namespace %s with error %d", entityPath, sb.namespace, statusCode)
+			return nil, fmt.Errorf("cbs error: failed with code %d and message: %s", statusCode, description)
+		}
 	})
 
 	return err

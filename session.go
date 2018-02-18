@@ -21,7 +21,6 @@ func newSession(amqpSession *amqp.Session) *session {
 	return &session{
 		Session:   amqpSession,
 		SessionID: uuid.NewV4(),
-		counter:   0,
 	}
 }
 

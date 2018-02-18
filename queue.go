@@ -18,7 +18,7 @@ type (
 /*
 QueueWithPartitioning ensure the created queue will be a partitioned queue. Partitioned queues offer increased
 storage and availability compared to non-partitioned queues with the trade-off of requiring the following to ensure
-FIFO message retreival:
+FIFO message retrieval:
 
 SessionId. If a message has the SessionId property set, then Service Bus uses the SessionId property as the
 partition key. This way, all messages that belong to the same session are assigned to the same fragment and handled

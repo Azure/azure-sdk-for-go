@@ -2,8 +2,6 @@ package servicebus
 
 import (
 	"context"
-	"net"
-	"time"
 
 	"github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
@@ -17,7 +15,7 @@ type (
 		session    *session
 		receiver   *amqp.Receiver
 		entityPath string
-		done       chan struct{}
+		done       func()
 		Name       uuid.UUID
 	}
 )
@@ -27,21 +25,21 @@ func (sb *serviceBus) newReceiver(entityPath string) (*receiver, error) {
 	receiver := &receiver{
 		sb:         sb,
 		entityPath: entityPath,
-		done:       make(chan struct{}),
 	}
 	err := receiver.newSessionAndLink()
-	if err != nil {
-		return nil, err
-	}
-	return receiver, nil
+	return receiver, err
 }
 
 // Close will close the AMQP session and link of the receiver
 func (r *receiver) Close() error {
-	close(r.done)
-
+	// This isn't safe to be called concurrently with Listen
+	if r.done != nil {
+		r.done()
+	}
 	err := r.receiver.Close()
 	if err != nil {
+		// ensure session is closed on receiver error
+		_ = r.session.Close()
 		return err
 	}
 
@@ -60,67 +58,67 @@ func (r *receiver) Recover() error {
 
 // Listen start a listener for messages sent to the entity path
 func (r *receiver) Listen(handler Handler) {
+	ctx, done := context.WithCancel(context.Background())
+	r.done = done
 	messages := make(chan *amqp.Message)
-	go r.listenForMessages(messages)
-	go r.handleMessages(messages, handler)
+	go r.listenForMessages(ctx, messages)
+	go r.handleMessages(ctx, messages, handler)
 }
 
-func (r *receiver) handleMessages(messages chan *amqp.Message, handler Handler) {
+func (r *receiver) handleMessages(ctx context.Context, messages chan *amqp.Message, handler Handler) {
 	for {
 		select {
-		case <-r.done:
+		case <-ctx.Done():
 			log.Debug("done handling messages")
-			close(messages)
 			return
 		case msg := <-messages:
-			ctx := context.Background()
-			id := interface{}("null")
+			var id interface{} = "null"
 			if msg.Properties != nil {
 				id = msg.Properties.MessageID
 			}
+
 			log.Debugf("Message id: %s is being passed to handler", id)
 			err := handler(ctx, msg)
-
 			if err != nil {
 				msg.Reject()
 				log.Debugf("Message rejected: id: %s", id)
-			} else {
-				// Accept message
-				msg.Accept()
-				log.Debugf("Message accepted: id: %s", id)
+				continue
 			}
+
+			// Accept message
+			msg.Accept()
+			log.Debugf("Message accepted: id: %s", id)
 		}
 	}
 }
 
-func (r *receiver) listenForMessages(msgChan chan *amqp.Message) {
+func (r *receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Message) {
 	for {
-		select {
-		case <-r.done:
-			log.Debug("done listenting for messages")
-			return
-		default:
-			//log.Debug("attempting to receive messages")
-			waitCtx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
-			msg, err := r.receiver.Receive(waitCtx)
-			cancel()
+		//log.Debug("attempting to receive messages")
+		msg, err := r.receiver.Receive(ctx)
+		// TODO (vcabbage): This previously checked `net.Error.Timeout() == true`, which
+		//                  should never happen. If it does it's a bug in pack.ag/amqp.
+		if err != nil {
+			if ctx.Err() != nil {
+				return
+			}
 
-			// TODO: handle receive errors better. It's not sufficient to check only for timeout
-			if err, ok := err.(net.Error); ok && err.Timeout() {
-				log.Debug("attempting to receive messages timed out")
-				continue
-			} else if err != nil {
-				log.Fatalln(err)
-				time.Sleep(10 * time.Second)
-			}
-			if msg != nil {
-				id := interface{}("null")
-				if msg.Properties != nil {
-					id = msg.Properties.MessageID
-				}
-				log.Debugf("Message received: %s", id)
-				msgChan <- msg
-			}
+			// TODO (vcabbage): I'm not sure what the appropriate action is here, this was
+			//                 previously a call to `log.Fatalln`, which calls os.Exit(1).
+			log.Error(err)
+			return
+		}
+
+		var id interface{} = "null"
+		if msg.Properties != nil {
+			id = msg.Properties.MessageID
+		}
+		log.Debugf("Message received: %s", id)
+
+		select {
+		case msgChan <- msg:
+		case <-ctx.Done():
+			return
 		}
 	}
 }
@@ -141,7 +139,8 @@ func (r *receiver) newSessionAndLink() error {
 
 	amqpReceiver, err := amqpSession.NewReceiver(
 		amqp.LinkSourceAddress(r.entityPath),
-		amqp.LinkCredit(10))
+		amqp.LinkCredit(10),
+	)
 	if err != nil {
 		return err
 	}

@@ -27,11 +27,7 @@ func (sb *serviceBus) newSender(entityPath string) (*sender, error) {
 
 	log.Debugf("creating a new sender for entity path %s", entityPath)
 	err := s.newSessionAndLink()
-	if err != nil {
-		return nil, err
-	}
-
-	return s, nil
+	return s, err
 }
 
 // Recover will attempt to close the current session and link, then rebuild them
@@ -48,6 +44,7 @@ func (s *sender) Recover() error {
 func (s *sender) Close() error {
 	err := s.sender.Close()
 	if err != nil {
+		_ = s.session.Close()
 		return err
 	}
 

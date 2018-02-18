@@ -103,7 +103,7 @@ func QueueWithAutoDeleteOnIdle(window *time.Duration) QueueOption {
 func QueueWithMessageTimeToLive(window *time.Duration) QueueOption {
 	return func(q *mgmt.SBQueue) error {
 		if window == nil {
-			duration := time.Duration(14 * 24 * time.Hour)
+			duration := 14 * 24 * time.Hour
 			window = &duration
 		}
 		q.DefaultMessageTimeToLive = durationTo8601Seconds(window)
@@ -117,7 +117,7 @@ func QueueWithMessageTimeToLive(window *time.Duration) QueueOption {
 func QueueWithLockDuration(window *time.Duration) QueueOption {
 	return func(q *mgmt.SBQueue) error {
 		if window == nil {
-			duration := time.Duration(1 * time.Minute)
+			duration := 1 * time.Minute
 			window = &duration
 		}
 		q.LockDuration = durationTo8601Seconds(window)

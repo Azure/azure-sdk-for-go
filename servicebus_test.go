@@ -82,9 +82,7 @@ func (suite *ServiceBusSuite) TestQueue() {
 	}
 
 	sb := suite.getNewInstance()
-	defer func() {
-		sb.Close()
-	}()
+	defer sb.Close()
 
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
@@ -200,7 +198,9 @@ func TestServiceBusSuite(t *testing.T) {
 func TestCreateFromConnectionString(t *testing.T) {
 	connStr := os.Getenv("AZURE_SERVICE_BUS_CONN_STR") // `Endpoint=sb://XXXX.servicebus.windows.net/;SharedAccessKeyName=XXXX;SharedAccessKey=XXXX`
 	sb, err := NewWithConnectionString(connStr)
-	defer sb.Close()
+	if err != nil {
+		sb.Close()
+	}
 	assert.Nil(t, err)
 }
 

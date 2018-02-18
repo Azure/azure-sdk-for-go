@@ -74,7 +74,6 @@ type (
 		subscriptionID   string
 		resourceGroup    string
 		namespace        string
-		primaryKey       string
 		receivers        []*receiver
 		senders          map[string]*sender
 		receiverMu       sync.Mutex

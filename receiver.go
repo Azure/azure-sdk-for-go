@@ -45,12 +45,7 @@ func (r *receiver) Close() error {
 		return err
 	}
 
-	err = r.session.Close()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return r.session.Close()
 }
 
 // Recover will attempt to close the current session and link, then rebuild them
@@ -60,12 +55,7 @@ func (r *receiver) Recover() error {
 		return err
 	}
 
-	err = r.newSessionAndLink()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return r.newSessionAndLink()
 }
 
 // Listen start a listener for messages sent to the entity path

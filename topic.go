@@ -97,7 +97,7 @@ func TopicWithAutoDeleteOnIdle(window *time.Duration) TopicOption {
 func TopicWithMessageTimeToLive(window *time.Duration) TopicOption {
 	return func(t *mgmt.SBTopic) error {
 		if window == nil {
-			duration := time.Duration(14 * 24 * time.Hour)
+			duration := 14 * 24 * time.Hour
 			window = &duration
 		}
 		t.DefaultMessageTimeToLive = durationTo8601Seconds(window)

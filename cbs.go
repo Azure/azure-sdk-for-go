@@ -79,7 +79,10 @@ func (sb *serviceBus) ensureCbsLink() error {
 }
 
 func (sb *serviceBus) negotiateClaim(entityPath string) error {
-	sb.ensureCbsLink()
+	err := sb.ensureCbsLink()
+	if err != nil {
+		return err
+	}
 	sb.cbsLink.negotiateMu.Lock()
 	defer sb.cbsLink.negotiateMu.Unlock()
 
@@ -98,7 +101,7 @@ func (sb *serviceBus) negotiateClaim(entityPath string) error {
 		},
 	}
 
-	_, err := retry(3, 1*time.Second, func() (interface{}, error) {
+	_, err = retry(3, 1*time.Second, func() (interface{}, error) {
 		log.Debugf("Attempting to negotiate cbs for %s in namespace %s", entityPath, sb.namespace)
 		err := sb.cbsLink.send(context.Background(), msg)
 		if err != nil {
@@ -128,20 +131,6 @@ func (sb *serviceBus) negotiateClaim(entityPath string) error {
 	})
 
 	return err
-}
-
-func (cl *cbsLink) forceClose() {
-	if cl.sender != nil {
-		cl.sender.Close()
-	}
-
-	if cl.receiver != nil {
-		cl.receiver.Close()
-	}
-
-	if cl.session != nil {
-		cl.session.Close()
-	}
 }
 
 func (cl *cbsLink) send(ctx context.Context, msg *amqp.Message) error {

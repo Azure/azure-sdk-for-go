@@ -25,9 +25,7 @@ func (suite *ServiceBusSuite) TestQueueManagement() {
 	}
 
 	sb := suite.getNewInstance()
-	defer func() {
-		sb.Close()
-	}()
+	defer sb.Close()
 
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {

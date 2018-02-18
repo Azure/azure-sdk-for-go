@@ -1,9 +1,10 @@
 package servicebus
 
 import (
+	"sync/atomic"
+
 	"github.com/satori/go.uuid"
 	"pack.ag/amqp"
-	"sync/atomic"
 )
 
 type (

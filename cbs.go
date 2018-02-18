@@ -3,10 +3,11 @@ package servicebus
 import (
 	"context"
 	"fmt"
-	log "github.com/sirupsen/logrus"
-	"pack.ag/amqp"
 	"sync"
 	"time"
+
+	log "github.com/sirupsen/logrus"
+	"pack.ag/amqp"
 )
 
 const (

@@ -3,10 +3,11 @@ package servicebus
 import (
 	"context"
 	"errors"
+	"time"
+
 	mgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest"
 	log "github.com/sirupsen/logrus"
-	"time"
 )
 
 type (

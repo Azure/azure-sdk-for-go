@@ -4,14 +4,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"regexp"
+	"sync"
+
 	mgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
 	"pack.ag/amqp"
-	"regexp"
-	"sync"
 )
 
 const (

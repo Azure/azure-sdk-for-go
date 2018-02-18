@@ -2,11 +2,12 @@ package servicebus
 
 import (
 	"context"
+	"net"
+	"time"
+
 	"github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
-	"net"
 	"pack.ag/amqp"
-	"time"
 )
 
 // receiver provides session and link handling for a receiving entity path

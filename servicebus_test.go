@@ -3,6 +3,12 @@ package servicebus
 import (
 	"context"
 	"flag"
+	"math/rand"
+	"os"
+	"sync"
+	"testing"
+	"time"
+
 	rm "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources"
 	sbmgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest"
@@ -12,12 +18,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
-	"math/rand"
-	"os"
 	"pack.ag/amqp"
-	"sync"
-	"testing"
-	"time"
 )
 
 var (

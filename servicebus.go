@@ -3,15 +3,15 @@ package servicebus
 import (
 	"context"
 	"errors"
-	"fmt"
+	"regexp"
+	"sync"
+
 	mgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
 	"pack.ag/amqp"
-	"regexp"
-	"sync"
 )
 
 const (
@@ -73,7 +73,6 @@ type (
 		subscriptionID   string
 		resourceGroup    string
 		namespace        string
-		primaryKey       string
 		receivers        []*receiver
 		senders          map[string]*sender
 		receiverMu       sync.Mutex
@@ -165,7 +164,7 @@ func (sb *serviceBus) Close() error {
 	return nil
 }
 
-// Listen subscribes for messages sent to the provided entityPath.
+// Receive subscribes for messages sent to the provided entityPath.
 func (sb *serviceBus) Receive(entityPath string, handler Handler) error {
 	sb.receiverMu.Lock()
 	defer sb.receiverMu.Unlock()
@@ -194,6 +193,8 @@ func (sb *serviceBus) connection() (*amqp.Client, error) {
 	sb.clientMu.Lock()
 	defer sb.clientMu.Unlock()
 
+	// TODO (vcabbage): this will return nil, nil if sb.claimsBasedSecurityEnabled() == false.
+	//                  eventually leading to a panic when the consuming code calls conn.NewSession()
 	if sb.client == nil && sb.claimsBasedSecurityEnabled() {
 		host := getHostName(sb.namespace)
 		client, err := amqp.Dial(host, amqp.ConnSASLAnonymous(), amqp.ConnMaxSessions(65535))
@@ -266,11 +267,7 @@ func newWithConnectionString(connStr string) (*serviceBus, error) {
 // parsedConnectionFromStr takes a string connection string from the Azure portal and returns the parsed representation.
 func parsedConnectionFromStr(connStr string) (*parsedConn, error) {
 	matches := connStrRegex.FindStringSubmatch(connStr)
-	parsed, err := newParsedConnection(matches[1], matches[2], matches[3])
-	if err != nil {
-		return nil, err
-	}
-	return parsed, nil
+	return newParsedConnection(matches[1], matches[2], matches[3])
 }
 
 // newParsedConnection is a constructor for a parsedConn and verifies each of the inputs is non-null.
@@ -286,7 +283,7 @@ func newParsedConnection(host string, keyName string, key string) (*parsedConn, 
 }
 
 func getHostName(namespace string) string {
-	return fmt.Sprintf("amqps://%s.%s", namespace, "servicebus.windows.net")
+	return "amqps://" + namespace + ".servicebus.windows.net"
 }
 
 // claimsBasedSecurityEnabled indicates that the connection will use AAD JWT RBAC to authenticate in connections
@@ -305,7 +302,7 @@ func getServiceBusTokenProvider(credential ServicePrincipalCredentials, env azur
 func getTokenProvider(resourceURI string, cred ServicePrincipalCredentials, env azure.Environment) (*adal.ServicePrincipalToken, error) {
 	oauthConfig, err := adal.NewOAuthConfig(env.ActiveDirectoryEndpoint, cred.TenantID)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 
 	tokenProvider, err := adal.NewServicePrincipalToken(*oauthConfig, cred.ApplicationID, cred.Secret, resourceURI)
@@ -327,6 +324,7 @@ func (sb *serviceBus) drainReceivers() error {
 	defer sb.receiverMu.Unlock()
 
 	for _, receiver := range sb.receivers {
+		// TODO (vcabbage): what if an error occurs here?
 		receiver.Close()
 	}
 	sb.receivers = []*receiver{}

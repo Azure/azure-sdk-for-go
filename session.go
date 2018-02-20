@@ -1,9 +1,10 @@
 package servicebus
 
 import (
+	"sync/atomic"
+
 	"github.com/satori/go.uuid"
 	"pack.ag/amqp"
-	"sync/atomic"
 )
 
 type (
@@ -20,7 +21,6 @@ func newSession(amqpSession *amqp.Session) *session {
 	return &session{
 		Session:   amqpSession,
 		SessionID: uuid.NewV4(),
-		counter:   0,
 	}
 }
 

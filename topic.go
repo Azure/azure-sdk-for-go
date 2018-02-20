@@ -3,10 +3,11 @@ package servicebus
 import (
 	"context"
 	"errors"
+	"time"
+
 	mgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest"
 	log "github.com/sirupsen/logrus"
-	"time"
 )
 
 const (
@@ -96,7 +97,7 @@ func TopicWithAutoDeleteOnIdle(window *time.Duration) TopicOption {
 func TopicWithMessageTimeToLive(window *time.Duration) TopicOption {
 	return func(t *mgmt.SBTopic) error {
 		if window == nil {
-			duration := time.Duration(14 * 24 * time.Hour)
+			duration := 14 * 24 * time.Hour
 			window = &duration
 		}
 		t.DefaultMessageTimeToLive = durationTo8601Seconds(window)

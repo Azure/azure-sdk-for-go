@@ -3,11 +3,12 @@ package servicebus
 import (
 	"context"
 	"fmt"
+	"testing"
+	"time"
+
 	mgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
-	"testing"
-	"time"
 )
 
 func (suite *ServiceBusSuite) TestQueueManagement() {
@@ -24,9 +25,7 @@ func (suite *ServiceBusSuite) TestQueueManagement() {
 	}
 
 	sb := suite.getNewInstance()
-	defer func() {
-		sb.Close()
-	}()
+	defer sb.Close()
 
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {

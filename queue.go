@@ -3,10 +3,11 @@ package servicebus
 import (
 	"context"
 	"errors"
+	"time"
+
 	mgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest"
 	log "github.com/sirupsen/logrus"
-	"time"
 )
 
 type (
@@ -17,7 +18,7 @@ type (
 /*
 QueueWithPartitioning ensure the created queue will be a partitioned queue. Partitioned queues offer increased
 storage and availability compared to non-partitioned queues with the trade-off of requiring the following to ensure
-FIFO message retreival:
+FIFO message retrieval:
 
 SessionId. If a message has the SessionId property set, then Service Bus uses the SessionId property as the
 partition key. This way, all messages that belong to the same session are assigned to the same fragment and handled
@@ -102,7 +103,7 @@ func QueueWithAutoDeleteOnIdle(window *time.Duration) QueueOption {
 func QueueWithMessageTimeToLive(window *time.Duration) QueueOption {
 	return func(q *mgmt.SBQueue) error {
 		if window == nil {
-			duration := time.Duration(14 * 24 * time.Hour)
+			duration := 14 * 24 * time.Hour
 			window = &duration
 		}
 		q.DefaultMessageTimeToLive = durationTo8601Seconds(window)
@@ -116,7 +117,7 @@ func QueueWithMessageTimeToLive(window *time.Duration) QueueOption {
 func QueueWithLockDuration(window *time.Duration) QueueOption {
 	return func(q *mgmt.SBQueue) error {
 		if window == nil {
-			duration := time.Duration(1 * time.Minute)
+			duration := 1 * time.Minute
 			window = &duration
 		}
 		q.LockDuration = durationTo8601Seconds(window)

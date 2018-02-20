@@ -3,10 +3,11 @@ package servicebus
 import (
 	"context"
 	"errors"
+	"time"
+
 	mgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest"
 	log "github.com/sirupsen/logrus"
-	"time"
 )
 
 type (
@@ -28,7 +29,7 @@ func SubscriptionWithBatchedOperations() SubscriptionOption {
 func SubscriptionWithLockDuration(window *time.Duration) SubscriptionOption {
 	return func(q *mgmt.SBSubscription) error {
 		if window == nil {
-			duration := time.Duration(1 * time.Minute)
+			duration := 1 * time.Minute
 			window = &duration
 		}
 		q.LockDuration = durationTo8601Seconds(window)
@@ -73,7 +74,7 @@ func SubscriptionWithAutoDeleteOnIdle(window *time.Duration) SubscriptionOption 
 func SubscriptionWithMessageTimeToLive(window *time.Duration) SubscriptionOption {
 	return func(q *mgmt.SBSubscription) error {
 		if window == nil {
-			duration := time.Duration(14 * 24 * time.Hour)
+			duration := 14 * 24 * time.Hour
 			window = &duration
 		}
 		q.DefaultMessageTimeToLive = durationTo8601Seconds(window)

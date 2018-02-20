@@ -2,6 +2,7 @@ package servicebus
 
 import (
 	"context"
+
 	log "github.com/sirupsen/logrus"
 	"pack.ag/amqp"
 )
@@ -26,11 +27,7 @@ func (sb *serviceBus) newSender(entityPath string) (*sender, error) {
 
 	log.Debugf("creating a new sender for entity path %s", entityPath)
 	err := s.newSessionAndLink()
-	if err != nil {
-		return nil, err
-	}
-
-	return s, nil
+	return s, err
 }
 
 // Recover will attempt to close the current session and link, then rebuild them
@@ -40,26 +37,18 @@ func (s *sender) Recover() error {
 		return err
 	}
 
-	err = s.newSessionAndLink()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return s.newSessionAndLink()
 }
 
 // Close will close the AMQP session and link of the sender
 func (s *sender) Close() error {
 	err := s.sender.Close()
 	if err != nil {
+		_ = s.session.Close()
 		return err
 	}
 
-	err = s.session.Close()
-	if err != nil {
-		return err
-	}
-	return nil
+	return s.session.Close()
 }
 
 // Send will send a message to the entity path with options
@@ -67,15 +56,14 @@ func (s *sender) Send(ctx context.Context, msg *amqp.Message, opts ...SendOption
 	// TODO: Add in recovery logic in case the link / session has gone down
 	s.prepareMessage(msg)
 	for _, opt := range opts {
-		opt(msg)
+		err := opt(msg)
+		if err != nil {
+			return err
+		}
 	}
 
 	log.Debugf("sending message...")
-	err := s.sender.Send(ctx, msg)
-	if err != nil {
-		return err
-	}
-	return nil
+	return s.sender.Send(ctx, msg)
 }
 
 func (s *sender) String() string {

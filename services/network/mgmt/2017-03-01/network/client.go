@@ -21,10 +21,7 @@ package network
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
 )
 
 const (
@@ -51,73 +48,4 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 		BaseURI:        baseURI,
 		SubscriptionID: subscriptionID,
 	}
-}
-
-// CheckDNSNameAvailability checks whether a domain name in the cloudapp.net zone is available for use.
-//
-// location is the location of the domain name. domainNameLabel is the domain name to be verified. It must conform to
-// the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
-func (client BaseClient) CheckDNSNameAvailability(ctx context.Context, location string, domainNameLabel string) (result DNSNameAvailabilityResult, err error) {
-	req, err := client.CheckDNSNameAvailabilityPreparer(ctx, location, domainNameLabel)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.BaseClient", "CheckDNSNameAvailability", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.CheckDNSNameAvailabilitySender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.BaseClient", "CheckDNSNameAvailability", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.CheckDNSNameAvailabilityResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.BaseClient", "CheckDNSNameAvailability", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// CheckDNSNameAvailabilityPreparer prepares the CheckDNSNameAvailability request.
-func (client BaseClient) CheckDNSNameAvailabilityPreparer(ctx context.Context, location string, domainNameLabel string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"location":       autorest.Encode("path", location),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-03-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(domainNameLabel) > 0 {
-		queryParameters["domainNameLabel"] = autorest.Encode("query", domainNameLabel)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CheckDNSNameAvailabilitySender sends the CheckDNSNameAvailability request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) CheckDNSNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// CheckDNSNameAvailabilityResponder handles the response to the CheckDNSNameAvailability request. The method always
-// closes the http.Response Body.
-func (client BaseClient) CheckDNSNameAvailabilityResponder(resp *http.Response) (result DNSNameAvailabilityResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
 }

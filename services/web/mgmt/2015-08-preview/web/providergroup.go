@@ -24,46 +24,46 @@ import (
 	"net/http"
 )
 
-// ProviderClient is the webSite Management Client
-type ProviderClient struct {
+// ProviderGroupClient is the webSite Management Client
+type ProviderGroupClient struct {
 	BaseClient
 }
 
-// NewProviderClient creates an instance of the ProviderClient client.
-func NewProviderClient(subscriptionID string) ProviderClient {
-	return NewProviderClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewProviderGroupClient creates an instance of the ProviderGroupClient client.
+func NewProviderGroupClient(subscriptionID string) ProviderGroupClient {
+	return NewProviderGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewProviderClientWithBaseURI creates an instance of the ProviderClient client.
-func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) ProviderClient {
-	return ProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewProviderGroupClientWithBaseURI creates an instance of the ProviderGroupClient client.
+func NewProviderGroupClientWithBaseURI(baseURI string, subscriptionID string) ProviderGroupClient {
+	return ProviderGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetPublishingUser sends the get publishing user request.
-func (client ProviderClient) GetPublishingUser(ctx context.Context) (result User, err error) {
+func (client ProviderGroupClient) GetPublishingUser(ctx context.Context) (result User, err error) {
 	req, err := client.GetPublishingUserPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetPublishingUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "GetPublishingUser", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetPublishingUserSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetPublishingUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "GetPublishingUser", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetPublishingUserResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetPublishingUser", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "GetPublishingUser", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPublishingUserPreparer prepares the GetPublishingUser request.
-func (client ProviderClient) GetPublishingUserPreparer(ctx context.Context) (*http.Request, error) {
+func (client ProviderGroupClient) GetPublishingUserPreparer(ctx context.Context) (*http.Request, error) {
 	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -79,14 +79,14 @@ func (client ProviderClient) GetPublishingUserPreparer(ctx context.Context) (*ht
 
 // GetPublishingUserSender sends the GetPublishingUser request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProviderClient) GetPublishingUserSender(req *http.Request) (*http.Response, error) {
+func (client ProviderGroupClient) GetPublishingUserSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPublishingUserResponder handles the response to the GetPublishingUser request. The method always
 // closes the http.Response Body.
-func (client ProviderClient) GetPublishingUserResponder(resp *http.Response) (result User, err error) {
+func (client ProviderGroupClient) GetPublishingUserResponder(resp *http.Response) (result User, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -100,30 +100,30 @@ func (client ProviderClient) GetPublishingUserResponder(resp *http.Response) (re
 // GetSourceControl sends the get source control request.
 //
 // sourceControlType is type of source control
-func (client ProviderClient) GetSourceControl(ctx context.Context, sourceControlType string) (result SourceControl, err error) {
+func (client ProviderGroupClient) GetSourceControl(ctx context.Context, sourceControlType string) (result SourceControl, err error) {
 	req, err := client.GetSourceControlPreparer(ctx, sourceControlType)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControl", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "GetSourceControl", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSourceControlSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControl", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "GetSourceControl", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetSourceControlResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControl", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "GetSourceControl", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetSourceControlPreparer prepares the GetSourceControl request.
-func (client ProviderClient) GetSourceControlPreparer(ctx context.Context, sourceControlType string) (*http.Request, error) {
+func (client ProviderGroupClient) GetSourceControlPreparer(ctx context.Context, sourceControlType string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"sourceControlType": autorest.Encode("path", sourceControlType),
 	}
@@ -143,14 +143,14 @@ func (client ProviderClient) GetSourceControlPreparer(ctx context.Context, sourc
 
 // GetSourceControlSender sends the GetSourceControl request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProviderClient) GetSourceControlSender(req *http.Request) (*http.Response, error) {
+func (client ProviderGroupClient) GetSourceControlSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetSourceControlResponder handles the response to the GetSourceControl request. The method always
 // closes the http.Response Body.
-func (client ProviderClient) GetSourceControlResponder(resp *http.Response) (result SourceControl, err error) {
+func (client ProviderGroupClient) GetSourceControlResponder(resp *http.Response) (result SourceControl, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -162,31 +162,31 @@ func (client ProviderClient) GetSourceControlResponder(resp *http.Response) (res
 }
 
 // GetSourceControls sends the get source controls request.
-func (client ProviderClient) GetSourceControls(ctx context.Context) (result SourceControlCollectionPage, err error) {
+func (client ProviderGroupClient) GetSourceControls(ctx context.Context) (result SourceControlCollectionPage, err error) {
 	result.fn = client.getSourceControlsNextResults
 	req, err := client.GetSourceControlsPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControls", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "GetSourceControls", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSourceControlsSender(req)
 	if err != nil {
 		result.scc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControls", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "GetSourceControls", resp, "Failure sending request")
 		return
 	}
 
 	result.scc, err = client.GetSourceControlsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControls", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "GetSourceControls", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetSourceControlsPreparer prepares the GetSourceControls request.
-func (client ProviderClient) GetSourceControlsPreparer(ctx context.Context) (*http.Request, error) {
+func (client ProviderGroupClient) GetSourceControlsPreparer(ctx context.Context) (*http.Request, error) {
 	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -202,14 +202,14 @@ func (client ProviderClient) GetSourceControlsPreparer(ctx context.Context) (*ht
 
 // GetSourceControlsSender sends the GetSourceControls request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProviderClient) GetSourceControlsSender(req *http.Request) (*http.Response, error) {
+func (client ProviderGroupClient) GetSourceControlsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetSourceControlsResponder handles the response to the GetSourceControls request. The method always
 // closes the http.Response Body.
-func (client ProviderClient) GetSourceControlsResponder(resp *http.Response) (result SourceControlCollection, err error) {
+func (client ProviderGroupClient) GetSourceControlsResponder(resp *http.Response) (result SourceControlCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -221,10 +221,10 @@ func (client ProviderClient) GetSourceControlsResponder(resp *http.Response) (re
 }
 
 // getSourceControlsNextResults retrieves the next set of results, if any.
-func (client ProviderClient) getSourceControlsNextResults(lastResults SourceControlCollection) (result SourceControlCollection, err error) {
+func (client ProviderGroupClient) getSourceControlsNextResults(lastResults SourceControlCollection) (result SourceControlCollection, err error) {
 	req, err := lastResults.sourceControlCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ProviderClient", "getSourceControlsNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "web.ProviderGroupClient", "getSourceControlsNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -232,17 +232,17 @@ func (client ProviderClient) getSourceControlsNextResults(lastResults SourceCont
 	resp, err := client.GetSourceControlsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ProviderClient", "getSourceControlsNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "web.ProviderGroupClient", "getSourceControlsNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.GetSourceControlsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "getSourceControlsNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "getSourceControlsNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // GetSourceControlsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProviderClient) GetSourceControlsComplete(ctx context.Context) (result SourceControlCollectionIterator, err error) {
+func (client ProviderGroupClient) GetSourceControlsComplete(ctx context.Context) (result SourceControlCollectionIterator, err error) {
 	result.page, err = client.GetSourceControls(ctx)
 	return
 }
@@ -250,30 +250,30 @@ func (client ProviderClient) GetSourceControlsComplete(ctx context.Context) (res
 // UpdatePublishingUser sends the update publishing user request.
 //
 // requestMessage is details of publishing user
-func (client ProviderClient) UpdatePublishingUser(ctx context.Context, requestMessage User) (result User, err error) {
+func (client ProviderGroupClient) UpdatePublishingUser(ctx context.Context, requestMessage User) (result User, err error) {
 	req, err := client.UpdatePublishingUserPreparer(ctx, requestMessage)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "UpdatePublishingUser", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "UpdatePublishingUser", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdatePublishingUserSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "UpdatePublishingUser", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "UpdatePublishingUser", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdatePublishingUserResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "UpdatePublishingUser", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "UpdatePublishingUser", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdatePublishingUserPreparer prepares the UpdatePublishingUser request.
-func (client ProviderClient) UpdatePublishingUserPreparer(ctx context.Context, requestMessage User) (*http.Request, error) {
+func (client ProviderGroupClient) UpdatePublishingUserPreparer(ctx context.Context, requestMessage User) (*http.Request, error) {
 	const APIVersion = "2015-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -291,14 +291,14 @@ func (client ProviderClient) UpdatePublishingUserPreparer(ctx context.Context, r
 
 // UpdatePublishingUserSender sends the UpdatePublishingUser request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProviderClient) UpdatePublishingUserSender(req *http.Request) (*http.Response, error) {
+func (client ProviderGroupClient) UpdatePublishingUserSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdatePublishingUserResponder handles the response to the UpdatePublishingUser request. The method always
 // closes the http.Response Body.
-func (client ProviderClient) UpdatePublishingUserResponder(resp *http.Response) (result User, err error) {
+func (client ProviderGroupClient) UpdatePublishingUserResponder(resp *http.Response) (result User, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -312,30 +312,30 @@ func (client ProviderClient) UpdatePublishingUserResponder(resp *http.Response) 
 // UpdateSourceControl sends the update source control request.
 //
 // sourceControlType is type of source control requestMessage is source control token information
-func (client ProviderClient) UpdateSourceControl(ctx context.Context, sourceControlType string, requestMessage SourceControl) (result SourceControl, err error) {
+func (client ProviderGroupClient) UpdateSourceControl(ctx context.Context, sourceControlType string, requestMessage SourceControl) (result SourceControl, err error) {
 	req, err := client.UpdateSourceControlPreparer(ctx, sourceControlType, requestMessage)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "UpdateSourceControl", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "UpdateSourceControl", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSourceControlSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "UpdateSourceControl", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "UpdateSourceControl", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateSourceControlResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ProviderClient", "UpdateSourceControl", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.ProviderGroupClient", "UpdateSourceControl", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdateSourceControlPreparer prepares the UpdateSourceControl request.
-func (client ProviderClient) UpdateSourceControlPreparer(ctx context.Context, sourceControlType string, requestMessage SourceControl) (*http.Request, error) {
+func (client ProviderGroupClient) UpdateSourceControlPreparer(ctx context.Context, sourceControlType string, requestMessage SourceControl) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"sourceControlType": autorest.Encode("path", sourceControlType),
 	}
@@ -357,14 +357,14 @@ func (client ProviderClient) UpdateSourceControlPreparer(ctx context.Context, so
 
 // UpdateSourceControlSender sends the UpdateSourceControl request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProviderClient) UpdateSourceControlSender(req *http.Request) (*http.Response, error) {
+func (client ProviderGroupClient) UpdateSourceControlSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateSourceControlResponder handles the response to the UpdateSourceControl request. The method always
 // closes the http.Response Body.
-func (client ProviderClient) UpdateSourceControlResponder(resp *http.Response) (result SourceControl, err error) {
+func (client ProviderGroupClient) UpdateSourceControlResponder(resp *http.Response) (result SourceControl, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

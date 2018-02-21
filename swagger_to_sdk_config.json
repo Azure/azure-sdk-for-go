@@ -4,7 +4,7 @@
       "gofmt -w ./services/"
     ],
     "autorest_options": {
-      "use": "@microsoft.azure/autorest.go@~2",
+      "use": "@microsoft.azure/autorest.go@^2.1.87",
       "go": "",
       "verbose": "",
       "sdkrel:go-sdk-folder": ".",

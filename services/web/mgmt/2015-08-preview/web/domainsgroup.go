@@ -24,49 +24,49 @@ import (
 	"net/http"
 )
 
-// DomainsClient is the webSite Management Client
-type DomainsClient struct {
+// DomainsGroupClient is the webSite Management Client
+type DomainsGroupClient struct {
 	BaseClient
 }
 
-// NewDomainsClient creates an instance of the DomainsClient client.
-func NewDomainsClient(subscriptionID string) DomainsClient {
-	return NewDomainsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewDomainsGroupClient creates an instance of the DomainsGroupClient client.
+func NewDomainsGroupClient(subscriptionID string) DomainsGroupClient {
+	return NewDomainsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDomainsClientWithBaseURI creates an instance of the DomainsClient client.
-func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsClient {
-	return DomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewDomainsGroupClientWithBaseURI creates an instance of the DomainsGroupClient client.
+func NewDomainsGroupClientWithBaseURI(baseURI string, subscriptionID string) DomainsGroupClient {
+	return DomainsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdateDomain sends the create or update domain request.
 //
 // resourceGroupName is &gt;Name of the resource group domainName is name of the domain domain is domain
 // registration information
-func (client DomainsClient) CreateOrUpdateDomain(ctx context.Context, resourceGroupName string, domainName string, domain Domain) (result Domain, err error) {
+func (client DomainsGroupClient) CreateOrUpdateDomain(ctx context.Context, resourceGroupName string, domainName string, domain Domain) (result Domain, err error) {
 	req, err := client.CreateOrUpdateDomainPreparer(ctx, resourceGroupName, domainName, domain)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateDomain", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "CreateOrUpdateDomain", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateDomainSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateDomain", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "CreateOrUpdateDomain", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateDomainResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "CreateOrUpdateDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "CreateOrUpdateDomain", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdateDomainPreparer prepares the CreateOrUpdateDomain request.
-func (client DomainsClient) CreateOrUpdateDomainPreparer(ctx context.Context, resourceGroupName string, domainName string, domain Domain) (*http.Request, error) {
+func (client DomainsGroupClient) CreateOrUpdateDomainPreparer(ctx context.Context, resourceGroupName string, domainName string, domain Domain) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"domainName":        autorest.Encode("path", domainName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -90,14 +90,14 @@ func (client DomainsClient) CreateOrUpdateDomainPreparer(ctx context.Context, re
 
 // CreateOrUpdateDomainSender sends the CreateOrUpdateDomain request. The method will close the
 // http.Response Body if it receives an error.
-func (client DomainsClient) CreateOrUpdateDomainSender(req *http.Request) (*http.Response, error) {
+func (client DomainsGroupClient) CreateOrUpdateDomainSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateDomainResponder handles the response to the CreateOrUpdateDomain request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) CreateOrUpdateDomainResponder(resp *http.Response) (result Domain, err error) {
+func (client DomainsGroupClient) CreateOrUpdateDomainResponder(resp *http.Response) (result Domain, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -112,30 +112,30 @@ func (client DomainsClient) CreateOrUpdateDomainResponder(resp *http.Response) (
 //
 // resourceGroupName is name of the resource group domainName is name of the domain forceHardDeleteDomain is if
 // true then the domain will be deleted immediately instead of after 24 hours
-func (client DomainsClient) DeleteDomain(ctx context.Context, resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (result SetObject, err error) {
+func (client DomainsGroupClient) DeleteDomain(ctx context.Context, resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (result SetObject, err error) {
 	req, err := client.DeleteDomainPreparer(ctx, resourceGroupName, domainName, forceHardDeleteDomain)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteDomain", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "DeleteDomain", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteDomainSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteDomain", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "DeleteDomain", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteDomainResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "DeleteDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "DeleteDomain", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeleteDomainPreparer prepares the DeleteDomain request.
-func (client DomainsClient) DeleteDomainPreparer(ctx context.Context, resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (*http.Request, error) {
+func (client DomainsGroupClient) DeleteDomainPreparer(ctx context.Context, resourceGroupName string, domainName string, forceHardDeleteDomain *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"domainName":        autorest.Encode("path", domainName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -160,14 +160,14 @@ func (client DomainsClient) DeleteDomainPreparer(ctx context.Context, resourceGr
 
 // DeleteDomainSender sends the DeleteDomain request. The method will close the
 // http.Response Body if it receives an error.
-func (client DomainsClient) DeleteDomainSender(req *http.Request) (*http.Response, error) {
+func (client DomainsGroupClient) DeleteDomainSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteDomainResponder handles the response to the DeleteDomain request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) DeleteDomainResponder(resp *http.Response) (result SetObject, err error) {
+func (client DomainsGroupClient) DeleteDomainResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -181,30 +181,30 @@ func (client DomainsClient) DeleteDomainResponder(resp *http.Response) (result S
 // GetDomain sends the get domain request.
 //
 // resourceGroupName is name of the resource group domainName is name of the domain
-func (client DomainsClient) GetDomain(ctx context.Context, resourceGroupName string, domainName string) (result Domain, err error) {
+func (client DomainsGroupClient) GetDomain(ctx context.Context, resourceGroupName string, domainName string) (result Domain, err error) {
 	req, err := client.GetDomainPreparer(ctx, resourceGroupName, domainName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomain", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "GetDomain", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetDomainSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomain", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "GetDomain", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetDomainResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "GetDomain", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetDomainPreparer prepares the GetDomain request.
-func (client DomainsClient) GetDomainPreparer(ctx context.Context, resourceGroupName string, domainName string) (*http.Request, error) {
+func (client DomainsGroupClient) GetDomainPreparer(ctx context.Context, resourceGroupName string, domainName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"domainName":        autorest.Encode("path", domainName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -226,14 +226,14 @@ func (client DomainsClient) GetDomainPreparer(ctx context.Context, resourceGroup
 
 // GetDomainSender sends the GetDomain request. The method will close the
 // http.Response Body if it receives an error.
-func (client DomainsClient) GetDomainSender(req *http.Request) (*http.Response, error) {
+func (client DomainsGroupClient) GetDomainSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDomainResponder handles the response to the GetDomain request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) GetDomainResponder(resp *http.Response) (result Domain, err error) {
+func (client DomainsGroupClient) GetDomainResponder(resp *http.Response) (result Domain, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -248,30 +248,30 @@ func (client DomainsClient) GetDomainResponder(resp *http.Response) (result Doma
 //
 // resourceGroupName is name of the resource group domainName is name of the domain operationID is domain purchase
 // operation Id
-func (client DomainsClient) GetDomainOperation(ctx context.Context, resourceGroupName string, domainName string, operationID string) (result Domain, err error) {
+func (client DomainsGroupClient) GetDomainOperation(ctx context.Context, resourceGroupName string, domainName string, operationID string) (result Domain, err error) {
 	req, err := client.GetDomainOperationPreparer(ctx, resourceGroupName, domainName, operationID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomainOperation", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "GetDomainOperation", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetDomainOperationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomainOperation", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "GetDomainOperation", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetDomainOperationResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomainOperation", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "GetDomainOperation", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetDomainOperationPreparer prepares the GetDomainOperation request.
-func (client DomainsClient) GetDomainOperationPreparer(ctx context.Context, resourceGroupName string, domainName string, operationID string) (*http.Request, error) {
+func (client DomainsGroupClient) GetDomainOperationPreparer(ctx context.Context, resourceGroupName string, domainName string, operationID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"domainName":        autorest.Encode("path", domainName),
 		"operationId":       autorest.Encode("path", operationID),
@@ -294,14 +294,14 @@ func (client DomainsClient) GetDomainOperationPreparer(ctx context.Context, reso
 
 // GetDomainOperationSender sends the GetDomainOperation request. The method will close the
 // http.Response Body if it receives an error.
-func (client DomainsClient) GetDomainOperationSender(req *http.Request) (*http.Response, error) {
+func (client DomainsGroupClient) GetDomainOperationSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDomainOperationResponder handles the response to the GetDomainOperation request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) GetDomainOperationResponder(resp *http.Response) (result Domain, err error) {
+func (client DomainsGroupClient) GetDomainOperationResponder(resp *http.Response) (result Domain, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -315,31 +315,31 @@ func (client DomainsClient) GetDomainOperationResponder(resp *http.Response) (re
 // GetDomains sends the get domains request.
 //
 // resourceGroupName is name of the resource group
-func (client DomainsClient) GetDomains(ctx context.Context, resourceGroupName string) (result DomainCollectionPage, err error) {
+func (client DomainsGroupClient) GetDomains(ctx context.Context, resourceGroupName string) (result DomainCollectionPage, err error) {
 	result.fn = client.getDomainsNextResults
 	req, err := client.GetDomainsPreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "GetDomains", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetDomainsSender(req)
 	if err != nil {
 		result.dc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "GetDomains", resp, "Failure sending request")
 		return
 	}
 
 	result.dc, err = client.GetDomainsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "GetDomains", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "GetDomains", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetDomainsPreparer prepares the GetDomains request.
-func (client DomainsClient) GetDomainsPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client DomainsGroupClient) GetDomainsPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -360,14 +360,14 @@ func (client DomainsClient) GetDomainsPreparer(ctx context.Context, resourceGrou
 
 // GetDomainsSender sends the GetDomains request. The method will close the
 // http.Response Body if it receives an error.
-func (client DomainsClient) GetDomainsSender(req *http.Request) (*http.Response, error) {
+func (client DomainsGroupClient) GetDomainsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetDomainsResponder handles the response to the GetDomains request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) GetDomainsResponder(resp *http.Response) (result DomainCollection, err error) {
+func (client DomainsGroupClient) GetDomainsResponder(resp *http.Response) (result DomainCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -379,10 +379,10 @@ func (client DomainsClient) GetDomainsResponder(resp *http.Response) (result Dom
 }
 
 // getDomainsNextResults retrieves the next set of results, if any.
-func (client DomainsClient) getDomainsNextResults(lastResults DomainCollection) (result DomainCollection, err error) {
+func (client DomainsGroupClient) getDomainsNextResults(lastResults DomainCollection) (result DomainCollection, err error) {
 	req, err := lastResults.domainCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "getDomainsNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsGroupClient", "getDomainsNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -390,17 +390,17 @@ func (client DomainsClient) getDomainsNextResults(lastResults DomainCollection) 
 	resp, err := client.GetDomainsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.DomainsClient", "getDomainsNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "web.DomainsGroupClient", "getDomainsNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.GetDomainsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "getDomainsNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "getDomainsNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // GetDomainsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client DomainsClient) GetDomainsComplete(ctx context.Context, resourceGroupName string) (result DomainCollectionIterator, err error) {
+func (client DomainsGroupClient) GetDomainsComplete(ctx context.Context, resourceGroupName string) (result DomainCollectionIterator, err error) {
 	result.page, err = client.GetDomains(ctx, resourceGroupName)
 	return
 }
@@ -409,30 +409,30 @@ func (client DomainsClient) GetDomainsComplete(ctx context.Context, resourceGrou
 //
 // resourceGroupName is &gt;Name of the resource group domainName is name of the domain domain is domain
 // registration information
-func (client DomainsClient) UpdateDomain(ctx context.Context, resourceGroupName string, domainName string, domain Domain) (result Domain, err error) {
+func (client DomainsGroupClient) UpdateDomain(ctx context.Context, resourceGroupName string, domainName string, domain Domain) (result Domain, err error) {
 	req, err := client.UpdateDomainPreparer(ctx, resourceGroupName, domainName, domain)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateDomain", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "UpdateDomain", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateDomainSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateDomain", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "UpdateDomain", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateDomainResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.DomainsClient", "UpdateDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.DomainsGroupClient", "UpdateDomain", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdateDomainPreparer prepares the UpdateDomain request.
-func (client DomainsClient) UpdateDomainPreparer(ctx context.Context, resourceGroupName string, domainName string, domain Domain) (*http.Request, error) {
+func (client DomainsGroupClient) UpdateDomainPreparer(ctx context.Context, resourceGroupName string, domainName string, domain Domain) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"domainName":        autorest.Encode("path", domainName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -456,14 +456,14 @@ func (client DomainsClient) UpdateDomainPreparer(ctx context.Context, resourceGr
 
 // UpdateDomainSender sends the UpdateDomain request. The method will close the
 // http.Response Body if it receives an error.
-func (client DomainsClient) UpdateDomainSender(req *http.Request) (*http.Response, error) {
+func (client DomainsGroupClient) UpdateDomainSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateDomainResponder handles the response to the UpdateDomain request. The method always
 // closes the http.Response Body.
-func (client DomainsClient) UpdateDomainResponder(resp *http.Response) (result Domain, err error) {
+func (client DomainsGroupClient) UpdateDomainResponder(resp *http.Response) (result Domain, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -1255,6 +1255,122 @@ type ApplicationLogsConfig struct {
 	AzureBlobStorage *AzureBlobStorageApplicationLogsConfig `json:"azureBlobStorage,omitempty"`
 }
 
+// ApplicationStack application stack.
+type ApplicationStack struct {
+	// Name - Application stack name.
+	Name *string `json:"name,omitempty"`
+	// Display - Application stack display name.
+	Display *string `json:"display,omitempty"`
+	// Dependency - Application stack dependency.
+	Dependency *string `json:"dependency,omitempty"`
+	// MajorVersions - List of major versions available.
+	MajorVersions *[]StackMajorVersion `json:"majorVersions,omitempty"`
+	// Frameworks - List of frameworks associated with application stack.
+	Frameworks *[]ApplicationStack `json:"frameworks,omitempty"`
+}
+
+// ApplicationStackCollection collection of Application Stacks
+type ApplicationStackCollection struct {
+	autorest.Response `json:"-"`
+	// Value - Collection of resources.
+	Value *[]ApplicationStack `json:"value,omitempty"`
+	// NextLink - Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ApplicationStackCollectionIterator provides access to a complete listing of ApplicationStack values.
+type ApplicationStackCollectionIterator struct {
+	i    int
+	page ApplicationStackCollectionPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ApplicationStackCollectionIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ApplicationStackCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ApplicationStackCollectionIterator) Response() ApplicationStackCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ApplicationStackCollectionIterator) Value() ApplicationStack {
+	if !iter.page.NotDone() {
+		return ApplicationStack{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (asc ApplicationStackCollection) IsEmpty() bool {
+	return asc.Value == nil || len(*asc.Value) == 0
+}
+
+// applicationStackCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (asc ApplicationStackCollection) applicationStackCollectionPreparer() (*http.Request, error) {
+	if asc.NextLink == nil || len(to.String(asc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(asc.NextLink)))
+}
+
+// ApplicationStackCollectionPage contains a page of ApplicationStack values.
+type ApplicationStackCollectionPage struct {
+	fn  func(ApplicationStackCollection) (ApplicationStackCollection, error)
+	asc ApplicationStackCollection
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ApplicationStackCollectionPage) Next() error {
+	next, err := page.fn(page.asc)
+	if err != nil {
+		return err
+	}
+	page.asc = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ApplicationStackCollectionPage) NotDone() bool {
+	return !page.asc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ApplicationStackCollectionPage) Response() ApplicationStackCollection {
+	return page.asc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ApplicationStackCollectionPage) Values() []ApplicationStack {
+	if page.asc.IsEmpty() {
+		return nil
+	}
+	return *page.asc.Value
+}
+
 // AppsCreateFunctionFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AppsCreateFunctionFuture struct {
 	azure.Future
@@ -15685,6 +15801,28 @@ type SourceControlProperties struct {
 	RefreshToken *string `json:"refreshToken,omitempty"`
 	// ExpirationTime - OAuth token expiration.
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
+}
+
+// StackMajorVersion application stack major version.
+type StackMajorVersion struct {
+	// DisplayVersion - Application stack major version (display only).
+	DisplayVersion *string `json:"displayVersion,omitempty"`
+	// RuntimeVersion - Application stack major version (runtime only).
+	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	// IsDefault - <code>true</code> if this is the default major version; otherwise, <code>false</code>.
+	IsDefault *bool `json:"isDefault,omitempty"`
+	// MinorVersions - Minor versions associated with the major version.
+	MinorVersions *[]StackMinorVersion `json:"minorVersions,omitempty"`
+}
+
+// StackMinorVersion application stack minor version.
+type StackMinorVersion struct {
+	// DisplayVersion - Application stack minor version (display only).
+	DisplayVersion *string `json:"displayVersion,omitempty"`
+	// RuntimeVersion - Application stack minor version (runtime only).
+	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	// IsDefault - <code>true</code> if this is the default minor version; otherwise, <code>false</code>.
+	IsDefault *bool `json:"isDefault,omitempty"`
 }
 
 // StampCapacity stamp capacity information.

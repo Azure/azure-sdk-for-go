@@ -18,6 +18,7 @@ package policyinsights
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -141,6 +142,98 @@ type PolicyEventsQueryResultsTableColumns struct {
 	TenantID *Column `json:"TenantId,omitempty"`
 	// PrincipalOid - Principal object ID for the user who initiated the resource operation that triggered the policy event.
 	PrincipalOid *Column `json:"PrincipalOid,omitempty"`
+	// ExtendedProperties - The collection of extended properties, e.g. aggregates.
+	ExtendedProperties map[string]*Column `json:"ExtendedProperties"`
+}
+
+// MarshalJSON is the custom marshaler for PolicyEventsQueryResultsTableColumns.
+func (peqrt PolicyEventsQueryResultsTableColumns) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if peqrt.Timestamp != nil {
+		objectMap["Timestamp"] = peqrt.Timestamp
+	}
+	if peqrt.ResourceID != nil {
+		objectMap["ResourceId"] = peqrt.ResourceID
+	}
+	if peqrt.PolicyAssignmentID != nil {
+		objectMap["PolicyAssignmentId"] = peqrt.PolicyAssignmentID
+	}
+	if peqrt.PolicyDefinitionID != nil {
+		objectMap["PolicyDefinitionId"] = peqrt.PolicyDefinitionID
+	}
+	if peqrt.EffectiveParameters != nil {
+		objectMap["EffectiveParameters"] = peqrt.EffectiveParameters
+	}
+	if peqrt.IsCompliant != nil {
+		objectMap["IsCompliant"] = peqrt.IsCompliant
+	}
+	if peqrt.SubscriptionID != nil {
+		objectMap["SubscriptionId"] = peqrt.SubscriptionID
+	}
+	if peqrt.ResourceType != nil {
+		objectMap["ResourceType"] = peqrt.ResourceType
+	}
+	if peqrt.ResourceLocation != nil {
+		objectMap["ResourceLocation"] = peqrt.ResourceLocation
+	}
+	if peqrt.ResourceGroup != nil {
+		objectMap["ResourceGroup"] = peqrt.ResourceGroup
+	}
+	if peqrt.ResourceTags != nil {
+		objectMap["ResourceTags"] = peqrt.ResourceTags
+	}
+	if peqrt.PolicyAssignmentName != nil {
+		objectMap["PolicyAssignmentName"] = peqrt.PolicyAssignmentName
+	}
+	if peqrt.PolicyAssignmentOwner != nil {
+		objectMap["PolicyAssignmentOwner"] = peqrt.PolicyAssignmentOwner
+	}
+	if peqrt.PolicyAssignmentParameters != nil {
+		objectMap["PolicyAssignmentParameters"] = peqrt.PolicyAssignmentParameters
+	}
+	if peqrt.PolicyAssignmentScope != nil {
+		objectMap["PolicyAssignmentScope"] = peqrt.PolicyAssignmentScope
+	}
+	if peqrt.PolicyDefinitionName != nil {
+		objectMap["PolicyDefinitionName"] = peqrt.PolicyDefinitionName
+	}
+	if peqrt.PolicyDefinitionAction != nil {
+		objectMap["PolicyDefinitionAction"] = peqrt.PolicyDefinitionAction
+	}
+	if peqrt.PolicyDefinitionCategory != nil {
+		objectMap["PolicyDefinitionCategory"] = peqrt.PolicyDefinitionCategory
+	}
+	if peqrt.PolicySetDefinitionID != nil {
+		objectMap["PolicySetDefinitionId"] = peqrt.PolicySetDefinitionID
+	}
+	if peqrt.PolicySetDefinitionName != nil {
+		objectMap["PolicySetDefinitionName"] = peqrt.PolicySetDefinitionName
+	}
+	if peqrt.PolicySetDefinitionOwner != nil {
+		objectMap["PolicySetDefinitionOwner"] = peqrt.PolicySetDefinitionOwner
+	}
+	if peqrt.PolicySetDefinitionCategory != nil {
+		objectMap["PolicySetDefinitionCategory"] = peqrt.PolicySetDefinitionCategory
+	}
+	if peqrt.PolicySetDefinitionParameters != nil {
+		objectMap["PolicySetDefinitionParameters"] = peqrt.PolicySetDefinitionParameters
+	}
+	if peqrt.ManagementGroupIds != nil {
+		objectMap["ManagementGroupIds"] = peqrt.ManagementGroupIds
+	}
+	if peqrt.PolicyDefinitionReferenceID != nil {
+		objectMap["PolicyDefinitionReferenceId"] = peqrt.PolicyDefinitionReferenceID
+	}
+	if peqrt.TenantID != nil {
+		objectMap["TenantId"] = peqrt.TenantID
+	}
+	if peqrt.PrincipalOid != nil {
+		objectMap["PrincipalOid"] = peqrt.PrincipalOid
+	}
+	if peqrt.ExtendedProperties != nil {
+		objectMap["ExtendedProperties"] = peqrt.ExtendedProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // PolicyEventsQueryResultsTableMetadata metadata about the query results.
@@ -218,6 +311,92 @@ type PolicyStatesQueryResultsTableColumns struct {
 	ManagementGroupIds *Column `json:"ManagementGroupIds,omitempty"`
 	// PolicyDefinitionReferenceID - Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
 	PolicyDefinitionReferenceID *Column `json:"PolicyDefinitionReferenceId,omitempty"`
+	// ExtendedProperties - The collection of extended properties, e.g. aggregates.
+	ExtendedProperties map[string]*Column `json:"ExtendedProperties"`
+}
+
+// MarshalJSON is the custom marshaler for PolicyStatesQueryResultsTableColumns.
+func (psqrt PolicyStatesQueryResultsTableColumns) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if psqrt.Timestamp != nil {
+		objectMap["Timestamp"] = psqrt.Timestamp
+	}
+	if psqrt.ResourceID != nil {
+		objectMap["ResourceId"] = psqrt.ResourceID
+	}
+	if psqrt.PolicyAssignmentID != nil {
+		objectMap["PolicyAssignmentId"] = psqrt.PolicyAssignmentID
+	}
+	if psqrt.PolicyDefinitionID != nil {
+		objectMap["PolicyDefinitionId"] = psqrt.PolicyDefinitionID
+	}
+	if psqrt.EffectiveParameters != nil {
+		objectMap["EffectiveParameters"] = psqrt.EffectiveParameters
+	}
+	if psqrt.IsCompliant != nil {
+		objectMap["IsCompliant"] = psqrt.IsCompliant
+	}
+	if psqrt.SubscriptionID != nil {
+		objectMap["SubscriptionId"] = psqrt.SubscriptionID
+	}
+	if psqrt.ResourceType != nil {
+		objectMap["ResourceType"] = psqrt.ResourceType
+	}
+	if psqrt.ResourceLocation != nil {
+		objectMap["ResourceLocation"] = psqrt.ResourceLocation
+	}
+	if psqrt.ResourceGroup != nil {
+		objectMap["ResourceGroup"] = psqrt.ResourceGroup
+	}
+	if psqrt.ResourceTags != nil {
+		objectMap["ResourceTags"] = psqrt.ResourceTags
+	}
+	if psqrt.PolicyAssignmentName != nil {
+		objectMap["PolicyAssignmentName"] = psqrt.PolicyAssignmentName
+	}
+	if psqrt.PolicyAssignmentOwner != nil {
+		objectMap["PolicyAssignmentOwner"] = psqrt.PolicyAssignmentOwner
+	}
+	if psqrt.PolicyAssignmentParameters != nil {
+		objectMap["PolicyAssignmentParameters"] = psqrt.PolicyAssignmentParameters
+	}
+	if psqrt.PolicyAssignmentScope != nil {
+		objectMap["PolicyAssignmentScope"] = psqrt.PolicyAssignmentScope
+	}
+	if psqrt.PolicyDefinitionName != nil {
+		objectMap["PolicyDefinitionName"] = psqrt.PolicyDefinitionName
+	}
+	if psqrt.PolicyDefinitionAction != nil {
+		objectMap["PolicyDefinitionAction"] = psqrt.PolicyDefinitionAction
+	}
+	if psqrt.PolicyDefinitionCategory != nil {
+		objectMap["PolicyDefinitionCategory"] = psqrt.PolicyDefinitionCategory
+	}
+	if psqrt.PolicySetDefinitionID != nil {
+		objectMap["PolicySetDefinitionId"] = psqrt.PolicySetDefinitionID
+	}
+	if psqrt.PolicySetDefinitionName != nil {
+		objectMap["PolicySetDefinitionName"] = psqrt.PolicySetDefinitionName
+	}
+	if psqrt.PolicySetDefinitionOwner != nil {
+		objectMap["PolicySetDefinitionOwner"] = psqrt.PolicySetDefinitionOwner
+	}
+	if psqrt.PolicySetDefinitionCategory != nil {
+		objectMap["PolicySetDefinitionCategory"] = psqrt.PolicySetDefinitionCategory
+	}
+	if psqrt.PolicySetDefinitionParameters != nil {
+		objectMap["PolicySetDefinitionParameters"] = psqrt.PolicySetDefinitionParameters
+	}
+	if psqrt.ManagementGroupIds != nil {
+		objectMap["ManagementGroupIds"] = psqrt.ManagementGroupIds
+	}
+	if psqrt.PolicyDefinitionReferenceID != nil {
+		objectMap["PolicyDefinitionReferenceId"] = psqrt.PolicyDefinitionReferenceID
+	}
+	if psqrt.ExtendedProperties != nil {
+		objectMap["ExtendedProperties"] = psqrt.ExtendedProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // PolicyStatesQueryResultsTableMetadata metadata about the query results.

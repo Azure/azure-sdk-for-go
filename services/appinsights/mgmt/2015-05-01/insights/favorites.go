@@ -47,7 +47,7 @@ func NewFavoritesClientWithBaseURI(baseURI string, subscriptionID string) Favori
 // enum). canFetchContent is flag indicating whether or not to return the full content for each applicable
 // favorite. If false, only return summary content for favorites. tags is tags that must be present on each
 // favorite returned.
-func (client FavoritesClient) List(ctx context.Context, resourceGroupName string, resourceName string, favoriteType string, sourceType FavoriteSourceType, canFetchContent *bool, tags []string) (result ListApplicationInsightsComponentFavorite, err error) {
+func (client FavoritesClient) List(ctx context.Context, resourceGroupName string, resourceName string, favoriteType FavoriteType, sourceType FavoriteSourceType, canFetchContent *bool, tags []string) (result ListApplicationInsightsComponentFavorite, err error) {
 	req, err := client.ListPreparer(ctx, resourceGroupName, resourceName, favoriteType, sourceType, canFetchContent, tags)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.FavoritesClient", "List", nil, "Failure preparing request")
@@ -70,7 +70,7 @@ func (client FavoritesClient) List(ctx context.Context, resourceGroupName string
 }
 
 // ListPreparer prepares the List request.
-func (client FavoritesClient) ListPreparer(ctx context.Context, resourceGroupName string, resourceName string, favoriteType string, sourceType FavoriteSourceType, canFetchContent *bool, tags []string) (*http.Request, error) {
+func (client FavoritesClient) ListPreparer(ctx context.Context, resourceGroupName string, resourceName string, favoriteType FavoriteType, sourceType FavoriteSourceType, canFetchContent *bool, tags []string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),

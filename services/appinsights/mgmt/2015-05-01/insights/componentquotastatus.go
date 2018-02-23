@@ -30,13 +30,13 @@ type ComponentQuotaStatusClient struct {
 }
 
 // NewComponentQuotaStatusClient creates an instance of the ComponentQuotaStatusClient client.
-func NewComponentQuotaStatusClient(subscriptionID string) ComponentQuotaStatusClient {
-	return NewComponentQuotaStatusClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewComponentQuotaStatusClient(subscriptionID string, purgeID string) ComponentQuotaStatusClient {
+	return NewComponentQuotaStatusClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
 }
 
 // NewComponentQuotaStatusClientWithBaseURI creates an instance of the ComponentQuotaStatusClient client.
-func NewComponentQuotaStatusClientWithBaseURI(baseURI string, subscriptionID string) ComponentQuotaStatusClient {
-	return ComponentQuotaStatusClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewComponentQuotaStatusClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentQuotaStatusClient {
+	return ComponentQuotaStatusClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }
 
 // Get returns daily data volume cap (quota) status for an Application Insights component.

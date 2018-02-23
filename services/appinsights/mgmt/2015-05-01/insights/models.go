@@ -43,6 +43,16 @@ const (
 	Bluefield FlowType = "Bluefield"
 )
 
+// PurgeState enumerates the values for purge state.
+type PurgeState string
+
+const (
+	// Completed ...
+	Completed PurgeState = "Completed"
+	// Pending ...
+	Pending PurgeState = "Pending"
+)
+
 // RequestSource enumerates the values for request source.
 type RequestSource string
 
@@ -625,8 +635,8 @@ type ComponentPurgeResponse struct {
 // ComponentPurgeStatusResponse response containing status for a specific purge operation.
 type ComponentPurgeStatusResponse struct {
 	autorest.Response `json:"-"`
-	// Status - Status of the operation represented by the requested Id.
-	Status *string `json:"status,omitempty"`
+	// Status - Status of the operation represented by the requested Id. Possible values include: 'Pending', 'Completed'
+	Status PurgeState `json:"status,omitempty"`
 }
 
 // ErrorResponse error reponse indicates Insights service is not able to process the incoming request. The reason

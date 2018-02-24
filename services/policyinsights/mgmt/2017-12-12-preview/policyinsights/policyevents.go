@@ -108,16 +108,15 @@ func (client PolicyEventsClient) GetMetadataResponder(resp *http.Response) (resu
 
 // ListQueryResultsForManagementGroup queries policy events for the resources under the management group.
 //
-// managementGroupID is management group ID, e.g. /providers/Microsoft.Management/managementGroups/{name}. top is
-// maximum number of records to return. orderBy is ordering expression using OData notation. One or more
-// comma-separated column names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
-// ResourceId asc". selectParameter is select expression using OData notation. Limits the columns on each record to
-// just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". from is ISO 8601 formatted timestamp
-// specifying the start time of the interval to query. When not specified, the service uses ($to - 1-day).
-// toParameter is ISO 8601 formatted timestamp specifying the end time of the interval to query. When not
-// specified, the service uses request time. filter is oData filter expression. apply is oData apply expression for
-// aggregations.
-func (client PolicyEventsClient) ListQueryResultsForManagementGroup(ctx context.Context, managementGroupID string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result PolicyEventsQueryResults, err error) {
+// managementGroupName is management group name. top is maximum number of records to return. orderBy is ordering
+// expression using OData notation. One or more comma-separated column names with an optional "desc" (the default)
+// or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc". selectParameter is select expression using OData
+// notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId,
+// ResourceId". from is ISO 8601 formatted timestamp specifying the start time of the interval to query. When not
+// specified, the service uses ($to - 1-day). toParameter is ISO 8601 formatted timestamp specifying the end time
+// of the interval to query. When not specified, the service uses request time. filter is oData filter expression.
+// apply is oData apply expression for aggregations.
+func (client PolicyEventsClient) ListQueryResultsForManagementGroup(ctx context.Context, managementGroupName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result PolicyEventsQueryResults, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -125,7 +124,7 @@ func (client PolicyEventsClient) ListQueryResultsForManagementGroup(ctx context.
 		return result, validation.NewError("policyinsights.PolicyEventsClient", "ListQueryResultsForManagementGroup", err.Error())
 	}
 
-	req, err := client.ListQueryResultsForManagementGroupPreparer(ctx, managementGroupID, top, orderBy, selectParameter, from, toParameter, filter, apply)
+	req, err := client.ListQueryResultsForManagementGroupPreparer(ctx, managementGroupName, top, orderBy, selectParameter, from, toParameter, filter, apply)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForManagementGroup", nil, "Failure preparing request")
 		return
@@ -147,10 +146,11 @@ func (client PolicyEventsClient) ListQueryResultsForManagementGroup(ctx context.
 }
 
 // ListQueryResultsForManagementGroupPreparer prepares the ListQueryResultsForManagementGroup request.
-func (client PolicyEventsClient) ListQueryResultsForManagementGroupPreparer(ctx context.Context, managementGroupID string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (*http.Request, error) {
+func (client PolicyEventsClient) ListQueryResultsForManagementGroupPreparer(ctx context.Context, managementGroupName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"managementGroupId":    managementGroupID,
-		"policyEventsResource": autorest.Encode("path", "default"),
+		"managementGroupName":       autorest.Encode("path", managementGroupName),
+		"managementGroupsNamespace": autorest.Encode("path", "Microsoft.Management"),
+		"policyEventsResource":      autorest.Encode("path", "default"),
 	}
 
 	const APIVersion = "2017-12-12-preview"
@@ -182,7 +182,7 @@ func (client PolicyEventsClient) ListQueryResultsForManagementGroupPreparer(ctx 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{managementGroupId}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults", pathParameters),
+		autorest.WithPathParameters("/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -207,117 +207,18 @@ func (client PolicyEventsClient) ListQueryResultsForManagementGroupResponder(res
 	return
 }
 
-// ListQueryResultsForPolicyAssignment queries policy events for the policy assignment.
+// ListQueryResultsForPolicyDefinition queries policy events for the subscription level policy definition.
 //
-// policyAssignmentID is subscription level or a resource group level policy assignment ID. top is maximum number
-// of records to return. orderBy is ordering expression using OData notation. One or more comma-separated column
-// names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
-// selectParameter is select expression using OData notation. Limits the columns on each record to just those
-// requested, e.g. "$select=PolicyAssignmentId, ResourceId". from is ISO 8601 formatted timestamp specifying the
-// start time of the interval to query. When not specified, the service uses ($to - 1-day). toParameter is ISO 8601
-// formatted timestamp specifying the end time of the interval to query. When not specified, the service uses
-// request time. filter is oData filter expression. apply is oData apply expression for aggregations.
-func (client PolicyEventsClient) ListQueryResultsForPolicyAssignment(ctx context.Context, policyAssignmentID string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result PolicyEventsQueryResults, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: top,
-			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("policyinsights.PolicyEventsClient", "ListQueryResultsForPolicyAssignment", err.Error())
-	}
-
-	req, err := client.ListQueryResultsForPolicyAssignmentPreparer(ctx, policyAssignmentID, top, orderBy, selectParameter, from, toParameter, filter, apply)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForPolicyAssignment", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListQueryResultsForPolicyAssignmentSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForPolicyAssignment", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListQueryResultsForPolicyAssignmentResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForPolicyAssignment", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListQueryResultsForPolicyAssignmentPreparer prepares the ListQueryResultsForPolicyAssignment request.
-func (client PolicyEventsClient) ListQueryResultsForPolicyAssignmentPreparer(ctx context.Context, policyAssignmentID string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"policyAssignmentId":   policyAssignmentID,
-		"policyEventsResource": autorest.Encode("path", "default"),
-	}
-
-	const APIVersion = "2017-12-12-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
-	}
-	if len(orderBy) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderBy)
-	}
-	if len(selectParameter) > 0 {
-		queryParameters["$select"] = autorest.Encode("query", selectParameter)
-	}
-	if from != nil {
-		queryParameters["$from"] = autorest.Encode("query", *from)
-	}
-	if toParameter != nil {
-		queryParameters["$to"] = autorest.Encode("query", *toParameter)
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-	if len(apply) > 0 {
-		queryParameters["$apply"] = autorest.Encode("query", apply)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{policyAssignmentId}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListQueryResultsForPolicyAssignmentSender sends the ListQueryResultsForPolicyAssignment request. The method will close the
-// http.Response Body if it receives an error.
-func (client PolicyEventsClient) ListQueryResultsForPolicyAssignmentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListQueryResultsForPolicyAssignmentResponder handles the response to the ListQueryResultsForPolicyAssignment request. The method always
-// closes the http.Response Body.
-func (client PolicyEventsClient) ListQueryResultsForPolicyAssignmentResponder(resp *http.Response) (result PolicyEventsQueryResults, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListQueryResultsForPolicyDefinition queries policy events for the policy definition.
-//
-// policyDefinitionID is subscription level policy definition ID. top is maximum number of records to return.
-// orderBy is ordering expression using OData notation. One or more comma-separated column names with an optional
-// "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc". selectParameter is select
-// expression using OData notation. Limits the columns on each record to just those requested, e.g.
-// "$select=PolicyAssignmentId, ResourceId". from is ISO 8601 formatted timestamp specifying the start time of the
-// interval to query. When not specified, the service uses ($to - 1-day). toParameter is ISO 8601 formatted
-// timestamp specifying the end time of the interval to query. When not specified, the service uses request time.
-// filter is oData filter expression. apply is oData apply expression for aggregations.
-func (client PolicyEventsClient) ListQueryResultsForPolicyDefinition(ctx context.Context, policyDefinitionID string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result PolicyEventsQueryResults, err error) {
+// subscriptionID is microsoft Azure subscription ID. policyDefinitionName is policy definition name. top is
+// maximum number of records to return. orderBy is ordering expression using OData notation. One or more
+// comma-separated column names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
+// ResourceId asc". selectParameter is select expression using OData notation. Limits the columns on each record to
+// just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". from is ISO 8601 formatted timestamp
+// specifying the start time of the interval to query. When not specified, the service uses ($to - 1-day).
+// toParameter is ISO 8601 formatted timestamp specifying the end time of the interval to query. When not
+// specified, the service uses request time. filter is oData filter expression. apply is oData apply expression for
+// aggregations.
+func (client PolicyEventsClient) ListQueryResultsForPolicyDefinition(ctx context.Context, subscriptionID string, policyDefinitionName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result PolicyEventsQueryResults, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -325,7 +226,7 @@ func (client PolicyEventsClient) ListQueryResultsForPolicyDefinition(ctx context
 		return result, validation.NewError("policyinsights.PolicyEventsClient", "ListQueryResultsForPolicyDefinition", err.Error())
 	}
 
-	req, err := client.ListQueryResultsForPolicyDefinitionPreparer(ctx, policyDefinitionID, top, orderBy, selectParameter, from, toParameter, filter, apply)
+	req, err := client.ListQueryResultsForPolicyDefinitionPreparer(ctx, subscriptionID, policyDefinitionName, top, orderBy, selectParameter, from, toParameter, filter, apply)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForPolicyDefinition", nil, "Failure preparing request")
 		return
@@ -347,10 +248,12 @@ func (client PolicyEventsClient) ListQueryResultsForPolicyDefinition(ctx context
 }
 
 // ListQueryResultsForPolicyDefinitionPreparer prepares the ListQueryResultsForPolicyDefinition request.
-func (client PolicyEventsClient) ListQueryResultsForPolicyDefinitionPreparer(ctx context.Context, policyDefinitionID string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (*http.Request, error) {
+func (client PolicyEventsClient) ListQueryResultsForPolicyDefinitionPreparer(ctx context.Context, subscriptionID string, policyDefinitionName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"policyDefinitionId":   policyDefinitionID,
-		"policyEventsResource": autorest.Encode("path", "default"),
+		"authorizationNamespace": autorest.Encode("path", "Microsoft.Authorization"),
+		"policyDefinitionName":   autorest.Encode("path", policyDefinitionName),
+		"policyEventsResource":   autorest.Encode("path", "default"),
+		"subscriptionId":         autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2017-12-12-preview"
@@ -382,7 +285,7 @@ func (client PolicyEventsClient) ListQueryResultsForPolicyDefinitionPreparer(ctx
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{policyDefinitionId}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyDefinitions/{policyDefinitionName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -391,7 +294,7 @@ func (client PolicyEventsClient) ListQueryResultsForPolicyDefinitionPreparer(ctx
 // http.Response Body if it receives an error.
 func (client PolicyEventsClient) ListQueryResultsForPolicyDefinitionSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListQueryResultsForPolicyDefinitionResponder handles the response to the ListQueryResultsForPolicyDefinition request. The method always
@@ -407,17 +310,18 @@ func (client PolicyEventsClient) ListQueryResultsForPolicyDefinitionResponder(re
 	return
 }
 
-// ListQueryResultsForPolicySetDefinition queries policy events for the policy set definition.
+// ListQueryResultsForPolicySetDefinition queries policy events for the subscription level policy set definition.
 //
-// policySetDefinitionID is subscription level policy set definition ID. top is maximum number of records to
-// return. orderBy is ordering expression using OData notation. One or more comma-separated column names with an
-// optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc". selectParameter is
-// select expression using OData notation. Limits the columns on each record to just those requested, e.g.
-// "$select=PolicyAssignmentId, ResourceId". from is ISO 8601 formatted timestamp specifying the start time of the
-// interval to query. When not specified, the service uses ($to - 1-day). toParameter is ISO 8601 formatted
-// timestamp specifying the end time of the interval to query. When not specified, the service uses request time.
-// filter is oData filter expression. apply is oData apply expression for aggregations.
-func (client PolicyEventsClient) ListQueryResultsForPolicySetDefinition(ctx context.Context, policySetDefinitionID string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result PolicyEventsQueryResults, err error) {
+// subscriptionID is microsoft Azure subscription ID. policySetDefinitionName is policy set definition name. top is
+// maximum number of records to return. orderBy is ordering expression using OData notation. One or more
+// comma-separated column names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
+// ResourceId asc". selectParameter is select expression using OData notation. Limits the columns on each record to
+// just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". from is ISO 8601 formatted timestamp
+// specifying the start time of the interval to query. When not specified, the service uses ($to - 1-day).
+// toParameter is ISO 8601 formatted timestamp specifying the end time of the interval to query. When not
+// specified, the service uses request time. filter is oData filter expression. apply is oData apply expression for
+// aggregations.
+func (client PolicyEventsClient) ListQueryResultsForPolicySetDefinition(ctx context.Context, subscriptionID string, policySetDefinitionName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result PolicyEventsQueryResults, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -425,7 +329,7 @@ func (client PolicyEventsClient) ListQueryResultsForPolicySetDefinition(ctx cont
 		return result, validation.NewError("policyinsights.PolicyEventsClient", "ListQueryResultsForPolicySetDefinition", err.Error())
 	}
 
-	req, err := client.ListQueryResultsForPolicySetDefinitionPreparer(ctx, policySetDefinitionID, top, orderBy, selectParameter, from, toParameter, filter, apply)
+	req, err := client.ListQueryResultsForPolicySetDefinitionPreparer(ctx, subscriptionID, policySetDefinitionName, top, orderBy, selectParameter, from, toParameter, filter, apply)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForPolicySetDefinition", nil, "Failure preparing request")
 		return
@@ -447,10 +351,12 @@ func (client PolicyEventsClient) ListQueryResultsForPolicySetDefinition(ctx cont
 }
 
 // ListQueryResultsForPolicySetDefinitionPreparer prepares the ListQueryResultsForPolicySetDefinition request.
-func (client PolicyEventsClient) ListQueryResultsForPolicySetDefinitionPreparer(ctx context.Context, policySetDefinitionID string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (*http.Request, error) {
+func (client PolicyEventsClient) ListQueryResultsForPolicySetDefinitionPreparer(ctx context.Context, subscriptionID string, policySetDefinitionName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"policyEventsResource":  autorest.Encode("path", "default"),
-		"policySetDefinitionId": policySetDefinitionID,
+		"authorizationNamespace":  autorest.Encode("path", "Microsoft.Authorization"),
+		"policyEventsResource":    autorest.Encode("path", "default"),
+		"policySetDefinitionName": autorest.Encode("path", policySetDefinitionName),
+		"subscriptionId":          autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2017-12-12-preview"
@@ -482,7 +388,7 @@ func (client PolicyEventsClient) ListQueryResultsForPolicySetDefinitionPreparer(
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{policySetDefinitionId}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policySetDefinitions/{policySetDefinitionName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -491,7 +397,7 @@ func (client PolicyEventsClient) ListQueryResultsForPolicySetDefinitionPreparer(
 // http.Response Body if it receives an error.
 func (client PolicyEventsClient) ListQueryResultsForPolicySetDefinitionSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListQueryResultsForPolicySetDefinitionResponder handles the response to the ListQueryResultsForPolicySetDefinition request. The method always
@@ -708,6 +614,111 @@ func (client PolicyEventsClient) ListQueryResultsForResourceGroupResponder(resp 
 	return
 }
 
+// ListQueryResultsForResourceGroupLevelPolicyAssignment queries policy events for the resource group level policy
+// assignment.
+//
+// subscriptionID is microsoft Azure subscription ID. resourceGroupName is resource group name.
+// policyAssignmentName is policy assignment name. top is maximum number of records to return. orderBy is ordering
+// expression using OData notation. One or more comma-separated column names with an optional "desc" (the default)
+// or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc". selectParameter is select expression using OData
+// notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId,
+// ResourceId". from is ISO 8601 formatted timestamp specifying the start time of the interval to query. When not
+// specified, the service uses ($to - 1-day). toParameter is ISO 8601 formatted timestamp specifying the end time
+// of the interval to query. When not specified, the service uses request time. filter is oData filter expression.
+// apply is oData apply expression for aggregations.
+func (client PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAssignment(ctx context.Context, subscriptionID string, resourceGroupName string, policyAssignmentName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result PolicyEventsQueryResults, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("policyinsights.PolicyEventsClient", "ListQueryResultsForResourceGroupLevelPolicyAssignment", err.Error())
+	}
+
+	req, err := client.ListQueryResultsForResourceGroupLevelPolicyAssignmentPreparer(ctx, subscriptionID, resourceGroupName, policyAssignmentName, top, orderBy, selectParameter, from, toParameter, filter, apply)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForResourceGroupLevelPolicyAssignment", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListQueryResultsForResourceGroupLevelPolicyAssignmentSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForResourceGroupLevelPolicyAssignment", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListQueryResultsForResourceGroupLevelPolicyAssignmentResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForResourceGroupLevelPolicyAssignment", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListQueryResultsForResourceGroupLevelPolicyAssignmentPreparer prepares the ListQueryResultsForResourceGroupLevelPolicyAssignment request.
+func (client PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAssignmentPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, policyAssignmentName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"authorizationNamespace": autorest.Encode("path", "Microsoft.Authorization"),
+		"policyAssignmentName":   autorest.Encode("path", policyAssignmentName),
+		"policyEventsResource":   autorest.Encode("path", "default"),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", subscriptionID),
+	}
+
+	const APIVersion = "2017-12-12-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if len(orderBy) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderBy)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if from != nil {
+		queryParameters["$from"] = autorest.Encode("query", *from)
+	}
+	if toParameter != nil {
+		queryParameters["$to"] = autorest.Encode("query", *toParameter)
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(apply) > 0 {
+		queryParameters["$apply"] = autorest.Encode("query", apply)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListQueryResultsForResourceGroupLevelPolicyAssignmentSender sends the ListQueryResultsForResourceGroupLevelPolicyAssignment request. The method will close the
+// http.Response Body if it receives an error.
+func (client PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAssignmentSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListQueryResultsForResourceGroupLevelPolicyAssignmentResponder handles the response to the ListQueryResultsForResourceGroupLevelPolicyAssignment request. The method always
+// closes the http.Response Body.
+func (client PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAssignmentResponder(resp *http.Response) (result PolicyEventsQueryResults, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // ListQueryResultsForSubscription queries policy events for the resources under the subscription.
 //
 // subscriptionID is microsoft Azure subscription ID. top is maximum number of records to return. orderBy is
@@ -798,6 +809,110 @@ func (client PolicyEventsClient) ListQueryResultsForSubscriptionSender(req *http
 // ListQueryResultsForSubscriptionResponder handles the response to the ListQueryResultsForSubscription request. The method always
 // closes the http.Response Body.
 func (client PolicyEventsClient) ListQueryResultsForSubscriptionResponder(resp *http.Response) (result PolicyEventsQueryResults, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListQueryResultsForSubscriptionLevelPolicyAssignment queries policy events for the subscription level policy
+// assignment.
+//
+// subscriptionID is microsoft Azure subscription ID. policyAssignmentName is policy assignment name. top is
+// maximum number of records to return. orderBy is ordering expression using OData notation. One or more
+// comma-separated column names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
+// ResourceId asc". selectParameter is select expression using OData notation. Limits the columns on each record to
+// just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". from is ISO 8601 formatted timestamp
+// specifying the start time of the interval to query. When not specified, the service uses ($to - 1-day).
+// toParameter is ISO 8601 formatted timestamp specifying the end time of the interval to query. When not
+// specified, the service uses request time. filter is oData filter expression. apply is oData apply expression for
+// aggregations.
+func (client PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssignment(ctx context.Context, subscriptionID string, policyAssignmentName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result PolicyEventsQueryResults, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("policyinsights.PolicyEventsClient", "ListQueryResultsForSubscriptionLevelPolicyAssignment", err.Error())
+	}
+
+	req, err := client.ListQueryResultsForSubscriptionLevelPolicyAssignmentPreparer(ctx, subscriptionID, policyAssignmentName, top, orderBy, selectParameter, from, toParameter, filter, apply)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForSubscriptionLevelPolicyAssignment", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListQueryResultsForSubscriptionLevelPolicyAssignmentSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForSubscriptionLevelPolicyAssignment", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListQueryResultsForSubscriptionLevelPolicyAssignmentResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForSubscriptionLevelPolicyAssignment", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListQueryResultsForSubscriptionLevelPolicyAssignmentPreparer prepares the ListQueryResultsForSubscriptionLevelPolicyAssignment request.
+func (client PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssignmentPreparer(ctx context.Context, subscriptionID string, policyAssignmentName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"authorizationNamespace": autorest.Encode("path", "Microsoft.Authorization"),
+		"policyAssignmentName":   autorest.Encode("path", policyAssignmentName),
+		"policyEventsResource":   autorest.Encode("path", "default"),
+		"subscriptionId":         autorest.Encode("path", subscriptionID),
+	}
+
+	const APIVersion = "2017-12-12-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if len(orderBy) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderBy)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if from != nil {
+		queryParameters["$from"] = autorest.Encode("query", *from)
+	}
+	if toParameter != nil {
+		queryParameters["$to"] = autorest.Encode("query", *toParameter)
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(apply) > 0 {
+		queryParameters["$apply"] = autorest.Encode("query", apply)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListQueryResultsForSubscriptionLevelPolicyAssignmentSender sends the ListQueryResultsForSubscriptionLevelPolicyAssignment request. The method will close the
+// http.Response Body if it receives an error.
+func (client PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssignmentSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListQueryResultsForSubscriptionLevelPolicyAssignmentResponder handles the response to the ListQueryResultsForSubscriptionLevelPolicyAssignment request. The method always
+// closes the http.Response Body.
+func (client PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssignmentResponder(resp *http.Response) (result PolicyEventsQueryResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -88,6 +88,8 @@ type PolicyEventsQueryResultsTable struct {
 
 // PolicyEventsQueryResultsTableColumns list of columns included in query results.
 type PolicyEventsQueryResultsTableColumns struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Timestamp - Timestamp for the policy event record.
 	Timestamp *Column `json:"Timestamp,omitempty"`
 	// ResourceID - Resource ID.
@@ -142,8 +144,6 @@ type PolicyEventsQueryResultsTableColumns struct {
 	TenantID *Column `json:"TenantId,omitempty"`
 	// PrincipalOid - Principal object ID for the user who initiated the resource operation that triggered the policy event.
 	PrincipalOid *Column `json:"PrincipalOid,omitempty"`
-	// ExtendedProperties - The collection of extended properties, e.g. aggregates.
-	ExtendedProperties map[string]*Column `json:"ExtendedProperties"`
 }
 
 // MarshalJSON is the custom marshaler for PolicyEventsQueryResultsTableColumns.
@@ -230,8 +230,8 @@ func (peqrt PolicyEventsQueryResultsTableColumns) MarshalJSON() ([]byte, error) 
 	if peqrt.PrincipalOid != nil {
 		objectMap["PrincipalOid"] = peqrt.PrincipalOid
 	}
-	if peqrt.ExtendedProperties != nil {
-		objectMap["ExtendedProperties"] = peqrt.ExtendedProperties
+	for k, v := range peqrt.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -261,6 +261,8 @@ type PolicyStatesQueryResultsTable struct {
 
 // PolicyStatesQueryResultsTableColumns list of columns included in query results.
 type PolicyStatesQueryResultsTableColumns struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// Timestamp - Timestamp for the policy state record.
 	Timestamp *Column `json:"Timestamp,omitempty"`
 	// ResourceID - Resource ID.
@@ -311,8 +313,6 @@ type PolicyStatesQueryResultsTableColumns struct {
 	ManagementGroupIds *Column `json:"ManagementGroupIds,omitempty"`
 	// PolicyDefinitionReferenceID - Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
 	PolicyDefinitionReferenceID *Column `json:"PolicyDefinitionReferenceId,omitempty"`
-	// ExtendedProperties - The collection of extended properties, e.g. aggregates.
-	ExtendedProperties map[string]*Column `json:"ExtendedProperties"`
 }
 
 // MarshalJSON is the custom marshaler for PolicyStatesQueryResultsTableColumns.
@@ -393,8 +393,8 @@ func (psqrt PolicyStatesQueryResultsTableColumns) MarshalJSON() ([]byte, error) 
 	if psqrt.PolicyDefinitionReferenceID != nil {
 		objectMap["PolicyDefinitionReferenceId"] = psqrt.PolicyDefinitionReferenceID
 	}
-	if psqrt.ExtendedProperties != nil {
-		objectMap["ExtendedProperties"] = psqrt.ExtendedProperties
+	for k, v := range psqrt.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }

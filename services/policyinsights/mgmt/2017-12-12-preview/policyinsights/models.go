@@ -86,6 +86,8 @@ type PolicyDefinitionSummary struct {
 
 // PolicyEvent policy event record.
 type PolicyEvent struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// OdataID - OData entity ID; always set to null since policy event records do not have an entity ID.
 	OdataID *string `json:"@odata.id,omitempty"`
 	// OdataContext - OData context string; used by OData clients to resolve type information based on metadata.
@@ -144,8 +146,6 @@ type PolicyEvent struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// PrincipalOid - Principal object ID for the user who initiated the resource operation that triggered the policy event.
 	PrincipalOid *string `json:"principalOid,omitempty"`
-	// ExtendedProperties - The collection of extended properties, e.g. aggregates.
-	ExtendedProperties map[string]interface{} `json:"extendedProperties"`
 }
 
 // MarshalJSON is the custom marshaler for PolicyEvent.
@@ -238,8 +238,8 @@ func (peVar PolicyEvent) MarshalJSON() ([]byte, error) {
 	if peVar.PrincipalOid != nil {
 		objectMap["principalOid"] = peVar.PrincipalOid
 	}
-	if peVar.ExtendedProperties != nil {
-		objectMap["extendedProperties"] = peVar.ExtendedProperties
+	for k, v := range peVar.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -257,6 +257,8 @@ type PolicyEventsQueryResults struct {
 
 // PolicyState policy state record.
 type PolicyState struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// OdataID - OData entity ID; always set to null since policy state records do not have an entity ID.
 	OdataID *string `json:"@odata.id,omitempty"`
 	// OdataContext - OData context string; used by OData clients to resolve type information based on metadata.
@@ -311,8 +313,6 @@ type PolicyState struct {
 	ManagementGroupIds *string `json:"managementGroupIds,omitempty"`
 	// PolicyDefinitionReferenceID - Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
-	// ExtendedProperties - The collection of extended properties, e.g. aggregates.
-	ExtendedProperties map[string]interface{} `json:"extendedProperties"`
 }
 
 // MarshalJSON is the custom marshaler for PolicyState.
@@ -399,8 +399,8 @@ func (ps PolicyState) MarshalJSON() ([]byte, error) {
 	if ps.PolicyDefinitionReferenceID != nil {
 		objectMap["policyDefinitionReferenceId"] = ps.PolicyDefinitionReferenceID
 	}
-	if ps.ExtendedProperties != nil {
-		objectMap["extendedProperties"] = ps.ExtendedProperties
+	for k, v := range ps.AdditionalProperties {
+		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }

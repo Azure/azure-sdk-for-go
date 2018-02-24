@@ -43,16 +43,15 @@ func NewPolicyEventsClientWithBaseURI(baseURI string) PolicyEventsClient {
 
 // ListQueryResultsForManagementGroup queries policy events for the resources under the management group.
 //
-// managementGroupID is management group ID, e.g. /providers/Microsoft.Management/managementGroups/{name}. top is
-// maximum number of records to return. orderBy is ordering expression using OData notation. One or more
-// comma-separated column names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId,
-// ResourceId asc". selectParameter is select expression using OData notation. Limits the columns on each record to
-// just those requested, e.g. "$select=PolicyAssignmentId, ResourceId". from is ISO 8601 formatted timestamp
-// specifying the start time of the interval to query. When not specified, the service uses ($to - 1-day).
-// toParameter is ISO 8601 formatted timestamp specifying the end time of the interval to query. When not
-// specified, the service uses request time. filter is oData filter expression. apply is oData apply expression for
-// aggregations.
-func (client PolicyEventsClient) ListQueryResultsForManagementGroup(ctx context.Context, managementGroupID string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result PolicyEventsQueryResults, err error) {
+// managementGroupName is management group name. top is maximum number of records to return. orderBy is ordering
+// expression using OData notation. One or more comma-separated column names with an optional "desc" (the default)
+// or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc". selectParameter is select expression using OData
+// notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId,
+// ResourceId". from is ISO 8601 formatted timestamp specifying the start time of the interval to query. When not
+// specified, the service uses ($to - 1-day). toParameter is ISO 8601 formatted timestamp specifying the end time
+// of the interval to query. When not specified, the service uses request time. filter is oData filter expression.
+// apply is oData apply expression for aggregations.
+func (client PolicyEventsClient) ListQueryResultsForManagementGroup(ctx context.Context, managementGroupName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result PolicyEventsQueryResults, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -60,7 +59,7 @@ func (client PolicyEventsClient) ListQueryResultsForManagementGroup(ctx context.
 		return result, validation.NewError("policyinsights.PolicyEventsClient", "ListQueryResultsForManagementGroup", err.Error())
 	}
 
-	req, err := client.ListQueryResultsForManagementGroupPreparer(ctx, managementGroupID, top, orderBy, selectParameter, from, toParameter, filter, apply)
+	req, err := client.ListQueryResultsForManagementGroupPreparer(ctx, managementGroupName, top, orderBy, selectParameter, from, toParameter, filter, apply)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyEventsClient", "ListQueryResultsForManagementGroup", nil, "Failure preparing request")
 		return
@@ -82,10 +81,11 @@ func (client PolicyEventsClient) ListQueryResultsForManagementGroup(ctx context.
 }
 
 // ListQueryResultsForManagementGroupPreparer prepares the ListQueryResultsForManagementGroup request.
-func (client PolicyEventsClient) ListQueryResultsForManagementGroupPreparer(ctx context.Context, managementGroupID string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (*http.Request, error) {
+func (client PolicyEventsClient) ListQueryResultsForManagementGroupPreparer(ctx context.Context, managementGroupName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"managementGroupId":    managementGroupID,
-		"policyEventsResource": autorest.Encode("path", "default"),
+		"managementGroupName":       autorest.Encode("path", managementGroupName),
+		"managementGroupsNamespace": autorest.Encode("path", "Microsoft.Management"),
+		"policyEventsResource":      autorest.Encode("path", "default"),
 	}
 
 	const APIVersion = "2017-08-09-preview"
@@ -117,7 +117,7 @@ func (client PolicyEventsClient) ListQueryResultsForManagementGroupPreparer(ctx 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{managementGroupId}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults", pathParameters),
+		autorest.WithPathParameters("/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

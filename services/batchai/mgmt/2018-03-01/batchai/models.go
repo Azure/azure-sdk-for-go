@@ -170,10 +170,11 @@ const (
 	Lowpriority VMPriority = "lowpriority"
 )
 
-// AppInsightsDestination ...
-type AppInsightsDestination struct {
-	InstrumentationKey *string `json:"instrumentationKey,omitempty"`
-	// InstrumentationKeySecretReference - Specifies KeyVault Store and Secret which contains Application Insights instrumentation key. One of instumentationKey or instrumentationKeySecretReference must be specified.
+// AppInsightsReference specifies Azure Application Insights information for performance counters reporting.
+type AppInsightsReference struct {
+	Component          *ResourceID `json:"component,omitempty"`
+	InstrumentationKey *string     `json:"instrumentationKey,omitempty"`
+	// InstrumentationKeySecretReference - Specifies KeyVault Store and Secret which contains Azure Application Insights instrumentation key. One of instumentationKey or instrumentationKeySecretReference must be specified.
 	InstrumentationKeySecretReference *KeyVaultSecretReference `json:"instrumentationKeySecretReference,omitempty"`
 }
 
@@ -2235,10 +2236,10 @@ type OutputDirectory struct {
 	CreateNew *bool `json:"createNew,omitempty"`
 }
 
-// PerformanceCountersSettings ...
+// PerformanceCountersSettings performance counters reporting settings.
 type PerformanceCountersSettings struct {
-	// AppInsightsDestination - If provided, Batch AI will upload node performance counters to the corresponding Application Insights account.
-	AppInsightsDestination *AppInsightsDestination `json:"appInsightsDestination,omitempty"`
+	// AppInsightsReference - If provided, Batch AI will upload node performance counters to the corresponding Azure Application Insights account.
+	AppInsightsReference *AppInsightsReference `json:"appInsightsReference,omitempty"`
 }
 
 // PrivateRegistryCredentials credentials to access a container image in a private repository.
@@ -2426,15 +2427,18 @@ type SetupTask struct {
 	CommandLine          *string                `json:"commandLine,omitempty"`
 	EnvironmentVariables *[]EnvironmentVariable `json:"environmentVariables,omitempty"`
 	// Secrets - Server will never report values of these variables back.
-	Secrets     *[]EnvironmentVariableWithSecretValue `json:"secrets,omitempty"`
-	RunElevated *bool                                 `json:"runElevated,omitempty"`
-	// StdOutErrPathPrefix - The path where the Batch AI service will upload the stdout and stderror of setup task.
+	Secrets *[]EnvironmentVariableWithSecretValue `json:"secrets,omitempty"`
+	// RunElevated - Note. Non-elevated tasks are run under an account added into sudoer list and can perform sudo when required.
+	RunElevated *bool `json:"runElevated,omitempty"`
+	// StdOutErrPathPrefix - The prefix of a path where the Batch AI service will upload the stdout and stderr of the setup task.
 	StdOutErrPathPrefix *string `json:"stdOutErrPathPrefix,omitempty"`
+	// StdOutErrPathSuffix - Batch AI creates the setup task output directories under an unique path to avoid conflicts between different clusters. You can concatinate stdOutErrPathPrefix and stdOutErrPathSuffix to get the full path to the output directory.
+	StdOutErrPathSuffix *string `json:"stdOutErrPathSuffix,omitempty"`
 }
 
 // SSHConfiguration SSH configuration settings for the VM
 type SSHConfiguration struct {
-	// PublicIPsToAllow - Default value is '*' can be used to match all source IPs. Maximum number of publicIPs that can be specified are 400.
+	// PublicIPsToAllow - Default value is '*' can be used to match all source IPs. Maximum number of IP ranges that can be specified are 400.
 	PublicIPsToAllow    *[]string            `json:"publicIPsToAllow,omitempty"`
 	UserAccountSettings *UserAccountSettings `json:"userAccountSettings,omitempty"`
 }

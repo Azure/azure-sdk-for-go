@@ -26,6 +26,16 @@ import (
 	"net/http"
 )
 
+// PurgeState enumerates the values for purge state.
+type PurgeState string
+
+const (
+	// Completed ...
+	Completed PurgeState = "Completed"
+	// Pending ...
+	Pending PurgeState = "Pending"
+)
+
 // SearchSortEnum enumerates the values for search sort enum.
 type SearchSortEnum string
 
@@ -630,6 +640,36 @@ type Tag struct {
 	Name *string `json:"name,omitempty"`
 	// Value - The tag value.
 	Value *string `json:"value,omitempty"`
+}
+
+// WorkspacePurgeBody describes the body of a purge request for an App Insights Workspace
+type WorkspacePurgeBody struct {
+	// Table - Table from which to purge data.
+	Table *string `json:"table,omitempty"`
+	// Filters - The set of columns and filters (queries) to run over them to purge the resulting data.
+	Filters *[]WorkspacePurgeBodyFilters `json:"filters,omitempty"`
+}
+
+// WorkspacePurgeBodyFilters user-defined filters to return data which will be purged from the table.
+type WorkspacePurgeBodyFilters struct {
+	// Column - The column of the table over which the given query should run
+	Column *string `json:"column,omitempty"`
+	// Filter - A query to to run over the provided table and column to purge the corresponding data.
+	Filter *string `json:"filter,omitempty"`
+}
+
+// WorkspacePurgeResponse response containing operationId for a specific purge action.
+type WorkspacePurgeResponse struct {
+	autorest.Response `json:"-"`
+	// OperationID - Id to use when querying for status for a particular purge operation.
+	OperationID *string `json:"operationId,omitempty"`
+}
+
+// WorkspacePurgeStatusResponse response containing status for a specific purge operation.
+type WorkspacePurgeStatusResponse struct {
+	autorest.Response `json:"-"`
+	// Status - Status of the operation represented by the requested Id. Possible values include: 'Pending', 'Completed'
+	Status PurgeState `json:"status,omitempty"`
 }
 
 // WorkspacesGetSearchResultsFuture an abstraction for monitoring and retrieving the results of a long-running

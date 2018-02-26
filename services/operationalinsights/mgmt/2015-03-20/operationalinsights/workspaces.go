@@ -31,13 +31,13 @@ type WorkspacesClient struct {
 }
 
 // NewWorkspacesClient creates an instance of the WorkspacesClient client.
-func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
-	return NewWorkspacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewWorkspacesClient(subscriptionID string, purgeID string) WorkspacesClient {
+	return NewWorkspacesClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
 }
 
 // NewWorkspacesClientWithBaseURI creates an instance of the WorkspacesClient client.
-func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
-	return WorkspacesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) WorkspacesClient {
+	return WorkspacesClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }
 
 // GetSchema gets the schema for a given workspace.

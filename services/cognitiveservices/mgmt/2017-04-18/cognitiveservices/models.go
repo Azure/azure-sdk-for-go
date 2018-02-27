@@ -38,22 +38,14 @@ const (
 type Kind string
 
 const (
-	// Academic ...
-	Academic Kind = "Academic"
-	// BingAutosuggest ...
-	BingAutosuggest Kind = "Bing.Autosuggest"
 	// BingAutosuggestv7 ...
 	BingAutosuggestv7 Kind = "Bing.Autosuggest.v7"
 	// BingCustomSearch ...
 	BingCustomSearch Kind = "Bing.CustomSearch"
-	// BingSearch ...
-	BingSearch Kind = "Bing.Search"
 	// BingSearchv7 ...
 	BingSearchv7 Kind = "Bing.Search.v7"
 	// BingSpeech ...
 	BingSpeech Kind = "Bing.Speech"
-	// BingSpellCheck ...
-	BingSpellCheck Kind = "Bing.SpellCheck"
 	// BingSpellCheckv7 ...
 	BingSpellCheckv7 Kind = "Bing.SpellCheck.v7"
 	// ComputerVision ...
@@ -62,18 +54,20 @@ const (
 	ContentModerator Kind = "ContentModerator"
 	// CustomSpeech ...
 	CustomSpeech Kind = "CustomSpeech"
+	// CustomVisionPrediction ...
+	CustomVisionPrediction Kind = "CustomVision.Prediction"
+	// CustomVisionTraining ...
+	CustomVisionTraining Kind = "CustomVision.Training"
 	// Emotion ...
 	Emotion Kind = "Emotion"
 	// Face ...
 	Face Kind = "Face"
 	// LUIS ...
 	LUIS Kind = "LUIS"
-	// Recommendations ...
-	Recommendations Kind = "Recommendations"
+	// QnAMaker ...
+	QnAMaker Kind = "QnAMaker"
 	// SpeakerRecognition ...
 	SpeakerRecognition Kind = "SpeakerRecognition"
-	// Speech ...
-	Speech Kind = "Speech"
 	// SpeechTranslation ...
 	SpeechTranslation Kind = "SpeechTranslation"
 	// TextAnalytics ...
@@ -100,6 +94,20 @@ const (
 	ResolvingDNS ProvisioningState = "ResolvingDNS"
 	// Succeeded ...
 	Succeeded ProvisioningState = "Succeeded"
+)
+
+// QuotaUsageStatus enumerates the values for quota usage status.
+type QuotaUsageStatus string
+
+const (
+	// Blocked ...
+	Blocked QuotaUsageStatus = "Blocked"
+	// Included ...
+	Included QuotaUsageStatus = "Included"
+	// InOverage ...
+	InOverage QuotaUsageStatus = "InOverage"
+	// Unknown ...
+	Unknown QuotaUsageStatus = "Unknown"
 )
 
 // SkuName enumerates the values for sku name.
@@ -140,6 +148,26 @@ const (
 	Premium SkuTier = "Premium"
 	// Standard ...
 	Standard SkuTier = "Standard"
+)
+
+// UnitType enumerates the values for unit type.
+type UnitType string
+
+const (
+	// Bytes ...
+	Bytes UnitType = "Bytes"
+	// BytesPerSecond ...
+	BytesPerSecond UnitType = "BytesPerSecond"
+	// Count ...
+	Count UnitType = "Count"
+	// CountPerSecond ...
+	CountPerSecond UnitType = "CountPerSecond"
+	// Milliseconds ...
+	Milliseconds UnitType = "Milliseconds"
+	// Percent ...
+	Percent UnitType = "Percent"
+	// Seconds ...
+	Seconds UnitType = "Seconds"
 )
 
 // Account cognitive Services Account is an Azure resource representing the provisioned account, its type, location
@@ -299,7 +327,7 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 type AccountCreateParameters struct {
 	// Sku - Required. Gets or sets the SKU of the resource.
 	Sku *Sku `json:"sku,omitempty"`
-	// Kind - Required. Gets or sets the Kind of the resource. Possible values include: 'Academic', 'BingAutosuggest', 'BingAutosuggestv7', 'BingCustomSearch', 'BingSearch', 'BingSearchv7', 'BingSpeech', 'BingSpellCheck', 'BingSpellCheckv7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'Emotion', 'Face', 'LUIS', 'Recommendations', 'SpeakerRecognition', 'Speech', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'
+	// Kind - Required. Gets or sets the Kind of the resource. Possible values include: 'BingAutosuggestv7', 'BingCustomSearch', 'BingSearchv7', 'BingSpeech', 'BingSpellCheckv7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVisionPrediction', 'CustomVisionTraining', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'
 	Kind Kind `json:"kind,omitempty"`
 	// Location - Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update the request will succeed.
 	Location *string `json:"location,omitempty"`
@@ -478,7 +506,7 @@ func (aup AccountUpdateParameters) MarshalJSON() ([]byte, error) {
 type CheckSkuAvailabilityParameter struct {
 	// Skus - The SKU of the resource.
 	Skus *[]SkuName `json:"skus,omitempty"`
-	// Kind - The Kind of the resource. Possible values include: 'Academic', 'BingAutosuggest', 'BingAutosuggestv7', 'BingCustomSearch', 'BingSearch', 'BingSearchv7', 'BingSpeech', 'BingSpellCheck', 'BingSpellCheckv7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'Emotion', 'Face', 'LUIS', 'Recommendations', 'SpeakerRecognition', 'Speech', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'
+	// Kind - The Kind of the resource. Possible values include: 'BingAutosuggestv7', 'BingCustomSearch', 'BingSearchv7', 'BingSpeech', 'BingSpellCheckv7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVisionPrediction', 'CustomVisionTraining', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'
 	Kind Kind `json:"kind,omitempty"`
 	// Type - The Type of the resource.
 	Type *string `json:"type,omitempty"`
@@ -486,7 +514,7 @@ type CheckSkuAvailabilityParameter struct {
 
 // CheckSkuAvailabilityResult check SKU availability result.
 type CheckSkuAvailabilityResult struct {
-	// Kind - The Kind of the resource. Possible values include: 'Academic', 'BingAutosuggest', 'BingAutosuggestv7', 'BingCustomSearch', 'BingSearch', 'BingSearchv7', 'BingSpeech', 'BingSpellCheck', 'BingSpellCheckv7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'Emotion', 'Face', 'LUIS', 'Recommendations', 'SpeakerRecognition', 'Speech', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'
+	// Kind - The Kind of the resource. Possible values include: 'BingAutosuggestv7', 'BingCustomSearch', 'BingSearchv7', 'BingSpeech', 'BingSpellCheckv7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVisionPrediction', 'CustomVisionTraining', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'
 	Kind Kind `json:"kind,omitempty"`
 	// Type - The Type of the resource.
 	Type *string `json:"type,omitempty"`
@@ -519,6 +547,14 @@ type ErrorBody struct {
 	Code *string `json:"code,omitempty"`
 	// Message - error message
 	Message *string `json:"message,omitempty"`
+}
+
+// MetricName a metric name.
+type MetricName struct {
+	// Value - The name of the metric.
+	Value *string `json:"value,omitempty"`
+	// LocalizedValue - The friendly name of the metric.
+	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
 // OperationDisplayInfo the operation supported by Cognitive Services.
@@ -667,4 +703,29 @@ type Sku struct {
 	Name SkuName `json:"name,omitempty"`
 	// Tier - Gets the sku tier. This is based on the SKU name. Possible values include: 'Free', 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
+}
+
+// Usage the usage data for a usage request.
+type Usage struct {
+	// Unit - The unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'
+	Unit UnitType `json:"unit,omitempty"`
+	// Name - The name information for the metric.
+	Name *MetricName `json:"name,omitempty"`
+	// QuotaPeriod - The quota period used to summarize the usage values.
+	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
+	// Limit - Maximum value for this metric.
+	Limit *int32 `json:"limit,omitempty"`
+	// CurrentValue - Current value for this metric.
+	CurrentValue *int32 `json:"currentValue,omitempty"`
+	// NextResetTime - Next reset time for current quota.
+	NextResetTime *string `json:"nextResetTime,omitempty"`
+	// Status - Cognitive Services account quota usage status. Possible values include: 'Included', 'Blocked', 'InOverage', 'Unknown'
+	Status QuotaUsageStatus `json:"status,omitempty"`
+}
+
+// UsagesResult the response to a list usage request.
+type UsagesResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of usages for Cognitive Service account.
+	Value *[]Usage `json:"value,omitempty"`
 }

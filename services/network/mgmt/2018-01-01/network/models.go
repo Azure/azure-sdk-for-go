@@ -9452,6 +9452,12 @@ type OutboundNatRulePropertiesFormat struct {
 
 // PacketCapture parameters that define the create packet capture operation.
 type PacketCapture struct {
+	// Name - Name of the packet capture.
+	Name *string `json:"name,omitempty"`
+	// ID - ID of the packet capture.
+	ID *string `json:"id,omitempty"`
+	// Type - Packet capture type.
+	Type                     *string `json:"type,omitempty"`
 	*PacketCaptureParameters `json:"properties,omitempty"`
 }
 
@@ -9464,6 +9470,33 @@ func (pc *PacketCapture) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pc.Name = &name
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pc.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pc.Type = &typeVar
+			}
 		case "properties":
 			if v != nil {
 				var packetCaptureParameters PacketCaptureParameters
@@ -9534,10 +9567,12 @@ type PacketCaptureQueryStatusResult struct {
 // PacketCaptureResult information about packet capture session.
 type PacketCaptureResult struct {
 	autorest.Response `json:"-"`
-	// Name - Name of the packet capture session.
+	// Name - Name of the packet capture.
 	Name *string `json:"name,omitempty"`
-	// ID - ID of the packet capture operation.
-	ID                             *string `json:"id,omitempty"`
+	// ID - ID of the packet capture.
+	ID *string `json:"id,omitempty"`
+	// Type - Packet capture type.
+	Type                           *string `json:"type,omitempty"`
 	Etag                           *string `json:"etag,omitempty"`
 	*PacketCaptureResultProperties `json:"properties,omitempty"`
 }
@@ -9568,6 +9603,15 @@ func (pcr *PacketCaptureResult) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				pcr.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pcr.Type = &typeVar
 			}
 		case "etag":
 			if v != nil {
@@ -15935,8 +15979,7 @@ type VpnDeviceScriptParameters struct {
 
 // Watcher network watcher in a resource group.
 type Watcher struct {
-	autorest.Response `json:"-"`
-	// Etag - A unique read-only string that changes whenever the resource is updated.
+	autorest.Response        `json:"-"`
 	Etag                     *string `json:"etag,omitempty"`
 	*WatcherPropertiesFormat `json:"properties,omitempty"`
 	// ID - Resource ID.

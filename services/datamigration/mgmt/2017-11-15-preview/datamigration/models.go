@@ -590,7 +590,7 @@ func unmarshalBasicConnectToSourceSQLServerTaskOutput(body []byte) (BasicConnect
 		return nil, err
 	}
 
-	switch m[""] {
+	switch m["resultType"] {
 	case string(ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput):
 		var ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel
 		err := json.Unmarshal(body, &ctssstodl)
@@ -635,62 +635,22 @@ func (ctsssto ConnectToSourceSQLServerTaskOutput) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
-func (ctsssto ConnectToSourceSQLServerTaskOutput) AsMigrateSQLServerSQLDbTaskOutputError() (*MigrateSQLServerSQLDbTaskOutputError, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
-func (ctsssto ConnectToSourceSQLServerTaskOutput) AsMigrateSQLServerSQLDbTaskOutputTableLevel() (*MigrateSQLServerSQLDbTaskOutputTableLevel, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
-func (ctsssto ConnectToSourceSQLServerTaskOutput) AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbTaskOutputDatabaseLevel, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
-func (ctsssto ConnectToSourceSQLServerTaskOutput) AsMigrateSQLServerSQLDbTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbTaskOutputMigrationLevel, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
-func (ctsssto ConnectToSourceSQLServerTaskOutput) AsMigrateSQLServerSQLDbTaskOutput() (*MigrateSQLServerSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
-func (ctsssto ConnectToSourceSQLServerTaskOutput) AsBasicMigrateSQLServerSQLDbTaskOutput() (BasicMigrateSQLServerSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsGetUserTablesSQLTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
-func (ctsssto ConnectToSourceSQLServerTaskOutput) AsGetUserTablesSQLTaskOutput() (*GetUserTablesSQLTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLDbTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
-func (ctsssto ConnectToSourceSQLServerTaskOutput) AsConnectToTargetSQLDbTaskOutput() (*ConnectToTargetSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputDatabaseLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
+// AsConnectToSourceSQLServerTaskOutputDatabaseLevel is the BasicConnectToSourceSQLServerTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
 func (ctsssto ConnectToSourceSQLServerTaskOutput) AsConnectToSourceSQLServerTaskOutputDatabaseLevel() (*ConnectToSourceSQLServerTaskOutputDatabaseLevel, bool) {
 	return nil, false
 }
 
-// AsConnectToSourceSQLServerTaskOutputTaskLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
+// AsConnectToSourceSQLServerTaskOutputTaskLevel is the BasicConnectToSourceSQLServerTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
 func (ctsssto ConnectToSourceSQLServerTaskOutput) AsConnectToSourceSQLServerTaskOutputTaskLevel() (*ConnectToSourceSQLServerTaskOutputTaskLevel, bool) {
 	return nil, false
 }
 
-// AsConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
+// AsConnectToSourceSQLServerTaskOutput is the BasicConnectToSourceSQLServerTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
 func (ctsssto ConnectToSourceSQLServerTaskOutput) AsConnectToSourceSQLServerTaskOutput() (*ConnectToSourceSQLServerTaskOutput, bool) {
 	return &ctsssto, true
 }
 
-// AsBasicConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
+// AsBasicConnectToSourceSQLServerTaskOutput is the BasicConnectToSourceSQLServerTaskOutput implementation for ConnectToSourceSQLServerTaskOutput.
 func (ctsssto ConnectToSourceSQLServerTaskOutput) AsBasicConnectToSourceSQLServerTaskOutput() (BasicConnectToSourceSQLServerTaskOutput, bool) {
 	return &ctsssto, true
 }
@@ -736,62 +696,22 @@ func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) MarshalJSON() (
 	return json.Marshal(objectMap)
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
-func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbTaskOutputError() (*MigrateSQLServerSQLDbTaskOutputError, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
-func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbTaskOutputTableLevel() (*MigrateSQLServerSQLDbTaskOutputTableLevel, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
-func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbTaskOutputDatabaseLevel, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
-func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbTaskOutputMigrationLevel, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
-func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbTaskOutput() (*MigrateSQLServerSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
-func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsBasicMigrateSQLServerSQLDbTaskOutput() (BasicMigrateSQLServerSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsGetUserTablesSQLTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
-func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsGetUserTablesSQLTaskOutput() (*GetUserTablesSQLTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLDbTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
-func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsConnectToTargetSQLDbTaskOutput() (*ConnectToTargetSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputDatabaseLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
+// AsConnectToSourceSQLServerTaskOutputDatabaseLevel is the BasicConnectToSourceSQLServerTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
 func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsConnectToSourceSQLServerTaskOutputDatabaseLevel() (*ConnectToSourceSQLServerTaskOutputDatabaseLevel, bool) {
 	return &ctssstodl, true
 }
 
-// AsConnectToSourceSQLServerTaskOutputTaskLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
+// AsConnectToSourceSQLServerTaskOutputTaskLevel is the BasicConnectToSourceSQLServerTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
 func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsConnectToSourceSQLServerTaskOutputTaskLevel() (*ConnectToSourceSQLServerTaskOutputTaskLevel, bool) {
 	return nil, false
 }
 
-// AsConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
+// AsConnectToSourceSQLServerTaskOutput is the BasicConnectToSourceSQLServerTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
 func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsConnectToSourceSQLServerTaskOutput() (*ConnectToSourceSQLServerTaskOutput, bool) {
 	return nil, false
 }
 
-// AsBasicConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
+// AsBasicConnectToSourceSQLServerTaskOutput is the BasicConnectToSourceSQLServerTaskOutput implementation for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
 func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsBasicConnectToSourceSQLServerTaskOutput() (BasicConnectToSourceSQLServerTaskOutput, bool) {
 	return &ctssstodl, true
 }
@@ -836,62 +756,22 @@ func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) MarshalJSON() ([]by
 	return json.Marshal(objectMap)
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
-func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsMigrateSQLServerSQLDbTaskOutputError() (*MigrateSQLServerSQLDbTaskOutputError, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
-func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsMigrateSQLServerSQLDbTaskOutputTableLevel() (*MigrateSQLServerSQLDbTaskOutputTableLevel, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
-func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbTaskOutputDatabaseLevel, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
-func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsMigrateSQLServerSQLDbTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbTaskOutputMigrationLevel, bool) {
-	return nil, false
-}
-
-// AsMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
-func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsMigrateSQLServerSQLDbTaskOutput() (*MigrateSQLServerSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
-func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsBasicMigrateSQLServerSQLDbTaskOutput() (BasicMigrateSQLServerSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsGetUserTablesSQLTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
-func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsGetUserTablesSQLTaskOutput() (*GetUserTablesSQLTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLDbTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
-func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsConnectToTargetSQLDbTaskOutput() (*ConnectToTargetSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputDatabaseLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
+// AsConnectToSourceSQLServerTaskOutputDatabaseLevel is the BasicConnectToSourceSQLServerTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
 func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsConnectToSourceSQLServerTaskOutputDatabaseLevel() (*ConnectToSourceSQLServerTaskOutputDatabaseLevel, bool) {
 	return nil, false
 }
 
-// AsConnectToSourceSQLServerTaskOutputTaskLevel is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
+// AsConnectToSourceSQLServerTaskOutputTaskLevel is the BasicConnectToSourceSQLServerTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
 func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsConnectToSourceSQLServerTaskOutputTaskLevel() (*ConnectToSourceSQLServerTaskOutputTaskLevel, bool) {
 	return &ctssstotl, true
 }
 
-// AsConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
+// AsConnectToSourceSQLServerTaskOutput is the BasicConnectToSourceSQLServerTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
 func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsConnectToSourceSQLServerTaskOutput() (*ConnectToSourceSQLServerTaskOutput, bool) {
 	return nil, false
 }
 
-// AsBasicConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
+// AsBasicConnectToSourceSQLServerTaskOutput is the BasicConnectToSourceSQLServerTaskOutput implementation for ConnectToSourceSQLServerTaskOutputTaskLevel.
 func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsBasicConnectToSourceSQLServerTaskOutput() (BasicConnectToSourceSQLServerTaskOutput, bool) {
 	return &ctssstotl, true
 }
@@ -1495,7 +1375,7 @@ func unmarshalBasicMigrateSQLServerSQLDbTaskOutput(body []byte) (BasicMigrateSQL
 		return nil, err
 	}
 
-	switch m[""] {
+	switch m["resultType"] {
 	case string(ResultTypeErrorOutput):
 		var msssdtoe MigrateSQLServerSQLDbTaskOutputError
 		err := json.Unmarshal(body, &msssdtoe)
@@ -1548,64 +1428,34 @@ func (msssdto MigrateSQLServerSQLDbTaskOutput) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
+// AsMigrateSQLServerSQLDbTaskOutputError is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
 func (msssdto MigrateSQLServerSQLDbTaskOutput) AsMigrateSQLServerSQLDbTaskOutputError() (*MigrateSQLServerSQLDbTaskOutputError, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
+// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
 func (msssdto MigrateSQLServerSQLDbTaskOutput) AsMigrateSQLServerSQLDbTaskOutputTableLevel() (*MigrateSQLServerSQLDbTaskOutputTableLevel, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
+// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
 func (msssdto MigrateSQLServerSQLDbTaskOutput) AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbTaskOutputDatabaseLevel, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
+// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
 func (msssdto MigrateSQLServerSQLDbTaskOutput) AsMigrateSQLServerSQLDbTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbTaskOutputMigrationLevel, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
+// AsMigrateSQLServerSQLDbTaskOutput is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
 func (msssdto MigrateSQLServerSQLDbTaskOutput) AsMigrateSQLServerSQLDbTaskOutput() (*MigrateSQLServerSQLDbTaskOutput, bool) {
 	return &msssdto, true
 }
 
-// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
+// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
 func (msssdto MigrateSQLServerSQLDbTaskOutput) AsBasicMigrateSQLServerSQLDbTaskOutput() (BasicMigrateSQLServerSQLDbTaskOutput, bool) {
 	return &msssdto, true
-}
-
-// AsGetUserTablesSQLTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
-func (msssdto MigrateSQLServerSQLDbTaskOutput) AsGetUserTablesSQLTaskOutput() (*GetUserTablesSQLTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
-func (msssdto MigrateSQLServerSQLDbTaskOutput) AsConnectToTargetSQLDbTaskOutput() (*ConnectToTargetSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputDatabaseLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
-func (msssdto MigrateSQLServerSQLDbTaskOutput) AsConnectToSourceSQLServerTaskOutputDatabaseLevel() (*ConnectToSourceSQLServerTaskOutputDatabaseLevel, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputTaskLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
-func (msssdto MigrateSQLServerSQLDbTaskOutput) AsConnectToSourceSQLServerTaskOutputTaskLevel() (*ConnectToSourceSQLServerTaskOutputTaskLevel, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
-func (msssdto MigrateSQLServerSQLDbTaskOutput) AsConnectToSourceSQLServerTaskOutput() (*ConnectToSourceSQLServerTaskOutput, bool) {
-	return nil, false
-}
-
-// AsBasicConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutput.
-func (msssdto MigrateSQLServerSQLDbTaskOutput) AsBasicConnectToSourceSQLServerTaskOutput() (BasicConnectToSourceSQLServerTaskOutput, bool) {
-	return nil, false
 }
 
 // MigrateSQLServerSQLDbTaskOutputDatabaseLevel ...
@@ -1693,64 +1543,34 @@ func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) MarshalJSON() ([]b
 	return json.Marshal(objectMap)
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
+// AsMigrateSQLServerSQLDbTaskOutputError is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
 func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbTaskOutputError() (*MigrateSQLServerSQLDbTaskOutputError, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
+// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
 func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbTaskOutputTableLevel() (*MigrateSQLServerSQLDbTaskOutputTableLevel, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
+// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
 func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbTaskOutputDatabaseLevel, bool) {
 	return &msssdtodl, true
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
+// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
 func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbTaskOutputMigrationLevel, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
+// AsMigrateSQLServerSQLDbTaskOutput is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
 func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsMigrateSQLServerSQLDbTaskOutput() (*MigrateSQLServerSQLDbTaskOutput, bool) {
 	return nil, false
 }
 
-// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
+// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
 func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsBasicMigrateSQLServerSQLDbTaskOutput() (BasicMigrateSQLServerSQLDbTaskOutput, bool) {
 	return &msssdtodl, true
-}
-
-// AsGetUserTablesSQLTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
-func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsGetUserTablesSQLTaskOutput() (*GetUserTablesSQLTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
-func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsConnectToTargetSQLDbTaskOutput() (*ConnectToTargetSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputDatabaseLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
-func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsConnectToSourceSQLServerTaskOutputDatabaseLevel() (*ConnectToSourceSQLServerTaskOutputDatabaseLevel, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputTaskLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
-func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsConnectToSourceSQLServerTaskOutputTaskLevel() (*ConnectToSourceSQLServerTaskOutputTaskLevel, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
-func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsConnectToSourceSQLServerTaskOutput() (*ConnectToSourceSQLServerTaskOutput, bool) {
-	return nil, false
-}
-
-// AsBasicConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
-func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsBasicConnectToSourceSQLServerTaskOutput() (BasicConnectToSourceSQLServerTaskOutput, bool) {
-	return nil, false
 }
 
 // MigrateSQLServerSQLDbTaskOutputError ...
@@ -1777,64 +1597,34 @@ func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) MarshalJSON() ([]byte, erro
 	return json.Marshal(objectMap)
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
+// AsMigrateSQLServerSQLDbTaskOutputError is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
 func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsMigrateSQLServerSQLDbTaskOutputError() (*MigrateSQLServerSQLDbTaskOutputError, bool) {
 	return &msssdtoe, true
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
+// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
 func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsMigrateSQLServerSQLDbTaskOutputTableLevel() (*MigrateSQLServerSQLDbTaskOutputTableLevel, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
+// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
 func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbTaskOutputDatabaseLevel, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
+// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
 func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsMigrateSQLServerSQLDbTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbTaskOutputMigrationLevel, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
+// AsMigrateSQLServerSQLDbTaskOutput is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
 func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsMigrateSQLServerSQLDbTaskOutput() (*MigrateSQLServerSQLDbTaskOutput, bool) {
 	return nil, false
 }
 
-// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
+// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
 func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsBasicMigrateSQLServerSQLDbTaskOutput() (BasicMigrateSQLServerSQLDbTaskOutput, bool) {
 	return &msssdtoe, true
-}
-
-// AsGetUserTablesSQLTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
-func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsGetUserTablesSQLTaskOutput() (*GetUserTablesSQLTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
-func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsConnectToTargetSQLDbTaskOutput() (*ConnectToTargetSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputDatabaseLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
-func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsConnectToSourceSQLServerTaskOutputDatabaseLevel() (*ConnectToSourceSQLServerTaskOutputDatabaseLevel, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputTaskLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
-func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsConnectToSourceSQLServerTaskOutputTaskLevel() (*ConnectToSourceSQLServerTaskOutputTaskLevel, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
-func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsConnectToSourceSQLServerTaskOutput() (*ConnectToSourceSQLServerTaskOutput, bool) {
-	return nil, false
-}
-
-// AsBasicConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputError.
-func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsBasicConnectToSourceSQLServerTaskOutput() (BasicConnectToSourceSQLServerTaskOutput, bool) {
-	return nil, false
 }
 
 // MigrateSQLServerSQLDbTaskOutputMigrationLevel ...
@@ -1924,64 +1714,34 @@ func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) MarshalJSON() ([]
 	return json.Marshal(objectMap)
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
+// AsMigrateSQLServerSQLDbTaskOutputError is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
 func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsMigrateSQLServerSQLDbTaskOutputError() (*MigrateSQLServerSQLDbTaskOutputError, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
+// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
 func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsMigrateSQLServerSQLDbTaskOutputTableLevel() (*MigrateSQLServerSQLDbTaskOutputTableLevel, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
+// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
 func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbTaskOutputDatabaseLevel, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
+// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
 func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsMigrateSQLServerSQLDbTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbTaskOutputMigrationLevel, bool) {
 	return &msssdtoml, true
 }
 
-// AsMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
+// AsMigrateSQLServerSQLDbTaskOutput is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
 func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsMigrateSQLServerSQLDbTaskOutput() (*MigrateSQLServerSQLDbTaskOutput, bool) {
 	return nil, false
 }
 
-// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
+// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
 func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsBasicMigrateSQLServerSQLDbTaskOutput() (BasicMigrateSQLServerSQLDbTaskOutput, bool) {
 	return &msssdtoml, true
-}
-
-// AsGetUserTablesSQLTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
-func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsGetUserTablesSQLTaskOutput() (*GetUserTablesSQLTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
-func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsConnectToTargetSQLDbTaskOutput() (*ConnectToTargetSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputDatabaseLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
-func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsConnectToSourceSQLServerTaskOutputDatabaseLevel() (*ConnectToSourceSQLServerTaskOutputDatabaseLevel, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputTaskLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
-func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsConnectToSourceSQLServerTaskOutputTaskLevel() (*ConnectToSourceSQLServerTaskOutputTaskLevel, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
-func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsConnectToSourceSQLServerTaskOutput() (*ConnectToSourceSQLServerTaskOutput, bool) {
-	return nil, false
-}
-
-// AsBasicConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
-func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsBasicConnectToSourceSQLServerTaskOutput() (BasicConnectToSourceSQLServerTaskOutput, bool) {
-	return nil, false
 }
 
 // MigrateSQLServerSQLDbTaskOutputTableLevel ...
@@ -2046,64 +1806,34 @@ func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) MarshalJSON() ([]byte
 	return json.Marshal(objectMap)
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputError is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
+// AsMigrateSQLServerSQLDbTaskOutputError is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
 func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsMigrateSQLServerSQLDbTaskOutputError() (*MigrateSQLServerSQLDbTaskOutputError, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
+// AsMigrateSQLServerSQLDbTaskOutputTableLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
 func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsMigrateSQLServerSQLDbTaskOutputTableLevel() (*MigrateSQLServerSQLDbTaskOutputTableLevel, bool) {
 	return &msssdtotl, true
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
+// AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
 func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsMigrateSQLServerSQLDbTaskOutputDatabaseLevel() (*MigrateSQLServerSQLDbTaskOutputDatabaseLevel, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
+// AsMigrateSQLServerSQLDbTaskOutputMigrationLevel is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
 func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsMigrateSQLServerSQLDbTaskOutputMigrationLevel() (*MigrateSQLServerSQLDbTaskOutputMigrationLevel, bool) {
 	return nil, false
 }
 
-// AsMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
+// AsMigrateSQLServerSQLDbTaskOutput is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
 func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsMigrateSQLServerSQLDbTaskOutput() (*MigrateSQLServerSQLDbTaskOutput, bool) {
 	return nil, false
 }
 
-// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
+// AsBasicMigrateSQLServerSQLDbTaskOutput is the BasicMigrateSQLServerSQLDbTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
 func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsBasicMigrateSQLServerSQLDbTaskOutput() (BasicMigrateSQLServerSQLDbTaskOutput, bool) {
 	return &msssdtotl, true
-}
-
-// AsGetUserTablesSQLTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
-func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsGetUserTablesSQLTaskOutput() (*GetUserTablesSQLTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToTargetSQLDbTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
-func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsConnectToTargetSQLDbTaskOutput() (*ConnectToTargetSQLDbTaskOutput, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputDatabaseLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
-func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsConnectToSourceSQLServerTaskOutputDatabaseLevel() (*ConnectToSourceSQLServerTaskOutputDatabaseLevel, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutputTaskLevel is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
-func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsConnectToSourceSQLServerTaskOutputTaskLevel() (*ConnectToSourceSQLServerTaskOutputTaskLevel, bool) {
-	return nil, false
-}
-
-// AsConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
-func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsConnectToSourceSQLServerTaskOutput() (*ConnectToSourceSQLServerTaskOutput, bool) {
-	return nil, false
-}
-
-// AsBasicConnectToSourceSQLServerTaskOutput is the BasicTaskOutput implementation for MigrateSQLServerSQLDbTaskOutputTableLevel.
-func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsBasicConnectToSourceSQLServerTaskOutput() (BasicConnectToSourceSQLServerTaskOutput, bool) {
-	return nil, false
 }
 
 // MigrateSQLServerSQLDbTaskProperties properties for the task that migrates on-prem SQL Server databases to Azure

@@ -40,89 +40,12 @@ func NewWorkspaceClientWithBaseURI(baseURI string, subscriptionID string, purgeI
 	return WorkspaceClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }
 
-// GetPurgeStatus gets the status of a previously submitted purge using the id returned from the original purge
-// request.
-//
-// resourceGroupName is the name of the resource group to get. The name is case insensitive. workspaceName is log
-// Analytics workspace name
-func (client WorkspaceClient) GetPurgeStatus(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspacePurgeStatusResponse, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("operationalinsights.WorkspaceClient", "GetPurgeStatus", err.Error())
-	}
-
-	req, err := client.GetPurgeStatusPreparer(ctx, resourceGroupName, workspaceName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspaceClient", "GetPurgeStatus", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetPurgeStatusSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspaceClient", "GetPurgeStatus", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetPurgeStatusResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspaceClient", "GetPurgeStatus", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetPurgeStatusPreparer prepares the GetPurgeStatus request.
-func (client WorkspaceClient) GetPurgeStatusPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"purgeId":           autorest.Encode("path", client.PurgeID),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":     autorest.Encode("path", workspaceName),
-	}
-
-	const APIVersion = "2015-03-20"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/operations/{purgeId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetPurgeStatusSender sends the GetPurgeStatus request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkspaceClient) GetPurgeStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetPurgeStatusResponder handles the response to the GetPurgeStatus request. The method always
-// closes the http.Response Body.
-func (client WorkspaceClient) GetPurgeStatusResponder(resp *http.Response) (result WorkspacePurgeStatusResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // Purge purges data in an Log Analytics workspace by a set of user-defined filters.
 //
 // resourceGroupName is the name of the resource group to get. The name is case insensitive. workspaceName is log
 // Analytics workspace name body is describes the body of a request to purge data in a single table of an Log
 // Analytics Workspace
-func (client WorkspaceClient) Purge(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeBody) (result WorkspacePurgeResponse, err error) {
+func (client WorkspaceClient) Purge(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeBody) (result WorkspacePurgeFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -140,16 +63,10 @@ func (client WorkspaceClient) Purge(ctx context.Context, resourceGroupName strin
 		return
 	}
 
-	resp, err := client.PurgeSender(req)
+	result, err = client.PurgeSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspaceClient", "Purge", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspaceClient", "Purge", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.PurgeResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspaceClient", "Purge", resp, "Failure responding to request")
 	}
 
 	return
@@ -180,14 +97,22 @@ func (client WorkspaceClient) PurgePreparer(ctx context.Context, resourceGroupNa
 
 // PurgeSender sends the Purge request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkspaceClient) PurgeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+func (client WorkspaceClient) PurgeSender(req *http.Request) (future WorkspacePurgeFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
 }
 
 // PurgeResponder handles the response to the Purge request. The method always
 // closes the http.Response Body.
-func (client WorkspaceClient) PurgeResponder(resp *http.Response) (result WorkspacePurgeResponse, err error) {
+func (client WorkspaceClient) PurgeResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

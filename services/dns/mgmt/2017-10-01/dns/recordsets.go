@@ -272,12 +272,12 @@ func (client RecordSetsClient) GetResponder(resp *http.Response) (result RecordS
 //
 // resourceGroupName is the name of the resource group. zoneName is the name of the DNS zone (without a terminating
 // dot). top is the maximum number of record sets to return. If not specified, returns up to 100 record sets.
-// recordsetnamesuffix is the suffix label of the record set name that has to be used to filter the record set
+// recordSetNameSuffix is the suffix label of the record set name that has to be used to filter the record set
 // enumerations. If this parameter is specified, Enumeration will return only records that end with
 // .<recordSetNameSuffix>
-func (client RecordSetsClient) ListAllByDNSZone(ctx context.Context, resourceGroupName string, zoneName string, top *int32, recordsetnamesuffix string) (result RecordSetListResultPage, err error) {
+func (client RecordSetsClient) ListAllByDNSZone(ctx context.Context, resourceGroupName string, zoneName string, top *int32, recordSetNameSuffix string) (result RecordSetListResultPage, err error) {
 	result.fn = client.listAllByDNSZoneNextResults
-	req, err := client.ListAllByDNSZonePreparer(ctx, resourceGroupName, zoneName, top, recordsetnamesuffix)
+	req, err := client.ListAllByDNSZonePreparer(ctx, resourceGroupName, zoneName, top, recordSetNameSuffix)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAllByDNSZone", nil, "Failure preparing request")
 		return
@@ -299,7 +299,7 @@ func (client RecordSetsClient) ListAllByDNSZone(ctx context.Context, resourceGro
 }
 
 // ListAllByDNSZonePreparer prepares the ListAllByDNSZone request.
-func (client RecordSetsClient) ListAllByDNSZonePreparer(ctx context.Context, resourceGroupName string, zoneName string, top *int32, recordsetnamesuffix string) (*http.Request, error) {
+func (client RecordSetsClient) ListAllByDNSZonePreparer(ctx context.Context, resourceGroupName string, zoneName string, top *int32, recordSetNameSuffix string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -313,8 +313,8 @@ func (client RecordSetsClient) ListAllByDNSZonePreparer(ctx context.Context, res
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
-	if len(recordsetnamesuffix) > 0 {
-		queryParameters["$recordsetnamesuffix"] = autorest.Encode("query", recordsetnamesuffix)
+	if len(recordSetNameSuffix) > 0 {
+		queryParameters["$recordsetnamesuffix"] = autorest.Encode("query", recordSetNameSuffix)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -367,8 +367,8 @@ func (client RecordSetsClient) listAllByDNSZoneNextResults(lastResults RecordSet
 }
 
 // ListAllByDNSZoneComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RecordSetsClient) ListAllByDNSZoneComplete(ctx context.Context, resourceGroupName string, zoneName string, top *int32, recordsetnamesuffix string) (result RecordSetListResultIterator, err error) {
-	result.page, err = client.ListAllByDNSZone(ctx, resourceGroupName, zoneName, top, recordsetnamesuffix)
+func (client RecordSetsClient) ListAllByDNSZoneComplete(ctx context.Context, resourceGroupName string, zoneName string, top *int32, recordSetNameSuffix string) (result RecordSetListResultIterator, err error) {
+	result.page, err = client.ListAllByDNSZone(ctx, resourceGroupName, zoneName, top, recordSetNameSuffix)
 	return
 }
 

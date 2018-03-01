@@ -78,7 +78,7 @@ func (client Client) CheckNameAvailabilityPreparer(ctx context.Context, paramete
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsJSON(),
-		autorest.AsPatch(),
+		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Cache/CheckNameAvailability", pathParameters),
 		autorest.WithJSON(parameters),

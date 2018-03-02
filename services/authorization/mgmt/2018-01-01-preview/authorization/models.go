@@ -751,6 +751,8 @@ func (rd *RoleDefinition) UnmarshalJSON(body []byte) error {
 type RoleDefinitionFilter struct {
 	// RoleName - Returns role definition with the specific name.
 	RoleName *string `json:"roleName,omitempty"`
+	// Type - Returns role definition with the specific type.
+	Type *string `json:"type,omitempty"`
 }
 
 // RoleDefinitionListResult role definition list operation result.

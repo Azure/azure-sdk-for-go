@@ -600,7 +600,7 @@ type DeploymentPropertiesExtended struct {
 	// DebugSetting - The debug setting of the deployment.
 	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
 	// OnErrorDeployment - The deployment on error behavior.
-	OnErrorDeployment *OnErrorDeployment `json:"onErrorDeployment,omitempty"`
+	OnErrorDeployment *OnErrorDeploymentExtended `json:"onErrorDeployment,omitempty"`
 }
 
 // DeploymentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1221,6 +1221,16 @@ func (future MoveResourcesFuture) Result(client Client) (ar autorest.Response, e
 
 // OnErrorDeployment deployment on error behavior.
 type OnErrorDeployment struct {
+	// Type - The deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment. Possible values include: 'LastSuccessful', 'SpecificDeployment'
+	Type OnErrorDeploymentType `json:"type,omitempty"`
+	// DeploymentName - The deployment to be used on error case.
+	DeploymentName *string `json:"deploymentName,omitempty"`
+}
+
+// OnErrorDeploymentExtended deployment on error behavior with additional details.
+type OnErrorDeploymentExtended struct {
+	// ProvisioningState - The state of the provisioning for the on error deployment.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Type - The deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment. Possible values include: 'LastSuccessful', 'SpecificDeployment'
 	Type OnErrorDeploymentType `json:"type,omitempty"`
 	// DeploymentName - The deployment to be used on error case.

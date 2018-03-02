@@ -566,6 +566,14 @@ const (
 	Integrated ManagedPipelineMode = "Integrated"
 )
 
+// ManagedServiceIdentityType enumerates the values for managed service identity type.
+type ManagedServiceIdentityType string
+
+const (
+	// SystemAssigned ...
+	SystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+)
+
 // MSDeployLogEntryType enumerates the values for ms deploy log entry type.
 type MSDeployLogEntryType string
 
@@ -9715,8 +9723,8 @@ type LocalizableString struct {
 
 // ManagedServiceIdentity managed service identity.
 type ManagedServiceIdentity struct {
-	// Type - Type of managed service identity.
-	Type interface{} `json:"type,omitempty"`
+	// Type - Type of managed service identity. Possible values include: 'SystemAssigned'
+	Type ManagedServiceIdentityType `json:"type,omitempty"`
 	// TenantID - Tenant of managed service identity.
 	TenantID *string `json:"tenantId,omitempty"`
 	// PrincipalID - Principal Id of managed service identity.

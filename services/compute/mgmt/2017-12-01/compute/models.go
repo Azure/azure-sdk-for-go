@@ -7952,6 +7952,55 @@ func (future VirtualMachineScaleSetVMsDeleteFuture) Result(client VirtualMachine
 	return
 }
 
+// VirtualMachineScaleSetVMsPerformMaintenanceFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type VirtualMachineScaleSetVMsPerformMaintenanceFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future VirtualMachineScaleSetVMsPerformMaintenanceFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPerformMaintenanceFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsPerformMaintenanceFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		osr, err = client.PerformMaintenanceResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPerformMaintenanceFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPerformMaintenanceFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	osr, err = client.PerformMaintenanceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPerformMaintenanceFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
 // VirtualMachineScaleSetVMsPowerOffFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VirtualMachineScaleSetVMsPowerOffFuture struct {
@@ -7997,6 +8046,55 @@ func (future VirtualMachineScaleSetVMsPowerOffFuture) Result(client VirtualMachi
 	osr, err = client.PowerOffResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsPowerOffFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// VirtualMachineScaleSetVMsRedeployFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type VirtualMachineScaleSetVMsRedeployFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future VirtualMachineScaleSetVMsRedeployFuture) Result(client VirtualMachineScaleSetVMsClient) (osr OperationStatusResponse, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRedeployFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return osr, azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsRedeployFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		osr, err = client.RedeployResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRedeployFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRedeployFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	osr, err = client.RedeployResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMsRedeployFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }

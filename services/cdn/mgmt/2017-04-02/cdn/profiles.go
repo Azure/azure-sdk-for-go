@@ -25,8 +25,7 @@ import (
 	"net/http"
 )
 
-// ProfilesClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You must make
-// sure that requests made to these resources are secure.
+// ProfilesClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager.
 type ProfilesClient struct {
 	BaseClient
 }

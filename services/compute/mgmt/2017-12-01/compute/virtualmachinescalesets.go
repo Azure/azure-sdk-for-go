@@ -835,6 +835,83 @@ func (client VirtualMachineScaleSetsClient) ListSkusComplete(ctx context.Context
 	return
 }
 
+// PerformMaintenance perform maintenance on one or more virtual machines in a VM scale set.
+//
+// resourceGroupName is the name of the resource group. VMScaleSetName is the name of the VM scale set.
+// VMInstanceIDs is a list of virtual machine instance IDs from the VM scale set.
+func (client VirtualMachineScaleSetsClient) PerformMaintenance(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs VirtualMachineScaleSetVMInstanceRequiredIDs) (result VirtualMachineScaleSetsPerformMaintenanceFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: VMInstanceIDs,
+			Constraints: []validation.Constraint{{Target: "VMInstanceIDs.InstanceIds", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("compute.VirtualMachineScaleSetsClient", "PerformMaintenance", err.Error())
+	}
+
+	req, err := client.PerformMaintenancePreparer(ctx, resourceGroupName, VMScaleSetName, VMInstanceIDs)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "PerformMaintenance", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.PerformMaintenanceSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "PerformMaintenance", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// PerformMaintenancePreparer prepares the PerformMaintenance request.
+func (client VirtualMachineScaleSetsClient) PerformMaintenancePreparer(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs VirtualMachineScaleSetVMInstanceRequiredIDs) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vmScaleSetName":    autorest.Encode("path", VMScaleSetName),
+	}
+
+	const APIVersion = "2017-12-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/performMaintenance", pathParameters),
+		autorest.WithJSON(VMInstanceIDs),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PerformMaintenanceSender sends the PerformMaintenance request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachineScaleSetsClient) PerformMaintenanceSender(req *http.Request) (future VirtualMachineScaleSetsPerformMaintenanceFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
+}
+
+// PerformMaintenanceResponder handles the response to the PerformMaintenance request. The method always
+// closes the http.Response Body.
+func (client VirtualMachineScaleSetsClient) PerformMaintenanceResponder(resp *http.Response) (result OperationStatusResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // PowerOff power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and
 // you are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
 //
@@ -900,6 +977,83 @@ func (client VirtualMachineScaleSetsClient) PowerOffSender(req *http.Request) (f
 // PowerOffResponder handles the response to the PowerOff request. The method always
 // closes the http.Response Body.
 func (client VirtualMachineScaleSetsClient) PowerOffResponder(resp *http.Response) (result OperationStatusResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Redeploy redeploy one or more virtual machines in a VM scale set.
+//
+// resourceGroupName is the name of the resource group. VMScaleSetName is the name of the VM scale set.
+// VMInstanceIDs is a list of virtual machine instance IDs from the VM scale set.
+func (client VirtualMachineScaleSetsClient) Redeploy(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs VirtualMachineScaleSetVMInstanceRequiredIDs) (result VirtualMachineScaleSetsRedeployFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: VMInstanceIDs,
+			Constraints: []validation.Constraint{{Target: "VMInstanceIDs.InstanceIds", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("compute.VirtualMachineScaleSetsClient", "Redeploy", err.Error())
+	}
+
+	req, err := client.RedeployPreparer(ctx, resourceGroupName, VMScaleSetName, VMInstanceIDs)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "Redeploy", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RedeploySender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "Redeploy", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RedeployPreparer prepares the Redeploy request.
+func (client VirtualMachineScaleSetsClient) RedeployPreparer(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs VirtualMachineScaleSetVMInstanceRequiredIDs) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vmScaleSetName":    autorest.Encode("path", VMScaleSetName),
+	}
+
+	const APIVersion = "2017-12-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsJSON(),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/redeploy", pathParameters),
+		autorest.WithJSON(VMInstanceIDs),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RedeploySender sends the Redeploy request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachineScaleSetsClient) RedeploySender(req *http.Request) (future VirtualMachineScaleSetsRedeployFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
+}
+
+// RedeployResponder handles the response to the Redeploy request. The method always
+// closes the http.Response Body.
+func (client VirtualMachineScaleSetsClient) RedeployResponder(resp *http.Response) (result OperationStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

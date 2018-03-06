@@ -24,8 +24,7 @@ import (
 	"net/http"
 )
 
-// ResourceUsageClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You must
-// make sure that requests made to these resources are secure.
+// ResourceUsageClient is the this is demo day
 type ResourceUsageClient struct {
 	BaseClient
 }

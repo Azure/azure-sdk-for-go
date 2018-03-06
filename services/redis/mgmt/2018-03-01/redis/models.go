@@ -80,14 +80,6 @@ const (
 	RecoveringScaleFailure ProvisioningState = "RecoveringScaleFailure"
 	// Scaling ...
 	Scaling ProvisioningState = "Scaling"
-	// ScalingFailed ...
-	ScalingFailed ProvisioningState = "ScalingFailed"
-	// Starting ...
-	Starting ProvisioningState = "Starting"
-	// Stopped ...
-	Stopped ProvisioningState = "Stopped"
-	// Stopping ...
-	Stopping ProvisioningState = "Stopping"
 	// Succeeded ...
 	Succeeded ProvisioningState = "Succeeded"
 	// Unlinking ...
@@ -1322,7 +1314,7 @@ func (ps *PatchSchedule) UnmarshalJSON(body []byte) error {
 type Properties struct {
 	// RedisVersion - Redis version.
 	RedisVersion *string `json:"redisVersion,omitempty"`
-	// ProvisioningState - Redis instance provisioning status. Possible values include: 'Creating', 'Deleting', 'Disabled', 'Failed', 'Linking', 'Provisioning', 'RecoveringScaleFailure', 'Scaling', 'ScalingFailed', 'Stopped', 'Stopping', 'Starting', 'Succeeded', 'Unlinking', 'Updating', 'Unprovisioning'
+	// ProvisioningState - Redis instance provisioning status. Possible values include: 'Creating', 'Deleting', 'Disabled', 'Failed', 'Linking', 'Provisioning', 'RecoveringScaleFailure', 'Scaling', 'Succeeded', 'Unlinking', 'Updating', 'Unprovisioning'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// HostName - Redis host name.
 	HostName *string `json:"hostName,omitempty"`

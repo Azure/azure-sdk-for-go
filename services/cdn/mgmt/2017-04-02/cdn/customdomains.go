@@ -25,8 +25,7 @@ import (
 	"net/http"
 )
 
-// CustomDomainsClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You must
-// make sure that requests made to these resources are secure.
+// CustomDomainsClient is the this is demo day
 type CustomDomainsClient struct {
 	BaseClient
 }

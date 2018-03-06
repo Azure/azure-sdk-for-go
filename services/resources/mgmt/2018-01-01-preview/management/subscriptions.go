@@ -1,4 +1,4 @@
-package management
+package managementgroups
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -24,57 +24,57 @@ import (
 	"net/http"
 )
 
-// GroupSubscriptionsClient is the the Azure Management Groups API enables consolidation of multiple
+// SubscriptionsClient is the the Azure Management Groups API enables consolidation of multiple
 // subscriptions/resources into an organizational hierarchy and centrally
 // manage access control, policies, alerting and reporting for those resources.
-type GroupSubscriptionsClient struct {
+type SubscriptionsClient struct {
 	BaseClient
 }
 
-// NewGroupSubscriptionsClient creates an instance of the GroupSubscriptionsClient client.
-func NewGroupSubscriptionsClient() GroupSubscriptionsClient {
-	return NewGroupSubscriptionsClientWithBaseURI(DefaultBaseURI)
+// NewSubscriptionsClient creates an instance of the SubscriptionsClient client.
+func NewSubscriptionsClient(operationResultID string, skiptoken string) SubscriptionsClient {
+	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI, operationResultID, skiptoken)
 }
 
-// NewGroupSubscriptionsClientWithBaseURI creates an instance of the GroupSubscriptionsClient client.
-func NewGroupSubscriptionsClientWithBaseURI(baseURI string) GroupSubscriptionsClient {
-	return GroupSubscriptionsClient{NewWithBaseURI(baseURI)}
+// NewSubscriptionsClientWithBaseURI creates an instance of the SubscriptionsClient client.
+func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) SubscriptionsClient {
+	return SubscriptionsClient{NewWithBaseURI(baseURI, operationResultID, skiptoken)}
 }
 
 // Create associates existing subscription with the management group.
 //
 // groupID is management Group ID. subscriptionID is subscription ID. cacheControl is indicates that the request
 // shouldn't utilize any caches.
-func (client GroupSubscriptionsClient) Create(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error) {
+func (client SubscriptionsClient) Create(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error) {
 	req, err := client.CreatePreparer(ctx, groupID, subscriptionID, cacheControl)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupSubscriptionsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "management.GroupSubscriptionsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "Create", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupSubscriptionsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreatePreparer prepares the Create request.
-func (client GroupSubscriptionsClient) CreatePreparer(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (*http.Request, error) {
+func (client SubscriptionsClient) CreatePreparer(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId":        autorest.Encode("path", groupID),
 		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2017-11-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -96,14 +96,14 @@ func (client GroupSubscriptionsClient) CreatePreparer(ctx context.Context, group
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupSubscriptionsClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client SubscriptionsClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client GroupSubscriptionsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client SubscriptionsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -117,36 +117,36 @@ func (client GroupSubscriptionsClient) CreateResponder(resp *http.Response) (res
 //
 // groupID is management Group ID. subscriptionID is subscription ID. cacheControl is indicates that the request
 // shouldn't utilize any caches.
-func (client GroupSubscriptionsClient) Delete(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error) {
+func (client SubscriptionsClient) Delete(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, groupID, subscriptionID, cacheControl)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupSubscriptionsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "management.GroupSubscriptionsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupSubscriptionsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client GroupSubscriptionsClient) DeletePreparer(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (*http.Request, error) {
+func (client SubscriptionsClient) DeletePreparer(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId":        autorest.Encode("path", groupID),
 		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2017-11-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -168,14 +168,14 @@ func (client GroupSubscriptionsClient) DeletePreparer(ctx context.Context, group
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupSubscriptionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client SubscriptionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client GroupSubscriptionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client SubscriptionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

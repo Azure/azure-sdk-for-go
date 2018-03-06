@@ -1,4 +1,4 @@
-package management
+package managementgroups
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -24,21 +24,21 @@ import (
 	"net/http"
 )
 
-// GroupsClient is the the Azure Management Groups API enables consolidation of multiple
+// Client is the the Azure Management Groups API enables consolidation of multiple
 // subscriptions/resources into an organizational hierarchy and centrally
 // manage access control, policies, alerting and reporting for those resources.
-type GroupsClient struct {
+type Client struct {
 	BaseClient
 }
 
-// NewGroupsClient creates an instance of the GroupsClient client.
-func NewGroupsClient() GroupsClient {
-	return NewGroupsClientWithBaseURI(DefaultBaseURI)
+// NewClient creates an instance of the Client client.
+func NewClient(operationResultID string, skiptoken string) Client {
+	return NewClientWithBaseURI(DefaultBaseURI, operationResultID, skiptoken)
 }
 
-// NewGroupsClientWithBaseURI creates an instance of the GroupsClient client.
-func NewGroupsClientWithBaseURI(baseURI string) GroupsClient {
-	return GroupsClient{NewWithBaseURI(baseURI)}
+// NewClientWithBaseURI creates an instance of the Client client.
+func NewClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) Client {
+	return Client{NewWithBaseURI(baseURI, operationResultID, skiptoken)}
 }
 
 // CreateOrUpdate create or update a management group.
@@ -47,35 +47,29 @@ func NewGroupsClientWithBaseURI(baseURI string) GroupsClient {
 //
 // groupID is management Group ID. createManagementGroupRequest is management group creation parameters.
 // cacheControl is indicates that the request shouldn't utilize any caches.
-func (client GroupsClient) CreateOrUpdate(ctx context.Context, groupID string, createManagementGroupRequest CreateManagementGroupRequest, cacheControl string) (result Group, err error) {
+func (client Client) CreateOrUpdate(ctx context.Context, groupID string, createManagementGroupRequest CreateManagementGroupRequest, cacheControl string) (result CreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, groupID, createManagementGroupRequest, cacheControl)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateOrUpdateSender(req)
+	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client GroupsClient) CreateOrUpdatePreparer(ctx context.Context, groupID string, createManagementGroupRequest CreateManagementGroupRequest, cacheControl string) (*http.Request, error) {
+func (client Client) CreateOrUpdatePreparer(ctx context.Context, groupID string, createManagementGroupRequest CreateManagementGroupRequest, cacheControl string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId": autorest.Encode("path", groupID),
 	}
 
-	const APIVersion = "2017-11-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -99,18 +93,26 @@ func (client GroupsClient) CreateOrUpdatePreparer(ctx context.Context, groupID s
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client Client) CreateOrUpdateSender(req *http.Request) (future CreateOrUpdateFuture, err error) {
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client GroupsClient) CreateOrUpdateResponder(resp *http.Response) (result Group, err error) {
+func (client Client) CreateOrUpdateResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -121,35 +123,29 @@ func (client GroupsClient) CreateOrUpdateResponder(resp *http.Response) (result 
 // If a management group contains child resources, the request will fail.
 //
 // groupID is management Group ID. cacheControl is indicates that the request shouldn't utilize any caches.
-func (client GroupsClient) Delete(ctx context.Context, groupID string, cacheControl string) (result autorest.Response, err error) {
+func (client Client) Delete(ctx context.Context, groupID string, cacheControl string) (result DeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, groupID, cacheControl)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Delete", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Delete", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client GroupsClient) DeletePreparer(ctx context.Context, groupID string, cacheControl string) (*http.Request, error) {
+func (client Client) DeletePreparer(ctx context.Context, groupID string, cacheControl string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId": autorest.Encode("path", groupID),
 	}
 
-	const APIVersion = "2017-11-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -171,20 +167,29 @@ func (client GroupsClient) DeletePreparer(ctx context.Context, groupID string, c
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client Client) DeleteSender(req *http.Request) (future DeleteFuture, err error) {
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client GroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) DeleteResponder(resp *http.Response) (result OperationResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -192,37 +197,39 @@ func (client GroupsClient) DeleteResponder(resp *http.Response) (result autorest
 //
 // groupID is management Group ID. expand is the $expand=children query string parameter allows clients to request
 // inclusion of children in the response payload. recurse is the $recurse=true query string parameter allows
-// clients to request inclusion of entire hierarchy in the response payload. cacheControl is indicates that the
-// request shouldn't utilize any caches.
-func (client GroupsClient) Get(ctx context.Context, groupID string, expand string, recurse *bool, cacheControl string) (result Group, err error) {
-	req, err := client.GetPreparer(ctx, groupID, expand, recurse, cacheControl)
+// clients to request inclusion of entire hierarchy in the response payload. Note that  $expand=children must be
+// passed up if $recurse is set to true. filter is a filter which allows the exclusion of subscriptions from
+// results (i.e. '$filter=children.childType ne Subscription') cacheControl is indicates that the request shouldn't
+// utilize any caches.
+func (client Client) Get(ctx context.Context, groupID string, expand string, recurse *bool, filter string, cacheControl string) (result ManagementGroup, err error) {
+	req, err := client.GetPreparer(ctx, groupID, expand, recurse, filter, cacheControl)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client GroupsClient) GetPreparer(ctx context.Context, groupID string, expand string, recurse *bool, cacheControl string) (*http.Request, error) {
+func (client Client) GetPreparer(ctx context.Context, groupID string, expand string, recurse *bool, filter string, cacheControl string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId": autorest.Encode("path", groupID),
 	}
 
-	const APIVersion = "2017-11-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -231,6 +238,9 @@ func (client GroupsClient) GetPreparer(ctx context.Context, groupID string, expa
 	}
 	if recurse != nil {
 		queryParameters["$recurse"] = autorest.Encode("query", *recurse)
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -250,14 +260,14 @@ func (client GroupsClient) GetPreparer(ctx context.Context, groupID string, expa
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client Client) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client GroupsClient) GetResponder(resp *http.Response) (result Group, err error) {
+func (client Client) GetResponder(resp *http.Response) (result ManagementGroup, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -270,41 +280,38 @@ func (client GroupsClient) GetResponder(resp *http.Response) (result Group, err 
 
 // List list management groups for the authenticated user.
 //
-// cacheControl is indicates that the request shouldn't utilize any caches. skiptoken is page continuation token is
-// only used if a previous operation returned a partial result.
-// If a previous response contains a nextLink element, the value of the nextLink element will include a token
-// parameter that specifies a starting point to use for subsequent calls.
-func (client GroupsClient) List(ctx context.Context, cacheControl string, skiptoken string) (result GroupListResultPage, err error) {
+// cacheControl is indicates that the request shouldn't utilize any caches.
+func (client Client) List(ctx context.Context, cacheControl string) (result ListResultPage, err error) {
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, cacheControl, skiptoken)
+	req, err := client.ListPreparer(ctx, cacheControl)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.glr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "List", resp, "Failure sending request")
+		result.lr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.glr, err = client.ListResponder(resp)
+	result.lr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client GroupsClient) ListPreparer(ctx context.Context, cacheControl string, skiptoken string) (*http.Request, error) {
-	const APIVersion = "2017-11-01-preview"
+func (client Client) ListPreparer(ctx context.Context, cacheControl string) (*http.Request, error) {
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(skiptoken) > 0 {
-		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
+	if len(client.Skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", client.Skiptoken)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -324,14 +331,14 @@ func (client GroupsClient) ListPreparer(ctx context.Context, cacheControl string
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client Client) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client GroupsClient) ListResponder(resp *http.Response) (result GroupListResult, err error) {
+func (client Client) ListResponder(resp *http.Response) (result ListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -343,10 +350,10 @@ func (client GroupsClient) ListResponder(resp *http.Response) (result GroupListR
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client GroupsClient) listNextResults(lastResults GroupListResult) (result GroupListResult, err error) {
-	req, err := lastResults.groupListResultPreparer()
+func (client Client) listNextResults(lastResults ListResult) (result ListResult, err error) {
+	req, err := lastResults.listResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "management.GroupsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "managementgroups.Client", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -354,54 +361,54 @@ func (client GroupsClient) listNextResults(lastResults GroupListResult) (result 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "management.GroupsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "managementgroups.Client", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client GroupsClient) ListComplete(ctx context.Context, cacheControl string, skiptoken string) (result GroupListResultIterator, err error) {
-	result.page, err = client.List(ctx, cacheControl, skiptoken)
+func (client Client) ListComplete(ctx context.Context, cacheControl string) (result ListResultIterator, err error) {
+	result.page, err = client.List(ctx, cacheControl)
 	return
 }
 
 // Update update a management group.
 //
-// groupID is management Group ID. createManagementGroupRequest is management group creation parameters.
-// cacheControl is indicates that the request shouldn't utilize any caches.
-func (client GroupsClient) Update(ctx context.Context, groupID string, createManagementGroupRequest CreateManagementGroupRequest, cacheControl string) (result Group, err error) {
-	req, err := client.UpdatePreparer(ctx, groupID, createManagementGroupRequest, cacheControl)
+// groupID is management Group ID. patchGroupRequest is management group patch parameters. cacheControl is
+// indicates that the request shouldn't utilize any caches.
+func (client Client) Update(ctx context.Context, groupID string, patchGroupRequest PatchManagementGroupRequest, cacheControl string) (result ManagementGroup, err error) {
+	req, err := client.UpdatePreparer(ctx, groupID, patchGroupRequest, cacheControl)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "management.GroupsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "managementgroups.Client", "Update", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdatePreparer prepares the Update request.
-func (client GroupsClient) UpdatePreparer(ctx context.Context, groupID string, createManagementGroupRequest CreateManagementGroupRequest, cacheControl string) (*http.Request, error) {
+func (client Client) UpdatePreparer(ctx context.Context, groupID string, patchGroupRequest PatchManagementGroupRequest, cacheControl string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId": autorest.Encode("path", groupID),
 	}
 
-	const APIVersion = "2017-11-01-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -411,7 +418,7 @@ func (client GroupsClient) UpdatePreparer(ctx context.Context, groupID string, c
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/providers/Microsoft.Management/managementGroups/{groupId}", pathParameters),
-		autorest.WithJSON(createManagementGroupRequest),
+		autorest.WithJSON(patchGroupRequest),
 		autorest.WithQueryParameters(queryParameters))
 	if len(cacheControl) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -425,14 +432,14 @@ func (client GroupsClient) UpdatePreparer(ctx context.Context, groupID string, c
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client GroupsClient) UpdateSender(req *http.Request) (*http.Response, error) {
+func (client Client) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client GroupsClient) UpdateResponder(resp *http.Response) (result Group, err error) {
+func (client Client) UpdateResponder(resp *http.Response) (result ManagementGroup, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

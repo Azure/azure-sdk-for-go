@@ -21,7 +21,6 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -33,16 +32,16 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(groupID uuid.UUID) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, groupID)
+func NewOperationsClient(operationResultID string, skiptoken string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, operationResultID, skiptoken)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, groupID uuid.UUID) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, groupID)}
+func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, operationResultID, skiptoken)}
 }
 
-// List lists all of the available management REST API operations.
+// List lists all of the available Management REST API operations.
 func (client OperationsClient) List(ctx context.Context) (result OperationListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
@@ -68,7 +67,7 @@ func (client OperationsClient) List(ctx context.Context) (result OperationListRe
 
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2017-08-31-preview"
+	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

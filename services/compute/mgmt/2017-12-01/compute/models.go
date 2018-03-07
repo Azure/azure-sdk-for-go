@@ -36,6 +36,11 @@ const (
 	Read AccessLevel = "Read"
 )
 
+// PossibleAccessLevelValues returns an array of possible values for the AccessLevel const type.
+func PossibleAccessLevelValues() [2]AccessLevel {
+	return [2]AccessLevel{None, Read}
+}
+
 // CachingTypes enumerates the values for caching types.
 type CachingTypes string
 
@@ -48,6 +53,11 @@ const (
 	CachingTypesReadWrite CachingTypes = "ReadWrite"
 )
 
+// PossibleCachingTypesValues returns an array of possible values for the CachingTypes const type.
+func PossibleCachingTypesValues() [3]CachingTypes {
+	return [3]CachingTypes{CachingTypesNone, CachingTypesReadOnly, CachingTypesReadWrite}
+}
+
 // ComponentNames enumerates the values for component names.
 type ComponentNames string
 
@@ -55,6 +65,11 @@ const (
 	// MicrosoftWindowsShellSetup ...
 	MicrosoftWindowsShellSetup ComponentNames = "Microsoft-Windows-Shell-Setup"
 )
+
+// PossibleComponentNamesValues returns an array of possible values for the ComponentNames const type.
+func PossibleComponentNamesValues() [1]ComponentNames {
+	return [1]ComponentNames{MicrosoftWindowsShellSetup}
+}
 
 // ContainerServiceOrchestratorTypes enumerates the values for container service orchestrator types.
 type ContainerServiceOrchestratorTypes string
@@ -69,6 +84,11 @@ const (
 	// Swarm ...
 	Swarm ContainerServiceOrchestratorTypes = "Swarm"
 )
+
+// PossibleContainerServiceOrchestratorTypesValues returns an array of possible values for the ContainerServiceOrchestratorTypes const type.
+func PossibleContainerServiceOrchestratorTypesValues() [4]ContainerServiceOrchestratorTypes {
+	return [4]ContainerServiceOrchestratorTypes{Custom, DCOS, Kubernetes, Swarm}
+}
 
 // ContainerServiceVMSizeTypes enumerates the values for container service vm size types.
 type ContainerServiceVMSizeTypes string
@@ -170,6 +190,11 @@ const (
 	StandardGS5 ContainerServiceVMSizeTypes = "Standard_GS5"
 )
 
+// PossibleContainerServiceVMSizeTypesValues returns an array of possible values for the ContainerServiceVMSizeTypes const type.
+func PossibleContainerServiceVMSizeTypesValues() [47]ContainerServiceVMSizeTypes {
+	return [47]ContainerServiceVMSizeTypes{StandardA0, StandardA1, StandardA10, StandardA11, StandardA2, StandardA3, StandardA4, StandardA5, StandardA6, StandardA7, StandardA8, StandardA9, StandardD1, StandardD11, StandardD11V2, StandardD12, StandardD12V2, StandardD13, StandardD13V2, StandardD14, StandardD14V2, StandardD1V2, StandardD2, StandardD2V2, StandardD3, StandardD3V2, StandardD4, StandardD4V2, StandardD5V2, StandardDS1, StandardDS11, StandardDS12, StandardDS13, StandardDS14, StandardDS2, StandardDS3, StandardDS4, StandardG1, StandardG2, StandardG3, StandardG4, StandardG5, StandardGS1, StandardGS2, StandardGS3, StandardGS4, StandardGS5}
+}
+
 // DiskCreateOption enumerates the values for disk create option.
 type DiskCreateOption string
 
@@ -186,6 +211,11 @@ const (
 	Import DiskCreateOption = "Import"
 )
 
+// PossibleDiskCreateOptionValues returns an array of possible values for the DiskCreateOption const type.
+func PossibleDiskCreateOptionValues() [5]DiskCreateOption {
+	return [5]DiskCreateOption{Attach, Copy, Empty, FromImage, Import}
+}
+
 // DiskCreateOptionTypes enumerates the values for disk create option types.
 type DiskCreateOptionTypes string
 
@@ -198,6 +228,11 @@ const (
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = "FromImage"
 )
 
+// PossibleDiskCreateOptionTypesValues returns an array of possible values for the DiskCreateOptionTypes const type.
+func PossibleDiskCreateOptionTypesValues() [3]DiskCreateOptionTypes {
+	return [3]DiskCreateOptionTypes{DiskCreateOptionTypesAttach, DiskCreateOptionTypesEmpty, DiskCreateOptionTypesFromImage}
+}
+
 // InstanceViewTypes enumerates the values for instance view types.
 type InstanceViewTypes string
 
@@ -205,6 +240,11 @@ const (
 	// InstanceView ...
 	InstanceView InstanceViewTypes = "instanceView"
 )
+
+// PossibleInstanceViewTypesValues returns an array of possible values for the InstanceViewTypes const type.
+func PossibleInstanceViewTypesValues() [1]InstanceViewTypes {
+	return [1]InstanceViewTypes{InstanceView}
+}
 
 // IntervalInMins enumerates the values for interval in mins.
 type IntervalInMins string
@@ -220,6 +260,11 @@ const (
 	ThreeMins IntervalInMins = "ThreeMins"
 )
 
+// PossibleIntervalInMinsValues returns an array of possible values for the IntervalInMins const type.
+func PossibleIntervalInMinsValues() [4]IntervalInMins {
+	return [4]IntervalInMins{FiveMins, SixtyMins, ThirtyMins, ThreeMins}
+}
+
 // IPVersion enumerates the values for ip version.
 type IPVersion string
 
@@ -229,6 +274,11 @@ const (
 	// IPv6 ...
 	IPv6 IPVersion = "IPv6"
 )
+
+// PossibleIPVersionValues returns an array of possible values for the IPVersion const type.
+func PossibleIPVersionValues() [2]IPVersion {
+	return [2]IPVersion{IPv4, IPv6}
+}
 
 // MaintenanceOperationResultCodeTypes enumerates the values for maintenance operation result code types.
 type MaintenanceOperationResultCodeTypes string
@@ -244,6 +294,11 @@ const (
 	MaintenanceOperationResultCodeTypesRetryLater MaintenanceOperationResultCodeTypes = "RetryLater"
 )
 
+// PossibleMaintenanceOperationResultCodeTypesValues returns an array of possible values for the MaintenanceOperationResultCodeTypes const type.
+func PossibleMaintenanceOperationResultCodeTypesValues() [4]MaintenanceOperationResultCodeTypes {
+	return [4]MaintenanceOperationResultCodeTypes{MaintenanceOperationResultCodeTypesMaintenanceAborted, MaintenanceOperationResultCodeTypesMaintenanceCompleted, MaintenanceOperationResultCodeTypesNone, MaintenanceOperationResultCodeTypesRetryLater}
+}
+
 // OperatingSystemStateTypes enumerates the values for operating system state types.
 type OperatingSystemStateTypes string
 
@@ -253,6 +308,11 @@ const (
 	// Specialized ...
 	Specialized OperatingSystemStateTypes = "Specialized"
 )
+
+// PossibleOperatingSystemStateTypesValues returns an array of possible values for the OperatingSystemStateTypes const type.
+func PossibleOperatingSystemStateTypesValues() [2]OperatingSystemStateTypes {
+	return [2]OperatingSystemStateTypes{Generalized, Specialized}
+}
 
 // OperatingSystemTypes enumerates the values for operating system types.
 type OperatingSystemTypes string
@@ -264,6 +324,11 @@ const (
 	Windows OperatingSystemTypes = "Windows"
 )
 
+// PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
+func PossibleOperatingSystemTypesValues() [2]OperatingSystemTypes {
+	return [2]OperatingSystemTypes{Linux, Windows}
+}
+
 // PassNames enumerates the values for pass names.
 type PassNames string
 
@@ -271,6 +336,11 @@ const (
 	// OobeSystem ...
 	OobeSystem PassNames = "OobeSystem"
 )
+
+// PossiblePassNamesValues returns an array of possible values for the PassNames const type.
+func PossiblePassNamesValues() [1]PassNames {
+	return [1]PassNames{OobeSystem}
+}
 
 // ProtocolTypes enumerates the values for protocol types.
 type ProtocolTypes string
@@ -281,6 +351,11 @@ const (
 	// HTTPS ...
 	HTTPS ProtocolTypes = "Https"
 )
+
+// PossibleProtocolTypesValues returns an array of possible values for the ProtocolTypes const type.
+func PossibleProtocolTypesValues() [2]ProtocolTypes {
+	return [2]ProtocolTypes{HTTP, HTTPS}
+}
 
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
@@ -296,6 +371,11 @@ const (
 	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
 )
 
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() [4]ResourceIdentityType {
+	return [4]ResourceIdentityType{ResourceIdentityTypeNone, ResourceIdentityTypeSystemAssigned, ResourceIdentityTypeSystemAssignedUserAssigned, ResourceIdentityTypeUserAssigned}
+}
+
 // ResourceSkuCapacityScaleType enumerates the values for resource sku capacity scale type.
 type ResourceSkuCapacityScaleType string
 
@@ -308,6 +388,11 @@ const (
 	ResourceSkuCapacityScaleTypeNone ResourceSkuCapacityScaleType = "None"
 )
 
+// PossibleResourceSkuCapacityScaleTypeValues returns an array of possible values for the ResourceSkuCapacityScaleType const type.
+func PossibleResourceSkuCapacityScaleTypeValues() [3]ResourceSkuCapacityScaleType {
+	return [3]ResourceSkuCapacityScaleType{ResourceSkuCapacityScaleTypeAutomatic, ResourceSkuCapacityScaleTypeManual, ResourceSkuCapacityScaleTypeNone}
+}
+
 // ResourceSkuRestrictionsReasonCode enumerates the values for resource sku restrictions reason code.
 type ResourceSkuRestrictionsReasonCode string
 
@@ -317,6 +402,11 @@ const (
 	// QuotaID ...
 	QuotaID ResourceSkuRestrictionsReasonCode = "QuotaId"
 )
+
+// PossibleResourceSkuRestrictionsReasonCodeValues returns an array of possible values for the ResourceSkuRestrictionsReasonCode const type.
+func PossibleResourceSkuRestrictionsReasonCodeValues() [2]ResourceSkuRestrictionsReasonCode {
+	return [2]ResourceSkuRestrictionsReasonCode{NotAvailableForSubscription, QuotaID}
+}
 
 // ResourceSkuRestrictionsType enumerates the values for resource sku restrictions type.
 type ResourceSkuRestrictionsType string
@@ -328,6 +418,11 @@ const (
 	Zone ResourceSkuRestrictionsType = "Zone"
 )
 
+// PossibleResourceSkuRestrictionsTypeValues returns an array of possible values for the ResourceSkuRestrictionsType const type.
+func PossibleResourceSkuRestrictionsTypeValues() [2]ResourceSkuRestrictionsType {
+	return [2]ResourceSkuRestrictionsType{Location, Zone}
+}
+
 // RollingUpgradeActionType enumerates the values for rolling upgrade action type.
 type RollingUpgradeActionType string
 
@@ -337,6 +432,11 @@ const (
 	// Start ...
 	Start RollingUpgradeActionType = "Start"
 )
+
+// PossibleRollingUpgradeActionTypeValues returns an array of possible values for the RollingUpgradeActionType const type.
+func PossibleRollingUpgradeActionTypeValues() [2]RollingUpgradeActionType {
+	return [2]RollingUpgradeActionType{Cancel, Start}
+}
 
 // RollingUpgradeStatusCode enumerates the values for rolling upgrade status code.
 type RollingUpgradeStatusCode string
@@ -352,6 +452,11 @@ const (
 	RollingForward RollingUpgradeStatusCode = "RollingForward"
 )
 
+// PossibleRollingUpgradeStatusCodeValues returns an array of possible values for the RollingUpgradeStatusCode const type.
+func PossibleRollingUpgradeStatusCodeValues() [4]RollingUpgradeStatusCode {
+	return [4]RollingUpgradeStatusCode{Cancelled, Completed, Faulted, RollingForward}
+}
+
 // SettingNames enumerates the values for setting names.
 type SettingNames string
 
@@ -361,6 +466,11 @@ const (
 	// FirstLogonCommands ...
 	FirstLogonCommands SettingNames = "FirstLogonCommands"
 )
+
+// PossibleSettingNamesValues returns an array of possible values for the SettingNames const type.
+func PossibleSettingNamesValues() [2]SettingNames {
+	return [2]SettingNames{AutoLogon, FirstLogonCommands}
+}
 
 // StatusLevelTypes enumerates the values for status level types.
 type StatusLevelTypes string
@@ -374,6 +484,11 @@ const (
 	Warning StatusLevelTypes = "Warning"
 )
 
+// PossibleStatusLevelTypesValues returns an array of possible values for the StatusLevelTypes const type.
+func PossibleStatusLevelTypesValues() [3]StatusLevelTypes {
+	return [3]StatusLevelTypes{Error, Info, Warning}
+}
+
 // StorageAccountTypes enumerates the values for storage account types.
 type StorageAccountTypes string
 
@@ -383,6 +498,11 @@ const (
 	// StandardLRS ...
 	StandardLRS StorageAccountTypes = "Standard_LRS"
 )
+
+// PossibleStorageAccountTypesValues returns an array of possible values for the StorageAccountTypes const type.
+func PossibleStorageAccountTypesValues() [2]StorageAccountTypes {
+	return [2]StorageAccountTypes{PremiumLRS, StandardLRS}
+}
 
 // UpgradeMode enumerates the values for upgrade mode.
 type UpgradeMode string
@@ -396,6 +516,11 @@ const (
 	Rolling UpgradeMode = "Rolling"
 )
 
+// PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
+func PossibleUpgradeModeValues() [3]UpgradeMode {
+	return [3]UpgradeMode{Automatic, Manual, Rolling}
+}
+
 // VirtualMachinePriorityTypes enumerates the values for virtual machine priority types.
 type VirtualMachinePriorityTypes string
 
@@ -406,6 +531,11 @@ const (
 	Regular VirtualMachinePriorityTypes = "Regular"
 )
 
+// PossibleVirtualMachinePriorityTypesValues returns an array of possible values for the VirtualMachinePriorityTypes const type.
+func PossibleVirtualMachinePriorityTypesValues() [2]VirtualMachinePriorityTypes {
+	return [2]VirtualMachinePriorityTypes{Low, Regular}
+}
+
 // VirtualMachineScaleSetSkuScaleType enumerates the values for virtual machine scale set sku scale type.
 type VirtualMachineScaleSetSkuScaleType string
 
@@ -415,6 +545,11 @@ const (
 	// VirtualMachineScaleSetSkuScaleTypeNone ...
 	VirtualMachineScaleSetSkuScaleTypeNone VirtualMachineScaleSetSkuScaleType = "None"
 )
+
+// PossibleVirtualMachineScaleSetSkuScaleTypeValues returns an array of possible values for the VirtualMachineScaleSetSkuScaleType const type.
+func PossibleVirtualMachineScaleSetSkuScaleTypeValues() [2]VirtualMachineScaleSetSkuScaleType {
+	return [2]VirtualMachineScaleSetSkuScaleType{VirtualMachineScaleSetSkuScaleTypeAutomatic, VirtualMachineScaleSetSkuScaleTypeNone}
+}
 
 // VirtualMachineSizeTypes enumerates the values for virtual machine size types.
 type VirtualMachineSizeTypes string
@@ -753,6 +888,11 @@ const (
 	// VirtualMachineSizeTypesStandardNV6 ...
 	VirtualMachineSizeTypesStandardNV6 VirtualMachineSizeTypes = "Standard_NV6"
 )
+
+// PossibleVirtualMachineSizeTypesValues returns an array of possible values for the VirtualMachineSizeTypes const type.
+func PossibleVirtualMachineSizeTypesValues() [166]VirtualMachineSizeTypes {
+	return [166]VirtualMachineSizeTypes{VirtualMachineSizeTypesBasicA0, VirtualMachineSizeTypesBasicA1, VirtualMachineSizeTypesBasicA2, VirtualMachineSizeTypesBasicA3, VirtualMachineSizeTypesBasicA4, VirtualMachineSizeTypesStandardA0, VirtualMachineSizeTypesStandardA1, VirtualMachineSizeTypesStandardA10, VirtualMachineSizeTypesStandardA11, VirtualMachineSizeTypesStandardA1V2, VirtualMachineSizeTypesStandardA2, VirtualMachineSizeTypesStandardA2mV2, VirtualMachineSizeTypesStandardA2V2, VirtualMachineSizeTypesStandardA3, VirtualMachineSizeTypesStandardA4, VirtualMachineSizeTypesStandardA4mV2, VirtualMachineSizeTypesStandardA4V2, VirtualMachineSizeTypesStandardA5, VirtualMachineSizeTypesStandardA6, VirtualMachineSizeTypesStandardA7, VirtualMachineSizeTypesStandardA8, VirtualMachineSizeTypesStandardA8mV2, VirtualMachineSizeTypesStandardA8V2, VirtualMachineSizeTypesStandardA9, VirtualMachineSizeTypesStandardB1ms, VirtualMachineSizeTypesStandardB1s, VirtualMachineSizeTypesStandardB2ms, VirtualMachineSizeTypesStandardB2s, VirtualMachineSizeTypesStandardB4ms, VirtualMachineSizeTypesStandardB8ms, VirtualMachineSizeTypesStandardD1, VirtualMachineSizeTypesStandardD11, VirtualMachineSizeTypesStandardD11V2, VirtualMachineSizeTypesStandardD12, VirtualMachineSizeTypesStandardD12V2, VirtualMachineSizeTypesStandardD13, VirtualMachineSizeTypesStandardD13V2, VirtualMachineSizeTypesStandardD14, VirtualMachineSizeTypesStandardD14V2, VirtualMachineSizeTypesStandardD15V2, VirtualMachineSizeTypesStandardD16sV3, VirtualMachineSizeTypesStandardD16V3, VirtualMachineSizeTypesStandardD1V2, VirtualMachineSizeTypesStandardD2, VirtualMachineSizeTypesStandardD2sV3, VirtualMachineSizeTypesStandardD2V2, VirtualMachineSizeTypesStandardD2V3, VirtualMachineSizeTypesStandardD3, VirtualMachineSizeTypesStandardD32sV3, VirtualMachineSizeTypesStandardD32V3, VirtualMachineSizeTypesStandardD3V2, VirtualMachineSizeTypesStandardD4, VirtualMachineSizeTypesStandardD4sV3, VirtualMachineSizeTypesStandardD4V2, VirtualMachineSizeTypesStandardD4V3, VirtualMachineSizeTypesStandardD5V2, VirtualMachineSizeTypesStandardD64sV3, VirtualMachineSizeTypesStandardD64V3, VirtualMachineSizeTypesStandardD8sV3, VirtualMachineSizeTypesStandardD8V3, VirtualMachineSizeTypesStandardDS1, VirtualMachineSizeTypesStandardDS11, VirtualMachineSizeTypesStandardDS11V2, VirtualMachineSizeTypesStandardDS12, VirtualMachineSizeTypesStandardDS12V2, VirtualMachineSizeTypesStandardDS13, VirtualMachineSizeTypesStandardDS132V2, VirtualMachineSizeTypesStandardDS134V2, VirtualMachineSizeTypesStandardDS13V2, VirtualMachineSizeTypesStandardDS14, VirtualMachineSizeTypesStandardDS144V2, VirtualMachineSizeTypesStandardDS148V2, VirtualMachineSizeTypesStandardDS14V2, VirtualMachineSizeTypesStandardDS15V2, VirtualMachineSizeTypesStandardDS1V2, VirtualMachineSizeTypesStandardDS2, VirtualMachineSizeTypesStandardDS2V2, VirtualMachineSizeTypesStandardDS3, VirtualMachineSizeTypesStandardDS3V2, VirtualMachineSizeTypesStandardDS4, VirtualMachineSizeTypesStandardDS4V2, VirtualMachineSizeTypesStandardDS5V2, VirtualMachineSizeTypesStandardE16sV3, VirtualMachineSizeTypesStandardE16V3, VirtualMachineSizeTypesStandardE2sV3, VirtualMachineSizeTypesStandardE2V3, VirtualMachineSizeTypesStandardE3216V3, VirtualMachineSizeTypesStandardE328sV3, VirtualMachineSizeTypesStandardE32sV3, VirtualMachineSizeTypesStandardE32V3, VirtualMachineSizeTypesStandardE4sV3, VirtualMachineSizeTypesStandardE4V3, VirtualMachineSizeTypesStandardE6416sV3, VirtualMachineSizeTypesStandardE6432sV3, VirtualMachineSizeTypesStandardE64sV3, VirtualMachineSizeTypesStandardE64V3, VirtualMachineSizeTypesStandardE8sV3, VirtualMachineSizeTypesStandardE8V3, VirtualMachineSizeTypesStandardF1, VirtualMachineSizeTypesStandardF16, VirtualMachineSizeTypesStandardF16s, VirtualMachineSizeTypesStandardF16sV2, VirtualMachineSizeTypesStandardF1s, VirtualMachineSizeTypesStandardF2, VirtualMachineSizeTypesStandardF2s, VirtualMachineSizeTypesStandardF2sV2, VirtualMachineSizeTypesStandardF32sV2, VirtualMachineSizeTypesStandardF4, VirtualMachineSizeTypesStandardF4s, VirtualMachineSizeTypesStandardF4sV2, VirtualMachineSizeTypesStandardF64sV2, VirtualMachineSizeTypesStandardF72sV2, VirtualMachineSizeTypesStandardF8, VirtualMachineSizeTypesStandardF8s, VirtualMachineSizeTypesStandardF8sV2, VirtualMachineSizeTypesStandardG1, VirtualMachineSizeTypesStandardG2, VirtualMachineSizeTypesStandardG3, VirtualMachineSizeTypesStandardG4, VirtualMachineSizeTypesStandardG5, VirtualMachineSizeTypesStandardGS1, VirtualMachineSizeTypesStandardGS2, VirtualMachineSizeTypesStandardGS3, VirtualMachineSizeTypesStandardGS4, VirtualMachineSizeTypesStandardGS44, VirtualMachineSizeTypesStandardGS48, VirtualMachineSizeTypesStandardGS5, VirtualMachineSizeTypesStandardGS516, VirtualMachineSizeTypesStandardGS58, VirtualMachineSizeTypesStandardH16, VirtualMachineSizeTypesStandardH16m, VirtualMachineSizeTypesStandardH16mr, VirtualMachineSizeTypesStandardH16r, VirtualMachineSizeTypesStandardH8, VirtualMachineSizeTypesStandardH8m, VirtualMachineSizeTypesStandardL16s, VirtualMachineSizeTypesStandardL32s, VirtualMachineSizeTypesStandardL4s, VirtualMachineSizeTypesStandardL8s, VirtualMachineSizeTypesStandardM12832ms, VirtualMachineSizeTypesStandardM12864ms, VirtualMachineSizeTypesStandardM128ms, VirtualMachineSizeTypesStandardM128s, VirtualMachineSizeTypesStandardM6416ms, VirtualMachineSizeTypesStandardM6432ms, VirtualMachineSizeTypesStandardM64ms, VirtualMachineSizeTypesStandardM64s, VirtualMachineSizeTypesStandardNC12, VirtualMachineSizeTypesStandardNC12sV2, VirtualMachineSizeTypesStandardNC12sV3, VirtualMachineSizeTypesStandardNC24, VirtualMachineSizeTypesStandardNC24r, VirtualMachineSizeTypesStandardNC24rsV2, VirtualMachineSizeTypesStandardNC24rsV3, VirtualMachineSizeTypesStandardNC24sV2, VirtualMachineSizeTypesStandardNC24sV3, VirtualMachineSizeTypesStandardNC6, VirtualMachineSizeTypesStandardNC6sV2, VirtualMachineSizeTypesStandardNC6sV3, VirtualMachineSizeTypesStandardND12s, VirtualMachineSizeTypesStandardND24rs, VirtualMachineSizeTypesStandardND24s, VirtualMachineSizeTypesStandardND6s, VirtualMachineSizeTypesStandardNV12, VirtualMachineSizeTypesStandardNV24, VirtualMachineSizeTypesStandardNV6}
+}
 
 // AccessURI a disk access SAS uri.
 type AccessURI struct {

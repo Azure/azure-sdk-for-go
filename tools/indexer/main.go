@@ -15,17 +15,14 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
-)
 
-type packageSet map[string]bool
+	"github.com/Azure/azure-sdk-for-go/tools/indexer/util"
+)
 
 // adds any missing SDK packages to godoc.org
 func main() {
@@ -43,12 +40,22 @@ func main() {
 		}
 	}
 
-	pkgs, err := getPackagesForIndexing(dir)
+	pkgs, err := util.GetPackagesForIndexing(dir)
 	if err != nil {
 		panic(err)
 	}
 
-	indexedPkgs, err := getIndexedPackages()
+	// this URL will return the set of packages that have been indexed
+	resp, err := http.DefaultClient.Get("https://godoc.org/github.com/Azure/azure-sdk-for-go/services")
+	if err != nil {
+		panic(err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	indexedPkgs, err := util.GetIndexedPackages(resp.Body)
 	if err != nil {
 		panic(err)
 	}
@@ -62,6 +69,7 @@ func main() {
 			continue
 		}
 
+		// performing a GET on the package URL will cause the service to index it
 		fmt.Printf("indexing %s...", pkg)
 		resp, err := http.DefaultClient.Get(fmt.Sprintf("https://godoc.org/%s", pkg))
 		if err != nil {
@@ -78,7 +86,7 @@ func main() {
 		}
 
 		// sleep a bit between indexing
-		time.Sleep(60 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 
 	// check if any packages failed to index
@@ -95,92 +103,4 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println("successfully indexed all packages")
-}
-
-// returns the set of packages that have already been indexed
-func getIndexedPackages() (packageSet, error) {
-	// this URL will return the set of packages that have been indexed
-	resp, err := http.DefaultClient.Get("https://godoc.org/github.com/Azure/azure-sdk-for-go/services")
-	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("didn't receive 200 when looking for indexed packages, got %v: %s", resp.StatusCode, resp.Status)
-	}
-
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(body) < 1 {
-		return nil, errors.New("did't receive a response body when lookinig for indexed packages")
-	}
-
-	// scrape the response body to create the package list
-	pkgs := packageSet{}
-	bodyStr := string(body)
-	const lookFor = "github.com/Azure/azure-sdk-for-go/services/"
-	for {
-		// find the start of the package
-		index := strings.Index(bodyStr, lookFor)
-		if index < 0 {
-			break
-		}
-
-		// now find the terminal " character
-		terminal := strings.IndexRune(bodyStr[index+len(lookFor):], '"') + index + len(lookFor)
-		pkg := bodyStr[index:terminal]
-		pkgs[pkg] = true
-
-		// advance to the next
-		bodyStr = bodyStr[terminal:]
-	}
-	return pkgs, nil
-}
-
-// returns the set of packages, calculated from the repo, to be indexed
-func getPackagesForIndexing(dir string) (packageSet, error) {
-	leafDirs := []string{}
-	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			// check if leaf dir
-			fi, err := ioutil.ReadDir(path)
-			if err != nil {
-				return err
-			}
-			hasSubDirs := false
-			for _, f := range fi {
-				if f.IsDir() {
-					hasSubDirs = true
-					break
-				}
-			}
-			if !hasSubDirs {
-				leafDirs = append(leafDirs, path)
-			}
-		}
-		return nil
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	// dirs will look something like "D:\work\src\github.com\Azure\azure-sdk-for-go\services\..."
-	// strip off the stuff before the github.com and change the whacks so it looks like a package import
-
-	pkgs := packageSet{}
-	for _, dir := range leafDirs {
-		i := strings.Index(dir, "github.com")
-		if i < 0 {
-			return nil, fmt.Errorf("didn't find github.com in directory '%s'", dir)
-		}
-		pkg := strings.Replace(dir[i:], "\\", "/", -1)
-		pkgs[pkg] = false
-	}
-	return pkgs, nil
 }

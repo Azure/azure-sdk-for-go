@@ -36,6 +36,11 @@ const (
 	Deny Access = "Deny"
 )
 
+// PossibleAccessValues returns an array of possible values for the Access const type.
+func PossibleAccessValues() [2]Access {
+	return [2]Access{Allow, Deny}
+}
+
 // ApplicationGatewayBackendHealthServerHealth enumerates the values for application gateway backend health
 // server health.
 type ApplicationGatewayBackendHealthServerHealth string
@@ -51,6 +56,11 @@ const (
 	Up ApplicationGatewayBackendHealthServerHealth = "Up"
 )
 
+// PossibleApplicationGatewayBackendHealthServerHealthValues returns an array of possible values for the ApplicationGatewayBackendHealthServerHealth const type.
+func PossibleApplicationGatewayBackendHealthServerHealthValues() [4]ApplicationGatewayBackendHealthServerHealth {
+	return [4]ApplicationGatewayBackendHealthServerHealth{Down, Partial, Unknown, Up}
+}
+
 // ApplicationGatewayCookieBasedAffinity enumerates the values for application gateway cookie based affinity.
 type ApplicationGatewayCookieBasedAffinity string
 
@@ -61,6 +71,11 @@ const (
 	Enabled ApplicationGatewayCookieBasedAffinity = "Enabled"
 )
 
+// PossibleApplicationGatewayCookieBasedAffinityValues returns an array of possible values for the ApplicationGatewayCookieBasedAffinity const type.
+func PossibleApplicationGatewayCookieBasedAffinityValues() [2]ApplicationGatewayCookieBasedAffinity {
+	return [2]ApplicationGatewayCookieBasedAffinity{Disabled, Enabled}
+}
+
 // ApplicationGatewayFirewallMode enumerates the values for application gateway firewall mode.
 type ApplicationGatewayFirewallMode string
 
@@ -70,6 +85,11 @@ const (
 	// Prevention ...
 	Prevention ApplicationGatewayFirewallMode = "Prevention"
 )
+
+// PossibleApplicationGatewayFirewallModeValues returns an array of possible values for the ApplicationGatewayFirewallMode const type.
+func PossibleApplicationGatewayFirewallModeValues() [2]ApplicationGatewayFirewallMode {
+	return [2]ApplicationGatewayFirewallMode{Detection, Prevention}
+}
 
 // ApplicationGatewayOperationalState enumerates the values for application gateway operational state.
 type ApplicationGatewayOperationalState string
@@ -85,6 +105,11 @@ const (
 	Stopping ApplicationGatewayOperationalState = "Stopping"
 )
 
+// PossibleApplicationGatewayOperationalStateValues returns an array of possible values for the ApplicationGatewayOperationalState const type.
+func PossibleApplicationGatewayOperationalStateValues() [4]ApplicationGatewayOperationalState {
+	return [4]ApplicationGatewayOperationalState{Running, Starting, Stopped, Stopping}
+}
+
 // ApplicationGatewayProtocol enumerates the values for application gateway protocol.
 type ApplicationGatewayProtocol string
 
@@ -94,6 +119,11 @@ const (
 	// HTTPS ...
 	HTTPS ApplicationGatewayProtocol = "Https"
 )
+
+// PossibleApplicationGatewayProtocolValues returns an array of possible values for the ApplicationGatewayProtocol const type.
+func PossibleApplicationGatewayProtocolValues() [2]ApplicationGatewayProtocol {
+	return [2]ApplicationGatewayProtocol{HTTP, HTTPS}
+}
 
 // ApplicationGatewayRequestRoutingRuleType enumerates the values for application gateway request routing rule
 // type.
@@ -105,6 +135,11 @@ const (
 	// PathBasedRouting ...
 	PathBasedRouting ApplicationGatewayRequestRoutingRuleType = "PathBasedRouting"
 )
+
+// PossibleApplicationGatewayRequestRoutingRuleTypeValues returns an array of possible values for the ApplicationGatewayRequestRoutingRuleType const type.
+func PossibleApplicationGatewayRequestRoutingRuleTypeValues() [2]ApplicationGatewayRequestRoutingRuleType {
+	return [2]ApplicationGatewayRequestRoutingRuleType{Basic, PathBasedRouting}
+}
 
 // ApplicationGatewaySkuName enumerates the values for application gateway sku name.
 type ApplicationGatewaySkuName string
@@ -122,6 +157,11 @@ const (
 	WAFMedium ApplicationGatewaySkuName = "WAF_Medium"
 )
 
+// PossibleApplicationGatewaySkuNameValues returns an array of possible values for the ApplicationGatewaySkuName const type.
+func PossibleApplicationGatewaySkuNameValues() [5]ApplicationGatewaySkuName {
+	return [5]ApplicationGatewaySkuName{StandardLarge, StandardMedium, StandardSmall, WAFLarge, WAFMedium}
+}
+
 // ApplicationGatewaySslProtocol enumerates the values for application gateway ssl protocol.
 type ApplicationGatewaySslProtocol string
 
@@ -134,6 +174,11 @@ const (
 	TLSv12 ApplicationGatewaySslProtocol = "TLSv1_2"
 )
 
+// PossibleApplicationGatewaySslProtocolValues returns an array of possible values for the ApplicationGatewaySslProtocol const type.
+func PossibleApplicationGatewaySslProtocolValues() [3]ApplicationGatewaySslProtocol {
+	return [3]ApplicationGatewaySslProtocol{TLSv10, TLSv11, TLSv12}
+}
+
 // ApplicationGatewayTier enumerates the values for application gateway tier.
 type ApplicationGatewayTier string
 
@@ -143,6 +188,11 @@ const (
 	// WAF ...
 	WAF ApplicationGatewayTier = "WAF"
 )
+
+// PossibleApplicationGatewayTierValues returns an array of possible values for the ApplicationGatewayTier const type.
+func PossibleApplicationGatewayTierValues() [2]ApplicationGatewayTier {
+	return [2]ApplicationGatewayTier{Standard, WAF}
+}
 
 // AssociationType enumerates the values for association type.
 type AssociationType string
@@ -154,6 +204,11 @@ const (
 	Contains AssociationType = "Contains"
 )
 
+// PossibleAssociationTypeValues returns an array of possible values for the AssociationType const type.
+func PossibleAssociationTypeValues() [2]AssociationType {
+	return [2]AssociationType{Associated, Contains}
+}
+
 // AuthorizationUseStatus enumerates the values for authorization use status.
 type AuthorizationUseStatus string
 
@@ -163,6 +218,11 @@ const (
 	// InUse ...
 	InUse AuthorizationUseStatus = "InUse"
 )
+
+// PossibleAuthorizationUseStatusValues returns an array of possible values for the AuthorizationUseStatus const type.
+func PossibleAuthorizationUseStatusValues() [2]AuthorizationUseStatus {
+	return [2]AuthorizationUseStatus{Available, InUse}
+}
 
 // BgpPeerState enumerates the values for bgp peer state.
 type BgpPeerState string
@@ -180,6 +240,11 @@ const (
 	BgpPeerStateUnknown BgpPeerState = "Unknown"
 )
 
+// PossibleBgpPeerStateValues returns an array of possible values for the BgpPeerState const type.
+func PossibleBgpPeerStateValues() [5]BgpPeerState {
+	return [5]BgpPeerState{BgpPeerStateConnected, BgpPeerStateConnecting, BgpPeerStateIdle, BgpPeerStateStopped, BgpPeerStateUnknown}
+}
+
 // Direction enumerates the values for direction.
 type Direction string
 
@@ -189,6 +254,11 @@ const (
 	// Outbound ...
 	Outbound Direction = "Outbound"
 )
+
+// PossibleDirectionValues returns an array of possible values for the Direction const type.
+func PossibleDirectionValues() [2]Direction {
+	return [2]Direction{Inbound, Outbound}
+}
 
 // EffectiveRouteSource enumerates the values for effective route source.
 type EffectiveRouteSource string
@@ -204,6 +274,11 @@ const (
 	EffectiveRouteSourceVirtualNetworkGateway EffectiveRouteSource = "VirtualNetworkGateway"
 )
 
+// PossibleEffectiveRouteSourceValues returns an array of possible values for the EffectiveRouteSource const type.
+func PossibleEffectiveRouteSourceValues() [4]EffectiveRouteSource {
+	return [4]EffectiveRouteSource{EffectiveRouteSourceDefault, EffectiveRouteSourceUnknown, EffectiveRouteSourceUser, EffectiveRouteSourceVirtualNetworkGateway}
+}
+
 // EffectiveRouteState enumerates the values for effective route state.
 type EffectiveRouteState string
 
@@ -213,6 +288,11 @@ const (
 	// Invalid ...
 	Invalid EffectiveRouteState = "Invalid"
 )
+
+// PossibleEffectiveRouteStateValues returns an array of possible values for the EffectiveRouteState const type.
+func PossibleEffectiveRouteStateValues() [2]EffectiveRouteState {
+	return [2]EffectiveRouteState{Active, Invalid}
+}
 
 // ExpressRouteCircuitPeeringAdvertisedPublicPrefixState enumerates the values for express route circuit
 // peering advertised public prefix state.
@@ -229,6 +309,11 @@ const (
 	ValidationNeeded ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "ValidationNeeded"
 )
 
+// PossibleExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValues returns an array of possible values for the ExpressRouteCircuitPeeringAdvertisedPublicPrefixState const type.
+func PossibleExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValues() [4]ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
+	return [4]ExpressRouteCircuitPeeringAdvertisedPublicPrefixState{Configured, Configuring, NotConfigured, ValidationNeeded}
+}
+
 // ExpressRouteCircuitPeeringState enumerates the values for express route circuit peering state.
 type ExpressRouteCircuitPeeringState string
 
@@ -238,6 +323,11 @@ const (
 	// ExpressRouteCircuitPeeringStateEnabled ...
 	ExpressRouteCircuitPeeringStateEnabled ExpressRouteCircuitPeeringState = "Enabled"
 )
+
+// PossibleExpressRouteCircuitPeeringStateValues returns an array of possible values for the ExpressRouteCircuitPeeringState const type.
+func PossibleExpressRouteCircuitPeeringStateValues() [2]ExpressRouteCircuitPeeringState {
+	return [2]ExpressRouteCircuitPeeringState{ExpressRouteCircuitPeeringStateDisabled, ExpressRouteCircuitPeeringStateEnabled}
+}
 
 // ExpressRouteCircuitPeeringType enumerates the values for express route circuit peering type.
 type ExpressRouteCircuitPeeringType string
@@ -251,6 +341,11 @@ const (
 	MicrosoftPeering ExpressRouteCircuitPeeringType = "MicrosoftPeering"
 )
 
+// PossibleExpressRouteCircuitPeeringTypeValues returns an array of possible values for the ExpressRouteCircuitPeeringType const type.
+func PossibleExpressRouteCircuitPeeringTypeValues() [3]ExpressRouteCircuitPeeringType {
+	return [3]ExpressRouteCircuitPeeringType{AzurePrivatePeering, AzurePublicPeering, MicrosoftPeering}
+}
+
 // ExpressRouteCircuitSkuFamily enumerates the values for express route circuit sku family.
 type ExpressRouteCircuitSkuFamily string
 
@@ -260,6 +355,11 @@ const (
 	// UnlimitedData ...
 	UnlimitedData ExpressRouteCircuitSkuFamily = "UnlimitedData"
 )
+
+// PossibleExpressRouteCircuitSkuFamilyValues returns an array of possible values for the ExpressRouteCircuitSkuFamily const type.
+func PossibleExpressRouteCircuitSkuFamilyValues() [2]ExpressRouteCircuitSkuFamily {
+	return [2]ExpressRouteCircuitSkuFamily{MeteredData, UnlimitedData}
+}
 
 // ExpressRouteCircuitSkuTier enumerates the values for express route circuit sku tier.
 type ExpressRouteCircuitSkuTier string
@@ -271,6 +371,11 @@ const (
 	ExpressRouteCircuitSkuTierStandard ExpressRouteCircuitSkuTier = "Standard"
 )
 
+// PossibleExpressRouteCircuitSkuTierValues returns an array of possible values for the ExpressRouteCircuitSkuTier const type.
+func PossibleExpressRouteCircuitSkuTierValues() [2]ExpressRouteCircuitSkuTier {
+	return [2]ExpressRouteCircuitSkuTier{ExpressRouteCircuitSkuTierPremium, ExpressRouteCircuitSkuTierStandard}
+}
+
 // IPAllocationMethod enumerates the values for ip allocation method.
 type IPAllocationMethod string
 
@@ -281,6 +386,11 @@ const (
 	Static IPAllocationMethod = "Static"
 )
 
+// PossibleIPAllocationMethodValues returns an array of possible values for the IPAllocationMethod const type.
+func PossibleIPAllocationMethodValues() [2]IPAllocationMethod {
+	return [2]IPAllocationMethod{Dynamic, Static}
+}
+
 // IPVersion enumerates the values for ip version.
 type IPVersion string
 
@@ -290,6 +400,11 @@ const (
 	// IPv6 ...
 	IPv6 IPVersion = "IPv6"
 )
+
+// PossibleIPVersionValues returns an array of possible values for the IPVersion const type.
+func PossibleIPVersionValues() [2]IPVersion {
+	return [2]IPVersion{IPv4, IPv6}
+}
 
 // LoadDistribution enumerates the values for load distribution.
 type LoadDistribution string
@@ -302,6 +417,11 @@ const (
 	// SourceIPProtocol ...
 	SourceIPProtocol LoadDistribution = "SourceIPProtocol"
 )
+
+// PossibleLoadDistributionValues returns an array of possible values for the LoadDistribution const type.
+func PossibleLoadDistributionValues() [3]LoadDistribution {
+	return [3]LoadDistribution{Default, SourceIP, SourceIPProtocol}
+}
 
 // NextHopType enumerates the values for next hop type.
 type NextHopType string
@@ -321,6 +441,11 @@ const (
 	NextHopTypeVnetLocal NextHopType = "VnetLocal"
 )
 
+// PossibleNextHopTypeValues returns an array of possible values for the NextHopType const type.
+func PossibleNextHopTypeValues() [6]NextHopType {
+	return [6]NextHopType{NextHopTypeHyperNetGateway, NextHopTypeInternet, NextHopTypeNone, NextHopTypeVirtualAppliance, NextHopTypeVirtualNetworkGateway, NextHopTypeVnetLocal}
+}
+
 // OperationStatus enumerates the values for operation status.
 type OperationStatus string
 
@@ -332,6 +457,11 @@ const (
 	// Succeeded ...
 	Succeeded OperationStatus = "Succeeded"
 )
+
+// PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
+func PossibleOperationStatusValues() [3]OperationStatus {
+	return [3]OperationStatus{Failed, InProgress, Succeeded}
+}
 
 // PcError enumerates the values for pc error.
 type PcError string
@@ -349,6 +479,11 @@ const (
 	StorageFailed PcError = "StorageFailed"
 )
 
+// PossiblePcErrorValues returns an array of possible values for the PcError const type.
+func PossiblePcErrorValues() [5]PcError {
+	return [5]PcError{AgentStopped, CaptureFailed, InternalError, LocalFileFailed, StorageFailed}
+}
+
 // PcProtocol enumerates the values for pc protocol.
 type PcProtocol string
 
@@ -360,6 +495,11 @@ const (
 	// UDP ...
 	UDP PcProtocol = "UDP"
 )
+
+// PossiblePcProtocolValues returns an array of possible values for the PcProtocol const type.
+func PossiblePcProtocolValues() [3]PcProtocol {
+	return [3]PcProtocol{Any, TCP, UDP}
+}
 
 // PcStatus enumerates the values for pc status.
 type PcStatus string
@@ -377,6 +517,11 @@ const (
 	PcStatusUnknown PcStatus = "Unknown"
 )
 
+// PossiblePcStatusValues returns an array of possible values for the PcStatus const type.
+func PossiblePcStatusValues() [5]PcStatus {
+	return [5]PcStatus{PcStatusError, PcStatusNotStarted, PcStatusRunning, PcStatusStopped, PcStatusUnknown}
+}
+
 // ProbeProtocol enumerates the values for probe protocol.
 type ProbeProtocol string
 
@@ -386,6 +531,11 @@ const (
 	// ProbeProtocolTCP ...
 	ProbeProtocolTCP ProbeProtocol = "Tcp"
 )
+
+// PossibleProbeProtocolValues returns an array of possible values for the ProbeProtocol const type.
+func PossibleProbeProtocolValues() [2]ProbeProtocol {
+	return [2]ProbeProtocol{ProbeProtocolHTTP, ProbeProtocolTCP}
+}
 
 // ProcessorArchitecture enumerates the values for processor architecture.
 type ProcessorArchitecture string
@@ -397,6 +547,11 @@ const (
 	X86 ProcessorArchitecture = "X86"
 )
 
+// PossibleProcessorArchitectureValues returns an array of possible values for the ProcessorArchitecture const type.
+func PossibleProcessorArchitectureValues() [2]ProcessorArchitecture {
+	return [2]ProcessorArchitecture{Amd64, X86}
+}
+
 // Protocol enumerates the values for protocol.
 type Protocol string
 
@@ -406,6 +561,11 @@ const (
 	// ProtocolUDP ...
 	ProtocolUDP Protocol = "UDP"
 )
+
+// PossibleProtocolValues returns an array of possible values for the Protocol const type.
+func PossibleProtocolValues() [2]Protocol {
+	return [2]Protocol{ProtocolTCP, ProtocolUDP}
+}
 
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
@@ -420,6 +580,11 @@ const (
 	// ProvisioningStateUpdating ...
 	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() [4]ProvisioningState {
+	return [4]ProvisioningState{ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateSucceeded, ProvisioningStateUpdating}
+}
 
 // RouteNextHopType enumerates the values for route next hop type.
 type RouteNextHopType string
@@ -437,6 +602,11 @@ const (
 	RouteNextHopTypeVnetLocal RouteNextHopType = "VnetLocal"
 )
 
+// PossibleRouteNextHopTypeValues returns an array of possible values for the RouteNextHopType const type.
+func PossibleRouteNextHopTypeValues() [5]RouteNextHopType {
+	return [5]RouteNextHopType{RouteNextHopTypeInternet, RouteNextHopTypeNone, RouteNextHopTypeVirtualAppliance, RouteNextHopTypeVirtualNetworkGateway, RouteNextHopTypeVnetLocal}
+}
+
 // SecurityRuleAccess enumerates the values for security rule access.
 type SecurityRuleAccess string
 
@@ -447,6 +617,11 @@ const (
 	SecurityRuleAccessDeny SecurityRuleAccess = "Deny"
 )
 
+// PossibleSecurityRuleAccessValues returns an array of possible values for the SecurityRuleAccess const type.
+func PossibleSecurityRuleAccessValues() [2]SecurityRuleAccess {
+	return [2]SecurityRuleAccess{SecurityRuleAccessAllow, SecurityRuleAccessDeny}
+}
+
 // SecurityRuleDirection enumerates the values for security rule direction.
 type SecurityRuleDirection string
 
@@ -456,6 +631,11 @@ const (
 	// SecurityRuleDirectionOutbound ...
 	SecurityRuleDirectionOutbound SecurityRuleDirection = "Outbound"
 )
+
+// PossibleSecurityRuleDirectionValues returns an array of possible values for the SecurityRuleDirection const type.
+func PossibleSecurityRuleDirectionValues() [2]SecurityRuleDirection {
+	return [2]SecurityRuleDirection{SecurityRuleDirectionInbound, SecurityRuleDirectionOutbound}
+}
 
 // SecurityRuleProtocol enumerates the values for security rule protocol.
 type SecurityRuleProtocol string
@@ -468,6 +648,11 @@ const (
 	// SecurityRuleProtocolUDP ...
 	SecurityRuleProtocolUDP SecurityRuleProtocol = "Udp"
 )
+
+// PossibleSecurityRuleProtocolValues returns an array of possible values for the SecurityRuleProtocol const type.
+func PossibleSecurityRuleProtocolValues() [3]SecurityRuleProtocol {
+	return [3]SecurityRuleProtocol{SecurityRuleProtocolAsterisk, SecurityRuleProtocolTCP, SecurityRuleProtocolUDP}
+}
 
 // ServiceProviderProvisioningState enumerates the values for service provider provisioning state.
 type ServiceProviderProvisioningState string
@@ -483,6 +668,11 @@ const (
 	Provisioning ServiceProviderProvisioningState = "Provisioning"
 )
 
+// PossibleServiceProviderProvisioningStateValues returns an array of possible values for the ServiceProviderProvisioningState const type.
+func PossibleServiceProviderProvisioningStateValues() [4]ServiceProviderProvisioningState {
+	return [4]ServiceProviderProvisioningState{Deprovisioning, NotProvisioned, Provisioned, Provisioning}
+}
+
 // TransportProtocol enumerates the values for transport protocol.
 type TransportProtocol string
 
@@ -492,6 +682,11 @@ const (
 	// TransportProtocolUDP ...
 	TransportProtocolUDP TransportProtocol = "Udp"
 )
+
+// PossibleTransportProtocolValues returns an array of possible values for the TransportProtocol const type.
+func PossibleTransportProtocolValues() [2]TransportProtocol {
+	return [2]TransportProtocol{TransportProtocolTCP, TransportProtocolUDP}
+}
 
 // VirtualNetworkGatewayConnectionStatus enumerates the values for virtual network gateway connection status.
 type VirtualNetworkGatewayConnectionStatus string
@@ -507,6 +702,11 @@ const (
 	VirtualNetworkGatewayConnectionStatusUnknown VirtualNetworkGatewayConnectionStatus = "Unknown"
 )
 
+// PossibleVirtualNetworkGatewayConnectionStatusValues returns an array of possible values for the VirtualNetworkGatewayConnectionStatus const type.
+func PossibleVirtualNetworkGatewayConnectionStatusValues() [4]VirtualNetworkGatewayConnectionStatus {
+	return [4]VirtualNetworkGatewayConnectionStatus{VirtualNetworkGatewayConnectionStatusConnected, VirtualNetworkGatewayConnectionStatusConnecting, VirtualNetworkGatewayConnectionStatusNotConnected, VirtualNetworkGatewayConnectionStatusUnknown}
+}
+
 // VirtualNetworkGatewayConnectionType enumerates the values for virtual network gateway connection type.
 type VirtualNetworkGatewayConnectionType string
 
@@ -520,6 +720,11 @@ const (
 	// VPNClient ...
 	VPNClient VirtualNetworkGatewayConnectionType = "VPNClient"
 )
+
+// PossibleVirtualNetworkGatewayConnectionTypeValues returns an array of possible values for the VirtualNetworkGatewayConnectionType const type.
+func PossibleVirtualNetworkGatewayConnectionTypeValues() [4]VirtualNetworkGatewayConnectionType {
+	return [4]VirtualNetworkGatewayConnectionType{ExpressRoute, IPsec, Vnet2Vnet, VPNClient}
+}
 
 // VirtualNetworkGatewaySkuName enumerates the values for virtual network gateway sku name.
 type VirtualNetworkGatewaySkuName string
@@ -535,6 +740,11 @@ const (
 	VirtualNetworkGatewaySkuNameUltraPerformance VirtualNetworkGatewaySkuName = "UltraPerformance"
 )
 
+// PossibleVirtualNetworkGatewaySkuNameValues returns an array of possible values for the VirtualNetworkGatewaySkuName const type.
+func PossibleVirtualNetworkGatewaySkuNameValues() [4]VirtualNetworkGatewaySkuName {
+	return [4]VirtualNetworkGatewaySkuName{VirtualNetworkGatewaySkuNameBasic, VirtualNetworkGatewaySkuNameHighPerformance, VirtualNetworkGatewaySkuNameStandard, VirtualNetworkGatewaySkuNameUltraPerformance}
+}
+
 // VirtualNetworkGatewaySkuTier enumerates the values for virtual network gateway sku tier.
 type VirtualNetworkGatewaySkuTier string
 
@@ -549,6 +759,11 @@ const (
 	VirtualNetworkGatewaySkuTierUltraPerformance VirtualNetworkGatewaySkuTier = "UltraPerformance"
 )
 
+// PossibleVirtualNetworkGatewaySkuTierValues returns an array of possible values for the VirtualNetworkGatewaySkuTier const type.
+func PossibleVirtualNetworkGatewaySkuTierValues() [4]VirtualNetworkGatewaySkuTier {
+	return [4]VirtualNetworkGatewaySkuTier{VirtualNetworkGatewaySkuTierBasic, VirtualNetworkGatewaySkuTierHighPerformance, VirtualNetworkGatewaySkuTierStandard, VirtualNetworkGatewaySkuTierUltraPerformance}
+}
+
 // VirtualNetworkGatewayType enumerates the values for virtual network gateway type.
 type VirtualNetworkGatewayType string
 
@@ -558,6 +773,11 @@ const (
 	// VirtualNetworkGatewayTypeVpn ...
 	VirtualNetworkGatewayTypeVpn VirtualNetworkGatewayType = "Vpn"
 )
+
+// PossibleVirtualNetworkGatewayTypeValues returns an array of possible values for the VirtualNetworkGatewayType const type.
+func PossibleVirtualNetworkGatewayTypeValues() [2]VirtualNetworkGatewayType {
+	return [2]VirtualNetworkGatewayType{VirtualNetworkGatewayTypeExpressRoute, VirtualNetworkGatewayTypeVpn}
+}
 
 // VirtualNetworkPeeringState enumerates the values for virtual network peering state.
 type VirtualNetworkPeeringState string
@@ -571,6 +791,11 @@ const (
 	Initiated VirtualNetworkPeeringState = "Initiated"
 )
 
+// PossibleVirtualNetworkPeeringStateValues returns an array of possible values for the VirtualNetworkPeeringState const type.
+func PossibleVirtualNetworkPeeringStateValues() [3]VirtualNetworkPeeringState {
+	return [3]VirtualNetworkPeeringState{Connected, Disconnected, Initiated}
+}
+
 // VpnType enumerates the values for vpn type.
 type VpnType string
 
@@ -580,6 +805,11 @@ const (
 	// RouteBased ...
 	RouteBased VpnType = "RouteBased"
 )
+
+// PossibleVpnTypeValues returns an array of possible values for the VpnType const type.
+func PossibleVpnTypeValues() [2]VpnType {
+	return [2]VpnType{PolicyBased, RouteBased}
+}
 
 // AddressSpace addressSpace contains an array of IP address ranges that can be used by subnets of the virtual
 // network.

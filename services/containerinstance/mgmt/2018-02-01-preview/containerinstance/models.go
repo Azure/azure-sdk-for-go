@@ -35,6 +35,11 @@ const (
 	UDP ContainerGroupNetworkProtocol = "UDP"
 )
 
+// PossibleContainerGroupNetworkProtocolValues returns an array of possible values for the ContainerGroupNetworkProtocol const type.
+func PossibleContainerGroupNetworkProtocolValues() [2]ContainerGroupNetworkProtocol {
+	return [2]ContainerGroupNetworkProtocol{TCP, UDP}
+}
+
 // ContainerGroupRestartPolicy enumerates the values for container group restart policy.
 type ContainerGroupRestartPolicy string
 
@@ -47,6 +52,11 @@ const (
 	OnFailure ContainerGroupRestartPolicy = "OnFailure"
 )
 
+// PossibleContainerGroupRestartPolicyValues returns an array of possible values for the ContainerGroupRestartPolicy const type.
+func PossibleContainerGroupRestartPolicyValues() [3]ContainerGroupRestartPolicy {
+	return [3]ContainerGroupRestartPolicy{Always, Never, OnFailure}
+}
+
 // ContainerNetworkProtocol enumerates the values for container network protocol.
 type ContainerNetworkProtocol string
 
@@ -56,6 +66,11 @@ const (
 	// ContainerNetworkProtocolUDP ...
 	ContainerNetworkProtocolUDP ContainerNetworkProtocol = "UDP"
 )
+
+// PossibleContainerNetworkProtocolValues returns an array of possible values for the ContainerNetworkProtocol const type.
+func PossibleContainerNetworkProtocolValues() [2]ContainerNetworkProtocol {
+	return [2]ContainerNetworkProtocol{ContainerNetworkProtocolTCP, ContainerNetworkProtocolUDP}
+}
 
 // OperatingSystemTypes enumerates the values for operating system types.
 type OperatingSystemTypes string
@@ -67,6 +82,11 @@ const (
 	Windows OperatingSystemTypes = "Windows"
 )
 
+// PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
+func PossibleOperatingSystemTypesValues() [2]OperatingSystemTypes {
+	return [2]OperatingSystemTypes{Linux, Windows}
+}
+
 // OperationsOrigin enumerates the values for operations origin.
 type OperationsOrigin string
 
@@ -76,6 +96,11 @@ const (
 	// User ...
 	User OperationsOrigin = "User"
 )
+
+// PossibleOperationsOriginValues returns an array of possible values for the OperationsOrigin const type.
+func PossibleOperationsOriginValues() [2]OperationsOrigin {
+	return [2]OperationsOrigin{System, User}
+}
 
 // AsyncOperation azure async operation status.
 type AsyncOperation struct {

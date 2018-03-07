@@ -41,7 +41,7 @@ func NewAsyncContainerGroupOperationClientWithBaseURI(baseURI string, subscripti
 	return AsyncContainerGroupOperationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get the usage for a subscription
+// Get get the container group async operation status.
 //
 // location is the identifier for the physical azure location. operationID is the operation Id.
 func (client AsyncContainerGroupOperationClient) Get(ctx context.Context, location string, operationID string) (result AsyncOperation, err error) {

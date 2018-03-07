@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## `v14.2.0`
+
+### Changes
+
+- For blob storage, added GetProperties() method to Container.
+- Added PublicAccess field to ContainerProperties struct.
+
 ## `v14.1.1`
 
 - Fixing timestamp marshalling bug in the `storage` package.

@@ -36,6 +36,11 @@ const (
 	ReadOnly LockLevel = "ReadOnly"
 )
 
+// PossibleLockLevelValues returns an array of possible values for the LockLevel const type.
+func PossibleLockLevelValues() [3]LockLevel {
+	return [3]LockLevel{CanNotDelete, NotSpecified, ReadOnly}
+}
+
 // ManagementLockListResult the list of locks.
 type ManagementLockListResult struct {
 	autorest.Response `json:"-"`

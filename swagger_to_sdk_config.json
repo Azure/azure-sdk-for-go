@@ -9,8 +9,7 @@
       "verbose": "",
       "sdkrel:go-sdk-folder": ".",
       "multiapi": "",
-      "package-version": "latest",
-      "user-agent": "Azure-SDK-For-Go/latest services"
+      "use-onever": ""
     },
     "version": "0.2.0"
   }

@@ -447,7 +447,7 @@ func (client ContainerGroupsClient) ListByResourceGroupComplete(ctx context.Cont
 //
 // resourceGroupName is the name of the resource group. containerGroupName is the name of the container group.
 // resource is the container group resource with just the tags to be updated.
-func (client ContainerGroupsClient) Update(ctx context.Context, resourceGroupName string, containerGroupName string, resource *Resource) (result ContainerGroup, err error) {
+func (client ContainerGroupsClient) Update(ctx context.Context, resourceGroupName string, containerGroupName string, resource Resource) (result ContainerGroup, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, containerGroupName, resource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "Update", nil, "Failure preparing request")
@@ -470,7 +470,7 @@ func (client ContainerGroupsClient) Update(ctx context.Context, resourceGroupNam
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ContainerGroupsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, containerGroupName string, resource *Resource) (*http.Request, error) {
+func (client ContainerGroupsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, containerGroupName string, resource Resource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"containerGroupName": autorest.Encode("path", containerGroupName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
@@ -487,11 +487,8 @@ func (client ContainerGroupsClient) UpdatePreparer(ctx context.Context, resource
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}", pathParameters),
+		autorest.WithJSON(resource),
 		autorest.WithQueryParameters(queryParameters))
-	if resource != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(resource))
-	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

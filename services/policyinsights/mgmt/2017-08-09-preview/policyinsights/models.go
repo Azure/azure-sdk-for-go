@@ -32,6 +32,11 @@ const (
 	Latest PolicyStatesResource = "latest"
 )
 
+// PossiblePolicyStatesResourceValues returns an array of possible values for the PolicyStatesResource const type.
+func PossiblePolicyStatesResourceValues() [2]PolicyStatesResource {
+	return [2]PolicyStatesResource{Default, Latest}
+}
+
 // Column column definition.
 type Column struct {
 	// Ordinal - Ordinal value of the column in a record.

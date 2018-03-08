@@ -34,6 +34,11 @@ const (
 	Secondary KeyType = "Secondary"
 )
 
+// PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
+func PossibleKeyTypeValues() [2]KeyType {
+	return [2]KeyType{Primary, Secondary}
+}
+
 // RebootType enumerates the values for reboot type.
 type RebootType string
 
@@ -46,6 +51,11 @@ const (
 	SecondaryNode RebootType = "SecondaryNode"
 )
 
+// PossibleRebootTypeValues returns an array of possible values for the RebootType const type.
+func PossibleRebootTypeValues() [3]RebootType {
+	return [3]RebootType{AllNodes, PrimaryNode, SecondaryNode}
+}
+
 // SkuFamily enumerates the values for sku family.
 type SkuFamily string
 
@@ -55,6 +65,11 @@ const (
 	// P ...
 	P SkuFamily = "P"
 )
+
+// PossibleSkuFamilyValues returns an array of possible values for the SkuFamily const type.
+func PossibleSkuFamilyValues() [2]SkuFamily {
+	return [2]SkuFamily{C, P}
+}
 
 // SkuName enumerates the values for sku name.
 type SkuName string
@@ -67,6 +82,11 @@ const (
 	// Standard ...
 	Standard SkuName = "Standard"
 )
+
+// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
+func PossibleSkuNameValues() [3]SkuName {
+	return [3]SkuName{Basic, Premium, Standard}
+}
 
 // AccessKeys redis cache access keys.
 type AccessKeys struct {

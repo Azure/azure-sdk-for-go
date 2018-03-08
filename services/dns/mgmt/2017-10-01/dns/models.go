@@ -51,6 +51,11 @@ const (
 	TXT RecordType = "TXT"
 )
 
+// PossibleRecordTypeValues returns an array of possible values for the RecordType const type.
+func PossibleRecordTypeValues() [10]RecordType {
+	return [10]RecordType{A, AAAA, CAA, CNAME, MX, NS, PTR, SOA, SRV, TXT}
+}
+
 // AaaaRecord an AAAA record.
 type AaaaRecord struct {
 	// Ipv6Address - The IPv6 address of this AAAA record.
@@ -734,4 +739,19 @@ func (future ZonesDeleteFuture) Result(client ZonesClient) (ar autorest.Response
 		err = autorest.NewErrorWithError(err, "dns.ZonesDeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
+}
+
+// ZoneUpdate describes a request to update a DNS zone.
+type ZoneUpdate struct {
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ZoneUpdate.
+func (zu ZoneUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if zu.Tags != nil {
+		objectMap["tags"] = zu.Tags
+	}
+	return json.Marshal(objectMap)
 }

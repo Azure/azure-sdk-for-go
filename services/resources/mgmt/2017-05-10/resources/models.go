@@ -36,13 +36,29 @@ const (
 	Incremental DeploymentMode = "Incremental"
 )
 
+// PossibleDeploymentModeValues returns an array of possible values for the DeploymentMode const type.
+func PossibleDeploymentModeValues() [2]DeploymentMode {
+	return [2]DeploymentMode{Complete, Incremental}
+}
+
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
 
 const (
+	// None ...
+	None ResourceIdentityType = "None"
 	// SystemAssigned ...
 	SystemAssigned ResourceIdentityType = "SystemAssigned"
+	// SystemAssignedUserAssigned ...
+	SystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
+	// UserAssigned ...
+	UserAssigned ResourceIdentityType = "UserAssigned"
 )
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() [4]ResourceIdentityType {
+	return [4]ResourceIdentityType{None, SystemAssigned, SystemAssignedUserAssigned, UserAssigned}
+}
 
 // AliasPathType the type of the paths for alias.
 type AliasPathType struct {
@@ -1031,7 +1047,7 @@ type Identity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The identity type. Possible values include: 'SystemAssigned'
+	// Type - The identity type. Possible values include: 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned', 'None'
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 

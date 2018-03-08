@@ -36,6 +36,11 @@ const (
 	NotSpecified Mode = "NotSpecified"
 )
 
+// PossibleModeValues returns an array of possible values for the Mode const type.
+func PossibleModeValues() [3]Mode {
+	return [3]Mode{All, Indexed, NotSpecified}
+}
+
 // Type enumerates the values for type.
 type Type string
 
@@ -47,6 +52,11 @@ const (
 	// TypeNotSpecified ...
 	TypeNotSpecified Type = "NotSpecified"
 )
+
+// PossibleTypeValues returns an array of possible values for the Type const type.
+func PossibleTypeValues() [3]Type {
+	return [3]Type{TypeBuiltIn, TypeCustom, TypeNotSpecified}
+}
 
 // Assignment the policy assignment.
 type Assignment struct {

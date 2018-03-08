@@ -50,6 +50,11 @@ const (
 	Weekend DayOfWeek = "Weekend"
 )
 
+// PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
+func PossibleDayOfWeekValues() [9]DayOfWeek {
+	return [9]DayOfWeek{Everyday, Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday, Weekend}
+}
+
 // KeyType enumerates the values for key type.
 type KeyType string
 
@@ -59,6 +64,11 @@ const (
 	// Secondary ...
 	Secondary KeyType = "Secondary"
 )
+
+// PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
+func PossibleKeyTypeValues() [2]KeyType {
+	return [2]KeyType{Primary, Secondary}
+}
 
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
@@ -90,6 +100,11 @@ const (
 	Updating ProvisioningState = "Updating"
 )
 
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() [12]ProvisioningState {
+	return [12]ProvisioningState{Creating, Deleting, Disabled, Failed, Linking, Provisioning, RecoveringScaleFailure, Scaling, Succeeded, Unlinking, Unprovisioning, Updating}
+}
+
 // RebootType enumerates the values for reboot type.
 type RebootType string
 
@@ -102,6 +117,11 @@ const (
 	SecondaryNode RebootType = "SecondaryNode"
 )
 
+// PossibleRebootTypeValues returns an array of possible values for the RebootType const type.
+func PossibleRebootTypeValues() [3]RebootType {
+	return [3]RebootType{AllNodes, PrimaryNode, SecondaryNode}
+}
+
 // ReplicationRole enumerates the values for replication role.
 type ReplicationRole string
 
@@ -112,6 +132,11 @@ const (
 	ReplicationRoleSecondary ReplicationRole = "Secondary"
 )
 
+// PossibleReplicationRoleValues returns an array of possible values for the ReplicationRole const type.
+func PossibleReplicationRoleValues() [2]ReplicationRole {
+	return [2]ReplicationRole{ReplicationRolePrimary, ReplicationRoleSecondary}
+}
+
 // SkuFamily enumerates the values for sku family.
 type SkuFamily string
 
@@ -121,6 +146,11 @@ const (
 	// P ...
 	P SkuFamily = "P"
 )
+
+// PossibleSkuFamilyValues returns an array of possible values for the SkuFamily const type.
+func PossibleSkuFamilyValues() [2]SkuFamily {
+	return [2]SkuFamily{C, P}
+}
 
 // SkuName enumerates the values for sku name.
 type SkuName string
@@ -133,6 +163,28 @@ const (
 	// Standard ...
 	Standard SkuName = "Standard"
 )
+
+// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
+func PossibleSkuNameValues() [3]SkuName {
+	return [3]SkuName{Basic, Premium, Standard}
+}
+
+// TLSVersion enumerates the values for tls version.
+type TLSVersion string
+
+const (
+	// OneFullStopOne ...
+	OneFullStopOne TLSVersion = "1.1"
+	// OneFullStopTwo ...
+	OneFullStopTwo TLSVersion = "1.2"
+	// OneFullStopZero ...
+	OneFullStopZero TLSVersion = "1.0"
+)
+
+// PossibleTLSVersionValues returns an array of possible values for the TLSVersion const type.
+func PossibleTLSVersionValues() [3]TLSVersion {
+	return [3]TLSVersion{OneFullStopOne, OneFullStopTwo, OneFullStopZero}
+}
 
 // AccessKeys redis cache access keys.
 type AccessKeys struct {
@@ -161,8 +213,8 @@ type CommonProperties struct {
 	TenantSettings map[string]*string `json:"tenantSettings"`
 	// ShardCount - The number of shards to be created on a Premium Cluster Cache.
 	ShardCount *int32 `json:"shardCount,omitempty"`
-	// MinimumTLSVersion - Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
-	MinimumTLSVersion *string `json:"minimumTlsVersion,omitempty"`
+	// MinimumTLSVersion - Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2'). Possible values include: 'OneFullStopZero', 'OneFullStopOne', 'OneFullStopTwo'
+	MinimumTLSVersion TLSVersion `json:"minimumTlsVersion,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CommonProperties.
@@ -180,9 +232,7 @@ func (cp CommonProperties) MarshalJSON() ([]byte, error) {
 	if cp.ShardCount != nil {
 		objectMap["shardCount"] = cp.ShardCount
 	}
-	if cp.MinimumTLSVersion != nil {
-		objectMap["minimumTlsVersion"] = cp.MinimumTLSVersion
-	}
+	objectMap["minimumTlsVersion"] = cp.MinimumTLSVersion
 	return json.Marshal(objectMap)
 }
 
@@ -331,8 +381,8 @@ type CreateProperties struct {
 	TenantSettings map[string]*string `json:"tenantSettings"`
 	// ShardCount - The number of shards to be created on a Premium Cluster Cache.
 	ShardCount *int32 `json:"shardCount,omitempty"`
-	// MinimumTLSVersion - Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
-	MinimumTLSVersion *string `json:"minimumTlsVersion,omitempty"`
+	// MinimumTLSVersion - Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2'). Possible values include: 'OneFullStopZero', 'OneFullStopOne', 'OneFullStopTwo'
+	MinimumTLSVersion TLSVersion `json:"minimumTlsVersion,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CreateProperties.
@@ -359,9 +409,7 @@ func (cp CreateProperties) MarshalJSON() ([]byte, error) {
 	if cp.ShardCount != nil {
 		objectMap["shardCount"] = cp.ShardCount
 	}
-	if cp.MinimumTLSVersion != nil {
-		objectMap["minimumTlsVersion"] = cp.MinimumTLSVersion
-	}
+	objectMap["minimumTlsVersion"] = cp.MinimumTLSVersion
 	return json.Marshal(objectMap)
 }
 
@@ -1314,7 +1362,7 @@ func (ps *PatchSchedule) UnmarshalJSON(body []byte) error {
 type Properties struct {
 	// RedisVersion - Redis version.
 	RedisVersion *string `json:"redisVersion,omitempty"`
-	// ProvisioningState - Redis instance provisioning status. Possible values include: 'Creating', 'Deleting', 'Disabled', 'Failed', 'Linking', 'Provisioning', 'RecoveringScaleFailure', 'Scaling', 'Succeeded', 'Unlinking', 'Updating', 'Unprovisioning'
+	// ProvisioningState - Redis instance provisioning status. Possible values include: 'Creating', 'Deleting', 'Disabled', 'Failed', 'Linking', 'Provisioning', 'RecoveringScaleFailure', 'Scaling', 'Succeeded', 'Unlinking', 'Unprovisioning', 'Updating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// HostName - Redis host name.
 	HostName *string `json:"hostName,omitempty"`
@@ -1340,8 +1388,8 @@ type Properties struct {
 	TenantSettings map[string]*string `json:"tenantSettings"`
 	// ShardCount - The number of shards to be created on a Premium Cluster Cache.
 	ShardCount *int32 `json:"shardCount,omitempty"`
-	// MinimumTLSVersion - Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
-	MinimumTLSVersion *string `json:"minimumTlsVersion,omitempty"`
+	// MinimumTLSVersion - Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2'). Possible values include: 'OneFullStopZero', 'OneFullStopOne', 'OneFullStopTwo'
+	MinimumTLSVersion TLSVersion `json:"minimumTlsVersion,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Properties.
@@ -1387,9 +1435,7 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	if p.ShardCount != nil {
 		objectMap["shardCount"] = p.ShardCount
 	}
-	if p.MinimumTLSVersion != nil {
-		objectMap["minimumTlsVersion"] = p.MinimumTLSVersion
-	}
+	objectMap["minimumTlsVersion"] = p.MinimumTLSVersion
 	return json.Marshal(objectMap)
 }
 
@@ -1678,8 +1724,8 @@ type UpdateProperties struct {
 	TenantSettings map[string]*string `json:"tenantSettings"`
 	// ShardCount - The number of shards to be created on a Premium Cluster Cache.
 	ShardCount *int32 `json:"shardCount,omitempty"`
-	// MinimumTLSVersion - Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
-	MinimumTLSVersion *string `json:"minimumTlsVersion,omitempty"`
+	// MinimumTLSVersion - Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2'). Possible values include: 'OneFullStopZero', 'OneFullStopOne', 'OneFullStopTwo'
+	MinimumTLSVersion TLSVersion `json:"minimumTlsVersion,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for UpdateProperties.
@@ -1700,9 +1746,7 @@ func (up UpdateProperties) MarshalJSON() ([]byte, error) {
 	if up.ShardCount != nil {
 		objectMap["shardCount"] = up.ShardCount
 	}
-	if up.MinimumTLSVersion != nil {
-		objectMap["minimumTlsVersion"] = up.MinimumTLSVersion
-	}
+	objectMap["minimumTlsVersion"] = up.MinimumTLSVersion
 	return json.Marshal(objectMap)
 }
 

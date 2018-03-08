@@ -15,7 +15,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -32,17 +31,6 @@ var rootCmd = &cobra.Command{
 	Long: `This tool will generate a report in JSON format describing changes to
 public surface area between two specified commits.  It can work on
 individual packages or a set of packages under a specified directory.`,
-	SilenceErrors: true,
-	SilenceUsage:  true,
-}
-
-// used by commands to specify an exit code
-type cmdExitCode struct {
-	exitCode int
-}
-
-func (c cmdExitCode) Error() string {
-	return fmt.Sprintf("%v", c.exitCode)
 }
 
 func init() {
@@ -55,10 +43,6 @@ func init() {
 // Execute executes the specified command.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		if cec, ok := err.(cmdExitCode); ok {
-			os.Exit(cec.exitCode)
-		}
-		fmt.Println(err)
 		os.Exit(-1)
 	}
 }

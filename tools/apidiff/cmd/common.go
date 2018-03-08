@@ -72,6 +72,16 @@ type pkgReport struct {
 	BreakingChanges *breakingChanges `json:"breakingChanges,omitempty"`
 }
 
+// returns true if the package report contains breaking changes
+func (r pkgReport) hasBreakingChanges() bool {
+	return r.BreakingChanges != nil && !r.BreakingChanges.isEmpty()
+}
+
+// returns true if the package report contains additive changes
+func (r pkgReport) hasAdditiveChanges() bool {
+	return r.AdditiveChanges != nil && !r.AdditiveChanges.IsEmpty()
+}
+
 // returns true if the report contains no data
 func (r pkgReport) isEmpty() bool {
 	return (r.AdditiveChanges == nil || r.AdditiveChanges.IsEmpty()) &&
@@ -110,7 +120,7 @@ type report interface {
 func printReport(r report) error {
 	if r.isEmpty() {
 		println("no changes were found")
-		return cmdExitCode{exitCode: 0}
+		return nil
 	}
 
 	b, err := json.MarshalIndent(r, "", "  ")
@@ -118,7 +128,7 @@ func printReport(r report) error {
 		return fmt.Errorf("failed to marshal report: %v", err)
 	}
 	println(string(b))
-	return cmdExitCode{exitCode: 0}
+	return nil
 }
 
 func processArgsAndClone(args []string) (dir string, cln repo.WorkingTree, clean func(), err error) {
@@ -160,4 +170,20 @@ func processArgsAndClone(args []string) (dir string, cln repo.WorkingTree, clean
 	// fix up pkgDir to the clone
 	dir = strings.Replace(dir, src.Root(), cln.Root(), 1)
 	return
+}
+
+type reportStatus interface {
+	hasBreakingChanges() bool
+	hasAdditiveChanges() bool
+}
+
+// compares report status with the desired report options (breaking/additions)
+// to determine if the program should terminate with a non-zero exit code.
+func evalReportStatus(r reportStatus) {
+	if onlyBreakingChangesFlag && r.hasBreakingChanges() {
+		os.Exit(1)
+	}
+	if onlyAdditionsFlag && !r.hasAdditiveChanges() {
+		os.Exit(1)
+	}
 }

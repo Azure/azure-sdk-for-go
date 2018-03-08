@@ -29,31 +29,43 @@ var packageCmd = &cobra.Command{
 The package content in [target commit] is compared against the package content in [base commit]
 to determine what changes were introduced in [target commit].`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		pkgDir, cloneRepo, cleanupFn, err := processArgsAndClone(args)
+		rpt, err := thePackageCmd(args)
 		if err != nil {
 			return err
 		}
-		defer cleanupFn()
-
-		baseCommit := args[1]
-		targetCommit := args[2]
-
-		// lhs
-		vprintf("checking out base commit %s and gathering exports\n", baseCommit)
-		lhs, err := getContentForCommit(cloneRepo, pkgDir, baseCommit)
-		if err != nil {
-			return err
-		}
-
-		// rhs
-		vprintf("checking out target commit %s and gathering exports\n", targetCommit)
-		rhs, err := getContentForCommit(cloneRepo, pkgDir, targetCommit)
-		if err != nil {
-			return err
-		}
-
-		return printReport(getPkgReport(lhs, rhs))
+		evalReportStatus(rpt)
+		return nil
 	},
+}
+
+// split into its own func as we can't call os.Exit from it (the defer won't get executed)
+func thePackageCmd(args []string) (rpt pkgReport, err error) {
+	pkgDir, cloneRepo, cleanupFn, err := processArgsAndClone(args)
+	if err != nil {
+		return
+	}
+	defer cleanupFn()
+
+	baseCommit := args[1]
+	targetCommit := args[2]
+
+	// lhs
+	vprintf("checking out base commit %s and gathering exports\n", baseCommit)
+	lhs, err := getContentForCommit(cloneRepo, pkgDir, baseCommit)
+	if err != nil {
+		return
+	}
+
+	// rhs
+	vprintf("checking out target commit %s and gathering exports\n", targetCommit)
+	rhs, err := getContentForCommit(cloneRepo, pkgDir, targetCommit)
+	if err != nil {
+		return
+	}
+
+	rpt = getPkgReport(lhs, rhs)
+	err = printReport(rpt)
+	return
 }
 
 func init() {

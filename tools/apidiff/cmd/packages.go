@@ -33,36 +33,48 @@ var packagesCmd = &cobra.Command{
 The package content in [target commit] is compared against the package content in [base commit]
 to determine what changes were introduced in [target commit].`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		rootDir, cloneRepo, cleanupFn, err := processArgsAndClone(args)
+		rpt, err := thePackagesCmd(args)
 		if err != nil {
 			return err
 		}
-		defer cleanupFn()
-
-		baseCommit := args[1]
-		targetCommit := args[2]
-
-		// get for lhs
-		vprintf("checking out base commit %s and gathering exports\n", baseCommit)
-		lhs, err := getRepoContentForCommit(cloneRepo, rootDir, baseCommit)
-		if err != nil {
-			return err
-		}
-
-		// get for rhs
-		vprintf("checking out target commit %s and gathering exports\n", targetCommit)
-		rhs, err := getRepoContentForCommit(cloneRepo, rootDir, targetCommit)
-		if err != nil {
-			return err
-		}
-
-		// diff and report
-		return printReport(getPkgsReport(lhs, rhs))
+		evalReportStatus(rpt)
+		return nil
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(packagesCmd)
+}
+
+// split into its own func as we can't call os.Exit from it (the defer won't get executed)
+func thePackagesCmd(args []string) (rpt pkgsReport, err error) {
+	rootDir, cloneRepo, cleanupFn, err := processArgsAndClone(args)
+	if err != nil {
+		return
+	}
+	defer cleanupFn()
+
+	baseCommit := args[1]
+	targetCommit := args[2]
+
+	// get for lhs
+	vprintf("checking out base commit %s and gathering exports\n", baseCommit)
+	lhs, err := getRepoContentForCommit(cloneRepo, rootDir, baseCommit)
+	if err != nil {
+		return
+	}
+
+	// get for rhs
+	vprintf("checking out target commit %s and gathering exports\n", targetCommit)
+	rhs, err := getRepoContentForCommit(cloneRepo, rootDir, targetCommit)
+	if err != nil {
+		return
+	}
+
+	// diff and report
+	rpt = getPkgsReport(lhs, rhs)
+	err = printReport(rpt)
+	return
 }
 
 func getRepoContentForCommit(wt repo.WorkingTree, dir, commit string) (r repoContent, err error) {
@@ -151,13 +163,26 @@ type modifiedPackages map[string]map[string]pkgReport
 
 // represents a complete report of added, removed, and modified packages
 type pkgsReport struct {
-	AddedPackages    pkgsList         `json:"added,omitempty"`
-	ModifiedPackages modifiedPackages `json:"modified,omitempty"`
-	RemovedPackages  pkgsList         `json:"removed,omitempty"`
+	AddedPackages      pkgsList         `json:"added,omitempty"`
+	ModifiedPackages   modifiedPackages `json:"modified,omitempty"`
+	RemovedPackages    pkgsList         `json:"removed,omitempty"`
+	modPkgHasAdditions bool
+	modPkgHasBreaking  bool
 }
 
-func (pr pkgsReport) isEmpty() bool {
-	return len(pr.AddedPackages) == 0 && len(pr.ModifiedPackages) == 0 && len(pr.RemovedPackages) == 0
+// returns true if the package report contains breaking changes
+func (r pkgsReport) hasBreakingChanges() bool {
+	return len(r.RemovedPackages) > 0 || r.modPkgHasBreaking
+}
+
+// returns true if the package report contains additive changes
+func (r pkgsReport) hasAdditiveChanges() bool {
+	return len(r.AddedPackages) > 0 || r.modPkgHasAdditions
+}
+
+// returns true if the report contains no data
+func (r pkgsReport) isEmpty() bool {
+	return len(r.AddedPackages) == 0 && len(r.ModifiedPackages) == 0 && len(r.RemovedPackages) == 0
 }
 
 // generates a pkgsReport based on the delta between lhs and rhs
@@ -181,6 +206,12 @@ func getPkgsReport(lhs, rhs repoContent) pkgsReport {
 				continue
 			}
 			if r := getPkgReport(lhs[rhsK][rhsAPI], rhsCnt); !r.isEmpty() {
+				if r.hasBreakingChanges() {
+					report.modPkgHasBreaking = true
+				}
+				if r.hasAdditiveChanges() {
+					report.modPkgHasAdditions = true
+				}
 				// only add an entry if the report contains data
 				if report.ModifiedPackages == nil {
 					report.ModifiedPackages = modifiedPackages{}

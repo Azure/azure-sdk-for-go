@@ -38,6 +38,11 @@ const (
 	ReadWrite CachingTypes = "ReadWrite"
 )
 
+// PossibleCachingTypesValues returns an array of possible values for the CachingTypes const type.
+func PossibleCachingTypesValues() [3]CachingTypes {
+	return [3]CachingTypes{None, ReadOnly, ReadWrite}
+}
+
 // ComponentNames enumerates the values for component names.
 type ComponentNames string
 
@@ -45,6 +50,11 @@ const (
 	// MicrosoftWindowsShellSetup ...
 	MicrosoftWindowsShellSetup ComponentNames = "Microsoft-Windows-Shell-Setup"
 )
+
+// PossibleComponentNamesValues returns an array of possible values for the ComponentNames const type.
+func PossibleComponentNamesValues() [1]ComponentNames {
+	return [1]ComponentNames{MicrosoftWindowsShellSetup}
+}
 
 // DiskCreateOptionTypes enumerates the values for disk create option types.
 type DiskCreateOptionTypes string
@@ -58,6 +68,11 @@ const (
 	FromImage DiskCreateOptionTypes = "FromImage"
 )
 
+// PossibleDiskCreateOptionTypesValues returns an array of possible values for the DiskCreateOptionTypes const type.
+func PossibleDiskCreateOptionTypesValues() [3]DiskCreateOptionTypes {
+	return [3]DiskCreateOptionTypes{Attach, Empty, FromImage}
+}
+
 // InstanceViewTypes enumerates the values for instance view types.
 type InstanceViewTypes string
 
@@ -65,6 +80,11 @@ const (
 	// InstanceView ...
 	InstanceView InstanceViewTypes = "instanceView"
 )
+
+// PossibleInstanceViewTypesValues returns an array of possible values for the InstanceViewTypes const type.
+func PossibleInstanceViewTypesValues() [1]InstanceViewTypes {
+	return [1]InstanceViewTypes{InstanceView}
+}
 
 // OperatingSystemTypes enumerates the values for operating system types.
 type OperatingSystemTypes string
@@ -76,6 +96,11 @@ const (
 	Windows OperatingSystemTypes = "Windows"
 )
 
+// PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
+func PossibleOperatingSystemTypesValues() [2]OperatingSystemTypes {
+	return [2]OperatingSystemTypes{Linux, Windows}
+}
+
 // PassNames enumerates the values for pass names.
 type PassNames string
 
@@ -83,6 +108,11 @@ const (
 	// OobeSystem ...
 	OobeSystem PassNames = "OobeSystem"
 )
+
+// PossiblePassNamesValues returns an array of possible values for the PassNames const type.
+func PossiblePassNamesValues() [1]PassNames {
+	return [1]PassNames{OobeSystem}
+}
 
 // ProtocolTypes enumerates the values for protocol types.
 type ProtocolTypes string
@@ -94,6 +124,11 @@ const (
 	HTTPS ProtocolTypes = "Https"
 )
 
+// PossibleProtocolTypesValues returns an array of possible values for the ProtocolTypes const type.
+func PossibleProtocolTypesValues() [2]ProtocolTypes {
+	return [2]ProtocolTypes{HTTP, HTTPS}
+}
+
 // SettingNames enumerates the values for setting names.
 type SettingNames string
 
@@ -103,6 +138,11 @@ const (
 	// FirstLogonCommands ...
 	FirstLogonCommands SettingNames = "FirstLogonCommands"
 )
+
+// PossibleSettingNamesValues returns an array of possible values for the SettingNames const type.
+func PossibleSettingNamesValues() [2]SettingNames {
+	return [2]SettingNames{AutoLogon, FirstLogonCommands}
+}
 
 // StatusLevelTypes enumerates the values for status level types.
 type StatusLevelTypes string
@@ -116,6 +156,11 @@ const (
 	Warning StatusLevelTypes = "Warning"
 )
 
+// PossibleStatusLevelTypesValues returns an array of possible values for the StatusLevelTypes const type.
+func PossibleStatusLevelTypesValues() [3]StatusLevelTypes {
+	return [3]StatusLevelTypes{Error, Info, Warning}
+}
+
 // UpgradeMode enumerates the values for upgrade mode.
 type UpgradeMode string
 
@@ -126,6 +171,11 @@ const (
 	Manual UpgradeMode = "Manual"
 )
 
+// PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
+func PossibleUpgradeModeValues() [2]UpgradeMode {
+	return [2]UpgradeMode{Automatic, Manual}
+}
+
 // VirtualMachineScaleSetSkuScaleType enumerates the values for virtual machine scale set sku scale type.
 type VirtualMachineScaleSetSkuScaleType string
 
@@ -135,6 +185,11 @@ const (
 	// VirtualMachineScaleSetSkuScaleTypeNone ...
 	VirtualMachineScaleSetSkuScaleTypeNone VirtualMachineScaleSetSkuScaleType = "None"
 )
+
+// PossibleVirtualMachineScaleSetSkuScaleTypeValues returns an array of possible values for the VirtualMachineScaleSetSkuScaleType const type.
+func PossibleVirtualMachineScaleSetSkuScaleTypeValues() [2]VirtualMachineScaleSetSkuScaleType {
+	return [2]VirtualMachineScaleSetSkuScaleType{VirtualMachineScaleSetSkuScaleTypeAutomatic, VirtualMachineScaleSetSkuScaleTypeNone}
+}
 
 // VirtualMachineSizeTypes enumerates the values for virtual machine size types.
 type VirtualMachineSizeTypes string
@@ -245,6 +300,11 @@ const (
 	// StandardGS5 ...
 	StandardGS5 VirtualMachineSizeTypes = "Standard_GS5"
 )
+
+// PossibleVirtualMachineSizeTypesValues returns an array of possible values for the VirtualMachineSizeTypes const type.
+func PossibleVirtualMachineSizeTypesValues() [52]VirtualMachineSizeTypes {
+	return [52]VirtualMachineSizeTypes{BasicA0, BasicA1, BasicA2, BasicA3, BasicA4, StandardA0, StandardA1, StandardA10, StandardA11, StandardA2, StandardA3, StandardA4, StandardA5, StandardA6, StandardA7, StandardA8, StandardA9, StandardD1, StandardD11, StandardD11V2, StandardD12, StandardD12V2, StandardD13, StandardD13V2, StandardD14, StandardD14V2, StandardD1V2, StandardD2, StandardD2V2, StandardD3, StandardD3V2, StandardD4, StandardD4V2, StandardD5V2, StandardDS1, StandardDS11, StandardDS12, StandardDS13, StandardDS14, StandardDS2, StandardDS3, StandardDS4, StandardG1, StandardG2, StandardG3, StandardG4, StandardG5, StandardGS1, StandardGS2, StandardGS3, StandardGS4, StandardGS5}
+}
 
 // AdditionalUnattendContent specifies additional XML formatted information that can be included in the
 // Unattend.xml file, which is used by Windows Setup. Contents are defined by setting name, component name, and the

@@ -36,6 +36,11 @@ const (
 	Incremental DeploymentMode = "Incremental"
 )
 
+// PossibleDeploymentModeValues returns an array of possible values for the DeploymentMode const type.
+func PossibleDeploymentModeValues() [2]DeploymentMode {
+	return [2]DeploymentMode{Complete, Incremental}
+}
+
 // OnErrorDeploymentType enumerates the values for on error deployment type.
 type OnErrorDeploymentType string
 
@@ -46,6 +51,11 @@ const (
 	SpecificDeployment OnErrorDeploymentType = "SpecificDeployment"
 )
 
+// PossibleOnErrorDeploymentTypeValues returns an array of possible values for the OnErrorDeploymentType const type.
+func PossibleOnErrorDeploymentTypeValues() [2]OnErrorDeploymentType {
+	return [2]OnErrorDeploymentType{LastSuccessful, SpecificDeployment}
+}
+
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
 
@@ -53,6 +63,11 @@ const (
 	// SystemAssigned ...
 	SystemAssigned ResourceIdentityType = "SystemAssigned"
 )
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() [1]ResourceIdentityType {
+	return [1]ResourceIdentityType{SystemAssigned}
+}
 
 // AliasPathType the type of the paths for alias.
 type AliasPathType struct {

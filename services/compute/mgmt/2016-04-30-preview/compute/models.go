@@ -36,6 +36,11 @@ const (
 	Read AccessLevel = "Read"
 )
 
+// PossibleAccessLevelValues returns an array of possible values for the AccessLevel const type.
+func PossibleAccessLevelValues() [2]AccessLevel {
+	return [2]AccessLevel{None, Read}
+}
+
 // CachingTypes enumerates the values for caching types.
 type CachingTypes string
 
@@ -48,6 +53,11 @@ const (
 	CachingTypesReadWrite CachingTypes = "ReadWrite"
 )
 
+// PossibleCachingTypesValues returns an array of possible values for the CachingTypes const type.
+func PossibleCachingTypesValues() [3]CachingTypes {
+	return [3]CachingTypes{CachingTypesNone, CachingTypesReadOnly, CachingTypesReadWrite}
+}
+
 // ComponentNames enumerates the values for component names.
 type ComponentNames string
 
@@ -55,6 +65,11 @@ const (
 	// MicrosoftWindowsShellSetup ...
 	MicrosoftWindowsShellSetup ComponentNames = "Microsoft-Windows-Shell-Setup"
 )
+
+// PossibleComponentNamesValues returns an array of possible values for the ComponentNames const type.
+func PossibleComponentNamesValues() [1]ComponentNames {
+	return [1]ComponentNames{MicrosoftWindowsShellSetup}
+}
 
 // DiskCreateOption enumerates the values for disk create option.
 type DiskCreateOption string
@@ -74,6 +89,11 @@ const (
 	Restore DiskCreateOption = "Restore"
 )
 
+// PossibleDiskCreateOptionValues returns an array of possible values for the DiskCreateOption const type.
+func PossibleDiskCreateOptionValues() [6]DiskCreateOption {
+	return [6]DiskCreateOption{Attach, Copy, Empty, FromImage, Import, Restore}
+}
+
 // DiskCreateOptionTypes enumerates the values for disk create option types.
 type DiskCreateOptionTypes string
 
@@ -86,6 +106,11 @@ const (
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = "FromImage"
 )
 
+// PossibleDiskCreateOptionTypesValues returns an array of possible values for the DiskCreateOptionTypes const type.
+func PossibleDiskCreateOptionTypesValues() [3]DiskCreateOptionTypes {
+	return [3]DiskCreateOptionTypes{DiskCreateOptionTypesAttach, DiskCreateOptionTypesEmpty, DiskCreateOptionTypesFromImage}
+}
+
 // InstanceViewTypes enumerates the values for instance view types.
 type InstanceViewTypes string
 
@@ -93,6 +118,11 @@ const (
 	// InstanceView ...
 	InstanceView InstanceViewTypes = "instanceView"
 )
+
+// PossibleInstanceViewTypesValues returns an array of possible values for the InstanceViewTypes const type.
+func PossibleInstanceViewTypesValues() [1]InstanceViewTypes {
+	return [1]InstanceViewTypes{InstanceView}
+}
 
 // OperatingSystemStateTypes enumerates the values for operating system state types.
 type OperatingSystemStateTypes string
@@ -104,6 +134,11 @@ const (
 	Specialized OperatingSystemStateTypes = "Specialized"
 )
 
+// PossibleOperatingSystemStateTypesValues returns an array of possible values for the OperatingSystemStateTypes const type.
+func PossibleOperatingSystemStateTypesValues() [2]OperatingSystemStateTypes {
+	return [2]OperatingSystemStateTypes{Generalized, Specialized}
+}
+
 // OperatingSystemTypes enumerates the values for operating system types.
 type OperatingSystemTypes string
 
@@ -114,6 +149,11 @@ const (
 	Windows OperatingSystemTypes = "Windows"
 )
 
+// PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
+func PossibleOperatingSystemTypesValues() [2]OperatingSystemTypes {
+	return [2]OperatingSystemTypes{Linux, Windows}
+}
+
 // PassNames enumerates the values for pass names.
 type PassNames string
 
@@ -121,6 +161,11 @@ const (
 	// OobeSystem ...
 	OobeSystem PassNames = "OobeSystem"
 )
+
+// PossiblePassNamesValues returns an array of possible values for the PassNames const type.
+func PossiblePassNamesValues() [1]PassNames {
+	return [1]PassNames{OobeSystem}
+}
 
 // ProtocolTypes enumerates the values for protocol types.
 type ProtocolTypes string
@@ -132,6 +177,11 @@ const (
 	HTTPS ProtocolTypes = "Https"
 )
 
+// PossibleProtocolTypesValues returns an array of possible values for the ProtocolTypes const type.
+func PossibleProtocolTypesValues() [2]ProtocolTypes {
+	return [2]ProtocolTypes{HTTP, HTTPS}
+}
+
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
 
@@ -139,6 +189,11 @@ const (
 	// SystemAssigned ...
 	SystemAssigned ResourceIdentityType = "SystemAssigned"
 )
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() [1]ResourceIdentityType {
+	return [1]ResourceIdentityType{SystemAssigned}
+}
 
 // SettingNames enumerates the values for setting names.
 type SettingNames string
@@ -149,6 +204,11 @@ const (
 	// FirstLogonCommands ...
 	FirstLogonCommands SettingNames = "FirstLogonCommands"
 )
+
+// PossibleSettingNamesValues returns an array of possible values for the SettingNames const type.
+func PossibleSettingNamesValues() [2]SettingNames {
+	return [2]SettingNames{AutoLogon, FirstLogonCommands}
+}
 
 // StatusLevelTypes enumerates the values for status level types.
 type StatusLevelTypes string
@@ -162,6 +222,11 @@ const (
 	Warning StatusLevelTypes = "Warning"
 )
 
+// PossibleStatusLevelTypesValues returns an array of possible values for the StatusLevelTypes const type.
+func PossibleStatusLevelTypesValues() [3]StatusLevelTypes {
+	return [3]StatusLevelTypes{Error, Info, Warning}
+}
+
 // StorageAccountTypes enumerates the values for storage account types.
 type StorageAccountTypes string
 
@@ -171,6 +236,11 @@ const (
 	// StandardLRS ...
 	StandardLRS StorageAccountTypes = "Standard_LRS"
 )
+
+// PossibleStorageAccountTypesValues returns an array of possible values for the StorageAccountTypes const type.
+func PossibleStorageAccountTypesValues() [2]StorageAccountTypes {
+	return [2]StorageAccountTypes{PremiumLRS, StandardLRS}
+}
 
 // UpgradeMode enumerates the values for upgrade mode.
 type UpgradeMode string
@@ -182,6 +252,11 @@ const (
 	Manual UpgradeMode = "Manual"
 )
 
+// PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
+func PossibleUpgradeModeValues() [2]UpgradeMode {
+	return [2]UpgradeMode{Automatic, Manual}
+}
+
 // VirtualMachineScaleSetSkuScaleType enumerates the values for virtual machine scale set sku scale type.
 type VirtualMachineScaleSetSkuScaleType string
 
@@ -191,6 +266,11 @@ const (
 	// VirtualMachineScaleSetSkuScaleTypeNone ...
 	VirtualMachineScaleSetSkuScaleTypeNone VirtualMachineScaleSetSkuScaleType = "None"
 )
+
+// PossibleVirtualMachineScaleSetSkuScaleTypeValues returns an array of possible values for the VirtualMachineScaleSetSkuScaleType const type.
+func PossibleVirtualMachineScaleSetSkuScaleTypeValues() [2]VirtualMachineScaleSetSkuScaleType {
+	return [2]VirtualMachineScaleSetSkuScaleType{VirtualMachineScaleSetSkuScaleTypeAutomatic, VirtualMachineScaleSetSkuScaleTypeNone}
+}
 
 // VirtualMachineSizeTypes enumerates the values for virtual machine size types.
 type VirtualMachineSizeTypes string
@@ -323,6 +403,11 @@ const (
 	// StandardGS5 ...
 	StandardGS5 VirtualMachineSizeTypes = "Standard_GS5"
 )
+
+// PossibleVirtualMachineSizeTypesValues returns an array of possible values for the VirtualMachineSizeTypes const type.
+func PossibleVirtualMachineSizeTypesValues() [63]VirtualMachineSizeTypes {
+	return [63]VirtualMachineSizeTypes{BasicA0, BasicA1, BasicA2, BasicA3, BasicA4, StandardA0, StandardA1, StandardA10, StandardA11, StandardA2, StandardA3, StandardA4, StandardA5, StandardA6, StandardA7, StandardA8, StandardA9, StandardD1, StandardD11, StandardD11V2, StandardD12, StandardD12V2, StandardD13, StandardD13V2, StandardD14, StandardD14V2, StandardD15V2, StandardD1V2, StandardD2, StandardD2V2, StandardD3, StandardD3V2, StandardD4, StandardD4V2, StandardD5V2, StandardDS1, StandardDS11, StandardDS11V2, StandardDS12, StandardDS12V2, StandardDS13, StandardDS13V2, StandardDS14, StandardDS14V2, StandardDS15V2, StandardDS1V2, StandardDS2, StandardDS2V2, StandardDS3, StandardDS3V2, StandardDS4, StandardDS4V2, StandardDS5V2, StandardG1, StandardG2, StandardG3, StandardG4, StandardG5, StandardGS1, StandardGS2, StandardGS3, StandardGS4, StandardGS5}
+}
 
 // AccessURI a disk access SAS uri.
 type AccessURI struct {

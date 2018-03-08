@@ -839,13 +839,7 @@ func (client VirtualMachineScaleSetsClient) ListSkusComplete(ctx context.Context
 //
 // resourceGroupName is the name of the resource group. VMScaleSetName is the name of the VM scale set.
 // VMInstanceIDs is a list of virtual machine instance IDs from the VM scale set.
-func (client VirtualMachineScaleSetsClient) PerformMaintenance(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs VirtualMachineScaleSetVMInstanceRequiredIDs) (result VirtualMachineScaleSetsPerformMaintenanceFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: VMInstanceIDs,
-			Constraints: []validation.Constraint{{Target: "VMInstanceIDs.InstanceIds", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("compute.VirtualMachineScaleSetsClient", "PerformMaintenance", err.Error())
-	}
-
+func (client VirtualMachineScaleSetsClient) PerformMaintenance(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs *VirtualMachineScaleSetVMInstanceIDs) (result VirtualMachineScaleSetsPerformMaintenanceFuture, err error) {
 	req, err := client.PerformMaintenancePreparer(ctx, resourceGroupName, VMScaleSetName, VMInstanceIDs)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "PerformMaintenance", nil, "Failure preparing request")
@@ -862,7 +856,7 @@ func (client VirtualMachineScaleSetsClient) PerformMaintenance(ctx context.Conte
 }
 
 // PerformMaintenancePreparer prepares the PerformMaintenance request.
-func (client VirtualMachineScaleSetsClient) PerformMaintenancePreparer(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs VirtualMachineScaleSetVMInstanceRequiredIDs) (*http.Request, error) {
+func (client VirtualMachineScaleSetsClient) PerformMaintenancePreparer(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs *VirtualMachineScaleSetVMInstanceIDs) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -879,8 +873,11 @@ func (client VirtualMachineScaleSetsClient) PerformMaintenancePreparer(ctx conte
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/performMaintenance", pathParameters),
-		autorest.WithJSON(VMInstanceIDs),
 		autorest.WithQueryParameters(queryParameters))
+	if VMInstanceIDs != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(VMInstanceIDs))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -991,13 +988,7 @@ func (client VirtualMachineScaleSetsClient) PowerOffResponder(resp *http.Respons
 //
 // resourceGroupName is the name of the resource group. VMScaleSetName is the name of the VM scale set.
 // VMInstanceIDs is a list of virtual machine instance IDs from the VM scale set.
-func (client VirtualMachineScaleSetsClient) Redeploy(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs VirtualMachineScaleSetVMInstanceRequiredIDs) (result VirtualMachineScaleSetsRedeployFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: VMInstanceIDs,
-			Constraints: []validation.Constraint{{Target: "VMInstanceIDs.InstanceIds", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("compute.VirtualMachineScaleSetsClient", "Redeploy", err.Error())
-	}
-
+func (client VirtualMachineScaleSetsClient) Redeploy(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs *VirtualMachineScaleSetVMInstanceIDs) (result VirtualMachineScaleSetsRedeployFuture, err error) {
 	req, err := client.RedeployPreparer(ctx, resourceGroupName, VMScaleSetName, VMInstanceIDs)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "Redeploy", nil, "Failure preparing request")
@@ -1014,7 +1005,7 @@ func (client VirtualMachineScaleSetsClient) Redeploy(ctx context.Context, resour
 }
 
 // RedeployPreparer prepares the Redeploy request.
-func (client VirtualMachineScaleSetsClient) RedeployPreparer(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs VirtualMachineScaleSetVMInstanceRequiredIDs) (*http.Request, error) {
+func (client VirtualMachineScaleSetsClient) RedeployPreparer(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs *VirtualMachineScaleSetVMInstanceIDs) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -1031,8 +1022,11 @@ func (client VirtualMachineScaleSetsClient) RedeployPreparer(ctx context.Context
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/redeploy", pathParameters),
-		autorest.WithJSON(VMInstanceIDs),
 		autorest.WithQueryParameters(queryParameters))
+	if VMInstanceIDs != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(VMInstanceIDs))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

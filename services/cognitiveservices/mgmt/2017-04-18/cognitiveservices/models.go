@@ -34,6 +34,11 @@ const (
 	Key2 KeyName = "Key2"
 )
 
+// PossibleKeyNameValues returns an array of possible values for the KeyName const type.
+func PossibleKeyNameValues() [2]KeyName {
+	return [2]KeyName{Key1, Key2}
+}
+
 // Kind enumerates the values for kind.
 type Kind string
 
@@ -78,6 +83,11 @@ const (
 	WebLM Kind = "WebLM"
 )
 
+// PossibleKindValues returns an array of possible values for the Kind const type.
+func PossibleKindValues() [19]Kind {
+	return [19]Kind{BingAutosuggestv7, BingCustomSearch, BingSearchv7, BingSpeech, BingSpellCheckv7, ComputerVision, ContentModerator, CustomSpeech, CustomVisionPrediction, CustomVisionTraining, Emotion, Face, LUIS, QnAMaker, SpeakerRecognition, SpeechTranslation, TextAnalytics, TextTranslation, WebLM}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -96,6 +106,11 @@ const (
 	Succeeded ProvisioningState = "Succeeded"
 )
 
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() [6]ProvisioningState {
+	return [6]ProvisioningState{Creating, Deleting, Failed, Moving, ResolvingDNS, Succeeded}
+}
+
 // QuotaUsageStatus enumerates the values for quota usage status.
 type QuotaUsageStatus string
 
@@ -109,6 +124,11 @@ const (
 	// Unknown ...
 	Unknown QuotaUsageStatus = "Unknown"
 )
+
+// PossibleQuotaUsageStatusValues returns an array of possible values for the QuotaUsageStatus const type.
+func PossibleQuotaUsageStatusValues() [4]QuotaUsageStatus {
+	return [4]QuotaUsageStatus{Blocked, Included, InOverage, Unknown}
+}
 
 // SkuName enumerates the values for sku name.
 type SkuName string
@@ -138,6 +158,11 @@ const (
 	S6 SkuName = "S6"
 )
 
+// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
+func PossibleSkuNameValues() [11]SkuName {
+	return [11]SkuName{F0, P0, P1, P2, S0, S1, S2, S3, S4, S5, S6}
+}
+
 // SkuTier enumerates the values for sku tier.
 type SkuTier string
 
@@ -149,6 +174,11 @@ const (
 	// Standard ...
 	Standard SkuTier = "Standard"
 )
+
+// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
+func PossibleSkuTierValues() [3]SkuTier {
+	return [3]SkuTier{Free, Premium, Standard}
+}
 
 // UnitType enumerates the values for unit type.
 type UnitType string
@@ -169,6 +199,11 @@ const (
 	// Seconds ...
 	Seconds UnitType = "Seconds"
 )
+
+// PossibleUnitTypeValues returns an array of possible values for the UnitType const type.
+func PossibleUnitTypeValues() [7]UnitType {
+	return [7]UnitType{Bytes, BytesPerSecond, Count, CountPerSecond, Milliseconds, Percent, Seconds}
+}
 
 // Account cognitive Services Account is an Azure resource representing the provisioned account, its type, location
 // and SKU.

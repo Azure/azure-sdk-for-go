@@ -51,6 +51,11 @@ const (
 	TXT RecordType = "TXT"
 )
 
+// PossibleRecordTypeValues returns an array of possible values for the RecordType const type.
+func PossibleRecordTypeValues() [10]RecordType {
+	return [10]RecordType{A, AAAA, CAA, CNAME, MX, NS, PTR, SOA, SRV, TXT}
+}
+
 // ZoneType enumerates the values for zone type.
 type ZoneType string
 
@@ -60,6 +65,11 @@ const (
 	// Public ...
 	Public ZoneType = "Public"
 )
+
+// PossibleZoneTypeValues returns an array of possible values for the ZoneType const type.
+func PossibleZoneTypeValues() [2]ZoneType {
+	return [2]ZoneType{Private, Public}
+}
 
 // AaaaRecord an AAAA record.
 type AaaaRecord struct {

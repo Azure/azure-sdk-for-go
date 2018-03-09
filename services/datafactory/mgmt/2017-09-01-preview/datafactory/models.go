@@ -41,6 +41,11 @@ const (
 	AuthenticationTypeWebLinkedServiceTypeProperties AuthenticationType = "WebLinkedServiceTypeProperties"
 )
 
+// PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
+func PossibleAuthenticationTypeValues() [4]AuthenticationType {
+	return [4]AuthenticationType{AuthenticationTypeAnonymous, AuthenticationTypeBasic, AuthenticationTypeClientCertificate, AuthenticationTypeWebLinkedServiceTypeProperties}
+}
+
 // AuthorizationType enumerates the values for authorization type.
 type AuthorizationType string
 
@@ -53,6 +58,11 @@ const (
 	AuthorizationTypeRBAC AuthorizationType = "RBAC"
 )
 
+// PossibleAuthorizationTypeValues returns an array of possible values for the AuthorizationType const type.
+func PossibleAuthorizationTypeValues() [3]AuthorizationType {
+	return [3]AuthorizationType{AuthorizationTypeKey, AuthorizationTypeLinkedIntegrationRuntimeProperties, AuthorizationTypeRBAC}
+}
+
 // AzureSearchIndexWriteBehaviorType enumerates the values for azure search index write behavior type.
 type AzureSearchIndexWriteBehaviorType string
 
@@ -62,6 +72,11 @@ const (
 	// Upload ...
 	Upload AzureSearchIndexWriteBehaviorType = "Upload"
 )
+
+// PossibleAzureSearchIndexWriteBehaviorTypeValues returns an array of possible values for the AzureSearchIndexWriteBehaviorType const type.
+func PossibleAzureSearchIndexWriteBehaviorTypeValues() [2]AzureSearchIndexWriteBehaviorType {
+	return [2]AzureSearchIndexWriteBehaviorType{Merge, Upload}
+}
 
 // CassandraSourceReadConsistencyLevels enumerates the values for cassandra source read consistency levels.
 type CassandraSourceReadConsistencyLevels string
@@ -89,6 +104,11 @@ const (
 	TWO CassandraSourceReadConsistencyLevels = "TWO"
 )
 
+// PossibleCassandraSourceReadConsistencyLevelsValues returns an array of possible values for the CassandraSourceReadConsistencyLevels const type.
+func PossibleCassandraSourceReadConsistencyLevelsValues() [10]CassandraSourceReadConsistencyLevels {
+	return [10]CassandraSourceReadConsistencyLevels{ALL, EACHQUORUM, LOCALONE, LOCALQUORUM, LOCALSERIAL, ONE, QUORUM, SERIAL, THREE, TWO}
+}
+
 // CopyBehaviorType enumerates the values for copy behavior type.
 type CopyBehaviorType string
 
@@ -101,6 +121,11 @@ const (
 	PreserveHierarchy CopyBehaviorType = "PreserveHierarchy"
 )
 
+// PossibleCopyBehaviorTypeValues returns an array of possible values for the CopyBehaviorType const type.
+func PossibleCopyBehaviorTypeValues() [3]CopyBehaviorType {
+	return [3]CopyBehaviorType{FlattenHierarchy, MergeFiles, PreserveHierarchy}
+}
+
 // DatasetCompressionLevel enumerates the values for dataset compression level.
 type DatasetCompressionLevel string
 
@@ -110,6 +135,11 @@ const (
 	// Optimal ...
 	Optimal DatasetCompressionLevel = "Optimal"
 )
+
+// PossibleDatasetCompressionLevelValues returns an array of possible values for the DatasetCompressionLevel const type.
+func PossibleDatasetCompressionLevelValues() [2]DatasetCompressionLevel {
+	return [2]DatasetCompressionLevel{Fastest, Optimal}
+}
 
 // DayOfWeek enumerates the values for day of week.
 type DayOfWeek string
@@ -131,6 +161,11 @@ const (
 	Wednesday DayOfWeek = "Wednesday"
 )
 
+// PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
+func PossibleDayOfWeekValues() [7]DayOfWeek {
+	return [7]DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
+}
+
 // DaysOfWeek enumerates the values for days of week.
 type DaysOfWeek string
 
@@ -151,6 +186,11 @@ const (
 	DaysOfWeekWednesday DaysOfWeek = "Wednesday"
 )
 
+// PossibleDaysOfWeekValues returns an array of possible values for the DaysOfWeek const type.
+func PossibleDaysOfWeekValues() [7]DaysOfWeek {
+	return [7]DaysOfWeek{DaysOfWeekFriday, DaysOfWeekMonday, DaysOfWeekSaturday, DaysOfWeekSunday, DaysOfWeekThursday, DaysOfWeekTuesday, DaysOfWeekWednesday}
+}
+
 // Db2AuthenticationType enumerates the values for db 2 authentication type.
 type Db2AuthenticationType string
 
@@ -158,6 +198,11 @@ const (
 	// Basic ...
 	Basic Db2AuthenticationType = "Basic"
 )
+
+// PossibleDb2AuthenticationTypeValues returns an array of possible values for the Db2AuthenticationType const type.
+func PossibleDb2AuthenticationTypeValues() [1]Db2AuthenticationType {
+	return [1]Db2AuthenticationType{Basic}
+}
 
 // DependencyCondition enumerates the values for dependency condition.
 type DependencyCondition string
@@ -173,6 +218,11 @@ const (
 	Succeeded DependencyCondition = "Succeeded"
 )
 
+// PossibleDependencyConditionValues returns an array of possible values for the DependencyCondition const type.
+func PossibleDependencyConditionValues() [4]DependencyCondition {
+	return [4]DependencyCondition{Completed, Failed, Skipped, Succeeded}
+}
+
 // FtpAuthenticationType enumerates the values for ftp authentication type.
 type FtpAuthenticationType string
 
@@ -182,6 +232,11 @@ const (
 	// FtpAuthenticationTypeBasic ...
 	FtpAuthenticationTypeBasic FtpAuthenticationType = "Basic"
 )
+
+// PossibleFtpAuthenticationTypeValues returns an array of possible values for the FtpAuthenticationType const type.
+func PossibleFtpAuthenticationTypeValues() [2]FtpAuthenticationType {
+	return [2]FtpAuthenticationType{FtpAuthenticationTypeAnonymous, FtpAuthenticationTypeBasic}
+}
 
 // GoogleBigQueryAuthenticationType enumerates the values for google big query authentication type.
 type GoogleBigQueryAuthenticationType string
@@ -193,6 +248,11 @@ const (
 	UserAuthentication GoogleBigQueryAuthenticationType = "UserAuthentication"
 )
 
+// PossibleGoogleBigQueryAuthenticationTypeValues returns an array of possible values for the GoogleBigQueryAuthenticationType const type.
+func PossibleGoogleBigQueryAuthenticationTypeValues() [2]GoogleBigQueryAuthenticationType {
+	return [2]GoogleBigQueryAuthenticationType{ServiceAuthentication, UserAuthentication}
+}
+
 // HBaseAuthenticationType enumerates the values for h base authentication type.
 type HBaseAuthenticationType string
 
@@ -202,6 +262,11 @@ const (
 	// HBaseAuthenticationTypeBasic ...
 	HBaseAuthenticationTypeBasic HBaseAuthenticationType = "Basic"
 )
+
+// PossibleHBaseAuthenticationTypeValues returns an array of possible values for the HBaseAuthenticationType const type.
+func PossibleHBaseAuthenticationTypeValues() [2]HBaseAuthenticationType {
+	return [2]HBaseAuthenticationType{HBaseAuthenticationTypeAnonymous, HBaseAuthenticationTypeBasic}
+}
 
 // HDInsightActivityDebugInfoOption enumerates the values for hd insight activity debug info option.
 type HDInsightActivityDebugInfoOption string
@@ -214,6 +279,11 @@ const (
 	// None ...
 	None HDInsightActivityDebugInfoOption = "None"
 )
+
+// PossibleHDInsightActivityDebugInfoOptionValues returns an array of possible values for the HDInsightActivityDebugInfoOption const type.
+func PossibleHDInsightActivityDebugInfoOptionValues() [3]HDInsightActivityDebugInfoOption {
+	return [3]HDInsightActivityDebugInfoOption{Always, Failure, None}
+}
 
 // HiveAuthenticationType enumerates the values for hive authentication type.
 type HiveAuthenticationType string
@@ -229,6 +299,11 @@ const (
 	WindowsAzureHDInsightService HiveAuthenticationType = "WindowsAzureHDInsightService"
 )
 
+// PossibleHiveAuthenticationTypeValues returns an array of possible values for the HiveAuthenticationType const type.
+func PossibleHiveAuthenticationTypeValues() [4]HiveAuthenticationType {
+	return [4]HiveAuthenticationType{Anonymous, Username, UsernameAndPassword, WindowsAzureHDInsightService}
+}
+
 // HiveServerType enumerates the values for hive server type.
 type HiveServerType string
 
@@ -241,6 +316,11 @@ const (
 	HiveThriftServer HiveServerType = "HiveThriftServer"
 )
 
+// PossibleHiveServerTypeValues returns an array of possible values for the HiveServerType const type.
+func PossibleHiveServerTypeValues() [3]HiveServerType {
+	return [3]HiveServerType{HiveServer1, HiveServer2, HiveThriftServer}
+}
+
 // HiveThriftTransportProtocol enumerates the values for hive thrift transport protocol.
 type HiveThriftTransportProtocol string
 
@@ -252,6 +332,11 @@ const (
 	// SASL ...
 	SASL HiveThriftTransportProtocol = "SASL"
 )
+
+// PossibleHiveThriftTransportProtocolValues returns an array of possible values for the HiveThriftTransportProtocol const type.
+func PossibleHiveThriftTransportProtocolValues() [3]HiveThriftTransportProtocol {
+	return [3]HiveThriftTransportProtocol{Binary, HTTP, SASL}
+}
 
 // HTTPAuthenticationType enumerates the values for http authentication type.
 type HTTPAuthenticationType string
@@ -269,6 +354,11 @@ const (
 	HTTPAuthenticationTypeWindows HTTPAuthenticationType = "Windows"
 )
 
+// PossibleHTTPAuthenticationTypeValues returns an array of possible values for the HTTPAuthenticationType const type.
+func PossibleHTTPAuthenticationTypeValues() [5]HTTPAuthenticationType {
+	return [5]HTTPAuthenticationType{HTTPAuthenticationTypeAnonymous, HTTPAuthenticationTypeBasic, HTTPAuthenticationTypeClientCertificate, HTTPAuthenticationTypeDigest, HTTPAuthenticationTypeWindows}
+}
+
 // ImpalaAuthenticationType enumerates the values for impala authentication type.
 type ImpalaAuthenticationType string
 
@@ -281,6 +371,11 @@ const (
 	ImpalaAuthenticationTypeUsernameAndPassword ImpalaAuthenticationType = "UsernameAndPassword"
 )
 
+// PossibleImpalaAuthenticationTypeValues returns an array of possible values for the ImpalaAuthenticationType const type.
+func PossibleImpalaAuthenticationTypeValues() [3]ImpalaAuthenticationType {
+	return [3]ImpalaAuthenticationType{ImpalaAuthenticationTypeAnonymous, ImpalaAuthenticationTypeSASLUsername, ImpalaAuthenticationTypeUsernameAndPassword}
+}
+
 // IntegrationRuntimeAuthKeyName enumerates the values for integration runtime auth key name.
 type IntegrationRuntimeAuthKeyName string
 
@@ -290,6 +385,11 @@ const (
 	// AuthKey2 ...
 	AuthKey2 IntegrationRuntimeAuthKeyName = "authKey2"
 )
+
+// PossibleIntegrationRuntimeAuthKeyNameValues returns an array of possible values for the IntegrationRuntimeAuthKeyName const type.
+func PossibleIntegrationRuntimeAuthKeyNameValues() [2]IntegrationRuntimeAuthKeyName {
+	return [2]IntegrationRuntimeAuthKeyName{AuthKey1, AuthKey2}
+}
 
 // IntegrationRuntimeAutoUpdate enumerates the values for integration runtime auto update.
 type IntegrationRuntimeAutoUpdate string
@@ -301,6 +401,11 @@ const (
 	On IntegrationRuntimeAutoUpdate = "On"
 )
 
+// PossibleIntegrationRuntimeAutoUpdateValues returns an array of possible values for the IntegrationRuntimeAutoUpdate const type.
+func PossibleIntegrationRuntimeAutoUpdateValues() [2]IntegrationRuntimeAutoUpdate {
+	return [2]IntegrationRuntimeAutoUpdate{Off, On}
+}
+
 // IntegrationRuntimeEdition enumerates the values for integration runtime edition.
 type IntegrationRuntimeEdition string
 
@@ -310,6 +415,11 @@ const (
 	// Standard ...
 	Standard IntegrationRuntimeEdition = "Standard"
 )
+
+// PossibleIntegrationRuntimeEditionValues returns an array of possible values for the IntegrationRuntimeEdition const type.
+func PossibleIntegrationRuntimeEditionValues() [2]IntegrationRuntimeEdition {
+	return [2]IntegrationRuntimeEdition{Enterprise, Standard}
+}
 
 // IntegrationRuntimeInternalChannelEncryptionMode enumerates the values for integration runtime internal
 // channel encryption mode.
@@ -324,6 +434,11 @@ const (
 	SslEncrypted IntegrationRuntimeInternalChannelEncryptionMode = "SslEncrypted"
 )
 
+// PossibleIntegrationRuntimeInternalChannelEncryptionModeValues returns an array of possible values for the IntegrationRuntimeInternalChannelEncryptionMode const type.
+func PossibleIntegrationRuntimeInternalChannelEncryptionModeValues() [3]IntegrationRuntimeInternalChannelEncryptionMode {
+	return [3]IntegrationRuntimeInternalChannelEncryptionMode{NotEncrypted, NotSet, SslEncrypted}
+}
+
 // IntegrationRuntimeLicenseType enumerates the values for integration runtime license type.
 type IntegrationRuntimeLicenseType string
 
@@ -333,6 +448,11 @@ const (
 	// LicenseIncluded ...
 	LicenseIncluded IntegrationRuntimeLicenseType = "LicenseIncluded"
 )
+
+// PossibleIntegrationRuntimeLicenseTypeValues returns an array of possible values for the IntegrationRuntimeLicenseType const type.
+func PossibleIntegrationRuntimeLicenseTypeValues() [2]IntegrationRuntimeLicenseType {
+	return [2]IntegrationRuntimeLicenseType{BasePrice, LicenseIncluded}
+}
 
 // IntegrationRuntimeSsisCatalogPricingTier enumerates the values for integration runtime ssis catalog pricing
 // tier.
@@ -348,6 +468,11 @@ const (
 	// IntegrationRuntimeSsisCatalogPricingTierStandard ...
 	IntegrationRuntimeSsisCatalogPricingTierStandard IntegrationRuntimeSsisCatalogPricingTier = "Standard"
 )
+
+// PossibleIntegrationRuntimeSsisCatalogPricingTierValues returns an array of possible values for the IntegrationRuntimeSsisCatalogPricingTier const type.
+func PossibleIntegrationRuntimeSsisCatalogPricingTierValues() [4]IntegrationRuntimeSsisCatalogPricingTier {
+	return [4]IntegrationRuntimeSsisCatalogPricingTier{IntegrationRuntimeSsisCatalogPricingTierBasic, IntegrationRuntimeSsisCatalogPricingTierPremium, IntegrationRuntimeSsisCatalogPricingTierPremiumRS, IntegrationRuntimeSsisCatalogPricingTierStandard}
+}
 
 // IntegrationRuntimeState enumerates the values for integration runtime state.
 type IntegrationRuntimeState string
@@ -373,6 +498,11 @@ const (
 	Stopping IntegrationRuntimeState = "Stopping"
 )
 
+// PossibleIntegrationRuntimeStateValues returns an array of possible values for the IntegrationRuntimeState const type.
+func PossibleIntegrationRuntimeStateValues() [9]IntegrationRuntimeState {
+	return [9]IntegrationRuntimeState{Initial, Limited, NeedRegistration, Offline, Online, Started, Starting, Stopped, Stopping}
+}
+
 // IntegrationRuntimeType enumerates the values for integration runtime type.
 type IntegrationRuntimeType string
 
@@ -382,6 +512,11 @@ const (
 	// SelfHosted ...
 	SelfHosted IntegrationRuntimeType = "SelfHosted"
 )
+
+// PossibleIntegrationRuntimeTypeValues returns an array of possible values for the IntegrationRuntimeType const type.
+func PossibleIntegrationRuntimeTypeValues() [2]IntegrationRuntimeType {
+	return [2]IntegrationRuntimeType{Managed, SelfHosted}
+}
 
 // IntegrationRuntimeUpdateResult enumerates the values for integration runtime update result.
 type IntegrationRuntimeUpdateResult string
@@ -393,6 +528,11 @@ const (
 	Succeed IntegrationRuntimeUpdateResult = "Succeed"
 )
 
+// PossibleIntegrationRuntimeUpdateResultValues returns an array of possible values for the IntegrationRuntimeUpdateResult const type.
+func PossibleIntegrationRuntimeUpdateResultValues() [2]IntegrationRuntimeUpdateResult {
+	return [2]IntegrationRuntimeUpdateResult{Fail, Succeed}
+}
+
 // JSONFormatFilePattern enumerates the values for json format file pattern.
 type JSONFormatFilePattern string
 
@@ -402,6 +542,11 @@ const (
 	// SetOfObjects ...
 	SetOfObjects JSONFormatFilePattern = "setOfObjects"
 )
+
+// PossibleJSONFormatFilePatternValues returns an array of possible values for the JSONFormatFilePattern const type.
+func PossibleJSONFormatFilePatternValues() [2]JSONFormatFilePattern {
+	return [2]JSONFormatFilePattern{ArrayOfObjects, SetOfObjects}
+}
 
 // ManagedIntegrationRuntimeNodeStatus enumerates the values for managed integration runtime node status.
 type ManagedIntegrationRuntimeNodeStatus string
@@ -417,6 +562,11 @@ const (
 	ManagedIntegrationRuntimeNodeStatusUnavailable ManagedIntegrationRuntimeNodeStatus = "Unavailable"
 )
 
+// PossibleManagedIntegrationRuntimeNodeStatusValues returns an array of possible values for the ManagedIntegrationRuntimeNodeStatus const type.
+func PossibleManagedIntegrationRuntimeNodeStatusValues() [4]ManagedIntegrationRuntimeNodeStatus {
+	return [4]ManagedIntegrationRuntimeNodeStatus{ManagedIntegrationRuntimeNodeStatusAvailable, ManagedIntegrationRuntimeNodeStatusRecycling, ManagedIntegrationRuntimeNodeStatusStarting, ManagedIntegrationRuntimeNodeStatusUnavailable}
+}
+
 // MongoDbAuthenticationType enumerates the values for mongo db authentication type.
 type MongoDbAuthenticationType string
 
@@ -427,6 +577,11 @@ const (
 	MongoDbAuthenticationTypeBasic MongoDbAuthenticationType = "Basic"
 )
 
+// PossibleMongoDbAuthenticationTypeValues returns an array of possible values for the MongoDbAuthenticationType const type.
+func PossibleMongoDbAuthenticationTypeValues() [2]MongoDbAuthenticationType {
+	return [2]MongoDbAuthenticationType{MongoDbAuthenticationTypeAnonymous, MongoDbAuthenticationTypeBasic}
+}
+
 // ODataAuthenticationType enumerates the values for o data authentication type.
 type ODataAuthenticationType string
 
@@ -436,6 +591,11 @@ const (
 	// ODataAuthenticationTypeBasic ...
 	ODataAuthenticationTypeBasic ODataAuthenticationType = "Basic"
 )
+
+// PossibleODataAuthenticationTypeValues returns an array of possible values for the ODataAuthenticationType const type.
+func PossibleODataAuthenticationTypeValues() [2]ODataAuthenticationType {
+	return [2]ODataAuthenticationType{ODataAuthenticationTypeAnonymous, ODataAuthenticationTypeBasic}
+}
 
 // ParameterType enumerates the values for parameter type.
 type ParameterType string
@@ -457,6 +617,11 @@ const (
 	ParameterTypeString ParameterType = "String"
 )
 
+// PossibleParameterTypeValues returns an array of possible values for the ParameterType const type.
+func PossibleParameterTypeValues() [7]ParameterType {
+	return [7]ParameterType{ParameterTypeArray, ParameterTypeBool, ParameterTypeFloat, ParameterTypeInt, ParameterTypeObject, ParameterTypeSecureString, ParameterTypeString}
+}
+
 // PhoenixAuthenticationType enumerates the values for phoenix authentication type.
 type PhoenixAuthenticationType string
 
@@ -468,6 +633,11 @@ const (
 	// PhoenixAuthenticationTypeWindowsAzureHDInsightService ...
 	PhoenixAuthenticationTypeWindowsAzureHDInsightService PhoenixAuthenticationType = "WindowsAzureHDInsightService"
 )
+
+// PossiblePhoenixAuthenticationTypeValues returns an array of possible values for the PhoenixAuthenticationType const type.
+func PossiblePhoenixAuthenticationTypeValues() [3]PhoenixAuthenticationType {
+	return [3]PhoenixAuthenticationType{PhoenixAuthenticationTypeAnonymous, PhoenixAuthenticationTypeUsernameAndPassword, PhoenixAuthenticationTypeWindowsAzureHDInsightService}
+}
 
 // PipelineRunQueryFilterOperand enumerates the values for pipeline run query filter operand.
 type PipelineRunQueryFilterOperand string
@@ -483,6 +653,11 @@ const (
 	Status PipelineRunQueryFilterOperand = "Status"
 )
 
+// PossiblePipelineRunQueryFilterOperandValues returns an array of possible values for the PipelineRunQueryFilterOperand const type.
+func PossiblePipelineRunQueryFilterOperandValues() [4]PipelineRunQueryFilterOperand {
+	return [4]PipelineRunQueryFilterOperand{PipelineName, RunEnd, RunStart, Status}
+}
+
 // PipelineRunQueryFilterOperator enumerates the values for pipeline run query filter operator.
 type PipelineRunQueryFilterOperator string
 
@@ -497,6 +672,11 @@ const (
 	NotIn PipelineRunQueryFilterOperator = "NotIn"
 )
 
+// PossiblePipelineRunQueryFilterOperatorValues returns an array of possible values for the PipelineRunQueryFilterOperator const type.
+func PossiblePipelineRunQueryFilterOperatorValues() [4]PipelineRunQueryFilterOperator {
+	return [4]PipelineRunQueryFilterOperator{Equals, In, NotEquals, NotIn}
+}
+
 // PipelineRunQueryOrder enumerates the values for pipeline run query order.
 type PipelineRunQueryOrder string
 
@@ -506,6 +686,11 @@ const (
 	// DESC ...
 	DESC PipelineRunQueryOrder = "DESC"
 )
+
+// PossiblePipelineRunQueryOrderValues returns an array of possible values for the PipelineRunQueryOrder const type.
+func PossiblePipelineRunQueryOrderValues() [2]PipelineRunQueryOrder {
+	return [2]PipelineRunQueryOrder{ASC, DESC}
+}
 
 // PipelineRunQueryOrderByField enumerates the values for pipeline run query order by field.
 type PipelineRunQueryOrderByField string
@@ -517,6 +702,11 @@ const (
 	PipelineRunQueryOrderByFieldRunStart PipelineRunQueryOrderByField = "RunStart"
 )
 
+// PossiblePipelineRunQueryOrderByFieldValues returns an array of possible values for the PipelineRunQueryOrderByField const type.
+func PossiblePipelineRunQueryOrderByFieldValues() [2]PipelineRunQueryOrderByField {
+	return [2]PipelineRunQueryOrderByField{PipelineRunQueryOrderByFieldRunEnd, PipelineRunQueryOrderByFieldRunStart}
+}
+
 // PolybaseSettingsRejectType enumerates the values for polybase settings reject type.
 type PolybaseSettingsRejectType string
 
@@ -527,6 +717,11 @@ const (
 	Value PolybaseSettingsRejectType = "value"
 )
 
+// PossiblePolybaseSettingsRejectTypeValues returns an array of possible values for the PolybaseSettingsRejectType const type.
+func PossiblePolybaseSettingsRejectTypeValues() [2]PolybaseSettingsRejectType {
+	return [2]PolybaseSettingsRejectType{Percentage, Value}
+}
+
 // PrestoAuthenticationType enumerates the values for presto authentication type.
 type PrestoAuthenticationType string
 
@@ -536,6 +731,11 @@ const (
 	// PrestoAuthenticationTypeLDAP ...
 	PrestoAuthenticationTypeLDAP PrestoAuthenticationType = "LDAP"
 )
+
+// PossiblePrestoAuthenticationTypeValues returns an array of possible values for the PrestoAuthenticationType const type.
+func PossiblePrestoAuthenticationTypeValues() [2]PrestoAuthenticationType {
+	return [2]PrestoAuthenticationType{PrestoAuthenticationTypeAnonymous, PrestoAuthenticationTypeLDAP}
+}
 
 // RecurrenceFrequency enumerates the values for recurrence frequency.
 type RecurrenceFrequency string
@@ -557,6 +757,11 @@ const (
 	Year RecurrenceFrequency = "Year"
 )
 
+// PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
+func PossibleRecurrenceFrequencyValues() [7]RecurrenceFrequency {
+	return [7]RecurrenceFrequency{Day, Hour, Minute, Month, NotSpecified, Week, Year}
+}
+
 // SalesforceSinkWriteBehavior enumerates the values for salesforce sink write behavior.
 type SalesforceSinkWriteBehavior string
 
@@ -566,6 +771,11 @@ const (
 	// Upsert ...
 	Upsert SalesforceSinkWriteBehavior = "Upsert"
 )
+
+// PossibleSalesforceSinkWriteBehaviorValues returns an array of possible values for the SalesforceSinkWriteBehavior const type.
+func PossibleSalesforceSinkWriteBehaviorValues() [2]SalesforceSinkWriteBehavior {
+	return [2]SalesforceSinkWriteBehavior{Insert, Upsert}
+}
 
 // SalesforceSourceReadBehavior enumerates the values for salesforce source read behavior.
 type SalesforceSourceReadBehavior string
@@ -577,6 +787,11 @@ const (
 	QueryAll SalesforceSourceReadBehavior = "QueryAll"
 )
 
+// PossibleSalesforceSourceReadBehaviorValues returns an array of possible values for the SalesforceSourceReadBehavior const type.
+func PossibleSalesforceSourceReadBehaviorValues() [2]SalesforceSourceReadBehavior {
+	return [2]SalesforceSourceReadBehavior{Query, QueryAll}
+}
+
 // SapCloudForCustomerSinkWriteBehavior enumerates the values for sap cloud for customer sink write behavior.
 type SapCloudForCustomerSinkWriteBehavior string
 
@@ -587,6 +802,11 @@ const (
 	SapCloudForCustomerSinkWriteBehaviorUpdate SapCloudForCustomerSinkWriteBehavior = "Update"
 )
 
+// PossibleSapCloudForCustomerSinkWriteBehaviorValues returns an array of possible values for the SapCloudForCustomerSinkWriteBehavior const type.
+func PossibleSapCloudForCustomerSinkWriteBehaviorValues() [2]SapCloudForCustomerSinkWriteBehavior {
+	return [2]SapCloudForCustomerSinkWriteBehavior{SapCloudForCustomerSinkWriteBehaviorInsert, SapCloudForCustomerSinkWriteBehaviorUpdate}
+}
+
 // SapHanaAuthenticationType enumerates the values for sap hana authentication type.
 type SapHanaAuthenticationType string
 
@@ -596,6 +816,11 @@ const (
 	// SapHanaAuthenticationTypeWindows ...
 	SapHanaAuthenticationTypeWindows SapHanaAuthenticationType = "Windows"
 )
+
+// PossibleSapHanaAuthenticationTypeValues returns an array of possible values for the SapHanaAuthenticationType const type.
+func PossibleSapHanaAuthenticationTypeValues() [2]SapHanaAuthenticationType {
+	return [2]SapHanaAuthenticationType{SapHanaAuthenticationTypeBasic, SapHanaAuthenticationTypeWindows}
+}
 
 // SelfHostedIntegrationRuntimeNodeStatus enumerates the values for self hosted integration runtime node
 // status.
@@ -618,6 +843,11 @@ const (
 	SelfHostedIntegrationRuntimeNodeStatusUpgrading SelfHostedIntegrationRuntimeNodeStatus = "Upgrading"
 )
 
+// PossibleSelfHostedIntegrationRuntimeNodeStatusValues returns an array of possible values for the SelfHostedIntegrationRuntimeNodeStatus const type.
+func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() [7]SelfHostedIntegrationRuntimeNodeStatus {
+	return [7]SelfHostedIntegrationRuntimeNodeStatus{SelfHostedIntegrationRuntimeNodeStatusInitializeFailed, SelfHostedIntegrationRuntimeNodeStatusInitializing, SelfHostedIntegrationRuntimeNodeStatusLimited, SelfHostedIntegrationRuntimeNodeStatusNeedRegistration, SelfHostedIntegrationRuntimeNodeStatusOffline, SelfHostedIntegrationRuntimeNodeStatusOnline, SelfHostedIntegrationRuntimeNodeStatusUpgrading}
+}
+
 // ServiceNowAuthenticationType enumerates the values for service now authentication type.
 type ServiceNowAuthenticationType string
 
@@ -628,6 +858,11 @@ const (
 	ServiceNowAuthenticationTypeOAuth2 ServiceNowAuthenticationType = "OAuth2"
 )
 
+// PossibleServiceNowAuthenticationTypeValues returns an array of possible values for the ServiceNowAuthenticationType const type.
+func PossibleServiceNowAuthenticationTypeValues() [2]ServiceNowAuthenticationType {
+	return [2]ServiceNowAuthenticationType{ServiceNowAuthenticationTypeBasic, ServiceNowAuthenticationTypeOAuth2}
+}
+
 // SftpAuthenticationType enumerates the values for sftp authentication type.
 type SftpAuthenticationType string
 
@@ -637,6 +872,11 @@ const (
 	// SftpAuthenticationTypeSSHPublicKey ...
 	SftpAuthenticationTypeSSHPublicKey SftpAuthenticationType = "SshPublicKey"
 )
+
+// PossibleSftpAuthenticationTypeValues returns an array of possible values for the SftpAuthenticationType const type.
+func PossibleSftpAuthenticationTypeValues() [2]SftpAuthenticationType {
+	return [2]SftpAuthenticationType{SftpAuthenticationTypeBasic, SftpAuthenticationTypeSSHPublicKey}
+}
 
 // SparkAuthenticationType enumerates the values for spark authentication type.
 type SparkAuthenticationType string
@@ -652,6 +892,11 @@ const (
 	SparkAuthenticationTypeWindowsAzureHDInsightService SparkAuthenticationType = "WindowsAzureHDInsightService"
 )
 
+// PossibleSparkAuthenticationTypeValues returns an array of possible values for the SparkAuthenticationType const type.
+func PossibleSparkAuthenticationTypeValues() [4]SparkAuthenticationType {
+	return [4]SparkAuthenticationType{SparkAuthenticationTypeAnonymous, SparkAuthenticationTypeUsername, SparkAuthenticationTypeUsernameAndPassword, SparkAuthenticationTypeWindowsAzureHDInsightService}
+}
+
 // SparkServerType enumerates the values for spark server type.
 type SparkServerType string
 
@@ -663,6 +908,11 @@ const (
 	// SparkThriftServer ...
 	SparkThriftServer SparkServerType = "SparkThriftServer"
 )
+
+// PossibleSparkServerTypeValues returns an array of possible values for the SparkServerType const type.
+func PossibleSparkServerTypeValues() [3]SparkServerType {
+	return [3]SparkServerType{SharkServer, SharkServer2, SparkThriftServer}
+}
 
 // SparkThriftTransportProtocol enumerates the values for spark thrift transport protocol.
 type SparkThriftTransportProtocol string
@@ -676,6 +926,11 @@ const (
 	SparkThriftTransportProtocolSASL SparkThriftTransportProtocol = "SASL"
 )
 
+// PossibleSparkThriftTransportProtocolValues returns an array of possible values for the SparkThriftTransportProtocol const type.
+func PossibleSparkThriftTransportProtocolValues() [3]SparkThriftTransportProtocol {
+	return [3]SparkThriftTransportProtocol{SparkThriftTransportProtocolBinary, SparkThriftTransportProtocolHTTP, SparkThriftTransportProtocolSASL}
+}
+
 // SSISExecutionRuntime enumerates the values for ssis execution runtime.
 type SSISExecutionRuntime string
 
@@ -685,6 +940,11 @@ const (
 	// X86 ...
 	X86 SSISExecutionRuntime = "x86"
 )
+
+// PossibleSSISExecutionRuntimeValues returns an array of possible values for the SSISExecutionRuntime const type.
+func PossibleSSISExecutionRuntimeValues() [2]SSISExecutionRuntime {
+	return [2]SSISExecutionRuntime{X64, X86}
+}
 
 // StoredProcedureParameterType enumerates the values for stored procedure parameter type.
 type StoredProcedureParameterType string
@@ -704,6 +964,11 @@ const (
 	String StoredProcedureParameterType = "String"
 )
 
+// PossibleStoredProcedureParameterTypeValues returns an array of possible values for the StoredProcedureParameterType const type.
+func PossibleStoredProcedureParameterTypeValues() [6]StoredProcedureParameterType {
+	return [6]StoredProcedureParameterType{Boolean, Date, Decimal, GUID, Int, String}
+}
+
 // SybaseAuthenticationType enumerates the values for sybase authentication type.
 type SybaseAuthenticationType string
 
@@ -714,6 +979,11 @@ const (
 	SybaseAuthenticationTypeWindows SybaseAuthenticationType = "Windows"
 )
 
+// PossibleSybaseAuthenticationTypeValues returns an array of possible values for the SybaseAuthenticationType const type.
+func PossibleSybaseAuthenticationTypeValues() [2]SybaseAuthenticationType {
+	return [2]SybaseAuthenticationType{SybaseAuthenticationTypeBasic, SybaseAuthenticationTypeWindows}
+}
+
 // TeradataAuthenticationType enumerates the values for teradata authentication type.
 type TeradataAuthenticationType string
 
@@ -723,6 +993,11 @@ const (
 	// TeradataAuthenticationTypeWindows ...
 	TeradataAuthenticationTypeWindows TeradataAuthenticationType = "Windows"
 )
+
+// PossibleTeradataAuthenticationTypeValues returns an array of possible values for the TeradataAuthenticationType const type.
+func PossibleTeradataAuthenticationTypeValues() [2]TeradataAuthenticationType {
+	return [2]TeradataAuthenticationType{TeradataAuthenticationTypeBasic, TeradataAuthenticationTypeWindows}
+}
 
 // TriggerRunStatus enumerates the values for trigger run status.
 type TriggerRunStatus string
@@ -736,6 +1011,11 @@ const (
 	TriggerRunStatusSucceeded TriggerRunStatus = "Succeeded"
 )
 
+// PossibleTriggerRunStatusValues returns an array of possible values for the TriggerRunStatus const type.
+func PossibleTriggerRunStatusValues() [3]TriggerRunStatus {
+	return [3]TriggerRunStatus{TriggerRunStatusFailed, TriggerRunStatusInprogress, TriggerRunStatusSucceeded}
+}
+
 // TriggerRuntimeState enumerates the values for trigger runtime state.
 type TriggerRuntimeState string
 
@@ -748,6 +1028,11 @@ const (
 	TriggerRuntimeStateStopped TriggerRuntimeState = "Stopped"
 )
 
+// PossibleTriggerRuntimeStateValues returns an array of possible values for the TriggerRuntimeState const type.
+func PossibleTriggerRuntimeStateValues() [3]TriggerRuntimeState {
+	return [3]TriggerRuntimeState{TriggerRuntimeStateDisabled, TriggerRuntimeStateStarted, TriggerRuntimeStateStopped}
+}
+
 // TumblingWindowFrequency enumerates the values for tumbling window frequency.
 type TumblingWindowFrequency string
 
@@ -757,6 +1042,11 @@ const (
 	// TumblingWindowFrequencyMinute ...
 	TumblingWindowFrequencyMinute TumblingWindowFrequency = "Minute"
 )
+
+// PossibleTumblingWindowFrequencyValues returns an array of possible values for the TumblingWindowFrequency const type.
+func PossibleTumblingWindowFrequencyValues() [2]TumblingWindowFrequency {
+	return [2]TumblingWindowFrequency{TumblingWindowFrequencyHour, TumblingWindowFrequencyMinute}
+}
 
 // Type enumerates the values for type.
 type Type string
@@ -769,6 +1059,11 @@ const (
 	// TypeSecureString ...
 	TypeSecureString Type = "SecureString"
 )
+
+// PossibleTypeValues returns an array of possible values for the Type const type.
+func PossibleTypeValues() [3]Type {
+	return [3]Type{TypeAzureKeyVaultSecret, TypeSecretBase, TypeSecureString}
+}
 
 // TypeBasicActivity enumerates the values for type basic activity.
 type TypeBasicActivity string
@@ -826,6 +1121,11 @@ const (
 	TypeWebActivity TypeBasicActivity = "WebActivity"
 )
 
+// PossibleTypeBasicActivityValues returns an array of possible values for the TypeBasicActivity const type.
+func PossibleTypeBasicActivityValues() [25]TypeBasicActivity {
+	return [25]TypeBasicActivity{TypeActivity, TypeAzureMLBatchExecution, TypeAzureMLUpdateResource, TypeContainer, TypeCopy, TypeCustom, TypeDatabricksNotebook, TypeDataLakeAnalyticsUSQL, TypeExecutePipeline, TypeExecuteSSISPackage, TypeExecution, TypeFilter, TypeForEach, TypeGetMetadata, TypeHDInsightHive, TypeHDInsightMapReduce, TypeHDInsightPig, TypeHDInsightSpark, TypeHDInsightStreaming, TypeIfCondition, TypeLookup, TypeSQLServerStoredProcedure, TypeUntil, TypeWait, TypeWebActivity}
+}
+
 // TypeBasicCopySink enumerates the values for type basic copy sink.
 type TypeBasicCopySink string
 
@@ -861,6 +1161,11 @@ const (
 	// TypeSQLSink ...
 	TypeSQLSink TypeBasicCopySink = "SqlSink"
 )
+
+// PossibleTypeBasicCopySinkValues returns an array of possible values for the TypeBasicCopySink const type.
+func PossibleTypeBasicCopySinkValues() [15]TypeBasicCopySink {
+	return [15]TypeBasicCopySink{TypeAzureDataLakeStoreSink, TypeAzureQueueSink, TypeAzureSearchIndexSink, TypeAzureTableSink, TypeBlobSink, TypeCopySink, TypeDocumentDbCollectionSink, TypeDynamicsSink, TypeFileSystemSink, TypeOdbcSink, TypeOracleSink, TypeSalesforceSink, TypeSapCloudForCustomerSink, TypeSQLDWSink, TypeSQLSink}
+}
 
 // TypeBasicCopySource enumerates the values for type basic copy source.
 type TypeBasicCopySource string
@@ -968,6 +1273,11 @@ const (
 	TypeZohoSource TypeBasicCopySource = "ZohoSource"
 )
 
+// PossibleTypeBasicCopySourceValues returns an array of possible values for the TypeBasicCopySource const type.
+func PossibleTypeBasicCopySourceValues() [50]TypeBasicCopySource {
+	return [50]TypeBasicCopySource{TypeAmazonMWSSource, TypeAmazonRedshiftSource, TypeAzureDataLakeStoreSource, TypeAzureMySQLSource, TypeAzurePostgreSQLSource, TypeAzureTableSource, TypeBlobSource, TypeCassandraSource, TypeConcurSource, TypeCopySource, TypeCouchbaseSource, TypeDocumentDbCollectionSource, TypeDrillSource, TypeDynamicsSource, TypeEloquaSource, TypeFileSystemSource, TypeGoogleBigQuerySource, TypeGreenplumSource, TypeHBaseSource, TypeHdfsSource, TypeHiveSource, TypeHTTPSource, TypeHubspotSource, TypeImpalaSource, TypeJiraSource, TypeMagentoSource, TypeMariaDBSource, TypeMarketoSource, TypeMongoDbSource, TypeNetezzaSource, TypeOracleSource, TypePaypalSource, TypePhoenixSource, TypePrestoSource, TypeQuickBooksSource, TypeRelationalSource, TypeSalesforceMarketingCloudSource, TypeSalesforceSource, TypeSapCloudForCustomerSource, TypeSapEccSource, TypeServiceNowSource, TypeShopifySource, TypeSparkSource, TypeSQLDWSource, TypeSQLSource, TypeSquareSource, TypeVerticaSource, TypeWebSource, TypeXeroSource, TypeZohoSource}
+}
+
 // TypeBasicCopyTranslator enumerates the values for type basic copy translator.
 type TypeBasicCopyTranslator string
 
@@ -977,6 +1287,11 @@ const (
 	// TypeTabularTranslator ...
 	TypeTabularTranslator TypeBasicCopyTranslator = "TabularTranslator"
 )
+
+// PossibleTypeBasicCopyTranslatorValues returns an array of possible values for the TypeBasicCopyTranslator const type.
+func PossibleTypeBasicCopyTranslatorValues() [2]TypeBasicCopyTranslator {
+	return [2]TypeBasicCopyTranslator{TypeCopyTranslator, TypeTabularTranslator}
+}
 
 // TypeBasicDataset enumerates the values for type basic dataset.
 type TypeBasicDataset string
@@ -1090,6 +1405,11 @@ const (
 	TypeZohoObject TypeBasicDataset = "ZohoObject"
 )
 
+// PossibleTypeBasicDatasetValues returns an array of possible values for the TypeBasicDataset const type.
+func PossibleTypeBasicDatasetValues() [53]TypeBasicDataset {
+	return [53]TypeBasicDataset{TypeAmazonMWSObject, TypeAmazonS3Object, TypeAzureBlob, TypeAzureDataLakeStoreFile, TypeAzureMySQLTable, TypeAzurePostgreSQLTable, TypeAzureSearchIndex, TypeAzureSQLDWTable, TypeAzureSQLTable, TypeAzureTable, TypeCassandraTable, TypeConcurObject, TypeCouchbaseTable, TypeCustomDataset, TypeDataset, TypeDocumentDbCollection, TypeDrillTable, TypeDynamicsEntity, TypeEloquaObject, TypeFileShare, TypeGoogleBigQueryObject, TypeGreenplumTable, TypeHBaseObject, TypeHiveObject, TypeHTTPFile, TypeHubspotObject, TypeImpalaObject, TypeJiraObject, TypeMagentoObject, TypeMariaDBTable, TypeMarketoObject, TypeMongoDbCollection, TypeNetezzaTable, TypeODataResource, TypeOracleTable, TypePaypalObject, TypePhoenixObject, TypePrestoObject, TypeQuickBooksObject, TypeRelationalTable, TypeSalesforceMarketingCloudObject, TypeSalesforceObject, TypeSapCloudForCustomerResource, TypeSapEccResource, TypeServiceNowObject, TypeShopifyObject, TypeSparkObject, TypeSQLServerTable, TypeSquareObject, TypeVerticaTable, TypeWebTable, TypeXeroObject, TypeZohoObject}
+}
+
 // TypeBasicDatasetCompression enumerates the values for type basic dataset compression.
 type TypeBasicDatasetCompression string
 
@@ -1105,6 +1425,11 @@ const (
 	// TypeZipDeflate ...
 	TypeZipDeflate TypeBasicDatasetCompression = "ZipDeflate"
 )
+
+// PossibleTypeBasicDatasetCompressionValues returns an array of possible values for the TypeBasicDatasetCompression const type.
+func PossibleTypeBasicDatasetCompressionValues() [5]TypeBasicDatasetCompression {
+	return [5]TypeBasicDatasetCompression{TypeBZip2, TypeDatasetCompression, TypeDeflate, TypeGZip, TypeZipDeflate}
+}
 
 // TypeBasicDatasetStorageFormat enumerates the values for type basic dataset storage format.
 type TypeBasicDatasetStorageFormat string
@@ -1124,6 +1449,11 @@ const (
 	TypeTextFormat TypeBasicDatasetStorageFormat = "TextFormat"
 )
 
+// PossibleTypeBasicDatasetStorageFormatValues returns an array of possible values for the TypeBasicDatasetStorageFormat const type.
+func PossibleTypeBasicDatasetStorageFormatValues() [6]TypeBasicDatasetStorageFormat {
+	return [6]TypeBasicDatasetStorageFormat{TypeAvroFormat, TypeDatasetStorageFormat, TypeJSONFormat, TypeOrcFormat, TypeParquetFormat, TypeTextFormat}
+}
+
 // TypeBasicIntegrationRuntime enumerates the values for type basic integration runtime.
 type TypeBasicIntegrationRuntime string
 
@@ -1136,6 +1466,11 @@ const (
 	TypeSelfHosted TypeBasicIntegrationRuntime = "SelfHosted"
 )
 
+// PossibleTypeBasicIntegrationRuntimeValues returns an array of possible values for the TypeBasicIntegrationRuntime const type.
+func PossibleTypeBasicIntegrationRuntimeValues() [3]TypeBasicIntegrationRuntime {
+	return [3]TypeBasicIntegrationRuntime{TypeIntegrationRuntime, TypeManaged, TypeSelfHosted}
+}
+
 // TypeBasicIntegrationRuntimeStatus enumerates the values for type basic integration runtime status.
 type TypeBasicIntegrationRuntimeStatus string
 
@@ -1147,6 +1482,11 @@ const (
 	// TypeBasicIntegrationRuntimeStatusTypeSelfHosted ...
 	TypeBasicIntegrationRuntimeStatusTypeSelfHosted TypeBasicIntegrationRuntimeStatus = "SelfHosted"
 )
+
+// PossibleTypeBasicIntegrationRuntimeStatusValues returns an array of possible values for the TypeBasicIntegrationRuntimeStatus const type.
+func PossibleTypeBasicIntegrationRuntimeStatusValues() [3]TypeBasicIntegrationRuntimeStatus {
+	return [3]TypeBasicIntegrationRuntimeStatus{TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus, TypeBasicIntegrationRuntimeStatusTypeManaged, TypeBasicIntegrationRuntimeStatusTypeSelfHosted}
+}
 
 // TypeBasicLinkedService enumerates the values for type basic linked service.
 type TypeBasicLinkedService string
@@ -1294,6 +1634,11 @@ const (
 	TypeZoho TypeBasicLinkedService = "Zoho"
 )
 
+// PossibleTypeBasicLinkedServiceValues returns an array of possible values for the TypeBasicLinkedService const type.
+func PossibleTypeBasicLinkedServiceValues() [70]TypeBasicLinkedService {
+	return [70]TypeBasicLinkedService{TypeAmazonMWS, TypeAmazonRedshift, TypeAmazonS3, TypeAzureBatch, TypeAzureDatabricks, TypeAzureDataLakeAnalytics, TypeAzureDataLakeStore, TypeAzureKeyVault, TypeAzureML, TypeAzureMySQL, TypeAzurePostgreSQL, TypeAzureSearch, TypeAzureSQLDatabase, TypeAzureSQLDW, TypeAzureStorage, TypeCassandra, TypeConcur, TypeCosmosDb, TypeCouchbase, TypeCustomDataSource, TypeDb2, TypeDrill, TypeDynamics, TypeEloqua, TypeFileServer, TypeFtpServer, TypeGoogleBigQuery, TypeGreenplum, TypeHBase, TypeHdfs, TypeHDInsight, TypeHDInsightOnDemand, TypeHive, TypeHTTPServer, TypeHubspot, TypeImpala, TypeJira, TypeLinkedService, TypeMagento, TypeMariaDB, TypeMarketo, TypeMongoDb, TypeMySQL, TypeNetezza, TypeOData, TypeOdbc, TypeOracle, TypePaypal, TypePhoenix, TypePostgreSQL, TypePresto, TypeQuickBooks, TypeSalesforce, TypeSalesforceMarketingCloud, TypeSapBW, TypeSapCloudForCustomer, TypeSapEcc, TypeSapHana, TypeServiceNow, TypeSftp, TypeShopify, TypeSpark, TypeSQLServer, TypeSquare, TypeSybase, TypeTeradata, TypeVertica, TypeWeb, TypeXero, TypeZoho}
+}
+
 // TypeBasicTrigger enumerates the values for type basic trigger.
 type TypeBasicTrigger string
 
@@ -1310,6 +1655,11 @@ const (
 	TypeTumblingWindowTrigger TypeBasicTrigger = "TumblingWindowTrigger"
 )
 
+// PossibleTypeBasicTriggerValues returns an array of possible values for the TypeBasicTrigger const type.
+func PossibleTypeBasicTriggerValues() [5]TypeBasicTrigger {
+	return [5]TypeBasicTrigger{TypeBlobTrigger, TypeMultiplePipelineTrigger, TypeScheduleTrigger, TypeTrigger, TypeTumblingWindowTrigger}
+}
+
 // WebActivityMethod enumerates the values for web activity method.
 type WebActivityMethod string
 
@@ -1323,6 +1673,11 @@ const (
 	// PUT ...
 	PUT WebActivityMethod = "PUT"
 )
+
+// PossibleWebActivityMethodValues returns an array of possible values for the WebActivityMethod const type.
+func PossibleWebActivityMethodValues() [4]WebActivityMethod {
+	return [4]WebActivityMethod{DELETE, GET, POST, PUT}
+}
 
 // BasicActivity a pipeline activity.
 type BasicActivity interface {

@@ -36,6 +36,11 @@ const (
 	Deleting CustomDomainResourceState = "Deleting"
 )
 
+// PossibleCustomDomainResourceStateValues returns an array of possible values for the CustomDomainResourceState const type.
+func PossibleCustomDomainResourceStateValues() [3]CustomDomainResourceState {
+	return [3]CustomDomainResourceState{Active, Creating, Deleting}
+}
+
 // EndpointResourceState enumerates the values for endpoint resource state.
 type EndpointResourceState string
 
@@ -54,6 +59,11 @@ const (
 	EndpointResourceStateStopping EndpointResourceState = "Stopping"
 )
 
+// PossibleEndpointResourceStateValues returns an array of possible values for the EndpointResourceState const type.
+func PossibleEndpointResourceStateValues() [6]EndpointResourceState {
+	return [6]EndpointResourceState{EndpointResourceStateCreating, EndpointResourceStateDeleting, EndpointResourceStateRunning, EndpointResourceStateStarting, EndpointResourceStateStopped, EndpointResourceStateStopping}
+}
+
 // OriginResourceState enumerates the values for origin resource state.
 type OriginResourceState string
 
@@ -65,6 +75,11 @@ const (
 	// OriginResourceStateDeleting ...
 	OriginResourceStateDeleting OriginResourceState = "Deleting"
 )
+
+// PossibleOriginResourceStateValues returns an array of possible values for the OriginResourceState const type.
+func PossibleOriginResourceStateValues() [3]OriginResourceState {
+	return [3]OriginResourceState{OriginResourceStateActive, OriginResourceStateCreating, OriginResourceStateDeleting}
+}
 
 // ProfileResourceState enumerates the values for profile resource state.
 type ProfileResourceState string
@@ -80,6 +95,11 @@ const (
 	ProfileResourceStateDisabled ProfileResourceState = "Disabled"
 )
 
+// PossibleProfileResourceStateValues returns an array of possible values for the ProfileResourceState const type.
+func PossibleProfileResourceStateValues() [4]ProfileResourceState {
+	return [4]ProfileResourceState{ProfileResourceStateActive, ProfileResourceStateCreating, ProfileResourceStateDeleting, ProfileResourceStateDisabled}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -91,6 +111,11 @@ const (
 	// ProvisioningStateSucceeded ...
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() [3]ProvisioningState {
+	return [3]ProvisioningState{ProvisioningStateCreating, ProvisioningStateFailed, ProvisioningStateSucceeded}
+}
 
 // QueryStringCachingBehavior enumerates the values for query string caching behavior.
 type QueryStringCachingBehavior string
@@ -106,6 +131,11 @@ const (
 	UseQueryString QueryStringCachingBehavior = "UseQueryString"
 )
 
+// PossibleQueryStringCachingBehaviorValues returns an array of possible values for the QueryStringCachingBehavior const type.
+func PossibleQueryStringCachingBehaviorValues() [4]QueryStringCachingBehavior {
+	return [4]QueryStringCachingBehavior{BypassCaching, IgnoreQueryString, NotSet, UseQueryString}
+}
+
 // ResourceType enumerates the values for resource type.
 type ResourceType string
 
@@ -113,6 +143,11 @@ const (
 	// MicrosoftCdnProfilesEndpoints ...
 	MicrosoftCdnProfilesEndpoints ResourceType = "Microsoft.Cdn/Profiles/Endpoints"
 )
+
+// PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
+func PossibleResourceTypeValues() [1]ResourceType {
+	return [1]ResourceType{MicrosoftCdnProfilesEndpoints}
+}
 
 // SkuName enumerates the values for sku name.
 type SkuName string
@@ -127,6 +162,11 @@ const (
 	// StandardVerizon ...
 	StandardVerizon SkuName = "Standard_Verizon"
 )
+
+// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
+func PossibleSkuNameValues() [4]SkuName {
+	return [4]SkuName{CustomVerizon, PremiumVerizon, StandardAkamai, StandardVerizon}
+}
 
 // CheckNameAvailabilityInput input of CheckNameAvailability API.
 type CheckNameAvailabilityInput struct {

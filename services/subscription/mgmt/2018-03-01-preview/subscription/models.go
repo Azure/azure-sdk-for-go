@@ -34,6 +34,11 @@ const (
 	MSAZR0148P OfferType = "MS-AZR-0148P"
 )
 
+// PossibleOfferTypeValues returns an array of possible values for the OfferType const type.
+func PossibleOfferTypeValues() [2]OfferType {
+	return [2]OfferType{MSAZR0017P, MSAZR0148P}
+}
+
 // AdPrincipal active Directory Principal for subscription creation delegated permission
 type AdPrincipal struct {
 	// TenantID - Tenant id of the Principal. Must be the current tenant the caller is logged in to.
@@ -48,7 +53,7 @@ type CreationParameters struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// Owners - The list of principals that should be granted Owner access on the subscription. Principals should be of type User, Service Principal or Security Group.
 	Owners *[]AdPrincipal `json:"owners,omitempty"`
-	// OfferType - The offer type of the subscription. For example, MS-AZR-0017P (EnterpriseAgreement) and MS-AZR-0148P (EnterpriseAgreement devTest) are available. Only valid when creating a subscription in a billing account scope. Possible values include: 'MSAZR0017P', 'MSAZR0148P'
+	// OfferType - The offer type of the subscription. For example, MS-AZR-0017P (EnterpriseAgreement) and MS-AZR-0148P (EnterpriseAgreement devTest) are available. Only valid when creating a subscription in a enrollment account scope. Possible values include: 'MSAZR0017P', 'MSAZR0148P'
 	OfferType OfferType `json:"offerType,omitempty"`
 }
 
@@ -67,29 +72,29 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// FactoryCreateSubscriptionInBillingAccountFuture an abstraction for monitoring and retrieving the results of a
+// FactoryCreateSubscriptionInEnrollmentAccountFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type FactoryCreateSubscriptionInBillingAccountFuture struct {
+type FactoryCreateSubscriptionInEnrollmentAccountFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future FactoryCreateSubscriptionInBillingAccountFuture) Result(client FactoryClient) (cr CreationResult, err error) {
+func (future FactoryCreateSubscriptionInEnrollmentAccountFuture) Result(client FactoryClient) (cr CreationResult, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInBillingAccountFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return cr, azure.NewAsyncOpIncompleteError("subscription.FactoryCreateSubscriptionInBillingAccountFuture")
+		return cr, azure.NewAsyncOpIncompleteError("subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		cr, err = client.CreateSubscriptionInBillingAccountResponder(future.Response())
+		cr, err = client.CreateSubscriptionInEnrollmentAccountResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInBillingAccountFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -106,12 +111,12 @@ func (future FactoryCreateSubscriptionInBillingAccountFuture) Result(client Fact
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInBillingAccountFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	cr, err = client.CreateSubscriptionInBillingAccountResponder(resp)
+	cr, err = client.CreateSubscriptionInEnrollmentAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInBillingAccountFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }

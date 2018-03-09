@@ -40,30 +40,30 @@ func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
 	return FactoryClient{NewWithBaseURI(baseURI)}
 }
 
-// CreateSubscriptionInBillingAccount creates an Azure subscription
+// CreateSubscriptionInEnrollmentAccount creates an Azure subscription
 //
-// billingAccountName is the name of the billing account to which the subscription will be billed. body is the
+// enrollmentAccountName is the name of the billing account to which the subscription will be billed. body is the
 // subscription creation parameters.
-func (client FactoryClient) CreateSubscriptionInBillingAccount(ctx context.Context, billingAccountName string, body CreationParameters) (result FactoryCreateSubscriptionInBillingAccountFuture, err error) {
-	req, err := client.CreateSubscriptionInBillingAccountPreparer(ctx, billingAccountName, body)
+func (client FactoryClient) CreateSubscriptionInEnrollmentAccount(ctx context.Context, enrollmentAccountName string, body CreationParameters) (result FactoryCreateSubscriptionInEnrollmentAccountFuture, err error) {
+	req, err := client.CreateSubscriptionInEnrollmentAccountPreparer(ctx, enrollmentAccountName, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.FactoryClient", "CreateSubscriptionInBillingAccount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "subscription.FactoryClient", "CreateSubscriptionInEnrollmentAccount", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateSubscriptionInBillingAccountSender(req)
+	result, err = client.CreateSubscriptionInEnrollmentAccountSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.FactoryClient", "CreateSubscriptionInBillingAccount", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "subscription.FactoryClient", "CreateSubscriptionInEnrollmentAccount", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreateSubscriptionInBillingAccountPreparer prepares the CreateSubscriptionInBillingAccount request.
-func (client FactoryClient) CreateSubscriptionInBillingAccountPreparer(ctx context.Context, billingAccountName string, body CreationParameters) (*http.Request, error) {
+// CreateSubscriptionInEnrollmentAccountPreparer prepares the CreateSubscriptionInEnrollmentAccount request.
+func (client FactoryClient) CreateSubscriptionInEnrollmentAccountPreparer(ctx context.Context, enrollmentAccountName string, body CreationParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"enrollmentAccountName": autorest.Encode("path", enrollmentAccountName),
 	}
 
 	const APIVersion = "2018-03-01-preview"
@@ -75,15 +75,15 @@ func (client FactoryClient) CreateSubscriptionInBillingAccountPreparer(ctx conte
 		autorest.AsJSON(),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/providers/Microsoft.Subscription/createSubscription", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountName}/providers/Microsoft.Subscription/createSubscription", pathParameters),
 		autorest.WithJSON(body),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSubscriptionInBillingAccountSender sends the CreateSubscriptionInBillingAccount request. The method will close the
+// CreateSubscriptionInEnrollmentAccountSender sends the CreateSubscriptionInEnrollmentAccount request. The method will close the
 // http.Response Body if it receives an error.
-func (client FactoryClient) CreateSubscriptionInBillingAccountSender(req *http.Request) (future FactoryCreateSubscriptionInBillingAccountFuture, err error) {
+func (client FactoryClient) CreateSubscriptionInEnrollmentAccountSender(req *http.Request) (future FactoryCreateSubscriptionInEnrollmentAccountFuture, err error) {
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	future.Future = azure.NewFuture(req)
 	future.req = req
@@ -96,9 +96,9 @@ func (client FactoryClient) CreateSubscriptionInBillingAccountSender(req *http.R
 	return
 }
 
-// CreateSubscriptionInBillingAccountResponder handles the response to the CreateSubscriptionInBillingAccount request. The method always
+// CreateSubscriptionInEnrollmentAccountResponder handles the response to the CreateSubscriptionInEnrollmentAccount request. The method always
 // closes the http.Response Body.
-func (client FactoryClient) CreateSubscriptionInBillingAccountResponder(resp *http.Response) (result CreationResult, err error) {
+func (client FactoryClient) CreateSubscriptionInEnrollmentAccountResponder(resp *http.Response) (result CreationResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

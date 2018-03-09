@@ -26,6 +26,21 @@ import (
 	"net/http"
 )
 
+// PurgeState enumerates the values for purge state.
+type PurgeState string
+
+const (
+	// Completed ...
+	Completed PurgeState = "Completed"
+	// Pending ...
+	Pending PurgeState = "Pending"
+)
+
+// PossiblePurgeStateValues returns an array of possible values for the PurgeState const type.
+func PossiblePurgeStateValues() [2]PurgeState {
+	return [2]PurgeState{Completed, Pending}
+}
+
 // SearchSortEnum enumerates the values for search sort enum.
 type SearchSortEnum string
 
@@ -36,6 +51,11 @@ const (
 	Desc SearchSortEnum = "desc"
 )
 
+// PossibleSearchSortEnumValues returns an array of possible values for the SearchSortEnum const type.
+func PossibleSearchSortEnumValues() [2]SearchSortEnum {
+	return [2]SearchSortEnum{Asc, Desc}
+}
+
 // StorageInsightState enumerates the values for storage insight state.
 type StorageInsightState string
 
@@ -45,6 +65,11 @@ const (
 	// OK ...
 	OK StorageInsightState = "OK"
 )
+
+// PossibleStorageInsightStateValues returns an array of possible values for the StorageInsightState const type.
+func PossibleStorageInsightStateValues() [2]StorageInsightState {
+	return [2]StorageInsightState{ERROR, OK}
+}
 
 // CoreSummary the core summary of a search.
 type CoreSummary struct {
@@ -384,6 +409,12 @@ type SearchSort struct {
 	Order SearchSortEnum `json:"order,omitempty"`
 }
 
+// SetObject ...
+type SetObject struct {
+	autorest.Response `json:"-"`
+	Value             interface{} `json:"value,omitempty"`
+}
+
 // StorageAccount describes a storage account connection.
 type StorageAccount struct {
 	// ID - The Azure Resource Manager ID of the storage account resource.
@@ -630,6 +661,82 @@ type Tag struct {
 	Name *string `json:"name,omitempty"`
 	// Value - The tag value.
 	Value *string `json:"value,omitempty"`
+}
+
+// WorkspacePurgeBody describes the body of a purge request for an App Insights Workspace
+type WorkspacePurgeBody struct {
+	// Table - Table from which to purge data.
+	Table *string `json:"table,omitempty"`
+	// Filters - The set of columns and filters (queries) to run over them to purge the resulting data.
+	Filters *[]WorkspacePurgeBodyFilters `json:"filters,omitempty"`
+}
+
+// WorkspacePurgeBodyFilters user-defined filters to return data which will be purged from the table.
+type WorkspacePurgeBodyFilters struct {
+	// Column - The column of the table over which the given query should run
+	Column *string `json:"column,omitempty"`
+	// Filter - A query to to run over the provided table and column to purge the corresponding data.
+	Filter *string `json:"filter,omitempty"`
+}
+
+// WorkspacePurgeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type WorkspacePurgeFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future WorkspacePurgeFuture) Result(client WorkspaceClient) (so SetObject, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacePurgeFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return so, azure.NewAsyncOpIncompleteError("operationalinsights.WorkspacePurgeFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		so, err = client.PurgeResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacePurgeFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacePurgeFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	so, err = client.PurgeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacePurgeFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// WorkspacePurgeResponse response containing operationId for a specific purge action.
+type WorkspacePurgeResponse struct {
+	// OperationID - Id to use when querying for status for a particular purge operation.
+	OperationID *string `json:"operationId,omitempty"`
+}
+
+// WorkspacePurgeStatusResponse response containing status for a specific purge operation.
+type WorkspacePurgeStatusResponse struct {
+	// Status - Status of the operation represented by the requested Id. Possible values include: 'Pending', 'Completed'
+	Status PurgeState `json:"status,omitempty"`
 }
 
 // WorkspacesGetSearchResultsFuture an abstraction for monitoring and retrieving the results of a long-running

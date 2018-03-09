@@ -62,6 +62,11 @@ const (
 	WindowsPerformanceCounter DataSourceKind = "WindowsPerformanceCounter"
 )
 
+// PossibleDataSourceKindValues returns an array of possible values for the DataSourceKind const type.
+func PossibleDataSourceKindValues() [15]DataSourceKind {
+	return [15]DataSourceKind{AzureActivityLog, ChangeTrackingCustomRegistry, ChangeTrackingDefaultPath, ChangeTrackingDefaultRegistry, ChangeTrackingPath, CustomLog, CustomLogCollection, GenericDataSource, IISLogs, LinuxPerformanceCollection, LinuxPerformanceObject, LinuxSyslog, LinuxSyslogCollection, WindowsEvent, WindowsPerformanceCounter}
+}
+
 // EntityStatus enumerates the values for entity status.
 type EntityStatus string
 
@@ -80,6 +85,11 @@ const (
 	Succeeded EntityStatus = "Succeeded"
 )
 
+// PossibleEntityStatusValues returns an array of possible values for the EntityStatus const type.
+func PossibleEntityStatusValues() [6]EntityStatus {
+	return [6]EntityStatus{Canceled, Creating, Deleting, Failed, ProvisioningAccount, Succeeded}
+}
+
 // SkuNameEnum enumerates the values for sku name enum.
 type SkuNameEnum string
 
@@ -97,6 +107,11 @@ const (
 	// Unlimited ...
 	Unlimited SkuNameEnum = "Unlimited"
 )
+
+// PossibleSkuNameEnumValues returns an array of possible values for the SkuNameEnum const type.
+func PossibleSkuNameEnumValues() [6]SkuNameEnum {
+	return [6]SkuNameEnum{Free, PerNode, Premium, Standalone, Standard, Unlimited}
+}
 
 // DataSource datasources under OMS Workspace.
 type DataSource struct {

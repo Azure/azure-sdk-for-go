@@ -740,3 +740,18 @@ func (future ZonesDeleteFuture) Result(client ZonesClient) (ar autorest.Response
 	}
 	return
 }
+
+// ZoneUpdate describes a request to update a DNS zone.
+type ZoneUpdate struct {
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ZoneUpdate.
+func (zu ZoneUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if zu.Tags != nil {
+		objectMap["tags"] = zu.Tags
+	}
+	return json.Marshal(objectMap)
+}

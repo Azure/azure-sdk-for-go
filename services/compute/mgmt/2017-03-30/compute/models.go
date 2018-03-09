@@ -1799,11 +1799,11 @@ type ImageOSDisk struct {
 	// ManagedDisk - The managedDisk.
 	ManagedDisk *SubResource `json:"managedDisk,omitempty"`
 	// BlobURI - The Virtual Hard Disk.
-	BlobURI *string `json:"blobUri,omitempty"`
+	BlobURI *int32 `json:"blobUri,omitempty"`
 	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'CachingTypesNone', 'CachingTypesReadOnly', 'CachingTypesReadWrite'
 	Caching CachingTypes `json:"caching,omitempty"`
 	// DiskSizeGB - Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
-	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+	DiskSizeGB *string `json:"diskSizeGB,omitempty"`
 	// StorageAccountType - Specifies the storage account type for the managed disk. Possible values are: Standard_LRS or Premium_LRS. Possible values include: 'StandardLRS', 'PremiumLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 }
@@ -4495,9 +4495,9 @@ type VirtualMachineProperties struct {
 	// InstanceView - The virtual machine instance view.
 	InstanceView *VirtualMachineInstanceView `json:"instanceView,omitempty"`
 	// LicenseType - Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. <br><br> Possible values are: <br><br> Windows_Client <br><br> Windows_Server <br><br> If this element is included in a request for an update, the value must match the initial value. This value cannot be updated. <br><br> For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) <br><br> Minimum api-version: 2015-06-15
-	LicenseType *string `json:"licenseType,omitempty"`
+	LicenseType *int32 `json:"licenseType,omitempty"`
 	// VMID - Specifies the VM unique ID which is a 128-bits identifier that is encoded and stored in all Azure IaaS VMs SMBIOS and can be read using platform BIOS commands.
-	VMID *string `json:"vmId,omitempty"`
+	VMID *int32 `json:"vmId,omitempty"`
 }
 
 // VirtualMachineScaleSet describes a Virtual Machine Scale Set.

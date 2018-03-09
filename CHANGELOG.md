@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## `v14.3.0`
+
+### Changes
+
+- Add exports for max file range and sizes for files in storage.
+- Updated README regarding blob storage support.
+- Add godoc indexer tool.
+- Add apidiff tool.
+
 ## `v14.2.0`
 
 ### Changes

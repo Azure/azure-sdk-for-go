@@ -36,6 +36,11 @@ const (
 	Pending PurgeState = "Pending"
 )
 
+// PossiblePurgeStateValues returns an array of possible values for the PurgeState const type.
+func PossiblePurgeStateValues() [2]PurgeState {
+	return [2]PurgeState{Completed, Pending}
+}
+
 // SearchSortEnum enumerates the values for search sort enum.
 type SearchSortEnum string
 
@@ -46,6 +51,11 @@ const (
 	Desc SearchSortEnum = "desc"
 )
 
+// PossibleSearchSortEnumValues returns an array of possible values for the SearchSortEnum const type.
+func PossibleSearchSortEnumValues() [2]SearchSortEnum {
+	return [2]SearchSortEnum{Asc, Desc}
+}
+
 // StorageInsightState enumerates the values for storage insight state.
 type StorageInsightState string
 
@@ -55,6 +65,11 @@ const (
 	// OK ...
 	OK StorageInsightState = "OK"
 )
+
+// PossibleStorageInsightStateValues returns an array of possible values for the StorageInsightState const type.
+func PossibleStorageInsightStateValues() [2]StorageInsightState {
+	return [2]StorageInsightState{ERROR, OK}
+}
 
 // CoreSummary the core summary of a search.
 type CoreSummary struct {

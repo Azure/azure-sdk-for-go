@@ -24,48 +24,48 @@ import (
 	"net/http"
 )
 
-// AccountsClient is the billing client provides access to billing resources for Azure subscriptions.
-type AccountsClient struct {
+// EnrollmentAccountsClient is the billing client provides access to billing resources for Azure subscriptions.
+type EnrollmentAccountsClient struct {
 	BaseClient
 }
 
-// NewAccountsClient creates an instance of the AccountsClient client.
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return NewAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewEnrollmentAccountsClient creates an instance of the EnrollmentAccountsClient client.
+func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient {
+	return NewEnrollmentAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAccountsClientWithBaseURI creates an instance of the AccountsClient client.
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return AccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewEnrollmentAccountsClientWithBaseURI creates an instance of the EnrollmentAccountsClient client.
+func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsClient {
+	return EnrollmentAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get gets a billing account by name.
+// Get gets a enrollment account by name.
 //
-// name is billing Account name.
-func (client AccountsClient) Get(ctx context.Context, name string) (result AccountResult, err error) {
+// name is enrollment Account name.
+func (client EnrollmentAccountsClient) Get(ctx context.Context, name string) (result EnrollmentAccountResult, err error) {
 	req, err := client.GetPreparer(ctx, name)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client AccountsClient) GetPreparer(ctx context.Context, name string) (*http.Request, error) {
+func (client EnrollmentAccountsClient) GetPreparer(ctx context.Context, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name": autorest.Encode("path", name),
 	}
@@ -78,21 +78,21 @@ func (client AccountsClient) GetPreparer(ctx context.Context, name string) (*htt
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{name}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/enrollmentAccounts/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client EnrollmentAccountsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) GetResponder(resp *http.Response) (result AccountResult, err error) {
+func (client EnrollmentAccountsClient) GetResponder(resp *http.Response) (result EnrollmentAccountResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -103,31 +103,31 @@ func (client AccountsClient) GetResponder(resp *http.Response) (result AccountRe
 	return
 }
 
-// List lists the billing accounts the caller has access to.
-func (client AccountsClient) List(ctx context.Context) (result AccountListResult, err error) {
+// List lists the enrollment accounts the caller has access to.
+func (client EnrollmentAccountsClient) List(ctx context.Context) (result EnrollmentAccountListResult, err error) {
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client AccountsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client EnrollmentAccountsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	const APIVersion = "2018-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -136,21 +136,21 @@ func (client AccountsClient) ListPreparer(ctx context.Context) (*http.Request, e
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.Billing/billingAccounts"),
+		autorest.WithPath("/providers/Microsoft.Billing/enrollmentAccounts"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AccountsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client EnrollmentAccountsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) ListResponder(resp *http.Response) (result AccountListResult, err error) {
+func (client EnrollmentAccountsClient) ListResponder(resp *http.Response) (result EnrollmentAccountListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

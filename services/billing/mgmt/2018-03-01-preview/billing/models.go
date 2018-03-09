@@ -25,24 +25,32 @@ import (
 	"net/http"
 )
 
-// AccountListResult result of listing billing accounts.
-type AccountListResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of billing accounts.
-	Value *[]AccountResult `json:"value,omitempty"`
+// DownloadURL a secure URL that can be used to download a PDF invoice until the URL expires.
+type DownloadURL struct {
+	// ExpiryTime - The time in UTC at which this download URL will expire.
+	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
+	// URL - The URL to the PDF file.
+	URL *string `json:"url,omitempty"`
 }
 
-// AccountProperties the properties of the billing account.
-type AccountProperties struct {
+// EnrollmentAccountListResult result of listing enrollment accounts.
+type EnrollmentAccountListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of enrollment accounts.
+	Value *[]EnrollmentAccountResult `json:"value,omitempty"`
+}
+
+// EnrollmentAccountProperties the properties of the enrollment account.
+type EnrollmentAccountProperties struct {
 	// PrincipalName - The account owner's principal name.
 	PrincipalName *string `json:"principalName,omitempty"`
 }
 
-// AccountResult a billing account resource.
-type AccountResult struct {
+// EnrollmentAccountResult an enrollment account resource.
+type EnrollmentAccountResult struct {
 	autorest.Response `json:"-"`
-	// AccountProperties - A billing account.
-	*AccountProperties `json:"properties,omitempty"`
+	// EnrollmentAccountProperties - An enrollment account.
+	*EnrollmentAccountProperties `json:"properties,omitempty"`
 	// ID - Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -51,8 +59,8 @@ type AccountResult struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// UnmarshalJSON is the custom unmarshaler for AccountResult struct.
-func (ar *AccountResult) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for EnrollmentAccountResult struct.
+func (ear *EnrollmentAccountResult) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -62,12 +70,12 @@ func (ar *AccountResult) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var accountProperties AccountProperties
-				err = json.Unmarshal(*v, &accountProperties)
+				var enrollmentAccountProperties EnrollmentAccountProperties
+				err = json.Unmarshal(*v, &enrollmentAccountProperties)
 				if err != nil {
 					return err
 				}
-				ar.AccountProperties = &accountProperties
+				ear.EnrollmentAccountProperties = &enrollmentAccountProperties
 			}
 		case "id":
 			if v != nil {
@@ -76,7 +84,7 @@ func (ar *AccountResult) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ar.ID = &ID
+				ear.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -85,7 +93,7 @@ func (ar *AccountResult) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ar.Name = &name
+				ear.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -94,20 +102,12 @@ func (ar *AccountResult) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ar.Type = &typeVar
+				ear.Type = &typeVar
 			}
 		}
 	}
 
 	return nil
-}
-
-// DownloadURL a secure URL that can be used to download a PDF invoice until the URL expires.
-type DownloadURL struct {
-	// ExpiryTime - The time in UTC at which this download URL will expire.
-	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
-	// URL - The URL to the PDF file.
-	URL *string `json:"url,omitempty"`
 }
 
 // ErrorDetails the details of the error.

@@ -23,7 +23,6 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
-	"io"
 	"net/http"
 )
 
@@ -76,21 +75,6 @@ func PossibleAsyncOperationStateValues() [4]AsyncOperationState {
 	return [4]AsyncOperationState{Failed, InProgress, Started, Succeeded}
 }
 
-// BackendProtocol enumerates the values for backend protocol.
-type BackendProtocol string
-
-const (
-	// BackendProtocolHTTP ...
-	BackendProtocolHTTP BackendProtocol = "http"
-	// BackendProtocolSoap ...
-	BackendProtocolSoap BackendProtocol = "soap"
-)
-
-// PossibleBackendProtocolValues returns an array of possible values for the BackendProtocol const type.
-func PossibleBackendProtocolValues() [2]BackendProtocol {
-	return [2]BackendProtocol{BackendProtocolHTTP, BackendProtocolSoap}
-}
-
 // BearerTokenSendingMethodsContract enumerates the values for bearer token sending methods contract.
 type BearerTokenSendingMethodsContract string
 
@@ -119,23 +103,6 @@ const (
 // PossibleClientAuthenticationMethodContractValues returns an array of possible values for the ClientAuthenticationMethodContract const type.
 func PossibleClientAuthenticationMethodContractValues() [2]ClientAuthenticationMethodContract {
 	return [2]ClientAuthenticationMethodContract{Basic, Body}
-}
-
-// ConnectivityStatusType enumerates the values for connectivity status type.
-type ConnectivityStatusType string
-
-const (
-	// Failure ...
-	Failure ConnectivityStatusType = "failure"
-	// Initializing ...
-	Initializing ConnectivityStatusType = "initializing"
-	// Success ...
-	Success ConnectivityStatusType = "success"
-)
-
-// PossibleConnectivityStatusTypeValues returns an array of possible values for the ConnectivityStatusType const type.
-func PossibleConnectivityStatusTypeValues() [3]ConnectivityStatusType {
-	return [3]ConnectivityStatusType{Failure, Initializing, Success}
 }
 
 // GrantTypesContract enumerates the values for grant types contract.
@@ -222,8 +189,6 @@ type IdentityProviderNameType string
 const (
 	// Aad ...
 	Aad IdentityProviderNameType = "aad"
-	// AadB2C ...
-	AadB2C IdentityProviderNameType = "aadB2C"
 	// Facebook ...
 	Facebook IdentityProviderNameType = "facebook"
 	// Google ...
@@ -235,23 +200,8 @@ const (
 )
 
 // PossibleIdentityProviderNameTypeValues returns an array of possible values for the IdentityProviderNameType const type.
-func PossibleIdentityProviderNameTypeValues() [6]IdentityProviderNameType {
-	return [6]IdentityProviderNameType{Aad, AadB2C, Facebook, Google, Microsoft, Twitter}
-}
-
-// KeyTypeContract enumerates the values for key type contract.
-type KeyTypeContract string
-
-const (
-	// Primary ...
-	Primary KeyTypeContract = "primary"
-	// Secondary ...
-	Secondary KeyTypeContract = "secondary"
-)
-
-// PossibleKeyTypeContractValues returns an array of possible values for the KeyTypeContract const type.
-func PossibleKeyTypeContractValues() [2]KeyTypeContract {
-	return [2]KeyTypeContract{Primary, Secondary}
+func PossibleIdentityProviderNameTypeValues() [5]IdentityProviderNameType {
+	return [5]IdentityProviderNameType{Aad, Facebook, Google, Microsoft, Twitter}
 }
 
 // MethodContract enumerates the values for method contract.
@@ -298,25 +248,42 @@ func PossibleNameAvailabilityReasonValues() [3]NameAvailabilityReason {
 	return [3]NameAvailabilityReason{AlreadyExists, Invalid, Valid}
 }
 
+// OperationStatus enumerates the values for operation status.
+type OperationStatus string
+
+const (
+	// OperationStatusFailed ...
+	OperationStatusFailed OperationStatus = "Failed"
+	// OperationStatusInProgress ...
+	OperationStatusInProgress OperationStatus = "InProgress"
+	// OperationStatusSucceeded ...
+	OperationStatusSucceeded OperationStatus = "Succeeded"
+)
+
+// PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
+func PossibleOperationStatusValues() [3]OperationStatus {
+	return [3]OperationStatus{OperationStatusFailed, OperationStatusInProgress, OperationStatusSucceeded}
+}
+
 // PolicyScopeContract enumerates the values for policy scope contract.
 type PolicyScopeContract string
 
 const (
-	// PolicyScopeContractAll ...
-	PolicyScopeContractAll PolicyScopeContract = "All"
-	// PolicyScopeContractAPI ...
-	PolicyScopeContractAPI PolicyScopeContract = "Api"
-	// PolicyScopeContractOperation ...
-	PolicyScopeContractOperation PolicyScopeContract = "Operation"
-	// PolicyScopeContractProduct ...
-	PolicyScopeContractProduct PolicyScopeContract = "Product"
-	// PolicyScopeContractTenant ...
-	PolicyScopeContractTenant PolicyScopeContract = "Tenant"
+	// All ...
+	All PolicyScopeContract = "All"
+	// API ...
+	API PolicyScopeContract = "Api"
+	// Operation ...
+	Operation PolicyScopeContract = "Operation"
+	// Product ...
+	Product PolicyScopeContract = "Product"
+	// Tenant ...
+	Tenant PolicyScopeContract = "Tenant"
 )
 
 // PossiblePolicyScopeContractValues returns an array of possible values for the PolicyScopeContract const type.
 func PossiblePolicyScopeContractValues() [5]PolicyScopeContract {
-	return [5]PolicyScopeContract{PolicyScopeContractAll, PolicyScopeContractAPI, PolicyScopeContractOperation, PolicyScopeContractProduct, PolicyScopeContractTenant}
+	return [5]PolicyScopeContract{All, API, Operation, Product, Tenant}
 }
 
 // ProductStateContract enumerates the values for product state contract.
@@ -469,7 +436,7 @@ type APICollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
 	Value *[]APIContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -575,26 +542,14 @@ type APIContract struct {
 	ID *string `json:"id,omitempty"`
 	// Name - API name.
 	Name *string `json:"name,omitempty"`
+	// Description - Description of the API. May include HTML formatting tags.
+	Description *string `json:"description,omitempty"`
 	// ServiceURL - Absolute URL of the backend service implementing this API.
 	ServiceURL *string `json:"serviceUrl,omitempty"`
 	// Path - Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API.
 	Path *string `json:"path,omitempty"`
 	// Protocols - Describes on which protocols the operations in this API can be invoked.
 	Protocols *[]APIProtocolContract `json:"protocols,omitempty"`
-	// Description - Description of the API. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
-	// AuthenticationSettings - Collection of authentication settings included into this API.
-	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
-	// SubscriptionKeyParameterNames - Protocols over which API is made available.
-	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
-	// Type - Type of API. Possible values include: 'APITypeContractHTTP', 'APITypeContractSoap'
-	Type APITypeContract `json:"type,omitempty"`
-}
-
-// APIEntityBaseContract API base contract details.
-type APIEntityBaseContract struct {
-	// Description - Description of the API. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
 	// AuthenticationSettings - Collection of authentication settings included into this API.
 	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
 	// SubscriptionKeyParameterNames - Protocols over which API is made available.
@@ -613,28 +568,6 @@ type APIExportResult struct {
 	RequestID  *string        `json:"requestId,omitempty"`
 }
 
-// APIUpdateContract API Update Contract details.
-type APIUpdateContract struct {
-	// ID - API identifier path: /apis/{apiId}
-	ID *string `json:"id,omitempty"`
-	// Name - API name.
-	Name *string `json:"name,omitempty"`
-	// ServiceURL - Absolute URL of the backend service implementing this API.
-	ServiceURL *string `json:"serviceUrl,omitempty"`
-	// Path - Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API.
-	Path *string `json:"path,omitempty"`
-	// Protocols - Describes on which protocols the operations in this API can be invoked.
-	Protocols *[]APIProtocolContract `json:"protocols,omitempty"`
-	// Description - Description of the API. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
-	// AuthenticationSettings - Collection of authentication settings included into this API.
-	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
-	// SubscriptionKeyParameterNames - Protocols over which API is made available.
-	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
-	// Type - Type of API. Possible values include: 'APITypeContractHTTP', 'APITypeContractSoap'
-	Type APITypeContract `json:"type,omitempty"`
-}
-
 // AuthenticationSettingsContract API Authentication Settings.
 type AuthenticationSettingsContract struct {
 	OAuth2 *OAuth2AuthenticationSettingsContract `json:"oAuth2,omitempty"`
@@ -645,7 +578,7 @@ type AuthorizationServerCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
 	Value *[]OAuth2AuthorizationServerContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -745,184 +678,12 @@ func (page AuthorizationServerCollectionPage) Values() []OAuth2AuthorizationServ
 	return *page.asc.Value
 }
 
-// BackendAuthorizationHeaderCredentials authorization header information.
-type BackendAuthorizationHeaderCredentials struct {
-	// Scheme - Authentication Scheme name.
-	Scheme *string `json:"scheme,omitempty"`
-	// Parameter - Authentication Parameter value.
-	Parameter *string `json:"parameter,omitempty"`
-}
-
-// BackendBaseParameters backend entity base Parameter set.
-type BackendBaseParameters struct {
-	// Certificate - List of Client Certificate Thumbprint.
-	Certificate *[]string `json:"certificate,omitempty"`
-	// Query - Query Parameter description.
-	Query map[string][]string `json:"query"`
-	// Header - Header Parameter description.
-	Header map[string][]string `json:"header"`
-	// URL - WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all fragments and query strings.
-	URL *string `json:"url,omitempty"`
-	// Username - Username to connect to the WebProxy server
-	Username *string `json:"username,omitempty"`
-	// Password - Password to connect to the WebProxy Server
-	Password *string `json:"password,omitempty"`
-	// Title - Backend Title.
-	Title *string `json:"title,omitempty"`
-	// Description - Backend Description.
-	Description *string `json:"description,omitempty"`
-	// ResourceID - Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or Api Apps.
-	ResourceID         *string `json:"resourceId,omitempty"`
-	*BackendProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for BackendBaseParameters.
-func (bbp BackendBaseParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if bbp.Certificate != nil {
-		objectMap["certificate"] = bbp.Certificate
-	}
-	if bbp.Query != nil {
-		objectMap["query"] = bbp.Query
-	}
-	if bbp.Header != nil {
-		objectMap["header"] = bbp.Header
-	}
-	if bbp.URL != nil {
-		objectMap["url"] = bbp.URL
-	}
-	if bbp.Username != nil {
-		objectMap["username"] = bbp.Username
-	}
-	if bbp.Password != nil {
-		objectMap["password"] = bbp.Password
-	}
-	if bbp.Title != nil {
-		objectMap["title"] = bbp.Title
-	}
-	if bbp.Description != nil {
-		objectMap["description"] = bbp.Description
-	}
-	if bbp.ResourceID != nil {
-		objectMap["resourceId"] = bbp.ResourceID
-	}
-	if bbp.BackendProperties != nil {
-		objectMap["properties"] = bbp.BackendProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for BackendBaseParameters struct.
-func (bbp *BackendBaseParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "certificate":
-			if v != nil {
-				var certificate []string
-				err = json.Unmarshal(*v, &certificate)
-				if err != nil {
-					return err
-				}
-				bbp.Certificate = &certificate
-			}
-		case "query":
-			if v != nil {
-				var query map[string][]string
-				err = json.Unmarshal(*v, &query)
-				if err != nil {
-					return err
-				}
-				bbp.Query = query
-			}
-		case "header":
-			if v != nil {
-				var header map[string][]string
-				err = json.Unmarshal(*v, &header)
-				if err != nil {
-					return err
-				}
-				bbp.Header = header
-			}
-		case "url":
-			if v != nil {
-				var URL string
-				err = json.Unmarshal(*v, &URL)
-				if err != nil {
-					return err
-				}
-				bbp.URL = &URL
-			}
-		case "username":
-			if v != nil {
-				var username string
-				err = json.Unmarshal(*v, &username)
-				if err != nil {
-					return err
-				}
-				bbp.Username = &username
-			}
-		case "password":
-			if v != nil {
-				var password string
-				err = json.Unmarshal(*v, &password)
-				if err != nil {
-					return err
-				}
-				bbp.Password = &password
-			}
-		case "title":
-			if v != nil {
-				var title string
-				err = json.Unmarshal(*v, &title)
-				if err != nil {
-					return err
-				}
-				bbp.Title = &title
-			}
-		case "description":
-			if v != nil {
-				var description string
-				err = json.Unmarshal(*v, &description)
-				if err != nil {
-					return err
-				}
-				bbp.Description = &description
-			}
-		case "resourceId":
-			if v != nil {
-				var resourceID string
-				err = json.Unmarshal(*v, &resourceID)
-				if err != nil {
-					return err
-				}
-				bbp.ResourceID = &resourceID
-			}
-		case "properties":
-			if v != nil {
-				var backendProperties BackendProperties
-				err = json.Unmarshal(*v, &backendProperties)
-				if err != nil {
-					return err
-				}
-				bbp.BackendProperties = &backendProperties
-			}
-		}
-	}
-
-	return nil
-}
-
 // BackendCollection paged Backend list representation.
 type BackendCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Backend values.
 	Value *[]BackendResponse `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1023,122 +784,10 @@ func (page BackendCollectionPage) Values() []BackendResponse {
 
 // BackendContract parameters supplied to the Create Backend operation.
 type BackendContract struct {
-	// ID - Uniquely identifies the backend within the current API Management service instance. The value is a valid relative URL in the format of /backends/{backendId} where {backendId} is a backend identifier.
-	ID *string `json:"id,omitempty"`
-	// Protocol - Backend communication protocol. Possible values include: 'BackendProtocolHTTP', 'BackendProtocolSoap'
-	Protocol BackendProtocol `json:"protocol,omitempty"`
-	// Certificate - List of Client Certificate Thumbprint.
-	Certificate *[]string `json:"certificate,omitempty"`
-	// Query - Query Parameter description.
-	Query map[string][]string `json:"query"`
-	// Header - Header Parameter description.
-	Header map[string][]string `json:"header"`
-	// URL - WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all fragments and query strings.
-	URL *string `json:"url,omitempty"`
-	// Username - Username to connect to the WebProxy server
-	Username *string `json:"username,omitempty"`
-	// Password - Password to connect to the WebProxy Server
-	Password *string `json:"password,omitempty"`
-	// Title - Backend Title.
-	Title *string `json:"title,omitempty"`
-	// Description - Backend Description.
-	Description *string `json:"description,omitempty"`
-	// ResourceID - Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or Api Apps.
-	ResourceID         *string `json:"resourceId,omitempty"`
-	*BackendProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for BackendContract.
-func (bc BackendContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if bc.ID != nil {
-		objectMap["id"] = bc.ID
-	}
-	objectMap["protocol"] = bc.Protocol
-	if bc.Certificate != nil {
-		objectMap["certificate"] = bc.Certificate
-	}
-	if bc.Query != nil {
-		objectMap["query"] = bc.Query
-	}
-	if bc.Header != nil {
-		objectMap["header"] = bc.Header
-	}
-	if bc.URL != nil {
-		objectMap["url"] = bc.URL
-	}
-	if bc.Username != nil {
-		objectMap["username"] = bc.Username
-	}
-	if bc.Password != nil {
-		objectMap["password"] = bc.Password
-	}
-	if bc.Title != nil {
-		objectMap["title"] = bc.Title
-	}
-	if bc.Description != nil {
-		objectMap["description"] = bc.Description
-	}
-	if bc.ResourceID != nil {
-		objectMap["resourceId"] = bc.ResourceID
-	}
-	if bc.BackendProperties != nil {
-		objectMap["properties"] = bc.BackendProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// BackendCredentialsContract details of the Credentials used to connect to Backend.
-type BackendCredentialsContract struct {
-	// Certificate - List of Client Certificate Thumbprint.
-	Certificate *[]string `json:"certificate,omitempty"`
-	// Query - Query Parameter description.
-	Query map[string][]string `json:"query"`
-	// Header - Header Parameter description.
-	Header map[string][]string `json:"header"`
-	// Scheme - Authentication Scheme name.
-	Scheme *string `json:"scheme,omitempty"`
-	// Parameter - Authentication Parameter value.
-	Parameter *string `json:"parameter,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for BackendCredentialsContract.
-func (bcc BackendCredentialsContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if bcc.Certificate != nil {
-		objectMap["certificate"] = bcc.Certificate
-	}
-	if bcc.Query != nil {
-		objectMap["query"] = bcc.Query
-	}
-	if bcc.Header != nil {
-		objectMap["header"] = bcc.Header
-	}
-	if bcc.Scheme != nil {
-		objectMap["scheme"] = bcc.Scheme
-	}
-	if bcc.Parameter != nil {
-		objectMap["parameter"] = bcc.Parameter
-	}
-	return json.Marshal(objectMap)
-}
-
-// BackendProperties properties specific to a Backend.
-type BackendProperties struct {
+	// Host - Host attribute of the backend. Host is a pure hostname without a port or suffix, for example backend.contoso.com. Must not be empty.
+	Host *string `json:"host,omitempty"`
 	// SkipCertificateChainValidation - Flag indicating whether SSL certificate chain validation should be skipped when using self-signed certificates for this backend host.
 	SkipCertificateChainValidation *bool `json:"skipCertificateChainValidation,omitempty"`
-	// SkipCertificateNameValidation - Flag indicating whether SSL certificate name validation should be skipped when using self-signed certificates for this backend host.
-	SkipCertificateNameValidation *bool `json:"skipCertificateNameValidation,omitempty"`
-}
-
-// BackendProxyContract details of the Backend WebProxy Server to use in the Request to Backend.
-type BackendProxyContract struct {
-	// URL - WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all fragments and query strings.
-	URL *string `json:"url,omitempty"`
-	// Username - Username to connect to the WebProxy server
-	Username *string `json:"username,omitempty"`
-	// Password - Password to connect to the WebProxy Server
-	Password *string `json:"password,omitempty"`
 }
 
 // BackendResponse the Backend entity in API Management represents a backend service that is configured to skip
@@ -1147,129 +796,18 @@ type BackendResponse struct {
 	autorest.Response `json:"-"`
 	// ID - Uniquely identifies the backend within the current API Management service instance. The value is a valid relative URL in the format of /backends/{backendId} where {backendId} is a backend identifier.
 	ID *string `json:"id,omitempty"`
-	// Protocol - Backend communication protocol. Possible values include: 'BackendProtocolHTTP', 'BackendProtocolSoap'
-	Protocol BackendProtocol `json:"protocol,omitempty"`
-	// Certificate - List of Client Certificate Thumbprint.
-	Certificate *[]string `json:"certificate,omitempty"`
-	// Query - Query Parameter description.
-	Query map[string][]string `json:"query"`
-	// Header - Header Parameter description.
-	Header map[string][]string `json:"header"`
-	// URL - WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all fragments and query strings.
-	URL *string `json:"url,omitempty"`
-	// Username - Username to connect to the WebProxy server
-	Username *string `json:"username,omitempty"`
-	// Password - Password to connect to the WebProxy Server
-	Password *string `json:"password,omitempty"`
-	// Title - Backend Title.
-	Title *string `json:"title,omitempty"`
-	// Description - Backend Description.
-	Description *string `json:"description,omitempty"`
-	// ResourceID - Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or Api Apps.
-	ResourceID         *string `json:"resourceId,omitempty"`
-	*BackendProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for BackendResponse.
-func (br BackendResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if br.ID != nil {
-		objectMap["id"] = br.ID
-	}
-	objectMap["protocol"] = br.Protocol
-	if br.Certificate != nil {
-		objectMap["certificate"] = br.Certificate
-	}
-	if br.Query != nil {
-		objectMap["query"] = br.Query
-	}
-	if br.Header != nil {
-		objectMap["header"] = br.Header
-	}
-	if br.URL != nil {
-		objectMap["url"] = br.URL
-	}
-	if br.Username != nil {
-		objectMap["username"] = br.Username
-	}
-	if br.Password != nil {
-		objectMap["password"] = br.Password
-	}
-	if br.Title != nil {
-		objectMap["title"] = br.Title
-	}
-	if br.Description != nil {
-		objectMap["description"] = br.Description
-	}
-	if br.ResourceID != nil {
-		objectMap["resourceId"] = br.ResourceID
-	}
-	if br.BackendProperties != nil {
-		objectMap["properties"] = br.BackendProperties
-	}
-	return json.Marshal(objectMap)
+	// Host - Host attribute of the backend. Host is a pure hostname without a port or suffix, for example backend.contoso.com. Must not be empty.
+	Host *string `json:"host,omitempty"`
+	// SkipCertificateChainValidation - Flag indicating whether SSL certificate chain validation should be skipped when using self-signed certificates for this backend host.
+	SkipCertificateChainValidation *bool `json:"skipCertificateChainValidation,omitempty"`
 }
 
 // BackendUpdateParameters parameters supplied to the Update Backend operation.
 type BackendUpdateParameters struct {
-	// Protocol - Backend communication protocol. Possible values include: 'BackendProtocolHTTP', 'BackendProtocolSoap'
-	Protocol BackendProtocol `json:"protocol,omitempty"`
-	// Certificate - List of Client Certificate Thumbprint.
-	Certificate *[]string `json:"certificate,omitempty"`
-	// Query - Query Parameter description.
-	Query map[string][]string `json:"query"`
-	// Header - Header Parameter description.
-	Header map[string][]string `json:"header"`
-	// URL - WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all fragments and query strings.
-	URL *string `json:"url,omitempty"`
-	// Username - Username to connect to the WebProxy server
-	Username *string `json:"username,omitempty"`
-	// Password - Password to connect to the WebProxy Server
-	Password *string `json:"password,omitempty"`
-	// Title - Backend Title.
-	Title *string `json:"title,omitempty"`
-	// Description - Backend Description.
-	Description *string `json:"description,omitempty"`
-	// ResourceID - Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or Api Apps.
-	ResourceID         *string `json:"resourceId,omitempty"`
-	*BackendProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for BackendUpdateParameters.
-func (bup BackendUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["protocol"] = bup.Protocol
-	if bup.Certificate != nil {
-		objectMap["certificate"] = bup.Certificate
-	}
-	if bup.Query != nil {
-		objectMap["query"] = bup.Query
-	}
-	if bup.Header != nil {
-		objectMap["header"] = bup.Header
-	}
-	if bup.URL != nil {
-		objectMap["url"] = bup.URL
-	}
-	if bup.Username != nil {
-		objectMap["username"] = bup.Username
-	}
-	if bup.Password != nil {
-		objectMap["password"] = bup.Password
-	}
-	if bup.Title != nil {
-		objectMap["title"] = bup.Title
-	}
-	if bup.Description != nil {
-		objectMap["description"] = bup.Description
-	}
-	if bup.ResourceID != nil {
-		objectMap["resourceId"] = bup.ResourceID
-	}
-	if bup.BackendProperties != nil {
-		objectMap["properties"] = bup.BackendProperties
-	}
-	return json.Marshal(objectMap)
+	// Host - Host attribute of the backend. Host is a pure hostname without a port or suffix, for example backend.contoso.com. Must not be empty.
+	Host *string `json:"host,omitempty"`
+	// SkipCertificateChainValidation - Flag indicating whether SSL certificate chain validation should be skipped when using self-signed certificates for this backend host.
+	SkipCertificateChainValidation *bool `json:"skipCertificateChainValidation,omitempty"`
 }
 
 // CertificateCollection paged Certificates list representation.
@@ -1277,7 +815,7 @@ type CertificateCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
 	Value *[]CertificateContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1408,20 +946,6 @@ type CertificateInformation struct {
 	Subject *string `json:"subject,omitempty"`
 }
 
-// ConnectivityStatusContract details about connectivity to a resource.
-type ConnectivityStatusContract struct {
-	// Name - The hostname of the resource which the service depends on. This can be the database, storage or any other azure resource on which the service depends upon.
-	Name *string `json:"name,omitempty"`
-	// Status - Resource Connectivity Status Type identifier. Possible values include: 'Initializing', 'Success', 'Failure'
-	Status ConnectivityStatusType `json:"status,omitempty"`
-	// Error - Error details of the connectivity to the resource.
-	Error *string `json:"error,omitempty"`
-	// LastUpdated - The date when the resource connectivity status was last updated. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
-	// LastStatusChange - The date when the resource connectivity status last Changed from success to failure or vice-versa. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-	LastStatusChange *date.Time `json:"lastStatusChange,omitempty"`
-}
-
 // DeployConfigurationParameters parameters supplied to the Deploy Configuration operation.
 type DeployConfigurationParameters struct {
 	// Branch - The name of the Git branch from which the configuration is to be deployed to the configuration database.
@@ -1453,6 +977,7 @@ type ErrorFieldContract struct {
 
 // ErrorResponse error Response.
 type ErrorResponse struct {
+	autorest.Response `json:"-"`
 	// Code - Error code.
 	Code *string `json:"code,omitempty"`
 	// Message - Error message indicating why the operation failed.
@@ -1471,7 +996,7 @@ type GroupCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
 	Value *[]GroupContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1583,7 +1108,7 @@ type GroupContract struct {
 	BuiltIn *bool `json:"builtIn,omitempty"`
 	// Type - Group type. Possible values include: 'Custom', 'System', 'External'
 	Type GroupTypeContract `json:"type,omitempty"`
-	// ExternalID - For external groups, this property contains the id of the group from the external identity provider, e.g. for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group object id>; otherwise the value is null.
+	// ExternalID - For external groups, this property contains the id of the group from the external identity provider, e.g. Azure Active Directory; otherwise the value is null.
 	ExternalID *string `json:"externalId,omitempty"`
 }
 
@@ -1595,7 +1120,7 @@ type GroupCreateParameters struct {
 	Description *string `json:"description,omitempty"`
 	// Type - Group type. Possible values include: 'Custom', 'System', 'External'
 	Type GroupTypeContract `json:"type,omitempty"`
-	// ExternalID - Identifier of the external groups, this property contains the id of the group from the external identity provider, e.g. for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group object id>; otherwise the value is null.
+	// ExternalID - Identifier for an external group.
 	ExternalID *string `json:"externalId,omitempty"`
 }
 
@@ -1607,7 +1132,7 @@ type GroupUpdateParameters struct {
 	Description *string `json:"description,omitempty"`
 	// Type - Group type. Possible values include: 'Custom', 'System', 'External'
 	Type GroupTypeContract `json:"type,omitempty"`
-	// ExternalID - Identifier of the external groups, this property contains the id of the group from the external identity provider, e.g. for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group object id>; otherwise the value is null.
+	// ExternalID - Identifier for an external group.
 	ExternalID *string `json:"externalId,omitempty"`
 }
 
@@ -1630,7 +1155,7 @@ type IdentityProviderContract struct {
 	ClientID *string `json:"clientId,omitempty"`
 	// ClientSecret - Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is App Secret for Facebook login, API Key for Google login, Public Key for Microsoft.
 	ClientSecret *string `json:"clientSecret,omitempty"`
-	// Type - Identity Provider Type identifier. Possible values include: 'Facebook', 'Google', 'Microsoft', 'Twitter', 'Aad', 'AadB2C'
+	// Type - Identity Provider Type identifier. Possible values include: 'Facebook', 'Google', 'Microsoft', 'Twitter', 'Aad'
 	Type IdentityProviderNameType `json:"type,omitempty"`
 	// AllowedTenants - List of Allowed Tenants when configuring Azure Active Directory login.
 	AllowedTenants *[]string `json:"allowedTenants,omitempty"`
@@ -1653,12 +1178,24 @@ type IdentityProviderUpdateParameters struct {
 	AllowedTenants *[]string `json:"allowedTenants,omitempty"`
 }
 
+// ListPolicySnippetContract ...
+type ListPolicySnippetContract struct {
+	autorest.Response `json:"-"`
+	Value             *[]PolicySnippetContract `json:"value,omitempty"`
+}
+
+// ListUserIdentityContract ...
+type ListUserIdentityContract struct {
+	autorest.Response `json:"-"`
+	Value             *[]UserIdentityContract `json:"value,omitempty"`
+}
+
 // LoggerCollection paged Logger list representation.
 type LoggerCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Logger values.
 	Value *[]LoggerResponse `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1854,15 +1391,6 @@ func (lup LoggerUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// NetworkStatusContract network Status details.
-type NetworkStatusContract struct {
-	autorest.Response `json:"-"`
-	// DNSServers - Gets the list of DNS servers IPV4 addresses.
-	DNSServers *[]string `json:"dnsServers,omitempty"`
-	// ConnectivityStatus - Gets the list of Connectivity Status to the Resources.
-	ConnectivityStatus *[]ConnectivityStatusContract `json:"connectivityStatus,omitempty"`
-}
-
 // OAuth2AuthenticationSettingsContract API OAuth2 Authentication settings details.
 type OAuth2AuthenticationSettingsContract struct {
 	// AuthorizationServerID - OAuth authorization server identifier.
@@ -1951,7 +1479,7 @@ type OpenIDConnectProviderCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
 	Value *[]OpenidConnectProviderContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2096,20 +1624,12 @@ type OpenidConnectProviderUpdateContract struct {
 	ClientSecret *string `json:"clientSecret,omitempty"`
 }
 
-// Operation REST API operation
-type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
-	// Display - The object that describes the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
-}
-
 // OperationCollection paged Operation list representation.
 type OperationCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
 	Value *[]OperationContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2229,133 +1749,6 @@ type OperationContract struct {
 	Responses *[]ResultContract `json:"responses,omitempty"`
 }
 
-// OperationDisplay the object that describes the operation.
-type OperationDisplay struct {
-	// Provider - Friendly name of the resource provider
-	Provider *string `json:"provider,omitempty"`
-	// Operation - Operation type: read, write, delete, listKeys/action, etc.
-	Operation *string `json:"operation,omitempty"`
-	// Resource - Resource type on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
-	// Description - Friendly name of the operation
-	Description *string `json:"description,omitempty"`
-}
-
-// OperationEntityBaseContract api Operation Entity Base Contract details.
-type OperationEntityBaseContract struct {
-	// TemplateParameters - Collection of URL template parameters.
-	TemplateParameters *[]ParameterContract `json:"templateParameters,omitempty"`
-	// Description - Description of the operation. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
-	// Request - An entity containing request details.
-	Request *RequestContract `json:"request,omitempty"`
-	// Responses - Array of Operation responses.
-	Responses *[]ResultContract `json:"responses,omitempty"`
-}
-
-// OperationListResult result of the request to list REST API operations. It contains a list of operations and a
-// URL nextLink to get the next set of results.
-type OperationListResult struct {
-	autorest.Response `json:"-"`
-	// Value - List of operations supported by the resource provider.
-	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// OperationListResultIterator provides access to a complete listing of Operation values.
-type OperationListResultIterator struct {
-	i    int
-	page OperationListResultPage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *OperationListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter OperationListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter OperationListResultIterator) Response() OperationListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter OperationListResultIterator) Value() Operation {
-	if !iter.page.NotDone() {
-		return Operation{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (olr OperationListResult) IsEmpty() bool {
-	return olr.Value == nil || len(*olr.Value) == 0
-}
-
-// operationListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (olr OperationListResult) operationListResultPreparer() (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(olr.NextLink)))
-}
-
-// OperationListResultPage contains a page of Operation values.
-type OperationListResultPage struct {
-	fn  func(OperationListResult) (OperationListResult, error)
-	olr OperationListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *OperationListResultPage) Next() error {
-	next, err := page.fn(page.olr)
-	if err != nil {
-		return err
-	}
-	page.olr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page OperationListResultPage) NotDone() bool {
-	return !page.olr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page OperationListResultPage) Response() OperationListResult {
-	return page.olr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page OperationListResultPage) Values() []Operation {
-	if page.olr.IsEmpty() {
-		return nil
-	}
-	return *page.olr.Value
-}
-
 // OperationResultContract operation Result.
 type OperationResultContract struct {
 	autorest.Response `json:"-"`
@@ -2370,26 +1763,6 @@ type OperationResultContract struct {
 	// ResultInfo - Optional result info.
 	ResultInfo *string            `json:"resultInfo,omitempty"`
 	Error      *ErrorBodyContract `json:"error,omitempty"`
-}
-
-// OperationUpdateContract api Operation Update Contract details.
-type OperationUpdateContract struct {
-	// ID - Uniquely identifies the operation within the current API Management service instance. The value is a valid relative URL in the format of /apis/{aid}/operations/{id} where {aid} is an API identifier and {id} is an operation identifier.
-	ID *string `json:"id,omitempty"`
-	// Name - Operation Name.
-	Name *string `json:"name,omitempty"`
-	// Method - A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by only them.
-	Method *string `json:"method,omitempty"`
-	// URLTemplate - Relative URL template identifying the target resource for this operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}
-	URLTemplate *string `json:"urlTemplate,omitempty"`
-	// TemplateParameters - Collection of URL template parameters.
-	TemplateParameters *[]ParameterContract `json:"templateParameters,omitempty"`
-	// Description - Description of the operation. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
-	// Request - An entity containing request details.
-	Request *RequestContract `json:"request,omitempty"`
-	// Responses - Array of Operation responses.
-	Responses *[]ResultContract `json:"responses,omitempty"`
 }
 
 // ParameterContract operation parameters details.
@@ -2408,6 +1781,12 @@ type ParameterContract struct {
 	Values *[]string `json:"values,omitempty"`
 }
 
+// PatchParameters parameters supplied to the Patch operations.
+type PatchParameters struct {
+	// RawJSON - json value.
+	RawJSON interface{} `json:"RawJson,omitempty"`
+}
+
 // PolicySnippetContract policy snippet.
 type PolicySnippetContract struct {
 	// Name - Snippet name.
@@ -2416,15 +1795,8 @@ type PolicySnippetContract struct {
 	Content *string `json:"content,omitempty"`
 	// ToolTip - Snippet toolTip.
 	ToolTip *string `json:"toolTip,omitempty"`
-	// Scope - Snippet scope. Possible values include: 'PolicyScopeContractTenant', 'PolicyScopeContractProduct', 'PolicyScopeContractAPI', 'PolicyScopeContractOperation', 'PolicyScopeContractAll'
+	// Scope - Snippet scope. Possible values include: 'Tenant', 'Product', 'API', 'Operation', 'All'
 	Scope PolicyScopeContract `json:"scope,omitempty"`
-}
-
-// PolicySnippetsCollection the response of the list policy snippets operation.
-type PolicySnippetsCollection struct {
-	autorest.Response `json:"-"`
-	// Value - Policy snippet value.
-	Value *[]PolicySnippetContract `json:"value,omitempty"`
 }
 
 // ProductCollection paged Products list representation.
@@ -2432,7 +1804,7 @@ type ProductCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
 	Value *[]ProductContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2575,7 +1947,7 @@ type PropertyCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
 	Value *[]PropertyContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2718,7 +2090,7 @@ type QuotaCounterCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Quota counter values.
 	Value *[]QuotaCounterContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2749,12 +2121,6 @@ type QuotaCounterValueContract struct {
 	KbTransferred *float64 `json:"kbTransferred,omitempty"`
 }
 
-// ReadCloser ...
-type ReadCloser struct {
-	autorest.Response `json:"-"`
-	Value             *io.ReadCloser `json:"value,omitempty"`
-}
-
 // RegionContract region profile.
 type RegionContract struct {
 	// Name - Region name.
@@ -2775,7 +2141,7 @@ type ReportCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
 	Value *[]ReportRecordContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2900,11 +2266,11 @@ type ReportRecordContract struct {
 	APIRegion *string `json:"apiRegion,omitempty"`
 	// SubscriptionID - Subscription identifier path. /subscriptions/{subscriptionId}
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// CallCountSuccess - Number of succesful calls. This includes calls returning HttpStatusCode <= 301 and HttpStatusCode.NotModified and HttpStatusCode.TemporaryRedirect
+	// CallCountSuccess - Number of succesful calls.
 	CallCountSuccess *int32 `json:"callCountSuccess,omitempty"`
-	// CallCountBlocked - Number of calls blocked due to invalid credentials. This includes calls returning HttpStatusCode.Unauthorize and HttpStatusCode.Forbidden and HttpStatusCode.TooManyRequests
+	// CallCountBlocked - Number of calls blocked due to invalid credentials.
 	CallCountBlocked *int32 `json:"callCountBlocked,omitempty"`
-	// CallCountFailed - Number of calls failed due to proxy or backend errors. This includes calls returning HttpStatusCode.BadRequest(400) and any Code between HttpStatusCode.InternalServerError (500) and 600
+	// CallCountFailed - Number of calls failed due to proxy or backend errors.
 	CallCountFailed *int32 `json:"callCountFailed,omitempty"`
 	// CallCountOther - Number of other calls.
 	CallCountOther *int32 `json:"callCountOther,omitempty"`
@@ -2950,41 +2316,6 @@ type RequestContract struct {
 	Representations *[]RepresentationContract `json:"representations,omitempty"`
 }
 
-// Resource the Resource definition.
-type Resource struct {
-	// ID - Resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource is set to Microsoft.ApiManagement.
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Location != nil {
-		objectMap["location"] = r.Location
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
 // ResultContract operation response details.
 type ResultContract struct {
 	// StatusCode - Operation response HTTP status code.
@@ -3013,6 +2344,73 @@ type ServiceBackupRestoreParameters struct {
 	ContainerName *string `json:"containerName,omitempty"`
 	// BackupName - The name of the backup file to create.
 	BackupName *string `json:"backupName,omitempty"`
+}
+
+// ServiceBaseParameters parameters supplied to the Update API Management service operation.
+type ServiceBaseParameters struct {
+	// Tags - API Management service tags. A maximum of 10 tags can be provided for a resource, and each tag must have a key no greater than 128 characters (and a value no greater than 256 characters).
+	Tags map[string]*string `json:"tags"`
+	// ServiceProperties - Properties of the API Management service.
+	*ServiceProperties `json:"properties,omitempty"`
+	// Sku - SKU properties of the API Management service.
+	Sku *ServiceSkuProperties `json:"sku,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceBaseParameters.
+func (sbp ServiceBaseParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sbp.Tags != nil {
+		objectMap["tags"] = sbp.Tags
+	}
+	if sbp.ServiceProperties != nil {
+		objectMap["properties"] = sbp.ServiceProperties
+	}
+	if sbp.Sku != nil {
+		objectMap["sku"] = sbp.Sku
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServiceBaseParameters struct.
+func (sbp *ServiceBaseParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sbp.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var serviceProperties ServiceProperties
+				err = json.Unmarshal(*v, &serviceProperties)
+				if err != nil {
+					return err
+				}
+				sbp.ServiceProperties = &serviceProperties
+			}
+		case "sku":
+			if v != nil {
+				var sku ServiceSkuProperties
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				sbp.Sku = &sku
+			}
+		}
+	}
+
+	return nil
 }
 
 // ServiceCheckNameAvailabilityParameters parameters supplied to the CheckNameAvailability operation.
@@ -3245,41 +2643,35 @@ func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServiceResource a single API Management service resource in List or Get response.
+// ServiceResource description of an API Management service resource.
 type ServiceResource struct {
 	autorest.Response `json:"-"`
+	// ID - The ID of the created API Management service.
+	ID *string `json:"id,omitempty"`
+	// Location - Datacenter location of the API Management service.
+	Location *string `json:"location,omitempty"`
+	// Name - Name of the API Management service.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type of the API Management service.
+	Type *string `json:"type,omitempty"`
+	// Etag - ETag of the resource.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - API Management service tags. A maximum of 10 tags can be provided for a resource, and each tag must have a key no greater than 128 characters (and a value no greater than 256 characters).
+	Tags map[string]*string `json:"tags"`
 	// ServiceProperties - Properties of the API Management service.
 	*ServiceProperties `json:"properties,omitempty"`
 	// Sku - SKU properties of the API Management service.
 	Sku *ServiceSkuProperties `json:"sku,omitempty"`
-	// Etag - ETag of the resource.
-	Etag *string `json:"etag,omitempty"`
-	// ID - Resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type for API Management resource is set to Microsoft.ApiManagement.
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for ServiceResource.
 func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if sr.ServiceProperties != nil {
-		objectMap["properties"] = sr.ServiceProperties
-	}
-	if sr.Sku != nil {
-		objectMap["sku"] = sr.Sku
-	}
-	if sr.Etag != nil {
-		objectMap["etag"] = sr.Etag
-	}
 	if sr.ID != nil {
 		objectMap["id"] = sr.ID
+	}
+	if sr.Location != nil {
+		objectMap["location"] = sr.Location
 	}
 	if sr.Name != nil {
 		objectMap["name"] = sr.Name
@@ -3287,149 +2679,19 @@ func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	if sr.Type != nil {
 		objectMap["type"] = sr.Type
 	}
-	if sr.Location != nil {
-		objectMap["location"] = sr.Location
+	if sr.Etag != nil {
+		objectMap["etag"] = sr.Etag
 	}
 	if sr.Tags != nil {
 		objectMap["tags"] = sr.Tags
 	}
+	if sr.ServiceProperties != nil {
+		objectMap["properties"] = sr.ServiceProperties
+	}
+	if sr.Sku != nil {
+		objectMap["sku"] = sr.Sku
+	}
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ServiceResource struct.
-func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var serviceProperties ServiceProperties
-				err = json.Unmarshal(*v, &serviceProperties)
-				if err != nil {
-					return err
-				}
-				sr.ServiceProperties = &serviceProperties
-			}
-		case "sku":
-			if v != nil {
-				var sku ServiceSkuProperties
-				err = json.Unmarshal(*v, &sku)
-				if err != nil {
-					return err
-				}
-				sr.Sku = &sku
-			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				sr.Etag = &etag
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				sr.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				sr.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				sr.Type = &typeVar
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				sr.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				sr.Tags = tags
-			}
-		}
-	}
-
-	return nil
-}
-
-// ServicesApplyNetworkConfigurationUpdatesFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ServicesApplyNetworkConfigurationUpdatesFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future ServicesApplyNetworkConfigurationUpdatesFuture) Result(client ServicesClient) (sr ServiceResource, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServicesApplyNetworkConfigurationUpdatesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return sr, azure.NewAsyncOpIncompleteError("apimanagement.ServicesApplyNetworkConfigurationUpdatesFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		sr, err = client.ApplyNetworkConfigurationUpdatesResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "apimanagement.ServicesApplyNetworkConfigurationUpdatesFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServicesApplyNetworkConfigurationUpdatesFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	sr, err = client.ApplyNetworkConfigurationUpdatesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServicesApplyNetworkConfigurationUpdatesFuture", "Result", resp, "Failure responding to request")
-	}
-	return
 }
 
 // ServicesBackupFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -3690,73 +2952,6 @@ type ServiceUpdateHostnameParameters struct {
 	Delete *[]HostnameType `json:"delete,omitempty"`
 }
 
-// ServiceUpdateParameters parameters supplied to the Update API Management service operation.
-type ServiceUpdateParameters struct {
-	// ServiceProperties - Properties of the API Management service.
-	*ServiceProperties `json:"properties,omitempty"`
-	// Sku - SKU properties of the API Management service.
-	Sku *ServiceSkuProperties `json:"sku,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for ServiceUpdateParameters.
-func (sup ServiceUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sup.ServiceProperties != nil {
-		objectMap["properties"] = sup.ServiceProperties
-	}
-	if sup.Sku != nil {
-		objectMap["sku"] = sup.Sku
-	}
-	if sup.Tags != nil {
-		objectMap["tags"] = sup.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ServiceUpdateParameters struct.
-func (sup *ServiceUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var serviceProperties ServiceProperties
-				err = json.Unmarshal(*v, &serviceProperties)
-				if err != nil {
-					return err
-				}
-				sup.ServiceProperties = &serviceProperties
-			}
-		case "sku":
-			if v != nil {
-				var sku ServiceSkuProperties
-				err = json.Unmarshal(*v, &sku)
-				if err != nil {
-					return err
-				}
-				sup.Sku = &sku
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				sup.Tags = tags
-			}
-		}
-	}
-
-	return nil
-}
-
 // ServiceUploadCertificateParameters parameters supplied to the Upload SSL certificate for an API Management
 // service operation.
 type ServiceUploadCertificateParameters struct {
@@ -3768,12 +2963,18 @@ type ServiceUploadCertificateParameters struct {
 	CertificatePassword *string `json:"certificate_password,omitempty"`
 }
 
-// SubscriptionCollection paged Subscriptions list representation.
+// SetObject ...
+type SetObject struct {
+	autorest.Response `json:"-"`
+	Value             interface{} `json:"value,omitempty"`
+}
+
+// SubscriptionCollection paged Subsctions list representation.
 type SubscriptionCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
 	Value *[]SubscriptionContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -4113,6 +3314,19 @@ func (future TenantConfigurationValidateFuture) Result(client TenantConfiguratio
 	return
 }
 
+// TenantLongRunningOperationResult a standard service response for long running tenant operations.
+type TenantLongRunningOperationResult struct {
+	// OperationStatusLink - operation status link.
+	OperationStatusLink *string `json:"operationStatusLink,omitempty"`
+	// RetryAfter - The number of minutes to retry the operation after.
+	RetryAfter *int32 `json:"retryAfter,omitempty"`
+	// Status - Current status of the operation. Possible values include: 'OperationStatusInProgress', 'OperationStatusSucceeded', 'OperationStatusFailed'
+	Status OperationStatus `json:"status,omitempty"`
+	// StatusCode - Possible values include: 'Continue', 'OK', 'Created', 'Accepted', 'NotFound', 'Conflict'
+	StatusCode HTTPStatusCode `json:"statusCode,omitempty"`
+	RequestID  *string        `json:"requestId,omitempty"`
+}
+
 // TokenBodyParameterContract oAuth acquire token request body parameter (www-url-form-encoded).
 type TokenBodyParameterContract struct {
 	// Name - body parameter name.
@@ -4126,7 +3340,7 @@ type UserCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Page values.
 	Value *[]UserContract `json:"value,omitempty"`
-	// Count - Total record count number across all pages.
+	// Count - Total records count number.
 	Count *int64 `json:"count,omitempty"`
 	// NextLink - Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -4262,34 +3476,12 @@ type UserCreateParameters struct {
 	Note *string `json:"note,omitempty"`
 }
 
-// UserIdentityCollection list of Users Identity list representation.
-type UserIdentityCollection struct {
-	autorest.Response `json:"-"`
-	// Value - User Identity values.
-	Value *[]UserIdentityContract `json:"value,omitempty"`
-}
-
 // UserIdentityContract user identity details.
 type UserIdentityContract struct {
 	// Provider - Identity provider name.
 	Provider *string `json:"provider,omitempty"`
 	// ID - Identifier value within provider.
 	ID *string `json:"id,omitempty"`
-}
-
-// UserTokenParameters parameters supplied to the Get User Token operation.
-type UserTokenParameters struct {
-	// KeyType - The Key to be used to generate token for user. Possible values include: 'Primary', 'Secondary'
-	KeyType KeyTypeContract `json:"keyType,omitempty"`
-	// Expiry - The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-	Expiry *date.Time `json:"expiry,omitempty"`
-}
-
-// UserTokenResult get User Token response details.
-type UserTokenResult struct {
-	autorest.Response `json:"-"`
-	// Value - Shared Access Authorization token for the User.
-	Value *string `json:"value,omitempty"`
 }
 
 // UserUpdateParameters parameters supplied to the Update User operation.
@@ -4314,7 +3506,7 @@ type VirtualNetworkConfiguration struct {
 	Vnetid *string `json:"vnetid,omitempty"`
 	// Subnetname - The name of the subnet.
 	Subnetname *string `json:"subnetname,omitempty"`
-	// SubnetResourceID - The full resource ID of a subnet in a virtual network to deploy the API Management service in.
+	// SubnetResourceID - The name of the subnet Resource ID. This has format /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/{virtual network name}/subnets/{subnet name}.
 	SubnetResourceID *string `json:"subnetResourceId,omitempty"`
 	// Location - The location of the virtual network.
 	Location *string `json:"location,omitempty"`

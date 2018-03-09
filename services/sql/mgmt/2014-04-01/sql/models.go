@@ -36,6 +36,11 @@ const (
 	SQL AuthenticationType = "SQL"
 )
 
+// PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
+func PossibleAuthenticationTypeValues() [2]AuthenticationType {
+	return [2]AuthenticationType{ADPassword, SQL}
+}
+
 // CheckNameAvailabilityReason enumerates the values for check name availability reason.
 type CheckNameAvailabilityReason string
 
@@ -45,6 +50,11 @@ const (
 	// Invalid ...
 	Invalid CheckNameAvailabilityReason = "Invalid"
 )
+
+// PossibleCheckNameAvailabilityReasonValues returns an array of possible values for the CheckNameAvailabilityReason const type.
+func PossibleCheckNameAvailabilityReasonValues() [2]CheckNameAvailabilityReason {
+	return [2]CheckNameAvailabilityReason{AlreadyExists, Invalid}
+}
 
 // CreateMode enumerates the values for create mode.
 type CreateMode string
@@ -67,6 +77,11 @@ const (
 	// RestoreLongTermRetentionBackup ...
 	RestoreLongTermRetentionBackup CreateMode = "RestoreLongTermRetentionBackup"
 )
+
+// PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
+func PossibleCreateModeValues() [8]CreateMode {
+	return [8]CreateMode{Copy, Default, NonReadableSecondary, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreLongTermRetentionBackup}
+}
 
 // DatabaseEdition enumerates the values for database edition.
 type DatabaseEdition string
@@ -96,6 +111,11 @@ const (
 	Web DatabaseEdition = "Web"
 )
 
+// PossibleDatabaseEditionValues returns an array of possible values for the DatabaseEdition const type.
+func PossibleDatabaseEditionValues() [11]DatabaseEdition {
+	return [11]DatabaseEdition{Basic, Business, DataWarehouse, Free, Premium, PremiumRS, Standard, Stretch, System, System2, Web}
+}
+
 // ElasticPoolEdition enumerates the values for elastic pool edition.
 type ElasticPoolEdition string
 
@@ -107,6 +127,11 @@ const (
 	// ElasticPoolEditionStandard ...
 	ElasticPoolEditionStandard ElasticPoolEdition = "Standard"
 )
+
+// PossibleElasticPoolEditionValues returns an array of possible values for the ElasticPoolEdition const type.
+func PossibleElasticPoolEditionValues() [3]ElasticPoolEdition {
+	return [3]ElasticPoolEdition{ElasticPoolEditionBasic, ElasticPoolEditionPremium, ElasticPoolEditionStandard}
+}
 
 // ElasticPoolState enumerates the values for elastic pool state.
 type ElasticPoolState string
@@ -120,6 +145,11 @@ const (
 	Ready ElasticPoolState = "Ready"
 )
 
+// PossibleElasticPoolStateValues returns an array of possible values for the ElasticPoolState const type.
+func PossibleElasticPoolStateValues() [3]ElasticPoolState {
+	return [3]ElasticPoolState{Creating, Disabled, Ready}
+}
+
 // ReadScale enumerates the values for read scale.
 type ReadScale string
 
@@ -129,6 +159,11 @@ const (
 	// ReadScaleEnabled ...
 	ReadScaleEnabled ReadScale = "Enabled"
 )
+
+// PossibleReadScaleValues returns an array of possible values for the ReadScale const type.
+func PossibleReadScaleValues() [2]ReadScale {
+	return [2]ReadScale{ReadScaleDisabled, ReadScaleEnabled}
+}
 
 // RecommendedIndexAction enumerates the values for recommended index action.
 type RecommendedIndexAction string
@@ -141,6 +176,11 @@ const (
 	// Rebuild ...
 	Rebuild RecommendedIndexAction = "Rebuild"
 )
+
+// PossibleRecommendedIndexActionValues returns an array of possible values for the RecommendedIndexAction const type.
+func PossibleRecommendedIndexActionValues() [3]RecommendedIndexAction {
+	return [3]RecommendedIndexAction{Create, Drop, Rebuild}
+}
 
 // RecommendedIndexState enumerates the values for recommended index state.
 type RecommendedIndexState string
@@ -170,6 +210,11 @@ const (
 	Verifying RecommendedIndexState = "Verifying"
 )
 
+// PossibleRecommendedIndexStateValues returns an array of possible values for the RecommendedIndexState const type.
+func PossibleRecommendedIndexStateValues() [11]RecommendedIndexState {
+	return [11]RecommendedIndexState{Active, Blocked, Executing, Expired, Ignored, Pending, PendingRevert, Reverted, Reverting, Success, Verifying}
+}
+
 // RecommendedIndexType enumerates the values for recommended index type.
 type RecommendedIndexType string
 
@@ -183,6 +228,11 @@ const (
 	// NONCLUSTERED ...
 	NONCLUSTERED RecommendedIndexType = "NONCLUSTERED"
 )
+
+// PossibleRecommendedIndexTypeValues returns an array of possible values for the RecommendedIndexType const type.
+func PossibleRecommendedIndexTypeValues() [4]RecommendedIndexType {
+	return [4]RecommendedIndexType{CLUSTERED, CLUSTEREDCOLUMNSTORE, COLUMNSTORE, NONCLUSTERED}
+}
 
 // ReplicationRole enumerates the values for replication role.
 type ReplicationRole string
@@ -200,6 +250,11 @@ const (
 	ReplicationRoleSource ReplicationRole = "Source"
 )
 
+// PossibleReplicationRoleValues returns an array of possible values for the ReplicationRole const type.
+func PossibleReplicationRoleValues() [5]ReplicationRole {
+	return [5]ReplicationRole{ReplicationRoleCopy, ReplicationRoleNonReadableSecondary, ReplicationRolePrimary, ReplicationRoleSecondary, ReplicationRoleSource}
+}
+
 // ReplicationState enumerates the values for replication state.
 type ReplicationState string
 
@@ -214,6 +269,11 @@ const (
 	SUSPENDED ReplicationState = "SUSPENDED"
 )
 
+// PossibleReplicationStateValues returns an array of possible values for the ReplicationState const type.
+func PossibleReplicationStateValues() [4]ReplicationState {
+	return [4]ReplicationState{CATCHUP, PENDING, SEEDING, SUSPENDED}
+}
+
 // SampleName enumerates the values for sample name.
 type SampleName string
 
@@ -221,6 +281,11 @@ const (
 	// AdventureWorksLT ...
 	AdventureWorksLT SampleName = "AdventureWorksLT"
 )
+
+// PossibleSampleNameValues returns an array of possible values for the SampleName const type.
+func PossibleSampleNameValues() [1]SampleName {
+	return [1]SampleName{AdventureWorksLT}
+}
 
 // SecurityAlertPolicyEmailAccountAdmins enumerates the values for security alert policy email account admins.
 type SecurityAlertPolicyEmailAccountAdmins string
@@ -231,6 +296,11 @@ const (
 	// SecurityAlertPolicyEmailAccountAdminsEnabled ...
 	SecurityAlertPolicyEmailAccountAdminsEnabled SecurityAlertPolicyEmailAccountAdmins = "Enabled"
 )
+
+// PossibleSecurityAlertPolicyEmailAccountAdminsValues returns an array of possible values for the SecurityAlertPolicyEmailAccountAdmins const type.
+func PossibleSecurityAlertPolicyEmailAccountAdminsValues() [2]SecurityAlertPolicyEmailAccountAdmins {
+	return [2]SecurityAlertPolicyEmailAccountAdmins{SecurityAlertPolicyEmailAccountAdminsDisabled, SecurityAlertPolicyEmailAccountAdminsEnabled}
+}
 
 // SecurityAlertPolicyState enumerates the values for security alert policy state.
 type SecurityAlertPolicyState string
@@ -244,6 +314,11 @@ const (
 	SecurityAlertPolicyStateNew SecurityAlertPolicyState = "New"
 )
 
+// PossibleSecurityAlertPolicyStateValues returns an array of possible values for the SecurityAlertPolicyState const type.
+func PossibleSecurityAlertPolicyStateValues() [3]SecurityAlertPolicyState {
+	return [3]SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
+}
+
 // SecurityAlertPolicyUseServerDefault enumerates the values for security alert policy use server default.
 type SecurityAlertPolicyUseServerDefault string
 
@@ -253,6 +328,11 @@ const (
 	// SecurityAlertPolicyUseServerDefaultEnabled ...
 	SecurityAlertPolicyUseServerDefaultEnabled SecurityAlertPolicyUseServerDefault = "Enabled"
 )
+
+// PossibleSecurityAlertPolicyUseServerDefaultValues returns an array of possible values for the SecurityAlertPolicyUseServerDefault const type.
+func PossibleSecurityAlertPolicyUseServerDefaultValues() [2]SecurityAlertPolicyUseServerDefault {
+	return [2]SecurityAlertPolicyUseServerDefault{SecurityAlertPolicyUseServerDefaultDisabled, SecurityAlertPolicyUseServerDefaultEnabled}
+}
 
 // ServiceObjectiveName enumerates the values for service objective name.
 type ServiceObjectiveName string
@@ -390,6 +470,11 @@ const (
 	ServiceObjectiveNameSystem4L ServiceObjectiveName = "System4L"
 )
 
+// PossibleServiceObjectiveNameValues returns an array of possible values for the ServiceObjectiveName const type.
+func PossibleServiceObjectiveNameValues() [65]ServiceObjectiveName {
+	return [65]ServiceObjectiveName{ServiceObjectiveNameBasic, ServiceObjectiveNameDS100, ServiceObjectiveNameDS1000, ServiceObjectiveNameDS1200, ServiceObjectiveNameDS1500, ServiceObjectiveNameDS200, ServiceObjectiveNameDS2000, ServiceObjectiveNameDS300, ServiceObjectiveNameDS400, ServiceObjectiveNameDS500, ServiceObjectiveNameDS600, ServiceObjectiveNameDW100, ServiceObjectiveNameDW1000, ServiceObjectiveNameDW10000c, ServiceObjectiveNameDW1000c, ServiceObjectiveNameDW1200, ServiceObjectiveNameDW1500, ServiceObjectiveNameDW15000c, ServiceObjectiveNameDW1500c, ServiceObjectiveNameDW200, ServiceObjectiveNameDW2000, ServiceObjectiveNameDW2000c, ServiceObjectiveNameDW2500c, ServiceObjectiveNameDW300, ServiceObjectiveNameDW3000, ServiceObjectiveNameDW30000c, ServiceObjectiveNameDW3000c, ServiceObjectiveNameDW400, ServiceObjectiveNameDW500, ServiceObjectiveNameDW5000c, ServiceObjectiveNameDW600, ServiceObjectiveNameDW6000, ServiceObjectiveNameDW6000c, ServiceObjectiveNameDW7500c, ServiceObjectiveNameElasticPool, ServiceObjectiveNameFree, ServiceObjectiveNameP1, ServiceObjectiveNameP11, ServiceObjectiveNameP15, ServiceObjectiveNameP2, ServiceObjectiveNameP3, ServiceObjectiveNameP4, ServiceObjectiveNameP6, ServiceObjectiveNamePRS1, ServiceObjectiveNamePRS2, ServiceObjectiveNamePRS4, ServiceObjectiveNamePRS6, ServiceObjectiveNameS0, ServiceObjectiveNameS1, ServiceObjectiveNameS12, ServiceObjectiveNameS2, ServiceObjectiveNameS3, ServiceObjectiveNameS4, ServiceObjectiveNameS6, ServiceObjectiveNameS7, ServiceObjectiveNameS9, ServiceObjectiveNameSystem, ServiceObjectiveNameSystem0, ServiceObjectiveNameSystem1, ServiceObjectiveNameSystem2, ServiceObjectiveNameSystem2L, ServiceObjectiveNameSystem3, ServiceObjectiveNameSystem3L, ServiceObjectiveNameSystem4, ServiceObjectiveNameSystem4L}
+}
+
 // StorageKeyType enumerates the values for storage key type.
 type StorageKeyType string
 
@@ -399,6 +484,11 @@ const (
 	// StorageAccessKey ...
 	StorageAccessKey StorageKeyType = "StorageAccessKey"
 )
+
+// PossibleStorageKeyTypeValues returns an array of possible values for the StorageKeyType const type.
+func PossibleStorageKeyTypeValues() [2]StorageKeyType {
+	return [2]StorageKeyType{SharedAccessKey, StorageAccessKey}
+}
 
 // TransparentDataEncryptionActivityStatus enumerates the values for transparent data encryption activity
 // status.
@@ -411,6 +501,11 @@ const (
 	Encrypting TransparentDataEncryptionActivityStatus = "Encrypting"
 )
 
+// PossibleTransparentDataEncryptionActivityStatusValues returns an array of possible values for the TransparentDataEncryptionActivityStatus const type.
+func PossibleTransparentDataEncryptionActivityStatusValues() [2]TransparentDataEncryptionActivityStatus {
+	return [2]TransparentDataEncryptionActivityStatus{Decrypting, Encrypting}
+}
+
 // TransparentDataEncryptionStatus enumerates the values for transparent data encryption status.
 type TransparentDataEncryptionStatus string
 
@@ -420,6 +515,11 @@ const (
 	// TransparentDataEncryptionStatusEnabled ...
 	TransparentDataEncryptionStatusEnabled TransparentDataEncryptionStatus = "Enabled"
 )
+
+// PossibleTransparentDataEncryptionStatusValues returns an array of possible values for the TransparentDataEncryptionStatus const type.
+func PossibleTransparentDataEncryptionStatusValues() [2]TransparentDataEncryptionStatus {
+	return [2]TransparentDataEncryptionStatus{TransparentDataEncryptionStatusDisabled, TransparentDataEncryptionStatusEnabled}
+}
 
 // CheckNameAvailabilityRequest a request to check whether the specified name for a resource is available.
 type CheckNameAvailabilityRequest struct {
@@ -1077,6 +1177,55 @@ func (future DatabasesUpdateFuture) Result(client DatabasesClient) (d Database, 
 	d, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// DatabasesUpgradeDataWarehouseFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DatabasesUpgradeDataWarehouseFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabasesUpgradeDataWarehouseFuture) Result(client DatabasesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesUpgradeDataWarehouseFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("sql.DatabasesUpgradeDataWarehouseFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.UpgradeDataWarehouseResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesUpgradeDataWarehouseFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesUpgradeDataWarehouseFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.UpgradeDataWarehouseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesUpgradeDataWarehouseFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }

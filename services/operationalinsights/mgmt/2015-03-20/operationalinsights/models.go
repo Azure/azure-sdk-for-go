@@ -679,54 +679,6 @@ type WorkspacePurgeBodyFilters struct {
 	Filter *string `json:"filter,omitempty"`
 }
 
-// WorkspacePurgeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type WorkspacePurgeFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future WorkspacePurgeFuture) Result(client WorkspaceClient) (so SetObject, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacePurgeFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return so, azure.NewAsyncOpIncompleteError("operationalinsights.WorkspacePurgeFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		so, err = client.PurgeResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacePurgeFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacePurgeFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	so, err = client.PurgeResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacePurgeFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
 // WorkspacePurgeResponse response containing operationId for a specific purge action.
 type WorkspacePurgeResponse struct {
 	// OperationID - Id to use when querying for status for a particular purge operation.
@@ -784,6 +736,54 @@ func (future WorkspacesGetSearchResultsFuture) Result(client WorkspacesClient) (
 	srr, err = client.GetSearchResultsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesGetSearchResultsFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// WorkspacesPurgeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type WorkspacesPurgeFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future WorkspacesPurgeFuture) Result(client WorkspacesClient) (so SetObject, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesPurgeFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return so, azure.NewAsyncOpIncompleteError("operationalinsights.WorkspacesPurgeFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		so, err = client.PurgeResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesPurgeFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesPurgeFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	so, err = client.PurgeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesPurgeFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }

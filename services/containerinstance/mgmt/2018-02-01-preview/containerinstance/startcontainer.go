@@ -39,34 +39,35 @@ func NewStartContainerClientWithBaseURI(baseURI string, subscriptionID string) S
 	return StartContainerClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Exec starts the exec command for a specified container instance in a specified resource group and container group.
+// LaunchExec starts the exec command for a specified container instance in a specified resource group and container
+// group.
 //
 // resourceGroupName is the name of the resource group. containerGroupName is the name of the container group.
 // containerName is the name of the container instance. containerExecRequest is the request for the exec command.
-func (client StartContainerClient) Exec(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, containerExecRequest ContainerExecRequest) (result ContainerExecResponse, err error) {
-	req, err := client.ExecPreparer(ctx, resourceGroupName, containerGroupName, containerName, containerExecRequest)
+func (client StartContainerClient) LaunchExec(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, containerExecRequest ContainerExecRequest) (result ContainerExecResponse, err error) {
+	req, err := client.LaunchExecPreparer(ctx, resourceGroupName, containerGroupName, containerName, containerExecRequest)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerinstance.StartContainerClient", "Exec", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerinstance.StartContainerClient", "LaunchExec", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ExecSender(req)
+	resp, err := client.LaunchExecSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerinstance.StartContainerClient", "Exec", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerinstance.StartContainerClient", "LaunchExec", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ExecResponder(resp)
+	result, err = client.LaunchExecResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerinstance.StartContainerClient", "Exec", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerinstance.StartContainerClient", "LaunchExec", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ExecPreparer prepares the Exec request.
-func (client StartContainerClient) ExecPreparer(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, containerExecRequest ContainerExecRequest) (*http.Request, error) {
+// LaunchExecPreparer prepares the LaunchExec request.
+func (client StartContainerClient) LaunchExecPreparer(ctx context.Context, resourceGroupName string, containerGroupName string, containerName string, containerExecRequest ContainerExecRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"containerGroupName": autorest.Encode("path", containerGroupName),
 		"containerName":      autorest.Encode("path", containerName),
@@ -89,16 +90,16 @@ func (client StartContainerClient) ExecPreparer(ctx context.Context, resourceGro
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ExecSender sends the Exec request. The method will close the
+// LaunchExecSender sends the LaunchExec request. The method will close the
 // http.Response Body if it receives an error.
-func (client StartContainerClient) ExecSender(req *http.Request) (*http.Response, error) {
+func (client StartContainerClient) LaunchExecSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ExecResponder handles the response to the Exec request. The method always
+// LaunchExecResponder handles the response to the LaunchExec request. The method always
 // closes the http.Response Body.
-func (client StartContainerClient) ExecResponder(resp *http.Response) (result ContainerExecResponse, err error) {
+func (client StartContainerClient) LaunchExecResponder(resp *http.Response) (result ContainerExecResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

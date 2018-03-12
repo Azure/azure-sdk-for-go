@@ -103,27 +103,6 @@ func PossibleOperationsOriginValues() [2]OperationsOrigin {
 	return [2]OperationsOrigin{System, User}
 }
 
-// AsyncOperation azure async operation status.
-type AsyncOperation struct {
-	autorest.Response `json:"-"`
-	// ID - Async operation id.
-	ID *string `json:"id,omitempty"`
-	// Status - Async operation status.
-	Status *string `json:"status,omitempty"`
-	// StartTime - The date time that the async operation started.
-	StartTime *date.Time `json:"startTime,omitempty"`
-	// Properties - this structure contains the detailed properties of the operation.
-	Properties *AsyncOperationProperties `json:"properties,omitempty"`
-	// Error - If the async operation fails, this structure contains the error details.
-	Error *AzureResourceExtendedErrorInfo `json:"error,omitempty"`
-}
-
-// AsyncOperationProperties the properties of the async operation
-type AsyncOperationProperties struct {
-	// Events - The events of the async operation.
-	Events *[]Event `json:"events,omitempty"`
-}
-
 // AzureFileVolume the properties of the Azure File volume. Azure File shares are mounted as volumes.
 type AzureFileVolume struct {
 	// ShareName - The name of the Azure File share to be mounted as a volume.
@@ -134,18 +113,6 @@ type AzureFileVolume struct {
 	StorageAccountName *string `json:"storageAccountName,omitempty"`
 	// StorageAccountKey - The storage account access key used to access the Azure File share.
 	StorageAccountKey *string `json:"storageAccountKey,omitempty"`
-}
-
-// AzureResourceExtendedErrorInfo the error detail information for async operation
-type AzureResourceExtendedErrorInfo struct {
-	// Code - The error code.
-	Code *string `json:"code,omitempty"`
-	// Target - The error target.
-	Target *string `json:"target,omitempty"`
-	// Message - The error message.
-	Message *string `json:"message,omitempty"`
-	// Details - An array containing error information.
-	Details *[]AzureResourceExtendedErrorInfo `json:"details,omitempty"`
 }
 
 // Container a container instance.

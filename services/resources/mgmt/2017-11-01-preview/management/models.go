@@ -35,6 +35,11 @@ const (
 	ChildTypeSubscription ChildType = "Subscription"
 )
 
+// PossibleChildTypeValues returns an array of possible values for the ChildType const type.
+func PossibleChildTypeValues() [2]ChildType {
+	return [2]ChildType{ChildTypeManagementGroup, ChildTypeSubscription}
+}
+
 // ChildInfo the child information of a management group.
 type ChildInfo struct {
 	// ChildType - Possible values include: 'ChildTypeManagementGroup', 'ChildTypeSubscription'

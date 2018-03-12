@@ -40,6 +40,11 @@ const (
 	View Permissions = "view"
 )
 
+// PossiblePermissionsValues returns an array of possible values for the Permissions const type.
+func PossiblePermissionsValues() [4]Permissions {
+	return [4]Permissions{Delete, Edit, Noaccess, View}
+}
+
 // Permissions1 enumerates the values for permissions 1.
 type Permissions1 string
 
@@ -54,6 +59,11 @@ const (
 	Permissions1View Permissions1 = "view"
 )
 
+// PossiblePermissions1Values returns an array of possible values for the Permissions1 const type.
+func PossiblePermissions1Values() [4]Permissions1 {
+	return [4]Permissions1{Permissions1Delete, Permissions1Edit, Permissions1Noaccess, Permissions1View}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -61,6 +71,11 @@ const (
 	// Updating ...
 	Updating ProvisioningState = "Updating"
 )
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() [1]ProvisioningState {
+	return [1]ProvisioningState{Updating}
+}
 
 // Reason enumerates the values for reason.
 type Reason string
@@ -72,6 +87,11 @@ const (
 	Invalid Reason = "Invalid"
 )
 
+// PossibleReasonValues returns an array of possible values for the Reason const type.
+func PossibleReasonValues() [2]Reason {
+	return [2]Reason{AlreadyExists, Invalid}
+}
+
 // Type enumerates the values for type.
 type Type string
 
@@ -79,6 +99,11 @@ const (
 	// ProvidersMicrosoftManagementmanagementGroup ...
 	ProvidersMicrosoftManagementmanagementGroup Type = "/providers/Microsoft.Management/managementGroup"
 )
+
+// PossibleTypeValues returns an array of possible values for the Type const type.
+func PossibleTypeValues() [1]Type {
+	return [1]Type{ProvidersMicrosoftManagementmanagementGroup}
+}
 
 // Type1 enumerates the values for type 1.
 type Type1 string
@@ -90,6 +115,11 @@ const (
 	Subscriptions Type1 = "/subscriptions"
 )
 
+// PossibleType1Values returns an array of possible values for the Type1 const type.
+func PossibleType1Values() [2]Type1 {
+	return [2]Type1{ProvidersMicrosoftManagementmanagementGroups, Subscriptions}
+}
+
 // Type2 enumerates the values for type 2.
 type Type2 string
 
@@ -99,6 +129,11 @@ const (
 	// Type2Subscriptions ...
 	Type2Subscriptions Type2 = "/subscriptions"
 )
+
+// PossibleType2Values returns an array of possible values for the Type2 const type.
+func PossibleType2Values() [2]Type2 {
+	return [2]Type2{Type2ProvidersMicrosoftManagementmanagementGroups, Type2Subscriptions}
+}
 
 // CheckNameAvailabilityRequest management group name availability check parameters.
 type CheckNameAvailabilityRequest struct {

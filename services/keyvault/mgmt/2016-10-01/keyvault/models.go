@@ -39,6 +39,11 @@ const (
 	Replace AccessPolicyUpdateKind = "replace"
 )
 
+// PossibleAccessPolicyUpdateKindValues returns an array of possible values for the AccessPolicyUpdateKind const type.
+func PossibleAccessPolicyUpdateKindValues() [3]AccessPolicyUpdateKind {
+	return [3]AccessPolicyUpdateKind{Add, Remove, Replace}
+}
+
 // CertificatePermissions enumerates the values for certificate permissions.
 type CertificatePermissions string
 
@@ -73,6 +78,11 @@ const (
 	Update CertificatePermissions = "update"
 )
 
+// PossibleCertificatePermissionsValues returns an array of possible values for the CertificatePermissions const type.
+func PossibleCertificatePermissionsValues() [14]CertificatePermissions {
+	return [14]CertificatePermissions{Create, Delete, Deleteissuers, Get, Getissuers, Import, List, Listissuers, Managecontacts, Manageissuers, Purge, Recover, Setissuers, Update}
+}
+
 // CreateMode enumerates the values for create mode.
 type CreateMode string
 
@@ -82,6 +92,11 @@ const (
 	// CreateModeRecover ...
 	CreateModeRecover CreateMode = "recover"
 )
+
+// PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
+func PossibleCreateModeValues() [2]CreateMode {
+	return [2]CreateMode{CreateModeDefault, CreateModeRecover}
+}
 
 // KeyPermissions enumerates the values for key permissions.
 type KeyPermissions string
@@ -121,6 +136,11 @@ const (
 	KeyPermissionsWrapKey KeyPermissions = "wrapKey"
 )
 
+// PossibleKeyPermissionsValues returns an array of possible values for the KeyPermissions const type.
+func PossibleKeyPermissionsValues() [16]KeyPermissions {
+	return [16]KeyPermissions{KeyPermissionsBackup, KeyPermissionsCreate, KeyPermissionsDecrypt, KeyPermissionsDelete, KeyPermissionsEncrypt, KeyPermissionsGet, KeyPermissionsImport, KeyPermissionsList, KeyPermissionsPurge, KeyPermissionsRecover, KeyPermissionsRestore, KeyPermissionsSign, KeyPermissionsUnwrapKey, KeyPermissionsUpdate, KeyPermissionsVerify, KeyPermissionsWrapKey}
+}
+
 // Reason enumerates the values for reason.
 type Reason string
 
@@ -130,6 +150,11 @@ const (
 	// AlreadyExists ...
 	AlreadyExists Reason = "AlreadyExists"
 )
+
+// PossibleReasonValues returns an array of possible values for the Reason const type.
+func PossibleReasonValues() [2]Reason {
+	return [2]Reason{AccountNameInvalid, AlreadyExists}
+}
 
 // SecretPermissions enumerates the values for secret permissions.
 type SecretPermissions string
@@ -153,6 +178,11 @@ const (
 	SecretPermissionsSet SecretPermissions = "set"
 )
 
+// PossibleSecretPermissionsValues returns an array of possible values for the SecretPermissions const type.
+func PossibleSecretPermissionsValues() [8]SecretPermissions {
+	return [8]SecretPermissions{SecretPermissionsBackup, SecretPermissionsDelete, SecretPermissionsGet, SecretPermissionsList, SecretPermissionsPurge, SecretPermissionsRecover, SecretPermissionsRestore, SecretPermissionsSet}
+}
+
 // SkuName enumerates the values for sku name.
 type SkuName string
 
@@ -162,6 +192,11 @@ const (
 	// Standard ...
 	Standard SkuName = "standard"
 )
+
+// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
+func PossibleSkuNameValues() [2]SkuName {
+	return [2]SkuName{Premium, Standard}
+}
 
 // StoragePermissions enumerates the values for storage permissions.
 type StoragePermissions string
@@ -196,6 +231,11 @@ const (
 	// StoragePermissionsUpdate ...
 	StoragePermissionsUpdate StoragePermissions = "update"
 )
+
+// PossibleStoragePermissionsValues returns an array of possible values for the StoragePermissions const type.
+func PossibleStoragePermissionsValues() [14]StoragePermissions {
+	return [14]StoragePermissions{StoragePermissionsBackup, StoragePermissionsDelete, StoragePermissionsDeletesas, StoragePermissionsGet, StoragePermissionsGetsas, StoragePermissionsList, StoragePermissionsListsas, StoragePermissionsPurge, StoragePermissionsRecover, StoragePermissionsRegeneratekey, StoragePermissionsRestore, StoragePermissionsSet, StoragePermissionsSetsas, StoragePermissionsUpdate}
+}
 
 // AccessPolicyEntry an identity that have access to the key vault. All identities in the array must use the same
 // tenant ID as the key vault's tenant ID.

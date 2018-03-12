@@ -1381,6 +1381,27 @@ type ApplicationGatewayAuthenticationCertificate struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplicationGatewayAuthenticationCertificate.
+func (agac ApplicationGatewayAuthenticationCertificate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agac.ApplicationGatewayAuthenticationCertificatePropertiesFormat != nil {
+		objectMap["properties"] = agac.ApplicationGatewayAuthenticationCertificatePropertiesFormat
+	}
+	if agac.Name != nil {
+		objectMap["name"] = agac.Name
+	}
+	if agac.Etag != nil {
+		objectMap["etag"] = agac.Etag
+	}
+	if agac.Type != nil {
+		objectMap["type"] = agac.Type
+	}
+	if agac.ID != nil {
+		objectMap["id"] = agac.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewayAuthenticationCertificate struct.
 func (agac *ApplicationGatewayAuthenticationCertificate) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1705,6 +1726,27 @@ type ApplicationGatewayBackendAddressPool struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplicationGatewayBackendAddressPool.
+func (agbap ApplicationGatewayBackendAddressPool) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agbap.ApplicationGatewayBackendAddressPoolPropertiesFormat != nil {
+		objectMap["properties"] = agbap.ApplicationGatewayBackendAddressPoolPropertiesFormat
+	}
+	if agbap.Name != nil {
+		objectMap["name"] = agbap.Name
+	}
+	if agbap.Etag != nil {
+		objectMap["etag"] = agbap.Etag
+	}
+	if agbap.Type != nil {
+		objectMap["type"] = agbap.Type
+	}
+	if agbap.ID != nil {
+		objectMap["id"] = agbap.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewayBackendAddressPool struct.
 func (agbap *ApplicationGatewayBackendAddressPool) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1819,6 +1861,27 @@ type ApplicationGatewayBackendHTTPSettings struct {
 	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationGatewayBackendHTTPSettings.
+func (agbhs ApplicationGatewayBackendHTTPSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agbhs.ApplicationGatewayBackendHTTPSettingsPropertiesFormat != nil {
+		objectMap["properties"] = agbhs.ApplicationGatewayBackendHTTPSettingsPropertiesFormat
+	}
+	if agbhs.Name != nil {
+		objectMap["name"] = agbhs.Name
+	}
+	if agbhs.Etag != nil {
+		objectMap["etag"] = agbhs.Etag
+	}
+	if agbhs.Type != nil {
+		objectMap["type"] = agbhs.Type
+	}
+	if agbhs.ID != nil {
+		objectMap["id"] = agbhs.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewayBackendHTTPSettings struct.
@@ -2080,6 +2143,27 @@ type ApplicationGatewayFrontendIPConfiguration struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplicationGatewayFrontendIPConfiguration.
+func (agfic ApplicationGatewayFrontendIPConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agfic.ApplicationGatewayFrontendIPConfigurationPropertiesFormat != nil {
+		objectMap["properties"] = agfic.ApplicationGatewayFrontendIPConfigurationPropertiesFormat
+	}
+	if agfic.Name != nil {
+		objectMap["name"] = agfic.Name
+	}
+	if agfic.Etag != nil {
+		objectMap["etag"] = agfic.Etag
+	}
+	if agfic.Type != nil {
+		objectMap["type"] = agfic.Type
+	}
+	if agfic.ID != nil {
+		objectMap["id"] = agfic.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewayFrontendIPConfiguration struct.
 func (agfic *ApplicationGatewayFrontendIPConfiguration) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2168,6 +2252,27 @@ type ApplicationGatewayFrontendPort struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplicationGatewayFrontendPort.
+func (agfp ApplicationGatewayFrontendPort) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agfp.ApplicationGatewayFrontendPortPropertiesFormat != nil {
+		objectMap["properties"] = agfp.ApplicationGatewayFrontendPortPropertiesFormat
+	}
+	if agfp.Name != nil {
+		objectMap["name"] = agfp.Name
+	}
+	if agfp.Etag != nil {
+		objectMap["etag"] = agfp.Etag
+	}
+	if agfp.Type != nil {
+		objectMap["type"] = agfp.Type
+	}
+	if agfp.ID != nil {
+		objectMap["id"] = agfp.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewayFrontendPort struct.
 func (agfp *ApplicationGatewayFrontendPort) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2247,6 +2352,27 @@ type ApplicationGatewayHTTPListener struct {
 	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationGatewayHTTPListener.
+func (aghl ApplicationGatewayHTTPListener) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aghl.ApplicationGatewayHTTPListenerPropertiesFormat != nil {
+		objectMap["properties"] = aghl.ApplicationGatewayHTTPListenerPropertiesFormat
+	}
+	if aghl.Name != nil {
+		objectMap["name"] = aghl.Name
+	}
+	if aghl.Etag != nil {
+		objectMap["etag"] = aghl.Etag
+	}
+	if aghl.Type != nil {
+		objectMap["type"] = aghl.Type
+	}
+	if aghl.ID != nil {
+		objectMap["id"] = aghl.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewayHTTPListener struct.
@@ -2339,6 +2465,27 @@ type ApplicationGatewayIPConfiguration struct {
 	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationGatewayIPConfiguration.
+func (agic ApplicationGatewayIPConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agic.ApplicationGatewayIPConfigurationPropertiesFormat != nil {
+		objectMap["properties"] = agic.ApplicationGatewayIPConfigurationPropertiesFormat
+	}
+	if agic.Name != nil {
+		objectMap["name"] = agic.Name
+	}
+	if agic.Etag != nil {
+		objectMap["etag"] = agic.Etag
+	}
+	if agic.Type != nil {
+		objectMap["type"] = agic.Type
+	}
+	if agic.ID != nil {
+		objectMap["id"] = agic.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewayIPConfiguration struct.
@@ -2524,6 +2671,27 @@ type ApplicationGatewayPathRule struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplicationGatewayPathRule.
+func (agpr ApplicationGatewayPathRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agpr.ApplicationGatewayPathRulePropertiesFormat != nil {
+		objectMap["properties"] = agpr.ApplicationGatewayPathRulePropertiesFormat
+	}
+	if agpr.Name != nil {
+		objectMap["name"] = agpr.Name
+	}
+	if agpr.Etag != nil {
+		objectMap["etag"] = agpr.Etag
+	}
+	if agpr.Type != nil {
+		objectMap["type"] = agpr.Type
+	}
+	if agpr.ID != nil {
+		objectMap["id"] = agpr.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewayPathRule struct.
 func (agpr *ApplicationGatewayPathRule) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2609,6 +2777,27 @@ type ApplicationGatewayProbe struct {
 	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationGatewayProbe.
+func (agp ApplicationGatewayProbe) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agp.ApplicationGatewayProbePropertiesFormat != nil {
+		objectMap["properties"] = agp.ApplicationGatewayProbePropertiesFormat
+	}
+	if agp.Name != nil {
+		objectMap["name"] = agp.Name
+	}
+	if agp.Etag != nil {
+		objectMap["etag"] = agp.Etag
+	}
+	if agp.Type != nil {
+		objectMap["type"] = agp.Type
+	}
+	if agp.ID != nil {
+		objectMap["id"] = agp.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewayProbe struct.
@@ -2756,6 +2945,27 @@ type ApplicationGatewayRedirectConfiguration struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplicationGatewayRedirectConfiguration.
+func (agrc ApplicationGatewayRedirectConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agrc.ApplicationGatewayRedirectConfigurationPropertiesFormat != nil {
+		objectMap["properties"] = agrc.ApplicationGatewayRedirectConfigurationPropertiesFormat
+	}
+	if agrc.Name != nil {
+		objectMap["name"] = agrc.Name
+	}
+	if agrc.Etag != nil {
+		objectMap["etag"] = agrc.Etag
+	}
+	if agrc.Type != nil {
+		objectMap["type"] = agrc.Type
+	}
+	if agrc.ID != nil {
+		objectMap["id"] = agrc.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewayRedirectConfiguration struct.
 func (agrc *ApplicationGatewayRedirectConfiguration) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2848,6 +3058,27 @@ type ApplicationGatewayRequestRoutingRule struct {
 	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationGatewayRequestRoutingRule.
+func (agrrr ApplicationGatewayRequestRoutingRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agrrr.ApplicationGatewayRequestRoutingRulePropertiesFormat != nil {
+		objectMap["properties"] = agrrr.ApplicationGatewayRequestRoutingRulePropertiesFormat
+	}
+	if agrrr.Name != nil {
+		objectMap["name"] = agrrr.Name
+	}
+	if agrrr.Etag != nil {
+		objectMap["etag"] = agrrr.Etag
+	}
+	if agrrr.Type != nil {
+		objectMap["type"] = agrrr.Type
+	}
+	if agrrr.ID != nil {
+		objectMap["id"] = agrrr.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewayRequestRoutingRule struct.
@@ -3197,6 +3428,27 @@ type ApplicationGatewaySslCertificate struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplicationGatewaySslCertificate.
+func (agsc ApplicationGatewaySslCertificate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agsc.ApplicationGatewaySslCertificatePropertiesFormat != nil {
+		objectMap["properties"] = agsc.ApplicationGatewaySslCertificatePropertiesFormat
+	}
+	if agsc.Name != nil {
+		objectMap["name"] = agsc.Name
+	}
+	if agsc.Etag != nil {
+		objectMap["etag"] = agsc.Etag
+	}
+	if agsc.Type != nil {
+		objectMap["type"] = agsc.Type
+	}
+	if agsc.ID != nil {
+		objectMap["id"] = agsc.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewaySslCertificate struct.
 func (agsc *ApplicationGatewaySslCertificate) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3293,6 +3545,21 @@ type ApplicationGatewaySslPredefinedPolicy struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplicationGatewaySslPredefinedPolicy.
+func (agspp ApplicationGatewaySslPredefinedPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agspp.Name != nil {
+		objectMap["name"] = agspp.Name
+	}
+	if agspp.ApplicationGatewaySslPredefinedPolicyPropertiesFormat != nil {
+		objectMap["properties"] = agspp.ApplicationGatewaySslPredefinedPolicyPropertiesFormat
+	}
+	if agspp.ID != nil {
+		objectMap["id"] = agspp.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewaySslPredefinedPolicy struct.
 func (agspp *ApplicationGatewaySslPredefinedPolicy) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3355,6 +3622,27 @@ type ApplicationGatewayURLPathMap struct {
 	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationGatewayURLPathMap.
+func (agupm ApplicationGatewayURLPathMap) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agupm.ApplicationGatewayURLPathMapPropertiesFormat != nil {
+		objectMap["properties"] = agupm.ApplicationGatewayURLPathMapPropertiesFormat
+	}
+	if agupm.Name != nil {
+		objectMap["name"] = agupm.Name
+	}
+	if agupm.Etag != nil {
+		objectMap["etag"] = agupm.Etag
+	}
+	if agupm.Type != nil {
+		objectMap["type"] = agupm.Type
+	}
+	if agupm.ID != nil {
+		objectMap["id"] = agupm.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ApplicationGatewayURLPathMap struct.
@@ -3583,6 +3871,24 @@ type BackendAddressPool struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BackendAddressPool.
+func (bap BackendAddressPool) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bap.BackendAddressPoolPropertiesFormat != nil {
+		objectMap["properties"] = bap.BackendAddressPoolPropertiesFormat
+	}
+	if bap.Name != nil {
+		objectMap["name"] = bap.Name
+	}
+	if bap.Etag != nil {
+		objectMap["etag"] = bap.Etag
+	}
+	if bap.ID != nil {
+		objectMap["id"] = bap.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for BackendAddressPool struct.
@@ -4413,6 +4719,24 @@ type ExpressRouteCircuitAuthorization struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ExpressRouteCircuitAuthorization.
+func (erca ExpressRouteCircuitAuthorization) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if erca.AuthorizationPropertiesFormat != nil {
+		objectMap["properties"] = erca.AuthorizationPropertiesFormat
+	}
+	if erca.Name != nil {
+		objectMap["name"] = erca.Name
+	}
+	if erca.Etag != nil {
+		objectMap["etag"] = erca.Etag
+	}
+	if erca.ID != nil {
+		objectMap["id"] = erca.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for ExpressRouteCircuitAuthorization struct.
 func (erca *ExpressRouteCircuitAuthorization) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4674,6 +4998,24 @@ type ExpressRouteCircuitPeering struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExpressRouteCircuitPeering.
+func (ercp ExpressRouteCircuitPeering) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ercp.ExpressRouteCircuitPeeringPropertiesFormat != nil {
+		objectMap["properties"] = ercp.ExpressRouteCircuitPeeringPropertiesFormat
+	}
+	if ercp.Name != nil {
+		objectMap["name"] = ercp.Name
+	}
+	if ercp.Etag != nil {
+		objectMap["etag"] = ercp.Etag
+	}
+	if ercp.ID != nil {
+		objectMap["id"] = ercp.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ExpressRouteCircuitPeering struct.
@@ -5580,6 +5922,18 @@ type FlowLogInformation struct {
 	*FlowLogProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FlowLogInformation.
+func (fli FlowLogInformation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fli.TargetResourceID != nil {
+		objectMap["targetResourceId"] = fli.TargetResourceID
+	}
+	if fli.FlowLogProperties != nil {
+		objectMap["properties"] = fli.FlowLogProperties
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for FlowLogInformation struct.
 func (fli *FlowLogInformation) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5641,6 +5995,27 @@ type FrontendIPConfiguration struct {
 	Zones *[]string `json:"zones,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FrontendIPConfiguration.
+func (fic FrontendIPConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fic.FrontendIPConfigurationPropertiesFormat != nil {
+		objectMap["properties"] = fic.FrontendIPConfigurationPropertiesFormat
+	}
+	if fic.Name != nil {
+		objectMap["name"] = fic.Name
+	}
+	if fic.Etag != nil {
+		objectMap["etag"] = fic.Etag
+	}
+	if fic.Zones != nil {
+		objectMap["zones"] = fic.Zones
+	}
+	if fic.ID != nil {
+		objectMap["id"] = fic.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for FrontendIPConfiguration struct.
@@ -5762,6 +6137,24 @@ type InboundNatPool struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for InboundNatPool.
+func (inp InboundNatPool) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if inp.InboundNatPoolPropertiesFormat != nil {
+		objectMap["properties"] = inp.InboundNatPoolPropertiesFormat
+	}
+	if inp.Name != nil {
+		objectMap["name"] = inp.Name
+	}
+	if inp.Etag != nil {
+		objectMap["etag"] = inp.Etag
+	}
+	if inp.ID != nil {
+		objectMap["id"] = inp.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for InboundNatPool struct.
 func (inp *InboundNatPool) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5840,6 +6233,24 @@ type InboundNatRule struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InboundNatRule.
+func (inr InboundNatRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if inr.InboundNatRulePropertiesFormat != nil {
+		objectMap["properties"] = inr.InboundNatRulePropertiesFormat
+	}
+	if inr.Name != nil {
+		objectMap["name"] = inr.Name
+	}
+	if inr.Etag != nil {
+		objectMap["etag"] = inr.Etag
+	}
+	if inr.ID != nil {
+		objectMap["id"] = inr.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for InboundNatRule struct.
@@ -6270,6 +6681,24 @@ type InterfaceIPConfiguration struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InterfaceIPConfiguration.
+func (iic InterfaceIPConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iic.InterfaceIPConfigurationPropertiesFormat != nil {
+		objectMap["properties"] = iic.InterfaceIPConfigurationPropertiesFormat
+	}
+	if iic.Name != nil {
+		objectMap["name"] = iic.Name
+	}
+	if iic.Etag != nil {
+		objectMap["etag"] = iic.Etag
+	}
+	if iic.ID != nil {
+		objectMap["id"] = iic.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for InterfaceIPConfiguration struct.
@@ -6893,6 +7322,24 @@ type IPConfiguration struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IPConfiguration.
+func (ic IPConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ic.IPConfigurationPropertiesFormat != nil {
+		objectMap["properties"] = ic.IPConfigurationPropertiesFormat
+	}
+	if ic.Name != nil {
+		objectMap["name"] = ic.Name
+	}
+	if ic.Etag != nil {
+		objectMap["etag"] = ic.Etag
+	}
+	if ic.ID != nil {
+		objectMap["id"] = ic.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for IPConfiguration struct.
@@ -7784,6 +8231,24 @@ type LoadBalancingRule struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LoadBalancingRule.
+func (lbr LoadBalancingRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lbr.LoadBalancingRulePropertiesFormat != nil {
+		objectMap["properties"] = lbr.LoadBalancingRulePropertiesFormat
+	}
+	if lbr.Name != nil {
+		objectMap["name"] = lbr.Name
+	}
+	if lbr.Etag != nil {
+		objectMap["etag"] = lbr.Etag
+	}
+	if lbr.ID != nil {
+		objectMap["id"] = lbr.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for LoadBalancingRule struct.
 func (lbr *LoadBalancingRule) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8234,6 +8699,24 @@ type OutboundNatRule struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OutboundNatRule.
+func (onr OutboundNatRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if onr.OutboundNatRulePropertiesFormat != nil {
+		objectMap["properties"] = onr.OutboundNatRulePropertiesFormat
+	}
+	if onr.Name != nil {
+		objectMap["name"] = onr.Name
+	}
+	if onr.Etag != nil {
+		objectMap["etag"] = onr.Etag
+	}
+	if onr.ID != nil {
+		objectMap["id"] = onr.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for OutboundNatRule struct.
 func (onr *OutboundNatRule) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8300,6 +8783,15 @@ type OutboundNatRulePropertiesFormat struct {
 // PacketCapture parameters that define the create packet capture operation.
 type PacketCapture struct {
 	*PacketCaptureParameters `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PacketCapture.
+func (pc PacketCapture) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pc.PacketCaptureParameters != nil {
+		objectMap["properties"] = pc.PacketCaptureParameters
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for PacketCapture struct.
@@ -8387,6 +8879,24 @@ type PacketCaptureResult struct {
 	ID                             *string `json:"id,omitempty"`
 	Etag                           *string `json:"etag,omitempty"`
 	*PacketCaptureResultProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PacketCaptureResult.
+func (pcr PacketCaptureResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pcr.Name != nil {
+		objectMap["name"] = pcr.Name
+	}
+	if pcr.ID != nil {
+		objectMap["id"] = pcr.ID
+	}
+	if pcr.Etag != nil {
+		objectMap["etag"] = pcr.Etag
+	}
+	if pcr.PacketCaptureResultProperties != nil {
+		objectMap["properties"] = pcr.PacketCaptureResultProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for PacketCaptureResult struct.
@@ -8875,6 +9385,24 @@ type Probe struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Probe.
+func (p Probe) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.ProbePropertiesFormat != nil {
+		objectMap["properties"] = p.ProbePropertiesFormat
+	}
+	if p.Name != nil {
+		objectMap["name"] = p.Name
+	}
+	if p.Etag != nil {
+		objectMap["etag"] = p.Etag
+	}
+	if p.ID != nil {
+		objectMap["id"] = p.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Probe struct.
@@ -9387,6 +9915,24 @@ type ResourceNavigationLink struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceNavigationLink.
+func (rnl ResourceNavigationLink) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rnl.ResourceNavigationLinkFormat != nil {
+		objectMap["properties"] = rnl.ResourceNavigationLinkFormat
+	}
+	if rnl.Name != nil {
+		objectMap["name"] = rnl.Name
+	}
+	if rnl.Etag != nil {
+		objectMap["etag"] = rnl.Etag
+	}
+	if rnl.ID != nil {
+		objectMap["id"] = rnl.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for ResourceNavigationLink struct.
 func (rnl *ResourceNavigationLink) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -9467,6 +10013,24 @@ type Route struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Route.
+func (r Route) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.RoutePropertiesFormat != nil {
+		objectMap["properties"] = r.RoutePropertiesFormat
+	}
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Etag != nil {
+		objectMap["etag"] = r.Etag
+	}
+	if r.ID != nil {
+		objectMap["id"] = r.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Route struct.
@@ -11190,6 +11754,24 @@ type SecurityRule struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SecurityRule.
+func (sr SecurityRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sr.SecurityRulePropertiesFormat != nil {
+		objectMap["properties"] = sr.SecurityRulePropertiesFormat
+	}
+	if sr.Name != nil {
+		objectMap["name"] = sr.Name
+	}
+	if sr.Etag != nil {
+		objectMap["etag"] = sr.Etag
+	}
+	if sr.ID != nil {
+		objectMap["id"] = sr.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for SecurityRule struct.
 func (sr *SecurityRule) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -11511,6 +12093,24 @@ type Subnet struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Subnet.
+func (s Subnet) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.SubnetPropertiesFormat != nil {
+		objectMap["properties"] = s.SubnetPropertiesFormat
+	}
+	if s.Name != nil {
+		objectMap["name"] = s.Name
+	}
+	if s.Etag != nil {
+		objectMap["etag"] = s.Etag
+	}
+	if s.ID != nil {
+		objectMap["id"] = s.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Subnet struct.
@@ -11854,6 +12454,18 @@ type TroubleshootingParameters struct {
 	// TargetResourceID - The target resource to troubleshoot.
 	TargetResourceID           *string `json:"targetResourceId,omitempty"`
 	*TroubleshootingProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TroubleshootingParameters.
+func (tp TroubleshootingParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tp.TargetResourceID != nil {
+		objectMap["targetResourceId"] = tp.TargetResourceID
+	}
+	if tp.TroubleshootingProperties != nil {
+		objectMap["properties"] = tp.TroubleshootingProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for TroubleshootingParameters struct.
@@ -12977,6 +13589,24 @@ type VirtualNetworkGatewayIPConfiguration struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VirtualNetworkGatewayIPConfiguration.
+func (vngic VirtualNetworkGatewayIPConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vngic.VirtualNetworkGatewayIPConfigurationPropertiesFormat != nil {
+		objectMap["properties"] = vngic.VirtualNetworkGatewayIPConfigurationPropertiesFormat
+	}
+	if vngic.Name != nil {
+		objectMap["name"] = vngic.Name
+	}
+	if vngic.Etag != nil {
+		objectMap["etag"] = vngic.Etag
+	}
+	if vngic.ID != nil {
+		objectMap["id"] = vngic.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for VirtualNetworkGatewayIPConfiguration struct.
 func (vngic *VirtualNetworkGatewayIPConfiguration) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -13941,6 +14571,24 @@ type VirtualNetworkPeering struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VirtualNetworkPeering.
+func (vnp VirtualNetworkPeering) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vnp.VirtualNetworkPeeringPropertiesFormat != nil {
+		objectMap["properties"] = vnp.VirtualNetworkPeeringPropertiesFormat
+	}
+	if vnp.Name != nil {
+		objectMap["name"] = vnp.Name
+	}
+	if vnp.Etag != nil {
+		objectMap["etag"] = vnp.Etag
+	}
+	if vnp.ID != nil {
+		objectMap["id"] = vnp.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for VirtualNetworkPeering struct.
 func (vnp *VirtualNetworkPeering) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -14387,6 +15035,24 @@ type VpnClientRevokedCertificate struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VpnClientRevokedCertificate.
+func (vcrc VpnClientRevokedCertificate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vcrc.VpnClientRevokedCertificatePropertiesFormat != nil {
+		objectMap["properties"] = vcrc.VpnClientRevokedCertificatePropertiesFormat
+	}
+	if vcrc.Name != nil {
+		objectMap["name"] = vcrc.Name
+	}
+	if vcrc.Etag != nil {
+		objectMap["etag"] = vcrc.Etag
+	}
+	if vcrc.ID != nil {
+		objectMap["id"] = vcrc.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for VpnClientRevokedCertificate struct.
 func (vcrc *VpnClientRevokedCertificate) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -14457,6 +15123,24 @@ type VpnClientRootCertificate struct {
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VpnClientRootCertificate.
+func (vcrc VpnClientRootCertificate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vcrc.VpnClientRootCertificatePropertiesFormat != nil {
+		objectMap["properties"] = vcrc.VpnClientRootCertificatePropertiesFormat
+	}
+	if vcrc.Name != nil {
+		objectMap["name"] = vcrc.Name
+	}
+	if vcrc.Etag != nil {
+		objectMap["etag"] = vcrc.Etag
+	}
+	if vcrc.ID != nil {
+		objectMap["id"] = vcrc.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for VpnClientRootCertificate struct.

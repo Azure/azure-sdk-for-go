@@ -38,6 +38,11 @@ const (
 	Send AccessRights = "Send"
 )
 
+// PossibleAccessRightsValues returns an array of possible values for the AccessRights const type.
+func PossibleAccessRightsValues() [3]AccessRights {
+	return [3]AccessRights{Listen, Manage, Send}
+}
+
 // EntityStatus enumerates the values for entity status.
 type EntityStatus string
 
@@ -61,6 +66,11 @@ const (
 	// Unknown ...
 	Unknown EntityStatus = "Unknown"
 )
+
+// PossibleEntityStatusValues returns an array of possible values for the EntityStatus const type.
+func PossibleEntityStatusValues() [9]EntityStatus {
+	return [9]EntityStatus{Active, Creating, Deleting, Disabled, ReceiveDisabled, Renaming, Restoring, SendDisabled, Unknown}
+}
 
 // NamespaceState enumerates the values for namespace state.
 type NamespaceState string
@@ -94,6 +104,11 @@ const (
 	NamespaceStateUnknown NamespaceState = "Unknown"
 )
 
+// PossibleNamespaceStateValues returns an array of possible values for the NamespaceState const type.
+func PossibleNamespaceStateValues() [13]NamespaceState {
+	return [13]NamespaceState{NamespaceStateActivating, NamespaceStateActive, NamespaceStateCreated, NamespaceStateCreating, NamespaceStateDisabled, NamespaceStateDisabling, NamespaceStateEnabling, NamespaceStateFailed, NamespaceStateRemoved, NamespaceStateRemoving, NamespaceStateSoftDeleted, NamespaceStateSoftDeleting, NamespaceStateUnknown}
+}
+
 // Policykey enumerates the values for policykey.
 type Policykey string
 
@@ -104,6 +119,11 @@ const (
 	SecondaryKey Policykey = "SecondaryKey"
 )
 
+// PossiblePolicykeyValues returns an array of possible values for the Policykey const type.
+func PossiblePolicykeyValues() [2]Policykey {
+	return [2]Policykey{PrimaryKey, SecondaryKey}
+}
+
 // SkuName enumerates the values for sku name.
 type SkuName string
 
@@ -113,6 +133,11 @@ const (
 	// Standard ...
 	Standard SkuName = "Standard"
 )
+
+// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
+func PossibleSkuNameValues() [2]SkuName {
+	return [2]SkuName{Basic, Standard}
+}
 
 // SkuTier enumerates the values for sku tier.
 type SkuTier string
@@ -125,6 +150,11 @@ const (
 	// SkuTierStandard ...
 	SkuTierStandard SkuTier = "Standard"
 )
+
+// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
+func PossibleSkuTierValues() [3]SkuTier {
+	return [3]SkuTier{SkuTierBasic, SkuTierPremium, SkuTierStandard}
+}
 
 // UnavailableReason enumerates the values for unavailable reason.
 type UnavailableReason string
@@ -143,6 +173,11 @@ const (
 	// TooManyNamespaceInCurrentSubscription ...
 	TooManyNamespaceInCurrentSubscription UnavailableReason = "TooManyNamespaceInCurrentSubscription"
 )
+
+// PossibleUnavailableReasonValues returns an array of possible values for the UnavailableReason const type.
+func PossibleUnavailableReasonValues() [6]UnavailableReason {
+	return [6]UnavailableReason{InvalidName, NameInLockdown, NameInUse, None, SubscriptionIsDisabled, TooManyNamespaceInCurrentSubscription}
+}
 
 // CheckNameAvailabilityParameter parameter supplied to check Namespace name availability operation
 type CheckNameAvailabilityParameter struct {
